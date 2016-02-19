@@ -1,0 +1,84 @@
+{
+	"entitySpecification" : {
+		"type" : "neighborhood",
+		"idNameSpecification" : {
+			"datasourceId" : "lsoa-atlas",
+			"sheetId" : 0,
+			"keyColumnId" : 0,
+			"labelColumnId" : -1,
+			"seriesInstances" : [
+				{
+				"label" : "name",
+				"dataColumnId" : 1,
+				"startLine" : 3,
+				"endLine" : 4837
+				}
+			]
+		}
+	},
+	"idToDatasourceSpecifications" : {
+		"lsoa-atlas" : {
+			"id" : "lsoa-atlas",
+			"url" : "http://data.london.gov.uk/dataset/lsoa-atlas",
+			"remoteDatafile" : "https://files.datapress.com/london/dataset/lsoa-atlas/lsoa-data.xls",
+			"localDatafilePath" : "/LondonDatastore/lsoa-data.xls",
+			"datafileType" : "xls"
+		}
+	},
+	"seriesSpecifications" : [
+		{
+			"label" : "populationDensity",
+			"description" : "Population density (per hectare)",
+			"datasourceId" : "lsoa-atlas",
+			"sheetId" : 0,
+			"keyColumnId" : 0,
+			"labelColumnId" : -1,
+			"seriesInstances" : [
+				{
+				"label" : "2012",
+				"dataColumnId" : 101,
+				"startLine" : 3,
+				"endLine" : 4837
+				},
+				{
+				"label" : "2013",
+				"dataColumnId" : 102,
+				"startLine" : 3,
+				"endLine" : 4837
+				}
+			]
+		},
+		{
+			"label" : "carsPerHousehold",
+			"description" : "Number of cars per household",
+			"datasourceId" : "lsoa-atlas",
+			"sheetId" : 1,
+			"keyColumnId" : 0,
+			"labelColumnId" : -1,
+			"seriesInstances" : [
+				{
+				"label" : "2011",
+				"dataColumnId" : 54,
+				"startLine" : 3,
+				"endLine" : 4837
+				}
+			]
+		},
+		{
+			"label" : "avgPublicTransportAvailabilityScore",
+			"description" : "Average public transport availability score",
+			"datasourceId" : "lsoa-atlas",
+			"sheetId" : 1,
+			"keyColumnId" : 0,
+			"labelColumnId" : -1,
+			"seriesInstances" : [
+				{
+				"label" : "2014",
+				"dataColumnId" : 64,
+				"startLine" : 3,
+				"endLine" : 4837
+				}
+			]
+		}
+	]
+}

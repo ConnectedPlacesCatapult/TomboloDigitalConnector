@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // POI Excel file manipulation
+	compile group: 'org.apache.poi',		name: 'poi',		version: '3.13'
+	compile group: 'org.apache.poi',		name: 'poi-ooxml',	version: '3.13'
+	
+	// JSON handling
+	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	compile group: 'com.google.code.gson',	name: 'gson', 		version: '2.4'
+	
+	// Commons
+	compile group: 'commons-io',			name: 'commons-io',	version: '2.4'
+}
