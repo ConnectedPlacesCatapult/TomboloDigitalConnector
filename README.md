@@ -22,87 +22,21 @@ psql -d tombolo < src/main/resources/sql/inital_fixtures.sql
 
 ## Load LSOA
 
-<pre>
-wget 'https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip' -O /tmp/lsoa.zip
-</pre>
-<pre>
-mkdir /tmp/lsoa
-</pre>
-<pre>
-unzip /tmp/lsoa.zip -d /tmp/lsoa
-</pre>
-<pre>
-shp2pgsql /tmp/lsoa/LSOA_2011_EW_BGC_V2.shp lsoa | psql -d tombolo
-</pre>
-<pre>
-psql -d tombolo -c 'insert into area(area_type_id, label, name, shape) select '1', lsoa11cd, lsoa11nm, geom from lsoa'
-</pre>
-<pre>
-psql -d tombolo -c 'drop table lsoa'
-</pre>
-<pre>
-rm -r /tmp/lsoa
-</pre>
-<pre>
-rm /tmp/lsoa.zip
-</pre>
+```bash
+sh scripts/loadLsoa.sh
+```
 
 ## Load MSOA
 
-<pre>
-wget 'https://geoportal.statistics.gov.uk/Docs/Boundaries/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip' -O /tmp/msoa.zip
-</pre>
-<pre>
-mkdir /tmp/msoa
-</pre>
-<pre>
-unzip /tmp/msoa.zip -d /tmp/msoa
-</pre>
-<pre>
-shp2pgsql /tmp/msoa/MSOA_2011_EW_BGC_V2.shp msoa | psql -d tombolo
-</pre>
-<pre>
-psql -d tombolo -c 'insert into area(area_type_id, label, name, shape) select '2', msoa11cd, msoa11nm, geom from msoa'
-</pre>
-<pre>
-psql -d tombolo -c 'drop table msoa'
-</pre>
-<pre>
-rm -r /tmp/msoa
-</pre>
-<pre>
-rm /tmp/msoa.zip
-</pre>
+```bash
+sh scripts/loadMsoa.sh
+```
 
 ## Load Local Authorities
 
-<pre>
-wget 'https://data.gov.uk/dataset/local-authority-district-gb-dec-2012-boundaries-full-extent/datapackage.zip' -O /tmp/la.zip
-</pre>
-<pre>
-mkdir /tmp/la
-</pre>
-<pre>
-unzip /tmp/la.zip -d /tmp/la
-</pre>
-<pre>
-unzip '/tmp/la/data/Local_authority_district_(GB)_Dec_2012_Boundaries_(Full_Extent).zip' -d /tmp/la/data
-</pre>
-<pre>
-shp2pgsql /tmp/la/data/LAD_DEC_2012_GB_BFE.shp la | psql -d tombolo
-</pre>
-<pre>
-psql -d tombolo -c 'insert into area(area_type_id, label, name, shape) select '3', lad12cd, lad12nm, geom from la'
-</pre>
-<pre>
-psql -d tombolo -c 'drop table la'
-</pre>
-<pre>
-rm -r /tmp/la
-</pre>
-<pre>
-rm /tmp/la.zip
-</pre>
+```bash
+sh scripts/loadLa.sh
+```
 
 # Database geo unit transformation
 
