@@ -92,6 +92,15 @@ public class Attribute {
 	public String getDescription(){
 		return description;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() != Geography.class)
+			return false;
+		
+		Attribute attObj = (Attribute)obj;
+		return this.getId().equals(attObj.getId());
+	}
 	
 //	public DataType getDataType(){
 //		return dataType;

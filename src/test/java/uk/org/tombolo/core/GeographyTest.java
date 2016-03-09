@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.junit.Test;
 
-import uk.org.tombolo.core.orm.HibernateUtil;
+import uk.org.tombolo.core.utils.HibernateUtil;
 
 public class GeographyTest {
 	
@@ -21,10 +21,8 @@ public class GeographyTest {
 		assertEquals("Lower Layer Super Output Area", cityOfLondon1A.getGeographyType().getName());
 		assertEquals("City of London 001A", cityOfLondon1A.getName());
 		
-		//System.err.println(cityOfLondon1A.shape.getTypeString());
-		System.err.println(cityOfLondon1A.shape.getGeometryType());
-		System.err.println(cityOfLondon1A.shape.getArea());
-		
+		assertEquals("MultiPolygon",cityOfLondon1A.shape.getGeometryType());
+		assertEquals(133320d, cityOfLondon1A.shape.getArea(), 1d);
 		session.close();
 	}
 	

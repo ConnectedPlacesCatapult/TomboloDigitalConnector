@@ -6,10 +6,8 @@
     <session-factory>
 
         <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property>
-<!-- 
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
- -->    
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<!-- FIXME: Get the following values from a configuration file outsied git -->
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/tombolo</property>
         <property name="hibernate.connection.username">tombolo</property>
         <property name="hibernate.connection.password">tombolo</property>
@@ -20,5 +18,7 @@
 		
 		<mapping class="uk.org.tombolo.core.Provider"/>
 		<mapping class="uk.org.tombolo.core.Attribute"/>
+		
+		<mapping class="uk.org.tombolo.core.TimedValue"/>
     </session-factory>
 </hibernate-configuration>

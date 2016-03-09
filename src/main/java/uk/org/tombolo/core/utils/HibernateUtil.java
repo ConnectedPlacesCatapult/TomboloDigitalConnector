@@ -1,4 +1,4 @@
-package uk.org.tombolo.core.orm;
+package uk.org.tombolo.core.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

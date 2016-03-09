@@ -24,7 +24,7 @@ import org.json.simple.parser.ParseException;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.orm.HibernateUtil;
+import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.datacatalogue.DatasourceDetails;
 import uk.org.tombolo.datacatalogue.DatasourceSpecification;
 import uk.org.tombolo.importer.DownloadUtils;

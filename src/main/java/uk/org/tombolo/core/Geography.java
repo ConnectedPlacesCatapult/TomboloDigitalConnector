@@ -2,9 +2,12 @@ package uk.org.tombolo.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -25,8 +28,17 @@ public class Geography {
 	MultiPolygon shape;
 		
 	public Geography(){}
+	
+	public Geography(GeographyType geographyType, String label, String name, MultiPolygon shape){
+		this.geographyType = geographyType;
+		this.label = label;
+		this.name = name;
+		this.shape = shape;
+	}
 
 	@Id
+	@SequenceGenerator(name="geography_id_sequence",sequenceName="geography_id_sequence", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="geography_id_sequence")
 	@Column(name="id")
 	public Integer getId() {
 		return id;
@@ -73,4 +85,15 @@ public class Geography {
 	public void setShape(MultiPolygon shape) {
 		this.shape = shape;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() != Geography.class)
+			return false;
+		
+		Geography geoObj = (Geography)obj;
+		return this.getId().equals(geoObj.getId());
+	}
+	
+	
 }

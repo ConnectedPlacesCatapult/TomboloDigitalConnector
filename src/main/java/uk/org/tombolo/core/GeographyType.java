@@ -33,5 +33,4 @@ public class GeographyType {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 }
