@@ -8,9 +8,14 @@ import uk.org.tombolo.core.Geography;
 
 public class GeographyUtils {
 
-	public static Geography getTestGeography(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	static Session session = HibernateUtil.getSessionFactory().openSession();
 
+	public static Geography getGeographyByLabel(String label){
+		Criteria criteria = session.createCriteria(Geography.class);
+		return (Geography)criteria.add(Restrictions.eq("label", label)).uniqueResult();		
+	}
+	
+	public static Geography getTestGeography(){
 		Criteria criteria = session.createCriteria(Geography.class);
 		return (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
 	}

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -23,8 +24,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.datacatalogue.DatasourceDetails;
 import uk.org.tombolo.datacatalogue.DatasourceSpecification;
 import uk.org.tombolo.importer.DownloadUtils;
@@ -57,6 +62,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final String baseUrl = "http://data.statistics.gov.uk/ons/datasets/";
 	private static final String filePrefix = "csv/CSV_";
 	private static final String filePostfix = "_2011STATH_1_EN.zip";
+	
+	private static final LocalDateTime CENSUS_2011_DATE_TIME = LocalDateTime.of(2011,12,31,23,59,59);
 
 	DownloadUtils downloadUtils = new DownloadUtils();
 	
@@ -148,21 +155,19 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							for (int i=2; i<2+details.getAttributes().size(); i++){
 								values.add(Double.parseDouble(dequote(fields[i])));
 							}
-							System.err.println(line);
-							System.err.print(areaId);
-							for (int i=0; i<values.size(); i++){
-								System.err.print("\t"+values.get(i));
-							}
-							System.err.println();
-							
-							// FIXME: Update TimedValue table
-							
+							Geography geography = GeographyUtils.getGeographyByLabel(areaId);
+							if (geography != null
+									&& values.size() == details.getAttributes().size()){
+								for (int i=0; i<values.size(); i++){
+									TimedValue tv 
+										= new TimedValue(geography, details.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
+									TimedValueUtils.save(tv);
+								}								
+							}							
 						}catch (NumberFormatException e){
 							// Ignoring this line since it does not contain numeric values for the attributes
 						}
 					}
-					if (lineCount > 15)
-						break;
 				}
 				br.close();
 			}
@@ -235,8 +240,12 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			restrictions.put("provider", attribute.getProvider());
 			restrictions.put("label", attribute.getLabel());
 			Attribute savedAttribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
-			if (savedAttribute == null)
-				session.saveOrUpdate(attribute);
+			if (savedAttribute == null){
+				Integer id = (Integer)session.save(attribute);
+				attribute.setId(id);
+			}else{
+				attribute.setId(savedAttribute.getId());
+			}
 		}
 		session.getTransaction().commit();
 	}
