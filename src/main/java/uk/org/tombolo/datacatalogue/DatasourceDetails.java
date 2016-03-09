@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
 
 public class DatasourceDetails {
 
-	String provider;
+	Provider provider;
 	String name;
 	String description;
 	List<Attribute> attributes;
 	
-	public DatasourceDetails(String provider, String name, String description){
+	public DatasourceDetails(Provider provider, String name, String description){
 		this.provider = provider;
 		this.name = name;
 		this.description = description;
@@ -23,7 +24,7 @@ public class DatasourceDetails {
 		attributes.add(attribute);
 	}
 
-	public String getProvider() {
+	public Provider getProvider() {
 		return provider;
 	}
 

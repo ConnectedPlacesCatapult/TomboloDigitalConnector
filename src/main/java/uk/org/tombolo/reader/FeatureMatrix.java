@@ -36,13 +36,13 @@ public class FeatureMatrix {
 		bwriter.newLine();
 		bwriter.newLine();
 		
-		bwriter.write("@ATTRIBUTE "+key.getName() + " " + key.getDataType().name().toUpperCase());		
+//		bwriter.write("@ATTRIBUTE "+key.getLabel() + " " + key.getDataType().name().toUpperCase());		
 		for (Attribute attribute : attributes){
-			for (String seriesLabel : attribute.getLabels()){
-				String attributeName = attribute.getName()+"_"+seriesLabel;
-				bwriter.write("@ATTRIBUTE "+attributeName + " " + attribute.getDataType().name().toUpperCase());
-				bwriter.newLine();
-			}
+//			for (String seriesLabel : attribute.getLabels()){
+//				String attributeName = attribute.getLabel()+"_"+seriesLabel;
+//				bwriter.write("@ATTRIBUTE "+attributeName + " " + attribute.getDataType().name().toUpperCase());
+//				bwriter.newLine();
+//			}
 		}
 		bwriter.newLine();
 		
@@ -57,12 +57,12 @@ public class FeatureMatrix {
 		BufferedWriter bwriter = new BufferedWriter(writer);
 		
 		// Writing headers
-		bwriter.write(key.getName());
+		bwriter.write(key.getLabel());
 		for (Attribute attribute : attributes){
-			for (String seriesLabel : attribute.getLabels()){
-				String attributeName = attribute.getName()+"_"+seriesLabel;
-				bwriter.write("," + attributeName);
-			}
+//			for (String seriesLabel : attribute.getLabels()){
+//				String attributeName = attribute.getLabel()+"_"+seriesLabel;
+//				bwriter.write("," + attributeName);
+//			}
 		}
 		bwriter.newLine();
 		
@@ -77,10 +77,10 @@ public class FeatureMatrix {
 		for (String entityId : entityIdToAttributeNameToValueSeries.keySet()){
 			writer.write(entityId);
 			for (Attribute attribute : attributes){
-				for (String label : attribute.getLabels()){
-					Double value = entityIdToAttributeNameToValueSeries.get(entityId).get(attribute.getName()).getValue(label);
-					writer.write(","+value);
-				}
+//				for (String label : attribute.getLabels()){
+//					Double value = entityIdToAttributeNameToValueSeries.get(entityId).get(attribute.getLabel()).getValue(label);
+//					writer.write(","+value);
+//				}
 			}
 			writer.newLine();
 		}		

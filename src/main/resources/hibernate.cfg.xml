@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property>
+<!-- 
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
+ -->    
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/tombolo</property>
+        <property name="hibernate.connection.username">tombolo</property>
+        <property name="hibernate.connection.password">tombolo</property>
+        <property name="show_sql">true</property>
+
+		<mapping class="uk.org.tombolo.core.GeographyType"/>
+		<mapping class="uk.org.tombolo.core.Geography"/>
+		
+		<mapping class="uk.org.tombolo.core.Provider"/>
+		<mapping class="uk.org.tombolo.core.Attribute"/>
+    </session-factory>
+</hibernate-configuration>

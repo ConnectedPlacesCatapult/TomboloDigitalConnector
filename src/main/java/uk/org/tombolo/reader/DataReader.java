@@ -12,16 +12,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.ValueSeries;
@@ -86,7 +82,7 @@ public class DataReader {
 		// Read feature values
 		featureMatrix = new FeatureMatrix();
 		// FIXME: Specify this somewhere in a file!
-		featureMatrix.key = new Attribute(null,"boroughid","Borough identifier",Attribute.DataType.string);
+		featureMatrix.key = new Attribute(null,"boroughid","Borough identifier","Borough identifier",Attribute.DataType.string);
 		
 		for (SeriesSpecification  seriesSpec : seriesSpecs){
 			// Processing the i-th feature
@@ -105,9 +101,9 @@ public class DataReader {
 			// Update feature vector
 			// FIXME: The numeric should not be hard-coded
 			String attributeLabel = seriesSpec.getLabel();
-			Attribute attribute = new Attribute(null,attributeLabel,seriesSpec.getDescription(),Attribute.DataType.numeric);
+			Attribute attribute = new Attribute(null,attributeLabel,attributeLabel,seriesSpec.getDescription(),Attribute.DataType.numeric);
 			for (SeriesInstance seriesInstance : seriesSpec.getSeriesInstances()){
-				attribute.addLabel(seriesInstance.getLabel());
+//				attribute.addLabel(seriesInstance.getLabel());
 			}
 			featureMatrix.attributes.add(attribute);
 						
@@ -122,8 +118,8 @@ public class DataReader {
 					String entityId = cell.getStringCellValue();
 					if (!featureMatrix.entityIdToAttributeNameToValueSeries.containsKey(entityId))
 						featureMatrix.entityIdToAttributeNameToValueSeries.put(entityId, new HashMap<String,ValueSeries>());
-					if (!featureMatrix.entityIdToAttributeNameToValueSeries.get(entityId).containsKey(attribute.getName()))
-						featureMatrix.entityIdToAttributeNameToValueSeries.get(entityId).put(attribute.getName(), new ValueSeries());
+					if (!featureMatrix.entityIdToAttributeNameToValueSeries.get(entityId).containsKey(attribute.getLabel()))
+						featureMatrix.entityIdToAttributeNameToValueSeries.get(entityId).put(attribute.getLabel(), new ValueSeries());
 
 					// Data column
 					cell = row.getCell(seriesInstance.getDataColumnId());
@@ -133,7 +129,7 @@ public class DataReader {
 					
 					featureMatrix
 						.entityIdToAttributeNameToValueSeries
-							.get(entityId).get(attribute.getName()).addValue(seriesInstance.getLabel(), value);
+							.get(entityId).get(attribute.getLabel()).addValue(seriesInstance.getLabel(), value);
 				}
 				
 			}

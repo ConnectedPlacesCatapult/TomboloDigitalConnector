@@ -3,6 +3,8 @@ apply plugin: 'eclipse'
 
 repositories {
     mavenCentral()
+    maven { name = "osgeo"; url = "http://download.osgeo.org/webdav/geotools/" }
+    maven { name = "hibernatespatial"; url = "http://www.hibernatespatial.org/repository/" }
 }
 
 dependencies {
@@ -11,9 +13,22 @@ dependencies {
 	compile group: 'org.apache.poi',		name: 'poi-ooxml',	version: '3.13'
 	
 	// JSON handling
-	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-	compile group: 'com.google.code.gson',	name: 'gson', 		version: '2.4'
+	compile group: 'com.googlecode.json-simple', name: 'json-simple', 	version: '1.1.1'
+	compile group: 'com.google.code.gson',	name: 'gson', 				version: '2.4'
 	
 	// Commons
-	compile group: 'commons-io',			name: 'commons-io',	version: '2.4'
+	compile group: 'commons-io',			name: 'commons-io',				version: '2.4'
+	compile group: 'org.apache.commons',	name: 'commons-compress',		version: '1.10'
+	compile group: 'org.apache.commons',	name: 'commons-collections4',	version: '4.1'
+	
+	
+	// ORM
+	compile group: 'org.postgresql', 		name: 'postgresql', 			version: '9.4-1200-jdbc41'
+	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '4.3.6.Final'
+	compile group: 'org.hibernate',			name: 'hibernate-annotations',	version: '3.5.6-Final'
+	compile group: 'org.hibernate',			name: 'hibernate-spatial',		version: '4.3'
+
+	compile group: 'org.postgis',			name: 'postgis-jdbc',		version: '1.5.2'
+	compile group: 'org.hibernate.javax.persistence',	name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final'
+
 }
