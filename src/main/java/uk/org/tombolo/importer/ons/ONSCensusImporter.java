@@ -15,22 +15,21 @@ import java.util.Map;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.datacatalogue.DatasourceDetails;
 import uk.org.tombolo.datacatalogue.DatasourceSpecification;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -67,8 +66,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 
 	DownloadUtils downloadUtils = new DownloadUtils();
 	
-	public List<DatasourceDetails> getAllDatasources() throws IOException, ParseException{
-		List<DatasourceDetails> datasources = new ArrayList<DatasourceDetails>();
+	@Override
+	public List<Datasource> getAllDatasources() throws IOException, ParseException{
+		List<Datasource> datasources = new ArrayList<Datasource>();
 	
 		String baseUrl = ONS_API_URL + "collections.json?";
 		Map<String,String> params = new HashMap<String,String>();
@@ -92,7 +92,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			JSONArray names = (JSONArray)((JSONObject)collection.get("names")).get("name");
 			String datasetDescription = getEnglishValue(names);
 			
-			DatasourceDetails datasourceDetails = new DatasourceDetails(getProvider(),datasetId,datasetDescription);
+			Datasource datasourceDetails = new Datasource(getProvider(),datasetId,datasetDescription);
 			datasources.add(datasourceDetails);
 		}
 		
@@ -100,68 +100,71 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	}
 	
 	/**
-	 * Loads the dataset identified by datasetId into the underlying data store 
+	 * Loads the data-source identified by datasourceId into the underlying data store 
 	 * 
-	 * @param datasetId
+	 * @param datasourceId
 	 * @return the number of data values loaded
 	 * @throws IOException
 	 * @throws ParseException 
 	 */
-	public int loadDataset(String datasetId) throws IOException, ParseException{
+	public int importDatasource(String datasourceId) throws IOException, ParseException{
 		
 		// Get the provider details
 		Provider provider = getProvider();
 		
 		// Store the provider
-		saveProvider(provider);
+		ProviderUtils.save(provider);
 
 		// Get the details for the data source
-		DatasourceDetails details = getDatasetDetails(datasetId);
+		Datasource datasource = getDatasource(datasourceId);
 
 		// Store attributes in database
-		saveAttributes(details.getAttributes());
-		
+		AttributeUtils.save(datasource.getAttributes());
+
+		/*
 		DatasourceSpecification datasource = new DatasourceSpecification(
-				datasetId,	getProvider().getLabel(),						// Dataset id and provider
+				datasourceId,	getProvider().getLabel(),						// Dataset id and provider
 				"http://www.ons.gov.uk/ons/datasets-and-tables/index.html",	// Dataset location (description)
-				baseUrl + filePrefix + datasetId + filePostfix,				// Remote file
-				filePrefix + datasetId + filePostfix,						// Local file (relative to local data root)
+				baseUrl + filePrefix + datasourceId + filePostfix,				// Remote file
+				filePrefix + datasourceId + filePostfix,						// Local file (relative to local data root)
 				DatasourceSpecification.DatafileType.zip);					// File type
+		*/
 				
 		// Store data in database
 		File localFile = downloadUtils.getDatasourceFile(datasource);
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+		int lineCount = 0;
 		while(entries.hasMoreElements()){
 			zipEntry = entries.nextElement();
 
-			if (zipEntry.getName().equals("CSV_"+datasetId+"_2011STATH_1_EN.csv")){
+			if (zipEntry.getName().equals("CSV_"+datasourceId+"_2011STATH_1_EN.csv")){
 			
 				BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(zipEntry)));
 				
-				int lineCount = 0;
 				String line = null;
 				while ((line = br.readLine()) != null){
 					lineCount++;
 
 					String[] fields = line.split(",");
 					
-					if (fields.length == 2 + details.getAttributes().size()
+					if (fields.length == 2 + datasource.getAttributes().size()
 							&& fields[0].startsWith("\"")){
 						try{
 							String areaId = dequote(fields[0]);
 							List<Double> values = new ArrayList<Double>();
-							for (int i=2; i<2+details.getAttributes().size(); i++){
+							for (int i=2; i<2+datasource.getAttributes().size(); i++){
 								values.add(Double.parseDouble(dequote(fields[i])));
 							}
 							Geography geography = GeographyUtils.getGeographyByLabel(areaId);
 							if (geography != null
-									&& values.size() == details.getAttributes().size()){
+									&& values.size() == datasource.getAttributes().size()){
 								for (int i=0; i<values.size(); i++){
 									TimedValue tv 
-										= new TimedValue(geography, details.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
+										= new TimedValue(geography, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									TimedValueUtils.save(tv);
+									lineCount++;
 								}								
 							}							
 						}catch (NumberFormatException e){
@@ -175,12 +178,12 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		}
 		zipFile.close();		
 		
-		return -1;
+		return lineCount;
 	}
 	
-	public DatasourceDetails getDatasetDetails(String datasetId) throws IOException, ParseException{
+	public Datasource getDatasource(String datasourceId) throws IOException, ParseException{
 		// Set-up the basic url and the parameters
-		String baseUrl = ONS_API_URL + "datasetdetails/" + datasetId + ".json?";
+		String baseUrl = ONS_API_URL + "datasetdetails/" + datasourceId + ".json?";
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("context", "Census");
 		params.put("apikey", ONS_API_KEY);
@@ -200,8 +203,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		
 		// Get dataset English name
 		JSONArray names = (JSONArray)((JSONObject)datasetDetail.get("names")).get("name");
-		String datasetDescription = getEnglishValue(names);
-		DatasourceDetails datasourceDetails = new DatasourceDetails(getProvider(),datasetId,datasetDescription);
+		String datasourceDescription = getEnglishValue(names);
+		
+		Datasource datasource = new Datasource(getProvider(),datasourceId,datasourceDescription);
 		
 		// Get dataset dimensions
 		JSONArray dimensions = (JSONArray)((JSONObject)datasetDetail.get("dimensions")).get("dimension");
@@ -215,39 +219,15 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				String attributeDescription = getEnglishValue(dimensionTitles);
 				// FIXME: The Attribute.DataType value should be gotten from somewhere rather than defaulting to numeric
 				Attribute attribute = new Attribute(getProvider(), attributeName, attributeDescription, attributeDescription, Attribute.DataType.numeric);
-				datasourceDetails.addAttribute(attribute);
+				datasource.addAttribute(attribute);
 			}
 		}
 		
-		return datasourceDetails;
-	}
-	
-	protected void saveProvider(Provider provider){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		// FIXME: This might be inefficient if we are updating the provider over and over again without actually changing it
-		session.saveOrUpdate(provider);
-		session.getTransaction().commit();
-	}
-	
-	protected void saveAttributes(List<Attribute> attributes){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		for (Attribute attribute : attributes){
-			// FIXME: This might be inefficient if we are updating the attribute over and over again without actually changing it			
-			Criteria criteria = session.createCriteria(Attribute.class);
-			Map<String,Object> restrictions = new HashMap<String,Object>();
-			restrictions.put("provider", attribute.getProvider());
-			restrictions.put("label", attribute.getLabel());
-			Attribute savedAttribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
-			if (savedAttribute == null){
-				Integer id = (Integer)session.save(attribute);
-				attribute.setId(id);
-			}else{
-				attribute.setId(savedAttribute.getId());
-			}
-		}
-		session.getTransaction().commit();
+		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html");		// Dataset location (description)
+		datasource.setRemoteDatafile(baseUrl + filePrefix + datasourceId + filePostfix);	// Remote file
+		datasource.setLocalDatafile(filePrefix + datasourceId + filePostfix);				// Local file (relative to local data root)
+		
+		return datasource;
 	}
 	
 	private static String getEnglishValue(JSONArray array){

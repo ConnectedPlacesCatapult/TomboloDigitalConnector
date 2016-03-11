@@ -8,8 +8,8 @@ import java.util.List;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
+import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.datacatalogue.DatasourceDetails;
 import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
 public class ONSCensusImporterTest {
@@ -19,7 +19,7 @@ public class ONSCensusImporterTest {
 	@Test
 	public void testGetAllDatasources() throws IOException, ParseException{
 		
-		List<DatasourceDetails> datasources = onsImporter.getAllDatasources();
+		List<Datasource> datasources = onsImporter.getAllDatasources();
 		
 		assertEquals(701, datasources.size());
 	}
@@ -30,7 +30,7 @@ public class ONSCensusImporterTest {
 		String datasetId = "OT102EW";		
 		
 		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
-		DatasourceDetails datasourceDetails = onsImporter.getDatasetDetails(datasetId);
+		Datasource datasourceDetails = onsImporter.getDatasource(datasetId);
 		
 		assertEquals(datasetId, datasourceDetails.getName());
 		assertEquals("Population density (Out of term-time population)",datasourceDetails.getDescription());
@@ -48,29 +48,9 @@ public class ONSCensusImporterTest {
 		// FIXME: Mock this data so that the test will not take a very very very long time
 		String datasetId = "OT102EW";		
 
-		int count = onsImporter.loadDataset(datasetId);
+		int count = onsImporter.importDatasource(datasetId);
 		
 		assertEquals(-1, count);
 		
-	}
-	
-	@Test
-	public void testSaveProvider() {
-		Provider provider = onsImporter.getProvider();
-		
-		onsImporter.saveProvider(provider);
-	}
-	
-	@Test
-	public void testSaveAttributes() throws IOException, ParseException{
-		
-		String datasetId = "OT102EW";		
-		
-		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
-		DatasourceDetails datasourceDetails = onsImporter.getDatasetDetails(datasetId);
-
-		onsImporter.saveAttributes(datasourceDetails.getAttributes());
-		
-		// FIXME: Add assertions based on the db
-	}
+	}	
 }

@@ -1,0 +1,51 @@
+{
+	"datasource": {
+		"name" : "london-borough-profiles",
+		"description" : "T.b.a."
+		"url": "http://data.london.gov.uk/dataset/london-borough-profiles",
+		"remoteDatafile" : "https://files.datapress.com/london/dataset/london-borough-profiles/2015-09-24T15:02:16/london-borough-profiles.xls",
+		"localDatafilePath" : "london-borough-profiles.xls",
+		"datafileType" : "xls",
+	},
+	"default": {
+		"sheetId" : 1,
+		"keyColumnId" : 1,
+		"labelRowId" : -1,
+		"nameRowId" : 0,
+		"descriptionRowId" : 0,
+		"startLine" : 2,
+		"endLine" : 34
+	},
+	"attributes":[
+		{
+			"label" : "populationDensity",
+			"timestamp" : "2015-12-31T23:59:59",
+			"dataColumnId" : 7
+		},
+{
+			"label" : "householdIncome",
+			"timestamp" : "2013-12-31T23:59:59",
+			"dataColumnId" : 42
+		},
+		{
+			"label" : "medianHousePrice",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 52
+		},
+		{
+			"label" : "fractionGreenspace",
+			"timestamp" : "2005-12-31T23:59:59",
+			"dataColumnId" : 59
+		},
+		{
+			"label" : "carbonEmission",
+			"timestamp" : "2013-12-31T23:59:59",
+			"dataColumnId" : 60
+		},
+		{
+			"label" : "carsPerHousehold",
+			"timestamp" : "2011-12-31T23:59:59",
+			"dataColumnId" : 63
+		}		
+	]
+}

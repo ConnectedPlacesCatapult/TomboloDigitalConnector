@@ -1,8 +1,10 @@
 package uk.org.tombolo.datacatalogue;
 
+import uk.org.tombolo.core.Datasource.DatafileType;
+
+@Deprecated
 public class DatasourceSpecification {
-	public static enum DatafileType {xls,xlsx,zip};
-	
+
 	String id;
 	
 	// Datafile information

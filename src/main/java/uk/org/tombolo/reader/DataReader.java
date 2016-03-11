@@ -78,7 +78,6 @@ public class DataReader {
 			entities.add(new Entity(datapackSpecification.getEntitySpecification().getType(),entityId,entityName));
 		}
 		
-		
 		// Read feature values
 		featureMatrix = new FeatureMatrix();
 		// FIXME: Specify this somewhere in a file!

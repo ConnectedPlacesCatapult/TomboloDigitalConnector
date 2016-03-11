@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 
-import uk.org.tombolo.datacatalogue.DatasourceSpecification;
+import uk.org.tombolo.core.Datasource;
 
 public class DownloadUtils {
 
 	public static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
 	
 	public String tomboloDataCacheRootDirectory = "/tmp";	// Configurable root to where to store cached data
-	
-	public File getDatasourceFile(DatasourceSpecification datasource) throws MalformedURLException, IOException{
+		
+	public File getDatasourceFile(Datasource datasource) throws MalformedURLException, IOException{
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory 
 				+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY 

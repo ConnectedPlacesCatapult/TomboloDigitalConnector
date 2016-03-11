@@ -23,7 +23,6 @@ public class SeriesSpecification {
 	// Excel sheet information
 	int sheetId;
 	int keyColumnId;
-	int seriesLabelColumnId;
 	
 	// Series instance
 	List<SeriesInstance> seriesInstances;
@@ -57,10 +56,6 @@ public class SeriesSpecification {
 
 	public int getKeyColumnId() {
 		return keyColumnId;
-	}
-
-	public int getSeriesLabelColumnId() {
-		return seriesLabelColumnId;
 	}
 
 	public List<SeriesInstance> getSeriesInstances() {
