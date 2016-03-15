@@ -1,8 +1,8 @@
-package uk.org.tombolo.importer.londondatastore;
+package uk.org.tombolo.importer;
 
 import org.json.simple.JSONObject;
 
-public class LDSAttribute {
+public class ExcelAttribute {
 
 	// Label
 	String label;

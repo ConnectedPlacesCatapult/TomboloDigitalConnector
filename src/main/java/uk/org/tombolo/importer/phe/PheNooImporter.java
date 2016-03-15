@@ -1,19 +1,19 @@
-package uk.org.tombolo.importer.londondatastore;
+package uk.org.tombolo.importer.phe;
 
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.ExcelImporter;
 import uk.org.tombolo.importer.Importer;
 
-public class LondonDatastoreImporter extends ExcelImporter implements Importer {
+public class PheNooImporter extends ExcelImporter implements Importer {
 	public static final Provider PROVIDER = new Provider(
-			"uk.gov.london",
-			"London Datastore - Greater London Authority"
+			"uk.gov.phe",
+			"Public Health England"
 			);
 
-	private static final String DATASOURCE_SPEC_DIR = "datasources/londondatastore/";	
+	private static final String DATASOURCE_SPEC_DIR = "datasources/uk/gov/phe/";	
 	private static final int TIMEDVALUE_BUFFER_SIZE = 1000;
 	
-	public LondonDatastoreImporter(){
+	public PheNooImporter(){
 		datasourceSpecDir = DATASOURCE_SPEC_DIR;
 		timedValueBufferSize = TIMEDVALUE_BUFFER_SIZE;
 	}
@@ -22,4 +22,5 @@ public class LondonDatastoreImporter extends ExcelImporter implements Importer {
 	public Provider getProvider() {
 		return PROVIDER;
 	}
+
 }

@@ -1,0 +1,42 @@
+{
+	"datasource": {
+		"name" : "BMI_categories_2012-2014",
+		"description" : "T.b.a.",
+		"url" : "http://www.noo.org.uk/visualisation",
+		"remoteDatafile" : "https://www.noo.org.uk/gsf.php5?f=314008&fv=21761",
+		"localDatafilePath" : "/PublicHealthEngland/BMI_categories_2012-2014.xlsx",
+		"datafileType" : "xlsx"	
+	},
+	"default": {
+		"sheetId" : 1,
+		"keyColumnId" : 1,
+		"nameRowId" : 3,
+		"descriptionRowId" : 3,
+		"startLine" : 5,
+		"endLine" : 370
+	},
+	"attributes":[
+		{
+			"label" : "fractionUnderweight",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 5
+		},{
+			"label" : "fractionHealthyWeight",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 9
+		},{
+			"label" : "fractionOverweight",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 13
+		},{
+			"label" : "fractionObese",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 18
+		},{
+			"label" : "fractionExcessWeight",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 22
+		}
+		
+	]
+}
