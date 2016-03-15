@@ -19,10 +19,12 @@ public class LDSAttribute {
 	int timestampColumnId = -1;
 	
 	// Name index
+	String name;
 	int nameRowId = -1;
 	int nameColumnId = -1;
 	
 	// Description index
+	String description;
 	int descriptionRowId = -1;
 	int descriptionColumnId = -1;
 	
@@ -56,12 +58,16 @@ public class LDSAttribute {
 			timestampColumnId = ((Long)json.get("timestampColumnId")).intValue();	
 
 		// Name
+		if (json.get("name") != null)
+			name = (String)json.get("name");
 		if (json.get("nameRowId") != null)
 			nameRowId = ((Long)json.get("nameRowId")).intValue();
 		if (json.get("nameColumnId") != null)
 			nameColumnId = ((Long)json.get("nameColumnId")).intValue();
 
 		// Description
+		if (json.get("description") != null)
+			description = (String)json.get("description");
 		if (json.get("descriptionRowId") != null)
 			descriptionRowId = ((Long)json.get("descriptionRowId")).intValue();
 		if (json.get("descriptionColumnId") != null)

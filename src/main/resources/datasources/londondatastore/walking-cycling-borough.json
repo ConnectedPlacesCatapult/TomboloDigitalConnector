@@ -1,0 +1,66 @@
+{
+	"datasource": {
+		"name" : "walking-cycling-borough",
+		"description" : "T.b.a."
+		"url": "http://data.london.gov.uk/dataset/walking-and-cycling-borough",
+		"remoteDatafile" : "https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls",
+		"localDatafilePath" : "/LondonDatastore/walking-and-cycling-borough.xls",
+		"datafileType" : "xls"
+	},
+	"default": {
+		"sheetId" : 1,
+		"keyColumnId" : 0,
+		"startLine" : 4,
+		"endLine" : 36
+	},
+	"attributes":[
+		{
+			"label" : "walk5xWeek",
+			"name" : "Walk 5x Week",
+			"description" : "% of population who walk for at least 30 minutes, at least 5 x week",
+			"timestamp" : "2011-12-31T23:59:59",
+			"dataColumnId" : 7
+		},
+		{
+			"label" : "walk5xWeek",
+			"timestamp" : "2012-12-31T23:59:59",
+			"dataColumnId" : 18
+		},
+		{
+			"label" : "walk5xWeek",
+			"timestamp" : "2013-12-31T23:59:59",
+			"dataColumnId" : 29
+		},
+		{
+			"label" : "walk5xWeek",
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 40
+		},
+		{
+			"label" : "cycle1xWeek",
+			"name" : "Cycle 1x Week",
+			"description" : "% of population who cycle at least 1 x week",
+			"sheetId" : 2,
+			"timestamp" : "2011-12-31T23:59:59",
+			"dataColumnId" : 5,
+		},
+		{
+			"label" : "cycle1xWeek",
+			"sheetId" : 2,
+			"timestamp" : "2012-12-31T23:59:59",
+			"dataColumnId" : 16,
+		},
+		{
+			"label" : "cycle1xWeek",
+			"sheetId" : 2,
+			"timestamp" : "2013-12-31T23:59:59",
+			"dataColumnId" : 27,
+		},
+		{
+			"label" : "cycle1xWeek",
+			"sheetId" : 2,
+			"timestamp" : "2014-12-31T23:59:59",
+			"dataColumnId" : 38,
+		}
+	]
+}

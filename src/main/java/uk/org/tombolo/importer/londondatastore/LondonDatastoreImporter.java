@@ -104,7 +104,7 @@ public class LondonDatastoreImporter implements Importer {
 			
 			for (int aIndex = 0; aIndex<ldsAttributes.size(); aIndex++){
 				LDSAttribute ldsa = ldsAttributes.get(aIndex);
-				Attribute attribute = datasource.getAttributes().get(aIndex);
+				Attribute attribute = datasource.getAttributeByLabel(ldsa.label);
 				Sheet sheet = wb.getSheetAt(ldsa.sheetId);
 				for (int i = ldsa.startLine; i< ldsa.endLine+1; i++){
 					Row row = sheet.getRow(i);
@@ -269,17 +269,39 @@ public class LondonDatastoreImporter implements Importer {
 	}
 	
 	private List<Attribute> attributesFromLDSAttributes(Datasource datasource, List<LDSAttribute> ldsAttributes) throws EncryptedDocumentException, MalformedURLException, InvalidFormatException, IOException{
+		Set<String> uniqueAttributes = new HashSet<String>();
 		List<Attribute> attributes = new ArrayList<Attribute>();
 		ExcelUtils excelUtils = new ExcelUtils();
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		for (LDSAttribute ldsa : ldsAttributes){
 			Sheet sheet = wb.getSheetAt(ldsa.sheetId);
-			Row row = sheet.getRow(ldsa.nameRowId);
-			Cell cell = row.getCell(ldsa.dataColumnId);
-			String name = cell.getStringCellValue();
-			row = sheet.getRow(ldsa.descriptionRowId);
-			cell = row.getCell(ldsa.dataColumnId);
-			String description = cell.getStringCellValue();
+			
+			// If label has been encountered the we continue
+			if (uniqueAttributes.contains(ldsa.label))
+				continue;
+			uniqueAttributes.add(ldsa.label);
+			
+			// Name
+			String name = null;
+			if (ldsa.name != null){
+				name = ldsa.name;
+			}else if(ldsa.nameRowId != -1){
+				Row row = sheet.getRow(ldsa.nameRowId);
+				Cell cell = row.getCell(ldsa.dataColumnId);
+				name = cell.getStringCellValue();
+			}
+			
+			// Description
+			String description = null;
+			if (ldsa.description != null){
+				description = ldsa.description;
+			}else if (ldsa.descriptionRowId != -1){
+				Row row = sheet.getRow(ldsa.descriptionRowId);
+				Cell cell = row.getCell(ldsa.dataColumnId);
+				description = cell.getStringCellValue();
+			}			
+			
+			// Attribute
 			Attribute attribute = new Attribute(getProvider(),ldsa.label,name,description,Attribute.DataType.numeric);
 			attributes.add(attribute);
 		}

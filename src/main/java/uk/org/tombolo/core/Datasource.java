@@ -42,6 +42,15 @@ public class Datasource {
 	public List<Attribute> getAttributes() {
 		return attributes;
 	}
+	
+	public Attribute getAttributeByLabel(String label){
+		for (Attribute attribute : attributes){
+			if (label.equals(attribute.getLabel()))
+				return attribute;
+		}
+		return null;
+	}
+	
 	public String getUrl() {
 		return url;
 	}
