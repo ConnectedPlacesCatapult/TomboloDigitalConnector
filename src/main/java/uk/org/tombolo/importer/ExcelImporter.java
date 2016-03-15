@@ -90,8 +90,25 @@ public abstract class ExcelImporter implements Importer {
 			
 			for (int aIndex = 0; aIndex<ldsAttributes.size(); aIndex++){
 				ExcelAttribute ldsa = ldsAttributes.get(aIndex);
-				Attribute attribute = datasource.getAttributeByLabel(ldsa.label);
 				Sheet sheet = wb.getSheetAt(ldsa.sheetId);
+
+				// Attribute
+				Attribute attribute = datasource.getAttributeByLabel(ldsa.label);
+
+				// Timestamp
+				LocalDateTime timestamp = null;
+				if (ldsa.timestampRowId != -1){
+					Row tRow = sheet.getRow(ldsa.timestampRowId);
+					Cell tCell = tRow.getCell(ldsa.dataColumnId);
+					// FIXME: This could be string :/
+					timestamp = TimedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
+				}else if(ldsa.timestamp != null){
+					timestamp = LocalDateTime.parse(ldsa.timestamp);
+				}
+				if (timestamp == null)
+					continue;
+				
+				// Timed value per geography
 				for (int i = ldsa.startLine; i< ldsa.endLine+1; i++){
 					Row row = sheet.getRow(i);
 
@@ -102,11 +119,6 @@ public abstract class ExcelImporter implements Importer {
 					String geographyId = cell.getStringCellValue();
 					Geography geography = GeographyUtils.getGeographyByLabel(geographyId);
 					if (geography == null)
-						continue;
-
-					// Timestamp
-					LocalDateTime timestamp = LocalDateTime.parse(ldsa.timestamp);
-					if (timestamp == null)
 						continue;
 					
 					// Value

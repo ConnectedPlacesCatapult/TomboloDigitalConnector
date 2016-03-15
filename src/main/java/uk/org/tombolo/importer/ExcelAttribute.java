@@ -16,6 +16,7 @@ public class ExcelAttribute {
 
 	// Time
 	String timestamp;
+	int timestampRowId = -1;
 	int timestampColumnId = -1;
 	
 	// Name index
@@ -54,6 +55,8 @@ public class ExcelAttribute {
 		// Time
 		if (json.get("timestamp") != null)
 			timestamp = (String)json.get("timestamp");
+		if (json.get("timestampRowId") != null)
+			timestampRowId = ((Long)json.get("timestampRowId")).intValue();
 		if (json.get("timestampColumnId") != null)
 			timestampColumnId = ((Long)json.get("timestampColumnId")).intValue();	
 
