@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 drop table timed_value;
 
 drop table geography_object;

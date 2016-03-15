@@ -9,11 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
 
 public class AttributeUtils {
 
+	static Session session = HibernateUtil.getSessionFactory().openSession();
+	
 	public static Attribute getTestAttribute(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
 		Criteria criteria = session.createCriteria(Attribute.class);
 		Map<String,Object> restrictions = new HashMap<String,Object>();
 		restrictions.put("provider", ProviderUtils.getTestProvider());
@@ -22,7 +24,6 @@ public class AttributeUtils {
 	}
 	
 	public static void save(List<Attribute> attributes){
-		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		for (Attribute attribute : attributes){
 			// FIXME: This might be inefficient if we are updating the attribute over and over again without actually changing it			
@@ -41,4 +42,13 @@ public class AttributeUtils {
 		session.getTransaction().commit();
 	}
 
+	public static Attribute getByProviderAndLabel(Provider provider, String label){
+		Criteria criteria = session.createCriteria(Attribute.class);
+		Map<String,Object> restrictions = new HashMap<String,Object>();
+		restrictions.put("provider", provider);
+		restrictions.put("label", label);
+		Attribute attribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
+		return attribute;
+	}
+	
 }

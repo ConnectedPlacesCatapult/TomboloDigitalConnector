@@ -1,0 +1,21 @@
+{
+	"datasource": {
+		"name" : "phof-indicators-data-london-borough",
+		"description" : "T.b.a."
+		"url": "http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators",
+		"remoteDatafile" : "https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53/phof-indicators-data-london-borough.xlsx",
+		"localDatafilePath" : "phof-indicators-data-london-borough.xlsx",
+		"datafileType" : "xlsx",
+	},
+	"default": {
+		"sheetId" : 3,
+		"rowBased" : true,
+		"labelExtractor" : "uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor",
+		"keyColumnId" : 4,
+		"timestampColumnId" : 1,
+		"nameColumnId" : 0,
+		"descriptionColumnId" : 0,
+		"dataColumnId" : 6
+	},
+	"attributes":[]
+}
