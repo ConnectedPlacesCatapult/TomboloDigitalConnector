@@ -14,4 +14,11 @@ public class GeographyTypeUtilsTest {
 		assertEquals("unknown", unknown.getLabel());
 		assertEquals("Unknown Geography Type", unknown.getName());
 	}
+	
+	@Test
+	public void testGetGeographyTypeByLabel(){
+		GeographyType lsoa = GeographyTypeUtils.getGeographyTypeByLabel("lsoa");
+		assertEquals("lsoa", lsoa.getLabel());
+		assertEquals("Lower Layer Super Output Area", lsoa.getName());
+	}
 }

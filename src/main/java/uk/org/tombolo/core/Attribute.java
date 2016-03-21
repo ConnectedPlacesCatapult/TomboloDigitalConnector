@@ -23,10 +23,7 @@ public class Attribute {
 	
 	// FIXME: Maybe deprecate ... or implement properly
 //	DataType dataType;
-	
-//	@Deprecated
-//	TreeSet<String> labels = new TreeSet<String>();
-	
+		
 	public Attribute(){
 		
 	}
@@ -102,13 +99,4 @@ public class Attribute {
 //		return dataType;
 //	}
 	
-//	@Deprecated
-//	public void addLabel(String label){
-//		labels.add(label);
-//	}
-	
-//	@Deprecated
-//	public List<String> getLabels(){
-//		return new ArrayList<String>(labels);
-//	}	
 }
