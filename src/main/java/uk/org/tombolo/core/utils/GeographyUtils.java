@@ -20,12 +20,12 @@ public class GeographyUtils {
 	
 	public static List<Geography> getGeographyByTypeAndLabelPattern(GeographyType geographyType, String labelPattern){
 		Criteria criteria = session.createCriteria(Geography.class);
-		// FIXME: This should be paginated
-		return (List<Geography>) criteria
-				.add(Restrictions.eq("geographyType", geographyType))
-				.add(Restrictions.like("label", labelPattern))
-				.list();
+		criteria = criteria.add(Restrictions.eq("geographyType", geographyType));
+		if (labelPattern != null)
+			criteria = criteria.add(Restrictions.like("label", labelPattern));
 		
+		// FIXME: This should be paginated
+		return (List<Geography>) criteria.list();		
 	}
 	
 	public static Geography getTestGeography(){

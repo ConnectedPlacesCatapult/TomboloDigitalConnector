@@ -1,0 +1,35 @@
+{
+	"geographySpecification" : [
+		{
+			"geographyType" : "localAuthority"
+		}
+	],
+	"datasourceSpecification" : [
+		{
+			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+			"datasourceId" : "OT102EW"
+		},
+		{
+			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+			"datasourceId" : "LC3203EW"
+		},
+		{
+			"importerClass" : "uk.org.tombolo.importer.phe.PheNooImporter",
+			"datasourceId" : "BMI_categories_2012-2014"
+		}
+	],
+	"attributeSpecification" : [
+		{
+			"providerLabel" : "uk.gov.ons",
+			"attributeLabel" : "CL_0000858"
+		},
+		{
+			"providerLabel" : "uk.gov.phe",
+			"attributeLabel" : "c25a964003d772eb7858b25cf56b05ce"
+		},
+		{
+			"providerLabel" : "uk.gov.phe",
+			"attributeLabel" : "fractionObese"
+		}
+	]
+}

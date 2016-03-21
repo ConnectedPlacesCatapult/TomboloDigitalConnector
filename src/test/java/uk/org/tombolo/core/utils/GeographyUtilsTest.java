@@ -20,6 +20,15 @@ public class GeographyUtilsTest {
 	}
 	
 	@Test
+	public void testGetGeographyByTypeAndLabelPatternLocalAuthorities(){
+		GeographyType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
+		String labelPattern = null;
+		List<Geography> localAuthorities = GeographyUtils.getGeographyByTypeAndLabelPattern(localAuthority, labelPattern);
+		
+		assertEquals(380, localAuthorities.size());		
+	}
+	
+	@Test
 	public void testGetGeographyByTypeAndLabelPatternLondonBoroughs(){
 		GeographyType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
 		String labelPattern = "E09%";

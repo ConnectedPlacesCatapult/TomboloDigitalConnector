@@ -1,5 +1,14 @@
 package uk.org.tombolo.exporter;
 
-public class CSVExporter {
+import java.io.Writer;
+
+import uk.org.tombolo.execution.spec.DatasetSpecification;
+
+public class CSVExporter implements Exporter {
+
+	@Override
+	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
+		
+	}
 
 }

@@ -40,6 +40,8 @@ public class ONSCensusImporterTest {
 		assertEquals("Area (Hectares)", datasourceDetails.getAttributes().get(1).getDescription());
 		assertEquals("CL_0000858", datasourceDetails.getAttributes().get(2).getLabel());
 		assertEquals("Density (Persons per hectare)", datasourceDetails.getAttributes().get(2).getDescription());
+		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip", datasourceDetails.getRemoteDatafile());
+		assertEquals("csv/CSV_OT102EW_2011STATH_1_EN.zip", datasourceDetails.getLocalDatafile());
 	}
 	
 	@Test

@@ -230,9 +230,27 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			}
 		}
 		
-		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html");											// Dataset location (description)
-		datasource.setRemoteDatafile(ONS_DATASET_BASE_URL + ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);	// Remote file
-		datasource.setLocalDatafile(ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);							// Local file (relative to local data root)
+		// Get datafile
+		JSONArray documents = (JSONArray)((JSONObject)datasetDetail.get("documents")).get("document");
+		String remoteDatafile = null;
+		for (int docIndex = 0; docIndex<dimensions.size(); docIndex++){
+			JSONObject document = (JSONObject)documents.get(docIndex);
+			if (document.get("@type").equals("CSV")){
+				JSONObject href = (JSONObject)document.get("href");
+				if (href.get("@xml.lang").equals("en")){
+					remoteDatafile = (String)href.get("$");
+					break;
+				}
+			}
+		}
+		String localDatafile = remoteDatafile.substring(ONS_DATASET_BASE_URL.length());
+		
+		
+		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
+		datasource.setRemoteDatafile(remoteDatafile);	// Remote file
+		datasource.setLocalDatafile(localDatafile);		// Local file (relative to local data root)
+		//datasource.setRemoteDatafile(ONS_DATASET_BASE_URL + ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);	// Remote file
+		//datasource.setLocalDatafile(ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);							// Local file (relative to local data root)
 		
 		return datasource;
 	}

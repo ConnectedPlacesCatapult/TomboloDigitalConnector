@@ -1,10 +1,10 @@
 package uk.org.tombolo;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.importer.Importer;
 
 public class DataExportEngine implements ExecutionEngine{
 
@@ -12,7 +12,7 @@ public class DataExportEngine implements ExecutionEngine{
 	
 	public static void main(String[] args) {
 		
-		String executionSpecPath = "executions/obesity_uk.json";
+		String executionSpecPath = "executions/tombolo/obesity_uk.json";
 				
 		DataExportEngine engine = new DataExportEngine();
 		try{
@@ -25,19 +25,28 @@ public class DataExportEngine implements ExecutionEngine{
 	public DataExportEngine(){
 	}
 
-	public void executeResource(String resourcePath) throws IOException, EncryptedDocumentException, InvalidFormatException {
+	public void executeResource(String resourcePath) throws Exception {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(resourcePath).getFile());
 		execute(file);
 	}
 	
-	public void execute(File specification) throws IOException, EncryptedDocumentException, InvalidFormatException{
+	public void execute(File specification) throws Exception {
 		
-		// FIXME: Read specification file
+		// Read specification file
+		DatasetSpecification datasetSpec = DatasetSpecification.fromJsonFile(specification);
 		
-		// FIXME: Import data
+		// Import data
+		for (DatasourceSpecification datasourceSpec : datasetSpec.getDatasourceSpecification()){
+			System.err.println("Importing " 
+					+ datasourceSpec.getImporterClass() 
+					+ " " + datasourceSpec.getDatasourceId());
+			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+			importer.importDatasource(datasourceSpec.getDatasourceId());
+		}
 		
 		// FIXME: Export data
+		System.err.println("Exporting ...");
 		
 	}
 	

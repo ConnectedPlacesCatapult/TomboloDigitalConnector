@@ -23,7 +23,7 @@ public class DownloadUtils {
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory 
 				+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY 
-				+ "/" + datasource.getProvider() 
+				+ "/" + datasource.getProvider().getLabel()
 				+ "/" + datasource.getLocalDatafile());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
