@@ -109,6 +109,7 @@ public abstract class ExcelImporter implements Importer {
 					continue;
 				
 				// Timed value per geography
+				List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 				for (int i = ldsa.startLine; i< ldsa.endLine+1; i++){
 					Row row = sheet.getRow(i);
 
@@ -128,11 +129,16 @@ public abstract class ExcelImporter implements Importer {
 					//	continue;
 
 					TimedValue timedValue = new TimedValue(geography,attribute,timestamp,value);
-					TimedValueUtils.save(timedValue);
+					timedValueBuffer.add(timedValue);
 					valueCounter++;
-				}
-			}
-				
+					
+					if (valueCounter % timedValueBufferSize == 0){
+						TimedValueUtils.save(timedValueBuffer);
+						timedValueBuffer = new ArrayList<TimedValue>();
+					}
+				}	
+				TimedValueUtils.save(timedValueBuffer);
+			}				
 		}else{
 			// We have no explicitly defined columns
 			

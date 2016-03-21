@@ -9,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
 public class ONSCensusImporterTest {
@@ -50,7 +49,8 @@ public class ONSCensusImporterTest {
 
 		int count = onsImporter.importDatasource(datasetId);
 		
-		assertEquals(-1, count);
+		// FIXME: Justify this number
+		assertEquals(350623, count);
 		
 	}	
 }

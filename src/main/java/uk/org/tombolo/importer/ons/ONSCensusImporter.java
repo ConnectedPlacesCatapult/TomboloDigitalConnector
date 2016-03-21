@@ -27,10 +27,8 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.datacatalogue.DatasourceSpecification;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
@@ -58,13 +56,14 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final String ONS_LANGUAGE_ATTRIBUTE_VALUE_EN = "en";
 	private static final String ONS_ATTRIBUTE_VALUE_KEY = "$";
 	
-	private static final String baseUrl = "http://data.statistics.gov.uk/ons/datasets/";
-	private static final String filePrefix = "csv/CSV_";
-	private static final String filePostfix = "_2011STATH_1_EN.zip";
+	private static final String ONS_DATASET_BASE_URL = "http://data.statistics.gov.uk/ons/datasets/";
+	private static final String ONS_DATASET_FILE_PREFIX = "csv/CSV_";
+	private static final String ONS_DATASET_FILE_POSTFIX = "_2011STATH_1_EN.zip";
 	
 	private static final LocalDateTime CENSUS_2011_DATE_TIME = LocalDateTime.of(2011,12,31,23,59,59);
 
 	DownloadUtils downloadUtils = new DownloadUtils();
+	protected int timedValueBufferSize = 10000;
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws IOException, ParseException{
@@ -143,7 +142,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			
 				BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(zipEntry)));
 				
+				
 				String line = null;
+				List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 				while ((line = br.readLine()) != null){
 					lineCount++;
 
@@ -163,7 +164,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 								for (int i=0; i<values.size(); i++){
 									TimedValue tv 
 										= new TimedValue(geography, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
-									TimedValueUtils.save(tv);
+									timedValueBuffer.add(tv);
 									lineCount++;
 								}								
 							}							
@@ -171,7 +172,13 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							// Ignoring this line since it does not contain numeric values for the attributes
 						}
 					}
+					
+					if (lineCount % timedValueBufferSize == 0){
+						TimedValueUtils.save(timedValueBuffer);
+						timedValueBuffer = new ArrayList<TimedValue>();
+					}
 				}
+				TimedValueUtils.save(timedValueBuffer);
 				br.close();
 			}
 			
@@ -223,9 +230,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			}
 		}
 		
-		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html");		// Dataset location (description)
-		datasource.setRemoteDatafile(baseUrl + filePrefix + datasourceId + filePostfix);	// Remote file
-		datasource.setLocalDatafile(filePrefix + datasourceId + filePostfix);				// Local file (relative to local data root)
+		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html");											// Dataset location (description)
+		datasource.setRemoteDatafile(ONS_DATASET_BASE_URL + ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);	// Remote file
+		datasource.setLocalDatafile(ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);							// Local file (relative to local data root)
 		
 		return datasource;
 	}
