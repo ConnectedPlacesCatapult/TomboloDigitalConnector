@@ -1,10 +1,19 @@
 package uk.org.tombolo.execution.spec;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 
 public class DatasetSpecification {
 
 	List<GeographySpecification> geographySpecification;
+	
+	List<DatasourceSpecification> datasourceSpecification;
 	
 	List<AttributeSpecification> attributeSpecification;
 	
@@ -16,6 +25,14 @@ public class DatasetSpecification {
 		this.geographySpecification = geographySpecification;
 	}
 
+	public List<DatasourceSpecification> getDatasourceSpecification() {
+		return datasourceSpecification;
+	}
+
+	public void setDatasourceSpecification(List<DatasourceSpecification> datasourceSpecification) {
+		this.datasourceSpecification = datasourceSpecification;
+	}
+
 	public List<AttributeSpecification> getAttributeSpecification() {
 		return attributeSpecification;
 	}
@@ -24,4 +41,10 @@ public class DatasetSpecification {
 		this.attributeSpecification = attributeSpecification;
 	}
 
+	public static DatasetSpecification fromJsonFile(File jsonFile) throws JsonSyntaxException, JsonIOException, FileNotFoundException{
+		Gson gson = new Gson();
+		
+		return gson.fromJson(new FileReader(jsonFile), DatasetSpecification.class);
+	}
+	
 }
