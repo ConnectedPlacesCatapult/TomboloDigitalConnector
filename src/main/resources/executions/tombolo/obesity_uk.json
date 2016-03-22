@@ -11,7 +11,7 @@
 		},
 		{
 			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "LC3203EW"
+			"datasourceId" : "QS302EW"
 		},
 		{
 			"importerClass" : "uk.org.tombolo.importer.phe.PheNooImporter",
