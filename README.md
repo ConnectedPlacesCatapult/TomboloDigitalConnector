@@ -45,6 +45,15 @@ sh scripts/loadMsoa.sh
 sh scripts/loadLa.sh
 ```
 
+# Example executions
+
+Exports the London borough profiles form OrganiCity
+```bash
+java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
+	uk.org.tombolo.DataExportEngine \
+	src/main/resources/executions/organicity/borough-profiles.json
+```
+
 # Useful database queries
 
 This sections contain a number of useful database queries that should at some point be integrated into the connector main code

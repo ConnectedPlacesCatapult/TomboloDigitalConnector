@@ -29,12 +29,15 @@ dependencies {
 	// ORM
 	compile group: 'org.postgresql', 		name: 'postgresql', 			version: '9.4-1200-jdbc41'
 	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '4.3.6.Final'
-	compile group: 'org.hibernate',			name: 'hibernate-annotations',	version: '3.5.6-Final'
+	//compile group: 'org.hibernate',			name: 'hibernate-annotations',	version: '3.5.6-Final'
 	compile group: 'org.hibernate',			name: 'hibernate-spatial',		version: '4.3'
 
 	compile group: 'org.postgis',			name: 'postgis-jdbc',		version: '1.5.2'
 	compile group: 'org.hibernate.javax.persistence',	name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final'
 
+	// Logging
+	compile group: 'ch.qos.logback',	name: 'logback-classic',	version: '1.1.3'
+	
 }
 
 task copyDeps(type: Copy) {

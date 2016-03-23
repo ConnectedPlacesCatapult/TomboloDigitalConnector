@@ -1,8 +1,10 @@
 package uk.org.tombolo.importer;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
@@ -35,6 +39,8 @@ public abstract class ExcelImporter implements Importer {
 	protected String datasourceSpecDir;
 	protected int timedValueBufferSize;
 
+	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
+	
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
@@ -44,7 +50,7 @@ public abstract class ExcelImporter implements Importer {
 
 		if (file.isDirectory()){
 			for (File spec : file.listFiles()){
-				Datasource datasource = readDatasourceSpec(spec);
+				Datasource datasource = readDatasourceSpec(new FileInputStream(spec));
 				datasources.add(datasource);
 			}
 		}
@@ -54,11 +60,13 @@ public abstract class ExcelImporter implements Importer {
 	
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader
-				.getResource(datasourceSpecDir+"/"+datasourceId+".json")
-				.getFile());
-		return readDatasourceSpec(file);
+		String datasourceSpecPath = datasourceSpecDir+"/"+datasourceId+".json";
+		InputStream is = getClass().getResourceAsStream(datasourceSpecPath);
+		if (is == null)
+			log.debug("Failed to load resource: {}", datasourceSpecPath);
+		else
+			log.debug("Successfully loaded resource: {}", datasourceSpecPath);
+		return readDatasourceSpec(is);
 	}
 	
 	@Override
@@ -72,12 +80,11 @@ public abstract class ExcelImporter implements Importer {
 		AttributeUtils.save(datasource.getAttributes());
 		
 		// Get LDSAttributes
-		ClassLoader classLoader = getClass().getClassLoader();
-		File spec = new File(classLoader
-				.getResource(datasourceSpecDir+"/"+datasourceId+".json")
-				.getFile());
+		String datasourceSpecPath = datasourceSpecDir+"/"+datasourceId+".json";
+		InputStream is = getClass().getResourceAsStream(datasourceSpecPath);
+		
 		JSONParser parser = new JSONParser();
-		JSONObject json = (JSONObject) parser.parse(new FileReader(spec));
+		JSONObject json = (JSONObject) parser.parse(new InputStreamReader(is));
 		JSONObject defaultAttributeJson = (JSONObject)json.get("default");
 		JSONArray jsonAttributes = (JSONArray)json.get("attributes");
 		List<ExcelAttribute> ldsAttributes = loadLDSAttributes(defaultAttributeJson, jsonAttributes);
@@ -200,9 +207,9 @@ public abstract class ExcelImporter implements Importer {
 		return valueCounter;
 	}
 
-	protected Datasource readDatasourceSpec(File spec) throws Exception {
+	protected Datasource readDatasourceSpec(InputStream spec) throws Exception {
 		JSONParser parser = new JSONParser();
-		JSONObject json = (JSONObject) parser.parse(new FileReader(spec));
+		JSONObject json = (JSONObject) parser.parse(new InputStreamReader(spec));
 		JSONObject jsonDS = (JSONObject) json.get("datasource");
 		
 		// Basic details

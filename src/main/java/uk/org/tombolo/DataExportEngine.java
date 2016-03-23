@@ -2,6 +2,10 @@ package uk.org.tombolo;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.importer.Importer;
@@ -10,16 +14,24 @@ public class DataExportEngine implements ExecutionEngine{
 
 	String localDataPath;
 	
+	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
+	
 	public static void main(String[] args) {
 		
-		String executionSpecPath = "executions/tombolo/obesity_uk.json";
+		String executionSpecPath = args[0];
 				
 		DataExportEngine engine = new DataExportEngine();
 		try{
-			engine.executeResource(executionSpecPath);
+			File file = new File(executionSpecPath);
+			if (file.exists()){
+				engine.execute(file);
+			}else{
+				log.error("File not found: " + executionSpecPath);
+			}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+		log.info("exit");
 	}
 	
 	public DataExportEngine(){
@@ -38,16 +50,19 @@ public class DataExportEngine implements ExecutionEngine{
 		
 		// Import data
 		for (DatasourceSpecification datasourceSpec : datasetSpec.getDatasourceSpecification()){
-			System.err.println("Importing " 
-					+ datasourceSpec.getImporterClass() 
-					+ " " + datasourceSpec.getDatasourceId());
+			log.info("Importing {} {}", 
+					datasourceSpec.getImporterClass(),
+					datasourceSpec.getDatasourceId());
 			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-			importer.importDatasource(datasourceSpec.getDatasourceId());
+			int count = importer.importDatasource(datasourceSpec.getDatasourceId());
+			log.info("Imported {} values", count);
 		}
 		
 		// FIXME: Export data
-		System.err.println("Exporting ...");
+		log.info("Exporting ...");
 		
+		// Closing the Hibernate Session Factory
+		HibernateUtil.shutdown();
 	}
 	
 }

@@ -10,7 +10,7 @@ public class PheNooImporter extends ExcelImporter implements Importer {
 			"Public Health England"
 			);
 
-	private static final String DATASOURCE_SPEC_DIR = "datasources/uk/gov/phe/";	
+	private static final String DATASOURCE_SPEC_DIR = "/datasources/uk/gov/phe";	
 	private static final int TIMEDVALUE_BUFFER_SIZE = 1000;
 	
 	public PheNooImporter(){
