@@ -1,89 +1,164 @@
 package uk.org.tombolo.exporter;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geojson.feature.FeatureJSON;
-import org.geotools.geometry.jts.JTSFactoryFinder;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.postgis.MultiPolygon;
+import javax.json.JsonValue;
 
-import com.google.gson.Gson;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.geotools.geojson.geom.GeometryJSON;
 
+import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyTypeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 
 public class GeoJsonExporter implements Exporter {
-
-	Gson gson = new Gson();
+	
+	// FIXME: Rewriter using geotools ... I could not get it to work quicly in the initial implementation (borkur)
 	
 	@Override
-	public void write(Writer writer, DatasetSpecification datasetSpecification) throws IOException, ParseException {
+	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
+
+		// Write beginning of geography list
+		writer.write("{");
+		writeStringProperty(writer, 0, "type", "FeatureCollection");
+		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
-		// TODO Write Geographies
-		//List<Map<String,Object>> geographies = new ArrayList<Map<String,Object>>();
-		DefaultFeatureCollection geographies = new DefaultFeatureCollection();
+		int geographyCount = 0;
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 			List<Geography> geographyList = GeographyUtils
 					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
 			for (Geography geography : geographyList){
+				// Geography is an a polygon or point for which data is to be output
 
-				SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
-				typeBuilder.setName("Geography");
-				typeBuilder.add("label", String.class);
-				typeBuilder.add("geometry", MultiPolygon.class);
+				if (geographyCount > 0){
+					// This is not the first geography
+					writer.write(",\n");
+				}
+								
+				// Open geography object
+				writer.write("{");
+				writeStringProperty(writer, 0, "type","Feature");
+								
+				// Write geometry
+				GeometryJSON geoJson = new GeometryJSON();
+				StringWriter geoJsonWriter = new StringWriter();
+				geoJson.write(geography.getShape(),geoJsonWriter);
+				writer.write(", \"geometry\" : ");
+				geoJson.write(geography.getShape(), writer);
 
-				SimpleFeatureType featureType = typeBuilder.buildFeatureType();
-
-				SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-				featureBuilder.set("label", geography.getLabel());
-				featureBuilder.set("geometry", geography.getShape());
-
-				SimpleFeature feature = featureBuilder.buildFeature(geography.getLabel());
-
-				GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-				WKTReader reader = new WKTReader(geometryFactory);	
-				Geometry geometry = reader.read(geography.getShape().toText());
-
-				feature.setDefaultGeometry(geometry);
-
-				geographies.add(feature);
-
-				//GeometryJSON geoJson = new GeometryJSON();
-				//StringWriter geoJsonWriter = new StringWriter();
-				//geoJson.write(geography.getShape(),geoJsonWriter);
-				//FeatureObject fo = new FeatureObject();
-
-				//Map<String,Object> geographyJson = new LinkedHashMap<String,Object>();
-				//geographyJson.put("label", geography.getLabel());
-				//geographyJson.put("name", geography.getName());
-				//geographyJson.put("shape", geoJson);
-				//geographies.add(geographyJson);
-
-
+				// Open property list
+				writeObjectPropertyOpening(writer, 1, "properties", JsonValue.ValueType.OBJECT);
+				int propertyCount = 0;
+								
+				// Geography label
+				writeStringProperty(writer, propertyCount, "label", geography.getLabel());
+				propertyCount++;
+				
+				// Geography name
+				writeStringProperty(writer, propertyCount, "name", geography.getName());
+				propertyCount++;				
+				
+				// Write Attributes
+				List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+				writeObjectPropertyOpening(writer, propertyCount, "attributes", JsonValue.ValueType.OBJECT);
+				int attributeCount = 0;
+				for (AttributeSpecification attributeSpec : attributeSpecs){
+					Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
+					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+					
+					// Write TimedValues
+					writeAttributeProperty(writer, attributeCount, geography, attribute);
+					attributeCount++;
+				}
+				// Close attribute list
+				writer.write("}");
+				propertyCount++;
+				
+				// Close property list
+				writer.write("}");
+				
+				// Close geography object
+				writer.write("}");
+				
+				geographyCount++;
 			}
-			FeatureJSON featureJson = new FeatureJSON();
-			featureJson.writeFeatureCollection(geographies, writer);
-
-
-			// TODO Write Attributes
-
-			// TODO Write TimedValues
-
+		}
+		
+		// Write end of geography list
+		writer.write("]}");
 	}
+
+	protected void writeStringProperty(Writer writer, int propertyCount, String key, String value) throws IOException{
+		
+		if (propertyCount > 0)
+			writer.write(",");
+		
+		writer.write("\""+key+"\":\""+value+"\"");
+	}
+
+	protected void writeDoubleProperty(Writer writer, int propertyCount, String key, Double value) throws IOException{
+		
+		if (propertyCount > 0)
+			writer.write(",");
+		
+		writer.write("\""+key+"\":"+value+"");
+	}
+	
+	protected void writeObjectPropertyOpening(Writer writer, int propertyCount, String key, JsonValue.ValueType valueType) throws IOException{
+		if (propertyCount > 0)
+			writer.write(",");
+
+		writer.write("\""+key+"\":");
+		
+		switch(valueType){
+			case ARRAY:
+				writer.write("[");
+				break;
+			case OBJECT:
+				writer.write("{");
+				break;
+			default:
+				break;	
+		}
+	}
+
+	protected void writeAttributeProperty(Writer writer, int propertyCount, Geography geography, Attribute attribute) throws IOException{
+		// Open attribute
+		writeObjectPropertyOpening(writer, propertyCount, attribute.getLabel(), JsonValue.ValueType.OBJECT);
+		int subPropertyCount = 0;
+
+		// Write name
+		writeStringProperty(writer, subPropertyCount, "name", attribute.getName());
+		subPropertyCount++;
+		
+		// Write timed values
+		List<TimedValue> values = TimedValueUtils.getByGeographyAndAttribute(geography, attribute);
+		
+		// Open values
+		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);
+		int valueCount = 0;
+		for (TimedValue value : values){
+			writeDoubleProperty(writer, valueCount, value.getId().getTimestamp().toString(), value.getValue());
+			valueCount++;
+		}
+		// Close values
+		writer.write("}");
+		subPropertyCount++;
+		
+		// Close attribute
+		writer.write("}");	
 	}
 }

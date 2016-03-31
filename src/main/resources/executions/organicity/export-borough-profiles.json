@@ -1,0 +1,63 @@
+{
+	"datasetSpecification" : {
+		"geographySpecification" : [
+			{
+				"geographyType" : "localAuthority",
+				"labelPattern" : "E090%"
+			}
+		],	
+		"datasourceSpecification" : [
+			{
+				"importerClass" : "uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter",
+				"datasourceId" : "london-borough-profiles"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter",
+				"datasourceId" : "walking-cycling-borough"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.phe.PheNooImporter",
+				"datasourceId" : "BMI_categories_2012-2014"
+			}		
+		],
+		"attributeSpecification" : [
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "populationDensity"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "householdIncome"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "medianHousePrice"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "fractionGreenspace"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "carbonEmission"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "carsPerHousehold"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "walk5xWeek"
+			},
+			{
+				"providerLabel" : "uk.gov.london",
+				"attributeLabel" : "cycle1xWeek"
+			},
+			{
+				"providerLabel" : "uk.gov.phe",
+				"attributeLabel" : "fractionObese"
+			}
+		]
+	},
+	"exporterClass" : "uk.org.tombolo.exporter.oc.OrganiCityExporter"
+}

@@ -1,40 +1,60 @@
 package uk.org.tombolo;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.utils.HibernateUtil;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.importer.Importer;
 
 public class DataExportEngine implements ExecutionEngine{
 
-	String localDataPath;
+	private String outputFile;
 	
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	
 	public static void main(String[] args) {
 		
+		if (args.length != 2){
+			log.error("Use: {} {} {}",
+					DataExportEngine.class.getCanonicalName(),
+					"dataExportSpecFile",
+					"outputFile"
+					);
+			System.exit(1);
+		}
+		
 		String executionSpecPath = args[0];
-				
-		DataExportEngine engine = new DataExportEngine();
+		String outputFile = args[1];
+
+
+		File file = new File(executionSpecPath);
+		if (!file.exists()){
+			log.error("File not found: " + executionSpecPath);
+			System.exit(1);
+		}
+
+		DataExportEngine engine = new DataExportEngine(outputFile);
 		try{
-			File file = new File(executionSpecPath);
-			if (file.exists()){
-				engine.execute(file);
-			}else{
-				log.error("File not found: " + executionSpecPath);
-			}
+			engine.execute(file);
 		} catch (Exception e){
 			e.printStackTrace();
+		} finally {
+			// Closing the Hibernate Session Factory
+			HibernateUtil.shutdown();
 		}
 		log.info("exit");
 	}
 	
-	public DataExportEngine(){
+	public DataExportEngine(String outputFile){
+		this.outputFile = outputFile;
 	}
 
 	public void executeResource(String resourcePath) throws Exception {
@@ -46,10 +66,10 @@ public class DataExportEngine implements ExecutionEngine{
 	public void execute(File specification) throws Exception {
 		
 		// Read specification file
-		DatasetSpecification datasetSpec = DatasetSpecification.fromJsonFile(specification);
+		DataExportSpecification dataExportSpec = DataExportSpecification.fromJsonFile(specification);
 		
 		// Import data
-		for (DatasourceSpecification datasourceSpec : datasetSpec.getDatasourceSpecification()){
+		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
 			log.info("Importing {} {}", 
 					datasourceSpec.getImporterClass(),
 					datasourceSpec.getDatasourceId());
@@ -60,9 +80,15 @@ public class DataExportEngine implements ExecutionEngine{
 		
 		// FIXME: Export data
 		log.info("Exporting ...");
-		
-		// Closing the Hibernate Session Factory
-		HibernateUtil.shutdown();
+		Writer writer = null;
+		try {
+			writer = new FileWriter(outputFile);
+		} catch (IOException e) {
+			log.error("Error initilising output writer: {}", outputFile);
+		}
+		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+		exporter.write(writer, dataExportSpec.getDatasetSpecification());
+		writer.flush();
+		writer.close();
 	}
-	
 }

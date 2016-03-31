@@ -1,17 +1,11 @@
 package uk.org.tombolo.core;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 // FIXME: Probably turn this into and interface and a DoubleTimedValue class
 @Entity
@@ -49,77 +43,4 @@ public class TimedValue {
 		this.value = value;
 	}
 
-
-	@Embeddable
-	class TimedValueId implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		@ManyToOne
-		@JoinColumn(name="geography_id")
-		Geography geography;
-
-		@ManyToOne
-		@JoinColumn(name="attribute_id")
-		Attribute attribute;
-		
-		@Column(name="timestamp")
-		@Type(type="uk.org.tombolo.core.utils.LocalDateTimeUserType")
-		LocalDateTime timestamp;
-
-		public TimedValueId(){
-			
-		}
-		
-		public TimedValueId(Geography geography, Attribute attribute, LocalDateTime timestamp){
-			this.geography = geography;
-			this.attribute = attribute;
-			this.timestamp = timestamp;
-		}
-
-		public Geography getGeography() {
-			return geography;
-		}
-
-		public void setGeography(Geography geography) {
-			this.geography = geography;
-		}
-
-		public Attribute getAttribute() {
-			return attribute;
-		}
-
-		public void setAttribute(Attribute attribute) {
-			this.attribute = attribute;
-		}
-
-		public LocalDateTime getTimestamp() {
-			return timestamp;
-		}
-
-		public void setTimestamp(LocalDateTime timestamp) {
-			this.timestamp = timestamp;
-		}
-
-		@Override
-		public int hashCode() {
-			return (geography.getId()
-					+"\t"+attribute.getId()
-					+"\t"+timestamp.toString()).hashCode();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj.getClass() != this.getClass())
-				return false;
-			
-			TimedValueId idObj = (TimedValueId)obj;
-			if (idObj.geography.equals(this.geography)
-					&& idObj.attribute.equals(this.attribute)
-					&& idObj.timestamp.equals(this.timestamp))
-				return true;
-			
-			return false;
-		}
-		
-	}
 }

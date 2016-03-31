@@ -1,7 +1,12 @@
 package uk.org.tombolo.exporter.oc;
 
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+
+import javax.json.JsonValue;
+
+import org.geotools.geojson.geom.GeometryJSON;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
@@ -15,32 +20,87 @@ import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 import uk.org.tombolo.exporter.Exporter;
+import uk.org.tombolo.exporter.GeoJsonExporter;
 
-public class OrganiCityExporter implements Exporter {
+public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
+	public static final String OC_SITE_NAME = "london";
 
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
 
+		// Write beginning of geography list
+		writer.write("{");
+		writeStringProperty(writer, 0, "type", "FeatureCollection");
+		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
+		
+		int geographyCount = 0;
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 			List<Geography> geographyList = GeographyUtils
 					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
 			for (Geography geography : geographyList){
+				// Geography is an a polygon or point for which data is to be output
 
-				// TODO Write Geography info
+				if (geographyCount > 0){
+					// This is not the first geography
+					writer.write(",\n");
+				}
+								
+				// Open geography object
+				writer.write("{");
+				writeStringProperty(writer, 0, "type","Feature");
+								
+				// Write geometry
+				GeometryJSON geoJson = new GeometryJSON();
+				StringWriter geoJsonWriter = new StringWriter();
+				geoJson.write(geography.getShape(),geoJsonWriter);
+				writer.write(", \"geometry\" : ");
+				geoJson.write(geography.getShape(), writer);
 
+				// Open property list
+				writeObjectPropertyOpening(writer, 1, "properties", JsonValue.ValueType.OBJECT);
+				int propertyCount = 0;
 				
-				// TODO Write Attributes
+				// Urn
+				String urn = "urn:oc:entity:"+OC_SITE_NAME+":[service]:[provider]:[group]:"+geography.getLabel();
+				writeStringProperty(writer, propertyCount, "id", urn);
+				propertyCount++;
+				
+				// Geography label
+				writeStringProperty(writer, propertyCount, "label", geography.getLabel());
+				propertyCount++;
+				
+				// Geography name
+				writeStringProperty(writer, propertyCount, "name", geography.getName());
+				propertyCount++;				
+				
+				// Write Attributes
 				List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+				writeObjectPropertyOpening(writer, propertyCount, "attributes", JsonValue.ValueType.OBJECT);
+				int attributeCount = 0;
 				for (AttributeSpecification attributeSpec : attributeSpecs){
 					Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
 					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 					
-					// TODO Write TimedValues
-
-					
-				}				
+					// Write TimedValues
+					writeAttributeProperty(writer, attributeCount, geography, attribute);
+					attributeCount++;
+				}
+				// Close attribute list
+				writer.write("}");
+				propertyCount++;
+				
+				// Close property list
+				writer.write("}");
+				
+				// Close geography object
+				writer.write("}");
+				
+				geographyCount++;
 			}
 		}
+		
+		// Write end of geography list
+		writer.write("]}");
 	}
 }
