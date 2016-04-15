@@ -22,18 +22,19 @@ public class DataExportEngine implements ExecutionEngine{
 	
 	public static void main(String[] args) {
 		
-		if (args.length != 2){
-			log.error("Use: {} {} {}",
+		if (args.length != 3){
+			log.error("Use: {} {} {} {}",
 					DataExportEngine.class.getCanonicalName(),
 					"dataExportSpecFile",
-					"outputFile"
+					"outputFile",
+					"forceImport"
 					);
 			System.exit(1);
 		}
 		
 		String executionSpecPath = args[0];
 		String outputFile = args[1];
-
+		boolean forceImport = Boolean.parseBoolean(args[2]);
 
 		File file = new File(executionSpecPath);
 		if (!file.exists()){
@@ -43,7 +44,7 @@ public class DataExportEngine implements ExecutionEngine{
 
 		DataExportEngine engine = new DataExportEngine(outputFile);
 		try{
-			engine.execute(file);
+			engine.execute(file, forceImport);
 		} catch (Exception e){
 			e.printStackTrace();
 		} finally {
@@ -57,28 +58,30 @@ public class DataExportEngine implements ExecutionEngine{
 		this.outputFile = outputFile;
 	}
 
-	public void executeResource(String resourcePath) throws Exception {
+	public void executeResource(String resourcePath, boolean forceImport) throws Exception {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(resourcePath).getFile());
-		execute(file);
+		execute(file, forceImport);
 	}
 	
-	public void execute(File specification) throws Exception {
+	public void execute(File specification, boolean forceImport) throws Exception {
 		
 		// Read specification file
 		DataExportSpecification dataExportSpec = DataExportSpecification.fromJsonFile(specification);
 		
 		// Import data
-		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
-			log.info("Importing {} {}", 
-					datasourceSpec.getImporterClass(),
-					datasourceSpec.getDatasourceId());
-			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-			int count = importer.importDatasource(datasourceSpec.getDatasourceId());
-			log.info("Imported {} values", count);
+		if (forceImport){
+			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
+				log.info("Importing {} {}", 
+						datasourceSpec.getImporterClass(),
+						datasourceSpec.getDatasourceId());
+				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
+				log.info("Imported {} values", count);
+			}
 		}
 		
-		// FIXME: Export data
+		// Export data
 		log.info("Exporting ...");
 		Writer writer = null;
 		try {

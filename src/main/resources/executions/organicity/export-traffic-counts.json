@@ -1,0 +1,42 @@
+{
+	"datasetSpecification" : {
+		"geographySpecification" : [
+			{
+				"geographyType" : "sensor"
+			}
+		],	
+		"datasourceSpecification" : [
+			{
+				"importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+				"datasourceId" : "London"
+			}		
+		],
+		"attributeSpecification" : [
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountPedalCycles"
+			},
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountMotorcycles"
+			},
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountCarsTaxis"
+			},
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountBusesCoaches"
+			},
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountLightGoodsVehicles"
+			},
+			{
+				"providerLabel" : "uk.gov.dft",
+				"attributeLabel" : "CountHeavyGoodsVehicles"
+			}
+		]
+	},
+	"exporterClass" : "uk.org.tombolo.exporter.oc.OrganiCityExporter"
+}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Datasource {
-	public static enum DatafileType {xls,xlsx,zip};
 	
 	Provider provider;
 	String name;
@@ -12,7 +11,6 @@ public class Datasource {
 	String url;					// Url of the datasource for that series
 	String remoteDatafile;		// Remote datafile
 	String localDatafile; 		// Location of the local version of the datafile
-	DatafileType datafileType;	// Type of the datafile
 
 	List<Attribute> attributes;
 	
@@ -27,6 +25,10 @@ public class Datasource {
 		attributes.add(attribute);
 	}
 
+	public void addAllAttributes(List<Attribute> attributes){
+		this.attributes.addAll(attributes);
+	}
+	
 	public Provider getProvider() {
 		return provider;
 	}

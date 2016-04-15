@@ -45,8 +45,7 @@ public abstract class ExcelImporter implements Importer {
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
 		
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(datasourceSpecDir).getFile());
+		File file = new File(getClass().getResource(datasourceSpecDir).getFile());
 
 		if (file.isDirectory()){
 			for (File spec : file.listFiles()){

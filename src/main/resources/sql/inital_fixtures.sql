@@ -6,7 +6,8 @@ insert into geography_type(label, name) values
 ('unknown','Unknown Geography Type'),
 ('lsoa', 'Lower Layer Super Output Area'),
 ('msoa', 'Middle Layer Super Output Area'),
-('localAuthority', 'Local Authority');
+('localAuthority', 'Local Authority'),
+('sensor', 'Sensor');
 
 insert into provider(label, name) values
 ('uk.org.tombolo.test', 'Tombolo Tester');

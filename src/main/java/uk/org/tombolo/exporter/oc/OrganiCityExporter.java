@@ -7,6 +7,8 @@ import java.util.List;
 import javax.json.JsonValue;
 
 import org.geotools.geojson.geom.GeometryJSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
@@ -25,6 +27,8 @@ import uk.org.tombolo.exporter.GeoJsonExporter;
 public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 	public static final String OC_SITE_NAME = "london";
 
+	Logger log = LoggerFactory.getLogger(OrganiCityExporter.class);
+	
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
 
@@ -36,8 +40,10 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 		int geographyCount = 0;
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+			log.info("Getting geographies of type {} ({})", geographyType.getName(), geographyType.getLabel());
 			List<Geography> geographyList = GeographyUtils
 					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
+			log.info("Writing geographies ...");
 			for (Geography geography : geographyList){
 				// Geography is an a polygon or point for which data is to be output
 
@@ -51,6 +57,7 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 				writeStringProperty(writer, 0, "type","Feature");
 								
 				// Write geometry
+				log.info("Writing geography {}", geography.getName());
 				GeometryJSON geoJson = new GeometryJSON();
 				StringWriter geoJsonWriter = new StringWriter();
 				geoJson.write(geography.getShape(),geoJsonWriter);

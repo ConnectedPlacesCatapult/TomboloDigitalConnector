@@ -28,6 +28,23 @@ public class GeographyUtils {
 		return (List<Geography>) criteria.list();		
 	}
 	
+	public static void save(List<Geography> geographyObjects){
+		session.beginTransaction();
+		for(Geography geography : geographyObjects){
+			Criteria criteria = session.createCriteria(Geography.class);
+			Geography savedGeography = (Geography)criteria.add(Restrictions.eq("label", geography.getLabel())).uniqueResult();
+			if (savedGeography == null){
+				Integer id = (Integer)session.save(geography);
+				geography.setId(id);
+			}else{
+				// FIXME: Find a way to update an existing ... if needed
+				//geography.setId(savedGeography.getId());
+				//session.saveOrUpdate(geography);
+			}
+		}
+		session.getTransaction().commit();
+	}
+	
 	public static Geography getTestGeography(){
 		Criteria criteria = session.createCriteria(Geography.class);
 		return (Geography)criteria

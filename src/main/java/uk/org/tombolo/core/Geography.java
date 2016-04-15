@@ -12,24 +12,23 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Geometry;
 
 @Entity
 @Table(name="geography_object")
 public class Geography {
+	public static final int SRID = 4326;
 
 	Integer id;
 	GeographyType geographyType;
 	String label;
 	String name;
-	//FIXME: Here I wanted to use 'Geometry shape;' rather than 'MultiPolygon shape;' but I ran into issues with ORM mapping.
-	//       This will work for all the areas we will be using for the time being (lsoa, msoa and la) but we might have to revisit
-	//       this as we generalize the connector.
-	MultiPolygon shape;
+
+	Geometry shape;
 		
 	public Geography(){}
 	
-	public Geography(GeographyType geographyType, String label, String name, MultiPolygon shape){
+	public Geography(GeographyType geographyType, String label, String name, Geometry shape){
 		this.geographyType = geographyType;
 		this.label = label;
 		this.name = name;
@@ -76,13 +75,13 @@ public class Geography {
 		this.name = name;
 	}
 
-	@Column(name="shape", columnDefinition="geometry(MultiPolygon,4326)")
+	@Column(name="shape", columnDefinition="geometry(Geometry,"+SRID+")")
 	@Type(type = "org.hibernate.spatial.GeometryType")
-	public MultiPolygon getShape() {
+	public Geometry getShape() {
 		return shape;
 	}
 
-	public void setShape(MultiPolygon shape) {
+	public void setShape(Geometry shape) {
 		this.shape = shape;
 	}
 

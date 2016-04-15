@@ -20,7 +20,7 @@ public class DatasetSpecificationTest {
 		DatasetSpecification dsSpec = DatasetSpecification.fromJsonFile(file);
 		
 		assertEquals(1, dsSpec.getGeographySpecification().size());
-		assertEquals(2, dsSpec.getDatasourceSpecification().size());
+		assertEquals(3, dsSpec.getDatasourceSpecification().size());
 		assertEquals(3, dsSpec.getAttributeSpecification().size());
 	}
 }
