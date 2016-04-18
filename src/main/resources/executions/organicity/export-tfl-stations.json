@@ -1,0 +1,22 @@
+{
+	"datasetSpecification" : {
+		"geographySpecification" : [
+			{
+				"geographyType" : "TfLStation"
+			}
+		],	
+		"datasourceSpecification" : [
+			{
+				"importerClass" : "uk.org.tombolo.importer.tfl.TrafficCountImporter",
+				"datasourceId" : "StationList"
+			}		
+		],
+		"attributeSpecification" : [
+			{
+				"providerLabel" : "uk.gov.tfl",
+				"attributeLabel" : "ServingLineCount"
+			}
+		]
+	},
+	"exporterClass" : "uk.org.tombolo.exporter.oc.OrganiCityExporter"
+}

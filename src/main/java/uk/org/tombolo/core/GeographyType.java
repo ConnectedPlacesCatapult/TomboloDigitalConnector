@@ -14,6 +14,11 @@ public class GeographyType {
 	public GeographyType() {
 		
 	}
+	
+	public GeographyType(String label, String name){
+		this.label = label;
+		this.name = name;
+	}
 
 	@Id
 	@Column(name="label")
