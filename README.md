@@ -86,5 +86,5 @@ psql tombolo -c 'select geography_type_label, provider_label, count(distinct a.i
 This command might come handy when we start writing the data exporters
 
 ```bash
-psql -d tombolo -c 'SELECT ST_AsGeoJSON(ST_Transform(ST_SETSRID(shape, 27700),4326)) from area where area_type_id = 2 limit 1'
+psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from geography_object where limit 1'
 ```

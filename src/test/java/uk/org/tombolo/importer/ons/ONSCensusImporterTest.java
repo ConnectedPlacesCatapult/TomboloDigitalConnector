@@ -45,6 +45,15 @@ public class ONSCensusImporterTest {
 	}
 	
 	@Test
+	public void testGetDatasetDetailsQS103EW() throws IOException, ParseException{
+		
+		String datasetId = "QS103EW";		
+		
+		Datasource datasourceDetails = onsImporter.getDatasource(datasetId);
+		
+	}
+	
+	@Test
 	public void testLoadDataset() throws IOException, ParseException{
 		// FIXME: Mock this data so that the test will not take a very very very long time
 		String datasetId = "OT102EW";		

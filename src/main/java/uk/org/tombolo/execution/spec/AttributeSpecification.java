@@ -1,12 +1,15 @@
 package uk.org.tombolo.execution.spec;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class AttributeSpecification {
 	String providerLabel;
 	String attributeLabel;
 	LocalDateTime startTime;
 	LocalDateTime endTime;
+	Map<String, String> attributes = new TreeMap<String,String>();
 	
 	public AttributeSpecification(String providerLabel, String attributeLabel){
 		this.providerLabel = providerLabel;
@@ -37,4 +40,7 @@ public class AttributeSpecification {
 		this.endTime = endTime;
 	}
 	
+	public Map<String,String> getAttributes(){
+		return attributes;
+	}
 }

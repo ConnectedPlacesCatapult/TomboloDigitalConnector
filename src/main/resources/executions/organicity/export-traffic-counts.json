@@ -2,7 +2,12 @@
 	"datasetSpecification" : {
 		"geographySpecification" : [
 			{
-				"geographyType" : "sensor"
+				"geographyType" : "sensor",
+				"attributes" : {
+					"provider" : "uk.gov.dft",
+					"service" : "trafficCount",
+					"type" : "urn:oc:entityType:raw:manualcount"
+				}
 			}
 		],	
 		"datasourceSpecification" : [
@@ -14,27 +19,51 @@
 		"attributeSpecification" : [
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountPedalCycles"
+				"attributeLabel" : "CountPedalCycles",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountMotorcycles"
+				"attributeLabel" : "CountMotorcycles",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountCarsTaxis"
+				"attributeLabel" : "CountCarsTaxis",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountBusesCoaches"
+				"attributeLabel" : "CountBusesCoaches",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountLightGoodsVehicles"
+				"attributeLabel" : "CountLightGoodsVehicles",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountHeavyGoodsVehicles"
+				"attributeLabel" : "CountHeavyGoodsVehicles",
+				"attributes" : {
+					"type" : "urn:oc:attributeType:traffic:count",
+					"unit" : "count"
+				}
 			}
 		]
 	},

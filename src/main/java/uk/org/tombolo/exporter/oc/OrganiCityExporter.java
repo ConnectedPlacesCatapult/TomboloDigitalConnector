@@ -43,6 +43,10 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 			log.info("Getting geographies of type {} ({})", geographyType.getName(), geographyType.getLabel());
 			List<Geography> geographyList = GeographyUtils
 					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
+			String geoService = geographySpecification.getAttributes().get("service");
+			String geoProvider = geographySpecification.getAttributes().get("provider");
+			String geoGroup = geographySpecification.getAttributes().get("group");
+			String geoType = geographySpecification.getAttributes().get("type");
 			log.info("Writing geographies ...");
 			for (Geography geography : geographyList){
 				// Geography is an a polygon or point for which data is to be output
@@ -69,8 +73,17 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 				int propertyCount = 0;
 				
 				// Urn
-				String urn = "urn:oc:entity:"+OC_SITE_NAME+":[service]:[provider]:[group]:"+geography.getLabel();
+				String urn = "urn:oc:entity:"
+						+OC_SITE_NAME
+						+((geoService != null)?":"+geoService:"")
+						+((geoProvider != null)?":"+geoProvider:"")
+						+((geoGroup != null)?":"+geoGroup:"")
+						+":"+geography.getLabel();
 				writeStringProperty(writer, propertyCount, "id", urn);
+				propertyCount++;
+				
+				// Type
+				writeStringProperty(writer, propertyCount, "type", geoType);
 				propertyCount++;
 				
 				// Geography label
@@ -90,7 +103,7 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 					
 					// Write TimedValues
-					writeAttributeProperty(writer, attributeCount, geography, attribute);
+					writeAttributeProperty(writer, attributeCount, geography, attribute, attributeSpec);
 					attributeCount++;
 				}
 				// Close attribute list

@@ -80,7 +80,7 @@ public class GeoJsonExporter implements Exporter {
 					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 					
 					// Write TimedValues
-					writeAttributeProperty(writer, attributeCount, geography, attribute);
+					writeAttributeProperty(writer, attributeCount, geography, attribute, attributeSpec);
 					attributeCount++;
 				}
 				// Close attribute list
@@ -135,7 +135,7 @@ public class GeoJsonExporter implements Exporter {
 		}
 	}
 
-	protected void writeAttributeProperty(Writer writer, int propertyCount, Geography geography, Attribute attribute) throws IOException{
+	protected void writeAttributeProperty(Writer writer, int propertyCount, Geography geography, Attribute attribute, AttributeSpecification attributeSpec) throws IOException{
 		// Open attribute
 		writeObjectPropertyOpening(writer, propertyCount, attribute.getLabel(), JsonValue.ValueType.OBJECT);
 		int subPropertyCount = 0;
@@ -143,10 +143,60 @@ public class GeoJsonExporter implements Exporter {
 		// Write name
 		writeStringProperty(writer, subPropertyCount, "name", attribute.getName());
 		subPropertyCount++;
+
+		// Write provider
+		writeStringProperty(writer, subPropertyCount, "provider", attribute.getProvider().getName());
+		subPropertyCount++;
+		
+		// Write metadata
+		if (attributeSpec.getAttributes() != null && attributeSpec.getAttributes().get("unit") != null){
+			writeObjectPropertyOpening(writer, subPropertyCount, "metadatas", JsonValue.ValueType.ARRAY);
+			switch(attributeSpec.getAttributes().get("unit")){
+			case "count":
+				writer.write("{");
+				writeStringProperty(writer, 0, "name","unit");
+				writeStringProperty(writer, 1, "type","urn:oc:uom:count");
+				writeStringProperty(writer, 2, "value","count");
+				writer.write("},{");
+				writeStringProperty(writer, 0, "name","datatype");
+				writeStringProperty(writer, 1, "type","urn:oc:datatype:numeric");
+				writeStringProperty(writer, 2, "value","numeric");
+				writer.write("}");
+				break;
+			case "fraction":
+				writer.write("{");
+				writeStringProperty(writer, 0, "name","unit");
+				writeStringProperty(writer, 1, "type","urn:oc:uom:fraction");
+				writeStringProperty(writer, 2, "value","fraction");
+				writer.write("},{");
+				writeStringProperty(writer, 0, "name","datatype");
+				writeStringProperty(writer, 1, "type","urn:oc:datatype:numeric");
+				writeStringProperty(writer, 2, "value","numeric");
+				writer.write("}");
+				break;
+			case "percentage":
+				writer.write("{");
+				writeStringProperty(writer, 0, "name","unit");
+				writeStringProperty(writer, 1, "type","urn:oc:uom:percentage");
+				writeStringProperty(writer, 2, "value","percentage");
+				writer.write("},{");
+				writeStringProperty(writer, 0, "name","datatype");
+				writeStringProperty(writer, 1, "type","urn:oc:datatype:numeric");
+				writeStringProperty(writer, 2, "value","numeric");
+				writer.write("}");
+				break;
+				
+			}
+			// Close metadatas
+			writer.write("]");
+
+			subPropertyCount++;
+		}
+		
 		
 		// Write timed values
 		List<TimedValue> values = TimedValueUtils.getByGeographyAndAttribute(geography, attribute);
-		
+				
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);
 		int valueCount = 0;

@@ -138,6 +138,11 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		while(entries.hasMoreElements()){
 			zipEntry = entries.nextElement();
 
+			
+			// FIXME: Add an if statement if the data is multidimensional 
+			// FIXME: E.g. CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.csv 
+			
+			
 			if (zipEntry.getName().equals("CSV_"+datasourceId+"_2011STATH_1_EN.csv")){
 			
 				BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(zipEntry)));
@@ -224,6 +229,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				String attributeName = (String)dimension.get("dimensionId");
 				JSONArray dimensionTitles = (JSONArray)((JSONObject)dimension.get("dimensionTitles")).get("dimensionTitle");
 				String attributeDescription = getEnglishValue(dimensionTitles);
+				// FIXME: Check if there are numberOfDimensionItems
 				// FIXME: The Attribute.DataType value should be gotten from somewhere rather than defaulting to numeric
 				Attribute attribute = new Attribute(getProvider(), attributeName, attributeDescription, attributeDescription, Attribute.DataType.numeric);
 				datasource.addAttribute(attribute);
@@ -233,7 +239,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		// Get datafile
 		JSONArray documents = (JSONArray)((JSONObject)datasetDetail.get("documents")).get("document");
 		String remoteDatafile = null;
-		for (int docIndex = 0; docIndex<dimensions.size(); docIndex++){
+		for (int docIndex = 0; docIndex<documents.size(); docIndex++){
 			JSONObject document = (JSONObject)documents.get(docIndex);
 			if (document.get("@type").equals("CSV")){
 				JSONObject href = (JSONObject)document.get("href");
@@ -249,8 +255,6 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
 		datasource.setRemoteDatafile(remoteDatafile);	// Remote file
 		datasource.setLocalDatafile(localDatafile);		// Local file (relative to local data root)
-		//datasource.setRemoteDatafile(ONS_DATASET_BASE_URL + ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);	// Remote file
-		//datasource.setLocalDatafile(ONS_DATASET_FILE_PREFIX + datasourceId + ONS_DATASET_FILE_POSTFIX);							// Local file (relative to local data root)
 		
 		return datasource;
 	}
