@@ -28,39 +28,66 @@
 		"attributeSpecification" : [
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "populationDensity"
+				"attributeLabel" : "populationDensity",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:populationDensity"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "householdIncome"
+				"attributeLabel" : "householdIncome",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:householdIncome"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "medianHousePrice"
+				"attributeLabel" : "medianHousePrice",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:medianHousePrice"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "fractionGreenspace"
+				"attributeLabel" : "fractionGreenspace",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:fractionGreenspace"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "carbonEmission"
+				"attributeLabel" : "carbonEmission",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:carbonEmission"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "carsPerHousehold"
+				"attributeLabel" : "carsPerHousehold",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:carsPerHousehold"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "walk5xWeek"
+				"attributeLabel" : "walk5xWeek",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:walk5xWeek"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "cycle1xWeek"
+				"attributeLabel" : "cycle1xWeek",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:cycle1xWeek"
+				}
 			},
 			{
 				"providerLabel" : "uk.gov.phe",
-				"attributeLabel" : "fractionObese"
+				"attributeLabel" : "fractionObese",
+				"attributes" : {
+					"urn" : "urn:oc:attributeType:boroughProfile:fractionObese"
+				}
 			}
 		]
 	},
