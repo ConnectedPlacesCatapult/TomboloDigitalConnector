@@ -1,0 +1,30 @@
+#Ideal data for use in LEEDS use case version 0.1
+
+- I have identified dataset id where possible. Where I haven't provided ID's i'm not sure if there's API access
+(there probably is and i'm just missing it).
+
+- Realistically we take the data in whatever form it comes / whatever is easiest from the connector / easiest for you.
+
+Ideally:
+
+- Datasets with an id of "QS...." would come in the form of CSV files where Each LSOA ID
+is a row and each row in the original "QS...." datasets is a column with the column header being the row
+name in the "QS...." dataset. This is probably unrealistic and a lot easier to do in R than the connector.
+Thus separate CSV files for each LSOA would be great. We can talk about this if it is unclear.
+
+- Datasets such as the LSOA would come as shapefiles if possible or GeoJSON if preferred.
+
+- The NPTDR, NHS and population projections as CSV would be great.
+
+| Dataset                                                                      | Dataset id                           |
+|------------------------------------------------------------------------------|--------------------------------------|
+| Leeds LSOA borders (e.g. .shp (and associated))                              | https://goo.gl/QOvuFQ                |
+| Subnational Population Projections for Local Authorities in England: Table 2 | tcm77364153 or https://goo.gl/4d2SD6 |
+| National Public Transport Data Repository (NPTDR)                            | https://data.gov.uk/dataset/nptdr    |
+| Details of NHS organisations in England from Organisation Data Service       | https://goo.gl/kBTXjW                |
+| Age by single year                                                           | QS103EW                              |
+| Tenure (households)                                                          | QS405EW                              |
+| Living Arrangements                                                          | QS108EW                              |
+| Health                                                                       | QS302EW                              |
+| Long-term health problems or disability                                      | QS303EW                              |
+| Households by deprivation dimensions                                         | QS119EW                              |
