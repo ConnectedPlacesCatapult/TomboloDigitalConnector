@@ -4,14 +4,23 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.importer.AbstractImporterTestUtils;
+import uk.org.tombolo.importer.Importer;
 
 public class TrafficCountImporterTest {
 
-	TrafficCountImporter importer = new TrafficCountImporter();
+	private static Importer importer;
+	
+	@BeforeClass
+	public static void oneTimeSetUp(){
+		importer = new TrafficCountImporter();
+		AbstractImporterTestUtils.mockDownloadUtils(importer);
+	}
 	
 	@Test
 	public void testGetProvider(){
@@ -48,6 +57,11 @@ public class TrafficCountImporterTest {
 	@Test
 	public void testImportDatasource() throws Exception {
 		int count = importer.importDatasource("London");
+		assertEquals(
+				3		// Sensors
+				* 15	// Years
+				* TrafficCountImporter.COUNT_TYPE.values().length,	// Attributes
+				count);
 	}
 	
 }

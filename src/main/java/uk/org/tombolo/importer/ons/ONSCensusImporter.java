@@ -57,12 +57,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final String ONS_ATTRIBUTE_VALUE_KEY = "$";
 	
 	private static final String ONS_DATASET_BASE_URL = "http://data.statistics.gov.uk/ons/datasets/";
-	private static final String ONS_DATASET_FILE_PREFIX = "csv/CSV_";
-	private static final String ONS_DATASET_FILE_POSTFIX = "_2011STATH_1_EN.zip";
 	
 	private static final LocalDateTime CENSUS_2011_DATE_TIME = LocalDateTime.of(2011,12,31,23,59,59);
 
-	DownloadUtils downloadUtils = new DownloadUtils();
 	protected int timedValueBufferSize = 10000;
 	
 	@Override
@@ -91,72 +88,64 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			JSONArray names = (JSONArray)((JSONObject)collection.get("names")).get("name");
 			String datasetDescription = getEnglishValue(names);
 			
-			Datasource datasourceDetails = new Datasource(getProvider(),datasetId,datasetDescription);
+			Datasource datasourceDetails = new Datasource(datasetId,getProvider(),datasetId,datasetDescription);
 			datasources.add(datasourceDetails);
 		}
 		
 		return datasources;
 	}
-	
-	/**
-	 * Loads the data-source identified by datasourceId into the underlying data store 
-	 * 
-	 * @param datasourceId
-	 * @return the number of data values loaded
-	 * @throws IOException
-	 * @throws ParseException 
-	 */
-	public int importDatasource(String datasourceId) throws IOException, ParseException{
 		
+	public int importDatasource(Datasource datasource) throws IOException, ParseException{
 		// Get the provider details
 		Provider provider = getProvider();
 		
 		// Store the provider
 		ProviderUtils.save(provider);
-
-		// Get the details for the data source
-		Datasource datasource = getDatasource(datasourceId);
-
-		// Store attributes in database
-		AttributeUtils.save(datasource.getAttributes());
-
-		/*
-		DatasourceSpecification datasource = new DatasourceSpecification(
-				datasourceId,	getProvider().getLabel(),						// Dataset id and provider
-				"http://www.ons.gov.uk/ons/datasets-and-tables/index.html",	// Dataset location (description)
-				baseUrl + filePrefix + datasourceId + filePostfix,				// Remote file
-				filePrefix + datasourceId + filePostfix,						// Local file (relative to local data root)
-				DatasourceSpecification.DatafileType.zip);					// File type
-		*/
 				
 		// Store data in database
 		File localFile = downloadUtils.getDatasourceFile(datasource);
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
-		int lineCount = 0;
+		int valueCount = 0;
 		while(entries.hasMoreElements()){
 			zipEntry = entries.nextElement();
-
 			
-			// FIXME: Add an if statement if the data is multidimensional 
-			// FIXME: E.g. CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.csv 
-			
-			
-			if (zipEntry.getName().equals("CSV_"+datasourceId+"_2011STATH_1_EN.csv")){
+			if (zipEntry.getName().startsWith("CSV_") && zipEntry.getName().endsWith("_EN.csv")){
 			
 				BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(zipEntry)));
 				
-				
 				String line = null;
 				List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
+				int lineCounter = 0;
+				List<String> attributeBaseNames = new ArrayList<String>();
 				while ((line = br.readLine()) != null){
-					lineCount++;
-
+					lineCounter++;
+					// We are processing the lineCounter-th line
+					
 					String[] fields = line.split(",");
+					
+					// FIXME: Store the attributes when we have updated the attribute names
+					if (lineCounter == 8){
+						for (String field : fields){
+							attributeBaseNames.add(dequote(field));
+						}
+					}else if (lineCounter == 9){
+						for (int i = 2; i<datasource.getAttributes().size()+2; i++){
+							String name = attributeBaseNames.get(i);
+							if (!attributeBaseNames.get(i).equals(dequote(fields[i])))
+								name += " - " + dequote(fields[i]);
+							datasource.getAttributes().get(i-2).setName(name);
+							datasource.getAttributes().get(i-2).setDescription(name);
+						}
+						
+						// Store attributes in database
+						AttributeUtils.save(datasource.getAttributes());
+					}
 					
 					if (fields.length == 2 + datasource.getAttributes().size()
 							&& fields[0].startsWith("\"")){
+						// We have an actual data line
 						try{
 							String areaId = dequote(fields[0]);
 							List<Double> values = new ArrayList<Double>();
@@ -170,7 +159,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									TimedValue tv 
 										= new TimedValue(geography, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
-									lineCount++;
+									valueCount++;
 								}								
 							}							
 						}catch (NumberFormatException e){
@@ -178,7 +167,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}
 					
-					if (lineCount % timedValueBufferSize == 0){
+					if (valueCount % timedValueBufferSize == 0){
 						TimedValueUtils.save(timedValueBuffer);
 						timedValueBuffer = new ArrayList<TimedValue>();
 					}
@@ -190,7 +179,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		}
 		zipFile.close();		
 		
-		return lineCount;
+		return valueCount;
 	}
 	
 	public Datasource getDatasource(String datasourceId) throws IOException, ParseException{
@@ -217,7 +206,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		JSONArray names = (JSONArray)((JSONObject)datasetDetail.get("names")).get("name");
 		String datasourceDescription = getEnglishValue(names);
 		
-		Datasource datasource = new Datasource(getProvider(),datasourceId,datasourceDescription);
+		Datasource datasource = new Datasource(datasourceId,getProvider(),datasourceId,datasourceDescription);
 		
 		// Get dataset dimensions
 		JSONArray dimensions = (JSONArray)((JSONObject)datasetDetail.get("dimensions")).get("dimension");
@@ -226,13 +215,28 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			String dimensionType = (String)dimension.get("dimensionType");
 			if (dimensionType.equals("Topic")){
 				// The dimension is of type "Topic", i.e. an attribute in our terminology
-				String attributeName = (String)dimension.get("dimensionId");
+				long numberOfDimensionItems = (long)dimension.get("numberOfDimensionItems");
+
+				String attributeLabel = (String)dimension.get("dimensionId");
 				JSONArray dimensionTitles = (JSONArray)((JSONObject)dimension.get("dimensionTitles")).get("dimensionTitle");
 				String attributeDescription = getEnglishValue(dimensionTitles);
-				// FIXME: Check if there are numberOfDimensionItems
 				// FIXME: The Attribute.DataType value should be gotten from somewhere rather than defaulting to numeric
-				Attribute attribute = new Attribute(getProvider(), attributeName, attributeDescription, attributeDescription, Attribute.DataType.numeric);
-				datasource.addAttribute(attribute);
+				Attribute.DataType dataType = Attribute.DataType.numeric;
+
+				if (numberOfDimensionItems == 1){
+					// The attribute is one-dimensional
+					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription, attributeDescription, dataType);
+					datasource.addAttribute(attribute);
+				}else{
+					// The attribute is multi-dimensional
+					// We add an attribute for each dimension
+					// The name and the description will be added later when we get this information from the datafile itself
+					for (int i=0; i<numberOfDimensionItems; i++){
+						String multiAttributeLabel = attributeLabel+"_"+(i+1);
+						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.", "T.b.a.", dataType);
+						datasource.addAttribute(attribute);
+					}
+				}
 			}
 		}
 		
@@ -250,7 +254,6 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			}
 		}
 		String localDatafile = remoteDatafile.substring(ONS_DATASET_BASE_URL.length());
-		
 		
 		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
 		datasource.setRemoteDatafile(remoteDatafile);	// Remote file

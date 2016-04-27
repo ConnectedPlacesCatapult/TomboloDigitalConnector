@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Datasource {
 	
+	String id;
 	Provider provider;
 	String name;
 	String description;
@@ -14,7 +15,8 @@ public class Datasource {
 
 	List<Attribute> attributes;
 	
-	public Datasource(Provider provider, String name, String description){
+	public Datasource(String id, Provider provider, String name, String description){
+		this.id = id;
 		this.provider = provider;
 		this.name = name;
 		this.description = description;
@@ -27,6 +29,10 @@ public class Datasource {
 
 	public void addAllAttributes(List<Attribute> attributes){
 		this.attributes.addAll(attributes);
+	}
+	
+	public String getId(){
+		return id;
 	}
 	
 	public Provider getProvider() {

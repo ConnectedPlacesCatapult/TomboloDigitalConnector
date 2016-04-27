@@ -1,29 +1,47 @@
 package uk.org.tombolo.core;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.junit.AfterClass;
 import org.junit.Test;
 
+import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
 public class GeographyTest {
+
+	private static Session session = HibernateUtil.getSessionFactory().openSession();
+	
+	@AfterClass
+	public static void tearDownOnce(){
+		session.close();		
+	}
 	
 	@Test
 	public void testLsoaLoad(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-
 		Criteria criteria = session.createCriteria(Geography.class);
+
 		Geography cityOfLondon1A = (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
 		assertEquals("lsoa", cityOfLondon1A.getGeographyType().getLabel());
 		assertEquals("Lower Layer Super Output Area", cityOfLondon1A.getGeographyType().getName());
-		assertEquals("City of London 001A", cityOfLondon1A.getName());
-		
-		assertEquals("MultiPolygon",cityOfLondon1A.shape.getGeometryType());
-		assertEquals(133320d, cityOfLondon1A.shape.getArea(), 1d);
-		session.close();
+		assertEquals("City of London 001A", cityOfLondon1A.getName());		
 	}
+
+	@Test
+	public void testGeometryOverlap(){
+		Criteria criteria = session.createCriteria(Geography.class);
+
+		Geography cityOfLondon = GeographyUtils.getGeographyByLabel("E09000001");
+		Geography cityOfLondon1A = (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
+
+		assertTrue(cityOfLondon.getShape().contains(cityOfLondon1A.getShape()));
+		assertFalse(cityOfLondon1A.getShape().contains(cityOfLondon.getShape()));
+	}
+	
 	
 }

@@ -26,6 +26,6 @@ public class PheNooImporterTest {
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
 		
 		//FIXME: Find a way to match Gateshead etc.
-		assertEquals(5*(326-4)*1, datapoints);
+		assertEquals(5*(174-24)*1, datapoints);
 	}
 }

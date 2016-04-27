@@ -35,7 +35,7 @@ import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 
-public abstract class ExcelImporter implements Importer {
+public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;
 	protected int timedValueBufferSize;
 
@@ -49,7 +49,8 @@ public abstract class ExcelImporter implements Importer {
 
 		if (file.isDirectory()){
 			for (File spec : file.listFiles()){
-				Datasource datasource = readDatasourceSpec(new FileInputStream(spec));
+				String id = (spec.getName().split("\\."))[0];
+				Datasource datasource = readDatasourceSpec(id, new FileInputStream(spec));
 				datasources.add(datasource);
 			}
 		}
@@ -65,12 +66,11 @@ public abstract class ExcelImporter implements Importer {
 			log.debug("Failed to load resource: {}", datasourceSpecPath);
 		else
 			log.debug("Successfully loaded resource: {}", datasourceSpecPath);
-		return readDatasourceSpec(is);
+		return readDatasourceSpec(datasourceId, is);
 	}
 	
 	@Override
-	public int importDatasource(String datasourceId) throws Exception {
-		Datasource datasource = getDatasource(datasourceId);
+	public int importDatasource(Datasource datasource) throws Exception {
 
 		// Provider
 		ProviderUtils.save(getProvider());
@@ -79,7 +79,7 @@ public abstract class ExcelImporter implements Importer {
 		AttributeUtils.save(datasource.getAttributes());
 		
 		// Get LDSAttributes
-		String datasourceSpecPath = datasourceSpecDir+"/"+datasourceId+".json";
+		String datasourceSpecPath = datasourceSpecDir+"/"+datasource.getId()+".json";
 		InputStream is = getClass().getResourceAsStream(datasourceSpecPath);
 		
 		JSONParser parser = new JSONParser();
@@ -206,13 +206,14 @@ public abstract class ExcelImporter implements Importer {
 		return valueCounter;
 	}
 
-	protected Datasource readDatasourceSpec(InputStream spec) throws Exception {
+	protected Datasource readDatasourceSpec(String id, InputStream spec) throws Exception {
 		JSONParser parser = new JSONParser();
 		JSONObject json = (JSONObject) parser.parse(new InputStreamReader(spec));
 		JSONObject jsonDS = (JSONObject) json.get("datasource");
 		
 		// Basic details
 		Datasource datasource = new Datasource(
+				id,
 				getProvider(),
 				(String)jsonDS.get("name"),
 				(String)jsonDS.get("description"));

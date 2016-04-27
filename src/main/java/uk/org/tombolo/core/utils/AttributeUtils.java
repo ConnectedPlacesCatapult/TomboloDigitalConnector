@@ -37,6 +37,11 @@ public class AttributeUtils {
 				attribute.setId(id);
 			}else{
 				attribute.setId(savedAttribute.getId());
+				savedAttribute.setProvider(attribute.getProvider());
+				savedAttribute.setLabel(attribute.getLabel());
+				savedAttribute.setName(attribute.getName());
+				savedAttribute.setDescription(attribute.getDescription());
+				session.save(savedAttribute);
 			}
 		}
 		session.getTransaction().commit();

@@ -18,7 +18,15 @@ public class DownloadUtils {
 	public static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
 	
 	public String tomboloDataCacheRootDirectory = "/tmp";	// Configurable root to where to store cached data
+
+	public DownloadUtils(){
 		
+	}
+	
+	public DownloadUtils(String dataCacheRootDirectory){
+		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
+	}
+	
 	public File getDatasourceFile(Datasource datasource) throws MalformedURLException, IOException{
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory 

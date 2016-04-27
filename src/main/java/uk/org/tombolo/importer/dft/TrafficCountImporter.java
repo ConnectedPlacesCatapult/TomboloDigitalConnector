@@ -29,7 +29,7 @@ import uk.org.tombolo.core.utils.GeographyTypeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.DownloadUtils;
+import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.utils.CoordinateUtils;
 
@@ -42,13 +42,13 @@ import uk.org.tombolo.transformer.utils.CoordinateUtils;
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv
  */
-public class TrafficCountImporter implements Importer {
+public class TrafficCountImporter extends AbstractImporter implements Importer {
 	public static final Provider PROVIDER = new Provider(
 			"uk.gov.dft",
 			"Department for Transport"
 			);
 	
-	private static enum COUNT_TYPE 
+	protected static enum COUNT_TYPE 
 		{CountPedalCycles, CountMotorcycles, CountCarsTaxis, CountBusesCoaches, CountLightGoodsVehicles, CountHeavyGoodsVehicles};
 		
 	private static final String[] REGIONS = {"East Midlands","East of England","London",
@@ -133,8 +133,9 @@ public class TrafficCountImporter implements Importer {
 			return null;
 		
 		Datasource datasource = new Datasource(
+				datasourceId,
 				getProvider(), 
-				"Traffic Counts for "+datasourceId , 
+				"Traffic Counts for "+datasourceId, 
 				"Traffic Counts for "+datasourceId);
 
 		// Update attribute list
@@ -158,8 +159,7 @@ public class TrafficCountImporter implements Importer {
 	}
 
 	@Override
-	public int importDatasource(String datasourceId) throws Exception {
-		Datasource datasource = getDatasource(datasourceId);
+	public int importDatasource(Datasource datasource) throws Exception {
 		
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
@@ -170,9 +170,8 @@ public class TrafficCountImporter implements Importer {
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Geography.SRID);
 		GeographyType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
-		DownloadUtils du = new DownloadUtils();
 		Set<Long> trafficCounters = new HashSet<Long>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(du.getDatasourceFile(datasource)), "utf8"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
 		int valueCounter = 0;
 		while((line = reader.readLine()) != null){

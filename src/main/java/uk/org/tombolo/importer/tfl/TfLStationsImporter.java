@@ -34,7 +34,6 @@ import uk.org.tombolo.core.utils.GeographyTypeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 public class TfLStationsImporter extends TfLImporter implements Importer {
@@ -61,7 +60,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
 		switch (datasourceIdObject){
 			case StationList:
-				Datasource datasource = new Datasource(getProvider(), "TfL Stations", "A list of TfL Stations");
+				Datasource datasource = new Datasource(DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 				datasource.setRemoteDatafile(
 						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
@@ -74,8 +73,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	public int importDatasource(String datasourceId) throws Exception {
-		Datasource datasource = getDatasource(datasourceId);
+	public int importDatasource(Datasource datasource) throws Exception {
 		
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
@@ -84,13 +82,12 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		AttributeUtils.save(datasource.getAttributes());
 		
 		// Save timed values
-		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
+		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Geography.SRID);
 			GeographyType poiType = getGeographyType(GeographyTypeName.TfLStation);
-			DownloadUtils du = new DownloadUtils();
-			File xmlFile = du.getDatasourceFile(datasource);
+			File xmlFile = downloadUtils.getDatasourceFile(datasource);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
