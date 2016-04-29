@@ -1,3 +1,5 @@
+set -e -x
+
 wget 'https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip' -O /tmp/lsoa.zip
 mkdir /tmp/lsoa
 unzip /tmp/lsoa.zip -d /tmp/lsoa

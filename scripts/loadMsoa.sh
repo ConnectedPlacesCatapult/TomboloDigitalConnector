@@ -1,3 +1,5 @@
+set -e -x
+
 wget 'https://geoportal.statistics.gov.uk/Docs/Boundaries/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip' -O /tmp/msoa.zip
 mkdir /tmp/msoa
 unzip /tmp/msoa.zip -d /tmp/msoa

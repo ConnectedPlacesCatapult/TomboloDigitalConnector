@@ -1,3 +1,5 @@
+set -e -x
+
 #wget 'https://data.gov.uk/dataset/local-authority-district-gb-dec-2012-boundaries-full-extent/datapackage.zip' -O /tmp/la.zip
 wget 'https://data.gov.uk/dataset/county-and-unitary-authorities-ew-2012-boundaries-full-extent/datapackage.zip' -O /tmp/la.zip
 mkdir /tmp/la
