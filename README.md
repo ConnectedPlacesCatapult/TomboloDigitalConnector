@@ -54,8 +54,9 @@ gradle clean build copyDeps -x test
 java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
 	uk.org.tombolo.DataExportEngine \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
-	origanicity-borough-profiles.json
-cat /tmp/GeoJsonExporterTest.json | json_pp
+	organicity-borough-profiles.json \
+	false
+cat organicity-borough-profiles.json | json_pp
 ```
 
 # Useful database queries
