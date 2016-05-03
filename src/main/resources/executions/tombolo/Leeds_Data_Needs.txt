@@ -16,15 +16,25 @@ Thus separate CSV files for each LSOA would be great. We can talk about this if 
 
 - The NPTDR, NHS and population projections as CSV would be great.
 
+
+Version 1: Static social isolation score
+
 | Dataset                                                                      | Dataset id                           |
-|------------------------------------------------------------------------------|--------------------------------------|
 | Leeds LSOA borders (e.g. .shp (and associated))                              | https://goo.gl/QOvuFQ                |
-| Subnational Population Projections for Local Authorities in England: Table 2 | tcm77364153 or https://goo.gl/4d2SD6 |
-| National Public Transport Data Repository (NPTDR)                            | https://data.gov.uk/dataset/nptdr    |
-| Details of NHS organisations in England from Organisation Data Service       | https://goo.gl/kBTXjW                |
 | Age by single year                                                           | QS103EW                              |
 | Tenure (households)                                                          | QS405EW                              |
 | Living Arrangements                                                          | QS108EW                              |
 | Health                                                                       | QS302EW                              |
 | Long-term health problems or disability                                      | QS303EW                              |
 | Households by deprivation dimensions                                         | QS119EW                              |
+
+Version 2: Social isolation prediction over time
+
+| Dataset                                                                      | Dataset id                           |
+| Subnational Population Projections for Local Authorities in England: Table 2 | tcm77364153 or https://goo.gl/4d2SD6 |
+
+Version 3: Social isolation with fine-grained 
+
+| Dataset                                                                      | Dataset id                           |
+| National Public Transport Data Repository (NPTDR)                            | https://data.gov.uk/dataset/nptdr    |
+| Details of NHS organisations in England from Organisation Data Service       | https://goo.gl/kBTXjW                |
