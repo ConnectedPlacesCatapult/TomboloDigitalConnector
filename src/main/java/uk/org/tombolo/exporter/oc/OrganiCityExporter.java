@@ -10,6 +10,8 @@ import org.geotools.geojson.geom.GeometryJSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vividsolutions.jts.geom.Point;
+
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
@@ -80,6 +82,13 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 						+((geoGroup != null)?":"+geoGroup:"")
 						+":"+geography.getLabel();
 				writeStringProperty(writer, propertyCount, "id", urn);
+				propertyCount++;
+				
+				// Centroid
+				Point centroid = geography.getShape().getCentroid();
+				writeDoubleProperty(writer, propertyCount, "latitude", centroid.getY());
+				propertyCount++;
+				writeDoubleProperty(writer, propertyCount, "longitude", centroid.getX());
 				propertyCount++;
 				
 				// Type
