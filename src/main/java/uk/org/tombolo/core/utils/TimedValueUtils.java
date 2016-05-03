@@ -58,6 +58,11 @@ public class TimedValueUtils {
 						timedValue.getId().getTimestamp().toString(),
 						e.getMessage());
 			}
+		    if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
+		        //flush a batch of inserts and release memory:
+		        session.flush();
+		        session.clear();
+		    }
 		}
 		session.getTransaction().commit();
 		return saved;

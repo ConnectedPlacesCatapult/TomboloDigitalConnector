@@ -19,6 +19,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
@@ -60,7 +62,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private static final LocalDateTime CENSUS_2011_DATE_TIME = LocalDateTime.of(2011,12,31,23,59,59);
 
-	protected int timedValueBufferSize = 10000;
+	protected int timedValueBufferSize = 100000;
+	
+	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws IOException, ParseException{
@@ -141,6 +145,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						
 						// Store attributes in database
 						AttributeUtils.save(datasource.getAttributes());
+						log.info("Saved {} attributes", datasource.getAttributes().size());
 					}
 					
 					if (fields.length == 2 + datasource.getAttributes().size()
@@ -160,19 +165,25 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 										= new TimedValue(geography, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
 									valueCount++;
+									
+									// Flushing buffer
+									if (valueCount % timedValueBufferSize == 0){
+										// Buffer is full ... we write values to db
+										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
+										TimedValueUtils.save(timedValueBuffer);
+										timedValueBuffer = new ArrayList<TimedValue>();
+										log.info("Total values written: {}", valueCount);
+									}
 								}								
 							}							
 						}catch (NumberFormatException e){
 							// Ignoring this line since it does not contain numeric values for the attributes
 						}
 					}
-					
-					if (valueCount % timedValueBufferSize == 0){
-						TimedValueUtils.save(timedValueBuffer);
-						timedValueBuffer = new ArrayList<TimedValue>();
-					}
 				}
+				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
 				TimedValueUtils.save(timedValueBuffer);
+				log.info("Total values written: {}", valueCount);
 				br.close();
 			}
 			

@@ -40,6 +40,8 @@ create table geography_object (
 	PRIMARY KEY(id)
 );
 
+create index geography_label on geography_object (label);
+
 
 -- Attribute
 create sequence attribute_id_sequence;
