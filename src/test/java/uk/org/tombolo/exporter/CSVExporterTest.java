@@ -6,8 +6,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
+import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -27,40 +30,27 @@ public class CSVExporterTest {
 	@Test
 	public void testWrite() throws Exception {
 		Writer writer = new StringWriter();
-
 		exporter.write(writer, makeDatasetSpecification());
 		writer.flush();
 
-		assertEquals("E09000033", getFirstFeatureLabel(writer.toString()));
+		CSVRecord record = getFirstRecord(writer.toString());
+
+		assertEquals("E09000033", record.get("label"));
+		assertEquals("Westminster", record.get("name"));
+		assertNotNull(record.get("geometry"));
+		assertEquals("Population density (per hectare) 2015", record.get("uk.gov.london_populationDensity_name"));
+		assertEquals("London Datastore - Greater London Authority", record.get("uk.gov.london_populationDensity_provider"));
 	}
 
 	@Test
-	public void lineariseGeographies() throws Exception {
-		List<Geography> geographies = new ArrayList<Geography>();
-		geographies.add(new Geography(
-				new GeographyType("type_label", "type_name"),
-				"label",
-				"name",
-				new GeometryFactory().createPoint(new Coordinate(0,0))
-		));
-		Map<String, Object> geography = exporter.lineariseGeographies(makeDatasetSpecification(), geographies).get(0);
-
-		assertEquals("label",       (String) geography.get("label"));
-		assertEquals("name",        (String) geography.get("name"));
-		assertEquals("POINT (0 0)", (String) geography.get("geometry"));
-		assertEquals("Population density (per hectare) 2015", (String) geography.get("attribute_10_name"));
-		assertEquals("London Datastore - Greater London Authority", (String) geography.get("attribute_10_provider"));
-	}
-
-	@Test
-	public void getAllAttributes() throws Exception {
-		List<String> attributes = exporter.getAllAttributes(makeDatasetSpecification());
+	public void testGetColumnNames() throws Exception {
+		List<String> attributes = exporter.getColumnNames(makeAttributes());
 
 		assertEquals("label", attributes.get(0));
 		assertEquals("name", attributes.get(1));
 		assertEquals("geometry", attributes.get(2));
-		assertEquals("attribute_10_name", attributes.get(3));
-		assertEquals("attribute_10_provider", attributes.get(4));
+		assertEquals("uk.gov.london_populationDensity_name", attributes.get(3));
+		assertEquals("uk.gov.london_populationDensity_provider", attributes.get(4));
 	}
 
 	private DatasetSpecification makeDatasetSpecification() {
@@ -74,9 +64,22 @@ public class CSVExporterTest {
 		return spec;
 	}
 
-	private String getFirstFeatureLabel(String csvString) throws IOException {
+	private List<Attribute> makeAttributes() {
+		return new ArrayList<>(Arrays.asList(
+				new Attribute(
+						new Provider("uk.gov.london", "London Datastore - Greater London Authority"),
+						"populationDensity",
+						"Population density (per hectare) 2015",
+						"description1",
+						null
+				)
+		));
+	}
+
+	private CSVRecord getFirstRecord(String csvString) throws IOException {
 		CSVParser parser = CSVParser.parse(csvString, CSVFormat.DEFAULT.withHeader());
 		List<CSVRecord> records = parser.getRecords();
-		return records.get(0).get("label");
+
+		return records.get(0);
 	}
 }
