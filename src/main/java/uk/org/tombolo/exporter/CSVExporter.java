@@ -17,35 +17,37 @@ import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 
-import javax.json.JsonValue;
-
 public class CSVExporter implements Exporter {
 
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
-		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader());
-		printer.printRecord(Arrays.asList("label", "name", "geometry", "attr_name", "attr_provider"));
+		List<String> attributes = getAllAttributes(datasetSpecification);
+
+		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
+		printer.printRecord(attributes);
 		printer.printRecords(
-				tabulateGeographies(getGeographies(datasetSpecification), datasetSpecification)
-		);
+				tabulateGeographyMap(attributes,
+						lineariseGeographies(datasetSpecification,
+								getGeographies(datasetSpecification))));
+
 	}
 
-	public List<List<Object>> tabulateGeographies(List<Geography> geographies, DatasetSpecification datasetSpecification) {
-		List<List<Object>> table = new ArrayList<List<Object>>();
+	public List<Map<String, Object>> lineariseGeographies(DatasetSpecification datasetSpecification, List<Geography> geographies) {
+		List<Map<String, Object>> table = new ArrayList<Map<String, Object>>();
 
 		for(Geography geography : geographies) {
-			List<Object> row = new ArrayList<Object>();
+			Map<String, Object> row = new HashMap<String, Object>();
 
-			row.add(geography.getLabel());
-			row.add(geography.getName());
-			row.add(geography.getShape().toString());
+			row.put("label", geography.getLabel());
+			row.put("name", geography.getName());
+			row.put("geometry", geography.getShape().toString());
 
 			List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
 			for (AttributeSpecification attributeSpec : attributeSpecs) {
 				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
 				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 
-				row.addAll(getAttributeProperty(geography, attribute, attributeSpec));
+				row.putAll(getAttributeProperty(geography, attribute, attributeSpec));
 			}
 
 			table.add(row);
@@ -54,11 +56,43 @@ public class CSVExporter implements Exporter {
 		return table;
 	}
 
-	private List<Object> getAttributeProperty(Geography geography, Attribute attribute, AttributeSpecification attributeSpec) {
-		List<Object> property = new ArrayList<Object>();
+	public List<String> getAllAttributes(DatasetSpecification datasetSpecification) {
+		List<String> attributes = new ArrayList<String>(Arrays.asList("label", "name", "geometry"));
 
-		property.add(attribute.getName());
-		property.add(attribute.getProvider().getName());
+		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+		for (AttributeSpecification attributeSpec : attributeSpecs) {
+			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
+			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+
+			String prefix = "attribute_" + attribute.getId() + "_";
+			attributes.add(prefix + "name");
+			attributes.add(prefix + "provider");
+		}
+
+		return attributes;
+	}
+
+	private List<List<String>> tabulateGeographyMap(List<String> attributes, List<Map<String, Object>> mapTable) {
+		List<List<String>> listTable = new ArrayList<List<String>>();
+		for (Map <String, Object> mapRow : mapTable) {
+			List<String> listRow = new ArrayList<String>();
+
+			for (String attribute : attributes) {
+				listRow.add((String) mapRow.getOrDefault(attribute, ""));
+			}
+
+			listTable.add(listRow);
+		}
+
+		return listTable;
+	}
+
+	private Map<String, Object> getAttributeProperty(Geography geography, Attribute attribute, AttributeSpecification attributeSpec) {
+		Map<String, Object> property = new HashMap<String, Object>();
+
+		String prefix = "attribute_" + attribute.getId() + "_";
+		property.put(prefix + "name", attribute.getName());
+		property.put(prefix + "provider", attribute.getProvider().getName());
 
 		return property;
 	}

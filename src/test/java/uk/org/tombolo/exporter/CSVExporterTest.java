@@ -25,7 +25,7 @@ public class CSVExporterTest {
 	CSVExporter exporter = new CSVExporter();
 
 	@Test
-	public void testWrite() throws Exception{
+	public void testWrite() throws Exception {
 		Writer writer = new StringWriter();
 
 		exporter.write(writer, makeDatasetSpecification());
@@ -35,7 +35,7 @@ public class CSVExporterTest {
 	}
 
 	@Test
-	public void tabulateGeographies() throws Exception {
+	public void lineariseGeographies() throws Exception {
 		List<Geography> geographies = new ArrayList<Geography>();
 		geographies.add(new Geography(
 				new GeographyType("type_label", "type_name"),
@@ -43,14 +43,24 @@ public class CSVExporterTest {
 				"name",
 				new GeometryFactory().createPoint(new Coordinate(0,0))
 		));
-		List<Object> geography = exporter.tabulateGeographies(geographies, makeDatasetSpecification()).get(0);
+		Map<String, Object> geography = exporter.lineariseGeographies(makeDatasetSpecification(), geographies).get(0);
 
-		assertEquals("label",       (String) geography.get(0));
-		assertEquals("name",        (String) geography.get(1));
-		assertEquals("POINT (0 0)", (String) geography.get(2));
-		assertEquals("Population density (per hectare) 2015", (String) geography.get(3));
-		assertEquals("London Datastore - Greater London Authority", (String) geography.get(4));
+		assertEquals("label",       (String) geography.get("label"));
+		assertEquals("name",        (String) geography.get("name"));
+		assertEquals("POINT (0 0)", (String) geography.get("geometry"));
+		assertEquals("Population density (per hectare) 2015", (String) geography.get("attribute_10_name"));
+		assertEquals("London Datastore - Greater London Authority", (String) geography.get("attribute_10_provider"));
+	}
 
+	@Test
+	public void getAllAttributes() throws Exception {
+		List<String> attributes = exporter.getAllAttributes(makeDatasetSpecification());
+
+		assertEquals("label", attributes.get(0));
+		assertEquals("name", attributes.get(1));
+		assertEquals("geometry", attributes.get(2));
+		assertEquals("attribute_10_name", attributes.get(3));
+		assertEquals("attribute_10_provider", attributes.get(4));
 	}
 
 	private DatasetSpecification makeDatasetSpecification() {
