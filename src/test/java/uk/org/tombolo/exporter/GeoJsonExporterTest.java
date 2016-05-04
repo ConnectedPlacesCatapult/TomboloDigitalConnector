@@ -1,7 +1,9 @@
 package uk.org.tombolo.exporter;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
-import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class GeoJsonExporterTest {
 	
 	@Test
 	public void testWrite() throws Exception{
-		Writer writer = new FileWriter(new File("/tmp/GeoJsonExporterTest.json"));
+		Writer writer = new StringWriter();
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
 		geographySpecification.add(new GeographySpecification("localAuthority","E09%"));
@@ -25,7 +27,7 @@ public class GeoJsonExporterTest {
 		exporter.write(writer, spec);
 		writer.flush();
 		
-		//FIXME: Write assertsions
+		assertEquals("{\"type\":\"FeatureCollection\",\"features\":[]}", writer.toString());
 	}
 	
 }
