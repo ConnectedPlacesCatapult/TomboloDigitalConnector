@@ -8,7 +8,7 @@ public class CSVExporter implements Exporter {
 
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
-		
+		writer.write("mate we got some java");
 	}
 
 }
