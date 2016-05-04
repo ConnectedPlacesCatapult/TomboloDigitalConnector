@@ -43,12 +43,13 @@ public class CSVExporterTest {
 				"name",
 				new GeometryFactory().createPoint(new Coordinate(0,0))
 		));
-		List<Object> geography = exporter.tabulateGeographies(geographies).get(0);
+		List<Object> geography = exporter.tabulateGeographies(geographies, makeDatasetSpecification()).get(0);
 
-		assertEquals("type_label",  (String) geography.get(0));
-		assertEquals("label",       (String) geography.get(1));
-		assertEquals("name",        (String) geography.get(2));
-		assertEquals("POINT (0 0)", (String) geography.get(3));
+		assertEquals("label",       (String) geography.get(0));
+		assertEquals("name",        (String) geography.get(1));
+		assertEquals("POINT (0 0)", (String) geography.get(2));
+		assertEquals("Population density (per hectare) 2015", (String) geography.get(3));
+		assertEquals("London Datastore - Greater London Authority", (String) geography.get(4));
 
 	}
 
