@@ -21,33 +21,41 @@ public class CSVExporter implements Exporter {
 
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
-		List<String> attributes = getAllAttributes(datasetSpecification);
+		List<Attribute> attributes = getDatasetSpecificationAttributes(datasetSpecification);
+		List<String> columnNames = getColumnNames(attributes);
 
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
-		printer.printRecord(attributes);
+		printer.printRecord(columnNames);
 		printer.printRecords(
-				tabulateGeographyMap(attributes,
-						lineariseGeographies(datasetSpecification,
+				tabulateGeographyMap(columnNames,
+						flattenGeographies(attributes,
 								getGeographies(datasetSpecification))));
-
 	}
 
-	public List<Map<String, Object>> lineariseGeographies(DatasetSpecification datasetSpecification, List<Geography> geographies) {
-		List<Map<String, Object>> table = new ArrayList<Map<String, Object>>();
+	public List<String> getColumnNames(List<Attribute> attributes) {
+		List<String> columnNames = new ArrayList<>(Arrays.asList("label", "name", "geometry"));
+
+		for (Attribute attribute : attributes) {
+			columnNames.add(getAttributePropertyName(attribute, "name"));
+			columnNames.add(getAttributePropertyName(attribute, "provider"));
+		}
+
+		return columnNames;
+	}
+
+	// Take the geography/attributes structure and convert it to a key-value map
+	private List<Map<String, Object>> flattenGeographies(List<Attribute> attributes, List<Geography> geographies) {
+		List<Map<String, Object>> table = new ArrayList<>();
 
 		for(Geography geography : geographies) {
-			Map<String, Object> row = new HashMap<String, Object>();
+			Map<String, Object> row = new HashMap<>();
 
 			row.put("label", geography.getLabel());
 			row.put("name", geography.getName());
 			row.put("geometry", geography.getShape().toString());
 
-			List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-			for (AttributeSpecification attributeSpec : attributeSpecs) {
-				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-
-				row.putAll(getAttributeProperty(geography, attribute, attributeSpec));
+			for (Attribute attribute : attributes) {
+				row.putAll(getAttributeProperty(geography, attribute));
 			}
 
 			table.add(row);
@@ -55,25 +63,9 @@ public class CSVExporter implements Exporter {
 
 		return table;
 	}
-
-	public List<String> getAllAttributes(DatasetSpecification datasetSpecification) {
-		List<String> attributes = new ArrayList<String>(Arrays.asList("label", "name", "geometry"));
-
-		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-		for (AttributeSpecification attributeSpec : attributeSpecs) {
-			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-
-			String prefix = "attribute_" + attribute.getId() + "_";
-			attributes.add(prefix + "name");
-			attributes.add(prefix + "provider");
-		}
-
-		return attributes;
-	}
-
+	
 	private List<List<String>> tabulateGeographyMap(List<String> attributes, List<Map<String, Object>> mapTable) {
-		List<List<String>> listTable = new ArrayList<List<String>>();
+		List<List<String>> listTable = new ArrayList<>();
 		for (Map <String, Object> mapRow : mapTable) {
 			List<String> listRow = new ArrayList<String>();
 
@@ -87,18 +79,17 @@ public class CSVExporter implements Exporter {
 		return listTable;
 	}
 
-	private Map<String, Object> getAttributeProperty(Geography geography, Attribute attribute, AttributeSpecification attributeSpec) {
-		Map<String, Object> property = new HashMap<String, Object>();
+	private Map<String, Object> getAttributeProperty(Geography geography, Attribute attribute) {
+		Map<String, Object> property = new HashMap<>();
 
-		String prefix = "attribute_" + attribute.getId() + "_";
-		property.put(prefix + "name", attribute.getName());
-		property.put(prefix + "provider", attribute.getProvider().getName());
+		property.put(getAttributePropertyName(attribute, "name"), attribute.getName());
+		property.put(getAttributePropertyName(attribute, "provider"), attribute.getProvider().getName());
 
 		return property;
 	}
 
 	private List<Geography> getGeographies(DatasetSpecification datasetSpecification) {
-		List<Geography> geographies = new ArrayList<Geography>();
+		List<Geography> geographies = new ArrayList<>();
 
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
@@ -110,4 +101,20 @@ public class CSVExporter implements Exporter {
 		return geographies;
 	}
 
+	private String getAttributePropertyName(Attribute attribute, String property) {
+		return String.join("_", attribute.uniqueLabel(), property);
+	}
+
+	private List<Attribute> getDatasetSpecificationAttributes(DatasetSpecification datasetSpecification) {
+		List<Attribute> list = new ArrayList<>();
+
+		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+		for (AttributeSpecification attributeSpec : attributeSpecs) {
+			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
+			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+			list.add(attribute);
+		}
+
+		return list;
+	}
 }
