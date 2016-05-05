@@ -58,8 +58,7 @@ public class CSVExporter implements Exporter {
 
 		return table;
 	}
-
-	// Convert
+	
 	private List<List<String>> tabulateGeographyMap(List<String> attributes, List<Map<String, Object>> mapTable) {
 		List<List<String>> listTable = new ArrayList<>();
 		for (Map <String, Object> mapRow : mapTable) {
