@@ -2,10 +2,13 @@ package uk.org.tombolo.core.utils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Criteria;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,20 @@ public class TimedValueUtils {
 		
 		// FIXME: This should be paginated
 		return (List<TimedValue>) criteria.list();
+	}
+
+	public static Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
+		Criteria criteria = session.createCriteria(TimedValue.class);
+		criteria = criteria.add(Restrictions.eq("id.geography", geography));
+		criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
+		criteria = criteria.addOrder(Order.desc("id.timestamp"));
+		criteria.setMaxResults(1);
+
+		if (criteria.list().isEmpty()) {
+			return Optional.empty();
+		} else {
+			return Optional.of((TimedValue) criteria.list().get(0));
+		}
 	}
 	
 	public static void save(TimedValue timedValue){

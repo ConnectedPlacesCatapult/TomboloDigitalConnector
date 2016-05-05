@@ -40,6 +40,7 @@ public class CSVExporterTest {
 		assertNotNull(record.get("geometry"));
 		assertEquals("Population density (per hectare) 2015", record.get("uk.gov.london_populationDensity_name"));
 		assertEquals("London Datastore - Greater London Authority", record.get("uk.gov.london_populationDensity_provider"));
+		assertEquals("109.36855714483839", record.get("uk.gov.london_populationDensity_latest_value"));
 	}
 
 	@Test

@@ -5,8 +5,13 @@ import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import org.geotools.geometry.GeometryBuilder;
 import org.junit.Test;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.TimedValue;
 
 public class TimedValueUtilsTest {
 
@@ -22,5 +27,19 @@ public class TimedValueUtilsTest {
 		for (String testCase : testCases.keySet()){
 			assertEquals(testCase, testCases.get(testCase), TimedValueUtils.parseTimestampString(testCase));
 		}
+	}
+
+	@Test
+	public void testGetLatestByGeographyAndAttribute() {
+		Geography geography = GeographyUtils.getTestGeography();
+		Attribute attribute = AttributeUtils.getTestAttribute();
+
+		System.out.println(geography.getId());
+		Optional<TimedValue> value1 = TimedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
+		assertEquals(false, value1.isPresent());
+
+		attribute.setId(10); // This badly needs mocking
+		Optional<TimedValue> value2 = TimedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
+		assertEquals(true, value2.isPresent());
 	}
 }

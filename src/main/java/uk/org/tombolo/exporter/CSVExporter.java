@@ -5,14 +5,8 @@ import java.util.*;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.GeographyType;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyTypeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
@@ -38,6 +32,7 @@ public class CSVExporter implements Exporter {
 		for (Attribute attribute : attributes) {
 			columnNames.add(getAttributePropertyName(attribute, "name"));
 			columnNames.add(getAttributePropertyName(attribute, "provider"));
+			columnNames.add(getAttributePropertyName(attribute, "latest_value"));
 		}
 
 		return columnNames;
@@ -84,6 +79,11 @@ public class CSVExporter implements Exporter {
 
 		property.put(getAttributePropertyName(attribute, "name"), attribute.getName());
 		property.put(getAttributePropertyName(attribute, "provider"), attribute.getProvider().getName());
+
+		TimedValueUtils.getLatestByGeographyAndAttribute(geography, attribute).ifPresent(
+				timedValue -> property.put(
+						getAttributePropertyName(attribute, "latest_value"),
+						timedValue.getValue().toString()));
 
 		return property;
 	}
