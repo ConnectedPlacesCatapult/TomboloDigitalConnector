@@ -30,10 +30,10 @@ public class CSVExporterTest {
 	@Test
 	public void testWrite() throws Exception {
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification());
+		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "uk.gov.london", "populationDensity"));
 		writer.flush();
 
-		CSVRecord record = getFirstRecord(writer.toString());
+		CSVRecord record = getRecords(writer.toString()).get(0);
 
 		assertEquals("E09000033", record.get("label"));
 		assertEquals("Westminster", record.get("name"));
@@ -41,6 +41,30 @@ public class CSVExporterTest {
 		assertEquals("Population density (per hectare) 2015", record.get("uk.gov.london_populationDensity_name"));
 		assertEquals("London Datastore - Greater London Authority", record.get("uk.gov.london_populationDensity_provider"));
 		assertEquals("109.36855714483839", record.get("uk.gov.london_populationDensity_latest_value"));
+		assertEquals(6, record.size());
+	}
+
+	@Test
+	public void testWriteWithInvalidProperty() throws Exception {
+		Writer writer = new StringWriter();
+		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "uk.gov.london", "badName"));
+		writer.flush();
+
+		CSVRecord record = getRecords(writer.toString()).get(0);
+
+		assertEquals("E09000033", record.get("label"));
+		assertEquals("Westminster", record.get("name"));
+		assertNotNull(record.get("geometry"));
+		assertEquals(3, record.size());
+	}
+
+	@Test
+	public void testWriteWithInvalidGeography() throws Exception {
+		Writer writer = new StringWriter();
+		exporter.write(writer, makeDatasetSpecification("E09%", "badGeography", "uk.gov.london", "populationDensity"));
+		writer.flush();
+
+		assertTrue(getRecords(writer.toString()).isEmpty());
 	}
 
 	@Test
@@ -54,12 +78,12 @@ public class CSVExporterTest {
 		assertEquals("uk.gov.london_populationDensity_provider", attributes.get(4));
 	}
 
-	private DatasetSpecification makeDatasetSpecification() {
+	private DatasetSpecification makeDatasetSpecification(String geographyLabelPattern, String geographyType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		geographySpecification.add(new GeographySpecification("E09%", "localAuthority"));
+		geographySpecification.add(new GeographySpecification(geographyLabelPattern, geographyType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
-		attributeSpecification.add(new AttributeSpecification("uk.gov.london", "populationDensity"));
+		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
 		spec.setGeographySpecification(geographySpecification);
 		spec.setAttributeSpecification(attributeSpecification);
 		return spec;
@@ -77,10 +101,8 @@ public class CSVExporterTest {
 		));
 	}
 
-	private CSVRecord getFirstRecord(String csvString) throws IOException {
+	private List<CSVRecord> getRecords(String csvString) throws IOException {
 		CSVParser parser = CSVParser.parse(csvString, CSVFormat.DEFAULT.withHeader());
-		List<CSVRecord> records = parser.getRecords();
-
-		return records.get(0);
+		return parser.getRecords();
 	}
 }
