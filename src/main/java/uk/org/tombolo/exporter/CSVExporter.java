@@ -112,7 +112,10 @@ public class CSVExporter implements Exporter {
 		for (AttributeSpecification attributeSpec : attributeSpecs) {
 			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
 			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-			list.add(attribute);
+
+			if (null != attribute) {
+				list.add(attribute);
+			}
 		}
 
 		return list;
