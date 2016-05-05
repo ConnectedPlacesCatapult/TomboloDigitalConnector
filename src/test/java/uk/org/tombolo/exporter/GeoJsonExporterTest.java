@@ -2,8 +2,6 @@ package uk.org.tombolo.exporter;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
