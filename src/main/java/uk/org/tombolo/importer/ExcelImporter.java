@@ -21,10 +21,7 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
@@ -37,6 +34,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
 	private Map<String, Geography> geographyCache = new HashMap<String, Geography>();
+	private Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
@@ -171,7 +169,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				String name = cell.getStringCellValue();
 				// FIXME: Generalize!!!
 				PHOFLabelExtractor extractor = new PHOFLabelExtractor();
-				Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), extractor.extractLabel(name));
+				Attribute attribute = getAttributeByProviderAndLabel(getProvider(), extractor.extractLabel(name));
 				if (attribute == null)
 					continue;
 				
@@ -342,6 +340,16 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		}
 
 		return geographyCache.get(label);
+	}
+
+	private Attribute getAttributeByProviderAndLabel(Provider provider, String label) {
+		String cacheKey = provider.getLabel() + ":" + label;
+
+		if (!attributeCache.containsKey(cacheKey)) {
+			attributeCache.put(cacheKey, AttributeUtils.getByProviderAndLabel(provider, label));
+		}
+
+		return attributeCache.get(cacheKey);
 	}
 
 }
