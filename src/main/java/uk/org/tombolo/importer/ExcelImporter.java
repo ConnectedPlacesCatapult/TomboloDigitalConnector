@@ -7,11 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -40,6 +36,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	protected int timedValueBufferSize;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
+	private Map<String, Geography> geographyCache = new HashMap<String, Geography>();
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
@@ -124,7 +121,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					// Geography
 					cell = row.getCell(ldsa.keyColumnId);
 					String geographyId = cell.getStringCellValue();
-					Geography geography = GeographyUtils.getGeographyByLabel(geographyId);
+					Geography geography = getGeographyByLabel(geographyId);
 					if (geography == null)
 						continue;
 					
@@ -164,7 +161,8 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Geography
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
 				String geographyId = cell.getStringCellValue();
-				Geography geography = GeographyUtils.getGeographyByLabel(geographyId);
+				Geography geography = getGeographyByLabel(geographyId);
+				
 				if (geography == null)
 					continue;
 				
@@ -336,6 +334,14 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 			ldsAttributes.add(attribute);
 		}
 		return ldsAttributes;
+	}
+
+	private Geography getGeographyByLabel(String label) {
+		if (!geographyCache.containsKey(label)) {
+			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
+		}
+
+		return geographyCache.get(label);
 	}
 
 }
