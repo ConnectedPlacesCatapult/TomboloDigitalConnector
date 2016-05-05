@@ -1,16 +1,19 @@
 package uk.org.tombolo.importer;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
 
 public class DownloadUtils {
@@ -48,5 +51,17 @@ public class DownloadUtils {
 		}
 		return paramList.stream().collect(Collectors.joining("&"));
 	}
-	
+
+	public JSONObject fetchJSON(URL url) throws IOException, ParseException {
+		String urlKey = Base64.getEncoder().encodeToString(url.toString().getBytes());
+		File localDatasourceFile = new File(
+				tomboloDataCacheRootDirectory
+						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
+						+ "/" + urlKey + ".json");
+		if (!localDatasourceFile.exists()){
+			FileUtils.copyURLToFile(url, localDatasourceFile);
+		}
+		JSONParser parser = new JSONParser();
+		return (JSONObject) parser.parse(new FileReader(localDatasourceFile));
+	}
 }
