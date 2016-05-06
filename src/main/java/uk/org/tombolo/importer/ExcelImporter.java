@@ -33,8 +33,6 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	protected int timedValueBufferSize;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
-	private Map<String, Geography> geographyCache = new HashMap<String, Geography>();
-	private Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
@@ -52,7 +50,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		
 		return datasources;
 	}
-	
+
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		String datasourceSpecPath = datasourceSpecDir+"/"+datasourceId+".json";
@@ -66,6 +64,8 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	@Override
 	public int importDatasource(Datasource datasource) throws Exception {
+		Map<String, Geography> geographyCache = new HashMap<String, Geography>();
+		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 
 		// Provider
 		ProviderUtils.save(getProvider());
@@ -119,7 +119,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					// Geography
 					cell = row.getCell(ldsa.keyColumnId);
 					String geographyId = cell.getStringCellValue();
-					Geography geography = getGeographyByLabel(geographyId);
+					Geography geography = getGeographyByLabel(geographyCache, geographyId);
 					if (geography == null)
 						continue;
 					
@@ -159,7 +159,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Geography
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
 				String geographyId = cell.getStringCellValue();
-				Geography geography = getGeographyByLabel(geographyId);
+				Geography geography = getGeographyByLabel(geographyCache, geographyId);
 				
 				if (geography == null)
 					continue;
@@ -169,7 +169,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				String name = cell.getStringCellValue();
 				// FIXME: Generalize!!!
 				PHOFLabelExtractor extractor = new PHOFLabelExtractor();
-				Attribute attribute = getAttributeByProviderAndLabel(getProvider(), extractor.extractLabel(name));
+				Attribute attribute = getAttributeByProviderAndLabel(attributeCache, getProvider(), extractor.extractLabel(name));
 				if (attribute == null)
 					continue;
 				
@@ -334,7 +334,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		return ldsAttributes;
 	}
 
-	private Geography getGeographyByLabel(String label) {
+	private Geography getGeographyByLabel(Map<String, Geography> geographyCache, String label) {
 		if (!geographyCache.containsKey(label)) {
 			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
 		}
@@ -342,7 +342,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		return geographyCache.get(label);
 	}
 
-	private Attribute getAttributeByProviderAndLabel(Provider provider, String label) {
+	private Attribute getAttributeByProviderAndLabel(Map<String, Attribute> attributeCache, Provider provider, String label) {
 		String cacheKey = provider.getLabel() + ":" + label;
 
 		if (!attributeCache.containsKey(cacheKey)) {
