@@ -15,7 +15,7 @@ public class CSVExporter implements Exporter {
 
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
-		List<Attribute> attributes = getDatasetSpecificationAttributes(datasetSpecification);
+		List<Attribute> attributes = AttributeUtils.getAttributeBySpecification(datasetSpecification);
 		List<String> columnNames = getColumnNames(attributes);
 
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
@@ -23,7 +23,7 @@ public class CSVExporter implements Exporter {
 		printer.printRecords(
 				tabulateGeographyMap(columnNames,
 						flattenGeographies(attributes,
-								getGeographies(datasetSpecification))));
+								GeographyUtils.getGeographyBySpecification(datasetSpecification))));
 	}
 
 	public List<String> getColumnNames(List<Attribute> attributes) {
@@ -88,36 +88,7 @@ public class CSVExporter implements Exporter {
 		return property;
 	}
 
-	private List<Geography> getGeographies(DatasetSpecification datasetSpecification) {
-		List<Geography> geographies = new ArrayList<>();
-
-		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
-			List<Geography> geographyList = GeographyUtils
-					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
-			geographies.addAll(geographyList);
-		}
-
-		return geographies;
-	}
-
 	private String getAttributePropertyName(Attribute attribute, String property) {
 		return String.join("_", attribute.uniqueLabel(), property);
-	}
-
-	private List<Attribute> getDatasetSpecificationAttributes(DatasetSpecification datasetSpecification) {
-		List<Attribute> list = new ArrayList<>();
-
-		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-		for (AttributeSpecification attributeSpec : attributeSpecs) {
-			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-
-			if (null != attribute) {
-				list.add(attribute);
-			}
-		}
-
-		return list;
 	}
 }
