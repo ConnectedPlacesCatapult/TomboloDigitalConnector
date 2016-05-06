@@ -20,10 +20,12 @@ public class CSVExporter implements Exporter {
 
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 		printer.printRecord(columnNames);
-		printer.printRecords(
-				tabulateGeographyMap(columnNames,
-						flattenGeographies(attributes,
-								GeographyUtils.getGeographyBySpecification(datasetSpecification))));
+
+		for (Geography geography : GeographyUtils.getGeographyBySpecification(datasetSpecification)) {
+			printer.printRecord(
+					tabulateGeographyMap(columnNames,
+							flattenGeography(attributes, geography)));
+		}
 	}
 
 	public List<String> getColumnNames(List<Attribute> attributes) {
@@ -39,39 +41,28 @@ public class CSVExporter implements Exporter {
 	}
 
 	// Take the geography/attributes structure and convert it to a key-value map
-	private List<Map<String, Object>> flattenGeographies(List<Attribute> attributes, List<Geography> geographies) {
-		List<Map<String, Object>> table = new ArrayList<>();
+	private Map<String, Object> flattenGeography(List<Attribute> attributes, Geography geography) {
+		Map<String, Object> row = new HashMap<>();
 
-		for(Geography geography : geographies) {
-			Map<String, Object> row = new HashMap<>();
+		row.put("label", geography.getLabel());
+		row.put("name", geography.getName());
+		row.put("geometry", geography.getShape().toString());
 
-			row.put("label", geography.getLabel());
-			row.put("name", geography.getName());
-			row.put("geometry", geography.getShape().toString());
-
-			for (Attribute attribute : attributes) {
-				row.putAll(getAttributeProperty(geography, attribute));
-			}
-
-			table.add(row);
+		for (Attribute attribute : attributes) {
+			row.putAll(getAttributeProperty(geography, attribute));
 		}
 
-		return table;
+		return row;
 	}
 	
-	private List<List<String>> tabulateGeographyMap(List<String> attributes, List<Map<String, Object>> mapTable) {
-		List<List<String>> listTable = new ArrayList<>();
-		for (Map <String, Object> mapRow : mapTable) {
-			List<String> listRow = new ArrayList<String>();
+	private List<String> tabulateGeographyMap(List<String> attributes, Map<String, Object> map) {
+		List<String> listRow = new ArrayList<String>();
 
-			for (String attribute : attributes) {
-				listRow.add((String) mapRow.getOrDefault(attribute, ""));
-			}
-
-			listTable.add(listRow);
+		for (String attribute : attributes) {
+			listRow.add((String) map.getOrDefault(attribute, ""));
 		}
 
-		return listTable;
+		return listRow;
 	}
 
 	private Map<String, Object> getAttributeProperty(Geography geography, Attribute attribute) {
