@@ -44,7 +44,7 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 			log.info("Getting geographies of type {} ({})", geographyType.getName(), geographyType.getLabel());
 			List<Geography> geographyList = GeographyUtils
-					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
+					.getGeographyBySpecification(geographySpecification);
 			String geoService = geographySpecification.getAttributes().get("service");
 			String geoProvider = geographySpecification.getAttributes().get("provider");
 			String geoGroup = geographySpecification.getAttributes().get("group");
