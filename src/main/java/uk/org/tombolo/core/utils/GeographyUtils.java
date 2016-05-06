@@ -35,10 +35,7 @@ public class GeographyUtils {
 		List<Geography> geographies = new ArrayList<>();
 
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
-			List<Geography> geographyList = GeographyUtils
-					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
-			geographies.addAll(geographyList);
+			geographies.addAll(criteriaFromGeographySpecification(geographySpecification).list());
 		}
 
 		return geographies;
@@ -66,5 +63,15 @@ public class GeographyUtils {
 		return (Geography)criteria
 				.add(Restrictions.eq("label", "E01000001"))
 				.uniqueResult();
+	}
+
+	public static Criteria criteriaFromGeographySpecification(GeographySpecification geographySpecification) {
+		GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+		Criteria criteria = session.createCriteria(Geography.class);
+		criteria.add(Restrictions.eq("geographyType", geographyType));
+		if (geographySpecification.getLabelPattern() != null)
+			criteria.add(Restrictions.like("label", geographySpecification.getLabelPattern()));
+
+		return criteria;
 	}
 }
