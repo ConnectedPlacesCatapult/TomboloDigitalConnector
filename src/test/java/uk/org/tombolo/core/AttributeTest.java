@@ -16,7 +16,7 @@ public class AttributeTest {
     }
 
     @Test
-    public void testGetUniqueName() throws Exception {
-        assertEquals("providerLabel_attributeLabel", this.subject.uniqueName());
+    public void testUniqueLabel() throws Exception {
+        assertEquals("providerLabel_attributeLabel", this.subject.uniqueLabel());
     }
 }

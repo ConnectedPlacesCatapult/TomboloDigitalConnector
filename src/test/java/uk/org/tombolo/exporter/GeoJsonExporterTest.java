@@ -1,10 +1,12 @@
 package uk.org.tombolo.exporter;
 
 import static org.junit.Assert.*;
+import static uk.org.tombolo.execution.spec.GeographySpecification.*;
 
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -26,7 +28,8 @@ public class GeoJsonExporterTest {
 		Writer writer = new StringWriter();
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		geographySpecification.add(new GeographySpecification("E09%", "localAuthority"));
+		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09%"));
+		geographySpecification.add(new GeographySpecification(matchers, "localAuthority"));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification("uk.gov.london", "populationDensity"));
 		spec.setGeographySpecification(geographySpecification);

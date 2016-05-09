@@ -7,11 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -25,10 +21,7 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
@@ -57,7 +50,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		
 		return datasources;
 	}
-	
+
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		String datasourceSpecPath = datasourceSpecDir+"/"+datasourceId+".json";
@@ -71,6 +64,8 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	@Override
 	public int importDatasource(Datasource datasource) throws Exception {
+		Map<String, Geography> geographyCache = new HashMap<String, Geography>();
+		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 
 		// Provider
 		ProviderUtils.save(getProvider());
@@ -124,7 +119,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					// Geography
 					cell = row.getCell(ldsa.keyColumnId);
 					String geographyId = cell.getStringCellValue();
-					Geography geography = GeographyUtils.getGeographyByLabel(geographyId);
+					Geography geography = getGeographyByLabel(geographyCache, geographyId);
 					if (geography == null)
 						continue;
 					
@@ -164,7 +159,8 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Geography
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
 				String geographyId = cell.getStringCellValue();
-				Geography geography = GeographyUtils.getGeographyByLabel(geographyId);
+				Geography geography = getGeographyByLabel(geographyCache, geographyId);
+				
 				if (geography == null)
 					continue;
 				
@@ -173,7 +169,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				String name = cell.getStringCellValue();
 				// FIXME: Generalize!!!
 				PHOFLabelExtractor extractor = new PHOFLabelExtractor();
-				Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), extractor.extractLabel(name));
+				Attribute attribute = getAttributeByProviderAndLabel(attributeCache, getProvider(), extractor.extractLabel(name));
 				if (attribute == null)
 					continue;
 				
@@ -336,6 +332,24 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 			ldsAttributes.add(attribute);
 		}
 		return ldsAttributes;
+	}
+
+	private Geography getGeographyByLabel(Map<String, Geography> geographyCache, String label) {
+		if (!geographyCache.containsKey(label)) {
+			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
+		}
+
+		return geographyCache.get(label);
+	}
+
+	private Attribute getAttributeByProviderAndLabel(Map<String, Attribute> attributeCache, Provider provider, String label) {
+		String cacheKey = provider.getLabel() + ":" + label;
+
+		if (!attributeCache.containsKey(cacheKey)) {
+			attributeCache.put(cacheKey, AttributeUtils.getByProviderAndLabel(provider, label));
+		}
+
+		return attributeCache.get(cacheKey);
 	}
 
 }

@@ -1,11 +1,7 @@
 package uk.org.tombolo.importer.ons;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -17,7 +13,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,13 +71,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		params.put("context", "Census");		
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
-		
-		// Parse the json content
-		JSONParser parser = new JSONParser();
-		URLConnection connection = url.openConnection();
-		connection.setRequestProperty("Accept", "application/json");
-		
-		JSONObject rootObject = (JSONObject) parser.parse(new InputStreamReader(connection.getInputStream()));		
+		JSONObject rootObject = downloadUtils.fetchJSON(url);
+
 		JSONObject ons = (JSONObject)rootObject.get("ons");
 
 		JSONArray collections = (JSONArray)((JSONObject)ons.get("collectionList")).get("collection");
@@ -202,13 +192,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		params.put("geog", "2011STATH");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
-		
-		// Parse the json content
-		JSONParser parser = new JSONParser();
-		URLConnection connection = url.openConnection();
-		connection.setRequestProperty("Accept", "application/json");
-		
-		JSONObject rootObject = (JSONObject) parser.parse(new InputStreamReader(connection.getInputStream()));
+		JSONObject rootObject = downloadUtils.fetchJSON(url);
 		
 		JSONObject ons = (JSONObject)rootObject.get("ons");
 		JSONObject datasetDetail = (JSONObject)ons.get("datasetDetail");

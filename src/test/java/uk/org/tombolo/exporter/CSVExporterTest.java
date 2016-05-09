@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static uk.org.tombolo.execution.spec.GeographySpecification.*;
 
 public class CSVExporterTest {
 	CSVExporter exporter = new CSVExporter();
@@ -81,7 +82,8 @@ public class CSVExporterTest {
 	private DatasetSpecification makeDatasetSpecification(String geographyLabelPattern, String geographyType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		geographySpecification.add(new GeographySpecification(geographyLabelPattern, geographyType));
+		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", geographyLabelPattern));
+		geographySpecification.add(new GeographySpecification(matchers, geographyType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
 		spec.setGeographySpecification(geographySpecification);

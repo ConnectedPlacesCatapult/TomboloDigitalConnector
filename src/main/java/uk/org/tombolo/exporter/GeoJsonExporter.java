@@ -36,65 +36,61 @@ public class GeoJsonExporter implements Exporter {
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
 		int geographyCount = 0;
-		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
-			List<Geography> geographyList = GeographyUtils
-					.getGeographyByTypeAndLabelPattern(geographyType, geographySpecification.getLabelPattern());
-			for (Geography geography : geographyList){
-				// Geography is an a polygon or point for which data is to be output
+		List<Geography> geographyList = GeographyUtils.getGeographyBySpecification(datasetSpecification);
+		for (Geography geography : geographyList){
+			// Geography is an a polygon or point for which data is to be output
 
-				if (geographyCount > 0){
-					// This is not the first geography
-					writer.write(",\n");
-				}
-								
-				// Open geography object
-				writer.write("{");
-				writeStringProperty(writer, 0, "type","Feature");
-								
-				// Write geometry
-				GeometryJSON geoJson = new GeometryJSON();
-				StringWriter geoJsonWriter = new StringWriter();
-				geoJson.write(geography.getShape(),geoJsonWriter);
-				writer.write(", \"geometry\" : ");
-				geoJson.write(geography.getShape(), writer);
-
-				// Open property list
-				writeObjectPropertyOpening(writer, 1, "properties", JsonValue.ValueType.OBJECT);
-				int propertyCount = 0;
-								
-				// Geography label
-				writeStringProperty(writer, propertyCount, "label", geography.getLabel());
-				propertyCount++;
-				
-				// Geography name
-				writeStringProperty(writer, propertyCount, "name", geography.getName());
-				propertyCount++;				
-				
-				// Write Attributes
-				List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-				writeObjectPropertyOpening(writer, propertyCount, "attributes", JsonValue.ValueType.OBJECT);
-				int attributeCount = 0;
-				for (AttributeSpecification attributeSpec : attributeSpecs){
-					Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-					
-					// Write TimedValues
-					writeAttributeProperty(writer, attributeCount, geography, attribute, attributeSpec);
-					attributeCount++;
-				}
-				// Close attribute list
-				writer.write("}");
-				propertyCount++;
-				
-				// Close property list
-				writer.write("}");
-				
-				// Close geography object
-				writer.write("}");
-				
-				geographyCount++;
+			if (geographyCount > 0){
+				// This is not the first geography
+				writer.write(",\n");
 			}
+
+			// Open geography object
+			writer.write("{");
+			writeStringProperty(writer, 0, "type","Feature");
+
+			// Write geometry
+			GeometryJSON geoJson = new GeometryJSON();
+			StringWriter geoJsonWriter = new StringWriter();
+			geoJson.write(geography.getShape(),geoJsonWriter);
+			writer.write(", \"geometry\" : ");
+			geoJson.write(geography.getShape(), writer);
+
+			// Open property list
+			writeObjectPropertyOpening(writer, 1, "properties", JsonValue.ValueType.OBJECT);
+			int propertyCount = 0;
+
+			// Geography label
+			writeStringProperty(writer, propertyCount, "label", geography.getLabel());
+			propertyCount++;
+
+			// Geography name
+			writeStringProperty(writer, propertyCount, "name", geography.getName());
+			propertyCount++;
+
+			// Write Attributes
+			List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+			writeObjectPropertyOpening(writer, propertyCount, "attributes", JsonValue.ValueType.OBJECT);
+			int attributeCount = 0;
+			for (AttributeSpecification attributeSpec : attributeSpecs){
+				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
+				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+
+				// Write TimedValues
+				writeAttributeProperty(writer, attributeCount, geography, attribute, attributeSpec);
+				attributeCount++;
+			}
+			// Close attribute list
+			writer.write("}");
+			propertyCount++;
+
+			// Close property list
+			writer.write("}");
+
+			// Close geography object
+			writer.write("}");
+
+			geographyCount++;
 		}
 		
 		// Write end of geography list

@@ -95,7 +95,7 @@ public class Attribute {
 		return this.getId().equals(attObj.getId());
 	}
 
-	public String uniqueName() {
+	public String uniqueLabel() {
 		return String.join("_", this.getProvider().getLabel(), this.getLabel());
 	}
 	
