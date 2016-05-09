@@ -94,6 +94,10 @@ public class Attribute {
 		Attribute attObj = (Attribute)obj;
 		return this.getId().equals(attObj.getId());
 	}
+
+	public String uniqueLabel() {
+		return String.join("_", this.getProvider().getLabel(), this.getLabel());
+	}
 	
 //	public DataType getDataType(){
 //		return dataType;
