@@ -71,7 +71,8 @@ public class CSVExporter implements Exporter {
 		property.put(getAttributePropertyName(attribute, "name"), attribute.getName());
 		property.put(getAttributePropertyName(attribute, "provider"), attribute.getProvider().getName());
 
-		TimedValueUtils.getLatestByGeographyAndAttribute(geography, attribute).ifPresent(
+		TimedValueUtils timedValueUtils = new TimedValueUtils();
+		timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute).ifPresent(
 				timedValue -> property.put(
 						getAttributePropertyName(attribute, "latest_value"),
 						timedValue.getValue().toString()));

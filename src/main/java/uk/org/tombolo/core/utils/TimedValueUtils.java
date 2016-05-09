@@ -20,7 +20,7 @@ import uk.org.tombolo.core.TimedValue;
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 	
-	public static List<TimedValue> getByGeographyAndAttribute(Geography geography, Attribute attribute){
+	public List<TimedValue> getByGeographyAndAttribute(Geography geography, Attribute attribute){
 		return withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));
@@ -31,7 +31,7 @@ public class TimedValueUtils {
 		});
 	}
 
-	public static Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
+	public Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
 		return withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));
@@ -47,7 +47,7 @@ public class TimedValueUtils {
 		});
 	}
 	
-	public static Integer save(TimedValue timedValue){
+	public Integer save(TimedValue timedValue){
 		return withSession((session) -> {
 			session.beginTransaction();
 			try{
@@ -115,7 +115,7 @@ public class TimedValueUtils {
 		return null;
 	}
 
-	private static <T> T withSession(Function<Session, T> fn) {
+	private <T> T withSession(Function<Session, T> fn) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			return fn.apply(session);
