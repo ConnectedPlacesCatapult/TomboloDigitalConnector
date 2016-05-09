@@ -83,7 +83,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		JSONArray jsonAttributes = (JSONArray)json.get("attributes");
 		List<ExcelAttribute> ldsAttributes = loadLDSAttributes(defaultAttributeJson, jsonAttributes);
 
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		int valueCounter = 0;
 		if (ldsAttributes.size() > 0){
@@ -242,7 +242,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	private List<Attribute> attributesFromDatasource(Datasource datasource, ExcelAttribute defaultAttribute) throws Exception{
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		Sheet sheet = wb.getSheetAt(defaultAttribute.sheetId);
 		Set<String> uniqueLabels = new HashSet<String>();
@@ -285,7 +285,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	private List<Attribute> attributesFromLDSAttributes(Datasource datasource, List<ExcelAttribute> ldsAttributes) throws EncryptedDocumentException, MalformedURLException, InvalidFormatException, IOException{
 		Set<String> uniqueAttributes = new HashSet<String>();
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		for (ExcelAttribute ldsa : ldsAttributes){
 			Sheet sheet = wb.getSheetAt(ldsa.sheetId);

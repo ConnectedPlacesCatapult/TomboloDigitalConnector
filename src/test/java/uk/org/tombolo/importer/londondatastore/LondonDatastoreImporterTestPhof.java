@@ -4,15 +4,26 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.AbstractImporterTestUtils;
+import uk.org.tombolo.importer.Importer;
 
 public class LondonDatastoreImporterTestPhof {
 	private static final String DATASOURCE_ID = "phof-indicators-data-london-borough";
-	LondonDatastoreImporter importer = new LondonDatastoreImporter();
-	
+	private Importer importer;
+
+
+	@Before
+	public void before(){
+		importer = new LondonDatastoreImporter();
+		AbstractImporterTestUtils.mockDownloadUtils(importer);
+	}
+
+
 	@Test
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
