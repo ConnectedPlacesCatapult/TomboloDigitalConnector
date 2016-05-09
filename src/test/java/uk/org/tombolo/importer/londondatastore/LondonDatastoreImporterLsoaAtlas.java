@@ -4,15 +4,26 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
 public class LondonDatastoreImporterLsoaAtlas {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
-	LondonDatastoreImporter importer = new LondonDatastoreImporter(new TimedValueUtils());
+	LondonDatastoreImporter importer;
+	private AbstractImporterTestUtils.MockTimedValueUtils mockTimedValueUtils;
+
+	@Before
+	public void before(){
+		mockTimedValueUtils = new AbstractImporterTestUtils.MockTimedValueUtils();
+		importer = new LondonDatastoreImporter(mockTimedValueUtils);
+		AbstractImporterTestUtils.mockDownloadUtils(importer);
+	}
 	
 	@Test
 	public void testGetDatasource() throws Exception {

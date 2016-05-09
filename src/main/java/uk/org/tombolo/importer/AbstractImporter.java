@@ -5,10 +5,16 @@ import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public abstract class AbstractImporter implements Importer {
 
 	protected DownloadUtils downloadUtils = new DownloadUtils();
+	protected TimedValueUtils timedValueUtils;
+
+	public AbstractImporter(TimedValueUtils timedValueUtils) {
+		this.timedValueUtils = timedValueUtils;
+	}
 
 	public void setDownloadUtils(DownloadUtils downloadUtils){
 		this.downloadUtils = downloadUtils;

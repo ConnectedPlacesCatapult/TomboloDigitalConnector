@@ -1,18 +1,18 @@
 package uk.org.tombolo.importer.ons;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
 public abstract class AbstractONSCensusImporterTest extends AbstractImporterTestUtils {
+	public Importer importer;
+	private MockTimedValueUtils mockTimedValueUtils;
 
-	protected static Importer importer;
-	
-	@BeforeClass
-	public static void oneTimeSetUp(){
-		importer = new ONSCensusImporter();
+	@Before
+	public void before(){
+		mockTimedValueUtils = new MockTimedValueUtils();
+		importer = new ONSCensusImporter(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
-	
 }

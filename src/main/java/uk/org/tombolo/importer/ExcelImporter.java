@@ -31,12 +31,11 @@ import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;
 	protected int timedValueBufferSize;
-	protected TimedValueUtils timedValueUtils;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
 
 	public ExcelImporter(TimedValueUtils timedValueUtils) {
-		this.timedValueUtils = timedValueUtils;
+		super(timedValueUtils);
 	}
 
 	@Override

@@ -60,7 +60,11 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	protected int timedValueBufferSize = 100000;
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
-	
+
+	public ONSCensusImporter(TimedValueUtils timedValueUtils) {
+		super(timedValueUtils);
+	}
+
 	@Override
 	public List<Datasource> getAllDatasources() throws IOException, ParseException{
 		List<Datasource> datasources = new ArrayList<Datasource>();
@@ -160,7 +164,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									if (valueCount % timedValueBufferSize == 0){
 										// Buffer is full ... we write values to db
 										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-										TimedValueUtils.staticSave(timedValueBuffer);
+										timedValueUtils.save(timedValueBuffer);
 										timedValueBuffer = new ArrayList<TimedValue>();
 										log.info("Total values written: {}", valueCount);
 									}
@@ -172,7 +176,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					}
 				}
 				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-				TimedValueUtils.staticSave(timedValueBuffer);
+				timedValueUtils.save(timedValueBuffer);
 				log.info("Total values written: {}", valueCount);
 				br.close();
 			}
