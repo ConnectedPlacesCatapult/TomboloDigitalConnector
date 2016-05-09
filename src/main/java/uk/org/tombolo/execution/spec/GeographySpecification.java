@@ -1,22 +1,38 @@
 package uk.org.tombolo.execution.spec;
 
+import uk.org.tombolo.core.Geography;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class GeographySpecification {
 
-	String labelPattern;
+	public static class GeographyMatcher {
+		public final String attribute;
+		public final String pattern;
+
+		public GeographyMatcher(String attribute, String pattern) {
+			this.attribute = attribute;
+			this.pattern = pattern;
+		}
+	}
+
+	List<GeographyMatcher> matchers;
 	String geographyType;
 	
 	Map<String,String> attributes = new TreeMap<String,String>();
 	
-	public GeographySpecification(String labelPattern, String geographyType){
-		this.labelPattern = labelPattern;
+	public GeographySpecification(List<GeographyMatcher> matchers, String geographyType){
+		this.matchers = matchers;
 		this.geographyType = geographyType;
 	}
 
-	public String getLabelPattern() {
-		return labelPattern;
+	public List<GeographyMatcher> getMatchers() {
+		if (null == this.matchers)
+			return new ArrayList<>();
+		return this.matchers;
 	}
 
 	public String getGeographyType() {
