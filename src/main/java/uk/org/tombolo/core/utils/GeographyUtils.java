@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,6 +9,9 @@ import org.hibernate.criterion.Restrictions;
 
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
 
 public class GeographyUtils {
 
@@ -26,6 +30,21 @@ public class GeographyUtils {
 		
 		// FIXME: This should be paginated
 		return (List<Geography>) criteria.list();		
+	}
+
+	public static List<Geography> getGeographyBySpecification(DatasetSpecification datasetSpecification) {
+		List<Geography> geographies = new ArrayList<>();
+
+		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
+			geographies.addAll(getGeographyBySpecification(geographySpecification));
+		}
+
+		return geographies;
+	}
+
+
+	public static List<Geography> getGeographyBySpecification(GeographySpecification geographySpecification) {
+		return criteriaFromGeographySpecification(geographySpecification).list();
 	}
 	
 	public static void save(List<Geography> geographyObjects){
@@ -50,5 +69,16 @@ public class GeographyUtils {
 		return (Geography)criteria
 				.add(Restrictions.eq("label", "E01000001"))
 				.uniqueResult();
+	}
+
+	public static Criteria criteriaFromGeographySpecification(GeographySpecification geographySpecification) {
+		GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+		Criteria criteria = session.createCriteria(Geography.class);
+		criteria.add(Restrictions.eq("geographyType", geographyType));
+
+		for (GeographyMatcher matcher : geographySpecification.getMatchers())
+			criteria.add(Restrictions.like(matcher.attribute, matcher.pattern));
+
+		return criteria;
 	}
 }

@@ -3,7 +3,12 @@
 		"geographySpecification" : [
 			{
 				"geographyType" : "localAuthority",
-				"labelPattern" : "E090%",
+				"matchers" : [
+					{
+						"attribute": "label",
+						"pattern": "E090%"
+					}
+				],
 				"attributes" : {
 					"provider" : "uk.gov.london",
 					"service" : "boroughProfile",
