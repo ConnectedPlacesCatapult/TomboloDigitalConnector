@@ -1,6 +1,7 @@
 package uk.org.tombolo.core.utils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -47,22 +48,8 @@ public class TimedValueUtils {
 		});
 	}
 	
-	public Integer save(TimedValue timedValue){
-		return withSession((session) -> {
-			session.beginTransaction();
-			try{
-				session.saveOrUpdate(timedValue);
-			}catch(NonUniqueObjectException e){
-				//FIXME: Find out why this is happening
-				log.info("Could not save timed value for geography {}, attribute {}, time {}: {}",
-						timedValue.getId().getGeography().getLabel(),
-						timedValue.getId().getAttribute().getName(),
-						timedValue.getId().getTimestamp().toString(),
-						e.getMessage());
-			}
-			session.getTransaction().commit();
-			return 1;
-		});
+	public void save(TimedValue timedValue){
+		save(Arrays.asList(timedValue));
 	}
 
 	public int save(List<TimedValue> timedValues){
@@ -74,7 +61,7 @@ public class TimedValueUtils {
 					session.saveOrUpdate(timedValue);
 					saved++;
 				}catch(NonUniqueObjectException e){
-					//FIXME: Find out why this is happening
+					// This is happening because the TFL stations contain a duplicate ID
 					log.info("Could not save timed value for geography {}, attribute {}, time {}: {}",
 							timedValue.getId().getGeography().getLabel(),
 							timedValue.getId().getAttribute().getName(),
