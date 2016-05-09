@@ -31,9 +31,14 @@ import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;
 	protected int timedValueBufferSize;
+	protected TimedValueUtils timedValueUtils;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
-	
+
+	public ExcelImporter(TimedValueUtils timedValueUtils) {
+		this.timedValueUtils = timedValueUtils;
+	}
+
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
@@ -102,7 +107,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					Row tRow = sheet.getRow(ldsa.timestampRowId);
 					Cell tCell = tRow.getCell(ldsa.dataColumnId);
 					// FIXME: This could be string :/
-					timestamp = TimedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
+					timestamp = timedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
 				}else if(ldsa.timestamp != null){
 					timestamp = LocalDateTime.parse(ldsa.timestamp);
 				}
@@ -134,11 +139,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					valueCounter++;
 					
 					if (valueCounter % timedValueBufferSize == 0){
-						TimedValueUtils.save(timedValueBuffer);
+						timedValueUtils.save(timedValueBuffer);
 						timedValueBuffer = new ArrayList<TimedValue>();
 					}
 				}	
-				TimedValueUtils.save(timedValueBuffer);
+				timedValueUtils.save(timedValueBuffer);
 			}				
 		}else{
 			// We have no explicitly defined columns
@@ -176,7 +181,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Timestamp
 				cell = row.getCell(defaultAttribute.timestampColumnId);
 				String timestampString = cell.getStringCellValue();
-				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(timestampString);
+				LocalDateTime timestamp = timedValueUtils.parseTimestampString(timestampString);
 				if (timestamp == null)
 					continue;
 				
@@ -193,11 +198,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				valueCounter++;
 				
 				if (valueCounter % timedValueBufferSize == 0){
-					TimedValueUtils.save(timedValueBuffer);
+					timedValueUtils.save(timedValueBuffer);
 					timedValueBuffer = new ArrayList<TimedValue>();
 				}
 			}	
-			TimedValueUtils.save(timedValueBuffer);
+			timedValueUtils.save(timedValueBuffer);
 		}
 		return valueCounter;
 	}

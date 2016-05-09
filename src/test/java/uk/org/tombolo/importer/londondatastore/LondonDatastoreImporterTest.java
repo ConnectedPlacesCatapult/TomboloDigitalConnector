@@ -7,10 +7,11 @@ import java.util.List;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class LondonDatastoreImporterTest {
 
-	LondonDatastoreImporter importer = new LondonDatastoreImporter();
+	LondonDatastoreImporter importer = new LondonDatastoreImporter(new TimedValueUtils());
 	
 	@Test
 	public void testGetAllDatasources() throws Exception{

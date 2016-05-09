@@ -160,7 +160,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									if (valueCount % timedValueBufferSize == 0){
 										// Buffer is full ... we write values to db
 										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-										TimedValueUtils.save(timedValueBuffer);
+										TimedValueUtils.staticSave(timedValueBuffer);
 										timedValueBuffer = new ArrayList<TimedValue>();
 										log.info("Total values written: {}", valueCount);
 									}
@@ -172,7 +172,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					}
 				}
 				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-				TimedValueUtils.save(timedValueBuffer);
+				TimedValueUtils.staticSave(timedValueBuffer);
 				log.info("Total values written: {}", valueCount);
 				br.close();
 			}

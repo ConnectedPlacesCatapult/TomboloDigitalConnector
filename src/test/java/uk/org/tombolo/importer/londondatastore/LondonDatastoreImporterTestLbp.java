@@ -5,10 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class LondonDatastoreImporterTestLbp {
 
-	LondonDatastoreImporter importer = new LondonDatastoreImporter();
+	LondonDatastoreImporter importer = new LondonDatastoreImporter(new TimedValueUtils());
 	
 	@Test
 	public void testGetDatasource() throws Exception {

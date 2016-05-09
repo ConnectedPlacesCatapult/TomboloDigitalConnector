@@ -60,7 +60,12 @@ public class TimedValueUtils {
 		session.getTransaction().commit();
 	}
 
-	public static int save(List<TimedValue> timedValues){
+	@Deprecated
+	public static int staticSave(List<TimedValue> timedValues){
+		return new TimedValueUtils().save(timedValues);
+	}
+
+	public int save(List<TimedValue> timedValues){
 		int saved = 0;
 		session.beginTransaction();
 		for (TimedValue timedValue : timedValues){

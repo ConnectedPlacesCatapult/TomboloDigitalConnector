@@ -8,10 +8,11 @@ import org.junit.Test;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class LondonDatastoreImporterLsoaAtlas {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
-	LondonDatastoreImporter importer = new LondonDatastoreImporter();
+	LondonDatastoreImporter importer = new LondonDatastoreImporter(new TimedValueUtils());
 	
 	@Test
 	public void testGetDatasource() throws Exception {

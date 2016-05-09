@@ -134,7 +134,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(geography,servingLines, timestamp, count));
 			}
-			int saved = TimedValueUtils.save(timedValues);
+			int saved = TimedValueUtils.staticSave(timedValues);
 
 			return saved;
 		}

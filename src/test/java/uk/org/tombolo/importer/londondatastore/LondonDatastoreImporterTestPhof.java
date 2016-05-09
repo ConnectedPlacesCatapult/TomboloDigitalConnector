@@ -11,18 +11,29 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class LondonDatastoreImporterTestPhof {
 	private static final String DATASOURCE_ID = "phof-indicators-data-london-borough";
-	private Importer importer;
+	private LondonDatastoreImporter importer;
+	private MockTimedValueUtils mockTimedValueUtils;
 
+	static class MockTimedValueUtils extends TimedValueUtils {
+		public int numberOfSavedRecords = 0;
+
+		public int save(List<TimedValue> timedValues){
+			numberOfSavedRecords += timedValues.size();
+			return 0;
+		}
+	}
 
 	@Before
 	public void before(){
-		importer = new LondonDatastoreImporter();
+		mockTimedValueUtils = new MockTimedValueUtils();
+		importer = new LondonDatastoreImporter(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
-
 
 	@Test
 	public void testGetDatasource() throws Exception {
@@ -51,10 +62,8 @@ public class LondonDatastoreImporterTestPhof {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
-		
-		//FIXME: include assertion on datapoints count
+		assertEquals(30908, mockTimedValueUtils.numberOfSavedRecords);
 	}
 	
 }
