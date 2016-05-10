@@ -12,7 +12,11 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import uk.org.tombolo.core.Datasource;
 
 public class ExcelUtils {
-	private DownloadUtils downloadUtils = new DownloadUtils();
+	private DownloadUtils downloadUtils;
+
+	ExcelUtils(DownloadUtils downloadUtils) {
+		this.downloadUtils = downloadUtils;
+	}
 	
 	public Workbook getWorkbook(Datasource datasource) throws MalformedURLException, IOException, EncryptedDocumentException, InvalidFormatException{
 		File localDatafile = downloadUtils.getDatasourceFile(datasource);		

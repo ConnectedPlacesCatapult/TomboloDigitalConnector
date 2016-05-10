@@ -29,7 +29,6 @@ dependencies {
 	compile group: 'org.apache.commons',	name: 'commons-collections4',	version: '4.1'
 	compile group: 'org.apache.commons',	name: 'commons-csv',			version: '1.2'
 	
-	
 	// ORM
 	compile group: 'org.postgresql', 		name: 'postgresql', 			version: '9.4-1200-jdbc41'
 	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '4.3.6.Final'
@@ -38,6 +37,9 @@ dependencies {
 
 	compile group: 'org.postgis',			name: 'postgis-jdbc',		version: '1.5.2'
 	compile group: 'org.hibernate.javax.persistence',	name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final'
+
+	// Testing
+	testCompile group: 'org.mockito',		name: 'mockito-core',			version: '1.10.19'
 
 	// Logging
 	compile group: 'ch.qos.logback',	name: 'logback-classic',	version: '1.1.3'
