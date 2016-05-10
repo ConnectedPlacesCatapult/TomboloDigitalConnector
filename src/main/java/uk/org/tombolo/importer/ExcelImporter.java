@@ -33,7 +33,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	protected int timedValueBufferSize;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
-	
+
+	public ExcelImporter(TimedValueUtils timedValueUtils) {
+		super(timedValueUtils);
+	}
+
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
@@ -83,7 +87,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		JSONArray jsonAttributes = (JSONArray)json.get("attributes");
 		List<ExcelAttribute> ldsAttributes = loadLDSAttributes(defaultAttributeJson, jsonAttributes);
 
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		int valueCounter = 0;
 		if (ldsAttributes.size() > 0){
@@ -102,7 +106,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					Row tRow = sheet.getRow(ldsa.timestampRowId);
 					Cell tCell = tRow.getCell(ldsa.dataColumnId);
 					// FIXME: This could be string :/
-					timestamp = TimedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
+					timestamp = timedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
 				}else if(ldsa.timestamp != null){
 					timestamp = LocalDateTime.parse(ldsa.timestamp);
 				}
@@ -134,11 +138,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					valueCounter++;
 					
 					if (valueCounter % timedValueBufferSize == 0){
-						TimedValueUtils.save(timedValueBuffer);
+						timedValueUtils.save(timedValueBuffer);
 						timedValueBuffer = new ArrayList<TimedValue>();
 					}
 				}	
-				TimedValueUtils.save(timedValueBuffer);
+				timedValueUtils.save(timedValueBuffer);
 			}				
 		}else{
 			// We have no explicitly defined columns
@@ -176,7 +180,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Timestamp
 				cell = row.getCell(defaultAttribute.timestampColumnId);
 				String timestampString = cell.getStringCellValue();
-				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(timestampString);
+				LocalDateTime timestamp = timedValueUtils.parseTimestampString(timestampString);
 				if (timestamp == null)
 					continue;
 				
@@ -193,11 +197,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				valueCounter++;
 				
 				if (valueCounter % timedValueBufferSize == 0){
-					TimedValueUtils.save(timedValueBuffer);
+					timedValueUtils.save(timedValueBuffer);
 					timedValueBuffer = new ArrayList<TimedValue>();
 				}
 			}	
-			TimedValueUtils.save(timedValueBuffer);
+			timedValueUtils.save(timedValueBuffer);
 		}
 		return valueCounter;
 	}
@@ -242,7 +246,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	private List<Attribute> attributesFromDatasource(Datasource datasource, ExcelAttribute defaultAttribute) throws Exception{
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		Sheet sheet = wb.getSheetAt(defaultAttribute.sheetId);
 		Set<String> uniqueLabels = new HashSet<String>();
@@ -285,7 +289,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	private List<Attribute> attributesFromLDSAttributes(Datasource datasource, List<ExcelAttribute> ldsAttributes) throws EncryptedDocumentException, MalformedURLException, InvalidFormatException, IOException{
 		Set<String> uniqueAttributes = new HashSet<String>();
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		ExcelUtils excelUtils = new ExcelUtils();
+		ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 		Workbook wb = excelUtils.getWorkbook(datasource);
 		for (ExcelAttribute ldsa : ldsAttributes){
 			Sheet sheet = wb.getSheetAt(ldsa.sheetId);

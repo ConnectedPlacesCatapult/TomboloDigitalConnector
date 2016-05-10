@@ -1,24 +1,33 @@
 package uk.org.tombolo.importer.dft;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
 public class TrafficCountImporterTest {
 
 	private static Importer importer;
-	
-	@BeforeClass
-	public static void oneTimeSetUp(){
-		importer = new TrafficCountImporter();
+	private TimedValueUtils mockTimedValueUtils;
+
+	@Before
+	public void before(){
+		mockTimedValueUtils = mock(TimedValueUtils.class);
+		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
+		importer = new TrafficCountImporter(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 	

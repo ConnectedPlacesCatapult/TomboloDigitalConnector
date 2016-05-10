@@ -45,6 +45,10 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	
 	XPathFactory xPathFactory = XPathFactory.newInstance();
 	XPath xpath = xPathFactory.newXPath();
+
+	public TfLStationsImporter(TimedValueUtils timedValueUtils) {
+		super(timedValueUtils);
+	}
 	
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
@@ -134,7 +138,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(geography,servingLines, timestamp, count));
 			}
-			int saved = TimedValueUtils.save(timedValues);
+			int saved = timedValueUtils.save(timedValues);
 
 			return saved;
 		}

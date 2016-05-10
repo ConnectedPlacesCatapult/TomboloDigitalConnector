@@ -158,7 +158,8 @@ public class GeoJsonExporter implements Exporter {
 		}
 		
 		// Write timed values
-		List<TimedValue> values = TimedValueUtils.getByGeographyAndAttribute(geography, attribute);
+		TimedValueUtils timedValueUtils = new TimedValueUtils();
+		List<TimedValue> values = timedValueUtils.getByGeographyAndAttribute(geography, attribute);
 				
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);
