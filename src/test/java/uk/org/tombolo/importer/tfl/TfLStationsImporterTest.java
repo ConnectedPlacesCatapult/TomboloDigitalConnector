@@ -1,23 +1,24 @@
 package uk.org.tombolo.importer.tfl;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
-import uk.org.tombolo.importer.Importer;
-
-import java.util.List;
 
 public class TfLStationsImporterTest {
 	public TfLStationsImporter importer;
-	private AbstractImporterTestUtils.MockTimedValueUtils mockTimedValueUtils;
+	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
 	public void before(){
-		mockTimedValueUtils = new AbstractImporterTestUtils.MockTimedValueUtils();
+		mockTimedValueUtils = mock(TimedValueUtils.class);
+		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new TfLStationsImporter(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}

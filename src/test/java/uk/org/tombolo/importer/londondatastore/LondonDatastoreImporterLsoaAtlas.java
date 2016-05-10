@@ -1,6 +1,9 @@
 package uk.org.tombolo.importer.londondatastore;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
@@ -16,11 +19,12 @@ import uk.org.tombolo.importer.AbstractImporterTestUtils;
 public class LondonDatastoreImporterLsoaAtlas {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
 	LondonDatastoreImporter importer;
-	private AbstractImporterTestUtils.MockTimedValueUtils mockTimedValueUtils;
+	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
 	public void before(){
-		mockTimedValueUtils = new AbstractImporterTestUtils.MockTimedValueUtils();
+		mockTimedValueUtils = mock(TimedValueUtils.class);
+		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new LondonDatastoreImporter(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
