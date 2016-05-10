@@ -88,7 +88,7 @@ public class Attribute {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() != Geography.class)
+		if (obj.getClass() != Attribute.class)
 			return false;
 		
 		Attribute attObj = (Attribute)obj;
