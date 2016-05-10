@@ -62,7 +62,7 @@ public class TimedValueUtils {
 					saved++;
 				}catch(NonUniqueObjectException e){
 					// This is happening because the TFL stations contain a duplicate ID
-					log.info("Could not save timed value for geography {}, attribute {}, time {}: {}",
+					log.warn("Could not save timed value for geography {}, attribute {}, time {}: {}",
 							timedValue.getId().getGeography().getLabel(),
 							timedValue.getId().getAttribute().getName(),
 							timedValue.getId().getTimestamp().toString(),
