@@ -25,15 +25,21 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 			for (int i = 0; i < inputAttributes.size() - 1; i++) {
 				Attribute attribute = inputAttributes.get(i);
 				Optional<TimedValue> optionalTimedValue = timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
-				if (optionalTimedValue.isPresent())
+				if (optionalTimedValue.isPresent()) {
 					value += optionalTimedValue.get().getValue();
+					if (optionalTimedValue.get().getId().getTimestamp().isAfter(localDateTime))
+						localDateTime = optionalTimedValue.get().getId().getTimestamp();
+				}
 			}
 			Attribute attribute = inputAttributes.get(inputAttributes.size()-1);
 			Optional<TimedValue> timedValueOptional = timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
-			if (timedValueOptional.isPresent())
+			if (timedValueOptional.isPresent()) {
 				value /= timedValueOptional.get().getValue();
+				if (timedValueOptional.get().getId().getTimestamp().isAfter(localDateTime))
+					localDateTime = timedValueOptional.get().getId().getTimestamp();
+			}
 
-			values.add(new TimedValue(geography, attribute, localDateTime, value));
+			values.add(new TimedValue(geography, outputAttribute, localDateTime, value));
 		}
 		return values;
 	}
