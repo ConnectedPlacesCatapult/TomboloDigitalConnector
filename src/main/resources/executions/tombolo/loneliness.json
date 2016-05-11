@@ -39,50 +39,37 @@
 		],
 		"transformSpecification" : [
 			{
-				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
-					"provider" : "uk.gov.ons",
+
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
 					"label" : "FCC.CL_0000053.fraction_over_65",
 					"name" : "Fraction of population over 65",
 					"description" : "Fraction of population over 65"
 				},
 				"inputAttributes" : [
-					"CL_0000053_68",
-					"CL_0000053_69",
-					"CL_0000053_70",
-					"CL_0000053_71",
-					"CL_0000053_72",
-					"CL_0000053_73",
-					"CL_0000053_74",
-					"CL_0000053_75",
-					"CL_0000053_76",
-					"CL_0000053_77",
-					"CL_0000053_78",
-					"CL_0000053_79",
-					"CL_0000053_80",
-					"CL_0000053_81",
-					"CL_0000053_82",
-					"CL_0000053_83",
-					"CL_0000053_84",
-					"CL_0000053_85",
-					"CL_0000053_86",
-					"CL_0000053_87",
-					"CL_0000053_88",
-					"CL_0000053_89",
-					"CL_0000053_90",
-					"CL_0000053_91",
-					"CL_0000053_92",
-					"CL_0000053_93",
-					"CL_0000053_94",
-					"CL_0000053_95",
-					"CL_0000053_96",
-					"CL_0000053_97",
-					"CL_0000053_98",
-					"CL_0000053_99",
-					"CL_0000053_100",
-					"CL_0000053_101",
-					"CL_0000053_102",
-					"CL_0000053_1" // Divide the sum of the above by this
+					{
+						"provider" : {
+							"label" : "uk.gov.ons",
+							"name" : "Office for National Statistics"
+						},
+						"label" : "CL_0000053_68", // 68..102
+						"name" : "Age (T102A) - Age 66",
+						"description" : "Age (T102A) - Age 66"
+					},
+					{
+						// Divide the sum of the above by this
+						"provider" : {
+							"label" : "uk.gov.ons",
+							"name" : "Office for National Statistics"
+						},
+						"label": "CL_0000053_1",
+						"name": "Age (T102A) - Total: All categories: Age",
+						"description" : "Age (T102A) - Total: All categories: Age"
+					}
 				]
 			}
 		],

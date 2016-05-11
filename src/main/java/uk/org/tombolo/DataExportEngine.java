@@ -4,15 +4,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.TransformSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.transformer.Transformer;
 
 public class DataExportEngine implements ExecutionEngine{
 
@@ -78,6 +85,16 @@ public class DataExportEngine implements ExecutionEngine{
 				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
 				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
 				log.info("Imported {} values", count);
+			}
+		}
+
+		for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
+			Transformer transformer = (Transformer) Class.forName(transformSpec.getTransformClass()).newInstance();
+			transformer.setTimedValueUtils(new TimedValueUtils());
+			List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
+			for (GeographySpecification geographySpec : geographySpecList ) {
+				List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
+				transformer.transform(geographies, transformSpec.getInputAttributes(), transformSpec.getOutputAttribute());
 			}
 		}
 		

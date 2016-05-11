@@ -1,9 +1,6 @@
 package uk.org.tombolo.core.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -48,6 +45,10 @@ public class AttributeUtils {
 			}
 		}
 		session.getTransaction().commit();
+	}
+
+	public static void save(Attribute attribute) {
+		save(Arrays.asList(attribute));
 	}
 
 	public static Attribute getByProviderAndLabel(Provider provider, String label){
