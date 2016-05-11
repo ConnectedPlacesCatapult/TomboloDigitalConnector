@@ -3,6 +3,7 @@ package uk.org.tombolo.importer;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -59,7 +61,10 @@ public class DownloadUtils {
 						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
 						+ "/" + urlKey + ".json");
 		if (!localDatasourceFile.exists()){
-			FileUtils.copyURLToFile(url, localDatasourceFile);
+			URLConnection connection = url.openConnection();
+			// ONS requires this be set, or else you get 406 errors.
+			connection.setRequestProperty("Accept", "application/json");
+			IOUtils.copy(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		}
 		JSONParser parser = new JSONParser();
 		return (JSONObject) parser.parse(new FileReader(localDatasourceFile));
