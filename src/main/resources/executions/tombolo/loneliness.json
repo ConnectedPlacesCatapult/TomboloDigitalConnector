@@ -41,7 +41,6 @@
 			{
 				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
-
 					"provider" : {
 						"label" : "uk.gov.ons",
 						"name" : "Office for National Statistics"
@@ -52,23 +51,12 @@
 				},
 				"inputAttributes" : [
 					{
-						"provider" : {
-							"label" : "uk.gov.ons",
-							"name" : "Office for National Statistics"
-						},
-						"label" : "CL_0000053_68", // 68..102
-						"name" : "Age (T102A) - Age 66",
-						"description" : "Age (T102A) - Age 66"
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_68" // 68..102
 					},
 					{
-						// Divide the sum of the above by this
-						"provider" : {
-							"label" : "uk.gov.ons",
-							"name" : "Office for National Statistics"
-						},
-						"label": "CL_0000053_1",
-						"name": "Age (T102A) - Total: All categories: Age",
-						"description" : "Age (T102A) - Total: All categories: Age"
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_1"
 					}
 				]
 			}

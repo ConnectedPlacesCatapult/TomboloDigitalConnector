@@ -60,6 +60,15 @@ public class AttributeUtils {
 		return attribute;
 	}
 
+	public static Attribute getByProviderAndLabel(String providerLabel, String attributeLabel) {
+		Criteria criteria = session.createCriteria(Attribute.class);
+		Map<String,Object> restrictions = new HashMap<String,Object>();
+		restrictions.put("provider.label", providerLabel);
+		restrictions.put("label", attributeLabel);
+		Attribute attribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
+		return attribute;
+	}
+
 	public static List<Attribute> getAttributeBySpecification(DatasetSpecification datasetSpecification) {
 		List<Attribute> list = new ArrayList<>();
 

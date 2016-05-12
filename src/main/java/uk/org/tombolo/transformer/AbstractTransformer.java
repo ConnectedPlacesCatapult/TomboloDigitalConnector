@@ -27,7 +27,6 @@ public abstract class AbstractTransformer implements Transformer {
         Attribute outputAttribute = transformSpecification.getOutputAttribute();
         ProviderUtils.save(outputAttribute.getProvider());
         AttributeUtils.save(outputAttribute);
-        AttributeUtils.save(inputAttributes);
         List<TimedValue> timedValues = transform(geographies, inputAttributes, outputAttribute);
         timedValueUtils.save(timedValues);
     }

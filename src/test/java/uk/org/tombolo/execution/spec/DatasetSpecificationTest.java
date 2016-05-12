@@ -25,7 +25,7 @@ public class DatasetSpecificationTest {
 		DatasetSpecification dsSpec = makeDatasetSpecification();
 
 		List<TransformSpecification> transformSpec = new ArrayList<TransformSpecification>();
-		transformSpec.add(new TransformSpecification(new ArrayList<Attribute>(), new Attribute(), "className"));
+		transformSpec.add(new TransformSpecification(new ArrayList<>(), new Attribute(), "className"));
 
 		dsSpec.setTransformSpecification(transformSpec);
 		assertSame(transformSpec, dsSpec.getTransformSpecification());
