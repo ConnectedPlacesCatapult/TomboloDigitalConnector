@@ -10,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.utils.GeographyUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
@@ -88,13 +86,14 @@ public class DataExportEngine implements ExecutionEngine{
 			}
 		}
 
+		// Run transforms over geographies
 		for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
 			Transformer transformer = (Transformer) Class.forName(transformSpec.getTransformClass()).newInstance();
 			transformer.setTimedValueUtils(new TimedValueUtils());
 			List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
 			for (GeographySpecification geographySpec : geographySpecList ) {
 				List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
-				transformer.transform(geographies, transformSpec.getInputAttributes(), transformSpec.getOutputAttribute());
+				transformer.transformBySpecification(geographies, transformSpec);
 			}
 		}
 		

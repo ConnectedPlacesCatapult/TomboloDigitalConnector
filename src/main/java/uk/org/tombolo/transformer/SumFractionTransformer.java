@@ -8,9 +8,6 @@ import java.util.Optional;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class SumFractionTransformer extends AbstractTransformer implements Transformer {
 
@@ -27,11 +24,6 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 	@Override
 	public List<TimedValue> transform(List<Geography> geographies, List<Attribute> inputAttributes, Attribute outputAttribute) {
 		List<TimedValue> values = new ArrayList<TimedValue>();
-
-		// FIXME: extract
-		ProviderUtils.save(outputAttribute.getProvider());
-		AttributeUtils.save(outputAttribute);
-		AttributeUtils.save(inputAttributes);
 
 		for (Geography geography : geographies) {
 			LocalDateTime latestTime = LocalDateTime.MIN;
@@ -63,8 +55,6 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 			// Create the transformed output value
 			values.add(new TimedValue(geography, outputAttribute, latestTime, value));
 		}
-
-		this.timedValueUtils.save(values);
 		return values;
 	}
 
