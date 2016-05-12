@@ -87,12 +87,13 @@ public class DataExportEngine implements ExecutionEngine{
 		}
 
 		// Run transforms over geographies
-		for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
-			Transformer transformer = (Transformer) Class.forName(transformSpec.getTransformClass()).newInstance();
-			transformer.setTimedValueUtils(new TimedValueUtils());
-			List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
-			for (GeographySpecification geographySpec : geographySpecList ) {
-				List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
+		List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
+		for (GeographySpecification geographySpec : geographySpecList) {
+			List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
+			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
+				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
+				Transformer transformer = (Transformer) Class.forName(transformSpec.getTransformClass()).newInstance();
+				transformer.setTimedValueUtils(new TimedValueUtils());
 				transformer.transformBySpecification(geographies, transformSpec);
 			}
 		}
