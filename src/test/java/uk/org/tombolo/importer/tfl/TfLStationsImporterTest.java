@@ -19,7 +19,8 @@ public class TfLStationsImporterTest {
 	public void before(){
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
-		importer = new TfLStationsImporter(mockTimedValueUtils);
+		importer = new TfLStationsImporter();
+		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 	

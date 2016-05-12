@@ -101,8 +101,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	
 	private static final Logger log = LoggerFactory.getLogger(TrafficCountImporter.class);
 
-	public TrafficCountImporter(TimedValueUtils timedValueUtils) {
-		super(timedValueUtils);
+	public TrafficCountImporter() {
 		if (regions == null)
 			regions = Arrays.asList(REGIONS);
 		if (localAuthorities == null)

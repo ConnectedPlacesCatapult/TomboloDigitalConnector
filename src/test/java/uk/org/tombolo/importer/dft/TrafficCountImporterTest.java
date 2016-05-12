@@ -27,7 +27,8 @@ public class TrafficCountImporterTest {
 	public void before(){
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
-		importer = new TrafficCountImporter(mockTimedValueUtils);
+		importer = new TrafficCountImporter();
+		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 	

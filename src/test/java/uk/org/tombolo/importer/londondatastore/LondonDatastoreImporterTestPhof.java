@@ -25,7 +25,8 @@ public class LondonDatastoreImporterTestPhof {
 	public void before(){
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
-		importer = new LondonDatastoreImporter(mockTimedValueUtils);
+		importer = new LondonDatastoreImporter();
+		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 
