@@ -39,7 +39,7 @@
 		],
 		"transformSpecification" : [
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",
@@ -201,7 +201,7 @@
 				]
 			},
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",
@@ -227,7 +227,7 @@
 				]
 			},
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",
@@ -257,7 +257,7 @@
 				]
 			},
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",
@@ -283,7 +283,7 @@
 				]
 			},
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",
@@ -309,7 +309,7 @@
 				]
 			},
 			{
-				"transformClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
 				"outputAttribute" : {
 					"provider" : {
 						"label" : "uk.gov.ons",

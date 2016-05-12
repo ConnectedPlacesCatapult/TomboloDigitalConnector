@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 public class TransformSpecificationTest {
 
     @Test
-    public void testGetTransformClass() throws Exception {
+    public void testGettransformerClass() throws Exception {
         TransformSpecification tSpec = new TransformSpecification(new ArrayList<>(), new Attribute(), "className");
-        assertEquals("className", tSpec.getTransformClass());
+        assertEquals("className", tSpec.gettransformerClass());
     }
 
     @Test

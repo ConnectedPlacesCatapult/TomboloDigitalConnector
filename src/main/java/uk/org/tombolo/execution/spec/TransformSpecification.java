@@ -19,17 +19,17 @@ public class TransformSpecification {
     }
 
     private List<AttributeSpecifier> inputAttributes;
-    private String transformClass;
+    private String transformerClass;
     private Attribute outputAttribute;
 
-    public TransformSpecification(List<AttributeSpecifier> inputAttributes, Attribute outputAttribute, String transformClass){
+    public TransformSpecification(List<AttributeSpecifier> inputAttributes, Attribute outputAttribute, String transformerClass){
         this.inputAttributes = inputAttributes;
-        this.transformClass = transformClass;
+        this.transformerClass = transformerClass;
         this.outputAttribute = outputAttribute;
     }
 
-    public String getTransformClass() {
-        return transformClass;
+    public String gettransformerClass() {
+        return transformerClass;
     }
 
     public List<Attribute> getInputAttributes() {

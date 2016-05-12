@@ -92,7 +92,7 @@ public class DataExportEngine implements ExecutionEngine{
 			List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
 			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
 				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
-				Transformer transformer = (Transformer) Class.forName(transformSpec.getTransformClass()).newInstance();
+				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
 				transformer.setTimedValueUtils(new TimedValueUtils());
 				transformer.transformBySpecification(geographies, transformSpec);
 			}
