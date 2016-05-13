@@ -16,10 +16,6 @@ public abstract class TfLImporter extends AbstractImporter implements Importer {
 			"Transport for London"
 			);
 
-	public TfLImporter(TimedValueUtils timedValueUtils) {
-		super(timedValueUtils);
-	}
-
 	@Override
 	public Provider getProvider() {
 		return PROVIDER;

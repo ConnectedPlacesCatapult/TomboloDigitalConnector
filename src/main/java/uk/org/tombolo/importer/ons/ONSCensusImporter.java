@@ -61,10 +61,6 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
-	public ONSCensusImporter(TimedValueUtils timedValueUtils) {
-		super(timedValueUtils);
-	}
-
 	@Override
 	public List<Datasource> getAllDatasources() throws IOException, ParseException{
 		List<Datasource> datasources = new ArrayList<Datasource>();

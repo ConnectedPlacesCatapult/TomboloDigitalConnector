@@ -10,14 +10,15 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 public abstract class AbstractImporter implements Importer {
 
 	protected DownloadUtils downloadUtils = new DownloadUtils();
-	protected TimedValueUtils timedValueUtils;
+	protected TimedValueUtils timedValueUtils = new TimedValueUtils();
 
-	public AbstractImporter(TimedValueUtils timedValueUtils) {
-		this.timedValueUtils = timedValueUtils;
-	}
+	public AbstractImporter() { }
 
 	public void setDownloadUtils(DownloadUtils downloadUtils){
 		this.downloadUtils = downloadUtils;
+	}
+	public void setTimedValueUtils(TimedValueUtils timedValueUtils){
+		this.timedValueUtils = timedValueUtils;
 	}
 	
 	/**

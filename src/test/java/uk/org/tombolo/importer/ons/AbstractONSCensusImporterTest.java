@@ -19,7 +19,8 @@ public abstract class AbstractONSCensusImporterTest extends AbstractImporterTest
 	public void before(){
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
-		importer = new ONSCensusImporter(mockTimedValueUtils);
+		importer = new ONSCensusImporter();
+		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 }

@@ -11,10 +11,6 @@ public abstract class AbstractONSImporter extends AbstractImporter implements Im
 			"Office for National Statistics"
 			);
 
-	public AbstractONSImporter(TimedValueUtils timedValueUtils) {
-		super(timedValueUtils);
-	}
-
 	@Override
 	public Provider getProvider() {
 		return PROVIDER;

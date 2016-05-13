@@ -25,7 +25,6 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
@@ -33,10 +32,6 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	protected int timedValueBufferSize;
 
 	private static Logger log = LoggerFactory.getLogger(ExcelImporter.class);
-
-	public ExcelImporter(TimedValueUtils timedValueUtils) {
-		super(timedValueUtils);
-	}
 
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
