@@ -6,6 +6,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.TransformSpecification;
 
 public interface Transformer {
 
@@ -22,6 +23,8 @@ public interface Transformer {
 	 * @return
 	 */
 	public List<TimedValue> transform(List<Geography> geographies, List<Attribute> inputAttributes, Attribute outputAttribute);
+
+	public void transformBySpecification(List<Geography> geographies, TransformSpecification transformSpecification);
 
 	public void setTimedValueUtils(TimedValueUtils timedValueUtils);
 }

@@ -1,9 +1,6 @@
 package uk.org.tombolo.core.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -50,11 +47,24 @@ public class AttributeUtils {
 		session.getTransaction().commit();
 	}
 
+	public static void save(Attribute attribute) {
+		save(Arrays.asList(attribute));
+	}
+
 	public static Attribute getByProviderAndLabel(Provider provider, String label){
 		Criteria criteria = session.createCriteria(Attribute.class);
 		Map<String,Object> restrictions = new HashMap<String,Object>();
 		restrictions.put("provider", provider);
 		restrictions.put("label", label);
+		Attribute attribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
+		return attribute;
+	}
+
+	public static Attribute getByProviderAndLabel(String providerLabel, String attributeLabel) {
+		Criteria criteria = session.createCriteria(Attribute.class);
+		Map<String,Object> restrictions = new HashMap<String,Object>();
+		restrictions.put("provider.label", providerLabel);
+		restrictions.put("label", attributeLabel);
 		Attribute attribute = (Attribute)criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
 		return attribute;
 	}
