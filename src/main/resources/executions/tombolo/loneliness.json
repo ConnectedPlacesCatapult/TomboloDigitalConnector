@@ -290,8 +290,8 @@
 						"name" : "Office for National Statistics"
 					},
 					"label" : "FCC.CL_0000004.fraction_limited",
-					"name" : "Fraction of population limited a little or a lot",
-					"description" : "Fraction of population limited a little or a lot"
+					"name" : "Fraction of population limited a little or a lot by a long term health problem or disability",
+					"description" : "Fraction of population limited a little or a lot by a long term health problem or disability"
 				},
 				"inputAttributes" : [
 					{
