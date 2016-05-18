@@ -35,4 +35,9 @@ public class DataExportSpecification {
 		return gson.fromJson(new FileReader(jsonFile), DataExportSpecification.class);
 	}
 
+	public static DataExportSpecification fromJson(String jsonString) {
+		Gson gson = new Gson();
+		return gson.fromJson(jsonString, DataExportSpecification.class);
+	}
+
 }

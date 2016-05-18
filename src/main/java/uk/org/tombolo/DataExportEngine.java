@@ -1,8 +1,5 @@
 package uk.org.tombolo;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
@@ -20,95 +17,42 @@ import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.Transformer;
 
 public class DataExportEngine implements ExecutionEngine{
-
-	private String outputFile;
-	
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	
-	public static void main(String[] args) {
-		
-		if (args.length != 3){
-			log.error("Use: {} {} {} {}",
-					DataExportEngine.class.getCanonicalName(),
-					"dataExportSpecFile",
-					"outputFile",
-					"forceImport"
-					);
-			System.exit(1);
-		}
-		
-		String executionSpecPath = args[0];
-		String outputFile = args[1];
-		boolean forceImport = Boolean.parseBoolean(args[2]);
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
+		try {
+			// Import data
+			if (forceImport){
+				for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
+					log.info("Importing {} {}",
+							datasourceSpec.getImporterClass(),
+							datasourceSpec.getDatasourceId());
+					Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+					int count = importer.importDatasource(datasourceSpec.getDatasourceId());
+					log.info("Imported {} values", count);
+				}
+			}
 
-		File file = new File(executionSpecPath);
-		if (!file.exists()){
-			log.error("File not found: " + executionSpecPath);
-			System.exit(1);
-		}
+			// Run transforms over geographies
+			List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
+			for (GeographySpecification geographySpec : geographySpecList) {
+				List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
+				for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
+					log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
+					Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
+					transformer.setTimedValueUtils(new TimedValueUtils());
+					transformer.transformBySpecification(geographies, transformSpec);
+				}
+			}
 
-		DataExportEngine engine = new DataExportEngine(outputFile);
-		try{
-			engine.execute(file, forceImport);
-		} catch (Exception e){
-			e.printStackTrace();
+			// Export data
+			log.info("Exporting ...");
+			Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+			exporter.write(writer, dataExportSpec.getDatasetSpecification());
 		} finally {
-			// Closing the Hibernate Session Factory
+			// FIXME: This method should either be responsible for the entire state of HibernateUtil, or not at all.
+			// e.g. it should set it up too, or it shouldn't have to shut it down.
 			HibernateUtil.shutdown();
 		}
-		log.info("exit");
-	}
-	
-	public DataExportEngine(String outputFile){
-		this.outputFile = outputFile;
-	}
-
-	public void executeResource(String resourcePath, boolean forceImport) throws Exception {
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(resourcePath).getFile());
-		execute(file, forceImport);
-	}
-	
-	public void execute(File specification, boolean forceImport) throws Exception {
-		
-		// Read specification file
-		DataExportSpecification dataExportSpec = DataExportSpecification.fromJsonFile(specification);
-		
-		// Import data
-		if (forceImport){
-			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
-				log.info("Importing {} {}", 
-						datasourceSpec.getImporterClass(),
-						datasourceSpec.getDatasourceId());
-				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
-				log.info("Imported {} values", count);
-			}
-		}
-
-		// Run transforms over geographies
-		List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
-		for (GeographySpecification geographySpec : geographySpecList) {
-			List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
-			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
-				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
-				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
-				transformer.setTimedValueUtils(new TimedValueUtils());
-				transformer.transformBySpecification(geographies, transformSpec);
-			}
-		}
-		
-		// Export data
-		log.info("Exporting ...");
-		Writer writer = null;
-		try {
-			writer = new FileWriter(outputFile);
-		} catch (IOException e) {
-			log.error("Error initilising output writer: {}", outputFile);
-		}
-		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-		exporter.write(writer, dataExportSpec.getDatasetSpecification());
-		writer.flush();
-		writer.close();
 	}
 }
