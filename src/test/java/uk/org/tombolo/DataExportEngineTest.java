@@ -10,22 +10,14 @@ import static org.junit.Assert.*;
 
 public class DataExportEngineTest {
     DataExportEngine engine = new DataExportEngine();
-    String blankSpec = "{" +
-                "\"datasetSpecification\": {" +
-                    "\"geographySpecification\": []," +
-                    "\"datasourceSpecification\": [], " +
-                    "\"transformSpecification\": [], " +
-                    "\"attributeSpecification\": [] " +
-                "}, " +
-                "exporterClass: \"uk.org.tombolo.exporter.GeoJsonExporter\"" +
-            "}";
+    DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.fromBlankGeoJson();
 
     @Test
     public void testReturnsEmptyOnBlankSpec() throws Exception {
         Writer writer = new StringWriter();
-        DataExportSpecification spec = DataExportSpecification.fromJson(blankSpec);
 
-        engine.execute(spec, writer, true);
+        engine.execute(builder.build(), writer, true);
+
         assertEquals("{\"type\":\"FeatureCollection\",\"features\":[]}", writer.toString());
     }
 }
