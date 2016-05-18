@@ -1,11 +1,12 @@
 package uk.org.tombolo;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
-public class DataExportSpecificationBuilder {
+public class DataExportSpecificationBuilder implements JSONAware {
     private JSONObject jsonSpec;
     private JSONArray geographySpec;
     private JSONArray datasourceSpec;
@@ -39,10 +40,16 @@ public class DataExportSpecificationBuilder {
     }
 
     public DataExportSpecification build() {
-        return DataExportSpecification.fromJson(buildString());
+        return DataExportSpecification.fromJson(toJSONString());
     }
 
-    public String buildString() {
+    @Override
+    public String toJSONString() {
         return jsonSpec.toJSONString();
+    }
+
+    public DataExportSpecificationBuilder addGeographySpecification(GeographySpecificationBuilder geographySpecificationBuilder) {
+        geographySpec.add(geographySpecificationBuilder);
+        return this;
     }
 }

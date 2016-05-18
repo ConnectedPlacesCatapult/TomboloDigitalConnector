@@ -14,14 +14,14 @@ public class DataExportSpecificationTest {
 
     @Test
     public void testFromJsonWithBlankSpec() throws Exception {
-        assertSame(DataExportSpecification.class, DataExportSpecification.fromJson(builder.buildString()).getClass());
+        assertSame(DataExportSpecification.class, DataExportSpecification.fromJson(builder.toJSONString()).getClass());
     }
 
     @Test
     public void testFromJsonFileWithBlankSpec() throws Exception {
         File file = File.createTempFile("test", "spec");
         Writer writer = new FileWriter(file);
-        writer.write(builder.buildString());
+        writer.write(builder.toJSONString());
         writer.close();
         assertSame(DataExportSpecification.class, DataExportSpecification.fromJsonFile(file).getClass());
     }
@@ -29,6 +29,6 @@ public class DataExportSpecificationTest {
     @Test
     public void testFromJsonFileWithExporter() throws Exception {
         builder.setExporterClass("a_cool_string");
-        assertEquals("a_cool_string", DataExportSpecification.fromJson(builder.buildString()).exporterClass);
+        assertEquals("a_cool_string", DataExportSpecification.fromJson(builder.toJSONString()).exporterClass);
     }
 }
