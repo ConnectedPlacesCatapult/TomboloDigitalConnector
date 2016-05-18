@@ -16,6 +16,8 @@ public class DatasetSpecification {
 	List<DatasourceSpecification> datasourceSpecification;
 	
 	List<AttributeSpecification> attributeSpecification;
+
+	List<TransformSpecification> transformSpecification;
 	
 	public List<GeographySpecification> getGeographySpecification() {
 		return geographySpecification;
@@ -39,6 +41,14 @@ public class DatasetSpecification {
 
 	public void setAttributeSpecification(List<AttributeSpecification> attributeSpecification) {
 		this.attributeSpecification = attributeSpecification;
+	}
+
+	public List<TransformSpecification> getTransformSpecification() {
+		return transformSpecification;
+	}
+
+	public void setTransformSpecification(List<TransformSpecification> transformSpecification) {
+		this.transformSpecification = transformSpecification;
 	}
 
 	public static DatasetSpecification fromJsonFile(File jsonFile) throws JsonSyntaxException, JsonIOException, FileNotFoundException{

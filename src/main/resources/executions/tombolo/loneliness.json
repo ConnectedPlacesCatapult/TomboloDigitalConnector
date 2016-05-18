@@ -1,38 +1,374 @@
 {
 	"datasetSpecification" : {
-	"geographySpecification" : [
-		{
-			"geographyType" : "lsoa"
-		}
-	],
-	"datasourceSpecification" : [
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS103EW"
-		},
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS405EW"
-		},
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS108EW"
-		},
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS302EW"
-		},
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS303EW"
-		},
-		{
-			"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-			"datasourceId" : "QS119EW"
-		}
-	],
-	"attributeSpecification" : [
-	]
+		"geographySpecification" : [
+			{
+				"geographyType" : "lsoa",
+				"matchers" : [
+					{
+						"attribute": "name",
+						"pattern": "Leeds%"
+					}
+				]
+			}
+		],
+		"datasourceSpecification" : [
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS103EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS405EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS108EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS302EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS303EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS119EW"
+			}
+		],
+		"transformSpecification" : [
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000053.fraction_over_64",
+					"name" : "Fraction of population over 64",
+					"description" : "Fraction of population over 64"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_67"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_68"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_69"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_70"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_71"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_72"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_73"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_74"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_75"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_76"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_77"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_78"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_79"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_80"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_81"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_82"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_83"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_84"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_85"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_86"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_87"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_88"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_89"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_90"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_91"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_92"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_93"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_94"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_95"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_96"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_97"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_98"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_99"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_100"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_101"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_102"
+					},
+					{ // Divide the sum of the above by this total:
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000053_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000073.fraction_renting",
+					"name" : "Fraction of population renting (privately or socially)",
+					"description" : "Fraction of population renting (privately or socially)"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000073_6"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000073_9"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000073_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000065.fraction_widowed_divorced_separated",
+					"name" : "Fraction of population widowed, divorced, or separated",
+					"description" : "Fraction of population widowed, divorced, or separated"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000065_9"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000065_10"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000065_11"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000065_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000010.fraction_bad_or_very_bad_health",
+					"name" : "Fraction of population with bad or very bad health",
+					"description" : "Fraction of population with bad or very bad health"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000010_5"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000010_6"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000010_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000004.fraction_limited",
+					"name" : "Fraction of population limited a little or a lot by a long term health problem or disability",
+					"description" : "Fraction of population limited a little or a lot by a long term health problem or disability"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000004_2"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000004_3"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000004_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000178.fraction_deprived_2_or_more",
+					"name" : "Fraction of population deprived in 2 or more dimensions",
+					"description" : "Fraction of population deprived in 2 or more dimensions"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000178_4"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000178_5"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000178_6"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000178_1"
+					}
+				]
+			}
+		],
+		"attributeSpecification" : [
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "CL_0000053_1" // Age (T102A) - Total: All categories: Age
+			},
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "FCC.CL_0000053.fraction_over_64"
+			},
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "FCC.CL_0000073.fraction_renting"
+			},
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "FCC.CL_0000065.fraction_widowed_divorced_separated"
+			},
+			{
+				"providerLabel": "uk.gov.ons",
+				"attributeLabel": "FCC.CL_0000010.fraction_bad_or_very_bad_health"
+			},
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "FCC.CL_0000004.fraction_limited"
+			},
+			{
+				"providerLabel" : "uk.gov.ons",
+				"attributeLabel" : "FCC.CL_0000178.fraction_deprived_2_or_more"
+			}
+		]
 	},
 	"exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
 }
