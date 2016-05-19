@@ -52,7 +52,7 @@ Exports the London borough profiles form OrganiCity
 ```bash
 gradle clean build copyDeps -x test
 java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
-	uk.org.tombolo.DataExportEngine \
+	uk.org.tombolo.DataExportRunner \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
 	organicity-borough-profiles.json \
 	false
