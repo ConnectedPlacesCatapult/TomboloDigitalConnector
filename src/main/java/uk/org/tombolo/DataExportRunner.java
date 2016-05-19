@@ -10,7 +10,7 @@ import java.io.*;
 public class DataExportRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
 
-    public final void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         validateArguments(args);
 
         String executionSpecPath = args[0];
@@ -30,7 +30,7 @@ public class DataExportRunner {
         }
     }
 
-    private DataExportSpecification getSpecification(String specificationPath) throws FileNotFoundException {
+    private static DataExportSpecification getSpecification(String specificationPath) throws FileNotFoundException {
         File file = new File(specificationPath);
         if (!file.exists()){
             log.error("File not found: {}", specificationPath);
@@ -39,10 +39,10 @@ public class DataExportRunner {
         return DataExportSpecification.fromJsonFile(file);
     }
 
-    private void validateArguments(String[] args) {
+    private static void validateArguments(String[] args) {
         if (args.length != 3){
             log.error("Use: {} {} {} {}",
-                    this.getClass().getCanonicalName(),
+                    DataExportRunner.class.getCanonicalName(),
                     "dataExportSpecFile",
                     "outputFile",
                     "forceImport"
@@ -51,7 +51,7 @@ public class DataExportRunner {
         }
     }
 
-    private Writer getOutputWriter(String path) {
+    private static Writer getOutputWriter(String path) {
         try {
             return new FileWriter(path);
         } catch (IOException e) {
