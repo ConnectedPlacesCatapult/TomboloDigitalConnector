@@ -10,7 +10,7 @@ import java.io.Writer;
 import static org.junit.Assert.*;
 
 public class DataExportSpecificationTest {
-    DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.fromBlankGeoJson();
+    DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
 
     @Test
     public void testFromJsonWithBlankSpec() throws Exception {

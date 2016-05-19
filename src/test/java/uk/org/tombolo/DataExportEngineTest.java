@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class DataExportEngineTest {
     DataExportEngine engine = new DataExportEngine();
-    DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.fromBlankGeoJson();
+    DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();
 
     @Test

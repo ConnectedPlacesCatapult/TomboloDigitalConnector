@@ -28,7 +28,7 @@ public class DataExportSpecificationBuilder implements JSONAware {
         datasetSpec.put("attributeSpecification", attributeSpec);
     }
 
-    public static DataExportSpecificationBuilder fromBlankGeoJson() {
+    public static DataExportSpecificationBuilder withGeoJsonExporter() {
         DataExportSpecificationBuilder builder =  new DataExportSpecificationBuilder();
         builder.setExporterClass(GeoJsonExporter.class.getCanonicalName());
         return builder;
