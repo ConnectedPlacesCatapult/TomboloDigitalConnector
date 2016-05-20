@@ -24,7 +24,10 @@ The following scripts will delete the existing tables in the tombolo database an
 ```bash
 createdb tombolo
 psql -d tombolo < src/main/resources/sql/create_database.sql
-psql -d tombolo < src/main/resources/sql/inital_fixtures.sql 
+psql -d tombolo < src/main/resources/sql/inital_fixtures.sql
+
+createdb tombolo_test
+psql -d tombolo_test < src/test/resources/sql/setup_test_db.sql
 ```
 
 ## Load LSOA
