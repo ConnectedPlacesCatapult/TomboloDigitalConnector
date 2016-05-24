@@ -1,7 +1,10 @@
 package uk.org.tombolo.core.utils;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import java.util.function.Function;
 
 public class HibernateUtil {
 
@@ -27,5 +30,14 @@ public class HibernateUtil {
     public static void shutdown() {
     	// Close caches and connection pools
     	getSessionFactory().close();
+    }
+
+    public static <T> T withSession(Function<Session, T> fn) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            return fn.apply(session);
+        } finally {
+            session.close();
+        }
     }
 }

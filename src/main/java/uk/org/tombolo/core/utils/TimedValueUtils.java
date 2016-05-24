@@ -22,7 +22,7 @@ public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 	
 	public List<TimedValue> getByGeographyAndAttribute(Geography geography, Attribute attribute){
-		return withSession((session) -> {
+		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
@@ -33,7 +33,7 @@ public class TimedValueUtils {
 	}
 
 	public Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
-		return withSession((session) -> {
+		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
@@ -53,7 +53,7 @@ public class TimedValueUtils {
 	}
 
 	public int save(List<TimedValue> timedValues){
-		return withSession((session) -> {
+		return HibernateUtil.withSession((session) -> {
 			int saved = 0;
 			session.beginTransaction();
 			for (TimedValue timedValue : timedValues){
@@ -100,14 +100,5 @@ public class TimedValueUtils {
 		}
 
 		return null;
-	}
-
-	private <T> T withSession(Function<Session, T> fn) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			return fn.apply(session);
-		} finally {
-			session.close();
-		}
 	}
 }
