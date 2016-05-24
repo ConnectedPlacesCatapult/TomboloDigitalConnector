@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 public final class TestFactory {
     public static final Provider DEFAULT_PROVIDER = new Provider("default_provider_label", "default_provider_name");
+    public static final String TIMESTAMP = "2011-01-01T00:00:00";
 
     private TestFactory() {}
 
