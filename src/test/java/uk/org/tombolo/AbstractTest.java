@@ -14,7 +14,7 @@ public abstract class AbstractTest {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            Query truncateTables = session.createSQLQuery("TRUNCATE timed_value, attribute");
+            Query truncateTables = session.createSQLQuery("TRUNCATE timed_value, attribute, provider");
             truncateTables.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
