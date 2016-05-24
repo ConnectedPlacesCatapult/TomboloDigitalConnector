@@ -34,7 +34,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		Writer writer = new StringWriter();
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09%"));
+		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09000001"));
 		geographySpecification.add(new GeographySpecification(matchers, "localAuthority"));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification("default_provider_label", "attr_label"));

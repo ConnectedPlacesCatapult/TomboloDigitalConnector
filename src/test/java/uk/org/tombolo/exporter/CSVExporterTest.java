@@ -32,7 +32,7 @@ public class CSVExporterTest extends AbstractTest {
 		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "default_provider_label", "attr_label"));
+		exporter.write(writer, makeDatasetSpecification("E09000001", "localAuthority", "default_provider_label", "attr_label"));
 		CSVRecord record = getRecords(writer.toString()).get(0);
 
 		assertEquals("E09000001", record.get("label"));
