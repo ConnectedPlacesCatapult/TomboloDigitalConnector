@@ -14,7 +14,7 @@ public class LondonDatastoreImporter extends ExcelImporter implements Importer {
 	private static final String DATASOURCE_SPEC_DIR = "/datasources/uk/gov/london";
 	private static final int TIMEDVALUE_BUFFER_SIZE = 1000;
 
-	LondonDatastoreImporter(){
+	public LondonDatastoreImporter(){
 		datasourceSpecDir = DATASOURCE_SPEC_DIR;
 		timedValueBufferSize = TIMEDVALUE_BUFFER_SIZE;
 	}
