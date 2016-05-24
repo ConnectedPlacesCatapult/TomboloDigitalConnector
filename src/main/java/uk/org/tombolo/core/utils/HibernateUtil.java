@@ -10,6 +10,7 @@ import java.util.function.Function;
 public class HibernateUtil {
 
 	private static SessionFactory sessionFactory = buildSessionFactory();
+    private static Session sharedSession = sessionFactory.openSession();
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -26,29 +27,21 @@ public class HibernateUtil {
     
     public static void shutdown() {
     	// Close caches and connection pools
+        sharedSession.close();
     	sessionFactory.close();
     }
 
     public static <T> T withSession(Function<Session, T> fn) {
-        Session session = sessionFactory.openSession();
-        try {
-            return fn.apply(session);
-        } finally {
-            session.close();
-        }
+        return fn.apply(sharedSession);
     }
 
     public static void withSession(Consumer<Session> fn) {
-        Session session = sessionFactory.openSession();
-        try {
-            fn.accept(session);
-        } finally {
-            session.close();
-        }
+        fn.accept(sharedSession);
     }
 
     public static void restart() {
         shutdown();
         sessionFactory = buildSessionFactory();
+        sharedSession = sessionFactory.openSession();
     }
 }
