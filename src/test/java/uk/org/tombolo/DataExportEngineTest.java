@@ -20,7 +20,7 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-public class DataExportEngineTest {
+public class DataExportEngineTest extends AbstractTest {
     DataExportEngine engine = new DataExportEngine();
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();

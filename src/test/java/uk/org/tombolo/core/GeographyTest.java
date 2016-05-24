@@ -10,10 +10,11 @@ import org.hibernate.criterion.Restrictions;
 import org.junit.AfterClass;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
-public class GeographyTest {
+public class GeographyTest extends AbstractTest {
 
 	private static Session session = HibernateUtil.getSessionFactory().openSession();
 	

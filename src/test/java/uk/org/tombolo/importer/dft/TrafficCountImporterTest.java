@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
@@ -18,7 +19,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
-public class TrafficCountImporterTest {
+public class TrafficCountImporterTest extends AbstractTest {
 
 	private static Importer importer;
 	private TimedValueUtils mockTimedValueUtils;

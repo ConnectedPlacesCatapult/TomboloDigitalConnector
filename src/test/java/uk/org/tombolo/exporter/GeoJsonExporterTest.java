@@ -15,12 +15,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 
 
-public class GeoJsonExporterTest {
+public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
 	
 	@Test

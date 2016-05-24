@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.GeographyType;
 
-public class GeographyTypeUtilsTest {
+public class GeographyTypeUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetUnknownGeographyType(){

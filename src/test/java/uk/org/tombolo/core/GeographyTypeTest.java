@@ -5,9 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.hibernate.Session;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
-public class GeographyTypeTest {
+public class GeographyTypeTest extends AbstractTest {
 
 	@Test
 	public void testFixtures(){

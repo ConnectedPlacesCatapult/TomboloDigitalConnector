@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
@@ -25,7 +26,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import static uk.org.tombolo.execution.spec.GeographySpecification.*;
 
-public class CSVExporterTest {
+public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
 	@Test

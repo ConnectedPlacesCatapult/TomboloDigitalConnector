@@ -9,11 +9,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
-public class TimedValueTest {
+public class TimedValueTest extends AbstractTest {
 
 	@Test
 	public void testSave(){
