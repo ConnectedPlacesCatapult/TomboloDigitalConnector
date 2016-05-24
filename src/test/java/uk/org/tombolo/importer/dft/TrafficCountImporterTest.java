@@ -34,7 +34,6 @@ public class TrafficCountImporterTest extends AbstractTest {
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 
-	@Ignore("FIXME")
 	@Test
 	public void testGetProvider(){
 		Provider provider = importer.getProvider();
@@ -42,14 +41,12 @@ public class TrafficCountImporterTest extends AbstractTest {
 		assertEquals("Department for Transport", provider.getName());
 	}
 
-	@Ignore("FIXME")
 	@Test
 	public void testGetAllDatasources() throws Exception {
 		List<Datasource> datasources = importer.getAllDatasources();
 		assertEquals(220,datasources.size());
 	}
 
-	@Ignore("FIXME")
 	@Test
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource("London");
@@ -69,7 +66,6 @@ public class TrafficCountImporterTest extends AbstractTest {
 		assertEquals("dft/traffic/la/Bristol__City_of.csv", datasource.getLocalDatafile());
 	}
 
-	@Ignore("FIXME")
 	@Test
 	public void testImportDatasource() throws Exception {
 		int count = importer.importDatasource("London");
