@@ -35,6 +35,7 @@ public class TimedValueTest extends AbstractTest {
 		assertEquals(15.7d, testTv.getValue(), 0.1d);
 		
 		transaction.rollback();
+		session.close();
 	}
 	
 }
