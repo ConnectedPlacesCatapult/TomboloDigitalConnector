@@ -13,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
@@ -23,7 +24,8 @@ import uk.org.tombolo.execution.spec.GeographySpecification;
 
 public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
-	
+
+	@Ignore("FIXME")
 	@Test
 	public void testWrite() throws Exception{
 		Writer writer = new StringWriter();
