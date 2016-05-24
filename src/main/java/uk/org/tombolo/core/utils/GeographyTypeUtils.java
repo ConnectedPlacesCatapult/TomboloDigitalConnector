@@ -24,7 +24,6 @@ public class GeographyTypeUtils {
 			session.beginTransaction();
 			session.saveOrUpdate(geographyType);
 			session.getTransaction().commit();
-			return null;
 		});
 	}
 }

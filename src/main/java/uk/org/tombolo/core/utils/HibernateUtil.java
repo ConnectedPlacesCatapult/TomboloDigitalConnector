@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class HibernateUtil {
@@ -36,6 +37,15 @@ public class HibernateUtil {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             return fn.apply(session);
+        } finally {
+            session.close();
+        }
+    }
+
+    public static void withSession(Consumer<Session> fn) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            fn.accept(session);
         } finally {
             session.close();
         }

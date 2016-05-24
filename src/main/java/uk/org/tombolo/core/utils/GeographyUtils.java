@@ -67,7 +67,6 @@ public class GeographyUtils {
 				}
 			}
 			session.getTransaction().commit();
-			return null;
 		});
 	}
 	

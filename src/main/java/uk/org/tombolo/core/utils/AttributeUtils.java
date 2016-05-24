@@ -46,7 +46,6 @@ public class AttributeUtils {
 				}
 			}
 			session.getTransaction().commit();
-			return null;
 		});
 	}
 

@@ -22,7 +22,6 @@ public class ProviderUtils {
 			// FIXME: This might be inefficient if we are updating the provider over and over again without actually changing it
 			session.saveOrUpdate(provider);
 			session.getTransaction().commit();
-			return null;
 		});
 	}
 
