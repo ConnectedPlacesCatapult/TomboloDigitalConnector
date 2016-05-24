@@ -23,18 +23,14 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
     
     public static void shutdown() {
     	// Close caches and connection pools
-    	getSessionFactory().close();
+    	sessionFactory.close();
     }
 
     public static <T> T withSession(Function<Session, T> fn) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             return fn.apply(session);
         } finally {
@@ -43,7 +39,7 @@ public class HibernateUtil {
     }
 
     public static void withSession(Consumer<Session> fn) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             fn.accept(session);
         } finally {

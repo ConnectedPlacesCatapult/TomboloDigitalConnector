@@ -11,17 +11,12 @@ public abstract class AbstractTest {
     @Before
     public void clearDatabase() {
         HibernateUtil.restart();
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        try {
+        HibernateUtil.withSession(session -> {
+            Transaction transaction = session.beginTransaction();
             Query truncateTables = session.createSQLQuery("TRUNCATE timed_value, attribute, provider");
             truncateTables.executeUpdate();
             transaction.commit();
-        } catch (HibernateException e) {
-            transaction.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
+        });
+
     }
 }

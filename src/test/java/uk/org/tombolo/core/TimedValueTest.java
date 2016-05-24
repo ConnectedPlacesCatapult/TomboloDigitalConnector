@@ -18,24 +18,23 @@ public class TimedValueTest extends AbstractTest {
 
 	@Test
 	public void testSave(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		
-		Transaction transaction = session.beginTransaction();
-		
-		Geography geography = GeographyUtils.getTestGeography();
-				
-		Attribute attribute = AttributeUtils.getTestAttribute();
-				
-		LocalDateTime timestamp = LocalDateTime.now();
-		
-		TimedValue tv = new TimedValue(geography, attribute, timestamp, 15.7d);
-		session.save(tv);
-				
-		TimedValue testTv = (TimedValue)session.load(TimedValue.class, tv.getId());
-		assertEquals(15.7d, testTv.getValue(), 0.1d);
-		
-		transaction.rollback();
-		session.close();
+		HibernateUtil.withSession(session -> {
+			Transaction transaction = session.beginTransaction();
+
+			Geography geography = GeographyUtils.getTestGeography();
+
+			Attribute attribute = AttributeUtils.getTestAttribute();
+
+			LocalDateTime timestamp = LocalDateTime.now();
+
+			TimedValue tv = new TimedValue(geography, attribute, timestamp, 15.7d);
+			session.save(tv);
+
+			TimedValue testTv = (TimedValue)session.load(TimedValue.class, tv.getId());
+			assertEquals(15.7d, testTv.getValue(), 0.1d);
+
+			transaction.rollback();
+		});
 	}
 	
 }

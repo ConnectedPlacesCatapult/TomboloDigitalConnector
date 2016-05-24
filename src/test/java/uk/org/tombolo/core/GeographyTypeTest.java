@@ -12,18 +12,15 @@ public class GeographyTypeTest extends AbstractTest {
 
 	@Test
 	public void testFixtures(){
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		HibernateUtil.withSession(session -> {
+			GeographyType unknown = (GeographyType)session.load(GeographyType.class, "unknown");
+			assertEquals("unknown", unknown.getLabel());
+			assertEquals("Unknown Geography Type", unknown.getName());
 
-		GeographyType unknown = (GeographyType)session.load(GeographyType.class, "unknown");
-		assertEquals("unknown", unknown.getLabel());
-		assertEquals("Unknown Geography Type", unknown.getName());
-		
-		GeographyType lsoa = (GeographyType)session.load(GeographyType.class, "lsoa");
-		assertEquals("lsoa", lsoa.getLabel());
-		assertEquals("Lower Layer Super Output Area", lsoa.getName());
-
-		session.close();
-
+			GeographyType lsoa = (GeographyType)session.load(GeographyType.class, "lsoa");
+			assertEquals("lsoa", lsoa.getLabel());
+			assertEquals("Lower Layer Super Output Area", lsoa.getName());
+		});
 	}
 	
 }
