@@ -60,4 +60,12 @@ public class DataExportSpecificationBuilder implements JSONAware {
         attributeSpec.add(attribute);
         return this;
     }
+
+    public DataExportSpecificationBuilder addDatasourceSpecification(String importerClass, String datasourceId) {
+        JSONObject datasource = new JSONObject();
+        datasource.put("importerClass", importerClass);
+        datasource.put("datasourceId", datasourceId);
+        datasourceSpec.add(datasource);
+        return this;
+    }
 }

@@ -60,5 +60,19 @@ public class DataExportEngineTest extends AbstractTest {
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.values['2011-01-01T00:00']", equalTo(100d)));
     }
 
+    @Test
+    public void testImportsFromLondonDataStore() throws Exception {
+        builder.addGeographySpecification(
+                new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E09000001")
+        ).addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+         .addAttributeSpecification("uk.gov.london", "populationDensity");
+
+        engine.execute(builder.build(), writer, true);
+
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("Population density (per hectare) 2015")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.values[*]", hasSize(1)));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.values['2015-12-31T23:59:59']", equalTo(28.237556363195576)));
+    }
+
 
 }
