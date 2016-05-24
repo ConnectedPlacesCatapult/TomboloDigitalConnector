@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory = buildSessionFactory();
+	private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
         try {
@@ -49,5 +49,10 @@ public class HibernateUtil {
         } finally {
             session.close();
         }
+    }
+
+    public static void restart() {
+        shutdown();
+        sessionFactory = buildSessionFactory();
     }
 }

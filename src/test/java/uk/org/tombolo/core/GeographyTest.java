@@ -16,32 +16,29 @@ import uk.org.tombolo.core.utils.HibernateUtil;
 
 public class GeographyTest extends AbstractTest {
 
-	private static Session session = HibernateUtil.getSessionFactory().openSession();
-	
-	@AfterClass
-	public static void tearDownOnce(){
-		session.close();		
-	}
-	
 	@Test
 	public void testLsoaLoad(){
-		Criteria criteria = session.createCriteria(Geography.class);
+		HibernateUtil.withSession(session -> {
+			Criteria criteria = session.createCriteria(Geography.class);
 
-		Geography cityOfLondon1A = (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
-		assertEquals("lsoa", cityOfLondon1A.getGeographyType().getLabel());
-		assertEquals("Lower Layer Super Output Area", cityOfLondon1A.getGeographyType().getName());
-		assertEquals("City of London 001A", cityOfLondon1A.getName());		
+			Geography cityOfLondon1A = (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
+			assertEquals("lsoa", cityOfLondon1A.getGeographyType().getLabel());
+			assertEquals("Lower Layer Super Output Area", cityOfLondon1A.getGeographyType().getName());
+			assertEquals("City of London 001A", cityOfLondon1A.getName());
+		});
 	}
 
 	@Test
 	public void testGeometryOverlap(){
-		Criteria criteria = session.createCriteria(Geography.class);
+		HibernateUtil.withSession(session -> {
+			Criteria criteria = session.createCriteria(Geography.class);
 
-		Geography cityOfLondon = GeographyUtils.getGeographyByLabel("E09000001");
-		Geography cityOfLondon1A = (Geography)criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
+			Geography cityOfLondon = GeographyUtils.getGeographyByLabel("E09000001");
+			Geography cityOfLondon1A = (Geography) criteria.add(Restrictions.eq("label", "E01000001")).uniqueResult();
 
-		assertTrue(cityOfLondon.getShape().contains(cityOfLondon1A.getShape()));
-		assertFalse(cityOfLondon1A.getShape().contains(cityOfLondon.getShape()));
+			assertTrue(cityOfLondon.getShape().contains(cityOfLondon1A.getShape()));
+			assertFalse(cityOfLondon1A.getShape().contains(cityOfLondon.getShape()));
+		});
 	}
 	
 	

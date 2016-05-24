@@ -9,6 +9,7 @@ import uk.org.tombolo.core.utils.HibernateUtil;
 public abstract class AbstractTest {
     @Before
     public void clearDatabase() {
+        HibernateUtil.restart();
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             Transaction transaction = session.beginTransaction();
