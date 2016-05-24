@@ -161,7 +161,6 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			if (geographyType == null || geographyType.getLabel() == null){
 				geographyType = new GeographyType(geographyTypeName.name(), "Transport for London Station");
 				GeographyTypeUtils.save(geographyType);
-				geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
 			}
 			return geographyType;
 		}
