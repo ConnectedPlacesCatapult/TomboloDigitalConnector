@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.importer.DownloadUtils;
 
 import java.io.*;
 
@@ -17,7 +18,7 @@ public class DataExportRunner {
         String outputFile = args[1];
         Boolean forceImport = Boolean.parseBoolean(args[2]);
 
-        DataExportEngine engine = new DataExportEngine();
+        DataExportEngine engine = new DataExportEngine(new DownloadUtils());
 
         try (Writer writer = getOutputWriter(outputFile)) {
             engine.execute(getSpecification(executionSpecPath), writer, forceImport);

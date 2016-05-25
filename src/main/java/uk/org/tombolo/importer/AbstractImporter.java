@@ -9,7 +9,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public abstract class AbstractImporter implements Importer {
 
-	protected DownloadUtils downloadUtils = new DownloadUtils();
+	protected DownloadUtils downloadUtils;
 	protected TimedValueUtils timedValueUtils = new TimedValueUtils();
 
 	public AbstractImporter() { }

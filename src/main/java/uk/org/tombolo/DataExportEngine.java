@@ -13,11 +13,17 @@ import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 import uk.org.tombolo.execution.spec.TransformSpecification;
 import uk.org.tombolo.exporter.Exporter;
+import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.Transformer;
 
 public class DataExportEngine implements ExecutionEngine{
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
+	private static DownloadUtils downloadUtils;
+
+	DataExportEngine(DownloadUtils downloadUtils) {
+		this.downloadUtils = downloadUtils;
+	}
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
 		// Import data
@@ -27,6 +33,7 @@ public class DataExportEngine implements ExecutionEngine{
 						datasourceSpec.getImporterClass(),
 						datasourceSpec.getDatasourceId());
 				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+				importer.setDownloadUtils(downloadUtils);
 				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
 				log.info("Imported {} values", count);
 			}

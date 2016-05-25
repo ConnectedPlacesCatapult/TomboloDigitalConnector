@@ -21,7 +21,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 public class DataExportEngineTest extends AbstractTest {
-    DataExportEngine engine = new DataExportEngine();
+    DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();
 
