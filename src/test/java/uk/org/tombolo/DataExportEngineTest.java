@@ -92,4 +92,18 @@ public class DataExportEngineTest extends AbstractTest {
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attribute_label.values[*]", hasSize(1)));
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attribute_label.values['2015-12-31T23:59:59']", equalTo(73.18066468830533)));
     }
+
+    @Test
+    public void testRunsOnNewGeographies() throws Exception {
+        builder .addGeographySpecification(
+                    new GeographySpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
+                .addAttributeSpecification("uk.gov.tfl", "ServingLineCount");
+
+        engine.execute(builder.build(), writer, true);
+
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.name", equalTo("Aldgate Station")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.ServingLineCount.values[*]", hasSize(1)));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.ServingLineCount.values['2010-02-04T11:54:08']", equalTo(3.0)));
+    }
 }
