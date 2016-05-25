@@ -68,4 +68,9 @@ public class DataExportSpecificationBuilder implements JSONAware {
         datasourceSpec.add(datasource);
         return this;
     }
+
+    public DataExportSpecificationBuilder addTransformSpecification(TransformSpecificationBuilder transformSpecificationBuilder) {
+        transformSpec.add(transformSpecificationBuilder);
+        return this;
+    }
 }

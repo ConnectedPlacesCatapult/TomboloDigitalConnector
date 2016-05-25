@@ -74,5 +74,22 @@ public class DataExportEngineTest extends AbstractTest {
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.values['2015-12-31T23:59:59']", equalTo(28.237556363195576)));
     }
 
+    @Test
+    public void testTransforms() throws Exception {
+        builder .addGeographySpecification(
+                    new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E09000001"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+                .addTransformSpecification(
+                    new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
+                            .setOutputAttribute("provider", "attribute")
+                            .addInputAttribute("uk.gov.london", "populationDensity")
+                            .addInputAttribute("uk.gov.london", "carsPerHousehold"))
+                .addAttributeSpecification("provider_label", "attribute_label");
 
+        engine.execute(builder.build(), writer, true);
+
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attribute_label.name", equalTo("attribute_name")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attribute_label.values[*]", hasSize(1)));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attribute_label.values['2015-12-31T23:59:59']", equalTo(73.18066468830533)));
+    }
 }
