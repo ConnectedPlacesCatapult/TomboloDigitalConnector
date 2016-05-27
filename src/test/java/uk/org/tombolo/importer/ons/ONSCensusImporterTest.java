@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.AttributeUtils;
@@ -13,6 +15,11 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
 	public static final String datasourceId = "OT102EW";
+
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E01002766");
+	}
 	
 	@Test
 	public void testGetAllDatasources() throws Exception{
@@ -49,12 +56,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		Datasource datasource = importer.getDatasource(datasourceId);		
 		int count = importer.importDatasource(datasource);
 		
-		assertEquals(
-				(0		// London is not a local authority (its boroughs are)
-				+ 147	// Islington
-				+ 590) 	// Leeds
-				* 3
-				, count);
+		assertEquals(3, count);
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
 		assertEquals("Area (Hectares)", attribute.getName());

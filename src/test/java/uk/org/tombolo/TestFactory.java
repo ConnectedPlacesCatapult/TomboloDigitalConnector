@@ -46,6 +46,8 @@ public final class TestFactory {
                 return makeGeography("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E09000001":
                 return makeGeography("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
+            case "E01002766":
+                return makeGeography("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named geography fixture", label));
         }

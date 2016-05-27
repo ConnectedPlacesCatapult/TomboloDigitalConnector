@@ -13,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
@@ -25,6 +26,11 @@ import uk.org.tombolo.execution.spec.GeographySpecification;
 
 public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
+
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E09000001");
+	}
 
 	@Test
 	public void testWrite() throws Exception{

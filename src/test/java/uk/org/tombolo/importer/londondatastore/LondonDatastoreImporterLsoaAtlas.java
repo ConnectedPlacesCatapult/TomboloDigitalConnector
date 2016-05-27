@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
@@ -21,6 +22,11 @@ public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
 	LondonDatastoreImporter importer;
 	private TimedValueUtils mockTimedValueUtils;
+
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E01000001");
+	}
 
 	@Before
 	public void before(){
@@ -43,6 +49,6 @@ public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
 	public void testImportDatasource() throws Exception{
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
 		
-		assertEquals(4835*4, datapoints);
+		assertEquals(4, datapoints);
 	}
 }
