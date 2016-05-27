@@ -1,8 +1,5 @@
 package uk.org.tombolo;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import uk.org.tombolo.core.utils.HibernateUtil;
@@ -14,8 +11,9 @@ public abstract class AbstractTest {
         HibernateUtil.restart();
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();
-            Query truncateTables = session.createSQLQuery("TRUNCATE timed_value, attribute, provider");
-            truncateTables.executeUpdate();
+            session.createSQLQuery("TRUNCATE timed_value, attribute, provider").executeUpdate();
+            session.createSQLQuery("DELETE FROM geography_object WHERE geography_type_label NOT IN ('unknown', 'lsoa', 'msoa', 'localAuthority', 'sensor', 'poi')").executeUpdate();
+            session.createSQLQuery("DELETE FROM geography_type WHERE label NOT IN ('unknown', 'lsoa', 'msoa', 'localAuthority', 'sensor', 'poi')").executeUpdate();
             transaction.commit();
         });
     }
