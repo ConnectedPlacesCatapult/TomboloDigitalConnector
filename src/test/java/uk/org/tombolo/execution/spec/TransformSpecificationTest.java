@@ -1,13 +1,14 @@
 package uk.org.tombolo.execution.spec;
 
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class TransformSpecificationTest {
+public class TransformSpecificationTest extends AbstractTest {
 
     @Test
     public void testGettransformerClass() throws Exception {

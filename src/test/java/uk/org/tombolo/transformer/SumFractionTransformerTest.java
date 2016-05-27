@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.TimedValue;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SumFractionTransformerTest {
+public class SumFractionTransformerTest extends AbstractTest {
 
 	// Input attributes with population count for different ages
 	Attribute threeYearOlds = new Attribute();

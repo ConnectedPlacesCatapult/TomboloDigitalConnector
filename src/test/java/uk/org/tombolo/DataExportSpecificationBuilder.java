@@ -52,4 +52,20 @@ public class DataExportSpecificationBuilder implements JSONAware {
         geographySpec.add(geographySpecificationBuilder);
         return this;
     }
+
+    public DataExportSpecificationBuilder addAttributeSpecification(String providerLabel, String attributeLabel) {
+        JSONObject attribute = new JSONObject();
+        attribute.put("providerLabel", providerLabel);
+        attribute.put("attributeLabel", attributeLabel);
+        attributeSpec.add(attribute);
+        return this;
+    }
+
+    public DataExportSpecificationBuilder addDatasourceSpecification(String importerClass, String datasourceId) {
+        JSONObject datasource = new JSONObject();
+        datasource.put("importerClass", importerClass);
+        datasource.put("datasourceId", datasourceId);
+        datasourceSpec.add(datasource);
+        return this;
+    }
 }

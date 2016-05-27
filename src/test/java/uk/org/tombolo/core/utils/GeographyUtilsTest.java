@@ -11,13 +11,14 @@ import com.google.common.collect.Lists;
 import com.sun.jna.platform.unix.X11;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 
-public class GeographyUtilsTest {
+public class GeographyUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetGeographyByLabel(){

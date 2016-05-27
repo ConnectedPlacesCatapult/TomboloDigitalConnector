@@ -24,7 +24,7 @@ The following scripts will delete the existing tables in the tombolo database an
 ```bash
 createdb tombolo
 psql -d tombolo < src/main/resources/sql/create_database.sql
-psql -d tombolo < src/main/resources/sql/inital_fixtures.sql 
+psql -d tombolo < src/main/resources/sql/inital_fixtures.sql
 ```
 
 ## Load LSOA
@@ -43,6 +43,18 @@ sh scripts/loadMsoa.sh
 
 ```bash
 sh scripts/loadLa.sh
+```
+
+### Set up test database
+
+You will need to have loaded the above geographies into your
+tombolo database before running this.
+
+```bash
+createdb tombolo_test
+psql -d tombolo_test < src/main/resources/sql/create_database.sql
+psql -d tombolo_test < src/test/resources/sql/create_test_user.sql
+pg_dump -a -t geography_object -t geography_type -t geography_id_sequence tombolo | psql -d tombolo_test
 ```
 
 # Example executions

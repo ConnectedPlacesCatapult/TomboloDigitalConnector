@@ -1,6 +1,7 @@
 package uk.org.tombolo.execution.spec;
 
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.DataExportSpecificationBuilder;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.io.Writer;
 
 import static org.junit.Assert.*;
 
-public class DataExportSpecificationTest {
+public class DataExportSpecificationTest extends AbstractTest {
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
 
     @Test

@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
@@ -18,7 +19,7 @@ import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
-public class LondonDatastoreImporterBaW {
+public class LondonDatastoreImporterBaW extends AbstractTest {
 	private static final String DATASOURCE_ID = "walking-cycling-borough";
 	public Importer importer;
 	private TimedValueUtils mockTimedValueUtils;
