@@ -11,8 +11,7 @@ public abstract class AbstractTest {
         HibernateUtil.restart();
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE timed_value, attribute, provider").executeUpdate();
-            session.createSQLQuery("DELETE FROM geography_object WHERE geography_type_label NOT IN ('unknown', 'lsoa', 'msoa', 'localAuthority', 'sensor', 'poi')").executeUpdate();
+            session.createSQLQuery("TRUNCATE timed_value, attribute, provider, geography_object").executeUpdate();
             session.createSQLQuery("DELETE FROM geography_type WHERE label NOT IN ('unknown', 'lsoa', 'msoa', 'localAuthority', 'sensor', 'poi')").executeUpdate();
             transaction.commit();
         });
