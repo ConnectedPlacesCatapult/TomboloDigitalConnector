@@ -1,6 +1,9 @@
 package uk.org.tombolo;
 
 import com.jayway.jsonpath.JsonPath;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
@@ -14,6 +17,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
@@ -105,5 +109,28 @@ public class DataExportEngineTest extends AbstractTest {
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.name", equalTo("Aldgate Station")));
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.ServingLineCount.values[*]", hasSize(1)));
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.ServingLineCount.values['2010-02-04T11:54:08']", equalTo(3.0)));
+    }
+
+    @Test
+    public void testExportsCSV() throws Exception {
+        DataExportSpecificationBuilder csvBuilder = DataExportSpecificationBuilder.withCSVExporter();
+        csvBuilder
+                .addGeographySpecification(
+                new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E09000001"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+                .addTransformSpecification(
+                        new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
+                                .setOutputAttribute("provider", "attribute")
+                                .addInputAttribute("uk.gov.london", "populationDensity")
+                                .addInputAttribute("uk.gov.london", "carsPerHousehold"))
+                .addAttributeSpecification("provider_label", "attribute_label");
+
+        engine.execute(csvBuilder.build(), writer, true);
+
+        List<CSVRecord> records = CSVParser.parse(writer.toString(), CSVFormat.DEFAULT.withHeader()).getRecords();
+
+        assertEquals(1, records.size());
+        assertEquals("E09000001", records.get(0).get("label"));
+        assertEquals("73.18066468830533", records.get(0).get("provider_label_attribute_label_latest_value"));
     }
 }

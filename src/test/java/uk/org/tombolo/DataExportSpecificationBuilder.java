@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
 public class DataExportSpecificationBuilder implements JSONAware {
@@ -26,12 +27,6 @@ public class DataExportSpecificationBuilder implements JSONAware {
         datasetSpec.put("datasourceSpecification", datasourceSpec);
         datasetSpec.put("transformSpecification", transformSpec);
         datasetSpec.put("attributeSpecification", attributeSpec);
-    }
-
-    public static DataExportSpecificationBuilder withGeoJsonExporter() {
-        DataExportSpecificationBuilder builder =  new DataExportSpecificationBuilder();
-        builder.setExporterClass(GeoJsonExporter.class.getCanonicalName());
-        return builder;
     }
 
     public DataExportSpecificationBuilder setExporterClass(String exporterClass) {
@@ -72,5 +67,17 @@ public class DataExportSpecificationBuilder implements JSONAware {
     public DataExportSpecificationBuilder addTransformSpecification(TransformSpecificationBuilder transformSpecificationBuilder) {
         transformSpec.add(transformSpecificationBuilder);
         return this;
+    }
+
+    public static DataExportSpecificationBuilder withCSVExporter() {
+        DataExportSpecificationBuilder builder =  new DataExportSpecificationBuilder();
+        builder.setExporterClass(CSVExporter.class.getCanonicalName());
+        return builder;
+    }
+
+    public static DataExportSpecificationBuilder withGeoJsonExporter() {
+        DataExportSpecificationBuilder builder = new DataExportSpecificationBuilder();
+        builder.setExporterClass(GeoJsonExporter.class.getCanonicalName());
+        return builder;
     }
 }
