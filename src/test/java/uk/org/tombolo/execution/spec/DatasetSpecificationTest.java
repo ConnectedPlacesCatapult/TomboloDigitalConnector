@@ -34,7 +34,7 @@ public class DatasetSpecificationTest extends AbstractTest {
 	}
 
 	private DatasetSpecification makeDatasetSpecification() throws FileNotFoundException {
-		String resourcePath = "executions/tombolo/obesity_uk.json";
+		String resourcePath = "executions/test_dataset_spec.json";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(resourcePath).getFile());
 		return DatasetSpecification.fromJsonFile(file);
