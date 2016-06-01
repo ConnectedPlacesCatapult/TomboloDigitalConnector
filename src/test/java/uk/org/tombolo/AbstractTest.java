@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.importer.DownloadUtils;
 
 public abstract class AbstractTest {
     @Before
@@ -17,6 +18,9 @@ public abstract class AbstractTest {
             truncateTables.executeUpdate();
             transaction.commit();
         });
+    }
 
+    protected static DownloadUtils makeTestDownloadUtils() {
+        return new DownloadUtils("src/test/resources/datacache");
     }
 }
