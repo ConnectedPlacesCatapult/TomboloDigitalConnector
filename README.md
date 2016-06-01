@@ -53,8 +53,7 @@ tombolo database before running this.
 ```bash
 createdb tombolo_test
 psql -d tombolo_test < src/main/resources/sql/create_database.sql
-psql -d tombolo_test < src/test/resources/sql/create_test_user.sql
-pg_dump -a -t geography_object -t geography_type -t geography_id_sequence tombolo | psql -d tombolo_test
+psql -d tombolo_test < src/test/resources/sql/initial_fixtures.sql
 ```
 
 # Example executions
