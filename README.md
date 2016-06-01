@@ -24,7 +24,7 @@ The following scripts will delete the existing tables in the tombolo database an
 ```bash
 createdb tombolo
 psql -d tombolo < src/main/resources/sql/create_database.sql
-psql -d tombolo < src/main/resources/sql/inital_fixtures.sql 
+psql -d tombolo < src/main/resources/sql/inital_fixtures.sql
 ```
 
 ## Load LSOA
@@ -45,6 +45,18 @@ sh scripts/loadMsoa.sh
 sh scripts/loadLa.sh
 ```
 
+### Set up test database
+
+You will need to have loaded the above geographies into your
+tombolo database before running this.
+
+```bash
+createdb tombolo_test
+psql -d tombolo_test < src/main/resources/sql/create_database.sql
+psql -d tombolo_test < src/test/resources/sql/create_test_user.sql
+pg_dump -a -t geography_object -t geography_type -t geography_id_sequence tombolo | psql -d tombolo_test
+```
+
 # Example executions
 
 Exports the London borough profiles form OrganiCity
@@ -52,7 +64,7 @@ Exports the London borough profiles form OrganiCity
 ```bash
 gradle clean build copyDeps -x test
 java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
-	uk.org.tombolo.DataExportEngine \
+	uk.org.tombolo.DataExportRunner \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
 	organicity-borough-profiles.json \
 	false

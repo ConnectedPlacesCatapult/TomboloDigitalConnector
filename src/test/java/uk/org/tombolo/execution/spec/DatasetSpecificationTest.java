@@ -7,9 +7,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 
-public class DatasetSpecificationTest {
+public class DatasetSpecificationTest extends AbstractTest {
 
 	@Test
 	public void testFromJsonFile() throws FileNotFoundException{

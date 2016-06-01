@@ -9,11 +9,12 @@ import java.util.Optional;
 
 import org.geotools.geometry.GeometryBuilder;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.TimedValue;
 
-public class TimedValueUtilsTest {
+public class TimedValueUtilsTest extends AbstractTest {
 
 	@Test
 	public void testParseTimestampString(){

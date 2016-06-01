@@ -1,8 +1,5 @@
 package uk.org.tombolo;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
@@ -16,71 +13,27 @@ import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 import uk.org.tombolo.execution.spec.TransformSpecification;
 import uk.org.tombolo.exporter.Exporter;
+import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.Transformer;
 
 public class DataExportEngine implements ExecutionEngine{
-
-	private String outputFile;
-	
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
-	
-	public static void main(String[] args) {
-		
-		if (args.length != 3){
-			log.error("Use: {} {} {} {}",
-					DataExportEngine.class.getCanonicalName(),
-					"dataExportSpecFile",
-					"outputFile",
-					"forceImport"
-					);
-			System.exit(1);
-		}
-		
-		String executionSpecPath = args[0];
-		String outputFile = args[1];
-		boolean forceImport = Boolean.parseBoolean(args[2]);
+	private static DownloadUtils downloadUtils;
 
-		File file = new File(executionSpecPath);
-		if (!file.exists()){
-			log.error("File not found: " + executionSpecPath);
-			System.exit(1);
-		}
-
-		DataExportEngine engine = new DataExportEngine(outputFile);
-		try{
-			engine.execute(file, forceImport);
-		} catch (Exception e){
-			e.printStackTrace();
-		} finally {
-			// Closing the Hibernate Session Factory
-			HibernateUtil.shutdown();
-		}
-		log.info("exit");
+	DataExportEngine(DownloadUtils downloadUtils) {
+		this.downloadUtils = downloadUtils;
 	}
 	
-	public DataExportEngine(String outputFile){
-		this.outputFile = outputFile;
-	}
-
-	public void executeResource(String resourcePath, boolean forceImport) throws Exception {
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(resourcePath).getFile());
-		execute(file, forceImport);
-	}
-	
-	public void execute(File specification, boolean forceImport) throws Exception {
-		
-		// Read specification file
-		DataExportSpecification dataExportSpec = DataExportSpecification.fromJsonFile(specification);
-		
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
 		// Import data
 		if (forceImport){
 			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
-				log.info("Importing {} {}", 
+				log.info("Importing {} {}",
 						datasourceSpec.getImporterClass(),
 						datasourceSpec.getDatasourceId());
 				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+				importer.setDownloadUtils(downloadUtils);
 				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
 				log.info("Imported {} values", count);
 			}
@@ -97,18 +50,10 @@ public class DataExportEngine implements ExecutionEngine{
 				transformer.transformBySpecification(geographies, transformSpec);
 			}
 		}
-		
+
 		// Export data
 		log.info("Exporting ...");
-		Writer writer = null;
-		try {
-			writer = new FileWriter(outputFile);
-		} catch (IOException e) {
-			log.error("Error initilising output writer: {}", outputFile);
-		}
 		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
 		exporter.write(writer, dataExportSpec.getDatasetSpecification());
-		writer.flush();
-		writer.close();
 	}
 }

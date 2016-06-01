@@ -15,30 +15,35 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
+import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 
 
-public class GeoJsonExporterTest {
+public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
-	
+
 	@Test
 	public void testWrite() throws Exception{
+		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
+
 		Writer writer = new StringWriter();
 		DatasetSpecification spec = new DatasetSpecification();
 		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09%"));
+		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09000001"));
 		geographySpecification.add(new GeographySpecification(matchers, "localAuthority"));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
-		attributeSpecification.add(new AttributeSpecification("uk.gov.london", "populationDensity"));
+		attributeSpecification.add(new AttributeSpecification("default_provider_label", "attr_label"));
 		spec.setGeographySpecification(geographySpecification);
 		spec.setAttributeSpecification(attributeSpecification);
 		
 		exporter.write(writer, spec);
-		writer.flush();
 
-		assertNotNull(getFirstFeatureLabel(writer.toString()));
+		assertEquals("E09000001", getFirstFeatureLabel(writer.toString()));
 	}
 
 	private String getFirstFeatureLabel(String jsonString) throws ParseException {

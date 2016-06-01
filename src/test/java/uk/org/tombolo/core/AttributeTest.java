@@ -2,10 +2,11 @@ package uk.org.tombolo.core;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 
 import static org.junit.Assert.*;
 
-public class AttributeTest {
+public class AttributeTest extends AbstractTest {
     Attribute subject;
     Provider provider;
 

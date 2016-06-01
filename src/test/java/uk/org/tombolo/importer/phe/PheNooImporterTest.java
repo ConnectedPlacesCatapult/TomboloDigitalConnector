@@ -4,14 +4,21 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 
-public class PheNooImporterTest {
+public class PheNooImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "BMI_categories_2012-2014";
 	PheNooImporter importer = new PheNooImporter();
+
+	@Before
+	public void setDownloadUtils() {
+		importer.setDownloadUtils(makeTestDownloadUtils());
+	}
 	
 	@Test
 	public void testGetDatasource() throws Exception {

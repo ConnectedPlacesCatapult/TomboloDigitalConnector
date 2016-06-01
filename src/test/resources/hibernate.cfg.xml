@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<!-- FIXME: Get the following values from a configuration file outsied git -->
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/tombolo_test</property>
+        <property name="hibernate.connection.username">tombolo_test</property>
+        <property name="hibernate.connection.password">tombolo_test</property>
+        <property name="show_sql">false</property>
+
+        <mapping class="uk.org.tombolo.core.GeographyType"/>
+		<mapping class="uk.org.tombolo.core.Geography"/>
+		
+		<mapping class="uk.org.tombolo.core.Provider"/>
+		<mapping class="uk.org.tombolo.core.Attribute"/>
+		
+		<mapping class="uk.org.tombolo.core.TimedValue"/>
+    </session-factory>
+</hibernate-configuration>

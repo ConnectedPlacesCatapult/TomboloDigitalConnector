@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -15,7 +16,7 @@ import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
-public class LondonDatastoreImporterTestLbp {
+public class LondonDatastoreImporterTestLbp extends AbstractTest {
 	public Importer importer;
 	private TimedValueUtils mockTimedValueUtils;
 

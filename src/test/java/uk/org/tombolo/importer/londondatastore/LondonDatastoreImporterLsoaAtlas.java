@@ -10,13 +10,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
-public class LondonDatastoreImporterLsoaAtlas {
+public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
 	LondonDatastoreImporter importer;
 	private TimedValueUtils mockTimedValueUtils;

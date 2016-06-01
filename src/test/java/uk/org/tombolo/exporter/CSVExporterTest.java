@@ -1,14 +1,13 @@
 package uk.org.tombolo.exporter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.junit.Before;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.GeographyType;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
@@ -20,37 +19,38 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static uk.org.tombolo.execution.spec.GeographySpecification.*;
 
-public class CSVExporterTest {
+public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
 	@Test
 	public void testWrite() throws Exception {
-		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "uk.gov.london", "populationDensity"));
-		writer.flush();
+		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
+		Writer writer = new StringWriter();
+		exporter.write(writer, makeDatasetSpecification("E09000001", "localAuthority", "default_provider_label", "attr_label"));
 		CSVRecord record = getRecords(writer.toString()).get(0);
 
-		assertNotNull(record.get("label"));
-		assertNotNull(record.get("name"));
+		assertEquals("E09000001", record.get("label"));
+		assertEquals("City of London", record.get("name"));
 		assertNotNull(record.get("geometry"));
-		// FIXME: This keeps changing between 'Population Density' and 'Population density (per hectare) 2015'. Investigate
-//		assertEquals("Population density (per hectare) 2015", record.get("uk.gov.london_populationDensity_name"));
-		assertEquals("London Datastore - Greater London Authority", record.get("uk.gov.london_populationDensity_provider"));
-		assertNotNull(record.get("uk.gov.london_populationDensity_latest_value"));
+		assertEquals("attr_name", record.get("default_provider_label_attr_label_name"));
+		assertEquals("default_provider_name", record.get("default_provider_label_attr_label_provider"));
+		assertEquals("100.0", record.get("default_provider_label_attr_label_latest_value"));
 		assertEquals(6, record.size());
 	}
 
 	@Test
 	public void testWriteWithInvalidProperty() throws Exception {
+		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
+
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "uk.gov.london", "badName"));
-		writer.flush();
+		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "default_provider_label", "bad_name"));
 
 		CSVRecord record = getRecords(writer.toString()).get(0);
 

@@ -7,11 +7,12 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
-public class TfLStationsImporterTest {
+public class TfLStationsImporterTest extends AbstractTest {
 	public TfLStationsImporter importer;
 	private TimedValueUtils mockTimedValueUtils;
 
