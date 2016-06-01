@@ -10,22 +10,24 @@ public class ProviderUtilsTest extends AbstractTest {
     private static final String TEST_PROVIDER_LABEL = "uk.org.tombolo.test";
     private static final String TEST_PROVIDER_NAME = "Tobmolo Test Provider";
     private static final String TEST_PROVIDER_NAME_UPDATE = "Tobmolo Test Provider 2.0";
-    private static final Provider TEST_PROVIDER = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
-    private static final Provider TEST_PROVIDER_CLONE = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
-    private static final Provider TEST_PROVIDER_UPDATE = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME_UPDATE);
-
 
     @Test
     public void getTestProvider() throws Exception {
-        ProviderUtils.save(TEST_PROVIDER);
+        Provider testProvider = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
+
+        ProviderUtils.save(testProvider);
         Provider provider = ProviderUtils.getTestProvider();
+
         assertTestProvider(provider);
     }
 
     @Test
     public void saveClone() throws Exception {
-        ProviderUtils.save(TEST_PROVIDER);
-        ProviderUtils.save(TEST_PROVIDER_CLONE);
+        Provider testProvider = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
+        Provider testProviderClone = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
+
+        ProviderUtils.save(testProvider);
+        ProviderUtils.save(testProviderClone);
 
         Provider provider = ProviderUtils.getTestProvider();
         assertTestProvider(provider);
@@ -33,22 +35,23 @@ public class ProviderUtilsTest extends AbstractTest {
 
     @Test
     public void update() throws Exception {
-        ProviderUtils.save(TEST_PROVIDER);
-        ProviderUtils.save(TEST_PROVIDER_UPDATE);
+        Provider testProvider = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
+        Provider testProviderUpdate = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME_UPDATE);
+
+        ProviderUtils.save(testProvider);
+        ProviderUtils.save(testProviderUpdate);
 
         Provider provider = ProviderUtils.getTestProvider();
-
-        // FIXME: This should not be passing
-        assertTestProvider(provider);
-
-        // FIXME: This should be passing
-        //assertTestProviderUpdate(provider);
+        assertTestProviderUpdate(provider);
     }
 
 
     @Test
     public void getByLabel() throws Exception {
-        ProviderUtils.save(TEST_PROVIDER);
+        Provider testProvider = new Provider(TEST_PROVIDER_LABEL, TEST_PROVIDER_NAME);
+
+        ProviderUtils.save(testProvider);
+
         Provider provider = ProviderUtils.getByLabel(TEST_PROVIDER_LABEL);
         assertTestProvider(provider);
     }
