@@ -1,5 +1,7 @@
 package uk.org.tombolo;
 
+import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -10,6 +12,7 @@ import uk.org.tombolo.core.Attribute;
 
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +65,8 @@ public class DataExportEngineTest extends AbstractTest {
         engine.execute(builder.build(), writer, true);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_name")));
-        assertHasOneTimedValue(writer.toString(), "attr_label");
-        assertTimedValueEquals(writer.toString(), "2011-01-01T00:00", "100.0", "attr_label");
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("E01000001", "attr_label", "2011-01-01T00:00", "100.0"));
     }
 
     @Test
@@ -76,8 +79,8 @@ public class DataExportEngineTest extends AbstractTest {
         engine.execute(builder.build(), writer, true);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("Population density (per hectare) 2015")));
-        assertHasOneTimedValue(writer.toString(), "populationDensity");
-        assertTimedValueEquals(writer.toString(), "2015-12-31T23:59:59", "28.237556363195576", "populationDensity");
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("E09000001", "populationDensity", "2015-12-31T23:59:59", "28.237556363195576"));
 
     }
 
@@ -95,9 +98,8 @@ public class DataExportEngineTest extends AbstractTest {
 
         engine.execute(builder.build(), writer, true);
 
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.percentage_under_1_years_old_label.name", equalTo("percentage_under_1_years_old_name")));
-        assertHasOneTimedValue(writer.toString(), "percentage_under_1_years_old_label");
-        assertTimedValueEquals(writer.toString(), "2011-12-31T23:59:59", "0.012263099219620958", "percentage_under_1_years_old_label");
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"));
     }
 
     @Test
@@ -110,8 +112,9 @@ public class DataExportEngineTest extends AbstractTest {
         engine.execute(builder.build(), writer, true);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.name", equalTo("Aldgate Station")));
-        assertHasOneTimedValue(writer.toString(), "ServingLineCount");
-        assertTimedValueEquals(writer.toString(), "2010-02-04T11:54:08", "3.0", "ServingLineCount");
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("tfl:station:tube:1000003", "ServingLineCount", "2010-02-04T11:54:08", "3.0"));
+
     }
 
     @Test
@@ -153,34 +156,37 @@ public class DataExportEngineTest extends AbstractTest {
 
         engine.execute(builder.build(), writer, true);
 
-        assertHasTimedValue(writer.toString(), "E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958");
-        assertHasTimedValue(writer.toString(), "E08000035", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.013229804986127467");
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"),
+                new TimedValueMatcher("E08000035", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.013229804986127467"));
     }
 
-    private void assertTimedValueEquals(String json, String timestamp, String matches, String attributeLabel) {
-        assertEquals(
-                matches,
-                JsonPath.parse(writer.toString())
-                        .read("$.features[0].properties.attributes." + attributeLabel + ".values['" + timestamp + "']")
-                        .toString());
-    }
-
-    private void assertHasOneTimedValue(String json, String attributeLabel) {
-        assertThat(json,
-                hasJsonPath("$.features[0].properties.attributes." + attributeLabel + ".values[*]", hasSize(1)));
-    }
-
-    private void assertHasTimedValue(String json, String geographyLabel, String attributeName, String timestamp, String value) {
-        List<Map<String, Object>> features = JsonPath.parse(json).read("$.features");
-        assertTrue("No features present", features.size() >= 1);
-        Boolean foundFeature = false;
-        for (Map<String, Object> feature : features) {
-            String featureLabel = (String) JsonPath.parse(feature).read("$.properties.label");
-            if (featureLabel.equals(geographyLabel)) {
-                assertEquals(value, JsonPath.parse(feature).read("$.properties.attributes." + attributeName + ".values['" + timestamp + "']").toString());
-                foundFeature = true;
-            }
+    private void assertHasOnlyTimedValues(String json, TimedValueMatcher ...matchers) {
+        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes..values.*");
+        assertEquals("Number of matchers does not match number of values", matchers.length, allTimedAttributes.size());
+        for (TimedValueMatcher matcher : matchers) {
+            assertHasTimedValue(json, matcher);
         }
-        assertTrue(String.format("No feature with label %s found", geographyLabel), foundFeature);
+    }
+
+    private void assertHasTimedValue(String json, TimedValueMatcher matcher) {
+        ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
+                Filter.filter(Criteria.where("properties.label").is(matcher.geographyLabel)));
+        assertEquals(String.format("Wrong number of features found for label %s", matcher.geographyLabel), 1, features.size());
+        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values['" + matcher.timestamp + "']").toString());
+    }
+
+    private static class TimedValueMatcher {
+        String geographyLabel;
+        String attributeName;
+        String timestamp;
+        String value;
+
+        TimedValueMatcher(String geographyLabel, String attributeName, String timestamp, String value) {
+            this.geographyLabel = geographyLabel;
+            this.attributeName = attributeName;
+            this.timestamp = timestamp;
+            this.value = value;
+        }
     }
 }
