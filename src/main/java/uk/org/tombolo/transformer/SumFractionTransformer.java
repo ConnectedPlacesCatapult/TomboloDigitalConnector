@@ -41,6 +41,10 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 						latestTime = optionalTimedValue.get().getId().getTimestamp();
 				}
 			}
+			if (latestTime.equals(LocalDateTime.MIN)) {
+				// All numerators were missing ... we add no value
+				continue;
+			}
 
 			// Divide by nth attribute
 			Attribute attribute = inputAttributes.get(inputAttributes.size()-1);
@@ -50,6 +54,9 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 				if (timedValueOptional.get().getId().getTimestamp().isAfter(latestTime))
 					// The timestamp is later that any timestamp seen before
 					latestTime = timedValueOptional.get().getId().getTimestamp();
+			}else{
+				// We do not add values if the denominator is not present
+				continue;
 			}
 
 			// Create the transformed output value
