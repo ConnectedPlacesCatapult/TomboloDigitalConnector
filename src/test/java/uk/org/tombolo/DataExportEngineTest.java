@@ -11,6 +11,7 @@ import uk.org.tombolo.core.Attribute;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.Map;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
@@ -27,6 +28,7 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeNamedGeography("E01000001");
         TestFactory.makeNamedGeography("E09000001");
         TestFactory.makeNamedGeography("E01002766");
+        TestFactory.makeNamedGeography("E08000035");
     }
 
     @Test
@@ -135,16 +137,50 @@ public class DataExportEngineTest extends AbstractTest {
         assertEquals("0.012263099219620958", records.get(0).get("provider_label_percentage_under_1_years_old_label_latest_value"));
     }
 
-    private void assertTimedValueEquals(String json, String time, String matches, String attributeLabel) {
+    @Test
+    public void testExportsMultipleGeographyTypes() throws Exception {
+        builder .addGeographySpecification(
+                        new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addGeographySpecification(
+                        new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addTransformSpecification(
+                        new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
+                                .setOutputAttribute("provider", "percentage_under_1_years_old")
+                                .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
+                                .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
+                .addAttributeSpecification("provider_label", "percentage_under_1_years_old_label");
+
+        engine.execute(builder.build(), writer, true);
+
+        assertHasTimedValue(writer.toString(), "E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958");
+        assertHasTimedValue(writer.toString(), "E08000035", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.013229804986127467");
+    }
+
+    private void assertTimedValueEquals(String json, String timestamp, String matches, String attributeLabel) {
         assertEquals(
                 matches,
                 JsonPath.parse(writer.toString())
-                        .read("$.features[0].properties.attributes." + attributeLabel + ".values['" + time + "']")
+                        .read("$.features[0].properties.attributes." + attributeLabel + ".values['" + timestamp + "']")
                         .toString());
     }
 
     private void assertHasOneTimedValue(String json, String attributeLabel) {
         assertThat(json,
                 hasJsonPath("$.features[0].properties.attributes." + attributeLabel + ".values[*]", hasSize(1)));
+    }
+
+    private void assertHasTimedValue(String json, String geographyLabel, String attributeName, String timestamp, String value) {
+        List<Map<String, Object>> features = JsonPath.parse(json).read("$.features");
+        assertTrue("No features present", features.size() >= 1);
+        Boolean foundFeature = false;
+        for (Map<String, Object> feature : features) {
+            String featureLabel = (String) JsonPath.parse(feature).read("$.properties.label");
+            if (featureLabel.equals(geographyLabel)) {
+                assertEquals(value, JsonPath.parse(feature).read("$.properties.attributes." + attributeName + ".values['" + timestamp + "']").toString());
+                foundFeature = true;
+            }
+        }
+        assertTrue(String.format("No feature with label %s found", geographyLabel), foundFeature);
     }
 }
