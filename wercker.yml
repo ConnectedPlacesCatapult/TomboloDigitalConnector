@@ -13,12 +13,22 @@ build:
         javac -version
         gradle -v
     - script:
-      name: Set up test database
+      name: Set up Postgres env variables
       code: |
         export PGHOST=$POSTGIS_PORT_5432_TCP_ADDR
+        export PGPORT=$POSTGIS_PORT_5432_TCP_PORT
         export PGUSER=postgres
         export PGPASSWORD=postgres
-        sleep 10
+    - script:
+      name: Wait for Postgres to come up
+      code: |
+        while ! psql -c "\l"; do
+          echo "PostgresSQL unavailable, waiting..."
+          sleep 3
+        done
+    - script:
+      name: Set up test database
+      code: |
         createdb tombolo_test
         psql -d tombolo_test < src/main/resources/sql/create_database.sql
         psql -d tombolo_test < src/test/resources/sql/initial_fixtures.sql
