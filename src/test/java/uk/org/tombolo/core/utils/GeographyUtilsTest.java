@@ -9,9 +9,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.sun.jna.platform.unix.X11;
+import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Geography;
 import uk.org.tombolo.core.GeographyType;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
@@ -20,12 +22,17 @@ import uk.org.tombolo.execution.spec.GeographySpecification;
 
 public class GeographyUtilsTest extends AbstractTest {
 
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E09000001");
+	}
+
 	@Test
 	public void testGetGeographyByLabel(){
-		Geography geography = GeographyUtils.getGeographyByLabel("E09000026");
+		Geography geography = GeographyUtils.getGeographyByLabel("E09000001");
 		
-		assertEquals("E09000026", geography.getLabel());
-		assertEquals("Redbridge", geography.getName());
+		assertEquals("E09000001", geography.getLabel());
+		assertEquals("City of London", geography.getName());
 	}
 	
 	@Test
@@ -37,7 +44,7 @@ public class GeographyUtilsTest extends AbstractTest {
 		// FIXME: This was based on the local authorities shapefile that magically disappeared from the web 
 		//assertEquals(380, localAuthorities.size());
 		
-		assertEquals(174, localAuthorities.size());
+		assertEquals(1, localAuthorities.size());
 	}
 	
 	@Test
@@ -46,7 +53,7 @@ public class GeographyUtilsTest extends AbstractTest {
 		String labelPattern = "E09%";
 		List<Geography> londonBoroughs = GeographyUtils.getGeographyByTypeAndLabelPattern(localAuthority, labelPattern);
 		
-		assertEquals(33, londonBoroughs.size());
+		assertEquals(1, londonBoroughs.size());
 	}
 
 	@Test
@@ -63,16 +70,16 @@ public class GeographyUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetGeographyBySpecificationNameSearch() throws Exception {
-		DatasetSpecification spec = makeDatasetSpecification("name", "%ham", "localAuthority", "uk.gov.london", "populationDensity");
+		DatasetSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity");
 		List<Geography> geographies = GeographyUtils.getGeographyBySpecification(spec);
-		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %ham", geographies.get(0).getName().contains("ham"));
+		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %don", geographies.get(0).getName().contains("don"));
 	}
 
 	@Test
 	public void testGetGeographyBySpecificationWithGeography() throws Exception {
-		GeographySpecification spec = makeDatasetSpecification("name", "%ham", "localAuthority", "uk.gov.london", "populationDensity").getGeographySpecification().get(0);
+		GeographySpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity").getGeographySpecification().get(0);
 		List<Geography> geographies = GeographyUtils.getGeographyBySpecification(spec);
-		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %ham", geographies.get(0).getName().contains("ham"));
+		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %don", geographies.get(0).getName().contains("don"));
 	}
 
 	private DatasetSpecification makeDatasetSpecification(String geographyAttribute, String geographyAttributePattern, String geographyType, String attributeProvider, String attributeName) {

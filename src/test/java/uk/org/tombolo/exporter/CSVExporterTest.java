@@ -26,6 +26,11 @@ import static uk.org.tombolo.execution.spec.GeographySpecification.*;
 public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E09000001");
+	}
+
 	@Test
 	public void testWrite() throws Exception {
 		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");

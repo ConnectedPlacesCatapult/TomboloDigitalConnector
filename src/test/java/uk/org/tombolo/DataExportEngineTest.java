@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
 
@@ -20,6 +21,13 @@ public class DataExportEngineTest extends AbstractTest {
     DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();
+
+    @Before
+    public void addGeography() {
+        TestFactory.makeNamedGeography("E01000001");
+        TestFactory.makeNamedGeography("E09000001");
+        TestFactory.makeNamedGeography("E01002766");
+    }
 
     @Test
     public void testReturnsEmptyOnBlankSpec() throws Exception {

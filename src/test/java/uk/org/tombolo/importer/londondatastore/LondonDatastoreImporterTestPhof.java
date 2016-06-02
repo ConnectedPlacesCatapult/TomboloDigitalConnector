@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
@@ -29,6 +30,11 @@ public class LondonDatastoreImporterTestPhof extends AbstractTest {
 		importer = new LondonDatastoreImporter();
 		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
+	}
+
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E09000001");
 	}
 
 	@Test
@@ -59,7 +65,7 @@ public class LondonDatastoreImporterTestPhof extends AbstractTest {
 	@Test
 	public void testImportDatasource() throws Exception{
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
-		assertEquals(30908, datapoints);
+		assertEquals(233, datapoints);
 	}
 	
 }
