@@ -15,7 +15,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -133,6 +133,102 @@ public class SumFractionTransformerTest extends AbstractTest {
 		assertEquals(t3, values.get(2).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.3d, values.get(2).getValue(), 0.001d);
+	}
+
+	@Test
+	public void testTransformNonExisting() {
+		TimedValueUtils utils = mock(TimedValueUtils.class);
+		when(utils.getLatestByGeographyAndAttribute(any(Geography.class), any(Attribute.class)))
+				.thenReturn(Optional.empty());
+		transformer.setTimedValueUtils(utils);
+
+		List<Geography> geographies = new ArrayList<Geography>();
+		geographies.add(place1);
+
+		List<Attribute> inputAttributes = new ArrayList<Attribute>();
+		inputAttributes.add(threeYearOlds);
+		inputAttributes.add(fourYearOlds);
+		inputAttributes.add(everybody);
+
+		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+
+		assertEquals(0,values.size());
+	}
+
+	@Test
+	public void testTransformNonExistingDenominator() {
+		TimedValueUtils utils = mock(TimedValueUtils.class);
+		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
+		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
+		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+				.thenReturn(Optional.empty());
+		transformer.setTimedValueUtils(utils);
+
+		List<Geography> geographies = new ArrayList<Geography>();
+		geographies.add(place1);
+
+		List<Attribute> inputAttributes = new ArrayList<Attribute>();
+		inputAttributes.add(threeYearOlds);
+		inputAttributes.add(fourYearOlds);
+		inputAttributes.add(everybody);
+
+		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+
+		assertEquals(0,values.size());
+	}
+
+	@Test
+	public void testTransformNonExistingNumerator() {
+		TimedValueUtils utils = mock(TimedValueUtils.class);
+		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
+		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+				.thenReturn(Optional.empty());
+		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
+		transformer.setTimedValueUtils(utils);
+
+		List<Geography> geographies = new ArrayList<Geography>();
+		geographies.add(place1);
+
+		List<Attribute> inputAttributes = new ArrayList<Attribute>();
+		inputAttributes.add(threeYearOlds);
+		inputAttributes.add(fourYearOlds);
+		inputAttributes.add(everybody);
+
+		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+
+		// This is controversial
+		// We could decide to return no value since one of the numerator values was missing
+		assertEquals(1,values.size());
+		assertEquals(.75d, values.get(0).getValue(),0.001d);
+	}
+
+	@Test
+	public void testTransformNonExistingNumerators() {
+		TimedValueUtils utils = mock(TimedValueUtils.class);
+		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+				.thenReturn(Optional.empty());
+		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+				.thenReturn(Optional.empty());
+		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
+		transformer.setTimedValueUtils(utils);
+
+		List<Geography> geographies = new ArrayList<Geography>();
+		geographies.add(place1);
+
+		List<Attribute> inputAttributes = new ArrayList<Attribute>();
+		inputAttributes.add(threeYearOlds);
+		inputAttributes.add(fourYearOlds);
+		inputAttributes.add(everybody);
+
+		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+
+		// Both numerators are missing
+		assertEquals(0,values.size());
 	}
 
 	// FIXME: Add more corner cases, especially for missing values
