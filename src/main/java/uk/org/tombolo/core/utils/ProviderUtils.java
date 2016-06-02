@@ -3,8 +3,7 @@ package uk.org.tombolo.core.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 
 import uk.org.tombolo.core.Provider;
@@ -12,7 +11,7 @@ import uk.org.tombolo.core.Provider;
 public class ProviderUtils {
 	public static Provider getTestProvider(){
 		return HibernateUtil.withSession(session -> {
-			return (Provider)session.load(Provider.class, "uk.org.tombolo.test");
+			return (Provider)session.get(Provider.class, "uk.org.tombolo.test");
 		});
 	}
 	
@@ -20,7 +19,12 @@ public class ProviderUtils {
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
 			// FIXME: This might be inefficient if we are updating the provider over and over again without actually changing it
-			session.saveOrUpdate(provider);
+			Provider savedProvider = (Provider) session.get(Provider.class, provider.getLabel());
+			if (savedProvider != null) {
+				session.update(session.merge(provider));
+			} else {
+				session.save(provider);
+			}
 			session.getTransaction().commit();
 		});
 	}
