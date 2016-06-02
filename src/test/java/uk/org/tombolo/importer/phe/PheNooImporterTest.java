@@ -8,12 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 
 public class PheNooImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "BMI_categories_2012-2014";
 	PheNooImporter importer = new PheNooImporter();
+
+	@Before
+	public void addGeography() {
+		TestFactory.makeNamedGeography("E09000001");
+	}
 
 	@Before
 	public void setDownloadUtils() {
@@ -33,6 +39,6 @@ public class PheNooImporterTest extends AbstractTest {
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
 		
 		//FIXME: Find a way to match Gateshead etc.
-		assertEquals(5*(174-24)*1, datapoints);
+		assertEquals(5, datapoints);
 	}
 }
