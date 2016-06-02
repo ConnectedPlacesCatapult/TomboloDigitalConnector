@@ -1,0 +1,12 @@
+box: java
+
+build:
+  steps:
+    - script:
+        name: Show base information
+        code: |
+            echo $JAVA_HOME
+            java -version
+            javac -version
+    - valery1707/gradle:
+        tasks: clean build copyDeps
