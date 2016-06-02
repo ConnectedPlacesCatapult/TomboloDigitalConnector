@@ -1,12 +1,28 @@
-box: java
-
+box: fcclab/tombolo
+services:
+  - id: mdillon/postgis:9.5
+    env:
+      POSTGRES_PASSWORD: postgres
 build:
   steps:
     - script:
-        name: Show base information
-        code: |
-            echo $JAVA_HOME
-            java -version
-            javac -version
-    - valery1707/gradle:
-        tasks: clean build copyDeps
+      name: Show basic information
+      code: |
+        echo $JAVA_HOME
+        java -version
+        javac -version
+        gradle -v
+    - script:
+      name: Set up test database
+      code: |
+        export PGHOST=$POSTGIS_PORT_5432_TCP_ADDR
+        export PGUSER=postgres
+        export PGPASSWORD=postgres
+        createdb tombolo_test
+        psql -d tombolo_test < src/main/resources/sql/create_database.sql
+        psql -d tombolo_test < src/test/resources/sql/initial_fixtures.sql
+    - script:
+      name: Run gradle build & test
+      code: |
+        export DATABASE_URI=jdbc:postgresql://$POSTGIS_PORT_5432_TCP_ADDR:$POSTGIS_PORT_5432_TCP_PORT/tombolo_test
+        gradle -s clean build copyDeps
