@@ -41,9 +41,6 @@ public class GeographyUtilsTest extends AbstractTest {
 		String labelPattern = null;
 		List<Geography> localAuthorities = GeographyUtils.getGeographyByTypeAndLabelPattern(localAuthority, labelPattern);
 		
-		// FIXME: This was based on the local authorities shapefile that magically disappeared from the web 
-		//assertEquals(380, localAuthorities.size());
-		
 		assertEquals(1, localAuthorities.size());
 	}
 	

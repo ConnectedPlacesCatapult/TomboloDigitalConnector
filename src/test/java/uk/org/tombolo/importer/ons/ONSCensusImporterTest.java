@@ -19,6 +19,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 	@Before
 	public void addGeography() {
 		TestFactory.makeNamedGeography("E01002766");
+		TestFactory.makeNamedGeography("E08000035");
 	}
 	
 	@Test
@@ -56,7 +57,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		Datasource datasource = importer.getDatasource(datasourceId);		
 		int count = importer.importDatasource(datasource);
 		
-		assertEquals(3, count);
+		assertEquals(3 + 3, count);
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
 		assertEquals("Area (Hectares)", attribute.getName());
