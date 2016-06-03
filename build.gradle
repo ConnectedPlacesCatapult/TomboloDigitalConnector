@@ -52,3 +52,7 @@ task copyDeps(type: Copy) {
   from configurations.runtime
   into 'build/dependency-cache/'
 }
+
+test {
+  maxHeapSize = "1024m"
+}
