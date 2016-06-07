@@ -17,8 +17,8 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyTypeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
@@ -41,9 +41,9 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 		
 		int geographyCount = 0;
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+			SubjectType subjectType = SubjectTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 			log.info("Getting geographies of type {} ({})", subjectType.getName(), subjectType.getLabel());
-			List<Subject> geographyList = GeographyUtils
+			List<Subject> geographyList = SubjectUtils
 					.getGeographyBySpecification(geographySpecification);
 			String geoService = geographySpecification.getAttributes().get("service");
 			String geoProvider = geographySpecification.getAttributes().get("provider");

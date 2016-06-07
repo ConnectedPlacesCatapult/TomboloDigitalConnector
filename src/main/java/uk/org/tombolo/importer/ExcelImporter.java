@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 
@@ -335,7 +335,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 
 	private Subject getGeographyByLabel(Map<String, Subject> geographyCache, String label) {
 		if (!geographyCache.containsKey(label)) {
-			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
+			geographyCache.put(label, SubjectUtils.getGeographyByLabel(label));
 		}
 
 		return geographyCache.get(label);

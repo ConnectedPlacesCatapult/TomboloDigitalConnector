@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
 public class TimedValueTest extends AbstractTest {
@@ -20,7 +20,7 @@ public class TimedValueTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			Transaction transaction = session.beginTransaction();
 
-			Subject geography = GeographyUtils.getTestGeography();
+			Subject geography = SubjectUtils.getTestGeography();
 
 			Attribute attribute = AttributeUtils.getTestAttribute();
 

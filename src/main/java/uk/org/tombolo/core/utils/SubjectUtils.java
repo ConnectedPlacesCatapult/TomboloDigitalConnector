@@ -13,7 +13,7 @@ import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
 
-public class GeographyUtils {
+public class SubjectUtils {
 
 	public static Subject getGeographyByLabel(String label){
 		return HibernateUtil.withSession(session -> {
@@ -80,7 +80,7 @@ public class GeographyUtils {
 	}
 
 	public static Criteria criteriaFromGeographySpecification(Session session, GeographySpecification geographySpecification) {
-		SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+		SubjectType subjectType = SubjectTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 		Criteria criteria = session.createCriteria(Subject.class);
 		criteria.add(Restrictions.eq("subjectType", subjectType));
 

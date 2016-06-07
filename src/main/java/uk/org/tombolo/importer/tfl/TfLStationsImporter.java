@@ -27,8 +27,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyTypeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.importer.Importer;
 
@@ -114,7 +114,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 				geographies.add(new Subject(poiType, stationLabel, stationName, point));
 			}
-			GeographyUtils.save(geographies);
+			SubjectUtils.save(geographies);
 
 			// Timed Values
 			List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -122,7 +122,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 				String stationLabel = stationLabelFromNode(station);
-				Subject geography = GeographyUtils.getGeographyByLabel(stationLabel);
+				Subject geography = SubjectUtils.getGeographyByLabel(stationLabel);
 
 				// Serving Line Count
 				NodeList servingLineList = (NodeList) xpath.evaluate("./servingLines/servingLine", station, XPathConstants.NODESET);
@@ -153,10 +153,10 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	private SubjectType getGeographyType(GeographyTypeName geographyTypeName){
 		switch(geographyTypeName){
 		case TfLStation:
-			SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
+			SubjectType subjectType = SubjectTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
 			if (subjectType == null || subjectType.getLabel() == null){
 				subjectType = new SubjectType(geographyTypeName.name(), "Transport for London Station");
-				GeographyTypeUtils.save(subjectType);
+				SubjectTypeUtils.save(subjectType);
 			}
 			return subjectType;
 		}

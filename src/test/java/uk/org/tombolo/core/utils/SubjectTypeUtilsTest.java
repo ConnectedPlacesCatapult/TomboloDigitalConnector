@@ -11,7 +11,7 @@ public class SubjectTypeUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetGeographyTypeByLabel(){
-		SubjectType lsoa = GeographyTypeUtils.getGeographyTypeByLabel("lsoa");
+		SubjectType lsoa = SubjectTypeUtils.getGeographyTypeByLabel("lsoa");
 		assertEquals("lsoa", lsoa.getLabel());
 		assertEquals("Lower Layer Super Output Area", lsoa.getName());
 	}

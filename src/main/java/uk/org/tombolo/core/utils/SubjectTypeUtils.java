@@ -2,7 +2,7 @@ package uk.org.tombolo.core.utils;
 
 import uk.org.tombolo.core.SubjectType;
 
-public class GeographyTypeUtils {
+public class SubjectTypeUtils {
 	public static SubjectType getGeographyTypeByLabel(String label){
 		return HibernateUtil.withSession(session -> {
 			return (SubjectType) session.get(SubjectType.class, label);

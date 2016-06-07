@@ -19,7 +19,7 @@ public class CSVExporter implements Exporter {
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 		printer.printRecord(columnNames);
 
-		for (Subject geography : GeographyUtils.getGeographyBySpecification(datasetSpecification)) {
+		for (Subject geography : SubjectUtils.getGeographyBySpecification(datasetSpecification)) {
 			printer.printRecord(
 					tabulateGeographyMap(columnNames,
 							flattenGeography(attributes, geography)));

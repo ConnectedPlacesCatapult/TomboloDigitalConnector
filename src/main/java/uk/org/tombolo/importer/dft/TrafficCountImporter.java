@@ -21,8 +21,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyTypeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
@@ -165,7 +165,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		SubjectType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
+		SubjectType sensorType = SubjectTypeUtils.getGeographyTypeByLabel("sensor");
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
@@ -199,10 +199,10 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 				Subject geography = new Subject(sensorType, label, name, point);
 				List<Subject> geographyList = new ArrayList<Subject>();
 				geographyList.add(geography);
-				GeographyUtils.save(geographyList);	
+				SubjectUtils.save(geographyList);
 			}
 			
-			Subject geography = GeographyUtils.getGeographyByLabel(label);
+			Subject geography = SubjectUtils.getGeographyByLabel(label);
 			LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 			// Pedal cycles

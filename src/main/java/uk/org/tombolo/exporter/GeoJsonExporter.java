@@ -12,7 +12,7 @@ import org.geotools.geojson.geom.GeometryJSON;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
@@ -31,7 +31,7 @@ public class GeoJsonExporter implements Exporter {
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
 		int geographyCount = 0;
-		List<Subject> geographyList = GeographyUtils.getGeographyBySpecification(datasetSpecification);
+		List<Subject> geographyList = SubjectUtils.getGeographyBySpecification(datasetSpecification);
 		for (Subject geography : geographyList){
 			// Geography is an a polygon or point for which data is to be output
 
