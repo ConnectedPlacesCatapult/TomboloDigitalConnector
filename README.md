@@ -1,6 +1,9 @@
-The Tombolo Digital Connector is a piece of software to combine urban datasets and urban models.
+# Tombolo Digital Connector
 
-# Build
+The Tombolo Digital Connector is a piece of software to combine urban datasets
+and urban models.
+
+## Build
 
 Build the Digital Connector with or without running the unit tests
 
@@ -15,45 +18,66 @@ For Eclipse users the following command builds
 gradle cleanEclipse eclipse
 ```
 
-# Quick start
+## Quick start
 
-## Create database and load initial fixtures
+### Set up main database
 
-The following scripts will delete the existing tables in the tombolo database and create a new empty copy, wiht some initial fixtures.
+First copy and amend the example configuration file at
+`/src/main/resources/DBConnection.properties.example` to
+`/src/main/resources/DBConnection.properties`.
+
+To create a user and database with the default values in the example file:
 
 ```bash
-createdb tombolo
-psql -d tombolo < src/main/resources/sql/create_database.sql
-psql -d tombolo < src/main/resources/sql/inital_fixtures.sql
+# Omit if you have set up your own database
+
+createuser tombolo
+createdb -O tombolo tombolo
+psql -d tombolo -c "CREATE EXTENSION postgis;"
 ```
 
-## Load LSOA
+The following scripts will delete the existing tables in the tombolo database
+and create a new empty copy, with some initial fixtures.
+
 
 ```bash
+# Create DB tables and load initial fixtures
+
+psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
+psql -d tombolo -U tombolo < src/main/resources/sql/initial_fixtures.sql
+```
+
+```bash
+# Load LSOAs, MSOAs, LAs
+
 sh scripts/loadLsoa.sh
-```
-
-## Load MSOA
-
-```bash
 sh scripts/loadMsoa.sh
-```
-
-## Load Local Authorities
-
-```bash
 sh scripts/loadLa.sh
 ```
 
 ### Set up test database
 
+To create the test user and database:
+
 ```bash
-createdb tombolo_test
-psql -d tombolo_test < src/main/resources/sql/create_database.sql
-psql -d tombolo_test < src/test/resources/sql/initial_fixtures.sql
+# Omit if you have set up your own database
+
+createuser tombolo_test
+createdb -O tombolo_test tombolo_test
+psql -d tombolo_test -c "CREATE EXTENSION postgis;"
 ```
 
-### Continuous Integration
+The following scripts will delete the existing tables in the tombolo_test database
+and create a new empty copy, with some initial fixtures.
+
+```bash
+# Create DB tables and load initial fixtures
+
+psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql
+psql -d tombolo_test -U tombolo_test < src/test/resources/sql/initial_fixtures.sql
+```
+
+## Continuous Integration
 
 We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
 against the CI server automatically. If you don't have access, you can use the
@@ -79,13 +103,13 @@ docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
 ```
 
-# Example executions
+## Example execution
 
-Exports the London borough profiles form OrganiCity
+Exports the London borough profiles from OrganiCity
 
 ```bash
 gradle clean build copyDeps -x test
-java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
+java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
 	uk.org.tombolo.DataExportRunner \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
 	organicity-borough-profiles.json \
@@ -93,7 +117,7 @@ java -cp build/libs/TomboloDigitalConnector.jar:build/dependency-cache/* \
 cat organicity-borough-profiles.json | json_pp
 ```
 
-# Useful database queries
+## Useful database queries
 
 This sections contain a number of useful database queries that should at some point be integrated into the connector main code
 
@@ -116,7 +140,7 @@ Attribute and value count per subject type and provider
 psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label, provider_label'
 ```
 
-# Database geo unit transformation
+### Database geo unit transformation
 
 This command might come handy when we start writing the data exporters
 

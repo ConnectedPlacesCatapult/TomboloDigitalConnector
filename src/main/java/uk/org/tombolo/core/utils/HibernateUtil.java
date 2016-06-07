@@ -41,15 +41,26 @@ public class HibernateUtil {
         // Create the SessionFactory from hibernate.cfg.xml
         Configuration cfg = new Configuration().configure();
         cfg.addProperties(getDatabaseConnectionProperties());
-
-        if (null != System.getenv("DATABASE_URI")) {
-            cfg.setProperty("hibernate.connection.url", System.getenv("DATABASE_URI"));
-        }
+        applyEnvironmentVariables(cfg);
 
         try {
             return cfg.buildSessionFactory();
         } catch (Exception ex) {
             throw new ServiceConfigurationError("Failed to create SessionFactory", ex);
+        }
+    }
+
+    private static void applyEnvironmentVariables(Configuration cfg) {
+        if (null != System.getenv("DATABASE_URI")) {
+            cfg.setProperty("hibernate.connection.url", System.getenv("DATABASE_URI"));
+        }
+
+        if (null != System.getenv("DATABASE_USERNAME")) {
+            cfg.setProperty("hibernate.connection.username", System.getenv("DATABASE_USERNAME"));
+        }
+
+        if (null != System.getenv("DATABASE_PASSWORD")) {
+            cfg.setProperty("hibernate.connection.password", System.getenv("DATABASE_PASSWORD"));
         }
     }
 
