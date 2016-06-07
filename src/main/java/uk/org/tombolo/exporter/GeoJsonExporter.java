@@ -25,42 +25,42 @@ public class GeoJsonExporter implements Exporter {
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
 
-		// Write beginning of geography list
+		// Write beginning of subject list
 		writer.write("{");
 		writeStringProperty(writer, 0, "type", "FeatureCollection");
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
-		int geographyCount = 0;
-		List<Subject> geographyList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
-		for (Subject geography : geographyList){
-			// Geography is an a polygon or point for which data is to be output
+		int subjectCount = 0;
+		List<Subject> subjectList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
+		for (Subject subject : subjectList){
+			// Subject is an a polygon or point for which data is to be output
 
-			if (geographyCount > 0){
-				// This is not the first geography
+			if (subjectCount > 0){
+				// This is not the first subject
 				writer.write(",\n");
 			}
 
-			// Open geography object
+			// Open subject object
 			writer.write("{");
 			writeStringProperty(writer, 0, "type","Feature");
 
 			// Write geometry
 			GeometryJSON geoJson = new GeometryJSON();
 			StringWriter geoJsonWriter = new StringWriter();
-			geoJson.write(geography.getShape(),geoJsonWriter);
+			geoJson.write(subject.getShape(),geoJsonWriter);
 			writer.write(", \"geometry\" : ");
-			geoJson.write(geography.getShape(), writer);
+			geoJson.write(subject.getShape(), writer);
 
 			// Open property list
 			writeObjectPropertyOpening(writer, 1, "properties", JsonValue.ValueType.OBJECT);
 			int propertyCount = 0;
 
-			// Geography label
-			writeStringProperty(writer, propertyCount, "label", geography.getLabel());
+			// Subject label
+			writeStringProperty(writer, propertyCount, "label", subject.getLabel());
 			propertyCount++;
 
-			// Geography name
-			writeStringProperty(writer, propertyCount, "name", geography.getName());
+			// Subject name
+			writeStringProperty(writer, propertyCount, "name", subject.getName());
 			propertyCount++;
 
 			// Write Attributes
@@ -72,7 +72,7 @@ public class GeoJsonExporter implements Exporter {
 				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 
 				// Write TimedValues
-				writeAttributeProperty(writer, attributeCount, geography, attribute, attributeSpec);
+				writeAttributeProperty(writer, attributeCount, subject, attribute, attributeSpec);
 				attributeCount++;
 			}
 			// Close attribute list
@@ -82,13 +82,13 @@ public class GeoJsonExporter implements Exporter {
 			// Close property list
 			writer.write("}");
 
-			// Close geography object
+			// Close subject object
 			writer.write("}");
 
-			geographyCount++;
+			subjectCount++;
 		}
 		
-		// Write end of geography list
+		// Write end of subject list
 		writer.write("]}");
 	}
 
@@ -126,7 +126,7 @@ public class GeoJsonExporter implements Exporter {
 		}
 	}
 
-	protected void writeAttributeProperty(Writer writer, int propertyCount, Subject geography, Attribute attribute, AttributeSpecification attributeSpec) throws IOException{
+	protected void writeAttributeProperty(Writer writer, int propertyCount, Subject subject, Attribute attribute, AttributeSpecification attributeSpec) throws IOException{
 		// Open attribute
 		writeObjectPropertyOpening(writer, propertyCount, attribute.getLabel(), JsonValue.ValueType.OBJECT);
 		int subPropertyCount = 0;
@@ -154,7 +154,7 @@ public class GeoJsonExporter implements Exporter {
 		
 		// Write timed values
 		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		List<TimedValue> values = timedValueUtils.getBySubjectAndAttribute(geography, attribute);
+		List<TimedValue> values = timedValueUtils.getBySubjectAndAttribute(subject, attribute);
 				
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);

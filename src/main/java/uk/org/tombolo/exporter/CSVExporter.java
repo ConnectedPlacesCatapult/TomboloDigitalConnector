@@ -19,10 +19,10 @@ public class CSVExporter implements Exporter {
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 		printer.printRecord(columnNames);
 
-		for (Subject geography : SubjectUtils.getSubjectBySpecification(datasetSpecification)) {
+		for (Subject subject : SubjectUtils.getSubjectBySpecification(datasetSpecification)) {
 			printer.printRecord(
-					tabulateGeographyMap(columnNames,
-							flattenGeography(attributes, geography)));
+					tabulateSubjectMap(columnNames,
+							flattenSubject(attributes, subject)));
 		}
 	}
 
@@ -38,22 +38,22 @@ public class CSVExporter implements Exporter {
 		return columnNames;
 	}
 
-	// Take the geography/attributes structure and convert it to a key-value map
-	private Map<String, Object> flattenGeography(List<Attribute> attributes, Subject geography) {
+	// Take the subject/attributes structure and convert it to a key-value map
+	private Map<String, Object> flattenSubject(List<Attribute> attributes, Subject subject) {
 		Map<String, Object> row = new HashMap<>();
 
-		row.put("label", geography.getLabel());
-		row.put("name", geography.getName());
-		row.put("geometry", geography.getShape().toString());
+		row.put("label", subject.getLabel());
+		row.put("name", subject.getName());
+		row.put("geometry", subject.getShape().toString());
 
 		for (Attribute attribute : attributes) {
-			row.putAll(getAttributeProperty(geography, attribute));
+			row.putAll(getAttributeProperty(subject, attribute));
 		}
 
 		return row;
 	}
 	
-	private List<String> tabulateGeographyMap(List<String> attributes, Map<String, Object> map) {
+	private List<String> tabulateSubjectMap(List<String> attributes, Map<String, Object> map) {
 		List<String> listRow = new ArrayList<String>();
 
 		for (String attribute : attributes) {
@@ -63,14 +63,14 @@ public class CSVExporter implements Exporter {
 		return listRow;
 	}
 
-	private Map<String, Object> getAttributeProperty(Subject geography, Attribute attribute) {
+	private Map<String, Object> getAttributeProperty(Subject subject, Attribute attribute) {
 		Map<String, Object> property = new HashMap<>();
 
 		property.put(getAttributePropertyName(attribute, "name"), attribute.getName());
 		property.put(getAttributePropertyName(attribute, "provider"), attribute.getProvider().getName());
 
 		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		timedValueUtils.getLatestBySubjectAndAttribute(geography, attribute).ifPresent(
+		timedValueUtils.getLatestBySubjectAndAttribute(subject, attribute).ifPresent(
 				timedValue -> property.put(
 						getAttributePropertyName(attribute, "latest_value"),
 						timedValue.getValue().toString()));

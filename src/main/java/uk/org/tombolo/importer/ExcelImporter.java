@@ -63,7 +63,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	@Override
 	public int importDatasource(Datasource datasource) throws Exception {
-		Map<String, Subject> geographyCache = new HashMap<String, Subject>();
+		Map<String, Subject> subjectCache = new HashMap<String, Subject>();
 		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 
 		// Provider
@@ -108,18 +108,18 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (timestamp == null)
 					continue;
 				
-				// Timed value per geography
+				// Timed value per subject
 				List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 				for (int i = ldsa.startLine; i< ldsa.endLine+1; i++){
 					Row row = sheet.getRow(i);
 
 					Cell cell;
 
-					// Geography
+					// Subject
 					cell = row.getCell(ldsa.keyColumnId);
-					String geographyId = cell.getStringCellValue();
-					Subject geography = getGeographyByLabel(geographyCache, geographyId);
-					if (geography == null)
+					String subjectId = cell.getStringCellValue();
+					Subject subject = getSubjectByLabel(subjectCache, subjectId);
+					if (subject == null)
 						continue;
 					
 					// Value
@@ -128,7 +128,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					//if (value == null)
 					//	continue;
 
-					TimedValue timedValue = new TimedValue(geography,attribute,timestamp,value);
+					TimedValue timedValue = new TimedValue(subject,attribute,timestamp,value);
 					timedValueBuffer.add(timedValue);
 					valueCounter++;
 					
@@ -155,12 +155,12 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (row.getRowNum() ==0)
 					continue;
 				
-				// Geography
+				// Subject
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
-				String geographyId = cell.getStringCellValue();
-				Subject geography = getGeographyByLabel(geographyCache, geographyId);
+				String subjectId = cell.getStringCellValue();
+				Subject subject = getSubjectByLabel(subjectCache, subjectId);
 				
-				if (geography == null)
+				if (subject == null)
 					continue;
 				
 				// Attribute
@@ -187,7 +187,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (value == null)
 					continue;
 				
-				TimedValue timedValue = new TimedValue(geography,attribute,timestamp,value);
+				TimedValue timedValue = new TimedValue(subject,attribute,timestamp,value);
 				timedValueBuffer.add(timedValue);
 				valueCounter++;
 				
@@ -333,12 +333,12 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		return ldsAttributes;
 	}
 
-	private Subject getGeographyByLabel(Map<String, Subject> geographyCache, String label) {
-		if (!geographyCache.containsKey(label)) {
-			geographyCache.put(label, SubjectUtils.getSubjectByLabel(label));
+	private Subject getSubjectByLabel(Map<String, Subject> subjectCache, String label) {
+		if (!subjectCache.containsKey(label)) {
+			subjectCache.put(label, SubjectUtils.getSubjectByLabel(label));
 		}
 
-		return geographyCache.get(label);
+		return subjectCache.get(label);
 	}
 
 	private Attribute getAttributeByProviderAndLabel(Map<String, Attribute> attributeCache, Provider provider, String label) {

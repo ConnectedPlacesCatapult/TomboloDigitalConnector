@@ -24,8 +24,8 @@ public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01000001");
 	}
 
 	@Before

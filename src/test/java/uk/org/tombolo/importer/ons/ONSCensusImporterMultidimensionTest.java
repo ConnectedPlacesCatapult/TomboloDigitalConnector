@@ -17,8 +17,8 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 	private static final String datasourceId = "QS103EW";
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01002766");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01002766");
 	}
 		
 	@Test

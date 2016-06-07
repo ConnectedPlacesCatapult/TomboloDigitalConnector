@@ -8,10 +8,10 @@ public class SubjectSpecificationBuilder implements JSONAware {
     JSONObject jsonSpec;
     JSONArray matchers;
 
-    public SubjectSpecificationBuilder(String geographyType) {
+    public SubjectSpecificationBuilder(String subjectType) {
         jsonSpec = new JSONObject();
         matchers = new JSONArray();
-        jsonSpec.put("subjectType", geographyType);
+        jsonSpec.put("subjectType", subjectType);
         jsonSpec.put("matchers", matchers);
     }
 

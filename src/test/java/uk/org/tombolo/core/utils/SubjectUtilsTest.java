@@ -21,20 +21,20 @@ import uk.org.tombolo.execution.spec.SubjectSpecification;
 public class SubjectUtilsTest extends AbstractTest {
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
-	public void testGetGeographyByLabel(){
-		Subject geography = SubjectUtils.getSubjectByLabel("E09000001");
+	public void testGetSubjectByLabel(){
+		Subject subject = SubjectUtils.getSubjectByLabel("E09000001");
 		
-		assertEquals("E09000001", geography.getLabel());
-		assertEquals("City of London", geography.getName());
+		assertEquals("E09000001", subject.getLabel());
+		assertEquals("City of London", subject.getName());
 	}
 	
 	@Test
-	public void testGetGeographyByTypeAndLabelPatternLocalAuthorities(){
+	public void testGetSubjectByTypeAndLabelPatternLocalAuthorities(){
 		SubjectType localAuthority = SubjectTypeUtils.getSubjectTypeByLabel("localAuthority");
 		String labelPattern = null;
 		List<Subject> localAuthorities = SubjectUtils.getSubjectByTypeAndLabelPattern(localAuthority, labelPattern);
@@ -43,7 +43,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	}
 	
 	@Test
-	public void testGetGeographyByTypeAndLabelPatternLondonBoroughs(){
+	public void testGetSubjectByTypeAndLabelPatternLondonBoroughs(){
 		SubjectType localAuthority = SubjectTypeUtils.getSubjectTypeByLabel("localAuthority");
 		String labelPattern = "E09%";
 		List<Subject> londonBoroughs = SubjectUtils.getSubjectByTypeAndLabelPattern(localAuthority, labelPattern);
@@ -52,36 +52,36 @@ public class SubjectUtilsTest extends AbstractTest {
 	}
 
 	@Test
-	public void testGetGeographyByTypeAndLabelPatternLondonNeighbourhoods(){
+	public void testGetSubjectByTypeAndLabelPatternLondonNeighbourhoods(){
 		// FIXME: Currently we cannot specify this since we do not have the notion of a parent and the lsoas do not have a label pattern
 	}
 
 	@Test
-	public void testGetGeographyBySpecificationLabelSearch() throws Exception {
+	public void testGetSubjectBySpecificationLabelSearch() throws Exception {
 		DatasetSpecification spec = makeDatasetSpecification("label", "E09%", "localAuthority", "uk.gov.london", "populationDensity");
-		List<Subject> geographies = SubjectUtils.getSubjectBySpecification(spec);
-		assertTrue("Label " + geographies.get(0).getLabel() + " matches searched pattern E09%", geographies.get(0).getLabel().contains("E09"));
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
+		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
 	}
 
 	@Test
-	public void testGetGeographyBySpecificationNameSearch() throws Exception {
+	public void testGetSubjectBySpecificationNameSearch() throws Exception {
 		DatasetSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity");
-		List<Subject> geographies = SubjectUtils.getSubjectBySpecification(spec);
-		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %don", geographies.get(0).getName().contains("don"));
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
+		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
 	}
 
 	@Test
-	public void testGetGeographyBySpecificationWithGeography() throws Exception {
+	public void testGetSubjectBySpecificationWithSubject() throws Exception {
 		SubjectSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity").getSubjectSpecification().get(0);
-		List<Subject> geographies = SubjectUtils.getSubjectBySpecification(spec);
-		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %don", geographies.get(0).getName().contains("don"));
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
+		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
 	}
 
-	private DatasetSpecification makeDatasetSpecification(String geographyAttribute, String geographyAttributePattern, String geographyType, String attributeProvider, String attributeName) {
+	private DatasetSpecification makeDatasetSpecification(String subjectAttribute, String subjectAttributePattern, String subjectType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(geographyAttribute, geographyAttributePattern));
-		subjectSpecification.add(new SubjectSpecification(matchers, geographyType));
+		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(subjectAttribute, subjectAttributePattern));
+		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
 		spec.setSubjectSpecification(subjectSpecification);

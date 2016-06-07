@@ -20,13 +20,13 @@ public class TimedValueTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			Transaction transaction = session.beginTransaction();
 
-			Subject geography = SubjectUtils.getTestSubject();
+			Subject subject = SubjectUtils.getTestSubject();
 
 			Attribute attribute = AttributeUtils.getTestAttribute();
 
 			LocalDateTime timestamp = LocalDateTime.now();
 
-			TimedValue tv = new TimedValue(geography, attribute, timestamp, 15.7d);
+			TimedValue tv = new TimedValue(subject, attribute, timestamp, 15.7d);
 			session.save(tv);
 
 			TimedValue testTv = (TimedValue)session.load(TimedValue.class, tv.getId());

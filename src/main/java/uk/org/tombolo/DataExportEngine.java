@@ -39,15 +39,15 @@ public class DataExportEngine implements ExecutionEngine{
 			}
 		}
 
-		// Run transforms over geographies
+		// Run transforms over subjects
 		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
 		for (SubjectSpecification subjectSpec : subjectSpecList) {
-			List<Subject> geographies = SubjectUtils.getSubjectBySpecification(subjectSpec);
+			List<Subject> subjects = SubjectUtils.getSubjectBySpecification(subjectSpec);
 			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
 				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
 				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
 				transformer.setTimedValueUtils(new TimedValueUtils());
-				transformer.transformBySpecification(geographies, transformSpec);
+				transformer.transformBySpecification(subjects, transformSpec);
 			}
 		}
 

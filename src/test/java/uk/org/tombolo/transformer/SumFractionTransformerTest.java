@@ -60,7 +60,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 	public void testTransform() {
 		// FIXME: Consider breaking up into multiple tests
 
-		List<Subject> geographies = Arrays.asList(place1,place2,place3);
+		List<Subject> subjects = Arrays.asList(place1,place2,place3);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,fiveYearOlds,everybody);
 
@@ -100,7 +100,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 		transformer.setTimedValueUtils(utils);
 
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// Three places
 		assertEquals(3, values.size());
@@ -131,11 +131,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Subject> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		assertEquals(0,values.size());
 	}
@@ -151,11 +151,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Subject> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		assertEquals(0,values.size());
 	}
@@ -171,11 +171,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Subject> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// This is controversial
 		// We could decide to return no value since one of the numerator values was missing
@@ -194,11 +194,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Subject> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// Both numerators are missing
 		assertEquals(0,values.size());

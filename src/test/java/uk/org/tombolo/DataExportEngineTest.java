@@ -27,11 +27,11 @@ public class DataExportEngineTest extends AbstractTest {
     Writer writer = new StringWriter();
 
     @Before
-    public void addGeography() {
-        TestFactory.makeNamedGeography("E01000001");
-        TestFactory.makeNamedGeography("E09000001");
-        TestFactory.makeNamedGeography("E01002766");
-        TestFactory.makeNamedGeography("E08000035");
+    public void addSubjectFixtures() {
+        TestFactory.makeNamedSubject("E01000001");
+        TestFactory.makeNamedSubject("E09000001");
+        TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeNamedSubject("E08000035");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testReturnsGeography() throws Exception {
+    public void testReturnsSubject() throws Exception {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         );
@@ -54,7 +54,7 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testReturnsGeographyAndAttribute() throws Exception {
+    public void testReturnsSubjectAndAttribute() throws Exception {
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
@@ -103,7 +103,7 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testRunsOnNewGeographies() throws Exception {
+    public void testRunsOnNewSubjects() throws Exception {
         builder .addSubjectSpecification(
                     new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
@@ -141,7 +141,7 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testExportsMultipleGeographyTypes() throws Exception {
+    public void testExportsMultipleSubjectTypes() throws Exception {
         builder .addSubjectSpecification(
                         new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addSubjectSpecification(
@@ -171,19 +171,19 @@ public class DataExportEngineTest extends AbstractTest {
 
     private void assertHasTimedValue(String json, TimedValueMatcher matcher) {
         ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
-                Filter.filter(Criteria.where("properties.label").is(matcher.geographyLabel)));
-        assertEquals(String.format("Wrong number of features found for label %s", matcher.geographyLabel), 1, features.size());
+                Filter.filter(Criteria.where("properties.label").is(matcher.subjectLabel)));
+        assertEquals(String.format("Wrong number of features found for label %s", matcher.subjectLabel), 1, features.size());
         assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values['" + matcher.timestamp + "']").toString());
     }
 
     private static class TimedValueMatcher {
-        String geographyLabel;
+        String subjectLabel;
         String attributeName;
         String timestamp;
         String value;
 
-        TimedValueMatcher(String geographyLabel, String attributeName, String timestamp, String value) {
-            this.geographyLabel = geographyLabel;
+        TimedValueMatcher(String subjectLabel, String attributeName, String timestamp, String value) {
+            this.subjectLabel = subjectLabel;
             this.attributeName = attributeName;
             this.timestamp = timestamp;
             this.value = value;

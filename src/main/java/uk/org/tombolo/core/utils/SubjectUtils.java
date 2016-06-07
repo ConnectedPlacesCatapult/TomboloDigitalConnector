@@ -35,13 +35,13 @@ public class SubjectUtils {
 	}
 
 	public static List<Subject> getSubjectBySpecification(DatasetSpecification datasetSpecification) {
-		List<Subject> geographies = new ArrayList<>();
+		List<Subject> subjects = new ArrayList<>();
 
 		for(SubjectSpecification subjectSpecification : datasetSpecification.getSubjectSpecification()){
-			geographies.addAll(getSubjectBySpecification(subjectSpecification));
+			subjects.addAll(getSubjectBySpecification(subjectSpecification));
 		}
 
-		return geographies;
+		return subjects;
 	}
 
 

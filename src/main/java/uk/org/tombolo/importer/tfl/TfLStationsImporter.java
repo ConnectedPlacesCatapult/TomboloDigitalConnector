@@ -35,7 +35,7 @@ import uk.org.tombolo.importer.Importer;
 public class TfLStationsImporter extends TfLImporter implements Importer {
 	private static enum DatasourceId {StationList};
 	private static enum AttributeName {ServingLineCount};
-	private static enum GeographyTypeName {TfLStation};
+	private static enum SubjectTypeName {TfLStation};
 
 	Logger log = LoggerFactory.getLogger(TfLStationsImporter.class);
 	
@@ -82,7 +82,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-			SubjectType poiType = getGeographyType(GeographyTypeName.TfLStation);
+			SubjectType poiType = getSubjectType(SubjectTypeName.TfLStation);
 			File xmlFile = downloadUtils.getDatasourceFile(datasource);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -97,7 +97,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			NodeList stations = rootElement.getElementsByTagName("station");
 
 			// Save stations
-			List<Subject> geographies = new ArrayList<Subject>();
+			List<Subject> subjects = new ArrayList<Subject>();
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 
@@ -112,9 +112,9 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				Coordinate coordinate = new Coordinate(longitude,latitude);
 				Point point = geometryFactory.createPoint(coordinate);
 
-				geographies.add(new Subject(poiType, stationLabel, stationName, point));
+				subjects.add(new Subject(poiType, stationLabel, stationName, point));
 			}
-			SubjectUtils.save(geographies);
+			SubjectUtils.save(subjects);
 
 			// Timed Values
 			List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -122,13 +122,13 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 				String stationLabel = stationLabelFromNode(station);
-				Subject geography = SubjectUtils.getSubjectByLabel(stationLabel);
+				Subject subject = SubjectUtils.getSubjectByLabel(stationLabel);
 
 				// Serving Line Count
 				NodeList servingLineList = (NodeList) xpath.evaluate("./servingLines/servingLine", station, XPathConstants.NODESET);
 				double count = Long.valueOf(servingLineList.getLength()).doubleValue();
 				
-				timedValues.add(new TimedValue(geography,servingLines, timestamp, count));
+				timedValues.add(new TimedValue(subject,servingLines, timestamp, count));
 			}
 			int saved = timedValueUtils.save(timedValues);
 
@@ -150,12 +150,12 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		return attributes;
 	}
 
-	private SubjectType getGeographyType(GeographyTypeName geographyTypeName){
-		switch(geographyTypeName){
+	private SubjectType getSubjectType(SubjectTypeName subjectTypeName){
+		switch(subjectTypeName){
 		case TfLStation:
-			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(geographyTypeName.name());
+			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeName.name());
 			if (subjectType == null || subjectType.getLabel() == null){
-				subjectType = new SubjectType(geographyTypeName.name(), "Transport for London Station");
+				subjectType = new SubjectType(subjectTypeName.name(), "Transport for London Station");
 				SubjectTypeUtils.save(subjectType);
 			}
 			return subjectType;

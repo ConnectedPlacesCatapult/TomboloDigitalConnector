@@ -18,7 +18,6 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
 public class LondonDatastoreImporterBaW extends AbstractTest {
 	private static final String DATASOURCE_ID = "walking-cycling-borough";
@@ -26,8 +25,8 @@ public class LondonDatastoreImporterBaW extends AbstractTest {
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Before

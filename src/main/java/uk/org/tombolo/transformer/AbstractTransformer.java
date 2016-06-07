@@ -22,12 +22,12 @@ public abstract class AbstractTransformer implements Transformer {
         this.timedValueUtils = timedValueUtils;
     }
 
-    public void transformBySpecification(List<Subject> geographies, TransformSpecification transformSpecification) {
+    public void transformBySpecification(List<Subject> subjects, TransformSpecification transformSpecification) {
         List<Attribute> inputAttributes = transformSpecification.getInputAttributes();
         Attribute outputAttribute = transformSpecification.getOutputAttribute();
         ProviderUtils.save(outputAttribute.getProvider());
         AttributeUtils.save(outputAttribute);
-        List<TimedValue> timedValues = transform(geographies, inputAttributes, outputAttribute);
+        List<TimedValue> timedValues = transform(subjects, inputAttributes, outputAttribute);
         timedValueUtils.save(timedValues);
     }
 }

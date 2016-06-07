@@ -17,14 +17,14 @@ public interface Transformer {
 	 *  Example: Input attributes may be the population count at certain age and the output attribute
 	 *  might the fraction of the population that is 65 or older.
 	 *
-	 * @param geographies
+	 * @param subjects
 	 * @param inputAttributes
 	 * @param outputAttribute
 	 * @return
 	 */
-	public List<TimedValue> transform(List<Subject> geographies, List<Attribute> inputAttributes, Attribute outputAttribute);
+	public List<TimedValue> transform(List<Subject> subjects, List<Attribute> inputAttributes, Attribute outputAttribute);
 
-	public void transformBySpecification(List<Subject> geographies, TransformSpecification transformSpecification);
+	public void transformBySpecification(List<Subject> subjects, TransformSpecification transformSpecification);
 
 	public void setTimedValueUtils(TimedValueUtils timedValueUtils);
 }

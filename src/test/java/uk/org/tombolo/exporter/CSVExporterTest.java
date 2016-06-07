@@ -27,8 +27,8 @@ public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
@@ -66,9 +66,9 @@ public class CSVExporterTest extends AbstractTest {
 	}
 
 	@Test
-	public void testWriteWithInvalidGeography() throws Exception {
+	public void testWriteWithInvalidSubject() throws Exception {
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "badGeography", "uk.gov.london", "populationDensity"));
+		exporter.write(writer, makeDatasetSpecification("E09%", "badSubject", "uk.gov.london", "populationDensity"));
 		writer.flush();
 
 		assertTrue(getRecords(writer.toString()).isEmpty());
@@ -85,11 +85,11 @@ public class CSVExporterTest extends AbstractTest {
 		assertEquals("uk.gov.london_populationDensity_provider", attributes.get(4));
 	}
 
-	private DatasetSpecification makeDatasetSpecification(String geographyLabelPattern, String geographyType, String attributeProvider, String attributeName) {
+	private DatasetSpecification makeDatasetSpecification(String subjectLabelPattern, String subjectType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", geographyLabelPattern));
-		subjectSpecification.add(new SubjectSpecification(matchers, geographyType));
+		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", subjectLabelPattern));
+		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
 		spec.setSubjectSpecification(subjectSpecification);

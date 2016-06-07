@@ -10,7 +10,7 @@ import uk.org.tombolo.core.SubjectType;
 public class SubjectTypeUtilsTest extends AbstractTest {
 	
 	@Test
-	public void testGetGeographyTypeByLabel(){
+	public void testGetSubjectTypeByLabel(){
 		SubjectType lsoa = SubjectTypeUtils.getSubjectTypeByLabel("lsoa");
 		assertEquals("lsoa", lsoa.getLabel());
 		assertEquals("Lower Layer Super Output Area", lsoa.getName());
