@@ -9,7 +9,7 @@ import uk.org.tombolo.exporter.GeoJsonExporter;
 
 public class DataExportSpecificationBuilder implements JSONAware {
     private JSONObject jsonSpec;
-    private JSONArray geographySpec;
+    private JSONArray subjectSpec;
     private JSONArray datasourceSpec;
     private JSONArray transformSpec;
     private JSONArray attributeSpec;
@@ -17,13 +17,13 @@ public class DataExportSpecificationBuilder implements JSONAware {
     private DataExportSpecificationBuilder() {
         jsonSpec = new JSONObject();
         JSONObject datasetSpec = new JSONObject();
-        geographySpec = new JSONArray();
+        subjectSpec = new JSONArray();
         datasourceSpec = new JSONArray();
         transformSpec = new JSONArray();
         attributeSpec = new JSONArray();
 
         jsonSpec.put("datasetSpecification", datasetSpec);
-        datasetSpec.put("geographySpecification", geographySpec);
+        datasetSpec.put("subjectSpecification", subjectSpec);
         datasetSpec.put("datasourceSpecification", datasourceSpec);
         datasetSpec.put("transformSpecification", transformSpec);
         datasetSpec.put("attributeSpecification", attributeSpec);
@@ -43,8 +43,8 @@ public class DataExportSpecificationBuilder implements JSONAware {
         return jsonSpec.toJSONString();
     }
 
-    public DataExportSpecificationBuilder addGeographySpecification(GeographySpecificationBuilder geographySpecificationBuilder) {
-        geographySpec.add(geographySpecificationBuilder);
+    public DataExportSpecificationBuilder addSubjectSpecification(SubjectSpecificationBuilder subjectSpecificationBuilder) {
+        subjectSpec.add(subjectSpecificationBuilder);
         return this;
     }
 

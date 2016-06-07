@@ -43,8 +43,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsGeography() throws Exception {
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         );
 
         engine.execute(builder.build(), writer, true);
@@ -58,8 +58,8 @@ public class DataExportEngineTest extends AbstractTest {
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         ).addAttributeSpecification("default_provider_label", "attr_label");
 
         engine.execute(builder.build(), writer, true);
@@ -71,8 +71,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testImportsFromLondonDataStore() throws Exception {
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E09000001")
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E09000001")
         ).addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
          .addAttributeSpecification("uk.gov.london", "populationDensity");
 
@@ -86,8 +86,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testTransforms() throws Exception {
-        builder .addGeographySpecification(
-                    new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+        builder .addSubjectSpecification(
+                    new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                     new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
@@ -104,8 +104,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testRunsOnNewGeographies() throws Exception {
-        builder .addGeographySpecification(
-                    new GeographySpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
+        builder .addSubjectSpecification(
+                    new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
                 .addAttributeSpecification("uk.gov.tfl", "ServingLineCount");
 
@@ -121,8 +121,8 @@ public class DataExportEngineTest extends AbstractTest {
     public void testExportsCSV() throws Exception {
         DataExportSpecificationBuilder csvBuilder = DataExportSpecificationBuilder.withCSVExporter();
         csvBuilder
-                .addGeographySpecification(
-                        new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                         new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
@@ -142,10 +142,10 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testExportsMultipleGeographyTypes() throws Exception {
-        builder .addGeographySpecification(
-                        new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
-                .addGeographySpecification(
-                        new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+        builder .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                         new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")

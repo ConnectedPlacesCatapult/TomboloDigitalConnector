@@ -16,7 +16,7 @@ public class DatasetSpecificationTest extends AbstractTest {
 	public void testFromJsonFile() throws FileNotFoundException{
 		DatasetSpecification dsSpec = makeDatasetSpecification();
 		
-		assertEquals(1, dsSpec.getGeographySpecification().size());
+		assertEquals(1, dsSpec.getSubjectSpecification().size());
 		assertEquals(3, dsSpec.getDatasourceSpecification().size());
 		assertEquals(3, dsSpec.getAttributeSpecification().size());
 	}

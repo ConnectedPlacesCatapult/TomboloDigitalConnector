@@ -10,7 +10,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.execution.spec.TransformSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.importer.DownloadUtils;
@@ -40,9 +40,9 @@ public class DataExportEngine implements ExecutionEngine{
 		}
 
 		// Run transforms over geographies
-		List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
-		for (GeographySpecification geographySpec : geographySpecList) {
-			List<Subject> geographies = SubjectUtils.getSubjectBySpecification(geographySpec);
+		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
+		for (SubjectSpecification subjectSpec : subjectSpecList) {
+			List<Subject> geographies = SubjectUtils.getSubjectBySpecification(subjectSpec);
 			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
 				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
 				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();

@@ -22,7 +22,7 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
@@ -40,15 +40,15 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
 		int geographyCount = 0;
-		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(geographySpecification.getGeographyType());
+		for(SubjectSpecification subjectSpecification : datasetSpecification.getSubjectSpecification()){
+			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
 			log.info("Getting geographies of type {} ({})", subjectType.getName(), subjectType.getLabel());
 			List<Subject> geographyList = SubjectUtils
-					.getSubjectBySpecification(geographySpecification);
-			String geoService = geographySpecification.getAttributes().get("service");
-			String geoProvider = geographySpecification.getAttributes().get("provider");
-			String geoGroup = geographySpecification.getAttributes().get("group");
-			String geoType = geographySpecification.getAttributes().get("type");
+					.getSubjectBySpecification(subjectSpecification);
+			String geoService = subjectSpecification.getAttributes().get("service");
+			String geoProvider = subjectSpecification.getAttributes().get("provider");
+			String geoGroup = subjectSpecification.getAttributes().get("group");
+			String geoType = subjectSpecification.getAttributes().get("type");
 			log.info("Writing geographies ...");
 			for (Subject geography : geographyList){
 				// Geography is an a polygon or point for which data is to be output

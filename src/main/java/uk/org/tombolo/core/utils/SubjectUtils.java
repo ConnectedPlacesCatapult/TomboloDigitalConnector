@@ -10,8 +10,8 @@ import org.hibernate.criterion.Restrictions;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 public class SubjectUtils {
 
@@ -37,17 +37,17 @@ public class SubjectUtils {
 	public static List<Subject> getSubjectBySpecification(DatasetSpecification datasetSpecification) {
 		List<Subject> geographies = new ArrayList<>();
 
-		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			geographies.addAll(getSubjectBySpecification(geographySpecification));
+		for(SubjectSpecification subjectSpecification : datasetSpecification.getSubjectSpecification()){
+			geographies.addAll(getSubjectBySpecification(subjectSpecification));
 		}
 
 		return geographies;
 	}
 
 
-	public static List<Subject> getSubjectBySpecification(GeographySpecification geographySpecification) {
+	public static List<Subject> getSubjectBySpecification(SubjectSpecification subjectSpecification) {
 		return HibernateUtil.withSession(session -> {
-			return (List<Subject>) criteriaFromGeographySpecification(session, geographySpecification).list();
+			return (List<Subject>) criteriaFromSubjectSpecification(session, subjectSpecification).list();
 		});
 	}
 	
@@ -79,12 +79,12 @@ public class SubjectUtils {
 		});
 	}
 
-	public static Criteria criteriaFromGeographySpecification(Session session, GeographySpecification geographySpecification) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(geographySpecification.getGeographyType());
+	public static Criteria criteriaFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
 		Criteria criteria = session.createCriteria(Subject.class);
 		criteria.add(Restrictions.eq("subjectType", subjectType));
 
-		for (GeographyMatcher matcher : geographySpecification.getMatchers())
+		for (SubjectMatcher matcher : subjectSpecification.getMatchers())
 			criteria.add(Restrictions.like(matcher.attribute, matcher.pattern));
 
 		return criteria;

@@ -1,7 +1,7 @@
 package uk.org.tombolo.core.utils;
 
 import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.GeographySpecification.*;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 public class SubjectUtilsTest extends AbstractTest {
 
@@ -72,19 +72,19 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetGeographyBySpecificationWithGeography() throws Exception {
-		GeographySpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity").getGeographySpecification().get(0);
+		SubjectSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity").getSubjectSpecification().get(0);
 		List<Subject> geographies = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + geographies.get(0).getName() + " matches searched pattern %don", geographies.get(0).getName().contains("don"));
 	}
 
 	private DatasetSpecification makeDatasetSpecification(String geographyAttribute, String geographyAttributePattern, String geographyType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
-		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher(geographyAttribute, geographyAttributePattern));
-		geographySpecification.add(new GeographySpecification(matchers, geographyType));
+		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
+		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(geographyAttribute, geographyAttributePattern));
+		subjectSpecification.add(new SubjectSpecification(matchers, geographyType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
-		spec.setGeographySpecification(geographySpecification);
+		spec.setSubjectSpecification(subjectSpecification);
 		spec.setAttributeSpecification(attributeSpecification);
 		return spec;
 	}

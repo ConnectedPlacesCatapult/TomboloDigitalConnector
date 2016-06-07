@@ -1,7 +1,7 @@
 package uk.org.tombolo.exporter;
 
 import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.GeographySpecification.*;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.*;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -21,7 +21,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 
 public class GeoJsonExporterTest extends AbstractTest {
@@ -39,12 +39,12 @@ public class GeoJsonExporterTest extends AbstractTest {
 
 		Writer writer = new StringWriter();
 		DatasetSpecification spec = new DatasetSpecification();
-		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", "E09000001"));
-		geographySpecification.add(new GeographySpecification(matchers, "localAuthority"));
+		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
+		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", "E09000001"));
+		subjectSpecification.add(new SubjectSpecification(matchers, "localAuthority"));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification("default_provider_label", "attr_label"));
-		spec.setGeographySpecification(geographySpecification);
+		spec.setSubjectSpecification(subjectSpecification);
 		spec.setAttributeSpecification(attributeSpecification);
 		
 		exporter.write(writer, spec);
