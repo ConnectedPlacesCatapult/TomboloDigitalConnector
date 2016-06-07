@@ -14,7 +14,7 @@ public class SubjectTypeTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			SubjectType unknown = (SubjectType)session.load(SubjectType.class, "unknown");
 			assertEquals("unknown", unknown.getLabel());
-			assertEquals("Unknown Geography Type", unknown.getName());
+			assertEquals("Unknown Subject Type", unknown.getName());
 
 			SubjectType lsoa = (SubjectType)session.load(SubjectType.class, "lsoa");
 			assertEquals("lsoa", lsoa.getLabel());

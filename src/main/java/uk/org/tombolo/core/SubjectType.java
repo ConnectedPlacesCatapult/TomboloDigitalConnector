@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="geography_type")
+@Table(name="subject_type")
 public class SubjectType {
 	String label;
 	String name;

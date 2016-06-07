@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Entity
-@Table(name="geography_object")
+@Table(name="subject_object")
 public class Subject {
 	public static final int SRID = 4326;
 
@@ -36,8 +36,8 @@ public class Subject {
 	}
 
 	@Id
-	@SequenceGenerator(name="geography_id_sequence",sequenceName="geography_id_sequence", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="geography_id_sequence")
+	@SequenceGenerator(name="subject_id_sequence",sequenceName="subject_id_sequence", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="subject_id_sequence")
 	@Column(name="id")
 	public Integer getId() {
 		return id;
@@ -48,7 +48,7 @@ public class Subject {
 	}
 
 	@ManyToOne()
-	@JoinColumn(name="geography_type_label")
+	@JoinColumn(name="subject_type_label")
 	public SubjectType getSubjectType() {
 		return subjectType;
 	}

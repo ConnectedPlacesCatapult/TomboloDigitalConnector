@@ -15,7 +15,7 @@ public class TimedValueId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name="geography_id")
+	@JoinColumn(name="subject_id")
 	Subject subject;
 
 	@ManyToOne
