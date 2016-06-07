@@ -18,6 +18,8 @@ public class DataExportRunner {
         String outputFile = args[1];
         Boolean forceImport = Boolean.parseBoolean(args[2]);
 
+        HibernateUtil.startup();
+
         DataExportEngine engine = new DataExportEngine(new DownloadUtils());
 
         try (Writer writer = getOutputWriter(outputFile)) {
