@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
@@ -22,10 +22,10 @@ public class GeographyUtils {
 		});
 	}
 	
-	public static List<Subject> getGeographyByTypeAndLabelPattern(GeographyType geographyType, String labelPattern){
+	public static List<Subject> getGeographyByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
 			Criteria criteria = session.createCriteria(Subject.class);
-			criteria = criteria.add(Restrictions.eq("geographyType", geographyType));
+			criteria = criteria.add(Restrictions.eq("subjectType", subjectType));
 			if (labelPattern != null)
 				criteria = criteria.add(Restrictions.like("label", labelPattern));
 
@@ -80,9 +80,9 @@ public class GeographyUtils {
 	}
 
 	public static Criteria criteriaFromGeographySpecification(Session session, GeographySpecification geographySpecification) {
-		GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+		SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 		Criteria criteria = session.createCriteria(Subject.class);
-		criteria.add(Restrictions.eq("geographyType", geographyType));
+		criteria.add(Restrictions.eq("subjectType", subjectType));
 
 		for (GeographyMatcher matcher : geographySpecification.getMatchers())
 			criteria.add(Restrictions.like(matcher.attribute, matcher.pattern));

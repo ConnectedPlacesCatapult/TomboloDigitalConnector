@@ -13,7 +13,7 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
@@ -35,7 +35,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetGeographyByTypeAndLabelPatternLocalAuthorities(){
-		GeographyType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
+		SubjectType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
 		String labelPattern = null;
 		List<Subject> localAuthorities = GeographyUtils.getGeographyByTypeAndLabelPattern(localAuthority, labelPattern);
 		
@@ -44,7 +44,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetGeographyByTypeAndLabelPatternLondonBoroughs(){
-		GeographyType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
+		SubjectType localAuthority = GeographyTypeUtils.getGeographyTypeByLabel("localAuthority");
 		String labelPattern = "E09%";
 		List<Subject> londonBoroughs = GeographyUtils.getGeographyByTypeAndLabelPattern(localAuthority, labelPattern);
 		

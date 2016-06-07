@@ -165,7 +165,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		GeographyType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
+		SubjectType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;

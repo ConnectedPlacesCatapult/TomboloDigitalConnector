@@ -82,7 +82,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-			GeographyType poiType = getGeographyType(GeographyTypeName.TfLStation);
+			SubjectType poiType = getGeographyType(GeographyTypeName.TfLStation);
 			File xmlFile = downloadUtils.getDatasourceFile(datasource);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -150,15 +150,15 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		return attributes;
 	}
 
-	private GeographyType getGeographyType(GeographyTypeName geographyTypeName){
+	private SubjectType getGeographyType(GeographyTypeName geographyTypeName){
 		switch(geographyTypeName){
 		case TfLStation:
-			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
-			if (geographyType == null || geographyType.getLabel() == null){
-				geographyType = new GeographyType(geographyTypeName.name(), "Transport for London Station");
-				GeographyTypeUtils.save(geographyType);
+			SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
+			if (subjectType == null || subjectType.getLabel() == null){
+				subjectType = new SubjectType(geographyTypeName.name(), "Transport for London Station");
+				GeographyTypeUtils.save(subjectType);
 			}
-			return geographyType;
+			return subjectType;
 		}
 		return null;
 	}

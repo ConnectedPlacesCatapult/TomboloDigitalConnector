@@ -7,15 +7,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="geography_type")
-public class GeographyType {
+public class SubjectType {
 	String label;
 	String name;
 	
-	public GeographyType() {
+	public SubjectType() {
 		
 	}
 	
-	public GeographyType(String label, String name){
+	public SubjectType(String label, String name){
 		this.label = label;
 		this.name = name;
 	}

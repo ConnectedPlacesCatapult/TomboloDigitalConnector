@@ -14,7 +14,7 @@ import com.vividsolutions.jts.geom.Point;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.GeographyType;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyTypeUtils;
@@ -41,8 +41,8 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 		
 		int geographyCount = 0;
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
-			log.info("Getting geographies of type {} ({})", geographyType.getName(), geographyType.getLabel());
+			SubjectType subjectType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+			log.info("Getting geographies of type {} ({})", subjectType.getName(), subjectType.getLabel());
 			List<Subject> geographyList = GeographyUtils
 					.getGeographyBySpecification(geographySpecification);
 			String geoService = geographySpecification.getAttributes().get("service");

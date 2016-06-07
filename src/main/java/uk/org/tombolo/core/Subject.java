@@ -20,7 +20,7 @@ public class Subject {
 	public static final int SRID = 4326;
 
 	Integer id;
-	GeographyType geographyType;
+	SubjectType subjectType;
 	String label;
 	String name;
 
@@ -28,8 +28,8 @@ public class Subject {
 		
 	public Subject(){}
 	
-	public Subject(GeographyType geographyType, String label, String name, Geometry shape){
-		this.geographyType = geographyType;
+	public Subject(SubjectType subjectType, String label, String name, Geometry shape){
+		this.subjectType = subjectType;
 		this.label = label;
 		this.name = name;
 		this.shape = shape;
@@ -49,12 +49,12 @@ public class Subject {
 
 	@ManyToOne()
 	@JoinColumn(name="geography_type_label")
-	public GeographyType getGeographyType() {
-		return geographyType;
+	public SubjectType getSubjectType() {
+		return subjectType;
 	}
 
-	public void setGeographyType(GeographyType geographyType) {
-		this.geographyType = geographyType;
+	public void setSubjectType(SubjectType subjectType) {
+		this.subjectType = subjectType;
 	}
 
 	@Column(name="label")
