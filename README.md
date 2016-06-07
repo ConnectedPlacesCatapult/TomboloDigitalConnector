@@ -47,9 +47,6 @@ sh scripts/loadLa.sh
 
 ### Set up test database
 
-You will need to have loaded the above geographies into your
-tombolo database before running this.
-
 ```bash
 createdb tombolo_test
 psql -d tombolo_test < src/main/resources/sql/create_database.sql
