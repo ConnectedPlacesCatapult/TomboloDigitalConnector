@@ -83,20 +83,20 @@ public class SumFractionTransformerTest extends AbstractTest {
 
 		TimedValueUtils utils = mock(TimedValueUtils.class);
 		// Place 1
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds)).thenReturn(Optional.of(threePlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds)).thenReturn(Optional.of(fourPlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, fiveYearOlds)).thenReturn(Optional.of(fivePlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody)).thenReturn(Optional.of(everybodyPlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds)).thenReturn(Optional.of(threePlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds)).thenReturn(Optional.of(fourPlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, fiveYearOlds)).thenReturn(Optional.of(fivePlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody)).thenReturn(Optional.of(everybodyPlace1T2));
 		// Place 2
-		when(utils.getLatestByGeographyAndAttribute(place2, threeYearOlds)).thenReturn(Optional.of(threePlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, fourYearOlds)).thenReturn(Optional.of(fourPlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, fiveYearOlds)).thenReturn(Optional.of(fivePlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, everybody)).thenReturn(Optional.of(everybodyPlace2T2));
+		when(utils.getLatestBySubjectAndAttribute(place2, threeYearOlds)).thenReturn(Optional.of(threePlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, fourYearOlds)).thenReturn(Optional.of(fourPlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, fiveYearOlds)).thenReturn(Optional.of(fivePlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, everybody)).thenReturn(Optional.of(everybodyPlace2T2));
 		// Place 3
-		when(utils.getLatestByGeographyAndAttribute(place3, threeYearOlds)).thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place3, fourYearOlds)).thenReturn(Optional.of(fourPlace3T1));
-		when(utils.getLatestByGeographyAndAttribute(place3, fiveYearOlds)).thenReturn(Optional.of(fivePlace3T3));
-		when(utils.getLatestByGeographyAndAttribute(place3, everybody)).thenReturn(Optional.of(everybodyPlace3T2));
+		when(utils.getLatestBySubjectAndAttribute(place3, threeYearOlds)).thenReturn(Optional.empty());
+		when(utils.getLatestBySubjectAndAttribute(place3, fourYearOlds)).thenReturn(Optional.of(fourPlace3T1));
+		when(utils.getLatestBySubjectAndAttribute(place3, fiveYearOlds)).thenReturn(Optional.of(fivePlace3T3));
+		when(utils.getLatestBySubjectAndAttribute(place3, everybody)).thenReturn(Optional.of(everybodyPlace3T2));
 		transformer.setTimedValueUtils(utils);
 
 
@@ -127,7 +127,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExisting() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(any(Subject.class), any(Attribute.class)))
+		when(utils.getLatestBySubjectAndAttribute(any(Subject.class), any(Attribute.class)))
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
@@ -143,11 +143,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingDenominator() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
@@ -163,11 +163,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingNumerator() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
@@ -186,11 +186,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingNumerators() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 

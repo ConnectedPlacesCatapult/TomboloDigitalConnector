@@ -20,7 +20,7 @@ public class TimedValueTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			Transaction transaction = session.beginTransaction();
 
-			Subject geography = SubjectUtils.getTestGeography();
+			Subject geography = SubjectUtils.getTestSubject();
 
 			Attribute attribute = AttributeUtils.getTestAttribute();
 

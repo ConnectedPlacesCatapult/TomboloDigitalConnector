@@ -146,7 +146,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							for (int i=2; i<2+datasource.getAttributes().size(); i++){
 								values.add(Double.parseDouble(dequote(fields[i])));
 							}
-							Subject geography = SubjectUtils.getGeographyByLabel(areaId);
+							Subject geography = SubjectUtils.getSubjectByLabel(areaId);
 							if (geography != null
 									&& values.size() == datasource.getAttributes().size()){
 								for (int i=0; i<values.size(); i++){

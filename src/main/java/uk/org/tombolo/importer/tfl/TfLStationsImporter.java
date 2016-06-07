@@ -122,7 +122,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 				String stationLabel = stationLabelFromNode(station);
-				Subject geography = SubjectUtils.getGeographyByLabel(stationLabel);
+				Subject geography = SubjectUtils.getSubjectByLabel(stationLabel);
 
 				// Serving Line Count
 				NodeList servingLineList = (NodeList) xpath.evaluate("./servingLines/servingLine", station, XPathConstants.NODESET);
@@ -153,7 +153,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	private SubjectType getGeographyType(GeographyTypeName geographyTypeName){
 		switch(geographyTypeName){
 		case TfLStation:
-			SubjectType subjectType = SubjectTypeUtils.getGeographyTypeByLabel(geographyTypeName.name());
+			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(geographyTypeName.name());
 			if (subjectType == null || subjectType.getLabel() == null){
 				subjectType = new SubjectType(geographyTypeName.name(), "Transport for London Station");
 				SubjectTypeUtils.save(subjectType);

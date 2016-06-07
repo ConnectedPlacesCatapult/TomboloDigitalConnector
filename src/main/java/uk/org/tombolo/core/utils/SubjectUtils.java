@@ -15,14 +15,14 @@ import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
 
 public class SubjectUtils {
 
-	public static Subject getGeographyByLabel(String label){
+	public static Subject getSubjectByLabel(String label){
 		return HibernateUtil.withSession(session -> {
 			Criteria criteria = session.createCriteria(Subject.class);
 			return (Subject) criteria.add(Restrictions.eq("label", label)).uniqueResult();
 		});
 	}
 	
-	public static List<Subject> getGeographyByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
+	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
 			Criteria criteria = session.createCriteria(Subject.class);
 			criteria = criteria.add(Restrictions.eq("subjectType", subjectType));
@@ -34,43 +34,43 @@ public class SubjectUtils {
 		});
 	}
 
-	public static List<Subject> getGeographyBySpecification(DatasetSpecification datasetSpecification) {
+	public static List<Subject> getSubjectBySpecification(DatasetSpecification datasetSpecification) {
 		List<Subject> geographies = new ArrayList<>();
 
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
-			geographies.addAll(getGeographyBySpecification(geographySpecification));
+			geographies.addAll(getSubjectBySpecification(geographySpecification));
 		}
 
 		return geographies;
 	}
 
 
-	public static List<Subject> getGeographyBySpecification(GeographySpecification geographySpecification) {
+	public static List<Subject> getSubjectBySpecification(GeographySpecification geographySpecification) {
 		return HibernateUtil.withSession(session -> {
 			return (List<Subject>) criteriaFromGeographySpecification(session, geographySpecification).list();
 		});
 	}
 	
-	public static void save(List<Subject> geographyObjects){
+	public static void save(List<Subject> subjectObjects){
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
-			for (Subject geography : geographyObjects) {
+			for (Subject subject : subjectObjects) {
 				Criteria criteria = session.createCriteria(Subject.class);
-				Subject savedGeography = (Subject) criteria.add(Restrictions.eq("label", geography.getLabel())).uniqueResult();
-				if (savedGeography == null) {
-					Integer id = (Integer) session.save(geography);
-					geography.setId(id);
+				Subject savedSubject = (Subject) criteria.add(Restrictions.eq("label", subject.getLabel())).uniqueResult();
+				if (savedSubject == null) {
+					Integer id = (Integer) session.save(subject);
+					subject.setId(id);
 				} else {
 					// FIXME: Find a way to update an existing ... if needed
-					//geography.setId(savedGeography.getId());
-					//session.saveOrUpdate(geography);
+					//subject.setId(savedSubject.getId());
+					//session.saveOrUpdate(subject);
 				}
 			}
 			session.getTransaction().commit();
 		});
 	}
 	
-	public static Subject getTestGeography(){
+	public static Subject getTestSubject(){
 		return HibernateUtil.withSession(session -> {
 			Criteria criteria = session.createCriteria(Subject.class);
 			return (Subject) criteria
@@ -80,7 +80,7 @@ public class SubjectUtils {
 	}
 
 	public static Criteria criteriaFromGeographySpecification(Session session, GeographySpecification geographySpecification) {
-		SubjectType subjectType = SubjectTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(geographySpecification.getGeographyType());
 		Criteria criteria = session.createCriteria(Subject.class);
 		criteria.add(Restrictions.eq("subjectType", subjectType));
 

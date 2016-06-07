@@ -33,7 +33,7 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 			for (int i = 0; i < inputAttributes.size() - 1; i++) {
 				// Process for the first n-1 values and sum them
 				Attribute attribute = inputAttributes.get(i);
-				Optional<TimedValue> optionalTimedValue = timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
+				Optional<TimedValue> optionalTimedValue = timedValueUtils.getLatestBySubjectAndAttribute(geography, attribute);
 				if (optionalTimedValue.isPresent()) {
 					value += optionalTimedValue.get().getValue();
 					if (optionalTimedValue.get().getId().getTimestamp().isAfter(latestTime))
@@ -48,7 +48,7 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
 
 			// Divide by nth attribute
 			Attribute attribute = inputAttributes.get(inputAttributes.size()-1);
-			Optional<TimedValue> timedValueOptional = timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute);
+			Optional<TimedValue> timedValueOptional = timedValueUtils.getLatestBySubjectAndAttribute(geography, attribute);
 			if (timedValueOptional.isPresent()) {
 				value /= timedValueOptional.get().getValue();
 				if (timedValueOptional.get().getId().getTimestamp().isAfter(latestTime))

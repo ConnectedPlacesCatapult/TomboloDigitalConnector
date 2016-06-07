@@ -165,7 +165,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		SubjectType sensorType = SubjectTypeUtils.getGeographyTypeByLabel("sensor");
+		SubjectType sensorType = SubjectTypeUtils.getSubjectTypeByLabel("sensor");
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
@@ -202,7 +202,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 				SubjectUtils.save(geographyList);
 			}
 			
-			Subject geography = SubjectUtils.getGeographyByLabel(label);
+			Subject geography = SubjectUtils.getSubjectByLabel(label);
 			LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 			// Pedal cycles

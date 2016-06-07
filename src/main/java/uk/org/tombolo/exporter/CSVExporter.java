@@ -19,7 +19,7 @@ public class CSVExporter implements Exporter {
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 		printer.printRecord(columnNames);
 
-		for (Subject geography : SubjectUtils.getGeographyBySpecification(datasetSpecification)) {
+		for (Subject geography : SubjectUtils.getSubjectBySpecification(datasetSpecification)) {
 			printer.printRecord(
 					tabulateGeographyMap(columnNames,
 							flattenGeography(attributes, geography)));
@@ -70,7 +70,7 @@ public class CSVExporter implements Exporter {
 		property.put(getAttributePropertyName(attribute, "provider"), attribute.getProvider().getName());
 
 		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		timedValueUtils.getLatestByGeographyAndAttribute(geography, attribute).ifPresent(
+		timedValueUtils.getLatestBySubjectAndAttribute(geography, attribute).ifPresent(
 				timedValue -> property.put(
 						getAttributePropertyName(attribute, "latest_value"),
 						timedValue.getValue().toString()));

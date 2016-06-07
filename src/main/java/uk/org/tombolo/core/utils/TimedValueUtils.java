@@ -19,10 +19,10 @@ import uk.org.tombolo.core.TimedValue;
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 	
-	public List<TimedValue> getByGeographyAndAttribute(Subject geography, Attribute attribute){
+	public List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.geography", geography));
+			criteria = criteria.add(Restrictions.eq("id.geography", subject));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
 
 			// FIXME: This should be paginated
@@ -30,10 +30,10 @@ public class TimedValueUtils {
 		});
 	}
 
-	public Optional<TimedValue> getLatestByGeographyAndAttribute(Subject geography, Attribute attribute) {
+	public Optional<TimedValue> getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.geography", geography));
+			criteria = criteria.add(Restrictions.eq("id.geography", subject));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
 			criteria = criteria.addOrder(Order.desc("id.timestamp"));
 			criteria.setMaxResults(1);
@@ -60,7 +60,7 @@ public class TimedValueUtils {
 					saved++;
 				}catch(NonUniqueObjectException e){
 					// This is happening because the TFL stations contain a duplicate ID
-					log.warn("Could not save timed value for geography {}, attribute {}, time {}: {}",
+					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
 							timedValue.getId().getGeography().getLabel(),
 							timedValue.getId().getAttribute().getName(),
 							timedValue.getId().getTimestamp().toString(),

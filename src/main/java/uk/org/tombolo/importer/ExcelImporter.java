@@ -335,7 +335,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 
 	private Subject getGeographyByLabel(Map<String, Subject> geographyCache, String label) {
 		if (!geographyCache.containsKey(label)) {
-			geographyCache.put(label, SubjectUtils.getGeographyByLabel(label));
+			geographyCache.put(label, SubjectUtils.getSubjectByLabel(label));
 		}
 
 		return geographyCache.get(label);

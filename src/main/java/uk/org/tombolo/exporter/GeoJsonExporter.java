@@ -31,7 +31,7 @@ public class GeoJsonExporter implements Exporter {
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
 		int geographyCount = 0;
-		List<Subject> geographyList = SubjectUtils.getGeographyBySpecification(datasetSpecification);
+		List<Subject> geographyList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
 		for (Subject geography : geographyList){
 			// Geography is an a polygon or point for which data is to be output
 
@@ -154,7 +154,7 @@ public class GeoJsonExporter implements Exporter {
 		
 		// Write timed values
 		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		List<TimedValue> values = timedValueUtils.getByGeographyAndAttribute(geography, attribute);
+		List<TimedValue> values = timedValueUtils.getBySubjectAndAttribute(geography, attribute);
 				
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);

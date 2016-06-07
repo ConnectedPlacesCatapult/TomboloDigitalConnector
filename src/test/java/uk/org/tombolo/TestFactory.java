@@ -32,7 +32,7 @@ public final class TestFactory {
     }
 
     public static TimedValue makeTimedValue(String geographyLabel, Attribute attribute, String timestamp, Double value) {
-        Subject geography = SubjectUtils.getGeographyByLabel(geographyLabel);
+        Subject geography = SubjectUtils.getSubjectByLabel(geographyLabel);
         TimedValue timedValue = new TimedValue(geography, attribute, LocalDateTime.parse(timestamp), value);
         (new TimedValueUtils()).save(timedValue);
         return timedValue;
@@ -54,7 +54,7 @@ public final class TestFactory {
     }
 
     private static Subject makeGeography(String geographyTypeLabel, String label, String name, Geometry geometry) {
-        Subject geography = new Subject(SubjectTypeUtils.getGeographyTypeByLabel(geographyTypeLabel), label, name, geometry);
+        Subject geography = new Subject(SubjectTypeUtils.getSubjectTypeByLabel(geographyTypeLabel), label, name, geometry);
         SubjectUtils.save(Collections.singletonList(geography));
         return geography;
     }
