@@ -5,14 +5,9 @@ import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import org.geotools.geometry.GeometryBuilder;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.TimedValue;
 
 public class TimedValueUtilsTest extends AbstractTest {
 

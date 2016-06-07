@@ -7,7 +7,7 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.GeographyType;
 
-public class GeographyTypeUtilsTest extends AbstractTest {
+public class SubjectTypeUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetGeographyTypeByLabel(){

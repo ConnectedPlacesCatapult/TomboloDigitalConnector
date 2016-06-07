@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 
 public class SumFractionTransformer extends AbstractTransformer implements Transformer {
@@ -22,10 +22,10 @@ public class SumFractionTransformer extends AbstractTransformer implements Trans
      * @return A list of TimedValue objects for different Geographies in the input, the output attribute and latest timestamp.
      */
 	@Override
-	public List<TimedValue> transform(List<Geography> geographies, List<Attribute> inputAttributes, Attribute outputAttribute) {
+	public List<TimedValue> transform(List<Subject> geographies, List<Attribute> inputAttributes, Attribute outputAttribute) {
 		List<TimedValue> values = new ArrayList<TimedValue>();
 
-		for (Geography geography : geographies) {
+		for (Subject geography : geographies) {
 			LocalDateTime latestTime = LocalDateTime.MIN;
 			double value = 0d;
 

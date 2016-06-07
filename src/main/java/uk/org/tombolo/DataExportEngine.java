@@ -6,7 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
@@ -42,7 +42,7 @@ public class DataExportEngine implements ExecutionEngine{
 		// Run transforms over geographies
 		List<GeographySpecification> geographySpecList = dataExportSpec.getDatasetSpecification().getGeographySpecification();
 		for (GeographySpecification geographySpec : geographySpecList) {
-			List<Geography> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
+			List<Subject> geographies = GeographyUtils.getGeographyBySpecification(geographySpec);
 			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
 				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
 				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();

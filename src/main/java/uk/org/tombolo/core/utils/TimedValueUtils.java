@@ -4,24 +4,22 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.hibernate.Criteria;
 import org.hibernate.NonUniqueObjectException;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 	
-	public List<TimedValue> getByGeographyAndAttribute(Geography geography, Attribute attribute){
+	public List<TimedValue> getByGeographyAndAttribute(Subject geography, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));
@@ -32,7 +30,7 @@ public class TimedValueUtils {
 		});
 	}
 
-	public Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
+	public Optional<TimedValue> getLatestByGeographyAndAttribute(Subject geography, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.geography", geography));

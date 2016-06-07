@@ -19,13 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
@@ -147,7 +146,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							for (int i=2; i<2+datasource.getAttributes().size(); i++){
 								values.add(Double.parseDouble(dequote(fields[i])));
 							}
-							Geography geography = GeographyUtils.getGeographyByLabel(areaId);
+							Subject geography = GeographyUtils.getGeographyByLabel(areaId);
 							if (geography != null
 									&& values.size() == datasource.getAttributes().size()){
 								for (int i=0; i<values.size(); i++){

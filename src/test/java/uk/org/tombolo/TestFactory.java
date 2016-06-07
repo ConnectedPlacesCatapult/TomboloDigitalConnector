@@ -1,17 +1,15 @@
 package uk.org.tombolo;
 
-import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 
 public final class TestFactory {
@@ -34,13 +32,13 @@ public final class TestFactory {
     }
 
     public static TimedValue makeTimedValue(String geographyLabel, Attribute attribute, String timestamp, Double value) {
-        Geography geography = GeographyUtils.getGeographyByLabel(geographyLabel);
+        Subject geography = GeographyUtils.getGeographyByLabel(geographyLabel);
         TimedValue timedValue = new TimedValue(geography, attribute, LocalDateTime.parse(timestamp), value);
         (new TimedValueUtils()).save(timedValue);
         return timedValue;
     }
 
-    public static Geography makeNamedGeography(String label) {
+    public static Subject makeNamedGeography(String label) {
         switch (label) {
             case "E01000001":
                 return makeGeography("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
@@ -55,8 +53,8 @@ public final class TestFactory {
         }
     }
 
-    private static Geography makeGeography(String geographyTypeLabel, String label, String name, Geometry geometry) {
-        Geography geography = new Geography(GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeLabel), label, name, geometry);
+    private static Subject makeGeography(String geographyTypeLabel, String label, String name, Geometry geometry) {
+        Subject geography = new Subject(GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeLabel), label, name, geometry);
         GeographyUtils.save(Collections.singletonList(geography));
         return geography;
     }

@@ -1,7 +1,5 @@
 package uk.org.tombolo.execution.spec;
 
-import uk.org.tombolo.core.Geography;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

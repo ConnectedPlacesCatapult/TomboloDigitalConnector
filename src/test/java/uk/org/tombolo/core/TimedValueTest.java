@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 
 
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ public class TimedValueTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			Transaction transaction = session.beginTransaction();
 
-			Geography geography = GeographyUtils.getTestGeography();
+			Subject geography = GeographyUtils.getTestGeography();
 
 			Attribute attribute = AttributeUtils.getTestAttribute();
 

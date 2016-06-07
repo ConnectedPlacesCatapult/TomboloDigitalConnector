@@ -1,7 +1,7 @@
 package uk.org.tombolo.transformer;
 
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
@@ -22,7 +22,7 @@ public abstract class AbstractTransformer implements Transformer {
         this.timedValueUtils = timedValueUtils;
     }
 
-    public void transformBySpecification(List<Geography> geographies, TransformSpecification transformSpecification) {
+    public void transformBySpecification(List<Subject> geographies, TransformSpecification transformSpecification) {
         List<Attribute> inputAttributes = transformSpecification.getInputAttributes();
         Attribute outputAttribute = transformSpecification.getOutputAttribute();
         ProviderUtils.save(outputAttribute.getProvider());

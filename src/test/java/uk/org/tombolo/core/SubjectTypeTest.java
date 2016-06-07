@@ -8,7 +8,7 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.utils.HibernateUtil;
 
-public class GeographyTypeTest extends AbstractTest {
+public class SubjectTypeTest extends AbstractTest {
 
 	@Test
 	public void testFixtures(){

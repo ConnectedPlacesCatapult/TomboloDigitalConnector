@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.vividsolutions.jts.geom.Point;
 
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.GeographyType;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.AttributeUtils;
@@ -43,14 +43,14 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
 			log.info("Getting geographies of type {} ({})", geographyType.getName(), geographyType.getLabel());
-			List<Geography> geographyList = GeographyUtils
+			List<Subject> geographyList = GeographyUtils
 					.getGeographyBySpecification(geographySpecification);
 			String geoService = geographySpecification.getAttributes().get("service");
 			String geoProvider = geographySpecification.getAttributes().get("provider");
 			String geoGroup = geographySpecification.getAttributes().get("group");
 			String geoType = geographySpecification.getAttributes().get("type");
 			log.info("Writing geographies ...");
-			for (Geography geography : geographyList){
+			for (Subject geography : geographyList){
 				// Geography is an a polygon or point for which data is to be output
 
 				if (geographyCount > 0){

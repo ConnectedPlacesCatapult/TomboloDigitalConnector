@@ -7,7 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.GeographyType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.GeographySpecification;
@@ -15,27 +15,27 @@ import uk.org.tombolo.execution.spec.GeographySpecification.GeographyMatcher;
 
 public class GeographyUtils {
 
-	public static Geography getGeographyByLabel(String label){
+	public static Subject getGeographyByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Geography.class);
-			return (Geography) criteria.add(Restrictions.eq("label", label)).uniqueResult();
+			Criteria criteria = session.createCriteria(Subject.class);
+			return (Subject) criteria.add(Restrictions.eq("label", label)).uniqueResult();
 		});
 	}
 	
-	public static List<Geography> getGeographyByTypeAndLabelPattern(GeographyType geographyType, String labelPattern){
+	public static List<Subject> getGeographyByTypeAndLabelPattern(GeographyType geographyType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Geography.class);
+			Criteria criteria = session.createCriteria(Subject.class);
 			criteria = criteria.add(Restrictions.eq("geographyType", geographyType));
 			if (labelPattern != null)
 				criteria = criteria.add(Restrictions.like("label", labelPattern));
 
 			// FIXME: This should be paginated
-			return (List<Geography>) criteria.list();
+			return (List<Subject>) criteria.list();
 		});
 	}
 
-	public static List<Geography> getGeographyBySpecification(DatasetSpecification datasetSpecification) {
-		List<Geography> geographies = new ArrayList<>();
+	public static List<Subject> getGeographyBySpecification(DatasetSpecification datasetSpecification) {
+		List<Subject> geographies = new ArrayList<>();
 
 		for(GeographySpecification geographySpecification : datasetSpecification.getGeographySpecification()){
 			geographies.addAll(getGeographyBySpecification(geographySpecification));
@@ -45,18 +45,18 @@ public class GeographyUtils {
 	}
 
 
-	public static List<Geography> getGeographyBySpecification(GeographySpecification geographySpecification) {
+	public static List<Subject> getGeographyBySpecification(GeographySpecification geographySpecification) {
 		return HibernateUtil.withSession(session -> {
-			return (List<Geography>) criteriaFromGeographySpecification(session, geographySpecification).list();
+			return (List<Subject>) criteriaFromGeographySpecification(session, geographySpecification).list();
 		});
 	}
 	
-	public static void save(List<Geography> geographyObjects){
+	public static void save(List<Subject> geographyObjects){
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
-			for (Geography geography : geographyObjects) {
-				Criteria criteria = session.createCriteria(Geography.class);
-				Geography savedGeography = (Geography) criteria.add(Restrictions.eq("label", geography.getLabel())).uniqueResult();
+			for (Subject geography : geographyObjects) {
+				Criteria criteria = session.createCriteria(Subject.class);
+				Subject savedGeography = (Subject) criteria.add(Restrictions.eq("label", geography.getLabel())).uniqueResult();
 				if (savedGeography == null) {
 					Integer id = (Integer) session.save(geography);
 					geography.setId(id);
@@ -70,10 +70,10 @@ public class GeographyUtils {
 		});
 	}
 	
-	public static Geography getTestGeography(){
+	public static Subject getTestGeography(){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Geography.class);
-			return (Geography) criteria
+			Criteria criteria = session.createCriteria(Subject.class);
+			return (Subject) criteria
 					.add(Restrictions.eq("label", "E01000001"))
 					.uniqueResult();
 		});
@@ -81,7 +81,7 @@ public class GeographyUtils {
 
 	public static Criteria criteriaFromGeographySpecification(Session session, GeographySpecification geographySpecification) {
 		GeographyType geographyType = GeographyTypeUtils.getGeographyTypeByLabel(geographySpecification.getGeographyType());
-		Criteria criteria = session.createCriteria(Geography.class);
+		Criteria criteria = session.createCriteria(Subject.class);
 		criteria.add(Restrictions.eq("geographyType", geographyType));
 
 		for (GeographyMatcher matcher : geographySpecification.getMatchers())

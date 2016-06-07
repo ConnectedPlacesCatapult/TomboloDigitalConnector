@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
 
 public class CSVExporter implements Exporter {
 
@@ -21,7 +19,7 @@ public class CSVExporter implements Exporter {
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
 		printer.printRecord(columnNames);
 
-		for (Geography geography : GeographyUtils.getGeographyBySpecification(datasetSpecification)) {
+		for (Subject geography : GeographyUtils.getGeographyBySpecification(datasetSpecification)) {
 			printer.printRecord(
 					tabulateGeographyMap(columnNames,
 							flattenGeography(attributes, geography)));
@@ -41,7 +39,7 @@ public class CSVExporter implements Exporter {
 	}
 
 	// Take the geography/attributes structure and convert it to a key-value map
-	private Map<String, Object> flattenGeography(List<Attribute> attributes, Geography geography) {
+	private Map<String, Object> flattenGeography(List<Attribute> attributes, Subject geography) {
 		Map<String, Object> row = new HashMap<>();
 
 		row.put("label", geography.getLabel());
@@ -65,7 +63,7 @@ public class CSVExporter implements Exporter {
 		return listRow;
 	}
 
-	private Map<String, Object> getAttributeProperty(Geography geography, Attribute attribute) {
+	private Map<String, Object> getAttributeProperty(Subject geography, Attribute attribute) {
 		Map<String, Object> property = new HashMap<>();
 
 		property.put(getAttributePropertyName(attribute, "name"), attribute.getName());

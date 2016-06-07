@@ -16,7 +16,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 @Entity
 @Table(name="geography_object")
-public class Geography {
+public class Subject {
 	public static final int SRID = 4326;
 
 	Integer id;
@@ -26,9 +26,9 @@ public class Geography {
 
 	Geometry shape;
 		
-	public Geography(){}
+	public Subject(){}
 	
-	public Geography(GeographyType geographyType, String label, String name, Geometry shape){
+	public Subject(GeographyType geographyType, String label, String name, Geometry shape){
 		this.geographyType = geographyType;
 		this.label = label;
 		this.name = name;
@@ -87,10 +87,10 @@ public class Geography {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() != Geography.class)
+		if (obj.getClass() != Subject.class)
 			return false;
 		
-		Geography geoObj = (Geography)obj;
+		Subject geoObj = (Subject)obj;
 		return this.getId().equals(geoObj.getId());
 	}
 	

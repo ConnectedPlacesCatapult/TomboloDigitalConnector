@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
@@ -36,9 +36,9 @@ public class SumFractionTransformerTest extends AbstractTest {
 	LocalDateTime t3 = LocalDateTime.now();
 
 	// Three greographies we would like to use
-	Geography place1 = new Geography();
-	Geography place2 = new Geography();
-	Geography place3 = new Geography();
+	Subject place1 = new Subject();
+	Subject place2 = new Subject();
+	Subject place3 = new Subject();
 
 	@Before
 	public void setUp(){
@@ -60,7 +60,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 	public void testTransform() {
 		// FIXME: Consider breaking up into multiple tests
 
-		List<Geography> geographies = Arrays.asList(place1,place2,place3);
+		List<Subject> geographies = Arrays.asList(place1,place2,place3);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,fiveYearOlds,everybody);
 
@@ -127,11 +127,11 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExisting() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(any(Geography.class), any(Attribute.class)))
+		when(utils.getLatestByGeographyAndAttribute(any(Subject.class), any(Attribute.class)))
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> geographies = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
@@ -151,7 +151,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> geographies = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
@@ -171,7 +171,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> geographies = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
@@ -194,7 +194,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> geographies = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 

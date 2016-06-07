@@ -22,7 +22,7 @@ public class TimedValue {
 		
 	}
 	
-	public TimedValue(Geography geography, Attribute attribute, LocalDateTime timestamp, Double value){
+	public TimedValue(Subject geography, Attribute attribute, LocalDateTime timestamp, Double value){
 		this.id = new TimedValueId(geography, attribute, timestamp);
 		this.value = value;
 	}

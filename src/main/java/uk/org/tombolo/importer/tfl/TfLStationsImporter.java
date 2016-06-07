@@ -24,16 +24,12 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.GeographyType;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyTypeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 public class TfLStationsImporter extends TfLImporter implements Importer {
@@ -85,7 +81,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
-			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Geography.SRID);
+			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 			GeographyType poiType = getGeographyType(GeographyTypeName.TfLStation);
 			File xmlFile = downloadUtils.getDatasourceFile(datasource);
 
@@ -101,7 +97,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			NodeList stations = rootElement.getElementsByTagName("station");
 
 			// Save stations
-			List<Geography> geographies = new ArrayList<Geography>();
+			List<Subject> geographies = new ArrayList<Subject>();
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 
@@ -116,7 +112,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				Coordinate coordinate = new Coordinate(longitude,latitude);
 				Point point = geometryFactory.createPoint(coordinate);
 
-				geographies.add(new Geography(poiType, stationLabel, stationName, point));
+				geographies.add(new Subject(poiType, stationLabel, stationName, point));
 			}
 			GeographyUtils.save(geographies);
 
@@ -126,7 +122,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 				String stationLabel = stationLabelFromNode(station);
-				Geography geography = GeographyUtils.getGeographyByLabel(stationLabel);
+				Subject geography = GeographyUtils.getGeographyByLabel(stationLabel);
 
 				// Serving Line Count
 				NodeList servingLineList = (NodeList) xpath.evaluate("./servingLines/servingLine", station, XPathConstants.NODESET);

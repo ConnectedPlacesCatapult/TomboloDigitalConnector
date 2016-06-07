@@ -16,7 +16,7 @@ public class TimedValueId implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name="geography_id")
-	Geography geography;
+	Subject geography;
 
 	@ManyToOne
 	@JoinColumn(name="attribute_id")
@@ -30,17 +30,17 @@ public class TimedValueId implements Serializable {
 		
 	}
 	
-	public TimedValueId(Geography geography, Attribute attribute, LocalDateTime timestamp){
+	public TimedValueId(Subject geography, Attribute attribute, LocalDateTime timestamp){
 		this.geography = geography;
 		this.attribute = attribute;
 		this.timestamp = timestamp;
 	}
 
-	public Geography getGeography() {
+	public Subject getGeography() {
 		return geography;
 	}
 
-	public void setGeography(Geography geography) {
+	public void setGeography(Subject geography) {
 		this.geography = geography;
 	}
 

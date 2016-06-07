@@ -18,12 +18,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.GeographyType;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.GeographyTypeUtils;
 import uk.org.tombolo.core.utils.GeographyUtils;
@@ -168,7 +164,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		AttributeUtils.save(datasource.getAttributes());
 		
 		// Read timed values
-		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Geography.SRID);
+		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 		GeographyType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
@@ -200,13 +196,13 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 				
 				String name = road+" ("+startJunction+" to "+endJunction+")";
 				
-				Geography geography = new Geography(sensorType, label, name, point);
-				List<Geography> geographyList = new ArrayList<Geography>();
+				Subject geography = new Subject(sensorType, label, name, point);
+				List<Subject> geographyList = new ArrayList<Subject>();
 				geographyList.add(geography);
 				GeographyUtils.save(geographyList);	
 			}
 			
-			Geography geography = GeographyUtils.getGeographyByLabel(label);
+			Subject geography = GeographyUtils.getGeographyByLabel(label);
 			LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 			// Pedal cycles

@@ -63,7 +63,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	@Override
 	public int importDatasource(Datasource datasource) throws Exception {
-		Map<String, Geography> geographyCache = new HashMap<String, Geography>();
+		Map<String, Subject> geographyCache = new HashMap<String, Subject>();
 		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 
 		// Provider
@@ -118,7 +118,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					// Geography
 					cell = row.getCell(ldsa.keyColumnId);
 					String geographyId = cell.getStringCellValue();
-					Geography geography = getGeographyByLabel(geographyCache, geographyId);
+					Subject geography = getGeographyByLabel(geographyCache, geographyId);
 					if (geography == null)
 						continue;
 					
@@ -158,7 +158,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Geography
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
 				String geographyId = cell.getStringCellValue();
-				Geography geography = getGeographyByLabel(geographyCache, geographyId);
+				Subject geography = getGeographyByLabel(geographyCache, geographyId);
 				
 				if (geography == null)
 					continue;
@@ -333,7 +333,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		return ldsAttributes;
 	}
 
-	private Geography getGeographyByLabel(Map<String, Geography> geographyCache, String label) {
+	private Subject getGeographyByLabel(Map<String, Subject> geographyCache, String label) {
 		if (!geographyCache.containsKey(label)) {
 			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
 		}
