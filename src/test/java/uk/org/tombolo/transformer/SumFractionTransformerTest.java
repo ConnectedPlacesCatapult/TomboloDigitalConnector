@@ -106,19 +106,19 @@ public class SumFractionTransformerTest extends AbstractTest {
 		assertEquals(3, values.size());
 
 		// Place 1
-		assertEquals(place1, values.get(0).getId().getGeography());
+		assertEquals(place1, values.get(0).getId().getSubject());
 		assertEquals(t2, values.get(0).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.5d, values.get(0).getValue(), 0.001d);
 
 		// Place 2
-		assertEquals(place2, values.get(1).getId().getGeography());
+		assertEquals(place2, values.get(1).getId().getSubject());
 		assertEquals(t2, values.get(1).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.4d, values.get(1).getValue(), 0.001d);
 
 		// Place 3
-		assertEquals(place3, values.get(2).getId().getGeography());
+		assertEquals(place3, values.get(2).getId().getSubject());
 		assertEquals(t3, values.get(2).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.3d, values.get(2).getValue(), 0.001d);
