@@ -8,7 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class DataExportSpecificationTest extends AbstractTest {
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();

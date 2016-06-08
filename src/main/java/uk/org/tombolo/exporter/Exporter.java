@@ -1,8 +1,8 @@
 package uk.org.tombolo.exporter;
 
-import java.io.Writer;
-
 import uk.org.tombolo.execution.spec.DatasetSpecification;
+
+import java.io.Writer;
 
 public interface Exporter {
 

@@ -1,13 +1,16 @@
 package uk.org.tombolo.exporter;
 
-import java.io.Writer;
-import java.util.*;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
+
+import java.io.Writer;
+import java.util.*;
 
 public class CSVExporter implements Exporter {
 

@@ -1,13 +1,13 @@
 package uk.org.tombolo.transformer;
 
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
 
 public class SumFractionTransformer extends AbstractTransformer implements Transformer {
 

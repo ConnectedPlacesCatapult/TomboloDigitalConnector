@@ -6,7 +6,8 @@ import uk.org.tombolo.core.Attribute;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class TransformSpecificationTest extends AbstractTest {
 

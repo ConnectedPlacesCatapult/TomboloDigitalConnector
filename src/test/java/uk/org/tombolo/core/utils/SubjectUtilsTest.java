@@ -1,15 +1,7 @@
 package uk.org.tombolo.core.utils;
 
-import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
@@ -17,6 +9,14 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 public class SubjectUtilsTest extends AbstractTest {
 

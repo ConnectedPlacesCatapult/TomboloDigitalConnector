@@ -1,17 +1,7 @@
 package uk.org.tombolo.importer.dft;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
@@ -19,6 +9,11 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class TrafficCountImporterTest extends AbstractTest {
 

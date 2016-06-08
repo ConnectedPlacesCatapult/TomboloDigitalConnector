@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.ons;
 
 import org.junit.Before;
-
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;

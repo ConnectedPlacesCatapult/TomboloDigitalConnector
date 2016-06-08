@@ -1,11 +1,10 @@
 package uk.org.tombolo.core.utils;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.SubjectType;
+
+import static org.junit.Assert.assertEquals;
 
 public class SubjectTypeUtilsTest extends AbstractTest {
 	

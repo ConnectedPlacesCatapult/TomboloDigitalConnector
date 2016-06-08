@@ -1,33 +1,22 @@
 package uk.org.tombolo.importer.dft;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.utils.CoordinateUtils;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * 

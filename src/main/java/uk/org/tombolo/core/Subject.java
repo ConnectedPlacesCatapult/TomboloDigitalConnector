@@ -1,18 +1,9 @@
 package uk.org.tombolo.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.hibernate.annotations.Type;
 
-import com.vividsolutions.jts.geom.Geometry;
+import javax.persistence.*;
 
 @Entity
 @Table(name="subject")

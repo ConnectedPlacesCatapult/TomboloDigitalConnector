@@ -1,22 +1,22 @@
 package uk.org.tombolo.exporter;
 
+import org.geotools.geojson.geom.GeometryJSON;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.AttributeSpecification;
+import uk.org.tombolo.execution.spec.DatasetSpecification;
+
+import javax.json.JsonValue;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
-
-import javax.json.JsonValue;
-
-import org.geotools.geojson.geom.GeometryJSON;
-
-import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
 
 public class GeoJsonExporter implements Exporter {
 	

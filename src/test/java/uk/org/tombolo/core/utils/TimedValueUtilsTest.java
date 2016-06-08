@@ -1,13 +1,13 @@
 package uk.org.tombolo.core.utils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
+import static org.junit.Assert.assertEquals;
 
 public class TimedValueUtilsTest extends AbstractTest {
 
