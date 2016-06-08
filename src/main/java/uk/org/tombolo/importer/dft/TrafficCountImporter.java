@@ -18,15 +18,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.GeographyType;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyTypeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
@@ -168,8 +164,8 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		AttributeUtils.save(datasource.getAttributes());
 		
 		// Read timed values
-		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Geography.SRID);
-		GeographyType sensorType = GeographyTypeUtils.getGeographyTypeByLabel("sensor");
+		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+		SubjectType sensorType = SubjectTypeUtils.getSubjectTypeByLabel("sensor");
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
@@ -184,7 +180,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			String label = "DfT-TrafficCounter-"+id;
 			String year = fields[0].replaceAll("\"", "");
 
-			// Save geography object
+			// Save subject object
 			if (!trafficCounters.contains(id)){
 				// We have not seen this id before
 				long easting = Long.valueOf(fields[6].replaceAll("\"", ""));
@@ -200,54 +196,54 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 				
 				String name = road+" ("+startJunction+" to "+endJunction+")";
 				
-				Geography geography = new Geography(sensorType, label, name, point);
-				List<Geography> geographyList = new ArrayList<Geography>();
-				geographyList.add(geography);
-				GeographyUtils.save(geographyList);	
+				Subject subject = new Subject(sensorType, label, name, point);
+				List<Subject> subjectList = new ArrayList<Subject>();
+				subjectList.add(subject);
+				SubjectUtils.save(subjectList);
 			}
 			
-			Geography geography = GeographyUtils.getGeographyByLabel(label);
+			Subject subject = SubjectUtils.getSubjectByLabel(label);
 			LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 			// Pedal cycles
 			Attribute pcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountPedalCycles.name());
 			double pcCount = Double.valueOf(fields[12].replaceAll("\"", ""));
-			TimedValue pedalCycleCount = new TimedValue(geography, pcAttribute, timestamp, pcCount);
+			TimedValue pedalCycleCount = new TimedValue(subject, pcAttribute, timestamp, pcCount);
 			timedValueUtils.save(pedalCycleCount);
 			valueCounter++;
 
 			// Motorcycles
 			Attribute mcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountMotorcycles.name());
 			double mcCount = Double.valueOf(fields[13].replaceAll("\"", ""));
-			TimedValue motorcycleCount = new TimedValue(geography, mcAttribute, timestamp, mcCount);
+			TimedValue motorcycleCount = new TimedValue(subject, mcAttribute, timestamp, mcCount);
 			timedValueUtils.save(motorcycleCount);
 			valueCounter++;
 
 			// Cars & taxis
 			Attribute ctAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountCarsTaxis.name());
 			double ctCount = Double.valueOf(fields[14].replaceAll("\"", ""));
-			TimedValue carTaxiCount = new TimedValue(geography, ctAttribute, timestamp, ctCount);
+			TimedValue carTaxiCount = new TimedValue(subject, ctAttribute, timestamp, ctCount);
 			timedValueUtils.save(carTaxiCount);
 			valueCounter++;
 
 			// Buses and Coaches
 			Attribute bcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountBusesCoaches.name());
 			double bcCount = Double.valueOf(fields[15].replaceAll("\"", ""));
-			TimedValue busCoachCount = new TimedValue(geography, bcAttribute, timestamp, bcCount);
+			TimedValue busCoachCount = new TimedValue(subject, bcAttribute, timestamp, bcCount);
 			timedValueUtils.save(busCoachCount);
 			valueCounter++;
 
 			// Light Goods Vehicles
 			Attribute lgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
 			double lgvCount = Double.valueOf(fields[16].replaceAll("\"", ""));
-			TimedValue lightGoodsVehicleCount = new TimedValue(geography, lgvAttribute, timestamp, lgvCount);
+			TimedValue lightGoodsVehicleCount = new TimedValue(subject, lgvAttribute, timestamp, lgvCount);
 			timedValueUtils.save(lightGoodsVehicleCount);
 			valueCounter++;
 
 			// Heavy Goods Vehicles
 			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
 			double hgvCount = Double.valueOf(fields[23].replaceAll("\"", ""));
-			TimedValue heavyGoodsVehicleCount = new TimedValue(geography, hgvAttribute, timestamp, hgvCount);
+			TimedValue heavyGoodsVehicleCount = new TimedValue(subject, hgvAttribute, timestamp, hgvCount);
 			timedValueUtils.save(heavyGoodsVehicleCount);
 			valueCounter++;
 		}

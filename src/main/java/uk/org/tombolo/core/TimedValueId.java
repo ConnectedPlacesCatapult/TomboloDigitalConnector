@@ -15,8 +15,8 @@ public class TimedValueId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name="geography_id")
-	Geography geography;
+	@JoinColumn(name="subject_id")
+	Subject subject;
 
 	@ManyToOne
 	@JoinColumn(name="attribute_id")
@@ -30,18 +30,18 @@ public class TimedValueId implements Serializable {
 		
 	}
 	
-	public TimedValueId(Geography geography, Attribute attribute, LocalDateTime timestamp){
-		this.geography = geography;
+	public TimedValueId(Subject subject, Attribute attribute, LocalDateTime timestamp){
+		this.subject = subject;
 		this.attribute = attribute;
 		this.timestamp = timestamp;
 	}
 
-	public Geography getGeography() {
-		return geography;
+	public Subject getSubject() {
+		return subject;
 	}
 
-	public void setGeography(Geography geography) {
-		this.geography = geography;
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 
 	public Attribute getAttribute() {
@@ -62,7 +62,7 @@ public class TimedValueId implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (geography.getId()
+		return (subject.getId()
 				+"\t"+attribute.getId()
 				+"\t"+timestamp.toString()).hashCode();
 	}
@@ -73,7 +73,7 @@ public class TimedValueId implements Serializable {
 			return false;
 		
 		TimedValueId idObj = (TimedValueId)obj;
-		if (idObj.geography.equals(this.geography)
+		if (idObj.subject.equals(this.subject)
 				&& idObj.attribute.equals(this.attribute)
 				&& idObj.timestamp.equals(this.timestamp))
 			return true;

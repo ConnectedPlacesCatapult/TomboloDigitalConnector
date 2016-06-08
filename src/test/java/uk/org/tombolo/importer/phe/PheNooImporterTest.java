@@ -17,8 +17,8 @@ public class PheNooImporterTest extends AbstractTest {
 	PheNooImporter importer = new PheNooImporter();
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Before

@@ -1,7 +1,7 @@
 {
-	"geographySpecification" : [
+	"subjectSpecification" : [
 		{
-			"geographyType" : "localAuthority"
+			"subjectType" : "localAuthority"
 		}
 	],
 	"datasourceSpecification" : [

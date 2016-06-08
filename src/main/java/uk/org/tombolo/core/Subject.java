@@ -15,29 +15,29 @@ import org.hibernate.annotations.Type;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Entity
-@Table(name="geography_object")
-public class Geography {
+@Table(name="subject")
+public class Subject {
 	public static final int SRID = 4326;
 
 	Integer id;
-	GeographyType geographyType;
+	SubjectType subjectType;
 	String label;
 	String name;
 
 	Geometry shape;
 		
-	public Geography(){}
+	public Subject(){}
 	
-	public Geography(GeographyType geographyType, String label, String name, Geometry shape){
-		this.geographyType = geographyType;
+	public Subject(SubjectType subjectType, String label, String name, Geometry shape){
+		this.subjectType = subjectType;
 		this.label = label;
 		this.name = name;
 		this.shape = shape;
 	}
 
 	@Id
-	@SequenceGenerator(name="geography_id_sequence",sequenceName="geography_id_sequence", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="geography_id_sequence")
+	@SequenceGenerator(name="subject_id_sequence",sequenceName="subject_id_sequence", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="subject_id_sequence")
 	@Column(name="id")
 	public Integer getId() {
 		return id;
@@ -48,13 +48,13 @@ public class Geography {
 	}
 
 	@ManyToOne()
-	@JoinColumn(name="geography_type_label")
-	public GeographyType getGeographyType() {
-		return geographyType;
+	@JoinColumn(name="subject_type_label")
+	public SubjectType getSubjectType() {
+		return subjectType;
 	}
 
-	public void setGeographyType(GeographyType geographyType) {
-		this.geographyType = geographyType;
+	public void setSubjectType(SubjectType subjectType) {
+		this.subjectType = subjectType;
 	}
 
 	@Column(name="label")
@@ -87,10 +87,10 @@ public class Geography {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj.getClass() != Geography.class)
+		if (obj.getClass() != Subject.class)
 			return false;
 		
-		Geography geoObj = (Geography)obj;
+		Subject geoObj = (Subject)obj;
 		return this.getId().equals(geoObj.getId());
 	}
 	

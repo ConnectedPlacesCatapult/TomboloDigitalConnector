@@ -1,17 +1,15 @@
 package uk.org.tombolo;
 
-import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 
 public final class TestFactory {
@@ -33,31 +31,31 @@ public final class TestFactory {
         return attribute;
     }
 
-    public static TimedValue makeTimedValue(String geographyLabel, Attribute attribute, String timestamp, Double value) {
-        Geography geography = GeographyUtils.getGeographyByLabel(geographyLabel);
-        TimedValue timedValue = new TimedValue(geography, attribute, LocalDateTime.parse(timestamp), value);
+    public static TimedValue makeTimedValue(String subjectLabel, Attribute attribute, String timestamp, Double value) {
+        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+        TimedValue timedValue = new TimedValue(subject, attribute, LocalDateTime.parse(timestamp), value);
         (new TimedValueUtils()).save(timedValue);
         return timedValue;
     }
 
-    public static Geography makeNamedGeography(String label) {
+    public static Subject makeNamedSubject(String label) {
         switch (label) {
             case "E01000001":
-                return makeGeography("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
+                return makeSubject("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E09000001":
-                return makeGeography("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
+                return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
             case "E08000035":
-                return makeGeography("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
+                return makeSubject("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
             case "E01002766":
-                return makeGeography("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
+                return makeSubject("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
             default:
-                throw new IllegalArgumentException(String.format("%s is not a valid named geography fixture", label));
+                throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture", label));
         }
     }
 
-    private static Geography makeGeography(String geographyTypeLabel, String label, String name, Geometry geometry) {
-        Geography geography = new Geography(GeographyTypeUtils.getGeographyTypeByLabel(geographyTypeLabel), label, name, geometry);
-        GeographyUtils.save(Collections.singletonList(geography));
-        return geography;
+    private static Subject makeSubject(String subjectTypeLabel, String label, String name, Geometry geometry) {
+        Subject subject = new Subject(SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel), label, name, geometry);
+        SubjectUtils.save(Collections.singletonList(subject));
+        return subject;
     }
 }

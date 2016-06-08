@@ -17,9 +17,9 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 	public static final String datasourceId = "OT102EW";
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01002766");
-		TestFactory.makeNamedGeography("E08000035");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01002766");
+		TestFactory.makeNamedSubject("E08000035");
 	}
 	
 	@Test

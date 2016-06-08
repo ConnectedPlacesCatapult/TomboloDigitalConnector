@@ -47,9 +47,6 @@ sh scripts/loadLa.sh
 
 ### Set up test database
 
-You will need to have loaded the above geographies into your
-tombolo database before running this.
-
 ```bash
 createdb tombolo_test
 psql -d tombolo_test < src/main/resources/sql/create_database.sql
@@ -101,7 +98,7 @@ cat organicity-borough-profiles.json | json_pp
 This sections contain a number of useful database queries that should at some point be integrated into the connector main code
 
 ```bash
-psql tombolo -c 'select geography_type_label, count(*) from geography_object group by geography_type_label'
+psql tombolo -c 'select subject_type_label, count(*) from subject group by subject_type_label'
 ```
 
 Attributes
@@ -109,14 +106,14 @@ Attributes
 psql tombolo -c 'select provider_label, label, name from attribute'
 ```
 
-Attribute and value count per geography type
+Attribute and value count per subject type
 ```bash
-psql tombolo -c 'select geography_type_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join geography_object as go on (tv.geography_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by geography_type_label'
+psql tombolo -c 'select subject_type_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label'
 ```
 
-Attribute and value count per geography type and provider
+Attribute and value count per subject type and provider
 ```bash
-psql tombolo -c 'select geography_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join geography_object as go on (tv.geography_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by geography_type_label, provider_label'
+psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label, provider_label'
 ```
 
 # Database geo unit transformation
@@ -124,5 +121,5 @@ psql tombolo -c 'select geography_type_label, provider_label, count(distinct a.i
 This command might come handy when we start writing the data exporters
 
 ```bash
-psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from geography_object where limit 1'
+psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from subject where limit 1'
 ```

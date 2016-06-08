@@ -2,9 +2,9 @@ CREATE EXTENSION postgis;
 
 drop table timed_value;
 
-drop table geography_object;
-drop sequence geography_id_sequence;
-drop table geography_type;
+drop table subject;
+drop sequence subject_id_sequence;
+drop table subject_type;
 
 drop table attribute;
 drop sequence attribute_id_sequence;
@@ -23,24 +23,24 @@ create table provider (
 -- FIXME: Add data source table
 
 
--- Geography
-create table geography_type (
+-- Subject
+create table subject_type (
 	label	VARCHAR(15) NOT NULL,
 	name	VARCHAR(255),
 	PRIMARY KEY(label)
 );
 
-create sequence geography_id_sequence;
-create table geography_object (
-	id                   integer NOT NULL DEFAULT nextval('geography_id_sequence'),
-	geography_type_label VARCHAR(15) NOT NULL REFERENCES geography_type(label) DEFAULT 'unknown',
+create sequence subject_id_sequence;
+create table subject (
+	id                   integer NOT NULL DEFAULT nextval('subject_id_sequence'),
+	subject_type_label VARCHAR(15) NOT NULL REFERENCES subject_type(label) DEFAULT 'unknown',
 	label				 VARCHAR(63) NOT NULL UNIQUE,
 	name				 VARCHAR(255),
 	shape				 geometry,
 	PRIMARY KEY(id)
 );
 
-create index geography_label on geography_object (label);
+create index subject_label on subject (label);
 
 
 -- Attribute
@@ -58,9 +58,9 @@ create table attribute (
 
 -- Timed Value
 create table timed_value (
-	geography_id	integer NOT NULL REFERENCES geography_object(id),
+	subject_id		integer NOT NULL REFERENCES subject(id),
 	attribute_id 	integer NOT NULL REFERENCES attribute(id),
 	timestamp		TIMESTAMP WITH TIME ZONE NOT NULL,
 	value			DOUBLE PRECISION NOT NULL,
-	PRIMARY KEY(geography_id,attribute_id,timestamp)
+	PRIMARY KEY(subject_id,attribute_id,timestamp)
 );

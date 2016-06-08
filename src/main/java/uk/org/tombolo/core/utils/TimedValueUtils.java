@@ -4,27 +4,25 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.hibernate.Criteria;
 import org.hibernate.NonUniqueObjectException;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 	
-	public List<TimedValue> getByGeographyAndAttribute(Geography geography, Attribute attribute){
+	public List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.geography", geography));
+			criteria = criteria.add(Restrictions.eq("id.subject", subject));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
 
 			// FIXME: This should be paginated
@@ -32,10 +30,10 @@ public class TimedValueUtils {
 		});
 	}
 
-	public Optional<TimedValue> getLatestByGeographyAndAttribute(Geography geography, Attribute attribute) {
+	public Optional<TimedValue> getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.geography", geography));
+			criteria = criteria.add(Restrictions.eq("id.subject", subject));
 			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
 			criteria = criteria.addOrder(Order.desc("id.timestamp"));
 			criteria.setMaxResults(1);
@@ -62,8 +60,8 @@ public class TimedValueUtils {
 					saved++;
 				}catch(NonUniqueObjectException e){
 					// This is happening because the TFL stations contain a duplicate ID
-					log.warn("Could not save timed value for geography {}, attribute {}, time {}: {}",
-							timedValue.getId().getGeography().getLabel(),
+					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
+							timedValue.getId().getSubject().getLabel(),
 							timedValue.getId().getAttribute().getName(),
 							timedValue.getId().getTimestamp().toString(),
 							e.getMessage());

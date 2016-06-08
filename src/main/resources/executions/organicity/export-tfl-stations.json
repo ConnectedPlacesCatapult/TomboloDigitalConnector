@@ -1,8 +1,8 @@
 {
 	"datasetSpecification" : {
-		"geographySpecification" : [
+		"subjectSpecification" : [
 			{
-				"geographyType" : "TfLStation"
+				"subjectType" : "TfLStation"
 			}
 		],	
 		"datasourceSpecification" : [

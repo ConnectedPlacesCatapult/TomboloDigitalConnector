@@ -22,8 +22,8 @@ public class TimedValue {
 		
 	}
 	
-	public TimedValue(Geography geography, Attribute attribute, LocalDateTime timestamp, Double value){
-		this.id = new TimedValueId(geography, attribute, timestamp);
+	public TimedValue(Subject subject, Attribute attribute, LocalDateTime timestamp, Double value){
+		this.id = new TimedValueId(subject, attribute, timestamp);
 		this.value = value;
 	}
 	

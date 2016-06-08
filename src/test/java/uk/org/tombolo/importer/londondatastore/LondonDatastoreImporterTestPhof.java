@@ -33,8 +33,8 @@ public class LondonDatastoreImporterTestPhof extends AbstractTest {
 	}
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
