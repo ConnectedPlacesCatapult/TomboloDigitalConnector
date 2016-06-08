@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -40,7 +39,6 @@ public class HibernateUtil {
     private static SessionFactory buildSessionFactory() {
         // Create the SessionFactory from hibernate.cfg.xml
         Configuration cfg = new Configuration().configure();
-        cfg.addProperties(getDatabaseConnectionProperties());
         applyEnvironmentVariables(cfg);
 
         try {
@@ -51,26 +49,16 @@ public class HibernateUtil {
     }
 
     private static void applyEnvironmentVariables(Configuration cfg) {
-        if (null != System.getenv("DATABASE_URI")) {
-            cfg.setProperty("hibernate.connection.url", System.getenv("DATABASE_URI"));
+        if (null != System.getProperty("databaseURI")) {
+            cfg.setProperty("hibernate.connection.url", System.getProperty("databaseURI"));
         }
 
-        if (null != System.getenv("DATABASE_USERNAME")) {
-            cfg.setProperty("hibernate.connection.username", System.getenv("DATABASE_USERNAME"));
+        if (null != System.getProperty("databaseUsername")) {
+            cfg.setProperty("hibernate.connection.username", System.getProperty("databaseUsername"));
         }
 
-        if (null != System.getenv("DATABASE_PASSWORD")) {
-            cfg.setProperty("hibernate.connection.password", System.getenv("DATABASE_PASSWORD"));
-        }
-    }
-
-    private static Properties getDatabaseConnectionProperties() {
-        try {
-            Properties dbConnectionProperties = new Properties();
-            dbConnectionProperties.load(ClassLoader.getSystemClassLoader().getResourceAsStream("DBConnection.properties"));
-            return dbConnectionProperties;
-        } catch (Exception ex) {
-            throw new ServiceConfigurationError("Failed to load database connection configuration from DBConnection.properties. See README for setup instructions.", ex);
+        if (null != System.getProperty("databasePassword")) {
+            cfg.setProperty("hibernate.connection.password", System.getProperty("databasePassword"));
         }
     }
 

@@ -1,3 +1,0 @@
-hibernate.connection.url=jdbc:postgresql://localhost:5432/tombolo
-hibernate.connection.username=tombolo
-hibernate.connection.password=tombolo

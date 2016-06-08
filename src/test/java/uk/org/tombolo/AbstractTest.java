@@ -8,6 +8,11 @@ import uk.org.tombolo.importer.DownloadUtils;
 public abstract class AbstractTest {
     @Before
     public void clearDatabase() {
+        // Ensure we aren't clobbering our production DB
+        if(!System.getProperty("environment", "").equals("test")) {
+            throw new Error("Not running in test mode. You're going to clobber your database!");
+        };
+
         HibernateUtil.restart();
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();

@@ -3,28 +3,13 @@
 The Tombolo Digital Connector is a piece of software to combine urban datasets
 and urban models.
 
-## Build
-
-Build the Digital Connector with or without running the unit tests
-
-```bash
-gradle clean build copyDeps
-gradle clean build copyDeps -x test
-```
-
-For Eclipse users the following command builds 
-
-```bash
-gradle cleanEclipse eclipse
-```
-
 ## Quick start
 
 ### Set up main database
 
 First copy and amend the example configuration file at
-`/src/main/resources/DBConnection.properties.example` to
-`/src/main/resources/DBConnection.properties`.
+`/gradle.properties.example` to
+`/gradle.properties`.
 
 To create a user and database with the default values in the example file:
 
@@ -77,6 +62,59 @@ psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sq
 psql -d tombolo_test -U tombolo_test < src/test/resources/sql/initial_fixtures.sql
 ```
 
+### Run tests
+
+```bash
+gradle test
+```
+
+### Run export
+
+Exports the London borough profiles from OrganiCity
+
+```bash
+gradle runExport \
+    -PdataExportSpecFile='path/to/spec/file.json' \
+    -PoutputFile='output_file.json' \
+    -PdoImport=true
+```
+
+For example, this exports the London borough profiles from OrganiCity
+
+```bash
+gradle runExport \
+    -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
+    -PoutputFile='organicity-borough-profiles.json' \
+    -PdoImport=true
+cat organicity-borough-profiles.json | json_pp
+```
+
+Or without Gradle:
+
+```bash
+gradle clean build copyDeps -x test
+java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
+	uk.org.tombolo.DataExportRunner \
+	src/main/resources/executions/organicity/export-borough-profiles.json \
+	organicity-borough-profiles.json \
+	true
+```
+
+### Build
+
+With or without running the unit tests
+
+```bash
+gradle clean build copyDeps
+gradle clean build copyDeps -x test
+```
+
+For Eclipse users the following command builds
+
+```bash
+gradle cleanEclipse eclipse
+```
+
 ## Continuous Integration
 
 We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
@@ -105,17 +143,7 @@ docker push fcclab/tombolo
 
 ## Example execution
 
-Exports the London borough profiles from OrganiCity
 
-```bash
-gradle clean build copyDeps -x test
-java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
-	uk.org.tombolo.DataExportRunner \
-	src/main/resources/executions/organicity/export-borough-profiles.json \
-	organicity-borough-profiles.json \
-	false
-cat organicity-borough-profiles.json | json_pp
-```
 
 ## Useful database queries
 
