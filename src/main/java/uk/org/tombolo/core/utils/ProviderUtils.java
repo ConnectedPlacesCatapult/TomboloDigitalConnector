@@ -1,12 +1,11 @@
 package uk.org.tombolo.core.utils;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import uk.org.tombolo.core.Provider;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.hibernate.*;
-import org.hibernate.criterion.Restrictions;
-
-import uk.org.tombolo.core.Provider;
 
 public class ProviderUtils {
 	public static Provider getTestProvider(){

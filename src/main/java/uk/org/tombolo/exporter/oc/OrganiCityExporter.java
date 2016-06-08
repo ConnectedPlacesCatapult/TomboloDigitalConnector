@@ -1,30 +1,27 @@
 package uk.org.tombolo.exporter.oc;
 
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.List;
-
-import javax.json.JsonValue;
-
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.vividsolutions.jts.geom.Point;
-
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
+
+import javax.json.JsonValue;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.List;
 
 public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 	public static final String OC_SITE_NAME = "london";

@@ -1,7 +1,17 @@
 package uk.org.tombolo.exporter;
 
-import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.junit.Before;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.execution.spec.AttributeSpecification;
+import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -9,19 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.junit.Before;
-import org.junit.Test;
-
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import static org.junit.Assert.assertEquals;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 
 public class GeoJsonExporterTest extends AbstractTest {

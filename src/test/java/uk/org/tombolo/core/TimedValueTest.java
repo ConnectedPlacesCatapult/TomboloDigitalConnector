@@ -1,17 +1,15 @@
 package uk.org.tombolo.core;
 
-import static org.junit.Assert.*;
+import org.hibernate.Transaction;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.time.LocalDateTime;
 
-
-import org.hibernate.Transaction;
-import org.junit.Test;
-
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
+import static org.junit.Assert.assertEquals;
 
 public class TimedValueTest extends AbstractTest {
 

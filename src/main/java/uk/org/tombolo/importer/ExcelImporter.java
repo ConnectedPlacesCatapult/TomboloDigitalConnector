@@ -1,14 +1,5 @@
 package uk.org.tombolo.importer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.time.LocalDateTime;
-import java.util.*;
-
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,12 +11,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;

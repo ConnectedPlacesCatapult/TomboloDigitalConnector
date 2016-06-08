@@ -1,18 +1,17 @@
 package uk.org.tombolo.transformer;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;

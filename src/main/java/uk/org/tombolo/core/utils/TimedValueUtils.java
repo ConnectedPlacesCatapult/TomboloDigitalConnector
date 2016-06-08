@@ -1,20 +1,19 @@
 package uk.org.tombolo.core.utils;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import org.hibernate.Criteria;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);

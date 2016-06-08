@@ -1,14 +1,16 @@
 package uk.org.tombolo.execution.spec;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.core.Attribute;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class DatasetSpecificationTest extends AbstractTest {
 

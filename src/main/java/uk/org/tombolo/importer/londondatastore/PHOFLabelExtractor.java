@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.londondatastore;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
 import uk.org.tombolo.importer.LabelExtractor;
 
 public class PHOFLabelExtractor implements LabelExtractor {

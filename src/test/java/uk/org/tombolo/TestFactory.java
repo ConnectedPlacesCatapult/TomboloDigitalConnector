@@ -4,8 +4,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
 

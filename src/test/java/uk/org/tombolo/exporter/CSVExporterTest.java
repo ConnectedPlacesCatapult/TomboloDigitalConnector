@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.*;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();

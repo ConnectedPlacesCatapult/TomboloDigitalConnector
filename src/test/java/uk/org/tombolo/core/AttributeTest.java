@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AttributeTest extends AbstractTest {
     Attribute subject;

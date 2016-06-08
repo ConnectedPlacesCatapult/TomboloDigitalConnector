@@ -1,17 +1,16 @@
 package uk.org.tombolo.core.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubjectUtils {
 

@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class DataExportEngineTest extends AbstractTest {
     DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());

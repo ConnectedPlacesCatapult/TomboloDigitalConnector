@@ -1,5 +1,6 @@
 package uk.org.tombolo.transformer.utils;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.DefaultCoordinateOperationFactory;
@@ -10,8 +11,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.TransformException;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class CoordinateUtils {
 
