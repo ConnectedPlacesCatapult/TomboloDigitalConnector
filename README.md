@@ -98,7 +98,7 @@ cat organicity-borough-profiles.json | json_pp
 This sections contain a number of useful database queries that should at some point be integrated into the connector main code
 
 ```bash
-psql tombolo -c 'select subject_type_label, count(*) from subject_object group by subject_type_label'
+psql tombolo -c 'select subject_type_label, count(*) from subject group by subject_type_label'
 ```
 
 Attributes
@@ -108,12 +108,12 @@ psql tombolo -c 'select provider_label, label, name from attribute'
 
 Attribute and value count per subject type
 ```bash
-psql tombolo -c 'select subject_type_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject_object as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label'
+psql tombolo -c 'select subject_type_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label'
 ```
 
 Attribute and value count per subject type and provider
 ```bash
-psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject_object as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label, provider_label'
+psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label, provider_label'
 ```
 
 # Database geo unit transformation
@@ -121,5 +121,5 @@ psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id)
 This command might come handy when we start writing the data exporters
 
 ```bash
-psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from subject_object where limit 1'
+psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from subject where limit 1'
 ```

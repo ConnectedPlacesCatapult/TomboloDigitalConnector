@@ -2,7 +2,7 @@ CREATE EXTENSION postgis;
 
 drop table timed_value;
 
-drop table subject_object;
+drop table subject;
 drop sequence subject_id_sequence;
 drop table subject_type;
 
@@ -31,7 +31,7 @@ create table subject_type (
 );
 
 create sequence subject_id_sequence;
-create table subject_object (
+create table subject (
 	id                   integer NOT NULL DEFAULT nextval('subject_id_sequence'),
 	subject_type_label VARCHAR(15) NOT NULL REFERENCES subject_type(label) DEFAULT 'unknown',
 	label				 VARCHAR(63) NOT NULL UNIQUE,
@@ -40,7 +40,7 @@ create table subject_object (
 	PRIMARY KEY(id)
 );
 
-create index subject_label on subject_object (label);
+create index subject_label on subject (label);
 
 
 -- Attribute
@@ -58,7 +58,7 @@ create table attribute (
 
 -- Timed Value
 create table timed_value (
-	subject_id		integer NOT NULL REFERENCES subject_object(id),
+	subject_id		integer NOT NULL REFERENCES subject(id),
 	attribute_id 	integer NOT NULL REFERENCES attribute(id),
 	timestamp		TIMESTAMP WITH TIME ZONE NOT NULL,
 	value			DOUBLE PRECISION NOT NULL,

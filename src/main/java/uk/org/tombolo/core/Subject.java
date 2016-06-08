@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 import com.vividsolutions.jts.geom.Geometry;
 
 @Entity
-@Table(name="subject_object")
+@Table(name="subject")
 public class Subject {
 	public static final int SRID = 4326;
 

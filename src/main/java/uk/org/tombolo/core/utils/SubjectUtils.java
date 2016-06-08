@@ -51,10 +51,10 @@ public class SubjectUtils {
 		});
 	}
 	
-	public static void save(List<Subject> subjectObjects){
+	public static void save(List<Subject> subjects){
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
-			for (Subject subject : subjectObjects) {
+			for (Subject subject : subjects) {
 				Criteria criteria = session.createCriteria(Subject.class);
 				Subject savedSubject = (Subject) criteria.add(Restrictions.eq("label", subject.getLabel())).uniqueResult();
 				if (savedSubject == null) {
