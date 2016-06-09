@@ -26,8 +26,8 @@ public class DataExportEngine implements ExecutionEngine{
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
 		// Import data
-		if (forceImport){
-			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
+		if (forceImport) {
+			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
 				log.info("Importing {} {}",
 						datasourceSpec.getImporterClass(),
 						datasourceSpec.getDatasourceId());
@@ -38,18 +38,6 @@ public class DataExportEngine implements ExecutionEngine{
 			}
 		}
 
-		// Run transforms over subjects
-		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
-		for (SubjectSpecification subjectSpec : subjectSpecList) {
-			List<Subject> subjects = SubjectUtils.getSubjectBySpecification(subjectSpec);
-			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
-				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
-				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
-				transformer.setTimedValueUtils(new TimedValueUtils());
-				transformer.transformBySpecification(subjects, transformSpec);
-			}
-		}
-
 		// Generate fields
 		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
 		List<Field> fields = new ArrayList<>();
@@ -57,9 +45,31 @@ public class DataExportEngine implements ExecutionEngine{
 			fields.add((Field) Class.forName(fieldSpec.getFieldClass()).newInstance());
 		}
 
-		// Export data
-		log.info("Exporting ...");
-		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-		exporter.write(writer, dataExportSpec.getDatasetSpecification());
+
+		if (fields.size() > 0) {
+			// Use the new fields method
+			log.info("Exporting ...");
+			Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+			List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
+			List<Subject> subjects = SubjectUtils.getSubjectBySpecification(subjectSpecList.get(0));
+			exporter.write(writer, subjects, fields);
+		} else {
+			// Run transforms over subjects
+			List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
+			for (SubjectSpecification subjectSpec : subjectSpecList) {
+				List<Subject> subjects = SubjectUtils.getSubjectBySpecification(subjectSpec);
+				for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
+					log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
+					Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
+					transformer.setTimedValueUtils(new TimedValueUtils());
+					transformer.transformBySpecification(subjects, transformSpec);
+				}
+			}
+
+			// Export data
+			log.info("Exporting ...");
+			Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+			exporter.write(writer, dataExportSpec.getDatasetSpecification());
+		}
 	}
 }
