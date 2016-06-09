@@ -1,12 +1,12 @@
 package uk.org.tombolo.execution.spec;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class DataExportSpecification {
 

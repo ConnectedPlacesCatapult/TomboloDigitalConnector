@@ -1,10 +1,10 @@
 package uk.org.tombolo.importer;
 
-import java.util.List;
-
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+
+import java.util.List;
 
 public interface Importer {
 

@@ -1,18 +1,13 @@
 package uk.org.tombolo.core.utils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import org.geotools.geometry.GeometryBuilder;
-import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.TimedValue;
+import static org.junit.Assert.assertEquals;
 
 public class TimedValueUtilsTest extends AbstractTest {
 

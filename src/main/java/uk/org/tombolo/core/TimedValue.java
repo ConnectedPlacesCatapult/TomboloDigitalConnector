@@ -1,11 +1,10 @@
 package uk.org.tombolo.core;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 // FIXME: Probably turn this into and interface and a DoubleTimedValue class
 @Entity
@@ -22,8 +21,8 @@ public class TimedValue {
 		
 	}
 	
-	public TimedValue(Geography geography, Attribute attribute, LocalDateTime timestamp, Double value){
-		this.id = new TimedValueId(geography, attribute, timestamp);
+	public TimedValue(Subject subject, Attribute attribute, LocalDateTime timestamp, Double value){
+		this.id = new TimedValueId(subject, attribute, timestamp);
 		this.value = value;
 	}
 	

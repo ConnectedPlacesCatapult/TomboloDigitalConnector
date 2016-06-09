@@ -1,25 +1,24 @@
 package uk.org.tombolo.importer.ons;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.AttributeUtils;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
 	public static final String datasourceId = "OT102EW";
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01002766");
-		TestFactory.makeNamedGeography("E08000035");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01002766");
+		TestFactory.makeNamedSubject("E08000035");
 	}
 	
 	@Test

@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.tfl;
 
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 

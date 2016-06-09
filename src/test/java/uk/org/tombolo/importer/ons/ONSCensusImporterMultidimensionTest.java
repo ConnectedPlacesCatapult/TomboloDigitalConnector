@@ -1,15 +1,14 @@
 package uk.org.tombolo.importer.ons;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.AttributeUtils;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImporterTest {
 
@@ -17,8 +16,8 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 	private static final String datasourceId = "QS103EW";
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01002766");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01002766");
 	}
 		
 	@Test

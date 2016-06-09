@@ -4,7 +4,8 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Provider;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ProviderUtilsTest extends AbstractTest {
     private static final String TEST_PROVIDER_LABEL = "uk.org.tombolo.test";

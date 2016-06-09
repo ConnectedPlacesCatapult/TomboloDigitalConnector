@@ -13,8 +13,8 @@
         <property name="hibernate.connection.password">tombolo</property>
         <property name="show_sql">false</property>
 
-		<mapping class="uk.org.tombolo.core.GeographyType"/>
-		<mapping class="uk.org.tombolo.core.Geography"/>
+		<mapping class="uk.org.tombolo.core.SubjectType"/>
+		<mapping class="uk.org.tombolo.core.Subject"/>
 		
 		<mapping class="uk.org.tombolo.core.Provider"/>
 		<mapping class="uk.org.tombolo.core.Attribute"/>

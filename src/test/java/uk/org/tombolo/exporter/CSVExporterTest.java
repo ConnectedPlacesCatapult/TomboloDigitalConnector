@@ -11,7 +11,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.GeographySpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -21,14 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.GeographySpecification.*;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
@@ -66,9 +66,9 @@ public class CSVExporterTest extends AbstractTest {
 	}
 
 	@Test
-	public void testWriteWithInvalidGeography() throws Exception {
+	public void testWriteWithInvalidSubject() throws Exception {
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "badGeography", "uk.gov.london", "populationDensity"));
+		exporter.write(writer, makeDatasetSpecification("E09%", "badSubject", "uk.gov.london", "populationDensity"));
 		writer.flush();
 
 		assertTrue(getRecords(writer.toString()).isEmpty());
@@ -85,14 +85,14 @@ public class CSVExporterTest extends AbstractTest {
 		assertEquals("uk.gov.london_populationDensity_provider", attributes.get(4));
 	}
 
-	private DatasetSpecification makeDatasetSpecification(String geographyLabelPattern, String geographyType, String attributeProvider, String attributeName) {
+	private DatasetSpecification makeDatasetSpecification(String subjectLabelPattern, String subjectType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
-		List<GeographySpecification> geographySpecification = new ArrayList<GeographySpecification>();
-		List<GeographyMatcher> matchers = Arrays.asList(new GeographyMatcher("label", geographyLabelPattern));
-		geographySpecification.add(new GeographySpecification(matchers, geographyType));
+		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
+		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", subjectLabelPattern));
+		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
 		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
 		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
-		spec.setGeographySpecification(geographySpecification);
+		spec.setSubjectSpecification(subjectSpecification);
 		spec.setAttributeSpecification(attributeSpecification);
 		return spec;
 	}

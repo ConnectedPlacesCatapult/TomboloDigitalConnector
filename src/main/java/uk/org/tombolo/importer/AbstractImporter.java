@@ -1,11 +1,10 @@
 package uk.org.tombolo.importer;
 
-import java.io.IOException;
-
 import org.json.simple.parser.ParseException;
-
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+
+import java.io.IOException;
 
 public abstract class AbstractImporter implements Importer {
 

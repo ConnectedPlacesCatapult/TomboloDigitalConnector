@@ -1,14 +1,5 @@
 package uk.org.tombolo.importer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.time.LocalDateTime;
-import java.util.*;
-
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,12 +11,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;
@@ -63,7 +58,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	
 	@Override
 	public int importDatasource(Datasource datasource) throws Exception {
-		Map<String, Geography> geographyCache = new HashMap<String, Geography>();
+		Map<String, Subject> subjectCache = new HashMap<String, Subject>();
 		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 
 		// Provider
@@ -108,18 +103,18 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (timestamp == null)
 					continue;
 				
-				// Timed value per geography
+				// Timed value per subject
 				List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 				for (int i = ldsa.startLine; i< ldsa.endLine+1; i++){
 					Row row = sheet.getRow(i);
 
 					Cell cell;
 
-					// Geography
+					// Subject
 					cell = row.getCell(ldsa.keyColumnId);
-					String geographyId = cell.getStringCellValue();
-					Geography geography = getGeographyByLabel(geographyCache, geographyId);
-					if (geography == null)
+					String subjectId = cell.getStringCellValue();
+					Subject subject = getSubjectByLabel(subjectCache, subjectId);
+					if (subject == null)
 						continue;
 					
 					// Value
@@ -128,7 +123,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					//if (value == null)
 					//	continue;
 
-					TimedValue timedValue = new TimedValue(geography,attribute,timestamp,value);
+					TimedValue timedValue = new TimedValue(subject,attribute,timestamp,value);
 					timedValueBuffer.add(timedValue);
 					valueCounter++;
 					
@@ -155,12 +150,12 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (row.getRowNum() ==0)
 					continue;
 				
-				// Geography
+				// Subject
 				Cell cell = row.getCell(defaultAttribute.keyColumnId);
-				String geographyId = cell.getStringCellValue();
-				Geography geography = getGeographyByLabel(geographyCache, geographyId);
+				String subjectId = cell.getStringCellValue();
+				Subject subject = getSubjectByLabel(subjectCache, subjectId);
 				
-				if (geography == null)
+				if (subject == null)
 					continue;
 				
 				// Attribute
@@ -187,7 +182,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				if (value == null)
 					continue;
 				
-				TimedValue timedValue = new TimedValue(geography,attribute,timestamp,value);
+				TimedValue timedValue = new TimedValue(subject,attribute,timestamp,value);
 				timedValueBuffer.add(timedValue);
 				valueCounter++;
 				
@@ -333,12 +328,12 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		return ldsAttributes;
 	}
 
-	private Geography getGeographyByLabel(Map<String, Geography> geographyCache, String label) {
-		if (!geographyCache.containsKey(label)) {
-			geographyCache.put(label, GeographyUtils.getGeographyByLabel(label));
+	private Subject getSubjectByLabel(Map<String, Subject> subjectCache, String label) {
+		if (!subjectCache.containsKey(label)) {
+			subjectCache.put(label, SubjectUtils.getSubjectByLabel(label));
 		}
 
-		return geographyCache.get(label);
+		return subjectCache.get(label);
 	}
 
 	private Attribute getAttributeByProviderAndLabel(Map<String, Attribute> attributeCache, Provider provider, String label) {

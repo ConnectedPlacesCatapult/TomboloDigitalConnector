@@ -1,15 +1,7 @@
 package uk.org.tombolo.importer.londondatastore;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
@@ -18,14 +10,21 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
 	private static final String DATASOURCE_ID = "lsoa-atlas";
 	LondonDatastoreImporter importer;
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E01000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E01000001");
 	}
 
 	@Before

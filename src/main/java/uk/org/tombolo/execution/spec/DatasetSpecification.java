@@ -1,17 +1,17 @@
 package uk.org.tombolo.execution.spec;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
 public class DatasetSpecification {
 
-	List<GeographySpecification> geographySpecification;
+	List<SubjectSpecification> subjectSpecification;
 	
 	List<DatasourceSpecification> datasourceSpecification;
 	
@@ -19,12 +19,12 @@ public class DatasetSpecification {
 
 	List<TransformSpecification> transformSpecification;
 	
-	public List<GeographySpecification> getGeographySpecification() {
-		return geographySpecification;
+	public List<SubjectSpecification> getSubjectSpecification() {
+		return subjectSpecification;
 	}
 	
-	public void setGeographySpecification(List<GeographySpecification> geographySpecification) {
-		this.geographySpecification = geographySpecification;
+	public void setSubjectSpecification(List<SubjectSpecification> subjectSpecification) {
+		this.subjectSpecification = subjectSpecification;
 	}
 
 	public List<DatasourceSpecification> getDatasourceSpecification() {

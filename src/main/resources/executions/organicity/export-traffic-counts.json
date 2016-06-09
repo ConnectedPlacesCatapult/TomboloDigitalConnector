@@ -1,8 +1,8 @@
 {
 	"datasetSpecification" : {
-		"geographySpecification" : [
+		"subjectSpecification" : [
 			{
-				"geographyType" : "sensor",
+				"subjectType" : "sensor",
 				"attributes" : {
 					"provider" : "uk.gov.dft",
 					"service" : "trafficCount",

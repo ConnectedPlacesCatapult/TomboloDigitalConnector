@@ -1,8 +1,8 @@
 {
 	"datasetSpecification" : {
-		"geographySpecification" : [
+		"subjectSpecification" : [
 			{
-				"geographyType" : "localAuthority",
+				"subjectType" : "localAuthority",
 				"matchers" : [
 					{
 						"attribute": "label",
@@ -30,6 +30,7 @@
 				"datasourceId" : "BMI_categories_2012-2014"
 			}		
 		],
+		"transformSpecification": [],
 		"attributeSpecification" : [
 			{
 				"providerLabel" : "uk.gov.london",

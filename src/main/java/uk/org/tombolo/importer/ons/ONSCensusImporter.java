@@ -1,14 +1,5 @@
 package uk.org.tombolo.importer.ons;
 
-import java.io.*;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.json.simple.JSONArray;
@@ -16,18 +7,20 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * A class for importing ONS Census data into the Tombolo Digital Connector platform.
@@ -147,12 +140,12 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							for (int i=2; i<2+datasource.getAttributes().size(); i++){
 								values.add(Double.parseDouble(dequote(fields[i])));
 							}
-							Geography geography = GeographyUtils.getGeographyByLabel(areaId);
-							if (geography != null
+							Subject subject = SubjectUtils.getSubjectByLabel(areaId);
+							if (subject != null
 									&& values.size() == datasource.getAttributes().size()){
 								for (int i=0; i<values.size(); i++){
 									TimedValue tv 
-										= new TimedValue(geography, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
+										= new TimedValue(subject, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
 									valueCount++;
 									

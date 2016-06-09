@@ -1,18 +1,17 @@
 package uk.org.tombolo.transformer;
 
+import org.junit.Before;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Geography;
-import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -36,9 +35,9 @@ public class SumFractionTransformerTest extends AbstractTest {
 	LocalDateTime t3 = LocalDateTime.now();
 
 	// Three greographies we would like to use
-	Geography place1 = new Geography();
-	Geography place2 = new Geography();
-	Geography place3 = new Geography();
+	Subject place1 = new Subject();
+	Subject place2 = new Subject();
+	Subject place3 = new Subject();
 
 	@Before
 	public void setUp(){
@@ -60,7 +59,7 @@ public class SumFractionTransformerTest extends AbstractTest {
 	public void testTransform() {
 		// FIXME: Consider breaking up into multiple tests
 
-		List<Geography> geographies = Arrays.asList(place1,place2,place3);
+		List<Subject> subjects = Arrays.asList(place1,place2,place3);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,fiveYearOlds,everybody);
 
@@ -83,42 +82,42 @@ public class SumFractionTransformerTest extends AbstractTest {
 
 		TimedValueUtils utils = mock(TimedValueUtils.class);
 		// Place 1
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds)).thenReturn(Optional.of(threePlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds)).thenReturn(Optional.of(fourPlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, fiveYearOlds)).thenReturn(Optional.of(fivePlace1T2));
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody)).thenReturn(Optional.of(everybodyPlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds)).thenReturn(Optional.of(threePlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds)).thenReturn(Optional.of(fourPlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, fiveYearOlds)).thenReturn(Optional.of(fivePlace1T2));
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody)).thenReturn(Optional.of(everybodyPlace1T2));
 		// Place 2
-		when(utils.getLatestByGeographyAndAttribute(place2, threeYearOlds)).thenReturn(Optional.of(threePlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, fourYearOlds)).thenReturn(Optional.of(fourPlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, fiveYearOlds)).thenReturn(Optional.of(fivePlace2T1));
-		when(utils.getLatestByGeographyAndAttribute(place2, everybody)).thenReturn(Optional.of(everybodyPlace2T2));
+		when(utils.getLatestBySubjectAndAttribute(place2, threeYearOlds)).thenReturn(Optional.of(threePlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, fourYearOlds)).thenReturn(Optional.of(fourPlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, fiveYearOlds)).thenReturn(Optional.of(fivePlace2T1));
+		when(utils.getLatestBySubjectAndAttribute(place2, everybody)).thenReturn(Optional.of(everybodyPlace2T2));
 		// Place 3
-		when(utils.getLatestByGeographyAndAttribute(place3, threeYearOlds)).thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place3, fourYearOlds)).thenReturn(Optional.of(fourPlace3T1));
-		when(utils.getLatestByGeographyAndAttribute(place3, fiveYearOlds)).thenReturn(Optional.of(fivePlace3T3));
-		when(utils.getLatestByGeographyAndAttribute(place3, everybody)).thenReturn(Optional.of(everybodyPlace3T2));
+		when(utils.getLatestBySubjectAndAttribute(place3, threeYearOlds)).thenReturn(Optional.empty());
+		when(utils.getLatestBySubjectAndAttribute(place3, fourYearOlds)).thenReturn(Optional.of(fourPlace3T1));
+		when(utils.getLatestBySubjectAndAttribute(place3, fiveYearOlds)).thenReturn(Optional.of(fivePlace3T3));
+		when(utils.getLatestBySubjectAndAttribute(place3, everybody)).thenReturn(Optional.of(everybodyPlace3T2));
 		transformer.setTimedValueUtils(utils);
 
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// Three places
 		assertEquals(3, values.size());
 
 		// Place 1
-		assertEquals(place1, values.get(0).getId().getGeography());
+		assertEquals(place1, values.get(0).getId().getSubject());
 		assertEquals(t2, values.get(0).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.5d, values.get(0).getValue(), 0.001d);
 
 		// Place 2
-		assertEquals(place2, values.get(1).getId().getGeography());
+		assertEquals(place2, values.get(1).getId().getSubject());
 		assertEquals(t2, values.get(1).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.4d, values.get(1).getValue(), 0.001d);
 
 		// Place 3
-		assertEquals(place3, values.get(2).getId().getGeography());
+		assertEquals(place3, values.get(2).getId().getSubject());
 		assertEquals(t3, values.get(2).getId().getTimestamp());
 		assertEquals(children, values.get(0).getId().getAttribute());
 		assertEquals(0.3d, values.get(2).getValue(), 0.001d);
@@ -127,15 +126,15 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExisting() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(any(Geography.class), any(Attribute.class)))
+		when(utils.getLatestBySubjectAndAttribute(any(Subject.class), any(Attribute.class)))
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		assertEquals(0,values.size());
 	}
@@ -143,19 +142,19 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingDenominator() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.empty());
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		assertEquals(0,values.size());
 	}
@@ -163,19 +162,19 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingNumerator() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.of(new TimedValue(place1, threeYearOlds, t1, 3.0d)));
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// This is controversial
 		// We could decide to return no value since one of the numerator values was missing
@@ -186,19 +185,19 @@ public class SumFractionTransformerTest extends AbstractTest {
 	@Test
 	public void testTransformNonExistingNumerators() {
 		TimedValueUtils utils = mock(TimedValueUtils.class);
-		when(utils.getLatestByGeographyAndAttribute(place1, threeYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, threeYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, fourYearOlds))
+		when(utils.getLatestBySubjectAndAttribute(place1, fourYearOlds))
 				.thenReturn(Optional.empty());
-		when(utils.getLatestByGeographyAndAttribute(place1, everybody))
+		when(utils.getLatestBySubjectAndAttribute(place1, everybody))
 				.thenReturn(Optional.of(new TimedValue(place1, fourYearOlds, t1, 4.0d)));
 		transformer.setTimedValueUtils(utils);
 
-		List<Geography> geographies = Arrays.asList(place1);
+		List<Subject> subjects = Arrays.asList(place1);
 
 		List<Attribute> inputAttributes = Arrays.asList(threeYearOlds,fourYearOlds,everybody);
 
-		List<TimedValue> values = transformer.transform(geographies, inputAttributes, children);
+		List<TimedValue> values = transformer.transform(subjects, inputAttributes, children);
 
 		// Both numerators are missing
 		assertEquals(0,values.size());

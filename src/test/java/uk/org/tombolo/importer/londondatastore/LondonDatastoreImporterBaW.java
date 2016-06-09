@@ -1,15 +1,7 @@
 package uk.org.tombolo.importer.londondatastore;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
@@ -18,7 +10,13 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ons.ONSCensusImporter;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LondonDatastoreImporterBaW extends AbstractTest {
 	private static final String DATASOURCE_ID = "walking-cycling-borough";
@@ -26,8 +24,8 @@ public class LondonDatastoreImporterBaW extends AbstractTest {
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void addGeography() {
-		TestFactory.makeNamedGeography("E09000001");
+	public void addSubjectFixtures() {
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Before

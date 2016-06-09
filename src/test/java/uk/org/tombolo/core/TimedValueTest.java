@@ -1,18 +1,15 @@
 package uk.org.tombolo.core;
 
-import static org.junit.Assert.*;
+import org.hibernate.Transaction;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.time.LocalDateTime;
 
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.junit.Test;
-
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.GeographyUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
+import static org.junit.Assert.assertEquals;
 
 public class TimedValueTest extends AbstractTest {
 
@@ -21,13 +18,13 @@ public class TimedValueTest extends AbstractTest {
 		HibernateUtil.withSession(session -> {
 			Transaction transaction = session.beginTransaction();
 
-			Geography geography = GeographyUtils.getTestGeography();
+			Subject subject = SubjectUtils.getTestSubject();
 
 			Attribute attribute = AttributeUtils.getTestAttribute();
 
 			LocalDateTime timestamp = LocalDateTime.now();
 
-			TimedValue tv = new TimedValue(geography, attribute, timestamp, 15.7d);
+			TimedValue tv = new TimedValue(subject, attribute, timestamp, 15.7d);
 			session.save(tv);
 
 			TimedValue testTv = (TimedValue)session.load(TimedValue.class, tv.getId());

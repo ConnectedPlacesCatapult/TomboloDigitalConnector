@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class DataExportEngineTest extends AbstractTest {
     DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());
@@ -27,11 +28,11 @@ public class DataExportEngineTest extends AbstractTest {
     Writer writer = new StringWriter();
 
     @Before
-    public void addGeography() {
-        TestFactory.makeNamedGeography("E01000001");
-        TestFactory.makeNamedGeography("E09000001");
-        TestFactory.makeNamedGeography("E01002766");
-        TestFactory.makeNamedGeography("E08000035");
+    public void addSubjectFixtures() {
+        TestFactory.makeNamedSubject("E01000001");
+        TestFactory.makeNamedSubject("E09000001");
+        TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeNamedSubject("E08000035");
     }
 
     @Test
@@ -42,9 +43,9 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testReturnsGeography() throws Exception {
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+    public void testReturnsSubject() throws Exception {
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         );
 
         engine.execute(builder.build(), writer, true);
@@ -54,12 +55,12 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testReturnsGeographyAndAttribute() throws Exception {
+    public void testReturnsSubjectAndAttribute() throws Exception {
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         ).addAttributeSpecification("default_provider_label", "attr_label");
 
         engine.execute(builder.build(), writer, true);
@@ -71,8 +72,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testImportsFromLondonDataStore() throws Exception {
-        builder.addGeographySpecification(
-                new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E09000001")
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E09000001")
         ).addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
          .addAttributeSpecification("uk.gov.london", "populationDensity");
 
@@ -86,8 +87,8 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testTransforms() throws Exception {
-        builder .addGeographySpecification(
-                    new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+        builder .addSubjectSpecification(
+                    new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                     new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
@@ -103,9 +104,9 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testRunsOnNewGeographies() throws Exception {
-        builder .addGeographySpecification(
-                    new GeographySpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
+    public void testRunsOnNewSubjects() throws Exception {
+        builder .addSubjectSpecification(
+                    new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
                 .addAttributeSpecification("uk.gov.tfl", "ServingLineCount");
 
@@ -121,8 +122,8 @@ public class DataExportEngineTest extends AbstractTest {
     public void testExportsCSV() throws Exception {
         DataExportSpecificationBuilder csvBuilder = DataExportSpecificationBuilder.withCSVExporter();
         csvBuilder
-                .addGeographySpecification(
-                        new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                         new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
@@ -141,11 +142,11 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testExportsMultipleGeographyTypes() throws Exception {
-        builder .addGeographySpecification(
-                        new GeographySpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
-                .addGeographySpecification(
-                        new GeographySpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+    public void testExportsMultipleSubjectTypes() throws Exception {
+        builder .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addTransformSpecification(
                         new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
@@ -171,19 +172,19 @@ public class DataExportEngineTest extends AbstractTest {
 
     private void assertHasTimedValue(String json, TimedValueMatcher matcher) {
         ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
-                Filter.filter(Criteria.where("properties.label").is(matcher.geographyLabel)));
-        assertEquals(String.format("Wrong number of features found for label %s", matcher.geographyLabel), 1, features.size());
+                Filter.filter(Criteria.where("properties.label").is(matcher.subjectLabel)));
+        assertEquals(String.format("Wrong number of features found for label %s", matcher.subjectLabel), 1, features.size());
         assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values['" + matcher.timestamp + "']").toString());
     }
 
     private static class TimedValueMatcher {
-        String geographyLabel;
+        String subjectLabel;
         String attributeName;
         String timestamp;
         String value;
 
-        TimedValueMatcher(String geographyLabel, String attributeName, String timestamp, String value) {
-            this.geographyLabel = geographyLabel;
+        TimedValueMatcher(String subjectLabel, String attributeName, String timestamp, String value) {
+            this.subjectLabel = subjectLabel;
             this.attributeName = attributeName;
             this.timestamp = timestamp;
             this.value = value;
