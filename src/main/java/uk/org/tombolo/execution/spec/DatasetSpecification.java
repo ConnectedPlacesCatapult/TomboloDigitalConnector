@@ -17,6 +17,8 @@ public class DatasetSpecification {
 	
 	List<AttributeSpecification> attributeSpecification;
 
+	List<FieldSpecification> fieldSpecification;
+
 	List<TransformSpecification> transformSpecification;
 	
 	public List<SubjectSpecification> getSubjectSpecification() {
@@ -51,10 +53,15 @@ public class DatasetSpecification {
 		this.transformSpecification = transformSpecification;
 	}
 
+	public List<FieldSpecification> getFieldSpecification() { return fieldSpecification; }
+
+	public void setFieldSpecification(List<FieldSpecification> fieldSpecification) {
+		this.fieldSpecification = fieldSpecification;
+	}
+
 	public static DatasetSpecification fromJsonFile(File jsonFile) throws JsonSyntaxException, JsonIOException, FileNotFoundException{
 		Gson gson = new Gson();
 		
 		return gson.fromJson(new FileReader(jsonFile), DatasetSpecification.class);
 	}
-	
 }

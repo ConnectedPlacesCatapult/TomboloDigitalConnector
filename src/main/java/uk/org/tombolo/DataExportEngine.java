@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.execution.spec.TransformSpecification;
+import uk.org.tombolo.execution.spec.*;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -50,6 +47,9 @@ public class DataExportEngine implements ExecutionEngine{
 				transformer.transformBySpecification(subjects, transformSpec);
 			}
 		}
+
+		// Generate fields
+		List<FieldSpecification> fieldSpecifications = dataExportSpec.getDatasetSpecification().getFieldSpecification();
 
 		// Export data
 		log.info("Exporting ...");

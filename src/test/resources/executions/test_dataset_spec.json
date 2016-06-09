@@ -31,5 +31,11 @@
 			"providerLabel" : "uk.gov.phe",
 			"attributeLabel" : "fractionObese"
 		}
+	],
+	"fieldSpecification": [
+		{
+			"fieldClass": "uk.org.tombolo.field.SubjectLabelField",
+			"label": "subjectLabel"
+		}
 	]
 }

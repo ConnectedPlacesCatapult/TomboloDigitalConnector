@@ -21,6 +21,7 @@ public class DatasetSpecificationTest extends AbstractTest {
 		assertEquals(1, dsSpec.getSubjectSpecification().size());
 		assertEquals(3, dsSpec.getDatasourceSpecification().size());
 		assertEquals(3, dsSpec.getAttributeSpecification().size());
+		assertEquals(1, dsSpec.getFieldSpecification().size());
 	}
 
 	@Test
@@ -32,7 +33,13 @@ public class DatasetSpecificationTest extends AbstractTest {
 
 		dsSpec.setTransformSpecification(transformSpec);
 		assertSame(transformSpec, dsSpec.getTransformSpecification());
+	}
 
+	@Test
+	public void testGetFieldSpecification() throws Exception {
+		DatasetSpecification dsSpec = makeDatasetSpecification();
+		assertEquals("subjectLabel", dsSpec.getFieldSpecification().get(0).getLabel());
+		assertEquals("uk.org.tombolo.field.SubjectLabelField", dsSpec.getFieldSpecification().get(0).getFieldClass());
 	}
 
 	private DatasetSpecification makeDatasetSpecification() throws FileNotFoundException {
