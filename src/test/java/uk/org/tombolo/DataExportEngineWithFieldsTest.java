@@ -67,7 +67,7 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
 
         engine.execute(builder.build(), writer, true);
 
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.label", equalTo("attr_label")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_label_name")));
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E01000001", "attr_label", "100.0"));
     }
@@ -84,7 +84,7 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
         ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
                 Filter.filter(Criteria.where("properties.label").is(matcher.subjectLabel)));
         assertEquals(String.format("Wrong number of features found for label %s", matcher.subjectLabel), 1, features.size());
-        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".value").toString());
+        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values.latest").toString());
     }
 
     private static class TimedValueMatcher {
