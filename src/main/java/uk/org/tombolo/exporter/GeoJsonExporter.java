@@ -11,19 +11,61 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.field.Field;
 
 import javax.json.JsonValue;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GeoJsonExporter implements Exporter {
+
+	private class AttributeWrapper {
+		private final String attributeLabel;
+		private final String attributeName;
+		private final String providerLabel;
+		private final String providerName;
+		private final Map<String, String> attributeAttributes;
+		private final List<TimedValue> timedValues;
+
+		public AttributeWrapper(String attributeLabel, String attributeName, String providerLabel, String providerName, Map<String, String> attributeAttributes, List<TimedValue> timedValues) {
+			this.attributeLabel = attributeLabel;
+			this.attributeName = attributeName;
+			this.providerLabel = providerLabel;
+			this.providerName = providerName;
+			this.attributeAttributes = attributeAttributes;
+			this.timedValues = timedValues;
+		}
+	}
 	
 	// FIXME: Rewriter using geotools ... I could not get it to work quicly in the initial implementation (borkur)
 	
 	@Override
 	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
+		TimedValueUtils timedValueUtils = new TimedValueUtils();
+		List<Subject> subjectList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
+
+		Map<Subject, List<AttributeWrapper>> subjectsToAttributeWrappers = new HashMap<>();
+		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
+		for (Subject subject : subjectList) {
+			ArrayList<AttributeWrapper> attributeWrappers = new ArrayList<>();
+			subjectsToAttributeWrappers.put(subject, attributeWrappers);
+			for (AttributeSpecification attributeSpec : attributeSpecs) {
+				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
+				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+
+				attributeWrappers.add(new AttributeWrapper(attribute.getLabel(), attribute.getName(), attribute.getProvider().getLabel(), attribute.getProvider().getName(), attributeSpec.getAttributes(), timedValueUtils.getBySubjectAndAttribute(subject, attribute)));
+			}
+		}
+
+		writeInner(writer, subjectList, subjectsToAttributeWrappers);
+	}
+
+	public void writeInner(Writer writer, List<Subject> subjectList, Map<Subject, List<AttributeWrapper>> subjectsToAttributeWrappers) throws Exception {
 
 		// Write beginning of subject list
 		writer.write("{");
@@ -31,7 +73,6 @@ public class GeoJsonExporter implements Exporter {
 		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
 		
 		int subjectCount = 0;
-		List<Subject> subjectList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
 		for (Subject subject : subjectList){
 			// Subject is an a polygon or point for which data is to be output
 
@@ -64,15 +105,11 @@ public class GeoJsonExporter implements Exporter {
 			propertyCount++;
 
 			// Write Attributes
-			List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
 			writeObjectPropertyOpening(writer, propertyCount, "attributes", JsonValue.ValueType.OBJECT);
 			int attributeCount = 0;
-			for (AttributeSpecification attributeSpec : attributeSpecs){
-				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-
+			for (AttributeWrapper attributeWrapper : subjectsToAttributeWrappers.get(subject)){
 				// Write TimedValues
-				writeAttributeProperty(writer, attributeCount, subject, attribute, attributeSpec);
+				writeAttributeProperty(writer, attributeCount, subject, attributeWrapper);
 				attributeCount++;
 			}
 			// Close attribute list
@@ -131,48 +168,50 @@ public class GeoJsonExporter implements Exporter {
 		}
 	}
 
-	protected void writeAttributeProperty(Writer writer, int propertyCount, Subject subject, Attribute attribute, AttributeSpecification attributeSpec) throws IOException{
+	protected void writeAttributeProperty(Writer writer, int propertyCount, Subject subject, AttributeWrapper attributeWrapper) throws IOException{
+		writeProperty(writer, propertyCount, subject, attributeWrapper.attributeLabel, attributeWrapper.attributeName, attributeWrapper.providerName, attributeWrapper.attributeAttributes, attributeWrapper.timedValues);
+	}
+
+	private void writeProperty(Writer writer, int propertyCount, Subject subject, String attributeLabel, String attributeName, String providerName, Map<String, String> attributeAttributes, List<TimedValue> timedValues) throws IOException {
 		// Open attribute
-		writeObjectPropertyOpening(writer, propertyCount, attribute.getLabel(), JsonValue.ValueType.OBJECT);
+		writeObjectPropertyOpening(writer, propertyCount, attributeLabel, JsonValue.ValueType.OBJECT);
 		int subPropertyCount = 0;
 
 		// Write name
-		writeStringProperty(writer, subPropertyCount, "name", attribute.getName());
+		writeStringProperty(writer, subPropertyCount, "name", attributeName);
 		subPropertyCount++;
 
 		// Write provider
-		writeStringProperty(writer, subPropertyCount, "provider", attribute.getProvider().getName());
+		writeStringProperty(writer, subPropertyCount, "provider", providerName);
 		subPropertyCount++;
-				
+
 		// Write attribute attributes (sic)
-		if (attributeSpec.getAttributes() != null){
+		if (attributeAttributes != null){
 
 			writeObjectPropertyOpening(writer, subPropertyCount, "attributes", JsonValue.ValueType.OBJECT);
 			int attributeAttributeCount = 0;
-			for (String attributeKey : attributeSpec.getAttributes().keySet()){
-				writeStringProperty(writer, attributeAttributeCount, attributeKey, attributeSpec.getAttributes().get(attributeKey));
+			for (String attributeKey : attributeAttributes.keySet()){
+				writeStringProperty(writer, attributeAttributeCount, attributeKey, attributeAttributes.get(attributeKey));
 				attributeAttributeCount++;
 			}
-			writer.write("}");			
+			writer.write("}");
 			subPropertyCount++;
 		}
-		
+
 		// Write timed values
-		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		List<TimedValue> values = timedValueUtils.getBySubjectAndAttribute(subject, attribute);
-				
+
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);
 		int valueCount = 0;
-		for (TimedValue value : values){
+		for (TimedValue value : timedValues){
 			writeDoubleProperty(writer, valueCount, value.getId().getTimestamp().toString(), value.getValue());
 			valueCount++;
 		}
 		// Close values
 		writer.write("}");
 		subPropertyCount++;
-		
+
 		// Close attribute
-		writer.write("}");	
+		writer.write("}");
 	}
 }

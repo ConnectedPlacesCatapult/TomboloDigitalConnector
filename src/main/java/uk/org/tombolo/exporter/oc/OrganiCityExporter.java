@@ -109,7 +109,8 @@ public class OrganiCityExporter extends GeoJsonExporter implements Exporter {
 					Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
 					
 					// Write TimedValues
-					writeAttributeProperty(writer, attributeCount, subject, attribute, attributeSpec);
+					// TODO: make work
+//					writeAttributeProperty(writer, attributeCount, subject, attribute, attributeSpec);
 					attributeCount++;
 				}
 				// Close attribute list
