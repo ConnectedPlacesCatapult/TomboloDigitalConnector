@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GeoJsonExporter implements Exporter {
 
@@ -27,15 +28,15 @@ public class GeoJsonExporter implements Exporter {
 		private final String providerLabel;
 		private final String providerName;
 		private final Map<String, String> attributeAttributes;
-		private final List<TimedValue> timedValues;
+		private final List<Map<String, Object>> timedValueWrappers;
 
-		public AttributeWrapper(String attributeLabel, String attributeName, String providerLabel, String providerName, Map<String, String> attributeAttributes, List<TimedValue> timedValues) {
+		public AttributeWrapper(String attributeLabel, String attributeName, String providerLabel, String providerName, Map<String, String> attributeAttributes, List<Map<String, Object>> timedValueWrappers) {
 			this.attributeLabel = attributeLabel;
 			this.attributeName = attributeName;
 			this.providerLabel = providerLabel;
 			this.providerName = providerName;
 			this.attributeAttributes = attributeAttributes;
-			this.timedValues = timedValues;
+			this.timedValueWrappers = timedValueWrappers;
 		}
 	}
 	
@@ -54,8 +55,14 @@ public class GeoJsonExporter implements Exporter {
 			for (AttributeSpecification attributeSpec : attributeSpecs) {
 				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
 				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
+				List<Map<String, Object>> timedValueWrappers = timedValueUtils.getBySubjectAndAttribute(subject, attribute).stream().map(timedValue -> {
+					Map<String, Object> timedValueWrapper = new HashMap<>();
+					timedValueWrapper.put("timestamp", timedValue.getId().getTimestamp().toString());
+					timedValueWrapper.put("value", timedValue.getValue());
+					return timedValueWrapper;
+				}).collect(Collectors.toList());
 
-				attributeWrappers.add(new AttributeWrapper(attribute.getLabel(), attribute.getName(), attribute.getProvider().getLabel(), attribute.getProvider().getName(), attributeSpec.getAttributes(), timedValueUtils.getBySubjectAndAttribute(subject, attribute)));
+				attributeWrappers.add(new AttributeWrapper(attribute.getLabel(), attribute.getName(), attribute.getProvider().getLabel(), attribute.getProvider().getName(), attributeSpec.getAttributes(), timedValueWrappers));
 			}
 		}
 
@@ -133,13 +140,16 @@ public class GeoJsonExporter implements Exporter {
 			ArrayList<AttributeWrapper> attributeWrappers = new ArrayList<>();
 			subjectsToAttributeWrappers.put(subject, attributeWrappers);
 			for (Field field : fields) {
+				Map<String, Object> valueWrapper = new HashMap<String, Object>();
+				valueWrapper.put("timestamp", "latest");
+				valueWrapper.put("value", Double.parseDouble(field.valueForSubject(subject)));
 				attributeWrappers.add(new AttributeWrapper(
 						field.getLabel(),
 						field.getLabel() + "_name",
 						field.getLabel() + "_provider_label",
 						field.getLabel() + "_provider_name",
 						null,
-						Arrays.asList()));
+						Arrays.asList(valueWrapper)));
 			}
 		}
 
@@ -181,10 +191,10 @@ public class GeoJsonExporter implements Exporter {
 	}
 
 	protected void writeAttributeProperty(Writer writer, int propertyCount, Subject subject, AttributeWrapper attributeWrapper) throws IOException{
-		writeProperty(writer, propertyCount, subject, attributeWrapper.attributeLabel, attributeWrapper.attributeName, attributeWrapper.providerName, attributeWrapper.attributeAttributes, attributeWrapper.timedValues);
+		writeProperty(writer, propertyCount, subject, attributeWrapper.attributeLabel, attributeWrapper.attributeName, attributeWrapper.providerName, attributeWrapper.attributeAttributes, attributeWrapper.timedValueWrappers);
 	}
 
-	private void writeProperty(Writer writer, int propertyCount, Subject subject, String attributeLabel, String attributeName, String providerName, Map<String, String> attributeAttributes, List<TimedValue> timedValues) throws IOException {
+	private void writeProperty(Writer writer, int propertyCount, Subject subject, String attributeLabel, String attributeName, String providerName, Map<String, String> attributeAttributes, List<Map<String, Object>> timedValueWrappers) throws IOException {
 		// Open attribute
 		writeObjectPropertyOpening(writer, propertyCount, attributeLabel, JsonValue.ValueType.OBJECT);
 		int subPropertyCount = 0;
@@ -215,8 +225,8 @@ public class GeoJsonExporter implements Exporter {
 		// Open values
 		writeObjectPropertyOpening(writer, subPropertyCount, "values", JsonValue.ValueType.OBJECT);
 		int valueCount = 0;
-		for (TimedValue value : timedValues){
-			writeDoubleProperty(writer, valueCount, value.getId().getTimestamp().toString(), value.getValue());
+		for (Map<String, Object> valueWrapper : timedValueWrappers){
+			writeDoubleProperty(writer, valueCount, (String) valueWrapper.get("timestamp"), (Double) valueWrapper.get("value"));
 			valueCount++;
 		}
 		// Close values

@@ -85,6 +85,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		);
 
 		assertEquals("some_label_name", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.name").toString());
+		assertEquals("100.0", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.values.latest").toString());
 	}
 
 	private String getFirstFeatureLabel(String jsonString) throws ParseException {
