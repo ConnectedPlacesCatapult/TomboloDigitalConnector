@@ -7,11 +7,13 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.*;
 import uk.org.tombolo.exporter.Exporter;
+import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.Transformer;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataExportEngine implements ExecutionEngine{
@@ -49,7 +51,11 @@ public class DataExportEngine implements ExecutionEngine{
 		}
 
 		// Generate fields
-		List<FieldSpecification> fieldSpecifications = dataExportSpec.getDatasetSpecification().getFieldSpecification();
+		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
+		List<Field> fields = new ArrayList<>();
+		for (FieldSpecification fieldSpec : fieldSpecs) {
+			fields.add((Field) Class.forName(fieldSpec.getFieldClass()).newInstance());
+		}
 
 		// Export data
 		log.info("Exporting ...");
