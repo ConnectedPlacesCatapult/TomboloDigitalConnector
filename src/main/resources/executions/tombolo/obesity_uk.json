@@ -116,6 +116,218 @@
 						"attributeLabel" : "CL_0000847"
 					}
 				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000052.fraction_no_qualification",
+					"name" : "Fraction of population with no qualification",
+					"description" : "Fraction of population with no qualification"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000052_2"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000052_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000052.fraction_high_qualification",
+					"name" : "Fraction of population with high qualification",
+					"description" : "Fraction of population with Level 4 qualification or higher"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000052_7"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000052_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000183.fraction_part_time_work",
+					"name" : "Fraction of population working part time",
+					"description" : "Fraction of population working part time"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_2"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000183.fraction_full_time_work",
+					"name" : "Fraction of population working full time",
+					"description" : "Fraction of population working full time without overtime (31 to 48 hours)"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_6"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000183.fraction_over_time_work",
+					"name" : "Fraction of population working over time",
+					"description" : "Fraction of population working full time with overtime (49 or more hours)"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_7"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000183_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000129.fraction_work_at_home",
+					"name" : "Fraction of population working mainly at or from home",
+					"description" : "Fraction of population working mainly at or from home"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_2"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000129.fraction_work_by_public_transport",
+					"name" : "Fraction of population travelling to work by public transport",
+					"description" : "Fraction of population travelling to work by public transport (Underground, metro, light rail, tram, train, bus, minibus or coach)"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_3"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_4"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_5"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_6"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_7"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_8"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_9"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
+					},
+					"label" : "FCC.CL_0000129.fraction_work_by_private_transport",
+					"name" : "Fraction of population travelling to work by private transport",
+					"description" : "Fraction of population travelling to work by private transport (taxi, motorcycle, scooter, moped, car or van)"
+				},
+				"inputAttributes" : [
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_10"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_11"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_12"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_13"
+					},
+					{
+						"providerLabel" : "uk.gov.ons",
+						"attributeLabel" : "CL_0000129_1"
+					}
+				]
 			}
 		],
 			"attributeSpecification": [
@@ -139,12 +351,60 @@
 					"providerLabel": "uk.gov.ons",
 					"attributeLabel": "FCC.CL_0000804.fraction_many_cars"
 				},
+
+				{
+					"comment": "Population with no qualification",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000052.fraction_no_qualification"
+				},
+
+				{
+					"comment": "Population with high qualification",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000052.fraction_high_qualification"
+				},
+
+				{
+					"comment": "Population working part time",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000183.fraction_part_time_work"
+				},
+
+				{
+					"comment": "Population working normal hours",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000183.fraction_full_time_work"
+				},
+
+				{
+					"comment": "Population working long hours",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000183.fraction_over_time_work"
+				},
+
+				{
+					"comment": "Population working at home",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000129.fraction_work_at_home"
+				},
+
+				{
+					"comment": "Population travelling to work by public transport",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000129.fraction_work_by_public_transport"
+				},
+
+				{
+					"comment": "Population travelling to work by private transport",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000129.fraction_work_by_private_transport"
+				},
+
 				{
 					"comment": "Fraction Obese",
 					"providerLabel": "uk.gov.phe",
 					"attributeLabel": "fractionObese"
 				}
-
 		]
 	},
 	"OPTexporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter",
