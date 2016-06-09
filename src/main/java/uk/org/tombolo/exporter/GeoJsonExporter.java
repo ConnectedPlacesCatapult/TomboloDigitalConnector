@@ -4,7 +4,6 @@ import org.geotools.geojson.geom.GeometryJSON;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
