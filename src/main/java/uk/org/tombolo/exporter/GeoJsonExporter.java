@@ -17,10 +17,7 @@ import javax.json.JsonValue;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GeoJsonExporter implements Exporter {
 
@@ -130,8 +127,23 @@ public class GeoJsonExporter implements Exporter {
 	}
 
 	@Override
-	public void write(Writer writer, List<Field> fields) {
+	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws Exception {
+		Map<Subject, List<AttributeWrapper>> subjectsToAttributeWrappers = new HashMap<>();
+		for (Subject subject : subjects) {
+			ArrayList<AttributeWrapper> attributeWrappers = new ArrayList<>();
+			subjectsToAttributeWrappers.put(subject, attributeWrappers);
+			for (Field field : fields) {
+				attributeWrappers.add(new AttributeWrapper(
+						field.getLabel(),
+						field.getLabel() + "_name",
+						field.getLabel() + "_provider_label",
+						field.getLabel() + "_provider_name",
+						null,
+						Arrays.asList()));
+			}
+		}
 
+		writeInner(writer, subjects, subjectsToAttributeWrappers);
 	}
 
 	protected void writeStringProperty(Writer writer, int propertyCount, String key, String value) throws IOException{

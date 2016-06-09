@@ -31,7 +31,7 @@ public class CSVExporter implements Exporter {
 	}
 
 	@Override
-	public void write(Writer writer, List<Field> fields) {
+	public void write(Writer writer, List<Subject> subjects, List<Field> fields) {
 		// TODO: make work
 	}
 
