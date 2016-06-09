@@ -38,8 +38,8 @@ public class DatasetSpecificationTest extends AbstractTest {
 	@Test
 	public void testGetFieldSpecification() throws Exception {
 		DatasetSpecification dsSpec = makeDatasetSpecification();
-		assertEquals("subjectLabel", dsSpec.getFieldSpecification().get(0).getLabel());
-		assertEquals("uk.org.tombolo.field.SubjectLabelField", dsSpec.getFieldSpecification().get(0).getFieldClass());
+		assertEquals("subjectLabel", dsSpec.getFieldSpecification().get(0).toField().getLabel());
+		assertEquals("uk.org.tombolo.field.SubjectLabelField", dsSpec.getFieldSpecification().get(0).toField().getClass().getCanonicalName());
 	}
 
 	private DatasetSpecification makeDatasetSpecification() throws FileNotFoundException {

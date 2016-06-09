@@ -1,9 +1,6 @@
 package uk.org.tombolo.execution.spec;
 
 import com.google.gson.*;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,12 +45,8 @@ public class DataExportSpecification {
 		@Override
 		public FieldSpecification deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject jsonObject = (JsonObject) json;
-			FieldSpecification fieldSpec = new FieldSpecification(jsonObject.get("fieldClass").getAsString(), jsonObject.get("label").getAsString());
-			jsonObject.remove("fieldClass");
-			jsonObject.remove("label");
-			// We convert the gson object to the org.simple.json type as we use that everywhere else
-			fieldSpec.setData((JSONObject) JSONValue.parse(jsonObject.toString()));
-			return fieldSpec;
+			String fieldClass = (String) jsonObject.remove("fieldClass").getAsString();
+			return new FieldSpecification(fieldClass, jsonObject.toString());
 		}
 	}
 }

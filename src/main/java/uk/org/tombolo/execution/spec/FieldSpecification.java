@@ -1,31 +1,19 @@
 package uk.org.tombolo.execution.spec;
 
-import com.google.gson.JsonObject;
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
+import uk.org.tombolo.field.Field;
 
 public class FieldSpecification {
     private String fieldClass;
-    private String label;
-    private JSONObject data;
+    private String json;
 
-    public FieldSpecification(String fieldClass, String label){
+    public FieldSpecification(String fieldClass, String json){
         this.fieldClass = fieldClass;
-        this.label = label;
+        this.json = json;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
-    public String getFieldClass() {
-        return fieldClass;
-    }
-
-    public void setData(JSONObject data) {
-        this.data = data;
-    }
-
-    public JSONObject getData() {
-        return data;
+    public Field toField() throws ClassNotFoundException {
+        Gson gson = new Gson();
+        return (Field) gson.fromJson(json, Class.forName(fieldClass));
     }
 }

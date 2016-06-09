@@ -40,9 +40,6 @@ public class GeoJsonExporterTest extends AbstractTest {
 		}
 
 		@Override
-		public void initialize(String label, JSONObject data) {}
-
-		@Override
 		public String valueForSubject(Subject subject) {
 			return value.toString();
 		}

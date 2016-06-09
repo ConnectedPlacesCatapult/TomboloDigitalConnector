@@ -42,9 +42,7 @@ public class DataExportEngine implements ExecutionEngine{
 		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
 		List<Field> fields = new ArrayList<>();
 		for (FieldSpecification fieldSpec : fieldSpecs) {
-			Field field = ((Field) Class.forName(fieldSpec.getFieldClass()).newInstance());
-			field.initialize(fieldSpec.getLabel(), fieldSpec.getData());
-			fields.add(field);
+			fields.add(fieldSpec.toField());
 		}
 
 
