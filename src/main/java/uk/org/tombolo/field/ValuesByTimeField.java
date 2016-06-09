@@ -6,27 +6,21 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
-public class LatestValueField implements Field, SingleValueField {
+public class ValuesByTimeField implements Field {
     private String label;
     private AttributeStruct attribute;
 
-    public LatestValueField(String label, AttributeStruct attribute) {
+    public ValuesByTimeField(String label, AttributeStruct attribute) {
         this.label = label;
         this.attribute = attribute;
     }
 
-    @Override
-    public String valueForSubject(Subject subject) {
-        TimedValueUtils timedValueUtils = new TimedValueUtils();
-        return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
-                .map(timedValue -> timedValue.getValue().toString())
-                .orElse(null);
-    }
-
-    @Override
     public JSONObject jsonValueForSubject(Subject subject) {
+        TimedValueUtils timedValueUtils = new TimedValueUtils();
         JSONObject obj = new JSONObject();
-        obj.put("latest", valueForSubject(subject));
+        timedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).forEach(timedValue -> {
+            obj.put(timedValue.getId().getTimestamp().toString(), timedValue.getValue());
+        });
         return obj;
     }
 

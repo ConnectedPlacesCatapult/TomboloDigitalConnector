@@ -18,6 +18,14 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder valuesByTime(String providerLabel, String attributeLabel) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.ValuesByTimeField")
+                .setLabel(attributeLabel)
+                .setAttribute(providerLabel, attributeLabel);
+        return spec;
+    }
+
     private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);

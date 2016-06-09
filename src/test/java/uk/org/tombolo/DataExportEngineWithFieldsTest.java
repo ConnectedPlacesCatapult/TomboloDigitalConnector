@@ -3,9 +3,6 @@ package uk.org.tombolo;
 import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
@@ -55,7 +52,7 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
     }
 
     @Test
-    public void testReturnsSubjectAndAttribute() throws Exception {
+    public void testReturnsSubjectAndLatestTimedValueForAttribute() throws Exception {
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
@@ -69,11 +66,28 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_label_name")));
         assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01000001", "attr_label", "100.0"));
+                new TimedValueMatcher("E01000001", "attr_label", "latest", "100.0"));
+    }
+
+    @Test
+    public void testReturnsSubjectAndValuesByTimeForAttribute() throws Exception {
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
+
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.valuesByTime("default_provider_label", "attr_label")
+        );
+
+        engine.execute(builder.build(), writer, true);
+
+        assertHasOnlyTimedValues(writer.toString(),
+                new TimedValueMatcher("E01000001", "attr_label", "2011-01-01T00:00", "100.0"));
     }
 
     private void assertHasOnlyTimedValues(String json, TimedValueMatcher ...matchers) {
-        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes.*");
+        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes..values.*");
         assertEquals("Number of matchers does not match number of values", matchers.length, allTimedAttributes.size());
         for (TimedValueMatcher matcher : matchers) {
             assertHasTimedValue(json, matcher);
@@ -84,17 +98,19 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
         ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
                 Filter.filter(Criteria.where("properties.label").is(matcher.subjectLabel)));
         assertEquals(String.format("Wrong number of features found for label %s", matcher.subjectLabel), 1, features.size());
-        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values.latest").toString());
+        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values['" + matcher.valueName + "']").toString());
     }
 
     private static class TimedValueMatcher {
         String subjectLabel;
         String attributeName;
+        String valueName;
         String value;
 
-        TimedValueMatcher(String subjectLabel, String attributeName, String value) {
+        TimedValueMatcher(String subjectLabel, String attributeName, String valueName, String value) {
             this.subjectLabel = subjectLabel;
             this.attributeName = attributeName;
+            this.valueName = valueName;
             this.value = value;
         }
     }

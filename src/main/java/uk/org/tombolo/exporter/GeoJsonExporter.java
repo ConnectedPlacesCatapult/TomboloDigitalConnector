@@ -1,6 +1,7 @@
 package uk.org.tombolo.exporter;
 
 import org.geotools.geojson.geom.GeometryJSON;
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -139,16 +140,20 @@ public class GeoJsonExporter implements Exporter {
 			ArrayList<AttributeWrapper> attributeWrappers = new ArrayList<>();
 			subjectsToAttributeWrappers.put(subject, attributeWrappers);
 			for (Field field : fields) {
-				Map<String, Object> valueWrapper = new HashMap<String, Object>();
-				valueWrapper.put("timestamp", "latest");
-				valueWrapper.put("value", Double.parseDouble(field.valueForSubject(subject)));
+				List<Map<String, Object>> valueWrappers = (List<Map<String, Object>>) field.jsonValueForSubject(subject).entrySet().stream().map(e -> {
+					Map.Entry<String, Object> entry = (Map.Entry<String, Object>) e;
+					Map<String, Object> wrapper = new HashMap<>();
+					wrapper.put("timestamp", (String) entry.getKey());
+					wrapper.put("value", (Double) entry.getValue());
+					return wrapper;
+				}).collect(Collectors.toList());
 				attributeWrappers.add(new AttributeWrapper(
 						field.getLabel(),
 						field.getLabel() + "_name",
 						field.getLabel() + "_provider_label",
 						field.getLabel() + "_provider_name",
 						null,
-						Arrays.asList(valueWrapper)));
+						valueWrappers));
 			}
 		}
 

@@ -40,8 +40,12 @@ public class GeoJsonExporterTest extends AbstractTest {
 		}
 
 		@Override
-		public String valueForSubject(Subject subject) {
-			return value.toString();
+		public JSONObject jsonValueForSubject(Subject subject) {
+			try {
+				return (JSONObject) (new JSONParser()).parse(String.format("{\"latest\": %s", value.toString()));
+			} finally {
+				return null;
+			}
 		}
 
 		@Override
