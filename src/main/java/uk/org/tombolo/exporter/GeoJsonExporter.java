@@ -92,6 +92,11 @@ public class GeoJsonExporter implements Exporter {
 		writer.write("]}");
 	}
 
+	@Override
+	public void write(Writer writer, List<Field> fields) {
+
+	}
+
 	protected void writeStringProperty(Writer writer, int propertyCount, String key, String value) throws IOException{
 		
 		if (propertyCount > 0)

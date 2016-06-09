@@ -8,6 +8,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.field.Field;
 
 import java.io.Writer;
 import java.util.*;
@@ -27,6 +28,11 @@ public class CSVExporter implements Exporter {
 					tabulateSubjectMap(columnNames,
 							flattenSubject(attributes, subject)));
 		}
+	}
+
+	@Override
+	public void write(Writer writer, List<Field> fields) {
+		// TODO: make work
 	}
 
 	public List<String> getColumnNames(List<Attribute> attributes) {
