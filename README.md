@@ -68,6 +68,17 @@ psql -d tombolo_test -U tombolo_test < src/test/resources/sql/initial_fixtures.s
 gradle test
 ```
 
+If you use the IntelliJ JUnit test runner, you will need to add the following to your
+VM Options in your JUnit configuration (Run -> Edit Configurations -> All under JUnit,
+and Defaults -> JUnit):
+
+```
+-Denvironment=test
+-DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
+-DdatabaseUsername=tombolo_test
+-DdatabasePassword=tombolo_test
+```
+
 ### Run export
 
 Exports the London borough profiles from OrganiCity
@@ -94,6 +105,10 @@ Or without Gradle:
 ```bash
 gradle clean build copyDeps -x test
 java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
+    -Denvironment=export \
+    -DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo \
+    -DdatabaseUsername=tombolo \
+    -DdatabasePassword=tombolo \
 	uk.org.tombolo.DataExportRunner \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
 	organicity-borough-profiles.json \
