@@ -13,6 +13,7 @@ import uk.org.tombolo.core.Attribute;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,9 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                        FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                ))
         );
 
         engine.execute(builder.build(), writer, true);
@@ -80,10 +83,13 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.valuesByTime("default_provider_label", "attr_label")
+                FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                        FieldSpecificationBuilder.valuesByTime("default_provider_label", "attr_label")
+                ))
         );
 
         engine.execute(builder.build(), writer, true);
+        System.out.println(writer.toString());
 
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E01000001", "attr_label", "2011-01-01T00:00", "100.0"));
@@ -95,7 +101,9 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E09000001"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                        ))
                 );
 
         engine.execute(builder.build(), writer, true);
@@ -116,7 +124,9 @@ public class DataExportEngineTest extends AbstractTest {
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                        ))
                 );
 
         engine.execute(builder.build(), writer, true);
@@ -131,7 +141,9 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.valuesByTime("uk.gov.tfl", "ServingLineCount")
+                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldSpecificationBuilder.valuesByTime("uk.gov.tfl", "ServingLineCount")
+                        ))
                 );
 
         engine.execute(builder.build(), writer, true);
@@ -180,7 +192,9 @@ public class DataExportEngineTest extends AbstractTest {
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                        ))
                 );
 
         engine.execute(builder.build(), writer, true);

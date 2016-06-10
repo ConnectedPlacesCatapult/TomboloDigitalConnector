@@ -13,21 +13,15 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.field.FieldWithProvider;
 import uk.org.tombolo.field.ValuesByTimeField;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 
 public class GeoJsonExporterTest extends AbstractTest {
@@ -45,7 +39,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		@Override
 		public JSONObject jsonValueForSubject(Subject subject) {
 			JSONObject obj = new JSONObject();
-			obj.put("latest", value);
+			obj.put(label, value);
 			return obj;
 		}
 
@@ -96,9 +90,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 				Arrays.asList(new FixedValueField("some_label", 100d))
 		);
 
-		assertEquals("providerTestName", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.provider").toString());
-		assertEquals("some_label_readable", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.name").toString());
-		assertEquals("100.0", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.values.latest").toString());
+		assertEquals("100.0", JsonPath.read(writer.toString(), "$.features[0].properties.some_label").toString());
 	}
 
 	private String getFirstFeatureLabel(String jsonString) throws ParseException {

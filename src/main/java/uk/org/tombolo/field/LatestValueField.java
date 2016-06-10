@@ -18,7 +18,7 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
     public JSONObject jsonValueForSubject(Subject subject) {
         JSONObject obj = new JSONObject();
         obj.put("latest", getValue(subject));
-        return obj;
+        return withinMetadata(obj);
     }
 
     private Double getValue(Subject subject) {

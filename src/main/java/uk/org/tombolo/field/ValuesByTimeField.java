@@ -8,7 +8,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
 public class ValuesByTimeField implements Field, FieldWithProvider {
-    private String label;
+    protected String label;
     private AttributeStruct attribute;
 
     public ValuesByTimeField(String label, AttributeStruct attribute) {
@@ -22,7 +22,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         timedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).forEach(timedValue -> {
             obj.put(timedValue.getId().getTimestamp().toString(), timedValue.getValue());
         });
-        return obj;
+        return withinMetadata(obj);
     }
 
     @Override
@@ -42,6 +42,15 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         } else {
             return attr;
         }
+    }
+
+    protected JSONObject withinMetadata(JSONObject contents) {
+        JSONObject attr = new JSONObject();
+        attr.put("name", getHumanReadableName());
+        attr.put("values", contents);
+        JSONObject obj = new JSONObject();
+        obj.put(label, attr);
+        return obj;
     }
 
     @Override

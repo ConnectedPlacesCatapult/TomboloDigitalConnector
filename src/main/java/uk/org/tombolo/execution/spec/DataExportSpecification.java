@@ -1,13 +1,11 @@
 package uk.org.tombolo.execution.spec;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 public class DataExportSpecification {
 
@@ -36,17 +34,8 @@ public class DataExportSpecification {
 
 	public static DataExportSpecification fromJson(String jsonString) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(FieldSpecification.class, new FieldSpecificationDeserializer());
+		gsonBuilder.registerTypeAdapter(FieldSpecification.class, new FieldSpecification.FieldSpecificationDeserializer());
 		Gson gson = gsonBuilder.create();
 		return gson.fromJson(jsonString, DataExportSpecification.class);
-	}
-
-	private static class FieldSpecificationDeserializer implements JsonDeserializer<FieldSpecification> {
-		@Override
-		public FieldSpecification deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			JsonObject jsonObject = (JsonObject) json;
-			String fieldClass = (String) jsonObject.remove("fieldClass").getAsString();
-			return new FieldSpecification(fieldClass, jsonObject.toString());
-		}
 	}
 }

@@ -3,6 +3,8 @@ package uk.org.tombolo;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
+import java.util.List;
+
 public class FieldSpecificationBuilder implements JSONAware {
     JSONObject jsonSpec;
 
@@ -23,6 +25,15 @@ public class FieldSpecificationBuilder implements JSONAware {
         spec    .setFieldClass("uk.org.tombolo.field.ValuesByTimeField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
+        return spec;
+    }
+
+
+    public static FieldSpecificationBuilder wrapperField(String label, List<FieldSpecificationBuilder> fieldSpecificationBuilders) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.WrapperField")
+                .setLabel(label)
+                .setFieldSpecification(fieldSpecificationBuilders);
         return spec;
     }
 
@@ -47,5 +58,9 @@ public class FieldSpecificationBuilder implements JSONAware {
     public FieldSpecificationBuilder setLabel(String label) {
         jsonSpec.put("label", label);
         return this;
+    }
+
+    public void setFieldSpecification(List<FieldSpecificationBuilder> fields) {
+        jsonSpec.put("fieldSpecification", fields);
     }
 }
