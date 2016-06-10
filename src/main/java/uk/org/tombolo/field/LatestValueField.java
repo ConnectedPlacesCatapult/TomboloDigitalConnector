@@ -17,22 +17,26 @@ public class LatestValueField implements Field, SingleValueField {
 
     @Override
     public String valueForSubject(Subject subject) {
-        TimedValueUtils timedValueUtils = new TimedValueUtils();
-        return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
-                .map(timedValue -> timedValue.getValue().toString())
-                .orElse(null);
+        return getValue(subject).toString();
     }
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) {
         JSONObject obj = new JSONObject();
-        obj.put("latest", valueForSubject(subject));
+        obj.put("latest", getValue(subject));
         return obj;
     }
 
     @Override
     public String getLabel() {
         return label;
+    }
+
+    private Double getValue(Subject subject) {
+        TimedValueUtils timedValueUtils = new TimedValueUtils();
+        return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
+                .map(timedValue -> timedValue.getValue())
+                .orElse(null);
     }
 
     private Attribute getAttribute() {
