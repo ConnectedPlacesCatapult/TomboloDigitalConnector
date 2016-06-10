@@ -49,10 +49,40 @@ dependencies {
 }
 
 task copyDeps(type: Copy) {
-  from configurations.runtime
-  into 'build/dependency-cache/'
+	from configurations.runtime
+	into 'build/dependency-cache/'
+}
+
+task runExport(dependsOn: ['classes'], type: JavaExec) {
+	main = 'uk.org.tombolo.DataExportRunner'
+	classpath = sourceSets.main.runtimeClasspath
+
+	doFirst {
+		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
+		if (!configured) throw new GradleException('Environment not configured. See the README.')
+
+		systemProperty("databaseURI", databaseURI)
+		systemProperty("databaseUsername", databaseUsername)
+		systemProperty("databasePassword", databasePassword)
+		systemProperty("environment", "export")
+
+		def argumentsSet = project.hasProperty('dataExportSpecFile') && project.hasProperty('outputFile') && project.hasProperty('doImport');
+		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+
+		args(dataExportSpecFile, outputFile, doImport)
+	}
 }
 
 test {
-  maxHeapSize = "1024m"
+	maxHeapSize = "1024m"
+
+	doFirst {
+		def configured = project.hasProperty('testDatabaseURI') && project.hasProperty('testDatabaseUsername') && project.hasProperty('testDatabasePassword');
+		if (!configured) throw new GradleException('Test environment not configured. See the README.')
+
+		systemProperty("databaseURI", testDatabaseURI)
+		systemProperty("databaseUsername", testDatabaseUsername)
+		systemProperty("databasePassword", testDatabasePassword)
+		systemProperty("environment", "test")
+	}
 }
