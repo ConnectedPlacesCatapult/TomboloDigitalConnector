@@ -2,6 +2,9 @@ package uk.org.tombolo.importer.ons;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -109,36 +112,50 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				while ((line = br.readLine()) != null){
 					lineCounter++;
 					// We are processing the lineCounter-th line
-					
-					String[] fields = line.split(",");
-					
-					// FIXME: Store the attributes when we have updated the attribute names
-					if (lineCounter == 8){
+
+					CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
+					List<CSVRecord> records = parser.getRecords();
+
+					if (records.isEmpty())
+						// The line is empty
+						continue;
+
+					List<String> fields = new ArrayList();
+					Iterator<String> iterator = records.get(0).iterator();
+					while(iterator.hasNext()){
+						fields.add(iterator.next());
+					}
+
+					if (lineCounter < 8) {
+						// Nothing interesting happens in these files before line 8
+						continue;
+					}else if (lineCounter == 8){
+						// Name of the main theme of the attribute
 						for (String field : fields){
-							attributeBaseNames.add(dequote(field));
+							attributeBaseNames.add(field);
 						}
 					}else if (lineCounter == 9){
+						// Name of the sub theme of the attribute
 						for (int i = 2; i<datasource.getAttributes().size()+2; i++){
 							String name = attributeBaseNames.get(i);
-							if (!attributeBaseNames.get(i).equals(dequote(fields[i])))
-								name += " - " + dequote(fields[i]);
+							if (!attributeBaseNames.get(i).equals(fields.get(i)))
+								name += " - " + fields.get(i);
 							datasource.getAttributes().get(i-2).setName(name);
 							datasource.getAttributes().get(i-2).setDescription(name);
 						}
-						
+
 						// Store attributes in database
 						AttributeUtils.save(datasource.getAttributes());
 						log.info("Saved {} attributes", datasource.getAttributes().size());
 					}
 					
-					if (fields.length == 2 + datasource.getAttributes().size()
-							&& fields[0].startsWith("\"")){
+					if (fields.size() == 2 + datasource.getAttributes().size()){
 						// We have an actual data line
 						try{
-							String areaId = dequote(fields[0]);
+							String areaId = fields.get(0);
 							List<Double> values = new ArrayList<Double>();
 							for (int i=2; i<2+datasource.getAttributes().size(); i++){
-								values.add(Double.parseDouble(dequote(fields[i])));
+								values.add(Double.parseDouble(fields.get(i)));
 							}
 							Subject subject = SubjectUtils.getSubjectByLabel(areaId);
 							if (subject != null
@@ -258,13 +275,5 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			}
 		}
 		return null;
-	}
-	
-	private String dequote(String string){
-		if (!string.startsWith("\""))
-			return string;
-		if (!string.endsWith("\""))
-			return string;
-		return string.substring(1, string.length()-1);
 	}
 }
