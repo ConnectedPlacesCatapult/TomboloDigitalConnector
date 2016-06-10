@@ -116,7 +116,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
 					List<CSVRecord> records = parser.getRecords();
 
-					if (records.size() != 1)
+					if (records.isEmpty())
 						// The line is empty
 						continue;
 
