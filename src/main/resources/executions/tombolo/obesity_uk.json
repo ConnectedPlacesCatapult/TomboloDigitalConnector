@@ -275,8 +275,22 @@
 					},
 					{
 						"providerLabel" : "uk.gov.ons",
-						"attributeLabel" : "CL_0000129_6"
+						"attributeLabel" : "CL_0000129_1"
+					}
+				]
+			},
+			{
+				"transformerClass" : "uk.org.tombolo.transformer.SumFractionTransformer",
+				"outputAttribute" : {
+					"provider" : {
+						"label" : "uk.gov.ons",
+						"name" : "Office for National Statistics"
 					},
+					"label" : "FCC.CL_0000129.fraction_work_by_private_transport",
+					"name" : "Fraction of population travelling to work by private transport",
+					"description" : "Fraction of population travelling to work by motorised private transport (motorcycle, scooter, moped, car or van)"
+				},
+				"inputAttributes" : [
 					{
 						"providerLabel" : "uk.gov.ons",
 						"attributeLabel" : "CL_0000129_7"
@@ -302,15 +316,11 @@
 						"label" : "uk.gov.ons",
 						"name" : "Office for National Statistics"
 					},
-					"label" : "FCC.CL_0000129.fraction_work_by_private_transport",
-					"name" : "Fraction of population travelling to work by private transport",
-					"description" : "Fraction of population travelling to work by private transport (taxi, motorcycle, scooter, moped, car or van)"
+					"label" : "FCC.CL_0000129.fraction_work_by_active_transport",
+					"name" : "Fraction of population travelling to work by active transport",
+					"description" : "Fraction of population travelling to work by active transport (walking, cycling)"
 				},
 				"inputAttributes" : [
-					{
-						"providerLabel" : "uk.gov.ons",
-						"attributeLabel" : "CL_0000129_10"
-					},
 					{
 						"providerLabel" : "uk.gov.ons",
 						"attributeLabel" : "CL_0000129_11"
@@ -318,10 +328,6 @@
 					{
 						"providerLabel" : "uk.gov.ons",
 						"attributeLabel" : "CL_0000129_12"
-					},
-					{
-						"providerLabel" : "uk.gov.ons",
-						"attributeLabel" : "CL_0000129_13"
 					},
 					{
 						"providerLabel" : "uk.gov.ons",
@@ -398,6 +404,12 @@
 					"comment": "Population travelling to work by private transport",
 					"providerLabel": "uk.gov.ons",
 					"attributeLabel": "FCC.CL_0000129.fraction_work_by_private_transport"
+				},
+
+				{
+					"comment": "Population travelling to work by active transport",
+					"providerLabel": "uk.gov.ons",
+					"attributeLabel": "FCC.CL_0000129.fraction_work_by_active_transport"
 				},
 
 				{
