@@ -47,6 +47,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     protected JSONObject withinMetadata(JSONObject contents) {
         JSONObject attr = new JSONObject();
         attr.put("name", getHumanReadableName());
+        attr.put("provider", getProvider().getName());
         attr.put("values", contents);
         JSONObject obj = new JSONObject();
         obj.put(label, attr);
