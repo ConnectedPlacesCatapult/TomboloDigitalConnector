@@ -8,21 +8,14 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.LatestValueField;
-import uk.org.tombolo.field.ValuesByTimeField;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

@@ -14,8 +14,6 @@ public class DatasetSpecification {
 	List<SubjectSpecification> subjectSpecification;
 	
 	List<DatasourceSpecification> datasourceSpecification;
-	
-	List<AttributeSpecification> attributeSpecification;
 
 	List<FieldSpecification> fieldSpecification;
 
@@ -35,14 +33,6 @@ public class DatasetSpecification {
 
 	public void setDatasourceSpecification(List<DatasourceSpecification> datasourceSpecification) {
 		this.datasourceSpecification = datasourceSpecification;
-	}
-
-	public List<AttributeSpecification> getAttributeSpecification() {
-		return attributeSpecification;
-	}
-
-	public void setAttributeSpecification(List<AttributeSpecification> attributeSpecification) {
-		this.attributeSpecification = attributeSpecification;
 	}
 
 	public List<TransformSpecification> getTransformSpecification() {

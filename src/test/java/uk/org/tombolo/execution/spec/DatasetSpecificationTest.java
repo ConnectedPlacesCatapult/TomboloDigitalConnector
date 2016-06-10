@@ -21,7 +21,6 @@ public class DatasetSpecificationTest extends AbstractTest {
 		
 		assertEquals(1, dsSpec.getSubjectSpecification().size());
 		assertEquals(3, dsSpec.getDatasourceSpecification().size());
-		assertEquals(3, dsSpec.getAttributeSpecification().size());
 		assertEquals(1, dsSpec.getFieldSpecification().size());
 	}
 
