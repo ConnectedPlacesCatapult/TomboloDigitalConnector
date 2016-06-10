@@ -1,16 +1,37 @@
 package uk.org.tombolo.field;
 
 import com.vividsolutions.jts.geom.Point;
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 
-public class SubjectLongitudeField extends SubjectLatitudeField {
+public class SubjectLongitudeField implements SingleValueField {
+    private final String label;
+
     public SubjectLongitudeField(String label) {
-        super(label);
+        this.label = label;
     }
 
     @Override
     public String valueForSubject(Subject subject) {
         Point centroid = subject.getShape().getCentroid();
         return String.valueOf(centroid.getX());
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject) {
+        JSONObject obj = new JSONObject();
+        Point centroid = subject.getShape().getCentroid();
+        obj.put(label, centroid.getX());
+        return obj;
+    }
+
+    @Override
+    public String getLabel() {
+        return label;
+    }
+
+    @Override
+    public String getHumanReadableName() {
+        return label;
     }
 }

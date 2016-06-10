@@ -20,7 +20,8 @@ public class SubjectLatitudeField implements SingleValueField {
     @Override
     public JSONObject jsonValueForSubject(Subject subject) {
         JSONObject obj = new JSONObject();
-        obj.put(label, valueForSubject(subject));
+        Point centroid = subject.getShape().getCentroid();
+        obj.put(label, centroid.getY());
         return obj;
     }
 
