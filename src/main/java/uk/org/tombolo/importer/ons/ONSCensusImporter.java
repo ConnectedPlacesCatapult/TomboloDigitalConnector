@@ -132,14 +132,14 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					}else if (lineCounter == 8){
 						// Name of the main theme of the attribute
 						for (String field : fields){
-							attributeBaseNames.add(dequote(field));
+							attributeBaseNames.add(field);
 						}
 					}else if (lineCounter == 9){
 						// Name of the sub theme of the attribute
 						for (int i = 2; i<datasource.getAttributes().size()+2; i++){
 							String name = attributeBaseNames.get(i);
-							if (!attributeBaseNames.get(i).equals(dequote(fields.get(i))))
-								name += " - " + dequote(fields.get(i));
+							if (!attributeBaseNames.get(i).equals(fields.get(i)))
+								name += " - " + fields.get(i);
 							datasource.getAttributes().get(i-2).setName(name);
 							datasource.getAttributes().get(i-2).setDescription(name);
 						}
@@ -152,10 +152,10 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					if (fields.size() == 2 + datasource.getAttributes().size()){
 						// We have an actual data line
 						try{
-							String areaId = dequote(fields.get(0));
+							String areaId = fields.get(0);
 							List<Double> values = new ArrayList<Double>();
 							for (int i=2; i<2+datasource.getAttributes().size(); i++){
-								values.add(Double.parseDouble(dequote(fields.get(i))));
+								values.add(Double.parseDouble(fields.get(i)));
 							}
 							Subject subject = SubjectUtils.getSubjectByLabel(areaId);
 							if (subject != null
@@ -275,13 +275,5 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			}
 		}
 		return null;
-	}
-	
-	private String dequote(String string){
-		if (!string.startsWith("\""))
-			return string;
-		if (!string.endsWith("\""))
-			return string;
-		return string.substring(1, string.length()-1);
 	}
 }
