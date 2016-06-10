@@ -1,7 +1,6 @@
 package uk.org.tombolo.exporter;
 
 import org.geotools.geojson.geom.GeometryJSON;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -12,12 +11,16 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.FieldWithProvider;
 
 import javax.json.JsonValue;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GeoJsonExporter implements Exporter {
@@ -147,13 +150,24 @@ public class GeoJsonExporter implements Exporter {
 					wrapper.put("value", (Double) entry.getValue());
 					return wrapper;
 				}).collect(Collectors.toList());
-				attributeWrappers.add(new AttributeWrapper(
-						field.getLabel(),
-						field.getLabel() + "_name",
-						field.getLabel() + "_provider_label",
-						field.getLabel() + "_provider_name",
-						null,
-						valueWrappers));
+				if (field instanceof FieldWithProvider) {
+					Provider provider = ((FieldWithProvider) field).getProvider();
+					attributeWrappers.add(new AttributeWrapper(
+							field.getLabel(),
+							field.getHumanReadableName(),
+							provider.getLabel(),
+							provider.getName(),
+							null,
+							valueWrappers));
+				} else {
+					attributeWrappers.add(new AttributeWrapper(
+							field.getLabel(),
+							field.getHumanReadableName(),
+							field.getLabel() + "_provider_label",
+							field.getLabel() + "_provider_name",
+							null,
+							valueWrappers));
+				}
 			}
 		}
 

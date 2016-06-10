@@ -6,4 +6,5 @@ import uk.org.tombolo.core.Subject;
 public interface Field {
     JSONObject jsonValueForSubject(Subject subject);
     String getLabel();
+    String getHumanReadableName();
 }

@@ -3,9 +3,6 @@ package uk.org.tombolo;
 import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
@@ -67,7 +64,7 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
 
         engine.execute(builder.build(), writer, true);
 
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_label_name")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_name")));
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E01000001", "attr_label", "latest", "100.0"));
     }
@@ -100,8 +97,7 @@ public class DataExportEngineWithFieldsTest extends AbstractTest {
 
         engine.execute(builder.build(), writer, true);
 
-        // FIXME: human readable names should probably return
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("populationDensity_name")));
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("Population density (per hectare) 2015")));
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E09000001", "populationDensity", "2015-12-31T23:59:59", "28.237556363195576"));
     }

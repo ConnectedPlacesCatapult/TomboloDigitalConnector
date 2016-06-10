@@ -2,11 +2,12 @@ package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
-public class ValuesByTimeField implements Field {
+public class ValuesByTimeField implements Field, FieldWithProvider {
     private String label;
     private AttributeStruct attribute;
 
@@ -29,7 +30,12 @@ public class ValuesByTimeField implements Field {
         return label;
     }
 
-    private Attribute getAttribute() {
+    @Override
+    public String getHumanReadableName() {
+        return getAttribute().getName();
+    }
+
+    protected Attribute getAttribute() {
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
         if (null == attribute) {
             throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
@@ -38,7 +44,12 @@ public class ValuesByTimeField implements Field {
         }
     }
 
-    private static final class AttributeStruct {
+    @Override
+    public Provider getProvider() {
+        return getAttribute().getProvider();
+    }
+
+    protected static final class AttributeStruct {
         public final String providerLabel;
         public final String attributeLabel;
 

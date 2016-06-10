@@ -10,12 +10,13 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.FieldWithProvider;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -30,7 +31,7 @@ import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
 
-	private class FixedValueField implements Field {
+	private class FixedValueField implements FieldWithProvider {
 		private final String label;
 		private final Double value;
 
@@ -49,6 +50,16 @@ public class GeoJsonExporterTest extends AbstractTest {
 		@Override
 		public String getLabel() {
 			return label;
+		}
+
+		@Override
+		public String getHumanReadableName() {
+			return label + "_readable";
+		}
+
+		@Override
+		public Provider getProvider() {
+			return new Provider("providerTestLabel", "providerTestName");
 		}
 	}
 
@@ -86,7 +97,8 @@ public class GeoJsonExporterTest extends AbstractTest {
 				Arrays.asList(new FixedValueField("some_label", 100d))
 		);
 
-		assertEquals("some_label_name", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.name").toString());
+		assertEquals("providerTestName", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.provider").toString());
+		assertEquals("some_label_readable", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.name").toString());
 		assertEquals("100.0", JsonPath.read(writer.toString(), "$.features[0].properties.attributes.some_label.values.latest").toString());
 	}
 
