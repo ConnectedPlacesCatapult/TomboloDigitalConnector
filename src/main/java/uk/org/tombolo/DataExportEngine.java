@@ -58,20 +58,13 @@ public class DataExportEngine implements ExecutionEngine{
 		}
 
 
-		if (fields.size() > 0) {
-			// Use the new fields method
-			log.info("Exporting ...");
-			Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-			List<Subject> subjects = new ArrayList<>();
-			for (SubjectSpecification subjectSpec : subjectSpecList) {
-				subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
-			}
-			exporter.write(writer, subjects, fields);
-		} else {
-			// Export data
-			log.info("Exporting ...");
-			Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-			exporter.write(writer, dataExportSpec.getDatasetSpecification());
+		// Use the new fields method
+		log.info("Exporting ...");
+		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+		List<Subject> subjects = new ArrayList<>();
+		for (SubjectSpecification subjectSpec : subjectSpecList) {
+			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
 		}
+		exporter.write(writer, subjects, fields);
 	}
 }

@@ -8,8 +8,5 @@ import java.io.Writer;
 import java.util.List;
 
 public interface Exporter {
-
-	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception;
-
 	void write(Writer writer, List<Subject> subjects, List<Field> fields) throws Exception;
 }
