@@ -1,10 +1,12 @@
 package uk.org.tombolo.execution.spec;
 
 import com.google.gson.*;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 public class DataExportSpecification {
@@ -28,10 +30,8 @@ public class DataExportSpecification {
 		this.exporterClass = exporterClass;
 	}
 
-	public static DataExportSpecification fromJsonFile(File jsonFile) throws JsonSyntaxException, JsonIOException, FileNotFoundException{
-		Gson gson = new Gson();
-		
-		return gson.fromJson(new FileReader(jsonFile), DataExportSpecification.class);
+	public static DataExportSpecification fromJsonFile(File jsonFile) throws IOException {
+		return fromJson(FileUtils.readFileToString(jsonFile));
 	}
 
 	public static DataExportSpecification fromJson(String jsonString) {

@@ -6,6 +6,7 @@ import uk.org.tombolo.core.Attribute;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertSame;
 public class DatasetSpecificationTest extends AbstractTest {
 
 	@Test
-	public void testFromJsonFile() throws FileNotFoundException{
+	public void testFromJsonFile() throws IOException {
 		DatasetSpecification dsSpec = makeDatasetSpecification();
 		
 		assertEquals(1, dsSpec.getSubjectSpecification().size());
@@ -38,14 +39,14 @@ public class DatasetSpecificationTest extends AbstractTest {
 	@Test
 	public void testGetFieldSpecification() throws Exception {
 		DatasetSpecification dsSpec = makeDatasetSpecification();
-		assertEquals("subjectLabel", dsSpec.getFieldSpecification().get(0).toField().getLabel());
-		assertEquals("uk.org.tombolo.field.SubjectLabelField", dsSpec.getFieldSpecification().get(0).toField().getClass().getCanonicalName());
+		assertEquals("latestValueLabel", dsSpec.getFieldSpecification().get(0).toField().getLabel());
+		assertEquals("uk.org.tombolo.field.LatestValueField", dsSpec.getFieldSpecification().get(0).toField().getClass().getCanonicalName());
 	}
 
-	private DatasetSpecification makeDatasetSpecification() throws FileNotFoundException {
+	private DatasetSpecification makeDatasetSpecification() throws IOException {
 		String resourcePath = "executions/test_dataset_spec.json";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(resourcePath).getFile());
-		return DatasetSpecification.fromJsonFile(file);
+		return DataExportSpecification.fromJsonFile(file).getDatasetSpecification();
 	}
 }

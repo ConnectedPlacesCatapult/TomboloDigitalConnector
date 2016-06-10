@@ -33,7 +33,7 @@ public class DataExportRunner {
         }
     }
 
-    private static DataExportSpecification getSpecification(String specificationPath) throws FileNotFoundException {
+    private static DataExportSpecification getSpecification(String specificationPath) throws IOException {
         File file = new File(specificationPath);
         if (!file.exists()){
             log.error("File not found: {}", specificationPath);

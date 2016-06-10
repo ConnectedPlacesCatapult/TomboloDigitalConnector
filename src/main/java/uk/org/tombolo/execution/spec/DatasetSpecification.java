@@ -58,10 +58,4 @@ public class DatasetSpecification {
 	public void setFieldSpecification(List<FieldSpecification> fieldSpecification) {
 		this.fieldSpecification = fieldSpecification;
 	}
-
-	public static DatasetSpecification fromJsonFile(File jsonFile) throws JsonSyntaxException, JsonIOException, FileNotFoundException{
-		Gson gson = new Gson();
-		
-		return gson.fromJson(new FileReader(jsonFile), DatasetSpecification.class);
-	}
 }
