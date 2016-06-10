@@ -31,69 +31,114 @@
 			}		
 		],
 		"transformSpecification": [],
-		"attributeSpecification" : [
+		"fieldSpecification": [
 			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "populationDensity",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:populationDensity"
-				}
+				"fieldClass": "uk.org.tombolo.field.OrganicitySubjectIDField",
+				"label": "id",
+				"site": "london",
+				"service" : "boroughProfile",
+				"provider" : "uk.gov.london",
+				"type" : "urn:oc:entityType:dataset:boroughProfile"
 			},
 			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "householdIncome",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:householdIncome"
-				}
+				"fieldClass": "uk.org.tombolo.field.SubjectLatitudeField",
+				"label": "latitude"
 			},
 			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "medianHousePrice",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:medianHousePrice"
-				}
+				"fieldClass": "uk.org.tombolo.field.SubjectLongitudeField",
+				"label": "longitude"
 			},
 			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "fractionGreenspace",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:fractionGreenspace"
-				}
+				"fieldClass": "uk.org.tombolo.field.FixedAnnotationField",
+				"label": "type",
+				"value": "urn:oc:entityType:dataset:boroughProfile"
 			},
 			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "carbonEmission",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:carbonEmission"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "carsPerHousehold",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:carsPerHousehold"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "walk5xWeek",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:walk5xWeek"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.london",
-				"attributeLabel" : "cycle1xWeek",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:cycle1xWeek"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.phe",
-				"attributeLabel" : "fractionObese",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:boroughProfile:fractionObese"
-				}
+				"fieldClass": "uk.org.tombolo.field.WrapperField",
+				"label": "attributes",
+				"fieldSpecification": [
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "populationDensity",
+						"urn": "urn:oc:attributeType:boroughProfile:populationDensity",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "populationDensity"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "householdIncome",
+						"urn": "urn:oc:attributeType:boroughProfile:householdIncome",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "householdIncome"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "medianHousePrice",
+						"urn": "urn:oc:attributeType:boroughProfile:medianHousePrice",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "medianHousePrice"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "fractionGreenspace",
+						"urn": "urn:oc:attributeType:boroughProfile:fractionGreenspace",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "fractionGreenspace"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "carbonEmission",
+						"urn": "urn:oc:attributeType:boroughProfile:carbonEmission",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "carbonEmission"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "carsPerHousehold",
+						"urn": "urn:oc:attributeType:boroughProfile:carsPerHousehold",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "carsPerHousehold"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "walk5xWeek",
+						"urn": "urn:oc:attributeType:boroughProfile:walk5xWeek",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "walk5xWeek"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "cycle1xWeek",
+						"urn": "urn:oc:attributeType:boroughProfile:cycle1xWeek",
+						"attribute": {
+							"providerLabel": "uk.gov.london",
+							"attributeLabel": "cycle1xWeek"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"label": "fractionObese",
+						"urn": "urn:oc:attributeType:boroughProfile:fractionObese",
+						"attribute": {
+							"providerLabel": "uk.gov.phe",
+							"attributeLabel": "fractionObese"
+						}
+					}
+				]
 			}
 		]
 	},
