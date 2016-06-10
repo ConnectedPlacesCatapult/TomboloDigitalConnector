@@ -10,6 +10,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 public class ValuesByTimeField implements Field, FieldWithProvider {
     protected String label;
     private AttributeStruct attribute;
+    private Attribute cachedAttribute;
 
     public ValuesByTimeField(String label, AttributeStruct attribute) {
         this.label = label;
@@ -36,10 +37,13 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     }
 
     protected Attribute getAttribute() {
+        if (null != cachedAttribute) return cachedAttribute;
+
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
         if (null == attr) {
             throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
         } else {
+            cachedAttribute = attr;
             return attr;
         }
     }
