@@ -44,33 +44,6 @@ public class GeoJsonExporter implements Exporter {
 	}
 	
 	// FIXME: Rewriter using geotools ... I could not get it to work quicly in the initial implementation (borkur)
-	
-	@Override
-	public void write(Writer writer, DatasetSpecification datasetSpecification) throws Exception {
-		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		List<Subject> subjectList = SubjectUtils.getSubjectBySpecification(datasetSpecification);
-
-		Map<Subject, List<AttributeWrapper>> subjectsToAttributeWrappers = new HashMap<>();
-		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-		for (Subject subject : subjectList) {
-			ArrayList<AttributeWrapper> attributeWrappers = new ArrayList<>();
-			subjectsToAttributeWrappers.put(subject, attributeWrappers);
-			for (AttributeSpecification attributeSpec : attributeSpecs) {
-				Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-				Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-				List<Map<String, Object>> timedValueWrappers = timedValueUtils.getBySubjectAndAttribute(subject, attribute).stream().map(timedValue -> {
-					Map<String, Object> timedValueWrapper = new HashMap<>();
-					timedValueWrapper.put("timestamp", timedValue.getId().getTimestamp().toString());
-					timedValueWrapper.put("value", timedValue.getValue());
-					return timedValueWrapper;
-				}).collect(Collectors.toList());
-
-				attributeWrappers.add(new AttributeWrapper(attribute.getLabel(), attribute.getName(), attribute.getProvider().getLabel(), attribute.getProvider().getName(), attributeSpec.getAttributes(), timedValueWrappers));
-			}
-		}
-
-		writeInner(writer, subjectList, subjectsToAttributeWrappers);
-	}
 
 	public void writeInner(Writer writer, List<Subject> subjectList, Map<Subject, List<AttributeWrapper>> subjectsToAttributeWrappers) throws Exception {
 

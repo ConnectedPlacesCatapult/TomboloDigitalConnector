@@ -17,11 +17,13 @@ import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.field.FieldWithProvider;
+import uk.org.tombolo.field.ValuesByTimeField;
 
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -74,16 +76,13 @@ public class GeoJsonExporterTest extends AbstractTest {
 		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
-		DatasetSpecification spec = new DatasetSpecification();
-		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", "E09000001"));
-		subjectSpecification.add(new SubjectSpecification(matchers, "localAuthority"));
-		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
-		attributeSpecification.add(new AttributeSpecification("default_provider_label", "attr_label"));
-		spec.setSubjectSpecification(subjectSpecification);
-		spec.setAttributeSpecification(attributeSpecification);
 		
-		exporter.write(writer, spec);
+		exporter.write(writer, Collections.singletonList(
+				SubjectUtils.getSubjectByLabel("E09000001")
+		), Collections.singletonList(
+				new ValuesByTimeField("attr_label",
+						new ValuesByTimeField.AttributeStruct("default_provider_label", "attr_label"))
+		));
 
 		assertEquals("E09000001", getFirstFeatureLabel(writer.toString()));
 	}
