@@ -155,7 +155,7 @@ public class DataExportEngineTest extends AbstractTest {
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                 .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                        FieldSpecificationBuilder.latestValue("provider_label", "percentage_under_1_years_old_label")
                 );
 
         engine.execute(csvBuilder.build(), writer, true);

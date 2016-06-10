@@ -37,7 +37,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
 
     protected Attribute getAttribute() {
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
-        if (null == attribute) {
+        if (null == attr) {
             throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
         } else {
             return attr;
@@ -49,11 +49,11 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         return getAttribute().getProvider();
     }
 
-    protected static final class AttributeStruct {
+    public static final class AttributeStruct {
         public final String providerLabel;
         public final String attributeLabel;
 
-        AttributeStruct(String providerLabel, String attributeLabel) {
+        public AttributeStruct(String providerLabel, String attributeLabel) {
             this.providerLabel = providerLabel;
             this.attributeLabel = attributeLabel;
         }

@@ -9,15 +9,21 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.LatestValueField;
+import uk.org.tombolo.field.ValuesByTimeField;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,76 +43,38 @@ public class CSVExporterTest extends AbstractTest {
 		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09000001", "localAuthority", "default_provider_label", "attr_label"));
+		exporter.write(writer, makeSubjects(), makeFields("default_provider_label", "attr_label"));
 		CSVRecord record = getRecords(writer.toString()).get(0);
 
 		assertEquals("E09000001", record.get("label"));
 		assertEquals("City of London", record.get("name"));
 		assertNotNull(record.get("geometry"));
-		assertEquals("attr_name", record.get("default_provider_label_attr_label_name"));
-		assertEquals("default_provider_name", record.get("default_provider_label_attr_label_provider"));
-		assertEquals("100.0", record.get("default_provider_label_attr_label_latest_value"));
+		assertEquals("attr_name", record.get("attr_label_name"));
+		assertEquals("default_provider_name", record.get("attr_label_provider"));
+		assertEquals("100.0", record.get("attr_label_latest_value"));
 		assertEquals(6, record.size());
 	}
 
 	@Test
-	public void testWriteWithInvalidProperty() throws Exception {
-		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
-		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
-
-		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "localAuthority", "default_provider_label", "bad_name"));
-
-		CSVRecord record = getRecords(writer.toString()).get(0);
-
-		assertNotNull(record.get("label"));
-		assertNotNull(record.get("name"));
-		assertNotNull(record.get("geometry"));
-		assertEquals(3, record.size());
-	}
-
-	@Test
-	public void testWriteWithInvalidSubject() throws Exception {
-		Writer writer = new StringWriter();
-		exporter.write(writer, makeDatasetSpecification("E09%", "badSubject", "uk.gov.london", "populationDensity"));
-		writer.flush();
-
-		assertTrue(getRecords(writer.toString()).isEmpty());
-	}
-
-	@Test
 	public void testGetColumnNames() throws Exception {
-		List<String> attributes = exporter.getColumnNames(makeAttributes());
+		List<String> attributes = exporter.getColumnNames(makeFields("uk.gov.london", "populationDensity"));
 
 		assertEquals("label", attributes.get(0));
 		assertEquals("name", attributes.get(1));
 		assertEquals("geometry", attributes.get(2));
-		assertEquals("uk.gov.london_populationDensity_name", attributes.get(3));
-		assertEquals("uk.gov.london_populationDensity_provider", attributes.get(4));
+		assertEquals("populationDensity_name", attributes.get(3));
+		assertEquals("populationDensity_provider", attributes.get(4));
 	}
 
-	private DatasetSpecification makeDatasetSpecification(String subjectLabelPattern, String subjectType, String attributeProvider, String attributeName) {
-		DatasetSpecification spec = new DatasetSpecification();
-		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher("label", subjectLabelPattern));
-		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
-		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
-		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
-		spec.setSubjectSpecification(subjectSpecification);
-		spec.setAttributeSpecification(attributeSpecification);
-		return spec;
+	private List<Subject> makeSubjects() {
+		return Collections.singletonList(SubjectUtils.getSubjectByLabel("E09000001"));
 	}
 
-	private List<Attribute> makeAttributes() {
-		return new ArrayList<>(Arrays.asList(
-				new Attribute(
-						new Provider("uk.gov.london", "London Datastore - Greater London Authority"),
-						"populationDensity",
-						"Population density (per hectare) 2015",
-						"description1",
-						null
-				)
-		));
+	private List<Field> makeFields(String providerLabel, String attributeLabel) {
+		return Collections.singletonList(
+				new LatestValueField(attributeLabel,
+						new LatestValueField.AttributeStruct(providerLabel, attributeLabel))
+		);
 	}
 
 	private List<CSVRecord> getRecords(String csvString) throws IOException {
