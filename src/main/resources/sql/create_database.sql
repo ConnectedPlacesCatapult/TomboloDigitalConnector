@@ -1,13 +1,13 @@
-drop table timed_value;
+drop table if exists timed_value;
 
-drop table subject;
-drop sequence subject_id_sequence;
-drop table subject_type;
+drop table if exists subject;
+drop sequence if exists subject_id_sequence;
+drop table if exists subject_type;
 
-drop table attribute;
-drop sequence attribute_id_sequence;
+drop table if exists attribute;
+drop sequence if exists attribute_id_sequence;
 
-drop table provider;
+drop table if exists provider;
 
 
 -- Provider
