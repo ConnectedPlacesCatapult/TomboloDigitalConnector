@@ -12,5 +12,5 @@ import uk.org.tombolo.core.Subject;
  * of your generic field, or another field entirely.
  */
 public interface SingleValueField extends Field {
-    String valueForSubject(Subject subject);
+    String valueForSubject(Subject subject) throws IncomputableFieldException;
 }

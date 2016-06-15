@@ -38,12 +38,12 @@ public class FractionOfTotalField implements SingleValueField {
     }
 
     @Override
-    public String valueForSubject(Subject subject) {
+    public String valueForSubject(Subject subject) throws IncomputableFieldException {
         return getValue(subject).value.toString();
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
+    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
         obj.put(valueWithTimestamp.timestamp.toString(), valueWithTimestamp.value);
@@ -68,7 +68,7 @@ public class FractionOfTotalField implements SingleValueField {
         return label;
     }
 
-    private ValueWithTimestamp getValue(Subject subject) {
+    private ValueWithTimestamp getValue(Subject subject) throws IncomputableFieldException {
         List<TimedValue> dividendValues = getLatestTimedValuesForSubjectAndAttributes(subject, dividendAttributes);
         List<TimedValue> divisorValues = getLatestTimedValuesForSubjectAndAttributes(subject, Collections.singletonList(divisorAttribute));
 
@@ -77,9 +77,9 @@ public class FractionOfTotalField implements SingleValueField {
         LocalDateTime latestTimeStamp = getMostRecentTimestampForTimedValues(ListUtils.union(dividendValues, divisorValues));
 
         if (0 == divisor) {
-            throw new IllegalArgumentException("Divisor cannot be zero or absent");
+            throw new IncomputableFieldException("Divisor cannot be zero or absent");
         } else if (0 == dividend) {
-            throw new IllegalArgumentException("Dividend cannot be zero or absent");
+            throw new IncomputableFieldException("Dividend cannot be zero or absent");
         }
 
         return new ValueWithTimestamp(dividend/divisor, latestTimeStamp);

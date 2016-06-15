@@ -49,14 +49,14 @@ public class FractionOfTotalFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubjectWithFullyAbsentDivisorValue() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("Dividend cannot be zero or absent");
         makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject);
     }
 
     @Test
     public void testJsonValueForSubjectWithAbsentDividendValue() throws Exception {
-        thrown.expect(IllegalArgumentException.class);
+        thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("Divisor cannot be zero or absent");
         makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject);
     }
