@@ -6,11 +6,10 @@ and urban models.
 ## Quick start
 
 ### Requirements
-<!-- TODO Determine minimally correct versions-->
-* PostgreSQL
-* PostGIS
-* Gradle
-* (Optional) Wercker
+* PostgreSQL (9.4+)
+* PostGIS (2.1+)
+* Gradle (2.12+)
+* (Optional) Wercker (1.0+)
 
 ### Set up main database
 
@@ -48,7 +47,10 @@ sh scripts/loadLa.sh
 ```
 
 ### Set up test database
-<!-- TODO What is the test database for? Why are there two? Not clear by reading-->
+
+The test database is used by the tests and is cleared routinely. We use this
+to gain control over what is in the database when our tests are running and
+to avoid affecting any important data in your main database.
 
 To create the test user and database:
 
@@ -89,7 +91,7 @@ and Defaults -> JUnit):
 
 ### Run export
 
-Exports the London borough profiles from OrganiCity
+We use the Gradle task `runExport` to run exports. The parameters are as follows:
 
 ```bash
 gradle runExport \
@@ -98,7 +100,7 @@ gradle runExport \
     -PdoImport=true
 ```
 
-For example, this exports the London borough profiles from OrganiCity
+For example, this exports the London borough profiles from OrganiCity to `organicity-borough-profiles.json`:
 
 ```bash
 gradle runExport \
