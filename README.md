@@ -5,6 +5,13 @@ and urban models.
 
 ## Quick start
 
+### Requirements
+<!-- TODO Determine minimally correct versions-->
+* PostgreSQL
+* PostGIS
+* Gradle
+* (Optional) Wercker
+
 ### Set up main database
 
 First copy and amend the example configuration file at
@@ -41,6 +48,7 @@ sh scripts/loadLa.sh
 ```
 
 ### Set up test database
+<!-- TODO What is the test database for? Why are there two? Not clear by reading-->
 
 To create the test user and database:
 
@@ -97,7 +105,6 @@ gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
     -PoutputFile='organicity-borough-profiles.json' \
     -PdoImport=true
-cat organicity-borough-profiles.json | json_pp
 ```
 
 Or without Gradle:
