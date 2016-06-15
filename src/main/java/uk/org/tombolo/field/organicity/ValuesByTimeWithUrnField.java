@@ -3,6 +3,10 @@ package uk.org.tombolo.field.organicity;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.field.ValuesByTimeField;
 
+/**
+ * ValuesByTimeWithUrnField.java
+ * Just as ValuesByTimeField, but with provided URN metadata included.
+ */
 public class ValuesByTimeWithUrnField extends ValuesByTimeField {
     private final String urn;
 

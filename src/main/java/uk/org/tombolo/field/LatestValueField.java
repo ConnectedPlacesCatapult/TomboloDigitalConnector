@@ -4,6 +4,12 @@ import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+/**
+ * LatestValueField.java
+ * Returns the latest TimedValue for a particular Attribute on the given subject, plus metadata
+ *
+ * The metadata is regarding the attribute.
+ */
 public class LatestValueField extends ValuesByTimeField implements SingleValueField {
     public LatestValueField(String label, AttributeStruct attribute) {
         super(label, attribute);

@@ -7,6 +7,12 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+/**
+ * ValuesByTimeField.java
+ * Returns all TimedValues on an Attribute for a given Subject, plus metadata.
+ *
+ * The metadata is regarding the attribute.
+ */
 public class ValuesByTimeField implements Field, FieldWithProvider {
     protected String label;
     private AttributeStruct attribute;

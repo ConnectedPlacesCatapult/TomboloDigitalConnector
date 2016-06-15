@@ -4,6 +4,10 @@ import com.vividsolutions.jts.geom.Point;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 
+/**
+ * SubjectLatitudeField.java
+ * Returns the latitude of the centroid of the subject.
+ */
 public class SubjectLatitudeField implements SingleValueField {
     private final String label;
 

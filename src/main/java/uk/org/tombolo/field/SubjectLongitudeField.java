@@ -4,6 +4,10 @@ import com.vividsolutions.jts.geom.Point;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 
+/**
+ * SubjectLongitudeField.java
+ * Returns the longitude of the centroid of the subject.
+ */
 public class SubjectLongitudeField implements SingleValueField {
     private final String label;
 

@@ -3,6 +3,10 @@ package uk.org.tombolo.field;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 
+/**
+ * FixedAnnotationField.java
+ * Returns a fixed value for annotation purposes.
+ */
 public class FixedAnnotationField implements SingleValueField {
     private final String label;
     private final String value;

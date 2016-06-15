@@ -4,6 +4,10 @@ import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.SingleValueField;
 
+/**
+ * OrganicitySubjectIDField.java
+ * Returns the Organicity 'Subject ID' for the given subject.
+ */
 public class OrganicitySubjectIDField implements SingleValueField {
     private final String label;
     private final String site;

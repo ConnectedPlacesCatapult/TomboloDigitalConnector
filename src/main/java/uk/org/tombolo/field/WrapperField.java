@@ -6,6 +6,13 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 
 import java.util.List;
 
+/**
+ * WrapperField.java
+ * A field that wraps subfields in a JSON object.
+ *
+ * Takes a fieldSpecification exactly like the root fieldSpecification does.
+ * Can be nested.
+ */
 public class WrapperField implements Field {
     private final List<FieldSpecification> fieldSpecification;
     private final String label;
