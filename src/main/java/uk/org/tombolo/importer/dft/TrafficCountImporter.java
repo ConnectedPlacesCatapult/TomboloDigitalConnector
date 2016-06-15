@@ -10,7 +10,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.transformer.utils.CoordinateUtils;
+import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

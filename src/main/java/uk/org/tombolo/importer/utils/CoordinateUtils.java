@@ -1,4 +1,4 @@
-package uk.org.tombolo.transformer.utils;
+package uk.org.tombolo.importer.utils;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.geometry.GeneralDirectPosition;
