@@ -37,6 +37,14 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder fixedAnnotationField(String label, String value) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.FixedAnnotationField")
+                .setLabel(label)
+                .setValue(value);
+        return spec;
+    }
+
     private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);
@@ -62,5 +70,9 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public void setFieldSpecification(List<FieldSpecificationBuilder> fields) {
         jsonSpec.put("fieldSpecification", fields);
+    }
+
+    public void setValue(String value) {
+        jsonSpec.put("value", value);
     }
 }
