@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
@@ -35,7 +36,7 @@ public class DataExportSpecificationBuilder implements JSONAware {
     }
 
     public DataExportSpecification build() {
-        return DataExportSpecification.fromJson(toJSONString());
+        return SpecificationDeserializer.fromJson(toJSONString(), DataExportSpecification.class);
     }
 
     @Override

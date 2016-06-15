@@ -45,6 +45,6 @@ public class DatasetSpecificationTest extends AbstractTest {
 		String resourcePath = "executions/test_dataset_spec.json";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(resourcePath).getFile());
-		return DataExportSpecification.fromJsonFile(file).getDatasetSpecification();
+		return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class).getDatasetSpecification();
 	}
 }
