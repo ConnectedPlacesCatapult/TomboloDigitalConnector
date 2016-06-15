@@ -36,7 +36,9 @@ public class CSVExporter implements Exporter {
 
 		for (Field field : fields) {
 			columnNames.add(getFieldPropertyName(field, "name"));
-			columnNames.add(getFieldPropertyName(field, "provider"));
+			if (field instanceof FieldWithProvider) {
+				columnNames.add(getFieldPropertyName(field, "provider"));
+			}
 			columnNames.add(getFieldPropertyName(field, "latest_value"));
 		}
 
