@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 /**
  * LatestValueField.java
@@ -13,7 +14,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
  * The metadata is regarding the attribute.
  */
 public class LatestValueField extends ValuesByTimeField implements SingleValueField {
-    public LatestValueField(String label, AttributeStruct attribute) {
+    public LatestValueField(String label, AttributeMatcher attribute) {
         super(label, attribute);
     }
 

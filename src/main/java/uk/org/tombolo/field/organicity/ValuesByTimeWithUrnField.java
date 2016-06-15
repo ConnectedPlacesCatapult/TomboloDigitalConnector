@@ -1,6 +1,7 @@
 package uk.org.tombolo.field.organicity;
 
 import org.json.simple.JSONObject;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.ValuesByTimeField;
 
 /**
@@ -10,7 +11,7 @@ import uk.org.tombolo.field.ValuesByTimeField;
 public class ValuesByTimeWithUrnField extends ValuesByTimeField {
     private final String urn;
 
-    public ValuesByTimeWithUrnField(String label, AttributeStruct attribute, String urn) {
+    public ValuesByTimeWithUrnField(String label, AttributeMatcher attribute, String urn) {
         super(label, attribute);
         this.urn = urn;
     }

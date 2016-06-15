@@ -6,6 +6,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 /**
  * ValuesByTimeField.java
@@ -15,10 +16,10 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
  */
 public class ValuesByTimeField implements Field, FieldWithProvider {
     protected String label;
-    private AttributeStruct attribute;
+    private AttributeMatcher attribute;
     private Attribute cachedAttribute;
 
-    public ValuesByTimeField(String label, AttributeStruct attribute) {
+    public ValuesByTimeField(String label, AttributeMatcher attribute) {
         this.label = label;
         this.attribute = attribute;
     }
@@ -67,15 +68,5 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     @Override
     public Provider getProvider() {
         return getAttribute().getProvider();
-    }
-
-    public static final class AttributeStruct {
-        public final String providerLabel;
-        public final String attributeLabel;
-
-        public AttributeStruct(String providerLabel, String attributeLabel) {
-            this.providerLabel = providerLabel;
-            this.attributeLabel = attributeLabel;
-        }
     }
 }

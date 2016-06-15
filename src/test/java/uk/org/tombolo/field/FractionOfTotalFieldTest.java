@@ -8,6 +8,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 import java.util.Arrays;
 
@@ -76,46 +77,46 @@ public class FractionOfTotalFieldTest extends AbstractTest {
         Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2");
         Attribute attribute3 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr3");
-        ValuesByTimeField.AttributeStruct attributeStruct1 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
-        ValuesByTimeField.AttributeStruct attributeStruct2 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
-        ValuesByTimeField.AttributeStruct attributeStruct3 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
+        AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
         TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
         TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-02T00:00", 100d);
         TestFactory.makeTimedValue("E01000001", attribute3, "2011-01-01T00:00", 400d);
-        return new FractionOfTotalField("aLabel", Arrays.asList(attributeStruct1, attributeStruct2), attributeStruct3);
+        return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
     }
 
     private FractionOfTotalField makeFieldWithPartiallyAbsentDividendValue() {
         Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2");
         Attribute attribute3 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr3");
-        ValuesByTimeField.AttributeStruct attributeStruct1 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
-        ValuesByTimeField.AttributeStruct attributeStruct2 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
-        ValuesByTimeField.AttributeStruct attributeStruct3 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
+        AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
         TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
         TestFactory.makeTimedValue("E01000001", attribute3, "2011-01-01T00:00", 400d);
-        return new FractionOfTotalField("aLabel", Arrays.asList(attributeStruct1, attributeStruct2), attributeStruct3);
+        return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
     }
 
     private FractionOfTotalField makeFieldWithFullyAbsentDividendValue() {
         Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2");
         Attribute attribute3 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr3");
-        ValuesByTimeField.AttributeStruct attributeStruct1 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
-        ValuesByTimeField.AttributeStruct attributeStruct2 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
-        ValuesByTimeField.AttributeStruct attributeStruct3 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
+        AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
         TestFactory.makeTimedValue("E01000001", attribute3, "2011-01-01T00:00", 400d);
-        return new FractionOfTotalField("aLabel", Arrays.asList(attributeStruct1, attributeStruct2), attributeStruct3);
+        return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
     }
     private FractionOfTotalField makeFieldWithAbsentDivisorValue() {
         Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2");
         Attribute attribute3 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr3");
-        ValuesByTimeField.AttributeStruct attributeStruct1 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
-        ValuesByTimeField.AttributeStruct attributeStruct2 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
-        ValuesByTimeField.AttributeStruct attributeStruct3 = new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
+        AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
         TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
         TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-02T00:00", 100d);
-        return new FractionOfTotalField("aLabel", Arrays.asList(attributeStruct1, attributeStruct2), attributeStruct3);
+        return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
     }
 }

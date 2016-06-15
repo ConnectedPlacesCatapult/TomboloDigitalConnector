@@ -6,6 +6,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,7 +22,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     public void setUp() throws Exception {
         subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
-        field = new ValuesByTimeField("aLabel", new ValuesByTimeField.AttributeStruct(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
+        field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }
 
     @Test

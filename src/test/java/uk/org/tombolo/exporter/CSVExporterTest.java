@@ -10,6 +10,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.LatestValueField;
 
@@ -66,7 +67,7 @@ public class CSVExporterTest extends AbstractTest {
 	private List<Field> makeFields(String providerLabel, String attributeLabel) {
 		return Collections.singletonList(
 				new LatestValueField(attributeLabel,
-						new LatestValueField.AttributeStruct(providerLabel, attributeLabel))
+						new AttributeMatcher(providerLabel, attributeLabel))
 		);
 	}
 

@@ -9,6 +9,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -24,13 +25,13 @@ import java.util.stream.Collectors;
  */
 public class FractionOfTotalField implements SingleValueField {
     private final String label;
-    private final List<ValuesByTimeField.AttributeStruct> dividendAttributes;
-    private final ValuesByTimeField.AttributeStruct divisorAttribute;
-    private Map<ValuesByTimeField.AttributeStruct, Attribute> cachedAttributes;
+    private final List<AttributeMatcher> dividendAttributes;
+    private final AttributeMatcher divisorAttribute;
+    private Map<AttributeMatcher, Attribute> cachedAttributes;
 
     private Logger log = LoggerFactory.getLogger(FractionOfTotalField.class);
 
-    FractionOfTotalField(String label, List<ValuesByTimeField.AttributeStruct> dividendAttributes, ValuesByTimeField.AttributeStruct divisorAttribute) {
+    FractionOfTotalField(String label, List<AttributeMatcher> dividendAttributes, AttributeMatcher divisorAttribute) {
         this.label = label;
         this.dividendAttributes = dividendAttributes;
         this.divisorAttribute = divisorAttribute;
@@ -84,13 +85,13 @@ public class FractionOfTotalField implements SingleValueField {
         return new ValueWithTimestamp(dividend/divisor, latestTimeStamp);
     }
 
-    private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<ValuesByTimeField.AttributeStruct> attributeStructs) {
+    private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<AttributeMatcher> attributeMatchers) {
         TimedValueUtils timedValueUtils = new TimedValueUtils();
-        return attributeStructs.stream()
-                .map(attributeStruct -> {
-                    return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute(attributeStruct))
+        return attributeMatchers.stream()
+                .map(attributeMatcher -> {
+                    return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute(attributeMatcher))
                             .orElseGet(() -> {
-                                log.warn(String.format("No TimedValue found for attribute %s in field %s", attributeStruct.attributeLabel, label));
+                                log.warn(String.format("No TimedValue found for attribute %s in field %s", attributeMatcher.attributeLabel, label));
                                 return null;
                             });
                 })
@@ -109,15 +110,15 @@ public class FractionOfTotalField implements SingleValueField {
                 .orElseGet(() -> LocalDateTime.MIN);
     }
 
-    protected Attribute getAttribute(ValuesByTimeField.AttributeStruct attributeStruct) {
+    protected Attribute getAttribute(AttributeMatcher attributeMatcher) {
         if (null == cachedAttributes) { cachedAttributes = new HashMap<>(); } // Gson will null this field whatever we do
-        if (cachedAttributes.containsKey(attributeStruct)) return cachedAttributes.get(attributeStruct);
+        if (cachedAttributes.containsKey(attributeMatcher)) return cachedAttributes.get(attributeMatcher);
 
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeStruct.providerLabel, attributeStruct.attributeLabel);
+        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.providerLabel, attributeMatcher.attributeLabel);
         if (null == attr) {
-            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeStruct.providerLabel, attributeStruct.attributeLabel));
+            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.providerLabel, attributeMatcher.attributeLabel));
         } else {
-            cachedAttributes.put(attributeStruct, attr);
+            cachedAttributes.put(attributeMatcher, attr);
             return attr;
         }
     }
