@@ -33,7 +33,7 @@
 		"transformSpecification": [],
 		"fieldSpecification": [
 			{
-				"fieldClass": "uk.org.tombolo.field.OrganicitySubjectIDField",
+				"fieldClass": "uk.org.tombolo.field.organicity.OrganicitySubjectIDField",
 				"label": "id",
 				"site": "london",
 				"service" : "boroughProfile",
@@ -58,7 +58,7 @@
 				"label": "attributes",
 				"fieldSpecification": [
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "populationDensity",
 						"urn": "urn:oc:attributeType:boroughProfile:populationDensity",
 						"attribute": {
@@ -67,7 +67,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "householdIncome",
 						"urn": "urn:oc:attributeType:boroughProfile:householdIncome",
 						"attribute": {
@@ -76,7 +76,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "medianHousePrice",
 						"urn": "urn:oc:attributeType:boroughProfile:medianHousePrice",
 						"attribute": {
@@ -85,7 +85,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "fractionGreenspace",
 						"urn": "urn:oc:attributeType:boroughProfile:fractionGreenspace",
 						"attribute": {
@@ -94,7 +94,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "carbonEmission",
 						"urn": "urn:oc:attributeType:boroughProfile:carbonEmission",
 						"attribute": {
@@ -103,7 +103,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "carsPerHousehold",
 						"urn": "urn:oc:attributeType:boroughProfile:carsPerHousehold",
 						"attribute": {
@@ -112,7 +112,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "walk5xWeek",
 						"urn": "urn:oc:attributeType:boroughProfile:walk5xWeek",
 						"attribute": {
@@ -121,7 +121,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "cycle1xWeek",
 						"urn": "urn:oc:attributeType:boroughProfile:cycle1xWeek",
 						"attribute": {
@@ -130,7 +130,7 @@
 						}
 					},
 					{
-						"fieldClass": "uk.org.tombolo.field.ValuesByTimeFieldWithUrn",
+						"fieldClass": "uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField",
 						"label": "fractionObese",
 						"urn": "urn:oc:attributeType:boroughProfile:fractionObese",
 						"attribute": {

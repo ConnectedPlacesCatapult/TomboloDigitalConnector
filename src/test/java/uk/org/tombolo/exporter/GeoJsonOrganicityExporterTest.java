@@ -10,7 +10,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.field.FixedAnnotationField;
-import uk.org.tombolo.field.OrganicitySubjectIDField;
+import uk.org.tombolo.field.organicity.OrganicitySubjectIDField;
 import uk.org.tombolo.field.SubjectLatitudeField;
 import uk.org.tombolo.field.SubjectLongitudeField;
 
@@ -19,7 +19,6 @@ import java.io.Writer;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 
 public class GeoJsonOrganicityExporterTest extends AbstractTest {

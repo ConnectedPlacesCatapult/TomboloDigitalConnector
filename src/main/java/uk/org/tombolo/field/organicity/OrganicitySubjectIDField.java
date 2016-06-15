@@ -1,7 +1,8 @@
-package uk.org.tombolo.field;
+package uk.org.tombolo.field.organicity;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.SingleValueField;
 
 public class OrganicitySubjectIDField implements SingleValueField {
     private final String label;

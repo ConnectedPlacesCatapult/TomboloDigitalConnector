@@ -1,11 +1,12 @@
-package uk.org.tombolo.field;
+package uk.org.tombolo.field.organicity;
 
 import org.json.simple.JSONObject;
+import uk.org.tombolo.field.ValuesByTimeField;
 
-public class ValuesByTimeFieldWithUrn extends ValuesByTimeField {
+public class ValuesByTimeWithUrnField extends ValuesByTimeField {
     private final String urn;
 
-    public ValuesByTimeFieldWithUrn(String label, AttributeStruct attribute, String urn) {
+    public ValuesByTimeWithUrnField(String label, AttributeStruct attribute, String urn) {
         super(label, attribute);
         this.urn = urn;
     }

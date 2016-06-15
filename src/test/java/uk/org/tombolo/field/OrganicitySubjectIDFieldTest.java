@@ -6,6 +6,7 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.organicity.OrganicitySubjectIDField;
 
 import static org.junit.Assert.*;
 
