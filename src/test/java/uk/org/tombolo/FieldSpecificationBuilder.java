@@ -1,5 +1,6 @@
 package uk.org.tombolo;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
@@ -45,6 +46,13 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder fractionOfTotal(String label) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.FractionOfTotalField")
+                .setLabel(label);
+        return spec;
+    }
+
     private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);
@@ -68,11 +76,31 @@ public class FieldSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public void setFieldSpecification(List<FieldSpecificationBuilder> fields) {
+    public FieldSpecificationBuilder setFieldSpecification(List<FieldSpecificationBuilder> fields) {
         jsonSpec.put("fieldSpecification", fields);
+        return this;
     }
 
-    public void setValue(String value) {
+    public FieldSpecificationBuilder setValue(String value) {
         jsonSpec.put("value", value);
+        return this;
+    }
+
+    public FieldSpecificationBuilder addDividendAttribute(String providerLabel, String attributeLabel) {
+        JSONArray dividendAttributeListObj = (JSONArray) jsonSpec.getOrDefault("dividendAttributes", new JSONArray());
+        jsonSpec.put("dividendAttributes", dividendAttributeListObj);
+        JSONObject dividendAttributeObj = new JSONObject();
+        dividendAttributeObj.put("providerLabel", providerLabel);
+        dividendAttributeObj.put("attributeLabel", attributeLabel);
+        dividendAttributeListObj.add(dividendAttributeObj);
+        return this;
+    }
+
+    public FieldSpecificationBuilder setDivisorAttribute(String providerLabel, String attributeLabel) {
+        JSONObject divisorAttributeObj = new JSONObject();
+        divisorAttributeObj.put("providerLabel", providerLabel);
+        divisorAttributeObj.put("attributeLabel", attributeLabel);
+        jsonSpec.put("divisorAttribute", divisorAttributeObj);
+        return this;
     }
 }

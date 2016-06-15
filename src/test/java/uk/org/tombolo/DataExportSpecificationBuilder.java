@@ -61,11 +61,6 @@ public class DataExportSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public DataExportSpecificationBuilder addTransformSpecification(TransformSpecificationBuilder transformSpecificationBuilder) {
-        transformSpec.add(transformSpecificationBuilder);
-        return this;
-    }
-
     public static DataExportSpecificationBuilder withCSVExporter() {
         DataExportSpecificationBuilder builder =  new DataExportSpecificationBuilder();
         builder.setExporterClass(CSVExporter.class.getCanonicalName());
