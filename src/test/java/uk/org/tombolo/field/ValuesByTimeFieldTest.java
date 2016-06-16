@@ -1,6 +1,5 @@
 package uk.org.tombolo.field;
 
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -10,7 +9,8 @@ import uk.org.tombolo.core.Subject;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class ValuesByTimeFieldTest extends AbstractTest {
     ValuesByTimeField field;

@@ -1,7 +1,6 @@
 package uk.org.tombolo.exporter;
 
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.field.Field;
 
 import java.io.Writer;

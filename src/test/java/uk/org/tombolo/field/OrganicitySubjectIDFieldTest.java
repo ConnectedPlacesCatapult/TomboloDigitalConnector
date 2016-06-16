@@ -8,7 +8,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.organicity.OrganicitySubjectIDField;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OrganicitySubjectIDFieldTest extends AbstractTest {
     Subject subject;

@@ -3,7 +3,6 @@ package uk.org.tombolo.exporter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.FieldWithProvider;
 import uk.org.tombolo.field.SingleValueField;

@@ -4,9 +4,11 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AttributeUtils {
 

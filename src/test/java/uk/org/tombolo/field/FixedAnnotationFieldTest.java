@@ -5,7 +5,7 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Subject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class FixedAnnotationFieldTest extends AbstractTest {
     FixedAnnotationField field = new FixedAnnotationField("aLabel", "aValue");

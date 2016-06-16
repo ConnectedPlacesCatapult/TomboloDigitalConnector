@@ -10,7 +10,7 @@ import uk.org.tombolo.field.organicity.ValuesByTimeWithUrnField;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ValuesByTimeWithUrnFieldTest extends AbstractTest {
     ValuesByTimeWithUrnField field;

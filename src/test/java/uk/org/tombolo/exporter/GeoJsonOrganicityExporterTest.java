@@ -10,13 +10,14 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.field.FixedAnnotationField;
-import uk.org.tombolo.field.organicity.OrganicitySubjectIDField;
 import uk.org.tombolo.field.SubjectLatitudeField;
 import uk.org.tombolo.field.SubjectLongitudeField;
+import uk.org.tombolo.field.organicity.OrganicitySubjectIDField;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 

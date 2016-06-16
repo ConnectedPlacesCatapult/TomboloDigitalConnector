@@ -7,7 +7,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SubjectLatitudeFieldTest extends AbstractTest {
     Subject subject;

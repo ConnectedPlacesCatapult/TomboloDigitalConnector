@@ -19,8 +19,8 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
