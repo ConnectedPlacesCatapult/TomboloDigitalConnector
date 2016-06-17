@@ -2,15 +2,11 @@ package uk.org.tombolo.execution.spec;
 
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 public class DatasetSpecificationTest extends AbstractTest {
 
@@ -21,17 +17,6 @@ public class DatasetSpecificationTest extends AbstractTest {
 		assertEquals(1, dsSpec.getSubjectSpecification().size());
 		assertEquals(3, dsSpec.getDatasourceSpecification().size());
 		assertEquals(1, dsSpec.getFieldSpecification().size());
-	}
-
-	@Test
-	public void testGetTransformSpecification() throws Exception {
-		DatasetSpecification dsSpec = makeDatasetSpecification();
-
-		List<TransformSpecification> transformSpec = new ArrayList<TransformSpecification>();
-		transformSpec.add(new TransformSpecification(new ArrayList<>(), new Attribute(), "className"));
-
-		dsSpec.setTransformSpecification(transformSpec);
-		assertSame(transformSpec, dsSpec.getTransformSpecification());
 	}
 
 	@Test
