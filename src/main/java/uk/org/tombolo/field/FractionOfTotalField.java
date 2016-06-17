@@ -87,16 +87,23 @@ public class FractionOfTotalField implements SingleValueField {
 
     private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<AttributeMatcher> attributeMatchers) {
         TimedValueUtils timedValueUtils = new TimedValueUtils();
-        return attributeMatchers.stream()
-                .map(attributeMatcher -> {
-                    return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute(attributeMatcher))
-                            .orElseGet(() -> {
-                                log.warn(String.format("No TimedValue found for attribute %s in field %s", attributeMatcher.attributeLabel, label));
-                                return null;
-                            });
-                })
-                .filter(timedValue -> null != timedValue)
-                .collect(Collectors.toList());
+        List<Attribute> attributes = getAttributes(attributeMatchers);
+        List<TimedValue> timedValues = timedValueUtils.getLatestBySubjectAndAttributes(subject, attributes);
+
+        // We check for and warn about missing timedValues
+        if (timedValues.size() != attributeMatchers.size()) {
+            List<Attribute> presentAttributes = timedValues.stream().map(timedValue -> timedValue.getId().getAttribute()).collect(Collectors.toList());
+            List<Attribute> missingAttributes = ListUtils.subtract(attributes, presentAttributes);
+            for (Attribute attribute : missingAttributes) {
+                log.warn(String.format("No TimedValue found for attribute %s in field %s", attribute.getLabel(), label));
+            }
+        }
+
+        return timedValues;
+    }
+
+    private List<Attribute> getAttributes(List<AttributeMatcher> attributeMatchers) {
+        return attributeMatchers.stream().map(this::getAttribute).collect(Collectors.toList());
     }
 
     private Double sumTimedValues(List<TimedValue> timedValues) {
