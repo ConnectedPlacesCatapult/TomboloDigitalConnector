@@ -1,9 +1,11 @@
 package uk.org.tombolo;
 
+import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.DownloadUtils;
 
@@ -26,6 +28,8 @@ public class DataExportRunner {
 
         DataExportEngine engine = new DataExportEngine(new DownloadUtils());
 
+        validateSpecification(executionSpecPath);
+
         try (Writer writer = getOutputWriter(outputFile)) {
             engine.execute(getSpecification(executionSpecPath), writer, forceImport);
         } catch (Exception e) {
@@ -34,6 +38,14 @@ public class DataExportRunner {
             // FIXME: This method should either be responsible for the entire state of HibernateUtil, or not at all.
             // e.g. it should set it up too, or it shouldn't have to shut it down.
             HibernateUtil.shutdown();
+        }
+    }
+
+    private static void validateSpecification(String executionSpecPath) {
+        ProcessingReport report = DataExportSpecificationValidator.validate(new File(executionSpecPath));
+        if (!report.isSuccess()) {
+            DataExportSpecificationValidator.display(report);
+            System.exit(1);
         }
     }
 

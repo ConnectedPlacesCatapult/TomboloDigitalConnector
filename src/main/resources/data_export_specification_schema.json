@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "datasetSpecification": {
+      "type": "object",
+      "properties": {
+        "subjectSpecification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subjectType": {
+                "type": "string"
+              },
+              "matchers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "attribute": {
+                      "type": "string",
+                      "enum": ["label", "name"]
+                    },
+                    "pattern": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "attribute",
+                    "pattern"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "subjectType"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "datasourceSpecification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "importerClass": {
+                "type": "string"
+              },
+              "datasourceId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "importerClass",
+              "datasourceId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fieldSpecification": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fieldClass": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fieldClass",
+              "label"
+            ]
+          }
+        }
+      },
+      "required": [
+        "subjectSpecification",
+        "datasourceSpecification",
+        "fieldSpecification"
+      ],
+      "additionalProperties": false
+    },
+    "exporterClass": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "datasetSpecification",
+    "exporterClass"
+  ],
+  "additionalProperties": false
+}
