@@ -22,7 +22,11 @@
 		"fieldSpecification": [
 			{
 				"fieldClass": "uk.org.tombolo.field.LatestValueField",
-				"label": "latestValueLabel"
+				"label": "fractionObese",
+				"attribute": {
+					"providerLabel" : "uk.gov.phe",
+					"attributeLabel" : "fractionObese"
+				}
 			}
 		]
 	}

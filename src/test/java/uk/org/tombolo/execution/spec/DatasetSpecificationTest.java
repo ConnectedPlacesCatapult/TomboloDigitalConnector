@@ -37,7 +37,7 @@ public class DatasetSpecificationTest extends AbstractTest {
 	@Test
 	public void testGetFieldSpecification() throws Exception {
 		DatasetSpecification dsSpec = makeDatasetSpecification();
-		assertEquals("latestValueLabel", dsSpec.getFieldSpecification().get(0).toField().getLabel());
+		assertEquals("fractionObese", dsSpec.getFieldSpecification().get(0).toField().getLabel());
 		assertEquals("uk.org.tombolo.field.LatestValueField", dsSpec.getFieldSpecification().get(0).toField().getClass().getCanonicalName());
 	}
 
