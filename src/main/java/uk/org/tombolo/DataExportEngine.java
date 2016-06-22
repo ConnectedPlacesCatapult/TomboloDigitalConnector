@@ -5,16 +5,15 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.execution.spec.TransformSpecification;
+import uk.org.tombolo.execution.spec.*;
 import uk.org.tombolo.exporter.Exporter;
+import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.transformer.Transformer;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataExportEngine implements ExecutionEngine{
@@ -27,8 +26,8 @@ public class DataExportEngine implements ExecutionEngine{
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
 		// Import data
-		if (forceImport){
-			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()){
+		if (forceImport) {
+			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
 				log.info("Importing {} {}",
 						datasourceSpec.getImporterClass(),
 						datasourceSpec.getDatasourceId());
@@ -37,6 +36,13 @@ public class DataExportEngine implements ExecutionEngine{
 				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
 				log.info("Imported {} values", count);
 			}
+		}
+
+		// Generate fields
+		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
+		List<Field> fields = new ArrayList<>();
+		for (FieldSpecification fieldSpec : fieldSpecs) {
+			fields.add(fieldSpec.toField());
 		}
 
 		// Run transforms over subjects
@@ -51,9 +57,14 @@ public class DataExportEngine implements ExecutionEngine{
 			}
 		}
 
-		// Export data
+
+		// Use the new fields method
 		log.info("Exporting ...");
 		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-		exporter.write(writer, dataExportSpec.getDatasetSpecification());
+		List<Subject> subjects = new ArrayList<>();
+		for (SubjectSpecification subjectSpec : subjectSpecList) {
+			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
+		}
+		exporter.write(writer, subjects, fields);
 	}
 }

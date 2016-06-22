@@ -6,8 +6,8 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
+import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.util.ArrayList;
@@ -82,10 +82,10 @@ public class SubjectUtilsTest extends AbstractTest {
 		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
 		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(subjectAttribute, subjectAttributePattern));
 		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
-		List<AttributeSpecification> attributeSpecification = new ArrayList<AttributeSpecification>();
-		attributeSpecification.add(new AttributeSpecification(attributeProvider, attributeName));
+		List<FieldSpecification> fieldSpecification = new ArrayList<FieldSpecification>();
+		fieldSpecification.add(new FieldSpecification(attributeProvider, attributeName));
 		spec.setSubjectSpecification(subjectSpecification);
-		spec.setAttributeSpecification(attributeSpecification);
+		spec.setFieldSpecification(fieldSpecification);
 		return spec;
 	}
 }

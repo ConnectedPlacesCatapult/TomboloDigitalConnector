@@ -4,10 +4,11 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.execution.spec.AttributeSpecification;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AttributeUtils {
 
@@ -71,22 +72,6 @@ public class AttributeUtils {
 			Attribute attribute = (Attribute) criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
 			return attribute;
 		});
-	}
-
-	public static List<Attribute> getAttributeBySpecification(DatasetSpecification datasetSpecification) {
-		List<Attribute> list = new ArrayList<>();
-
-		List<AttributeSpecification> attributeSpecs = datasetSpecification.getAttributeSpecification();
-		for (AttributeSpecification attributeSpec : attributeSpecs) {
-			Provider provider = ProviderUtils.getByLabel(attributeSpec.getProviderLabel());
-			Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeSpec.getAttributeLabel());
-
-			if (null != attribute) {
-				list.add(attribute);
-			}
-		}
-
-		return list;
 	}
 	
 }
