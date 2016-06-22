@@ -77,26 +77,23 @@ public class FractionOfTotalField implements SingleValueField {
         LocalDateTime latestTimeStamp = getMostRecentTimestampForTimedValues(ListUtils.union(dividendValues, divisorValues));
 
         if (0 == divisor) {
-            throw new IncomputableFieldException("Divisor cannot be zero or absent");
-        } else if (0 == dividend) {
-            throw new IncomputableFieldException("Dividend cannot be zero or absent");
+            throw new IncomputableFieldException("Cannot divide by zero");
         }
 
         return new ValueWithTimestamp(dividend/divisor, latestTimeStamp);
     }
 
-    private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<AttributeMatcher> attributeMatchers) {
+    private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<AttributeMatcher> attributeMatchers) throws IncomputableFieldException {
         TimedValueUtils timedValueUtils = new TimedValueUtils();
         List<Attribute> attributes = getAttributes(attributeMatchers);
         List<TimedValue> timedValues = timedValueUtils.getLatestBySubjectAndAttributes(subject, attributes);
 
-        // We check for and warn about missing timedValues
+        // We check for and throw on missing timedValues with some info on what they are
         if (timedValues.size() != attributeMatchers.size()) {
             List<Attribute> presentAttributes = timedValues.stream().map(timedValue -> timedValue.getId().getAttribute()).collect(Collectors.toList());
             List<Attribute> missingAttributes = ListUtils.subtract(attributes, presentAttributes);
-            for (Attribute attribute : missingAttributes) {
-                log.warn(String.format("No TimedValue found for attribute %s in field %s", attribute.getLabel(), label));
-            }
+            String missingAttributesString = missingAttributes.stream().map(Attribute::getLabel).collect(Collectors.joining(", "));
+            throw new IncomputableFieldException(String.format("No TimedValue found for attributes %s", missingAttributesString));
         }
 
         return timedValues;

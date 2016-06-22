@@ -41,24 +41,30 @@ public class FractionOfTotalFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubjectWithPartiallyAbsentDividendValue() throws Exception {
-        // This is controversial
-        // We could decide to return no value since one of the numerator values was missing
+        thrown.expect(IncomputableFieldException.class);
+        thrown.expectMessage("No TimedValue found for attributes attr2_label");
         String jsonString = makeFieldWithPartiallyAbsentDividendValue().jsonValueForSubject(subject).toJSONString();
-        assertThat(jsonString, hasJsonPath("$.aLabel.values['2011-01-03T00:00']", equalTo(0.25)));
     }
 
     @Test
-    public void testJsonValueForSubjectWithFullyAbsentDivisorValue() throws Exception {
+    public void testJsonValueForSubjectWithFullyAbsentDividendValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
-        thrown.expectMessage("Dividend cannot be zero or absent");
+        thrown.expectMessage("No TimedValue found for attributes attr1_label, attr2_label");
         makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject);
     }
 
     @Test
-    public void testJsonValueForSubjectWithAbsentDividendValue() throws Exception {
+    public void testJsonValueForSubjectWithAbsentDivisorValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
-        thrown.expectMessage("Divisor cannot be zero or absent");
+        thrown.expectMessage("No TimedValue found for attributes attr3_label");
         makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject);
+    }
+
+    @Test
+    public void testJsonValueForSubjectWithZeroDivisorValue() throws Exception {
+        thrown.expect(IncomputableFieldException.class);
+        thrown.expectMessage("Cannot divide by zero");
+        makeFieldWithZeroDivisorValue().jsonValueForSubject(subject);
     }
 
     @Test
@@ -117,6 +123,19 @@ public class FractionOfTotalFieldTest extends AbstractTest {
         AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
         TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
         TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-02T00:00", 100d);
+        return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
+    }
+
+    private FractionOfTotalField makeFieldWithZeroDivisorValue() {
+        Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1");
+        Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2");
+        Attribute attribute3 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr3");
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr1_label");
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr2_label");
+        AttributeMatcher attributeMatcher3 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr3_label");
+        TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
+        TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-02T00:00", 100d);
+        TestFactory.makeTimedValue("E01000001", attribute3, "2011-01-01T00:00", 0d);
         return new FractionOfTotalField("aLabel", Arrays.asList(attributeMatcher1, attributeMatcher2), attributeMatcher3);
     }
 }
