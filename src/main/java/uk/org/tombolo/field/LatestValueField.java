@@ -1,6 +1,8 @@
 package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
@@ -17,7 +19,10 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
 
     @Override
     public String valueForSubject(Subject subject) {
-        return getValue(subject).toString();
+        Double value = getValue(subject);
+        if (null == value)
+            return null;
+        return value.toString();
     }
 
     @Override
