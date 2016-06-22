@@ -2,8 +2,11 @@ package uk.org.tombolo.exporter;
 
 import org.geotools.geojson.geom.GeometryJSON;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.IncomputableFieldException;
 
 import javax.json.JsonValue;
 import java.io.IOException;
@@ -12,10 +15,11 @@ import java.io.Writer;
 import java.util.List;
 
 public class GeoJsonExporter implements Exporter {
+	private Logger log = LoggerFactory.getLogger(GeoJsonExporter.class);
 
 	// FIXME: Rewriter using geotools ... I could not get it to work quicly in the initial implementation (borkur)
 
-	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws Exception {
+	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
 		// Write beginning of subject list
 		writer.write("{");
 		writeStringProperty(writer, 0, "type", "FeatureCollection");
@@ -47,7 +51,12 @@ public class GeoJsonExporter implements Exporter {
 			properties.put("name", subject.getName());
 
 			for (Field field : fields){
-				properties.putAll(field.jsonValueForSubject(subject));
+				try {
+					properties.putAll(field.jsonValueForSubject(subject));
+				} catch (IncomputableFieldException e) {
+					log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
+					properties.put(field.getLabel(), null);
+				}
 			}
 
 			writer.write(String.format(", \"properties\": %s", properties.toJSONString()));

@@ -116,16 +116,13 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testTransforms() throws Exception {
         builder .addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
-                .addTransformSpecification(
-                        new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
-                                .setOutputAttribute("provider", "percentage_under_1_years_old")
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                                FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                                        .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
+                                        .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                         ))
                 );
 
@@ -161,13 +158,10 @@ public class DataExportEngineTest extends AbstractTest {
                 .addSubjectSpecification(
                         new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
-                .addTransformSpecification(
-                        new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
-                                .setOutputAttribute("provider", "percentage_under_1_years_old")
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.latestValue("provider_label", "percentage_under_1_years_old_label")
+                        FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                                .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
+                                .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                 );
 
         engine.execute(csvBuilder.build(), writer, true);
@@ -186,14 +180,11 @@ public class DataExportEngineTest extends AbstractTest {
                 .addSubjectSpecification(
                         new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
-                .addTransformSpecification(
-                        new TransformSpecificationBuilder("uk.org.tombolo.transformer.SumFractionTransformer")
-                                .setOutputAttribute("provider", "percentage_under_1_years_old")
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
-                                .addInputAttribute("uk.gov.ons", "CL_0000053_1")) // total population
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.valuesByTime("provider_label", "percentage_under_1_years_old_label")
+                                FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                                        .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
+                                        .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                         ))
                 );
 

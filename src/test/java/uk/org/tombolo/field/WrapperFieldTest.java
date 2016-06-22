@@ -1,12 +1,11 @@
 package uk.org.tombolo.field;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,10 +36,7 @@ public class WrapperFieldTest extends AbstractTest {
     }
 
     private List<FieldSpecification> makeFieldSpec() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(FieldSpecification.class, new FieldSpecification.FieldSpecificationDeserializer());
-        Gson gson = gsonBuilder.create();
         return Collections.singletonList(
-                gson.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldSpecification.class));
+                SpecificationDeserializer.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldSpecification.class));
     }
 }

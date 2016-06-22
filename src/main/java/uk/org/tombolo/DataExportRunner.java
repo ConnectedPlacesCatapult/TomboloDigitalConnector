@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.DownloadUtils;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class DataExportRunner {
             log.error("File not found: {}", specificationPath);
             System.exit(1);
         }
-        return DataExportSpecification.fromJsonFile(file);
+        return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class);
     }
 
     private static void validateArguments(String[] args) {

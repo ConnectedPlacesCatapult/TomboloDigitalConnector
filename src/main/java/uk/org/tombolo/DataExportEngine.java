@@ -4,13 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.execution.spec.*;
+import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.transformer.Transformer;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -45,21 +46,9 @@ public class DataExportEngine implements ExecutionEngine{
 			fields.add(fieldSpec.toField());
 		}
 
-		// Run transforms over subjects
-		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
-		for (SubjectSpecification subjectSpec : subjectSpecList) {
-			List<Subject> subjects = SubjectUtils.getSubjectBySpecification(subjectSpec);
-			for (TransformSpecification transformSpec : dataExportSpec.getDatasetSpecification().getTransformSpecification()) {
-				log.info("Running transformation to generate {}", transformSpec.getOutputAttribute().getName());
-				Transformer transformer = (Transformer) Class.forName(transformSpec.gettransformerClass()).newInstance();
-				transformer.setTimedValueUtils(new TimedValueUtils());
-				transformer.transformBySpecification(subjects, transformSpec);
-			}
-		}
-
-
 		// Use the new fields method
 		log.info("Exporting ...");
+		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
 		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
 		List<Subject> subjects = new ArrayList<>();
 		for (SubjectSpecification subjectSpec : subjectSpecList) {

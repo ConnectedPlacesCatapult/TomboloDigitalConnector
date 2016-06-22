@@ -1,9 +1,12 @@
 package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,23 +17,37 @@ import java.util.List;
  * Can be nested.
  */
 public class WrapperField implements Field {
+    private static Logger log = LoggerFactory.getLogger(WrapperField.class);
     private final List<FieldSpecification> fieldSpecification;
     private final String label;
+    private ArrayList<Field> fields;
 
     WrapperField(String label, List<FieldSpecification> fieldSpecification) {
         this.label = label;
         this.fieldSpecification = fieldSpecification;
     }
 
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
-        JSONObject obj = new JSONObject();
-        JSONObject inner = new JSONObject();
+    public void initialize() {
+        this.fields = new ArrayList<>();
         for (FieldSpecification fieldSpec : fieldSpecification) {
             try {
-                inner.putAll(fieldSpec.toField().jsonValueForSubject(subject));
+                fields.add(fieldSpec.toField());
             } catch (ClassNotFoundException e) {
-                throw new Error("Field not valid.");
+                throw new Error("Field not valid");
+            }
+        }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject) {
+        if (null == fields) { initialize(); }
+        JSONObject obj = new JSONObject();
+        JSONObject inner = new JSONObject();
+        for (Field field : fields) {
+            try {
+                inner.putAll(field.jsonValueForSubject(subject));
+            } catch (IncomputableFieldException e) {
+                log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
             }
         }
         obj.put(label, inner);

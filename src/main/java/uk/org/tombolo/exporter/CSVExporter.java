@@ -2,9 +2,12 @@ package uk.org.tombolo.exporter;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.FieldWithProvider;
+import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
 import java.io.IOException;
@@ -12,6 +15,8 @@ import java.io.Writer;
 import java.util.*;
 
 public class CSVExporter implements Exporter {
+	private Logger log = LoggerFactory.getLogger(CSVExporter.class);
+
 	@Override
 	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
 		List<String> columnNames = getColumnNames(fields);
@@ -31,7 +36,9 @@ public class CSVExporter implements Exporter {
 
 		for (Field field : fields) {
 			columnNames.add(getFieldPropertyName(field, "name"));
-			columnNames.add(getFieldPropertyName(field, "provider"));
+			if (field instanceof FieldWithProvider) {
+				columnNames.add(getFieldPropertyName(field, "provider"));
+			}
 			columnNames.add(getFieldPropertyName(field, "latest_value"));
 		}
 
@@ -74,7 +81,12 @@ public class CSVExporter implements Exporter {
 		}
 
 		if (field instanceof SingleValueField) {
-			property.put(getFieldPropertyName(field, "latest_value"), ((SingleValueField) field).valueForSubject(subject));
+			try {
+				property.put(getFieldPropertyName(field, "latest_value"), ((SingleValueField) field).valueForSubject(subject));
+			} catch (IncomputableFieldException e) {
+				log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
+				property.put(getFieldPropertyName(field, "latest_value"), null);
+			}
 		} else {
 			throw new IllegalArgumentException(String.format("Field %s cannot return a single value", field.getLabel()));
 		}

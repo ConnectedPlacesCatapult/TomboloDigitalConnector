@@ -24,7 +24,7 @@ import uk.org.tombolo.core.Subject;
  * generic structured data type.
  */
 public interface Field {
-    JSONObject jsonValueForSubject(Subject subject);
+    JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException;
     String getLabel();
     String getHumanReadableName();
 }

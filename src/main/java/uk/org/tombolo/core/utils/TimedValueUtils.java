@@ -11,9 +11,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
@@ -42,6 +42,54 @@ public class TimedValueUtils {
 			} else {
 				return Optional.of((TimedValue) criteria.list().get(0));
 			}
+		});
+	}
+
+	/**
+	 * getLatestBySubjectAndAttributes
+	 * Returns a list of TimedValues with the latest timestamp for each attribute on a subject
+	 *
+	 * This is here for optimisation reasons. In short:
+	 *
+	 *   * Calling getLatestBySubjectAndAttribute for each subject/attribute pair individually
+	 *     is very expensive (this impl is much, much faster)
+	 *   * The fastest way is to use a SELECT DISTINCT ON postgres query, but we can't do that
+	 *     because Hibernate doesn't support DISTINCT ON.
+	 *   * So instead we get a list of every TimedValue for every Attribute and sort
+	 *     through them in Java to find the latest.
+	 *
+	 * @param subject The Subject to retrieve the values for
+	 * @param attributes A list of attributes to return the values on
+	 * @return A list of the latest TimedValues for each subject/attribute pair
+	 */
+	public List<TimedValue> getLatestBySubjectAndAttributes(Subject subject, List<Attribute> attributes) {
+		return HibernateUtil.withSession((session) -> {
+			Criteria criteria = session.createCriteria(TimedValue.class);
+			criteria = criteria.add(Restrictions.eq("id.subject", subject));
+			criteria = criteria.add(Restrictions.in("id.attribute", attributes));
+
+			List<TimedValue> results = (List<TimedValue>) criteria.list();
+
+			// We use stream collection to build a map of Attribute -> TimedValue while
+			// discarding duplicates that have older timestamps. In this manner we build
+			// a map with only the latest timestamped TimedValues for each Attribute and
+			// discard the others.
+			Map<Attribute, TimedValue> tv = results.stream().collect(Collectors.toMap(
+					timedValue -> {
+						return timedValue.getId().getAttribute();
+					},
+					Function.identity(),
+					(t1, t2) -> {
+						if (t1.getId().getTimestamp().isAfter(t2.getId().getTimestamp())) {
+							return t1;
+						} else {
+							return t2;
+						}
+					}
+			));
+
+			// Then we discard the keys and return the values. Voila!
+			return new ArrayList<>(tv.values());
 		});
 	}
 	
@@ -75,7 +123,6 @@ public class TimedValueUtils {
 			return saved;
 		});
 	}
-
 	
 	/**
 	 * FIXME: Supports a very limited number of strings (implemented on-demand)

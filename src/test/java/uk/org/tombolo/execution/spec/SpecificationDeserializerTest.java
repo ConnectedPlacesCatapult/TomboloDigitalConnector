@@ -11,12 +11,12 @@ import java.io.Writer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-public class DataExportSpecificationTest extends AbstractTest {
+public class SpecificationDeserializerTest extends AbstractTest {
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
 
     @Test
     public void testFromJsonWithBlankSpec() throws Exception {
-        assertSame(DataExportSpecification.class, DataExportSpecification.fromJson(builder.toJSONString()).getClass());
+        assertSame(DataExportSpecification.class, SpecificationDeserializer.fromJson(builder.toJSONString(), DataExportSpecification.class).getClass());
     }
 
     @Test
@@ -25,12 +25,12 @@ public class DataExportSpecificationTest extends AbstractTest {
         Writer writer = new FileWriter(file);
         writer.write(builder.toJSONString());
         writer.close();
-        assertSame(DataExportSpecification.class, DataExportSpecification.fromJsonFile(file).getClass());
+        assertSame(DataExportSpecification.class, SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class).getClass());
     }
 
     @Test
     public void testFromJsonFileWithExporter() throws Exception {
         builder.setExporterClass("a_cool_string");
-        assertEquals("a_cool_string", DataExportSpecification.fromJson(builder.toJSONString()).exporterClass);
+        assertEquals("a_cool_string", SpecificationDeserializer.fromJson(builder.toJSONString(), DataExportSpecification.class).exporterClass);
     }
 }
