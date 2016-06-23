@@ -1,0 +1,50 @@
+package uk.org.tombolo.execution.spec;
+
+import com.github.fge.jsonschema.core.report.ProcessingReport;
+import org.junit.Test;
+import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.DataExportSpecificationBuilder;
+import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.SubjectSpecificationBuilder;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.StringReader;
+import java.util.Arrays;
+
+import static org.junit.Assert.*;
+
+public class DataExportSpecificationValidatorTest extends AbstractTest {
+
+    @Test
+    public void testValidateWithValidFixture() throws Exception {
+        String resourcePath = "executions/valid_specification_file.json";
+        ClassLoader classLoader = getClass().getClassLoader();
+        ProcessingReport report = DataExportSpecificationValidator.validate(new FileReader(classLoader.getResource(resourcePath).getFile()));
+        assertTrue("Spec is valid", report.isSuccess());
+    }
+
+    @Test
+    public void testValidateWithValidBuilder() throws Exception {
+        DataExportSpecificationBuilder spec = DataExportSpecificationBuilder.withGeoJsonExporter().addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                .addSubjectSpecification(
+                        new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addFieldSpecification(
+                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                                        .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
+                                        .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
+                        ))
+                );
+        ProcessingReport report = DataExportSpecificationValidator.validate(new StringReader(spec.toJSONString()));
+        assertTrue("Spec is valid", report.isSuccess());
+    }
+
+    @Test
+    public void testValidateWithInvalidFixture() throws Exception {
+        ProcessingReport report = DataExportSpecificationValidator.validate(new StringReader("{}"));
+        assertFalse("Spec is invalid", report.isSuccess());
+    }
+}

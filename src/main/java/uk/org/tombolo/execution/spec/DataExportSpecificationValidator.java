@@ -10,12 +10,12 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.Reader;
 
 public class DataExportSpecificationValidator {
     static Logger log = LoggerFactory.getLogger(DataExportSpecificationValidator.class);
 
-    public static ProcessingReport validate(File jsonFile) {
+    public static ProcessingReport validate(Reader jsonFile) {
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             JsonNode node = JsonLoader.fromURL(loader.getResource("data_export_specification_schema.json"));

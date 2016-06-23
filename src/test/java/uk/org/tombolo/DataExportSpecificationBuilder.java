@@ -12,7 +12,6 @@ public class DataExportSpecificationBuilder implements JSONAware {
     private JSONObject jsonSpec;
     private JSONArray subjectSpec;
     private JSONArray datasourceSpec;
-    private JSONArray transformSpec;
     private JSONArray fieldSpec;
 
     private DataExportSpecificationBuilder() {
@@ -20,13 +19,11 @@ public class DataExportSpecificationBuilder implements JSONAware {
         JSONObject datasetSpec = new JSONObject();
         subjectSpec = new JSONArray();
         datasourceSpec = new JSONArray();
-        transformSpec = new JSONArray();
         fieldSpec = new JSONArray();
 
         jsonSpec.put("datasetSpecification", datasetSpec);
         datasetSpec.put("subjectSpecification", subjectSpec);
         datasetSpec.put("datasourceSpecification", datasourceSpec);
-        datasetSpec.put("transformSpecification", transformSpec);
         datasetSpec.put("fieldSpecification", fieldSpec);
     }
 

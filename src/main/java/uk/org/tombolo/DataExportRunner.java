@@ -9,10 +9,7 @@ import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.DownloadUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 public class DataExportRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
@@ -41,8 +38,8 @@ public class DataExportRunner {
         }
     }
 
-    private static void validateSpecification(String executionSpecPath) {
-        ProcessingReport report = DataExportSpecificationValidator.validate(new File(executionSpecPath));
+    private static void validateSpecification(String executionSpecPath) throws FileNotFoundException {
+        ProcessingReport report = DataExportSpecificationValidator.validate(new FileReader(executionSpecPath));
         if (!report.isSuccess()) {
             DataExportSpecificationValidator.display(report);
             System.exit(1);
