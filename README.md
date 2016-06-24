@@ -3,6 +3,12 @@
 The Tombolo Digital Connector is a piece of software to combine urban datasets
 and urban models.
 
+Table of Contents:
+* [Quick start](#quick-start)
+* [Continuous Integration](#continuous-integration)
+* [System Architecture](#system-architecture)
+* [Data model](#data-model)
+
 ## Quick start
 
 ### Requirements
@@ -165,7 +171,11 @@ docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
 ```
 
-## Example execution
+## System Architecture
+
+<img alt="Use cases and connector" src="documentation/images/use-cases-connector.png"/>
+
+## Data model
 
 
 
