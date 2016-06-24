@@ -30,7 +30,6 @@
 				"datasourceId" : "BMI_categories_2012-2014"
 			}		
 		],
-		"transformSpecification": [],
 		"fieldSpecification": [
 			{
 				"fieldClass": "uk.org.tombolo.field.organicity.OrganicitySubjectIDField",
