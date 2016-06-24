@@ -214,7 +214,7 @@ and Derived Attributes representing data that has been derived by processes runn
 
 **Timed Value** is a data object representing the value of an attribute for a certain subject, taken at a certain time point.
 
-* _entity id:_ foreign key to an Entity
+* _subject_id:_ foreign key to a Subject
 * _attribute id:_ foreign key to Attribute
 * _timestamp:_ time point (or interval) to which the value refers (e.g. 2015-03-04T10:33:44Z, 2015, March 2015, etc.)
 * _value:_ the actual value
