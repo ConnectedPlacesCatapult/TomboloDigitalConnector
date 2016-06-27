@@ -7,12 +7,12 @@ import uk.org.tombolo.DataExportSpecificationBuilder;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.SubjectSpecificationBuilder;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DataExportSpecificationValidatorTest extends AbstractTest {
 

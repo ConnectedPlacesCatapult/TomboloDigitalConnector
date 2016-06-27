@@ -4,9 +4,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
 public abstract class TfLImporter extends AbstractImporter implements Importer {
 

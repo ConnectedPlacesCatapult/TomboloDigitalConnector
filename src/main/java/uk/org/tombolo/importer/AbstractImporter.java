@@ -4,7 +4,6 @@ import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;

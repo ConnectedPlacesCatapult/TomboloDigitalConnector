@@ -72,7 +72,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Gunnersbury Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -158,7 +158,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Aldgate High Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -235,7 +235,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Whitechapel High Street (North Side) and Commercial Street (West Side)</name>
 					<entranceToBookingHall> 13, 13 stairs down</entranceToBookingHall>
@@ -477,7 +477,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ealing Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -559,7 +559,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Chiltern Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -643,7 +643,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Upper Street</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -721,7 +721,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Junction Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -811,7 +811,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bowes Road</name>
 					<entranceToBookingHall> 1 step up</entranceToBookingHall>
@@ -909,7 +909,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Gillespie Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -991,7 +991,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Marylebone Road (North Side) and Baker Street</name>
 					<entranceToBookingHall> Level to Bakerloo Booking Hall or 18 or 16 stairs down to Metropolitan Booking Hall</entranceToBookingHall>
@@ -1163,7 +1163,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Balham High Road (East) &amp; Balham Station Road</name>
 					<entranceToBookingHall> 21, 10 stairs down</entranceToBookingHall>
@@ -1269,7 +1269,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bank Central Booking Hall Walbrook &amp; Queen Victoria Street (South)</name>
 					<entranceToBookingHall> 18 stairs down, subway (ramp down), ramp up, 2 stairs down</entranceToBookingHall>
@@ -2233,7 +2233,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Aldersgate Street</name>
 					<entranceToBookingHall> 11, 12 stairs down</entranceToBookingHall>
@@ -2338,7 +2338,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Parade (Longbridge Road)</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -2406,7 +2406,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach (off Station Road)</name>
 					<entranceToBookingHall> 	 Level</entranceToBookingHall>
@@ -2479,7 +2479,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Gliddon Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -2568,7 +2568,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Queensway</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -2650,7 +2650,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Gale Street</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -2723,7 +2723,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Haverstock Hill (Entrance)</name>
 					<entranceToBookingHall> 1 step up</entranceToBookingHall>
@@ -2813,7 +2813,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Jamaica Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -2891,7 +2891,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Roman Road</name>
 					<entranceToBookingHall> 19, 7 stairs down</entranceToBookingHall>
@@ -3006,7 +3006,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>National Rail Station</name>
 					<entranceToBookingHall> 	 Escalator (or 3 x14 stairs) down, 9 stairs down</entranceToBookingHall>
@@ -3248,7 +3248,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Blackhorse Road</name>
 					<entranceToBookingHall> 	 Level</entranceToBookingHall>
@@ -3351,7 +3351,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Stratford Place / Oxford Street (North side)</name>
 					<entranceToBookingHall> 19 stairs down, subway, 9 stairs down, subway, ramp up</entranceToBookingHall>
@@ -3538,7 +3538,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Borough High Street</name>
 					<entranceToBookingHall> 	 Level</entranceToBookingHall>
@@ -3623,7 +3623,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Boston Road</name>
 					<entranceToBookingHall> 	 Level</entranceToBookingHall>
@@ -3711,7 +3711,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bounds Green Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -3804,7 +3804,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bow Road</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -3893,7 +3893,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Highfield Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -3983,7 +3983,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Brixton Road</name>
 					<entranceToBookingHall>16, 13 stairs down</entranceToBookingHall>
@@ -4061,7 +4061,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -4144,7 +4144,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Watling Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -4226,7 +4226,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Caledonian Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -4304,7 +4304,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kentish Town Road</name>
 					<entranceToBookingHall>5 stairs up</entranceToBookingHall>
@@ -4407,7 +4407,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bus Station</name>
 					<entranceToBookingHall>Lift (or 12, 11, 12 stairs) down</entranceToBookingHall>
@@ -4529,7 +4529,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>North Colonnade (Docklands)</name>
 					<entranceToBookingHall>Ramp up</entranceToBookingHall>
@@ -4673,7 +4673,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bus Station</name>
 					<entranceToBookingHall>Ramp up, subway</entranceToBookingHall>
@@ -4764,7 +4764,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Cannon Street</name>
 					<entranceToBookingHall>1 step up, 11 stairs down</entranceToBookingHall>
@@ -4889,7 +4889,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Whitchurch Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -4955,7 +4955,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bedford Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5055,7 +5055,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Haverstock Hill / Adelaide Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5133,7 +5133,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Holborn (South Side) / Chancery Lane</name>
 					<entranceToBookingHall>16, 6, 2 stairs down</entranceToBookingHall>
@@ -5248,7 +5248,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Main Booking Hall Connex Railway Station (Forecourt)</name>
 					<entranceToBookingHall>9, 9, 10 stairs down, subway</entranceToBookingHall>
@@ -5596,7 +5596,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5672,7 +5672,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>High Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5729,7 +5729,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Acton Lane / Bollo Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5813,7 +5813,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -5921,7 +5921,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Clapham Common / Clapham Park Road</name>
 					<entranceToBookingHall>17, 8 stairs down</entranceToBookingHall>
@@ -6023,7 +6023,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bedford Road / Clapham Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6101,7 +6101,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Balham Hill / Nightingale Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6179,7 +6179,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Cockfosters Road (East Side)</name>
 					<entranceToBookingHall>11, 10 stairs down</entranceToBookingHall>
@@ -6286,7 +6286,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Colindale Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6365,7 +6365,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Colliers Wood High Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6443,7 +6443,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Long Acre</name>
 					<entranceToBookingHall>1 or 2 steps up</entranceToBookingHall>
@@ -6522,7 +6522,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Watford Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6604,7 +6604,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Rainham Road South</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6686,7 +6686,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Heathway</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6764,7 +6764,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Chigwell Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -6852,7 +6852,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Burnley Road</name>
 					<entranceToBookingHall>4, 5 stairs down</entranceToBookingHall>
@@ -6943,7 +6943,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Broadway / Haven Green</name>
 					<entranceToBookingHall>9 stairs down</entranceToBookingHall>
@@ -7017,7 +7017,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Uxbridge Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -7100,7 +7100,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (full), routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Earl's Court Road</name>
 					<entranceToBookingHall>8 stairs down</entranceToBookingHall>
@@ -7264,7 +7264,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Erconwald Street</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -7348,7 +7348,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Great North Road</name>
 					<entranceToBookingHall>Level (or 5 stairs) up</entranceToBookingHall>
@@ -7440,7 +7440,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>High Street North</name>
 					<entranceToBookingHall>Level or 2 steps up</entranceToBookingHall>
@@ -7522,7 +7522,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Upper Richmond Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -7608,7 +7608,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Field End Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -7690,7 +7690,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -7781,7 +7781,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>London Road / Elephant &amp; Castle (North Side)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -7928,7 +7928,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Broadway / Station Parade</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8009,7 +8009,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Villiers Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8197,7 +8197,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8276,7 +8276,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Silverlink and Virgin West Coast Main Line (Main Concourse)</name>
 					<entranceToBookingHall>Escalator (or 3, 17, 17, 8 stairs) down</entranceToBookingHall>
@@ -8428,7 +8428,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Euston Road (North side)</name>
 					<entranceToBookingHall>9, 15 stairs down, subway, ramp up</entranceToBookingHall>
@@ -8538,7 +8538,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Forest Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8606,7 +8606,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Cowcross Street</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -8729,7 +8729,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ballards Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8833,7 +8833,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Finchley Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -8920,7 +8920,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Wells Terrace</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9066,7 +9066,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (part), post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Fulham Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9156,7 +9156,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Woodford Avenue (South Side)</name>
 					<entranceToBookingHall>Ramp down, subway</entranceToBookingHall>
@@ -9320,7 +9320,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Gloucester Road</name>
 					<entranceToBookingHall>Level or 1 step up</entranceToBookingHall>
@@ -9414,7 +9414,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>North End Road / Bus Station</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9493,7 +9493,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Goldhawk Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9596,7 +9596,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Tottenham Court Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9674,7 +9674,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Manor Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9736,7 +9736,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Marylebone ( South Side)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -9856,7 +9856,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Piccadilly (South Side)</name>
 					<entranceToBookingHall>18, 8 stairs down</entranceToBookingHall>
@@ -10062,7 +10062,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Oldfield Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10140,7 +10140,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>New North Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10223,7 +10223,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Hampstead High Street</name>
 					<entranceToBookingHall>3 stairs up</entranceToBookingHall>
@@ -10313,7 +10313,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Hanger Lane / Western Avenue (North West)</name>
 					<entranceToBookingHall>19 stairs down (or ramp or 10, 10 stairs down)</entranceToBookingHall>
@@ -10431,7 +10431,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Great South West Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10533,7 +10533,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Terminal 4</name>
 					<entranceToBookingHall>Lift (or escalator or 15, 9 stairs) down, ramp down</entranceToBookingHall>
@@ -10611,7 +10611,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Watford Way</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10690,7 +10690,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Great North Road</name>
 					<entranceToBookingHall>Long steep ramps up and down</entranceToBookingHall>
@@ -10769,7 +10769,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kensington High Street ( via Shopping Arcade)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10851,7 +10851,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Holloway Road / Highbury Corner</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -10946,7 +10946,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Priory Gardens and footpath from Wood Lane</name>
 					<entranceToBookingHall>16 stairs down</entranceToBookingHall>
@@ -11049,7 +11049,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Long Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -11152,7 +11152,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kingsway (Entrance only)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -11290,7 +11290,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Lansdown Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -11380,7 +11380,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Holloway Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -11458,7 +11458,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Lane / Suttons Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -11531,7 +11531,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Lampton Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -11609,7 +11609,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kingsley Road</name>
 					<entranceToBookingHall>1, 15, 15, 9 stairs up</entranceToBookingHall>
@@ -11699,7 +11699,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bath Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -11777,7 +11777,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Hyde Park Corner (North Side)</name>
 					<entranceToBookingHall>14, 14 stairs down, subway</entranceToBookingHall>
@@ -11905,7 +11905,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Globe Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12014,7 +12014,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kennington Park Road / Braganza Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12098,7 +12098,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kentish Town Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -12199,7 +12199,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Shoot Up Hill / Christchurch Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12282,7 +12282,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Cambridge Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12361,7 +12361,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kingsbury Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12443,7 +12443,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Knightsbridge (North side)</name>
 					<entranceToBookingHall>21, 8 stairs down</entranceToBookingHall>
@@ -12578,7 +12578,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ladbroke Grove</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12662,7 +12662,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Westminster Bridge Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12740,7 +12740,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bayswater Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12819,7 +12819,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bramley Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -12898,7 +12898,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Charing Cross Road (East Side)</name>
 					<entranceToBookingHall>20, 13 stairs down</entranceToBookingHall>
@@ -13045,7 +13045,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Leyton High Road</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -13135,7 +13135,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Fairlop Road</name>
 					<entranceToBookingHall>Ramp down, subway</entranceToBookingHall>
@@ -13228,7 +13228,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bishopsgate (East Side)</name>
 					<entranceToBookingHall>16, 16 stairs down, steep ramp down, steep ramp up, 7 stairs up, to National Rail Station, lift (or 10 stairs) down</entranceToBookingHall>
@@ -13523,7 +13523,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Northern Line Booking Hall Station Approach</name>
 					<entranceToBookingHall>18, 18 stairs down</entranceToBookingHall>
@@ -13746,7 +13746,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -13825,7 +13825,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Randolph Avenue / Elgin Avenue</name>
 					<entranceToBookingHall>19, 7 stairs down</entranceToBookingHall>
@@ -13903,7 +13903,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Green Lanes / Finsbury Park</name>
 					<entranceToBookingHall>19, 10 stairs down, subway</entranceToBookingHall>
@@ -14054,7 +14054,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Garlick Hill</name>
 					<entranceToBookingHall>9, 15 stairs down</entranceToBookingHall>
@@ -14240,7 +14240,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Oxford Street (North Side)</name>
 					<entranceToBookingHall>15, 13 stairs down</entranceToBookingHall>
@@ -14402,7 +14402,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Chiltern Railway Station</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -14483,7 +14483,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Mile End Road</name>
 					<entranceToBookingHall>1 step up, 7, 15 stairs down</entranceToBookingHall>
@@ -14576,7 +14576,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bittacy Hill</name>
 					<entranceToBookingHall>Ramp up or 5 stairs up, 2 steps down</entranceToBookingHall>
@@ -14643,7 +14643,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Poultry (North)</name>
 					<entranceToBookingHall>15, 4 stairs down, subway, 2 stairs down</entranceToBookingHall>
@@ -15561,7 +15561,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>South Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -15647,7 +15647,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Moorfields (East Side)</name>
 					<entranceToBookingHall>2 steps up, through Arcade, 8, 9, 8 stairs down</entranceToBookingHall>
@@ -15854,7 +15854,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>London Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -15932,7 +15932,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eversholt Street</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -16023,7 +16023,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Neasden Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16105,7 +16105,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eastern Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16184,7 +16184,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Road</name>
 					<entranceToBookingHall>Long Footpath</entranceToBookingHall>
@@ -16287,7 +16287,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16360,7 +16360,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bus Station (entry only)</name>
 					<entranceToBookingHall>Lift down, or 12, 12 stairs, escalator (or 13, 13, 13 stairs) down</entranceToBookingHall>
@@ -16475,7 +16475,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16559,7 +16559,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Northfield Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16637,7 +16637,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Mandeville Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16715,7 +16715,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Northwick Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16805,7 +16805,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Green Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16887,7 +16887,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Joel Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -16967,7 +16967,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Notting Hill Gate (North Side)</name>
 					<entranceToBookingHall>18, 11 stairs down, 4 stairs up</entranceToBookingHall>
@@ -17114,7 +17114,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bramley Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -17193,7 +17193,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>City Road (North East Corner of the roundabout)</name>
 					<entranceToBookingHall>13, 13 stairs down, subway, 8 stairs down</entranceToBookingHall>
@@ -17388,7 +17388,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Great West Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -17490,7 +17490,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Clapham Road / Harleyford Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -17576,7 +17576,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Oxford Street (North West Corner of Junction)</name>
 					<entranceToBookingHall>19, 13 stairs down, subway</entranceToBookingHall>
@@ -17813,7 +17813,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Praed Street</name>
 					<entranceToBookingHall>10 stairs down</entranceToBookingHall>
@@ -18117,7 +18117,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Western Avenue / Hanger Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -18193,7 +18193,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (part), taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Beaconsfield Walk</name>
 					<entranceToBookingHall>5 stairs down</entranceToBookingHall>
@@ -18295,7 +18295,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Horsenden Lane South</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -18386,7 +18386,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Glasshouse Street / Regent Street</name>
 					<entranceToBookingHall>22, 8, stairs down, subway (ramp down</entranceToBookingHall>
@@ -18676,7 +18676,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bessborough Street (South Side)</name>
 					<entranceToBookingHall>Ramp (or 6 stairs) down, long ramp down, 9 stairs down</entranceToBookingHall>
@@ -18778,7 +18778,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -18886,7 +18886,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Plaistow Road</name>
 					<entranceToBookingHall>Level (or 1 step up)</entranceToBookingHall>
@@ -18975,7 +18975,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Preston Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19053,7 +19053,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform (part), taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19138,7 +19138,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Queensbury Station Parade</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19221,7 +19221,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Queensway / Bayswater Road</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -19299,7 +19299,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ravenscourt Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19402,7 +19402,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Imperial Drive / Rayners Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19484,7 +19484,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eastern Avenue / Redbridge Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19570,7 +19570,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Marylebone Road</name>
 					<entranceToBookingHall>20, 15 stairs down, ramp down</entranceToBookingHall>
@@ -19646,7 +19646,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Rectory Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19739,7 +19739,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Way</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -19823,7 +19823,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Brunel Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -19890,7 +19890,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Lord Hill's Bridge</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -19957,7 +19957,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20045,7 +20045,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>West End Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20131,7 +20131,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20217,7 +20217,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bernard Street</name>
 					<entranceToBookingHall> 1 step up </entranceToBookingHall>
@@ -20304,7 +20304,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Seven Sisters Road</name>
 					<entranceToBookingHall>Level (or 1 step up)</entranceToBookingHall>
@@ -20507,7 +20507,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Watney Street (DLR Station)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20614,7 +20614,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Sloane Square</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20705,7 +20705,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach / Car Park</name>
 					<entranceToBookingHall>3 steps up</entranceToBookingHall>
@@ -20857,7 +20857,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>South Ealing Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -20936,7 +20936,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Northolt Road</name>
 					<entranceToBookingHall>2 or 3 steps up</entranceToBookingHall>
@@ -21020,7 +21020,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (Dist / Circ), taxi ranks outside station, post office style queuing for tickets, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Pelham Street</name>
 					<entranceToBookingHall>Slight ramp up, through Arcade, 13, 3 stairs down</entranceToBookingHall>
@@ -21246,7 +21246,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -21319,7 +21319,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Morden Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -21401,7 +21401,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>George Lane (East)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -21512,7 +21512,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (part), taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Wimbledon Park Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -21594,7 +21594,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Parade (Southgate Circus)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -21673,7 +21673,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Cut</name>
 					<entranceToBookingHall>Lift (or 15, 7 stairs) down</entranceToBookingHall>
@@ -21754,7 +21754,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Prebend Gardens</name>
 					<entranceToBookingHall>Level footpath</entranceToBookingHall>
@@ -21868,7 +21868,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">taxi ranks outside station, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>London Road (Main Entrance)</name>
 					<entranceToBookingHall>16, 16, 16 stairs down</entranceToBookingHall>
@@ -21972,7 +21972,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Mile End Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22061,7 +22061,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Clapham Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22151,7 +22151,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bus Station</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22275,7 +22275,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Greenford Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22358,7 +22358,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22468,7 +22468,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Lower Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22574,7 +22574,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eton Avenue</name>
 					<entranceToBookingHall>13, 13, 9, 3 stairs down</entranceToBookingHall>
@@ -22702,7 +22702,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Embankment</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22816,7 +22816,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -22882,7 +22882,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, taxi ranks outside station.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Tooting Bec Road / Balham High Road</name>
 					<entranceToBookingHall>Short ramp up, 20, 12 stairs down</entranceToBookingHall>
@@ -22972,7 +22972,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Tooting Broadway / Tooting High Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -23051,7 +23051,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Oxford Street / Tottenham Court Road</name>
 					<entranceToBookingHall>19, 17 stairs down</entranceToBookingHall>
@@ -23257,7 +23257,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ferry Lane (North Side)</name>
 					<entranceToBookingHall>4, 9 stairs down, across forecourt, 7 stairs up</entranceToBookingHall>
@@ -23396,7 +23396,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Totteridge Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -23469,7 +23469,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Jubilee Walk</name>
 					<entranceToBookingHall>6, 3 stairs down</entranceToBookingHall>
@@ -23577,7 +23577,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Brecknock Road</name>
 					<entranceToBookingHall>1 step up, 3 stairs down</entranceToBookingHall>
@@ -23686,7 +23686,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Turnham Green Terrace</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -23784,7 +23784,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Green Lanes / Langham Road</name>
 					<entranceToBookingHall>5, 16, 3 stairs down</entranceToBookingHall>
@@ -23899,7 +23899,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -23963,7 +23963,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Upminster Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -24023,7 +24023,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Upney Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -24097,7 +24097,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Green Street</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -24180,7 +24180,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>High Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -24278,7 +24278,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Vauxhall Bridge Road (West Side)</name>
 					<entranceToBookingHall>20, 16 stairs down, subway</entranceToBookingHall>
@@ -24418,7 +24418,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Street</name>
 					<entranceToBookingHall>17 stairs down</entranceToBookingHall>
@@ -24641,7 +24641,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">electronic whiteboards in ticket hall, post office style queuing for tickets, subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Selborne Road</name>
 					<entranceToBookingHall>Ramp down</entranceToBookingHall>
@@ -24759,7 +24759,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eastern Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -24853,7 +24853,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Wapping High Street</name>
 					<entranceToBookingHall>Slight ramp up</entranceToBookingHall>
@@ -24940,7 +24940,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Tottenham Court Road (West Side)</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -25090,7 +25090,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Warwick Avenue (North Side)</name>
 					<entranceToBookingHall>14, 13 stairs down</entranceToBookingHall>
@@ -25183,7 +25183,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>South West Trains Station Platform 7</name>
 					<entranceToBookingHall>13, 13 stairs down, subway, 3 stairs up, 13, 13 stairs down, long subway, 6 (or 5) stairs up</entranceToBookingHall>
@@ -25634,7 +25634,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Cassiobury Park Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -25717,7 +25717,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">taxi ranks outside station, post office style queuing for tickets.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bridge Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -25827,7 +25827,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Noel Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -25905,7 +25905,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform (part).</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Old Brompton Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26000,7 +26000,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Nether Street</name>
 					<entranceToBookingHall>Ramp down</entranceToBookingHall>
@@ -26094,7 +26094,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Manor Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26192,7 +26192,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>West End Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26271,7 +26271,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Vaughan Road</name>
 					<entranceToBookingHall>6 stairs up</entranceToBookingHall>
@@ -26343,7 +26343,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform, post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>North End Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26427,7 +26427,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ickenham Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26512,7 +26512,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Great Western Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -26602,7 +26602,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">subway to street, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bridge Street (North Side)</name>
 					<entranceToBookingHall>Lift (or 16 stairs) down</entranceToBookingHall>
@@ -26829,7 +26829,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Wood Lane</name>
 					<entranceToBookingHall>5 stairs up</entranceToBookingHall>
@@ -26910,7 +26910,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">canopies over platform, taxi ranks outside station, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Whitechapel Road</name>
 					<entranceToBookingHall>7 stairs down</entranceToBookingHall>
@@ -27013,7 +27013,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Walm Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27091,7 +27091,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">canopies over platform (part).</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Arthur Road</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -27173,7 +27173,7 @@
 				<facility name="Waiting Room">no</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, routeways platform to ticket hall.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>High Road</name>
 					<entranceToBookingHall>Level ( or 3 steps up or down)</entranceToBookingHall>
@@ -27255,7 +27255,7 @@
 				<facility name="Waiting Room">yes</facility>
 				<facility name="Other Facilities">post office style queuing for tickets, subway to street.</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Broadway</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -27367,7 +27367,7 @@
 				<facility name="Other Facilities">
 				</facility>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Woodside Park Road Car Park</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27460,7 +27460,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>East India Dock Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -27506,7 +27506,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Woolwich Manor Way</name>
 					<entranceToBookingHall> Ramp (or 10 stairs) up</entranceToBookingHall>
@@ -27552,7 +27552,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Strait Road</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -27598,7 +27598,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Ditchburn Street</name>
 					<entranceToBookingHall> Level</entranceToBookingHall>
@@ -27644,7 +27644,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Bow Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27690,7 +27690,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>St. Leonard's Street</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27767,7 +27767,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Crossharbour</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27813,7 +27813,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Dock Road</name>
 					<entranceToBookingHall>Ramp (8 stairs) up</entranceToBookingHall>
@@ -27895,7 +27895,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Creek Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27953,7 +27953,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Strait Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -27999,7 +27999,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Deptford Bridge (North Side)</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -28057,7 +28057,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Devons Road</name>
 					<entranceToBookingHall>Ramp (or 4 steps) down</entranceToBookingHall>
@@ -28103,7 +28103,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Aspen Way</name>
 					<entranceToBookingHall>Lift (or 3 x 14 stairs) up</entranceToBookingHall>
@@ -28161,7 +28161,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Edgware Road / Marylebone Road</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -28236,7 +28236,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Chapel Street</name>
 					<entranceToBookingHall> Level </entranceToBookingHall>
@@ -28337,7 +28337,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Elverson Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -28399,7 +28399,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Slip road off Eastern Access Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -28445,7 +28445,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Greenwich High Road</name>
 					<entranceToBookingHall>Ramp down, subway</entranceToBookingHall>
@@ -28515,7 +28515,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Chiswick High Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -28576,7 +28576,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Hammersmith Broadway (South Side) (District &amp; Piccadilly)</name>
 					<entranceToBookingHall> Level </entranceToBookingHall>
@@ -28873,7 +28873,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Acton Lane</name>
 					<entranceToBookingHall>13 stairs down, 1 step up</entranceToBookingHall>
@@ -28928,7 +28928,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Bridge, High Street Wealdstone</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -29001,7 +29001,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach off Lowlands Road</name>
 					<entranceToBookingHall>13, 14 stairs up</entranceToBookingHall>
@@ -29096,7 +29096,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Terminal 1</name>
 					<entranceToBookingHall>Lift (or escalator or ramp or 16, 4, 12 stairs) down, then long subway (or travalator)</entranceToBookingHall>
@@ -29211,7 +29211,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Heron Quays</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -29257,7 +29257,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Manchester Road</name>
 					<entranceToBookingHall>Ramp down</entranceToBookingHall>
@@ -29303,7 +29303,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>College Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -29352,7 +29352,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Olympia Way</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -29401,7 +29401,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kenton Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -29450,7 +29450,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach / Station Avenue</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -29533,7 +29533,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Euston Road / King's Cross Forecourt</name>
 					<entranceToBookingHall>Metropolitan Line Booking Hall () </entranceToBookingHall>
@@ -30209,7 +30209,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Loampit Vale</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30255,7 +30255,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Butcher Row</name>
 					<entranceToBookingHall>Level (or 6 stairs up)</entranceToBookingHall>
@@ -30301,7 +30301,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Eastferry Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30363,7 +30363,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Amersham Vale</name>
 					<entranceToBookingHall>Ramp up</entranceToBookingHall>
@@ -30412,7 +30412,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>New Cross Road</name>
 					<entranceToBookingHall>2 steps up</entranceToBookingHall>
@@ -30461,7 +30461,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>East Lane</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -30510,7 +30510,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Castor Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30556,7 +30556,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Connaught Road</name>
 					<entranceToBookingHall>Lift (or 7, 16, 16, 16 stairs) up</entranceToBookingHall>
@@ -30614,7 +30614,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Pudding Mill Lane</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30660,7 +30660,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Salusbury Road</name>
 					<entranceToBookingHall>Slight ramp up</entranceToBookingHall>
@@ -30715,7 +30715,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Kew Road</name>
 					<entranceToBookingHall>Level (or 1 or 2 steps up)</entranceToBookingHall>
@@ -30784,7 +30784,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Royal Albert Dock Spine Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30830,7 +30830,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Victoria Dock Road</name>
 					<entranceToBookingHall>Lift (or 16, 16 stairs) up</entranceToBookingHall>
@@ -30882,7 +30882,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Shepherd's Bush Green</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -30962,7 +30962,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Uxbridge Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31033,7 +31033,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>The Link</name>
 					<entranceToBookingHall>Short subway, 15, 15 stairs up</entranceToBookingHall>
@@ -31094,7 +31094,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>South Quay</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31140,7 +31140,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Broadway ( Daily until 10.30pm )</name>
 					<entranceToBookingHall>1 step up, 2 steps down</entranceToBookingHall>
@@ -31280,7 +31280,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Finchley Road / Acacia Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31347,7 +31347,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>St. Martin's le Grand / Cheapside</name>
 					<entranceToBookingHall>17, 8 stairs down, short subway</entranceToBookingHall>
@@ -31438,7 +31438,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>North Circular Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31497,7 +31497,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Minories</name>
 					<entranceToBookingHall>Lift (or escalator or 11, 3 x 16 stairs) up</entranceToBookingHall>
@@ -31543,7 +31543,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>High Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31598,7 +31598,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Market Road</name>
 					<entranceToBookingHall>Ramp (or 11 stairs) up</entranceToBookingHall>
@@ -31644,7 +31644,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>West India Dock Road / Limehouse Causeway</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>
@@ -31696,7 +31696,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<entrances>
 				<entrance>
 					<name>Station Approach</name>
 					<entranceToBookingHall>1 step up</entranceToBookingHall>
@@ -31745,7 +31745,7 @@
 			</zones>
 			<facilities>
 			</facilities>
-			<entrances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <entrances>
 				<entrance>
 					<name>Wimbledon Hill Road</name>
 					<entranceToBookingHall>Level</entranceToBookingHall>

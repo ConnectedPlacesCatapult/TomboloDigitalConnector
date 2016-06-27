@@ -8,7 +8,6 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
 import java.io.IOException;
 import java.util.List;
