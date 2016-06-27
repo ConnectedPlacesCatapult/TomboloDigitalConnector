@@ -6,6 +6,8 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
+import java.io.IOException;
+
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,7 +17,7 @@ public abstract class AbstractONSCensusImporterTest extends AbstractImporterTest
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void before(){
+	public void before() throws IOException {
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new ONSCensusImporter();

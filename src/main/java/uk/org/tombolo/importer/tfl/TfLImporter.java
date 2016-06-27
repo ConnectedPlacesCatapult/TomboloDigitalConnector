@@ -4,11 +4,19 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 public abstract class TfLImporter extends AbstractImporter implements Importer {
 
-	// FIXME: This should be loaded from a configuration file but not in source code
-	protected static final String API_APP_ID = "c9d407ae";
-	protected static final String API_APP_KEY = "f33aa676ebb4518fe9ffd972d263daff";
+	protected static final String propertiesFile = "/properties/importer/tfl/tfl.properties";
+	protected static final String PROP_API_APP_ID = "apiIdTfl";
+	protected static final String PROP_API_APP_KEY = "apiKeyTfl";
+
+	public TfLImporter() throws IOException {
+		loadProperties(propertiesFile);
+	}
 
 	public static final Provider PROVIDER = new Provider(
 			"uk.gov.tfl",

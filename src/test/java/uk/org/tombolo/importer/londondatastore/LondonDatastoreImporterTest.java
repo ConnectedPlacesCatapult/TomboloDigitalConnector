@@ -10,6 +10,7 @@ import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.ONSCensusImporter;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,10 +24,10 @@ public class LondonDatastoreImporterTest extends AbstractTest {
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void before(){
+	public void before() throws IOException {
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
-		importer = new ONSCensusImporter();
+		importer = new LondonDatastoreImporter();
 		importer.setTimedValueUtils(mockTimedValueUtils);
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}

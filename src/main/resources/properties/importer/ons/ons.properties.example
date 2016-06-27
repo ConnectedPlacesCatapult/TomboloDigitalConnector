@@ -1,0 +1,3 @@
+! ONS API Authentication
+! https://web.ons.gov.uk/ons/apiservice/web/apiservice/home
+apiKeyOns=<INSERT-YOUR-API-KEY-HERE>

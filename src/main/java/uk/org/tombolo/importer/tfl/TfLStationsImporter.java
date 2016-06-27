@@ -24,12 +24,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TfLStationsImporter extends TfLImporter implements Importer {
-	private static enum DatasourceId {StationList};
+	protected static enum DatasourceId {StationList};
 	private static enum AttributeName {ServingLineCount};
 	private static enum SubjectTypeName {TfLStation};
 
@@ -37,7 +38,11 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	
 	XPathFactory xPathFactory = XPathFactory.newInstance();
 	XPath xpath = xPathFactory.newXPath();
-	
+
+	public TfLStationsImporter() throws IOException {
+		super();
+	}
+
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
@@ -56,8 +61,8 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 				datasource.setRemoteDatafile(
 						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
-								+"?app_id="+API_APP_ID
-								+"&app_key="+API_APP_KEY);
+								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
+								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
 				datasource.addAllAttributes(getStationAttributes());
 				return datasource;
 		}
