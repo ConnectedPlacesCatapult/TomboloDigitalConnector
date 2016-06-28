@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class HospitalImporter extends AbstractImporter implements Importer {
-    private static enum SubjectTypeLabel {Hospital};
+    private static enum SubjectTypeLabel {hospital};
 
     @Override
     public Provider getProvider() {
@@ -53,7 +53,7 @@ public final class HospitalImporter extends AbstractImporter implements Importer
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        SubjectType poiType = getSubjectType(SubjectTypeLabel.valueOf(datasource.getName()));
+        SubjectType poiType = getSubjectType(SubjectTypeLabel.valueOf(datasource.getId()));
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
