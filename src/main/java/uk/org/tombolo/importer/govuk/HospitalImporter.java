@@ -1,6 +1,9 @@
 package uk.org.tombolo.importer.govuk;
 
-import org.json.simple.JSONArray;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
@@ -14,9 +17,8 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class HospitalImporter extends AbstractImporter implements Importer {
@@ -50,16 +52,20 @@ public final class HospitalImporter extends AbstractImporter implements Importer
 
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         SubjectType poiType = getSubjectType(SubjectTypeLabel.valueOf(datasource.getName()));
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
 
-        JSONArray results = (JSONArray) documentObj.get("result");
+        List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
 
-        List<Subject> subjects = (List<Subject>) results.stream().map(resultObj -> {
-            JSONObject hospitalObj = (JSONObject) resultObj;
-            String label = (String) hospitalObj.get("organisation_id");
-            String name = (String) hospitalObj.get("organisation_name");
-            return new Subject(poiType, label, name, null);
+        List<Subject> subjects = results.stream().map(hospitalObj -> {
+                String label = hospitalObj.get("organisation_id");
+                String name = hospitalObj.get("organisation_name");
+                Double longitude = Double.parseDouble(hospitalObj.get("longitude"));
+                Double latitude = Double.parseDouble(hospitalObj.get("latitude"));
+                Coordinate coordinate = new Coordinate(longitude, latitude);
+                Point point = geometryFactory.createPoint(coordinate);
+                return new Subject(poiType, label, name, point);
         }).collect(Collectors.toList());
 
         SubjectUtils.save(subjects);

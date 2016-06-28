@@ -31,9 +31,12 @@ public class HospitalImporterTest extends AbstractTest {
     @Test
     public void testImportDatasource() throws Exception {
         int recordsImported = importer.importDatasource("hospital");
-        Subject subject = SubjectUtils.getSubjectByLabel("40887");
+        Subject subject = SubjectUtils.getSubjectByLabel("40918");
         assertEquals(1106, recordsImported);
-        assertEquals("West Berkshire Community Hospital", subject.getName());
+        assertEquals("Guy's Hospital", subject.getName());
+        assertEquals(51.5046, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
+        // This is in the form 0.0Ex in the JSON so we test on this
+        assertEquals(-0.0889, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
     }
 
     @Test
