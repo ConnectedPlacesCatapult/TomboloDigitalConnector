@@ -9,6 +9,8 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class HospitalImporterTest extends AbstractTest {
@@ -47,5 +49,12 @@ public class HospitalImporterTest extends AbstractTest {
         assertEquals("Hospital", datasource.getName());
         assertEquals("List of Hospitals in England", datasource.getDescription());
         assertEquals("https://data.gov.uk/data/api/service/health/hospitals/all_hospitals", datasource.getUrl());
+    }
+
+    @Test
+    public void testGetAllDatasources() throws Exception {
+        List<Datasource> datasources = importer.getAllDatasources();
+        assertEquals(1, datasources.size());
+        assertEquals("hospital", datasources.get(0).getId());
     }
 }

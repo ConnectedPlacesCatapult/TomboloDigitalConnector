@@ -17,6 +17,7 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,7 +35,11 @@ public final class HospitalImporter extends AbstractImporter implements Importer
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
-        return null;
+        List<Datasource> datasources = new ArrayList<Datasource>();
+        for (SubjectTypeLabel datasourceId : SubjectTypeLabel.values()){
+            datasources.add(getDatasource(datasourceId.name()));
+        }
+        return datasources;
     }
 
     @Override
