@@ -7,8 +7,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -24,12 +26,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class DataExportEngineTest extends AbstractTest {
-    DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());
+    DataExportEngine engine;
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();
 
     @Before
     public void addSubjectFixtures() {
+        String apiKeyFilename = AbstractImporterTestUtils.getApiKeysLocation();
+        engine =  new DataExportEngine(apiKeyFilename,makeTestDownloadUtils());
+
         TestFactory.makeNamedSubject("E01000001");
         TestFactory.makeNamedSubject("E09000001");
         TestFactory.makeNamedSubject("E01002766");

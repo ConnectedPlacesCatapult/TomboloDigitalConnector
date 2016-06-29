@@ -4,7 +4,6 @@ import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -39,16 +38,14 @@ public abstract class AbstractImporter implements Importer {
 	/**
 	 * Loads the given properties resource into the main properties object
 	 *
-	 * @param propertiesFileResourceLocation Absolute path to a resource file
-	 * @throws IOException
      */
 	@Override
-	public void loadProperties(String propertiesFileResourceLocation) throws IOException {
-		properties.load(new FileReader(getClass().getResource(propertiesFileResourceLocation).getFile()));
+	public void configure(Properties properties) {
+		this.properties.putAll(properties);
 	}
 
 	@Override
-	public Properties getProperties(){
+	public Properties getConfiguration(){
 		return properties;
 	}
 }

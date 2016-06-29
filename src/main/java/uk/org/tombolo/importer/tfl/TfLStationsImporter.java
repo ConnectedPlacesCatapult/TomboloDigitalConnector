@@ -15,6 +15,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -59,6 +60,11 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			case StationList:
 				Datasource datasource = new Datasource(DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
+				if (properties.getProperty(PROP_API_APP_ID) == null)
+					throw new ConfigurationException("Property "+PROP_API_APP_ID+" not defined");
+				if (properties.getProperty(PROP_API_APP_KEY) == null)
+					throw new ConfigurationException("Property "+PROP_API_APP_KEY+" not defined");
+
 				datasource.setRemoteDatafile(
 						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
 								+"?app_id="+properties.getProperty(PROP_API_APP_ID)

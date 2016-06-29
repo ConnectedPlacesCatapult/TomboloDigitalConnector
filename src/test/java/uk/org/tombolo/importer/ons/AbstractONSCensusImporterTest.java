@@ -6,7 +6,9 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;
@@ -22,6 +24,12 @@ public abstract class AbstractONSCensusImporterTest extends AbstractImporterTest
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new ONSCensusImporter();
 		importer.setTimedValueUtils(mockTimedValueUtils);
+
+		// Load api keys
+		Properties properties = new Properties();
+		properties.load(new FileReader(AbstractImporterTestUtils.getApiKeysLocation()));
+		importer.configure(properties);
+
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 }

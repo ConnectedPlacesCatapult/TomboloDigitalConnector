@@ -65,6 +65,6 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
 	@Test
 	public void testLoadingOfProperties() throws Exception {
-		assertEquals("onsApiKeyTest",importer.getProperties().getProperty(AbstractONSImporter.PROP_ONS_API_KEY));
+		assertEquals("onsApiKeyTest",importer.getConfiguration().getProperty(AbstractONSImporter.PROP_ONS_API_KEY));
 	}
 }

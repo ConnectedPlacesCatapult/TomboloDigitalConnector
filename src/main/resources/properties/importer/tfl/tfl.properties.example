@@ -1,4 +1,0 @@
-! TfL API Authentication
-! https://api.tfl.gov.uk/
-apiIdTfl=<INSERT-YOUR-API-ID-HERE>
-apiKeyTfl=<INSERT-YOUR-API-KEY-HERE>

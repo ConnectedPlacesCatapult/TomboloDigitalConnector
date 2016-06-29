@@ -13,6 +13,8 @@ import java.io.*;
 
 public class DataExportRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
+    // FIXME: At some point we might want to make this configurable
+    private static final String apiKeysFilename = "apiKeys.properties";
 
     public static void main(String[] args) throws IOException {
         validateArguments(args);
@@ -23,7 +25,7 @@ public class DataExportRunner {
 
         HibernateUtil.startup();
 
-        DataExportEngine engine = new DataExportEngine(new DownloadUtils());
+        DataExportEngine engine = new DataExportEngine(apiKeysFilename, new DownloadUtils());
 
         validateSpecification(executionSpecPath);
 

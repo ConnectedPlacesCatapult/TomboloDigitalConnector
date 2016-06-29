@@ -4,7 +4,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,6 +21,6 @@ public interface Importer {
 	public void setDownloadUtils(DownloadUtils downloadUtils);
 	public void setTimedValueUtils(TimedValueUtils timedValueUtils);
 
-	public void loadProperties(String propertiesFileResourceLocation) throws IOException;
-	public Properties getProperties();
+	public void configure(Properties properties);
+	public Properties getConfiguration();
 }
