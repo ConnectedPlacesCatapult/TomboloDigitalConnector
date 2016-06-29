@@ -8,12 +8,7 @@
 						"attribute": "label",
 						"pattern": "E090%"
 					}
-				],
-				"attributes" : {
-					"provider" : "uk.gov.london",
-					"service" : "boroughProfile",
-					"type" : "urn:oc:entityType:dataset:boroughProfile"
-				}
+				]
 			}
 		],	
 		"datasourceSpecification" : [
