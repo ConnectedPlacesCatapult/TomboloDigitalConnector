@@ -5,8 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 
 import java.util.Properties;
@@ -22,7 +20,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 	@Before
 	public void before() throws Exception {
 		importer = new TfLStationsImporter();
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
+		mockDownloadUtils(importer);
 		importer.configure(makeApiKeyProperties());
 	}
 	
@@ -41,8 +39,8 @@ public class TfLStationsImporterTest extends AbstractTest {
 	@Test
 	public void testNonConfigured() throws Exception {
 		importer = new TfLStationsImporter();
+		mockDownloadUtils(importer);
 
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage("Property apiIdTfl not defined");
 		importer.configure(new Properties());
@@ -54,8 +52,8 @@ public class TfLStationsImporterTest extends AbstractTest {
 		properties.put(TfLImporter.PROP_API_APP_ID, "dummy id");
 
 		importer = new TfLStationsImporter();
+		mockDownloadUtils(importer);
 
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage("Property apiKeyTfl not defined");
 		importer.configure(properties);

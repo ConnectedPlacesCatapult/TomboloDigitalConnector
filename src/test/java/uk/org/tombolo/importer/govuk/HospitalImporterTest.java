@@ -18,7 +18,7 @@ public class HospitalImporterTest extends AbstractTest {
     @Before
     public void setUp() throws Exception {
         importer = new HospitalImporter();
-        importer.setDownloadUtils(makeTestDownloadUtils());
+        mockDownloadUtils(importer);
     }
 
     @Test

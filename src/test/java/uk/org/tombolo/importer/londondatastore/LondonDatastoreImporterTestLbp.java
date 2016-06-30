@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +14,7 @@ public class LondonDatastoreImporterTestLbp extends AbstractTest {
 	@Before
 	public void before(){
 		importer = new LondonDatastoreImporter();
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
+		mockDownloadUtils(importer);
 	};
 	
 	@Test

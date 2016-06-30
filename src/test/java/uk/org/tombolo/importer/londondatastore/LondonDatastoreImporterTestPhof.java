@@ -6,8 +6,6 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporterTestUtils;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class LondonDatastoreImporterTestPhof extends AbstractTest {
 	@Before
 	public void before(){
 		importer = new LondonDatastoreImporter();
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
+		mockDownloadUtils(importer);
 	}
 
 	@Before

@@ -4,12 +4,14 @@ import org.hibernate.Transaction;
 import org.junit.Before;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.importer.DownloadUtils;
+import uk.org.tombolo.importer.Importer;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
 public abstract class AbstractTest {
+
     @Before
     public void clearDatabase() {
         // Ensure we aren't clobbering our production DB
@@ -26,7 +28,12 @@ public abstract class AbstractTest {
         });
     }
 
-    protected static DownloadUtils makeTestDownloadUtils() {
+    protected void mockDownloadUtils(Importer importer){
+        // Make the downloader point to the mocked data cache
+        importer.setDownloadUtils(makeTestDownloadUtils());
+    }
+
+    protected DownloadUtils makeTestDownloadUtils() {
         return new DownloadUtils("src/test/resources/datacache");
     }
 

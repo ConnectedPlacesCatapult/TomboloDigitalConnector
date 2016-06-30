@@ -5,8 +5,6 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.util.List;
@@ -20,7 +18,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 	@Before
 	public void before(){
 		importer = new TrafficCountImporter();
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
+		mockDownloadUtils(importer);
 	}
 
 	@Test

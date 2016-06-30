@@ -22,7 +22,7 @@ public class PheNooImporterTest extends AbstractTest {
 
 	@Before
 	public void setDownloadUtils() {
-		importer.setDownloadUtils(makeTestDownloadUtils());
+		mockDownloadUtils(importer);
 	}
 	
 	@Test
