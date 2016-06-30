@@ -15,6 +15,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
 
 import java.io.*;
@@ -96,7 +97,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					Row tRow = sheet.getRow(ldsa.timestampRowId);
 					Cell tCell = tRow.getCell(ldsa.dataColumnId);
 					// FIXME: This could be string :/
-					timestamp = timedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
+					timestamp = TimedValueUtils.parseTimestampString((String.valueOf(new Double(tCell.getNumericCellValue()).intValue())));
 				}else if(ldsa.timestamp != null){
 					timestamp = LocalDateTime.parse(ldsa.timestamp);
 				}
@@ -128,11 +129,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 					valueCounter++;
 					
 					if (valueCounter % timedValueBufferSize == 0){
-						timedValueUtils.save(timedValueBuffer);
+						TimedValueUtils.save(timedValueBuffer);
 						timedValueBuffer = new ArrayList<TimedValue>();
 					}
 				}	
-				timedValueUtils.save(timedValueBuffer);
+				TimedValueUtils.save(timedValueBuffer);
 			}				
 		}else{
 			// We have no explicitly defined columns
@@ -170,7 +171,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				// Timestamp
 				cell = row.getCell(defaultAttribute.timestampColumnId);
 				String timestampString = cell.getStringCellValue();
-				LocalDateTime timestamp = timedValueUtils.parseTimestampString(timestampString);
+				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(timestampString);
 				if (timestamp == null)
 					continue;
 				
@@ -187,11 +188,11 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 				valueCounter++;
 				
 				if (valueCounter % timedValueBufferSize == 0){
-					timedValueUtils.save(timedValueBuffer);
+					TimedValueUtils.save(timedValueBuffer);
 					timedValueBuffer = new ArrayList<TimedValue>();
 				}
 			}	
-			timedValueUtils.save(timedValueBuffer);
+			TimedValueUtils.save(timedValueBuffer);
 		}
 		return valueCounter;
 	}

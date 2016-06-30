@@ -198,42 +198,42 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			Attribute pcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountPedalCycles.name());
 			double pcCount = Double.valueOf(fields[12].replaceAll("\"", ""));
 			TimedValue pedalCycleCount = new TimedValue(subject, pcAttribute, timestamp, pcCount);
-			timedValueUtils.save(pedalCycleCount);
+			TimedValueUtils.save(pedalCycleCount);
 			valueCounter++;
 
 			// Motorcycles
 			Attribute mcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountMotorcycles.name());
 			double mcCount = Double.valueOf(fields[13].replaceAll("\"", ""));
 			TimedValue motorcycleCount = new TimedValue(subject, mcAttribute, timestamp, mcCount);
-			timedValueUtils.save(motorcycleCount);
+			TimedValueUtils.save(motorcycleCount);
 			valueCounter++;
 
 			// Cars & taxis
 			Attribute ctAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountCarsTaxis.name());
 			double ctCount = Double.valueOf(fields[14].replaceAll("\"", ""));
 			TimedValue carTaxiCount = new TimedValue(subject, ctAttribute, timestamp, ctCount);
-			timedValueUtils.save(carTaxiCount);
+			TimedValueUtils.save(carTaxiCount);
 			valueCounter++;
 
 			// Buses and Coaches
 			Attribute bcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountBusesCoaches.name());
 			double bcCount = Double.valueOf(fields[15].replaceAll("\"", ""));
 			TimedValue busCoachCount = new TimedValue(subject, bcAttribute, timestamp, bcCount);
-			timedValueUtils.save(busCoachCount);
+			TimedValueUtils.save(busCoachCount);
 			valueCounter++;
 
 			// Light Goods Vehicles
 			Attribute lgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
 			double lgvCount = Double.valueOf(fields[16].replaceAll("\"", ""));
 			TimedValue lightGoodsVehicleCount = new TimedValue(subject, lgvAttribute, timestamp, lgvCount);
-			timedValueUtils.save(lightGoodsVehicleCount);
+			TimedValueUtils.save(lightGoodsVehicleCount);
 			valueCounter++;
 
 			// Heavy Goods Vehicles
 			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
 			double hgvCount = Double.valueOf(fields[23].replaceAll("\"", ""));
 			TimedValue heavyGoodsVehicleCount = new TimedValue(subject, hgvAttribute, timestamp, hgvCount);
-			timedValueUtils.save(heavyGoodsVehicleCount);
+			TimedValueUtils.save(heavyGoodsVehicleCount);
 			valueCounter++;
 		}
 		reader.close();

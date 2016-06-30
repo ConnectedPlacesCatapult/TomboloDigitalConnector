@@ -84,9 +84,8 @@ public class FractionOfTotalField implements SingleValueField {
     }
 
     private List<TimedValue> getLatestTimedValuesForSubjectAndAttributes(Subject subject, List<AttributeMatcher> attributeMatchers) throws IncomputableFieldException {
-        TimedValueUtils timedValueUtils = new TimedValueUtils();
         List<Attribute> attributes = getAttributes(attributeMatchers);
-        List<TimedValue> timedValues = timedValueUtils.getLatestBySubjectAndAttributes(subject, attributes);
+        List<TimedValue> timedValues = TimedValueUtils.getLatestBySubjectAndAttributes(subject, attributes);
 
         // We check for and throw on missing timedValues with some info on what they are
         if (timedValues.size() != attributeMatchers.size()) {

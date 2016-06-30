@@ -11,10 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -133,7 +130,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(subject,servingLines, timestamp, count));
 			}
-			int saved = timedValueUtils.save(timedValues);
+			int saved = TimedValueUtils.save(timedValues);
 
 			return saved;
 		}

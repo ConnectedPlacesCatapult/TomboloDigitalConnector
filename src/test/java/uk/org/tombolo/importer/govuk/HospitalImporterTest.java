@@ -7,11 +7,10 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class HospitalImporterTest extends AbstractTest {
     HospitalImporter importer;
@@ -20,7 +19,6 @@ public class HospitalImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new HospitalImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
-        importer.setTimedValueUtils(new TimedValueUtils());
     }
 
     @Test

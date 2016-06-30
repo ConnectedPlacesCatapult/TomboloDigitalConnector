@@ -34,7 +34,7 @@ public final class TestFactory {
     public static TimedValue makeTimedValue(String subjectLabel, Attribute attribute, String timestamp, Double value) {
         Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
         TimedValue timedValue = new TimedValue(subject, attribute, LocalDateTime.parse(timestamp), value);
-        (new TimedValueUtils()).save(timedValue);
+        TimedValueUtils.save(timedValue);
         return timedValue;
     }
 

@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class TimedValueUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
-	
-	public List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
+
+	public static List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.subject", subject));
@@ -29,7 +29,7 @@ public class TimedValueUtils {
 		});
 	}
 
-	public Optional<TimedValue> getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
+	public static Optional<TimedValue> getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.subject", subject));
@@ -62,7 +62,7 @@ public class TimedValueUtils {
 	 * @param attributes A list of attributes to return the values on
 	 * @return A list of the latest TimedValues for each subject/attribute pair
 	 */
-	public List<TimedValue> getLatestBySubjectAndAttributes(Subject subject, List<Attribute> attributes) {
+	public static List<TimedValue> getLatestBySubjectAndAttributes(Subject subject, List<Attribute> attributes) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.subject", subject));
@@ -93,11 +93,11 @@ public class TimedValueUtils {
 		});
 	}
 	
-	public void save(TimedValue timedValue){
+	public static void save(TimedValue timedValue){
 		save(Arrays.asList(timedValue));
 	}
 
-	public int save(List<TimedValue> timedValues){
+	public static int save(List<TimedValue> timedValues){
 		return HibernateUtil.withSession((session) -> {
 			int saved = 0;
 			session.beginTransaction();

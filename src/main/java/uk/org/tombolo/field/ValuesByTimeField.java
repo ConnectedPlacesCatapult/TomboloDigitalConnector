@@ -25,9 +25,8 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     }
 
     public JSONObject jsonValueForSubject(Subject subject) {
-        TimedValueUtils timedValueUtils = new TimedValueUtils();
         JSONObject obj = new JSONObject();
-        timedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).forEach(timedValue -> {
+        TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).forEach(timedValue -> {
             obj.put(timedValue.getId().getTimestamp().toString(), timedValue.getValue());
         });
         return withinMetadata(obj);

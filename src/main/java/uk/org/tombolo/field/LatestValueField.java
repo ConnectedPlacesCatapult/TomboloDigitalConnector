@@ -2,8 +2,11 @@ package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
+
+import java.util.Optional;
 
 /**
  * LatestValueField.java
@@ -32,8 +35,7 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
     }
 
     private Double getValue(Subject subject) {
-        TimedValueUtils timedValueUtils = new TimedValueUtils();
-        return timedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
+        return TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
                 .map(timedValue -> timedValue.getValue())
                 .orElse(null);
     }
