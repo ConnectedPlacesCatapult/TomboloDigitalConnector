@@ -29,7 +29,7 @@ public class TimedValueUtils {
 		});
 	}
 
-	public static Optional<TimedValue> getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
+	public static TimedValue getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
 			Criteria criteria = session.createCriteria(TimedValue.class);
 			criteria = criteria.add(Restrictions.eq("id.subject", subject));
@@ -37,11 +37,7 @@ public class TimedValueUtils {
 			criteria = criteria.addOrder(Order.desc("id.timestamp"));
 			criteria.setMaxResults(1);
 
-			if (criteria.list().isEmpty()) {
-				return Optional.empty();
-			} else {
-				return Optional.of((TimedValue) criteria.list().get(0));
-			}
+			return (TimedValue) criteria.uniqueResult();
 		});
 	}
 

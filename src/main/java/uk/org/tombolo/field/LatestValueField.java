@@ -6,8 +6,6 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
-import java.util.Optional;
-
 /**
  * LatestValueField.java
  * Returns the latest TimedValue for a particular Attribute on the given subject, plus metadata
@@ -35,8 +33,7 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
     }
 
     private Double getValue(Subject subject) {
-        return TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute())
-                .map(timedValue -> timedValue.getValue())
-                .orElse(null);
+        TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute());
+        return (null != timedValue) ? timedValue.getValue() : null;
     }
 }
