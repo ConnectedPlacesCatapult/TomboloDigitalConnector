@@ -1,7 +1,7 @@
 package uk.org.tombolo.exporter;
 
+import com.google.gson.stream.JsonWriter;
 import org.geotools.geojson.geom.GeometryJSON;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,37 +9,42 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 
-import javax.json.JsonValue;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GeoJsonExporter implements Exporter {
 	private Logger log = LoggerFactory.getLogger(GeoJsonExporter.class);
 
 	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
-		JSONObject root = new JSONObject();
-		JSONArray features = new JSONArray();
-		root.put("type", "FeatureCollection");
-		root.put("features", features);
+		JsonWriter jsonWriter = new JsonWriter(writer);
 
-		root.put("features", subjects.stream()
-				.map(subject -> subjectToFeature(fields, subject))
-				.collect(Collectors.toList()));
+		jsonWriter.beginObject();
+		jsonWriter.name("type").value("FeatureCollection");
+		jsonWriter.name("features").beginArray();
 
-		writer.write(root.toJSONString());
+		for (Subject subject : subjects) {
+			writeFeatureForSubject(fields, subject, jsonWriter);
+		}
+
+		jsonWriter.endArray();
+		jsonWriter.endObject();
+
+		jsonWriter.close();
 	}
 
-	private JSONObject subjectToFeature(List<Field> fields, Subject subject) {
-		// Subject is an a polygon or point for which data is to be output
-		JSONObject feature = new JSONObject();
+	private void writeFeatureForSubject(List<Field> fields, Subject subject, JsonWriter jsonWriter) throws IOException {
+		jsonWriter.beginObject();
+
+		jsonWriter.name("type").value("Feature");
+		jsonWriter.name("geometry").jsonValue(getGeoJSONGeometryForSubject(subject));
+		jsonWriter.name("properties").jsonValue(getPropertiesForSubject(fields, subject).toJSONString());
+
+		jsonWriter.endObject();
+	}
+
+	private JSONObject getPropertiesForSubject(List<Field> fields, Subject subject) {
 		JSONObject properties = new JSONObject();
-		feature.put("type", "Feature");
-		GeometryJSON geoJson = new GeometryJSON();
-		properties.put("geometry", geoJson.toString(subject.getShape()));
-		feature.put("properties", properties);
 
 		properties.put("label", subject.getLabel());
 		properties.put("name", subject.getName());
@@ -52,7 +57,10 @@ public class GeoJsonExporter implements Exporter {
 				properties.put(field.getLabel(), null);
 			}
 		}
+		return properties;
+	}
 
-		return feature;
+	private String getGeoJSONGeometryForSubject(Subject subject) {
+		return (new GeometryJSON()).toString(subject.getShape());
 	}
 }
