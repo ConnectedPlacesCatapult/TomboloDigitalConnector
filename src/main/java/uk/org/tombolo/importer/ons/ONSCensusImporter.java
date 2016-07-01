@@ -14,6 +14,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
@@ -61,7 +62,14 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	}
 
 	@Override
-	public List<Datasource> getAllDatasources() throws IOException, ParseException{
+	public void verifyConfiguration() throws ConfigurationException {
+		if (properties.getProperty(PROP_ONS_API_KEY) == null)
+			throw new ConfigurationException("Property "+PROP_ONS_API_KEY+" not defined");
+	}
+
+	@Override
+	public List<Datasource> getAllDatasources() throws IOException, ParseException, ConfigurationException {
+		verifyConfiguration();
 		List<Datasource> datasources = new ArrayList<Datasource>();
 	
 		String baseUrl = ONS_API_URL + "collections.json?";
@@ -196,7 +204,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		return valueCount;
 	}
 	
-	public Datasource getDatasource(String datasourceId) throws IOException, ParseException{
+	public Datasource getDatasource(String datasourceId) throws IOException, ParseException, ConfigurationException {
+		verifyConfiguration();
 		// Set-up the basic url and the parameters
 		String baseUrl = ONS_API_URL + "datasetdetails/" + datasourceId + ".json?";
 		Map<String,String> params = new HashMap<String,String>();

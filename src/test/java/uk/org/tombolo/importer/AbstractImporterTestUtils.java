@@ -20,8 +20,4 @@ public abstract class AbstractImporterTestUtils extends AbstractTest {
 		// Make the downloader point to the mocked data cache
 		importer.setDownloadUtils(makeTestDownloadUtils());
 	}
-
-	public static String getApiKeysLocation(){
-		return ClassLoader.getSystemResource("properties/apiKeys.properties").getPath();
-	}
 }

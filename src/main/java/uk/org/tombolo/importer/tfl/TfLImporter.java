@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.tfl;
 
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 
 public abstract class TfLImporter extends AbstractImporter implements Importer {
@@ -19,5 +20,12 @@ public abstract class TfLImporter extends AbstractImporter implements Importer {
 		return PROVIDER;
 	}
 
-	
+	@Override
+	public void verifyConfiguration() throws ConfigurationException {
+		if (properties.getProperty(PROP_API_APP_ID) == null)
+			throw new ConfigurationException("Property "+PROP_API_APP_ID+" not defined");
+		if (properties.getProperty(PROP_API_APP_KEY) == null)
+			throw new ConfigurationException("Property "+PROP_API_APP_KEY+" not defined");
+	}
+
 }

@@ -6,4 +6,4 @@ build/
 .settings/
 _*
 gradle.properties
-src/main/resources/properties/**/*.properties
+apikeys.properties

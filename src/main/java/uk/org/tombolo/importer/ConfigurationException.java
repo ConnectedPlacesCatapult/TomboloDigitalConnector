@@ -1,7 +1,7 @@
 package uk.org.tombolo.importer;
 
 /**
- * Thrown if the importer requires configuration, but the configuration file is not present in the correct location
+ * Thrown if the importer requires configuration, but is not properly configured
  *
  */
 public class ConfigurationException extends Exception {

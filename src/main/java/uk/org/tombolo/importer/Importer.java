@@ -21,6 +21,7 @@ public interface Importer {
 	public void setDownloadUtils(DownloadUtils downloadUtils);
 	public void setTimedValueUtils(TimedValueUtils timedValueUtils);
 
-	public void configure(Properties properties);
+	public void configure(Properties properties) throws ConfigurationException;
+	public void verifyConfiguration() throws ConfigurationException;
 	public Properties getConfiguration();
 }

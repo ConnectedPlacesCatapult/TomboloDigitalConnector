@@ -40,8 +40,15 @@ public abstract class AbstractImporter implements Importer {
 	 *
      */
 	@Override
-	public void configure(Properties properties) {
+	public void configure(Properties properties) throws ConfigurationException {
 		this.properties.putAll(properties);
+		verifyConfiguration();
+	}
+
+	@Override
+	public void verifyConfiguration() throws ConfigurationException {
+		// Do nothing by default
+		// Importers that need configuration will override this
 	}
 
 	@Override

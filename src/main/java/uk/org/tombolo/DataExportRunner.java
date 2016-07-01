@@ -7,16 +7,18 @@ import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 
 import java.io.*;
+import java.util.Properties;
 
 public class DataExportRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
     // FIXME: At some point we might want to make this configurable
-    private static final String apiKeysFilename = "apiKeys.properties";
+    private static final String API_KEYS_FILENAME = "apikeys.properties";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         validateArguments(args);
 
         String executionSpecPath = args[0];
@@ -25,7 +27,17 @@ public class DataExportRunner {
 
         HibernateUtil.startup();
 
-        DataExportEngine engine = new DataExportEngine(apiKeysFilename, new DownloadUtils());
+        // Load API keys
+        Properties apiKeys;
+        try {
+            apiKeys = new Properties();
+            apiKeys.load(new FileReader(API_KEYS_FILENAME));
+        }catch (FileNotFoundException e){
+            throw new ConfigurationException("Missing API keys file: " + API_KEYS_FILENAME, e);
+        }
+
+        // Create engine
+        DataExportEngine engine = new DataExportEngine(apiKeys, new DownloadUtils());
 
         validateSpecification(executionSpecPath);
 

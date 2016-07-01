@@ -10,12 +10,9 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
-import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,25 +21,16 @@ import java.util.Properties;
 public class DataExportEngine implements ExecutionEngine{
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	private static DownloadUtils downloadUtils;
-	private static String apiKeyFilename;
+	private static Properties apiKeys;
 
-	DataExportEngine(String apiKeyFilename, DownloadUtils downloadUtils) {
-		this.apiKeyFilename = apiKeyFilename;
+	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
+		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 	}
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
 		// Import data
 		if (forceImport) {
-			// Load API keys
-			Properties apiKeys;
-			try {
-				apiKeys = new Properties();
-				apiKeys.load(new FileReader(apiKeyFilename));
-			}catch (FileNotFoundException e){
-				throw new ConfigurationException("Missing API keys file: " + apiKeyFilename, e);
-			}
-
 			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
 				log.info("Importing {} {}",
 						datasourceSpec.getImporterClass(),
