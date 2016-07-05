@@ -61,5 +61,10 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
 		assertEquals("Area (Hectares)", attribute.getName());
 		
-	}	
+	}
+
+	@Test
+	public void testLoadingOfProperties() throws Exception {
+		assertEquals("onsApiKeyTest",importer.getConfiguration().getProperty(AbstractONSImporter.PROP_ONS_API_KEY));
+	}
 }

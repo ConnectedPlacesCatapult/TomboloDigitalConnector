@@ -5,6 +5,10 @@ import org.junit.Before;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.importer.DownloadUtils;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 public abstract class AbstractTest {
     @Before
     public void clearDatabase() {
@@ -24,5 +28,13 @@ public abstract class AbstractTest {
 
     protected static DownloadUtils makeTestDownloadUtils() {
         return new DownloadUtils("src/test/resources/datacache");
+    }
+
+    protected static Properties makeApiKeyProperties() throws IOException {
+        Properties apiKeys;
+        String filename = ClassLoader.getSystemResource("properties/apikeys.properties").getPath();
+        apiKeys = new Properties();
+        apiKeys.load(new FileReader(filename));
+        return apiKeys;
     }
 }

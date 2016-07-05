@@ -5,6 +5,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
+import java.util.Properties;
 
 public interface Importer {
 
@@ -19,4 +20,8 @@ public interface Importer {
 
 	public void setDownloadUtils(DownloadUtils downloadUtils);
 	public void setTimedValueUtils(TimedValueUtils timedValueUtils);
+
+	public void configure(Properties properties) throws ConfigurationException;
+	public void verifyConfiguration() throws ConfigurationException;
+	public Properties getConfiguration();
 }

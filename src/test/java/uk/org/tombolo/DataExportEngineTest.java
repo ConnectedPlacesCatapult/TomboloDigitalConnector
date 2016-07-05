@@ -24,12 +24,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class DataExportEngineTest extends AbstractTest {
-    DataExportEngine engine = new DataExportEngine(makeTestDownloadUtils());
+    DataExportEngine engine;
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
     Writer writer = new StringWriter();
 
     @Before
-    public void addSubjectFixtures() {
+    public void addSubjectFixtures() throws Exception {
+        engine =  new DataExportEngine(makeApiKeyProperties(), makeTestDownloadUtils());
+
         TestFactory.makeNamedSubject("E01000001");
         TestFactory.makeNamedSubject("E09000001");
         TestFactory.makeNamedSubject("E01002766");

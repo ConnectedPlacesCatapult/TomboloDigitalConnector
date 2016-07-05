@@ -16,12 +16,15 @@ import uk.org.tombolo.importer.Importer;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class DataExportEngine implements ExecutionEngine{
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	private static DownloadUtils downloadUtils;
+	private static Properties apiKeys;
 
-	DataExportEngine(DownloadUtils downloadUtils) {
+	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
+		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 	}
 	
@@ -33,6 +36,7 @@ public class DataExportEngine implements ExecutionEngine{
 						datasourceSpec.getImporterClass(),
 						datasourceSpec.getDatasourceId());
 				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+				importer.configure(apiKeys);
 				importer.setDownloadUtils(downloadUtils);
 				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
 				log.info("Imported {} values", count);

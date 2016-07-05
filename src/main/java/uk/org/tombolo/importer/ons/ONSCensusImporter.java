@@ -14,6 +14,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
@@ -43,7 +44,6 @@ import java.util.*;
  */
 public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final String ONS_API_URL = "http://data.ons.gov.uk/ons/api/data/";
-	private static final String ONS_API_KEY = "kil61db9uf";	//FIXME: This should not be in the source code!!!
 	
 	private static final String ONS_LANGUAGE_ATTRIBUTE_KEY = "@xml.lang";
 	private static final String ONS_LANGUAGE_ATTRIBUTE_VALUE_EN = "en";
@@ -57,13 +57,24 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
+	public ONSCensusImporter() throws IOException {
+		super();
+	}
+
 	@Override
-	public List<Datasource> getAllDatasources() throws IOException, ParseException{
+	public void verifyConfiguration() throws ConfigurationException {
+		if (properties.getProperty(PROP_ONS_API_KEY) == null)
+			throw new ConfigurationException("Property "+PROP_ONS_API_KEY+" not defined");
+	}
+
+	@Override
+	public List<Datasource> getAllDatasources() throws IOException, ParseException, ConfigurationException {
+		verifyConfiguration();
 		List<Datasource> datasources = new ArrayList<Datasource>();
 	
 		String baseUrl = ONS_API_URL + "collections.json?";
 		Map<String,String> params = new HashMap<String,String>();
-		params.put("apikey", ONS_API_KEY);
+		params.put("apikey", properties.getProperty(PROP_ONS_API_KEY));
 		params.put("context", "Census");		
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
@@ -193,12 +204,13 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		return valueCount;
 	}
 	
-	public Datasource getDatasource(String datasourceId) throws IOException, ParseException{
+	public Datasource getDatasource(String datasourceId) throws IOException, ParseException, ConfigurationException {
+		verifyConfiguration();
 		// Set-up the basic url and the parameters
 		String baseUrl = ONS_API_URL + "datasetdetails/" + datasourceId + ".json?";
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("context", "Census");
-		params.put("apikey", ONS_API_KEY);
+		params.put("apikey", properties.getProperty(PROP_ONS_API_KEY));
 		params.put("geog", "2011STATH");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);

@@ -15,11 +15,15 @@ public abstract class AbstractONSCensusImporterTest extends AbstractImporterTest
 	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
-	public void before(){
+	public void before() throws Exception {
 		mockTimedValueUtils = mock(TimedValueUtils.class);
 		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new ONSCensusImporter();
 		importer.setTimedValueUtils(mockTimedValueUtils);
+
+		// Load api keys
+		importer.configure(makeApiKeyProperties());
+
 		AbstractImporterTestUtils.mockDownloadUtils(importer);
 	}
 }
