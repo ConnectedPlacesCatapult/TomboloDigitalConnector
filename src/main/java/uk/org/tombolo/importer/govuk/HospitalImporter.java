@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class HospitalImporter extends AbstractImporter implements Importer {
-    private static enum SubjectTypeLabel {hospital};
+    private enum SubjectTypeLabel {hospital};
 
     @Override
     public Provider getProvider() {
@@ -46,12 +46,17 @@ public final class HospitalImporter extends AbstractImporter implements Importer
         SubjectTypeLabel datasourceIdObject = SubjectTypeLabel.valueOf(datasourceId);
         switch (datasourceIdObject) {
             case hospital:
-                Datasource datasource = new Datasource(SubjectTypeLabel.hospital.name(), getProvider(), "Hospital", "List of Hospitals in England");
-                datasource.setUrl("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B");
-                return datasource;
+                return makeDatasource(
+                        datasourceIdObject.name(), "Hospital", "List of Hospitals in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B");
             default:
-                throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));
+                return null;
         }
+    }
+
+    private Datasource makeDatasource(String name, String humanName, String description, String url) {
+        Datasource datasource = new Datasource(name, getProvider(), humanName, description);
+        datasource.setUrl(url);
+        return datasource;
     }
 
     @Override
