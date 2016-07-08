@@ -14,6 +14,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -181,7 +182,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									if (valueCount % timedValueBufferSize == 0){
 										// Buffer is full ... we write values to db
 										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-										timedValueUtils.save(timedValueBuffer);
+										TimedValueUtils.save(timedValueBuffer);
 										timedValueBuffer = new ArrayList<TimedValue>();
 										log.info("Total values written: {}", valueCount);
 									}
@@ -193,7 +194,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					}
 				}
 				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-				timedValueUtils.save(timedValueBuffer);
+				TimedValueUtils.save(timedValueBuffer);
 				log.info("Total values written: {}", valueCount);
 				br.close();
 			}

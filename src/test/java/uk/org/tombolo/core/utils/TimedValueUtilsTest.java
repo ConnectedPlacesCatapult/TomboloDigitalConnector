@@ -47,8 +47,7 @@ public class TimedValueUtilsTest extends AbstractTest {
 		TimedValue latest2 = TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-03T00:00", 400d);
 
 
-		TimedValueUtils timedValueUtils = new TimedValueUtils();
-		List<TimedValue> results = timedValueUtils.getLatestBySubjectAndAttributes(subject, Arrays.asList(attribute1, attribute2));
+		List<TimedValue> results = TimedValueUtils.getLatestBySubjectAndAttributes(subject, Arrays.asList(attribute1, attribute2));
 
 		assertTrue("Contains value for attr1 with latest timestamp", results.contains(latest1));
 		assertTrue("Contains value for attr2 with latest timestamp", results.contains(latest2));

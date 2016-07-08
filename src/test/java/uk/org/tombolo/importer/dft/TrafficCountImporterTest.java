@@ -5,28 +5,20 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporterTestUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 public class TrafficCountImporterTest extends AbstractTest {
 
 	private static Importer importer;
-	private TimedValueUtils mockTimedValueUtils;
 
 	@Before
 	public void before(){
-		mockTimedValueUtils = mock(TimedValueUtils.class);
-		when(mockTimedValueUtils.save(anyListOf(TimedValue.class))).thenAnswer(AbstractImporterTestUtils.listLengthAnswer);
 		importer = new TrafficCountImporter();
-		importer.setTimedValueUtils(mockTimedValueUtils);
-		AbstractImporterTestUtils.mockDownloadUtils(importer);
+		mockDownloadUtils(importer);
 	}
 
 	@Test

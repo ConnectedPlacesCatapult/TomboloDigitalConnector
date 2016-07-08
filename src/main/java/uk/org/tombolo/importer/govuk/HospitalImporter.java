@@ -11,7 +11,6 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -81,11 +80,6 @@ public final class HospitalImporter extends AbstractImporter implements Importer
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
         this.downloadUtils = downloadUtils;
-    }
-
-    @Override
-    public void setTimedValueUtils(TimedValueUtils timedValueUtils) {
-        this.timedValueUtils = timedValueUtils;
     }
 
     private SubjectType getSubjectType(SubjectTypeLabel subjectTypeLabel){
