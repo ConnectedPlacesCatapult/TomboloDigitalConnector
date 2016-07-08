@@ -1,5 +1,6 @@
 package uk.org.tombolo.exporter;
 
+import com.google.gson.stream.JsonWriter;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -8,100 +9,58 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 
-import javax.json.JsonValue;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
 public class GeoJsonExporter implements Exporter {
 	private Logger log = LoggerFactory.getLogger(GeoJsonExporter.class);
 
-	// FIXME: Rewriter using geotools ... I could not get it to work quicly in the initial implementation (borkur)
-
 	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
-		// Write beginning of subject list
-		writer.write("{");
-		writeStringProperty(writer, 0, "type", "FeatureCollection");
-		writeObjectPropertyOpening(writer, 1, "features",JsonValue.ValueType.ARRAY);
-		
-		int subjectCount = 0;
-		for (Subject subject : subjects){
-			// Subject is an a polygon or point for which data is to be output
+		JsonWriter jsonWriter = new JsonWriter(writer);
 
-			if (subjectCount > 0){
-				// This is not the first subject
-				writer.write(",\n");
-			}
+		jsonWriter.beginObject();
+		jsonWriter.name("type").value("FeatureCollection");
+		jsonWriter.name("features").beginArray();
 
-			// Open subject object
-			writer.write("{");
-			writeStringProperty(writer, 0, "type","Feature");
-
-			// Write geometry
-			GeometryJSON geoJson = new GeometryJSON();
-			StringWriter geoJsonWriter = new StringWriter();
-			geoJson.write(subject.getShape(),geoJsonWriter);
-			writer.write(", \"geometry\" : ");
-			geoJson.write(subject.getShape(), writer);
-
-
-			JSONObject properties = new JSONObject();
-			properties.put("label", subject.getLabel());
-			properties.put("name", subject.getName());
-
-			for (Field field : fields){
-				try {
-					properties.putAll(field.jsonValueForSubject(subject));
-				} catch (IncomputableFieldException e) {
-					log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
-					properties.put(field.getLabel(), null);
-				}
-			}
-
-			writer.write(String.format(", \"properties\": %s", properties.toJSONString()));
-
-			// Close subject object
-			writer.write("}");
-
-			subjectCount++;
+		for (Subject subject : subjects) {
+			writeFeatureForSubject(fields, subject, jsonWriter);
 		}
-		
-		// Write end of subject list
-		writer.write("]}");
+
+		jsonWriter.endArray();
+		jsonWriter.endObject();
+
+		jsonWriter.close();
 	}
 
-	protected void writeStringProperty(Writer writer, int propertyCount, String key, String value) throws IOException{
-		
-		if (propertyCount > 0)
-			writer.write(",");
-		
-		writer.write("\""+key+"\":\""+value+"\"");
+	private void writeFeatureForSubject(List<Field> fields, Subject subject, JsonWriter jsonWriter) throws IOException {
+		jsonWriter.beginObject();
+
+		jsonWriter.name("type").value("Feature");
+		jsonWriter.name("geometry").jsonValue(getGeoJSONGeometryForSubject(subject));
+		jsonWriter.name("properties").jsonValue(getPropertiesForSubject(fields, subject).toJSONString());
+
+		jsonWriter.endObject();
 	}
 
-	protected void writeDoubleProperty(Writer writer, int propertyCount, String key, Double value) throws IOException{
-		
-		if (propertyCount > 0)
-			writer.write(",");
-		
-		writer.write("\""+key+"\":"+value+"");
-	}
-	
-	protected void writeObjectPropertyOpening(Writer writer, int propertyCount, String key, JsonValue.ValueType valueType) throws IOException{
-		if (propertyCount > 0)
-			writer.write(",");
+	private JSONObject getPropertiesForSubject(List<Field> fields, Subject subject) {
+		JSONObject properties = new JSONObject();
 
-		writer.write("\""+key+"\":");
-		
-		switch(valueType){
-			case ARRAY:
-				writer.write("[");
-				break;
-			case OBJECT:
-				writer.write("{");
-				break;
-			default:
-				break;	
+		properties.put("label", subject.getLabel());
+		properties.put("name", subject.getName());
+
+		for (Field field : fields){
+			try {
+				properties.putAll(field.jsonValueForSubject(subject));
+			} catch (IncomputableFieldException e) {
+				log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
+				properties.put(field.getLabel(), null);
+			}
 		}
+		return properties;
+	}
+
+	private String getGeoJSONGeometryForSubject(Subject subject) {
+		return (new GeometryJSON()).toString(subject.getShape());
 	}
 }
