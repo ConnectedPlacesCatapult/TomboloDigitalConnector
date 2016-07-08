@@ -47,7 +47,7 @@ public final class HospitalImporter extends AbstractImporter implements Importer
         switch (datasourceIdObject) {
             case hospital:
                 Datasource datasource = new Datasource(SubjectTypeLabel.hospital.name(), getProvider(), "Hospital", "List of Hospitals in England");
-                datasource.setUrl("https://data.gov.uk/data/api/service/health/hospitals/all_hospitals");
+                datasource.setUrl("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B");
                 return datasource;
             default:
                 throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));

@@ -46,7 +46,7 @@ public class HospitalImporterTest extends AbstractTest {
         assertEquals("uk.gov.data", datasource.getProvider().getLabel());
         assertEquals("Hospital", datasource.getName());
         assertEquals("List of Hospitals in England", datasource.getDescription());
-        assertEquals("https://data.gov.uk/data/api/service/health/hospitals/all_hospitals", datasource.getUrl());
+        assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasource.getUrl());
     }
 
     @Test
