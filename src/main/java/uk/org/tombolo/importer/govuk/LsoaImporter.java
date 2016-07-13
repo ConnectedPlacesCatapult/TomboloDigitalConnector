@@ -11,8 +11,11 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.projection.ProjectionException;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -23,8 +26,10 @@ import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public final class LsoaImporter extends AbstractImporter implements Importer {
     private static enum SubjectTypeLabel {lsoa};
@@ -62,30 +67,15 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
 
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
-        File localFile = downloadUtils.getDatasourceFile(datasource);
-        ZipFile zipFile = new ZipFile(localFile);
-        Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntries();
-        Path tempDirectory = Files.createTempDirectory("shapefile");
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getShapefileReaderForDatasource(datasource);
+        SubjectType lsoaSubjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
+        List<Subject> subjects = convertFeaturesToSubjects(featureReader, lsoaSubjectType);
+        SubjectUtils.save(subjects);
+        return subjects.size();
+    }
 
-        // We copy all of these files because 4 of them are needed for the shapefile to be readable.
-        // Copying all of them is simpler than copying a select 4 :)
-        while (zipEntries.hasMoreElements()) {
-            ZipArchiveEntry entry = zipEntries.nextElement();
-            Files.copy(zipFile.getInputStream(entry), Paths.get(tempDirectory.toString(), "/" + entry.getName()), StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        ShapefileDataStore store = new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/LSOA_2011_EW_BGC_V2.shp").toUri().toURL());
-
-        SubjectType lsoaSubjectType = SubjectTypeUtils.getSubjectTypeByLabel("lsoa");
-        CoordinateReferenceSystem sourceCrs = CRS.decode("EPSG:27700");
-        // The 'true' here means longitude first. Don't know why GeoTools puts lat first by default for this CRS
-        // There's a `.prj` file with this dataset, but it seems to result in transforms being ~10m off longitude-wise, so we ignore it
-        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:4326", true);
-
-        MathTransform crsTransform = CRS.findMathTransform(sourceCrs, targetCrs);
-
-        DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
-        FeatureReader featureReader = store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+    private List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType lsoaSubjectType) throws FactoryException, IOException, TransformException {
+        MathTransform crsTransform = makeCrsTransform();
 
         List<Subject> subjects = new ArrayList<>();
         while (featureReader.hasNext()) {
@@ -93,8 +83,9 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
             String label = (String) feature.getAttribute("LSOA11CD");
             String name = (String) feature.getAttribute("LSOA11NM");
             Geometry geom = (Geometry) feature.getDefaultGeometry();
+            Geometry transformedGeom;
             try {
-                Geometry transformedGeom = JTS.transform(geom, crsTransform);
+                transformedGeom = JTS.transform(geom, crsTransform);
                 transformedGeom.setSRID(4326); // EPSG:4326
                 subjects.add(new Subject(lsoaSubjectType, label, name, transformedGeom));
             } catch (ProjectionException e) {
@@ -109,10 +100,34 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
                 // EPSG:4326 (in the hundreds) we lose some precision — tripping the threshold for many LSOAs.
             }
         }
+        return subjects;
+    }
 
-        SubjectUtils.save(subjects);
+    private MathTransform makeCrsTransform() throws FactoryException {
+        CoordinateReferenceSystem sourceCrs = CRS.decode("EPSG:27700");
+        // The 'true' here means longitude first. Don't know why GeoTools puts lat first by default for this CRS
+        // There's a `.prj` file with this dataset, but it seems to result in transforms being ~10m off longitude-wise, so we ignore it
+        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:4326", true);
 
+        return CRS.findMathTransform(sourceCrs, targetCrs);
+    }
 
-        return subjects.size();
+    private FeatureReader<SimpleFeatureType, SimpleFeature> getShapefileReaderForDatasource(Datasource datasource) throws IOException {
+        File localFile = downloadUtils.getDatasourceFile(datasource);
+        ZipFile zipFile = new ZipFile(localFile);
+        Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntries();
+        Path tempDirectory = Files.createTempDirectory("shapefile");
+
+        // We copy all of these files because 4 of them are needed for the shapefile to be readable.
+        // Copying all of them is simpler than copying a select 4 :)
+        while (zipEntries.hasMoreElements()) {
+            ZipArchiveEntry entry = zipEntries.nextElement();
+            Files.copy(zipFile.getInputStream(entry), Paths.get(tempDirectory.toString(), "/" + entry.getName()), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        ShapefileDataStore store = new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/LSOA_2011_EW_BGC_V2.shp").toUri().toURL());
+
+        DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
+        return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
     }
 }
