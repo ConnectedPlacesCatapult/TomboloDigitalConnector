@@ -77,7 +77,7 @@ public final class OaImporter extends AbstractImporter implements Importer {
 
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
-        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 
         ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource, subjectType);
         FeatureReader featureReader = getFeatureReader(store);
