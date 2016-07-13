@@ -27,9 +27,13 @@ import uk.org.tombolo.importer.Importer;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.Stream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 public final class OaImporter extends AbstractImporter implements Importer {
     private static enum SubjectTypeLabel {lsoa, msoa};
@@ -74,10 +78,22 @@ public final class OaImporter extends AbstractImporter implements Importer {
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getShapefileReaderForDatasource(datasource, subjectType);
+
+        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource, subjectType);
+        FeatureReader featureReader = getFeatureReader(store);
+
         List<Subject> subjects = convertFeaturesToSubjects(featureReader, subjectType);
         SubjectUtils.save(subjects);
+
+        featureReader.close();
+        store.dispose();
+        
         return subjects.size();
+    }
+
+    private FeatureReader getFeatureReader(ShapefileDataStore store) throws IOException {
+        DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
+        return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
     }
 
     private List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType subjectType) throws FactoryException, IOException, TransformException {
@@ -85,13 +101,13 @@ public final class OaImporter extends AbstractImporter implements Importer {
 
         List<Subject> subjects = new ArrayList<>();
         while (featureReader.hasNext()) {
-            SimpleFeature feature = (SimpleFeature) featureReader.next();
+            SimpleFeature feature = featureReader.next();
             String label = (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11CD"));
             String name = (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11NM"));
             Geometry geom = (Geometry) feature.getDefaultGeometry();
-            Geometry transformedGeom;
+
             try {
-                transformedGeom = JTS.transform(geom, crsTransform);
+                Geometry transformedGeom = JTS.transform(geom, crsTransform);
                 transformedGeom.setSRID(4326); // EPSG:4326
                 subjects.add(new Subject(subjectType, label, name, transformedGeom));
             } catch (ProjectionException e) {
@@ -118,7 +134,7 @@ public final class OaImporter extends AbstractImporter implements Importer {
         return CRS.findMathTransform(sourceCrs, targetCrs);
     }
 
-    private FeatureReader<SimpleFeatureType, SimpleFeature> getShapefileReaderForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
+    private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
         File localFile = downloadUtils.getDatasourceFile(datasource);
         ZipFile zipFile = new ZipFile(localFile);
         Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntries();
@@ -131,10 +147,9 @@ public final class OaImporter extends AbstractImporter implements Importer {
             Files.copy(zipFile.getInputStream(entry), Paths.get(tempDirectory.toString(), "/" + entry.getName()), StandardCopyOption.REPLACE_EXISTING);
         }
 
-        ShapefileDataStore store = new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + shapefileNameForDatasource(subjectType)).toUri().toURL());
+        zipFile.close();
 
-        DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
-        return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        return new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + shapefileNameForDatasource(subjectType)).toUri().toURL());
     }
 
     private String shapefileNameForDatasource(SubjectType subjectType) {
