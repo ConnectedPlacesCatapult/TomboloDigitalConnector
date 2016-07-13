@@ -31,8 +31,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
 
-public final class LsoaImporter extends AbstractImporter implements Importer {
-    private static enum SubjectTypeLabel {lsoa};
+public final class OaImporter extends AbstractImporter implements Importer {
+    private static enum SubjectTypeLabel {lsoa, msoa};
 
     @Override
     public Provider getProvider() {
@@ -54,11 +54,17 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         SubjectTypeLabel datasourceIdObject = SubjectTypeLabel.valueOf(datasourceId);
+        Datasource datasource;
         switch (datasourceIdObject) {
             case lsoa:
-                Datasource datasource = new Datasource(SubjectTypeLabel.lsoa.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
+                datasource = new Datasource(datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
                 datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
                 datasource.setLocalDatafile("govuk/lsoa/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                return datasource;
+            case msoa:
+                datasource = new Datasource(datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
+                datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                datasource.setLocalDatafile("govuk/msoa/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
                 return datasource;
             default:
                 throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));
@@ -67,37 +73,37 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
 
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getShapefileReaderForDatasource(datasource);
-        SubjectType lsoaSubjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
-        List<Subject> subjects = convertFeaturesToSubjects(featureReader, lsoaSubjectType);
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getShapefileReaderForDatasource(datasource, subjectType);
+        List<Subject> subjects = convertFeaturesToSubjects(featureReader, subjectType);
         SubjectUtils.save(subjects);
         return subjects.size();
     }
 
-    private List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType lsoaSubjectType) throws FactoryException, IOException, TransformException {
+    private List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType subjectType) throws FactoryException, IOException, TransformException {
         MathTransform crsTransform = makeCrsTransform();
 
         List<Subject> subjects = new ArrayList<>();
         while (featureReader.hasNext()) {
             SimpleFeature feature = (SimpleFeature) featureReader.next();
-            String label = (String) feature.getAttribute("LSOA11CD");
-            String name = (String) feature.getAttribute("LSOA11NM");
+            String label = (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11CD"));
+            String name = (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11NM"));
             Geometry geom = (Geometry) feature.getDefaultGeometry();
             Geometry transformedGeom;
             try {
                 transformedGeom = JTS.transform(geom, crsTransform);
                 transformedGeom.setSRID(4326); // EPSG:4326
-                subjects.add(new Subject(lsoaSubjectType, label, name, transformedGeom));
+                subjects.add(new Subject(subjectType, label, name, transformedGeom));
             } catch (ProjectionException e) {
                 System.out.println(String.format("Rejecting %s. You will see this if you have assertions enabled (e.g. " +
-                        "you run with `-ea`) as GeoTools runs asserts. See source of LsoaImporter for details on this. " +
+                        "you run with `-ea`) as GeoTools runs asserts. See source of OaImporter for details on this. " +
                         "To fix this, replace `-ea` with `-ea -da:org.geotools...` in your test VM options (probably in" +
                         "your IDE) to disable assertions in GeoTools.", label));
                 // Effectively, GeoTools will run asserts on transforms by converting and then converting back to check
                 // the transform occurs within some tolerance (for us, 0.1E-6). Due to some misleading code in GeoTools
                 // TransverseMercator.java, the code claims to test against something sensible (0.1E-6 meters) but actually
                 // tests against 0.1E-6 in the units of the CRS. Because EPSG:27700 is much bigger (in the thousands) than
-                // EPSG:4326 (in the hundreds) we lose some precision — tripping the threshold for many LSOAs.
+                // EPSG:4326 (in the hundreds) we lose some precision — tripping the threshold for many OAs.
             }
         }
         return subjects;
@@ -112,7 +118,7 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
         return CRS.findMathTransform(sourceCrs, targetCrs);
     }
 
-    private FeatureReader<SimpleFeatureType, SimpleFeature> getShapefileReaderForDatasource(Datasource datasource) throws IOException {
+    private FeatureReader<SimpleFeatureType, SimpleFeature> getShapefileReaderForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
         File localFile = downloadUtils.getDatasourceFile(datasource);
         ZipFile zipFile = new ZipFile(localFile);
         Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntries();
@@ -125,9 +131,17 @@ public final class LsoaImporter extends AbstractImporter implements Importer {
             Files.copy(zipFile.getInputStream(entry), Paths.get(tempDirectory.toString(), "/" + entry.getName()), StandardCopyOption.REPLACE_EXISTING);
         }
 
-        ShapefileDataStore store = new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/LSOA_2011_EW_BGC_V2.shp").toUri().toURL());
+        ShapefileDataStore store = new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + shapefileNameForDatasource(subjectType)).toUri().toURL());
 
         DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
         return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+    }
+
+    private String shapefileNameForDatasource(SubjectType subjectType) {
+        return subjectType.getLabel().toUpperCase() + "_2011_EW_BGC_V2.shp";
+    }
+
+    private String fieldNameForSubjectType(SubjectType subjectType, String field) {
+        return subjectType.getLabel().toUpperCase() + field;
     }
 }
