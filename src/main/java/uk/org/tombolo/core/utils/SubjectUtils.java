@@ -3,6 +3,8 @@ package uk.org.tombolo.core.utils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectUtils {
+	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 
 	public static Subject getSubjectByLabel(String label){
 		return HibernateUtil.withSession(session -> {
@@ -53,16 +56,25 @@ public class SubjectUtils {
 	public static void save(List<Subject> subjects){
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
+			int saved = 0;
 			for (Subject subject : subjects) {
 				Criteria criteria = session.createCriteria(Subject.class);
 				Subject savedSubject = (Subject) criteria.add(Restrictions.eq("label", subject.getLabel())).uniqueResult();
+
 				if (savedSubject == null) {
-					Integer id = (Integer) session.save(subject);
-					subject.setId(id);
+					session.saveOrUpdate(subject);
+					saved++;
 				} else {
-					// FIXME: Find a way to update an existing ... if needed
-					//subject.setId(savedSubject.getId());
-					//session.saveOrUpdate(subject);
+					// This is happening because the TFL stations contain a duplicate ID, amongst other reasons
+					log.warn("Could not save subject {} {}. Original message: {}",
+							subject.getLabel(),
+							subject.getName());
+				}
+
+				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
+					//flush a batch of inserts and release memory:
+					session.flush();
+					session.clear();
 				}
 			}
 			session.getTransaction().commit();
