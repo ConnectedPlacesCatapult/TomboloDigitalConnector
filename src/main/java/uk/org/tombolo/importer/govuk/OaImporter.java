@@ -1,8 +1,6 @@
 package uk.org.tombolo.importer.govuk;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
@@ -16,6 +14,8 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -24,18 +24,17 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ZipUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 public final class OaImporter extends AbstractImporter implements Importer {
+    private static Logger log = LoggerFactory.getLogger(OaImporter.class);
     private static enum SubjectTypeLabel {lsoa, msoa};
 
     @Override
@@ -111,10 +110,10 @@ public final class OaImporter extends AbstractImporter implements Importer {
                 transformedGeom.setSRID(4326); // EPSG:4326
                 subjects.add(new Subject(subjectType, label, name, transformedGeom));
             } catch (ProjectionException e) {
-                System.out.println(String.format("Rejecting %s. You will see this if you have assertions enabled (e.g. " +
+                log.warn("Rejecting {}. You will see this if you have assertions enabled (e.g. " +
                         "you run with `-ea`) as GeoTools runs asserts. See source of OaImporter for details on this. " +
                         "To fix this, replace `-ea` with `-ea -da:org.geotools...` in your test VM options (probably in" +
-                        "your IDE) to disable assertions in GeoTools.", label));
+                        "your IDE) to disable assertions in GeoTools.", label);
                 // Effectively, GeoTools will run asserts on transforms by converting and then converting back to check
                 // the transform occurs within some tolerance (for us, 0.1E-6). Due to some misleading code in GeoTools
                 // TransverseMercator.java, the code claims to test against something sensible (0.1E-6 meters) but actually
@@ -136,19 +135,7 @@ public final class OaImporter extends AbstractImporter implements Importer {
 
     private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
         File localFile = downloadUtils.getDatasourceFile(datasource);
-        ZipFile zipFile = new ZipFile(localFile);
-        Enumeration<ZipArchiveEntry> zipEntries = zipFile.getEntries();
-        Path tempDirectory = Files.createTempDirectory("shapefile");
-
-        // We copy all of these files because 4 of them are needed for the shapefile to be readable.
-        // Copying all of them is simpler than copying a select 4 :)
-        while (zipEntries.hasMoreElements()) {
-            ZipArchiveEntry entry = zipEntries.nextElement();
-            Files.copy(zipFile.getInputStream(entry), Paths.get(tempDirectory.toString(), "/" + entry.getName()), StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        zipFile.close();
-
+        Path tempDirectory = ZipUtils.unzipToTemporaryDirectory(localFile);
         return new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + shapefileNameForDatasource(subjectType)).toUri().toURL());
     }
 
