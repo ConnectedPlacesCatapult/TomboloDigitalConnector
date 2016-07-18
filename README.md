@@ -37,7 +37,6 @@ psql -d tombolo -c "CREATE EXTENSION postgis;"
 The following scripts will delete the existing tables in the tombolo database
 and create a new empty copy, with some initial fixtures.
 
-
 ```bash
 # Create DB tables and load initial fixtures
 
@@ -46,10 +45,7 @@ psql -d tombolo -U tombolo < src/main/resources/sql/initial_fixtures.sql
 ```
 
 ```bash
-# Load LSOAs, MSOAs, LAs
-
-sh scripts/loadLsoa.sh
-sh scripts/loadMsoa.sh
+# Load Local Authorities
 sh scripts/loadLa.sh
 ```
 
