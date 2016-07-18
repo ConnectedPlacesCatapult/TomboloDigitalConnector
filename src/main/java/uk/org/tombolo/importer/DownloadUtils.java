@@ -1,14 +1,12 @@
 package uk.org.tombolo.importer;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -66,7 +64,7 @@ public class DownloadUtils {
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
 			connection.setRequestProperty("Accept", "application/json");
-			IOUtils.copy(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+			FileUtils.copyInputStreamToFile(connection.getInputStream(), localDatasourceFile);
 		}
 		JSONParser parser = new JSONParser();
 		return (JSONObject) parser.parse(new FileReader(localDatasourceFile));

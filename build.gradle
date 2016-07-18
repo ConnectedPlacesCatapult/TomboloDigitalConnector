@@ -9,10 +9,11 @@ repositories {
 
 dependencies {
 	// Geo Tools
-	compile group:'org.geotools',			name: 'gt-referencing', 	version: '9.0'
-	compile group:'org.geotools',			name: 'gt-geojson', 		version: '9.0'
-	compile group:'org.geotools',			name: 'gt-epsg-extension', 	version: '9.0'
-	compile group:'org.geotools',			name: 'gt-epsg-hsql',		version: '9.0'
+	compile group:'org.geotools',			name: 'gt-referencing', 	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-geojson', 		version: '14.0'
+	compile group:'org.geotools',			name: 'gt-shapefile', 		version: '14.0'
+	compile group:'org.geotools',			name: 'gt-epsg-extension', 	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-epsg-hsql',		version: '14.0'
 
     // POI Excel file manipulation
 	compile group: 'org.apache.poi',		name: 'poi',		version: '3.13'
@@ -57,6 +58,7 @@ task copyDeps(type: Copy) {
 task runExport(dependsOn: ['classes'], type: JavaExec) {
 	main = 'uk.org.tombolo.DataExportRunner'
 	classpath = sourceSets.main.runtimeClasspath
+	jvmArgs '-disableassertions'
 
 	doFirst {
 		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
@@ -76,6 +78,7 @@ task runExport(dependsOn: ['classes'], type: JavaExec) {
 
 test {
 	maxHeapSize = "1024m"
+	jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
 
 	doFirst {
 		def configured = project.hasProperty('testDatabaseURI') && project.hasProperty('testDatabaseUsername') && project.hasProperty('testDatabasePassword');
