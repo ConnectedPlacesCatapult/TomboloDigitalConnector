@@ -3,10 +3,7 @@ package uk.org.tombolo;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 
 import java.time.LocalDateTime;
@@ -41,16 +38,24 @@ public final class TestFactory {
     public static Subject makeNamedSubject(String label) {
         switch (label) {
             case "E01000001":
+                makeSubjectType("lsoa", "Lower Super Output Area");
                 return makeSubject("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E09000001":
+                makeSubjectType("localAuthority", "Local Authority");
                 return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
             case "E08000035":
+                makeSubjectType("localAuthority", "Local Authority");
                 return makeSubject("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
             case "E01002766":
+                makeSubjectType("lsoa", "Lower Super Output Area");
                 return makeSubject("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture", label));
         }
+    }
+
+    public static SubjectType makeSubjectType(String label, String name) {
+        return SubjectTypeUtils.getOrCreate(label, name);
     }
 
     private static Subject makeSubject(String subjectTypeLabel, String label, String name, Geometry geometry) {
