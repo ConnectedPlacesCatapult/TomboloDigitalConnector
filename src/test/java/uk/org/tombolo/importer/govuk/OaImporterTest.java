@@ -20,7 +20,6 @@ public class OaImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new OaImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
-        importer.setTimedValueUtils(new TimedValueUtils());
     }
 
     @Test
