@@ -20,7 +20,6 @@ public class LocalAuthorityImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new LocalAuthorityImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
-        importer.setTimedValueUtils(new TimedValueUtils());
     }
 
     @Test
