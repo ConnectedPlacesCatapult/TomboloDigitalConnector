@@ -16,4 +16,14 @@ public class SubjectTypeUtils {
 			session.getTransaction().commit();
 		});
 	}
+
+	public static SubjectType getOrCreate(String label, String description) {
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(label);
+		if (null == subjectType) {
+			subjectType = new SubjectType(label, description);
+			SubjectTypeUtils.save(subjectType);
+		}
+
+		return subjectType;
+	}
 }

@@ -13,6 +13,10 @@
 		],
 		"datasourceSpecification" : [
 			{
+				"importerClass" : "uk.org.tombolo.importer.govuk.OaImporter",
+				"datasourceId" : "lsoa"
+			},
+			{
 				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
 				"datasourceId" : "QS103EW"
 			},
