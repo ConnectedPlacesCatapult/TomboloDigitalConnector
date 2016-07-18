@@ -44,11 +44,6 @@ psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
 psql -d tombolo -U tombolo < src/main/resources/sql/initial_fixtures.sql
 ```
 
-```bash
-# Load Local Authorities
-sh scripts/loadLa.sh
-```
-
 ### Set up test database
 
 The test database is used by the tests and is cleared routinely. We use this
