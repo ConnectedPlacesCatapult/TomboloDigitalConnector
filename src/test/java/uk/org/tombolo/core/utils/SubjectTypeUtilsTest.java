@@ -10,8 +10,8 @@ public class SubjectTypeUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetSubjectTypeByLabel(){
-		SubjectType lsoa = SubjectTypeUtils.getSubjectTypeByLabel("lsoa");
-		assertEquals("lsoa", lsoa.getLabel());
-		assertEquals("Lower Layer Super Output Area", lsoa.getName());
+		SubjectType lsoa = SubjectTypeUtils.getSubjectTypeByLabel("unknown");
+		assertEquals("unknown", lsoa.getLabel());
+		assertEquals("Unknown Subject Type", lsoa.getName());
 	}
 }

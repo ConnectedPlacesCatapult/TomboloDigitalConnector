@@ -13,6 +13,10 @@
 		],	
 		"datasourceSpecification" : [
 			{
+				"importerClass" : "uk.org.tombolo.importer.govuk.LocalAuthorityImporter",
+				"datasourceId": "localAuthority"
+			},
+			{
 				"importerClass" : "uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter",
 				"datasourceId" : "london-borough-profiles"
 			},
