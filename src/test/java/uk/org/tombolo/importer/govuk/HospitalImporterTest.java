@@ -29,7 +29,7 @@ public class HospitalImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testImportDatasource() throws Exception {
+    public void testImportHospitals() throws Exception {
         int recordsImported = importer.importDatasource("hospital");
         Subject subject = SubjectUtils.getSubjectByLabel("40918");
         assertEquals(1106, recordsImported);
@@ -37,6 +37,26 @@ public class HospitalImporterTest extends AbstractTest {
         assertEquals(51.5046, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         // This is in the form 0.0Ex in the JSON so we test on this
         assertEquals(-0.0889, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
+    }
+
+    @Test
+    public void testImportClinics() throws Exception {
+        int recordsImported = importer.importDatasource("clinic");
+        Subject subject = SubjectUtils.getSubjectByLabel("12366");
+        assertEquals(8416, recordsImported);
+        assertEquals("Frinton Road Medical Centre", subject.getName());
+        assertEquals(51.8042, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
+        assertEquals(1.1863, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
+    }
+
+    @Test
+    public void testImportGpSurgeries() throws Exception {
+        int recordsImported = importer.importDatasource("gpSurgeries");
+        Subject subject = SubjectUtils.getSubjectByLabel("2915");
+        assertEquals(9767, recordsImported);
+        assertEquals("Blackfriars", subject.getName());
+        assertEquals(53.4839, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
+        assertEquals(-2.2547, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
     }
 
     @Test
@@ -52,7 +72,7 @@ public class HospitalImporterTest extends AbstractTest {
     @Test
     public void testGetAllDatasources() throws Exception {
         List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(1, datasources.size());
+        assertEquals(3, datasources.size());
         assertEquals("hospital", datasources.get(0).getId());
     }
 }

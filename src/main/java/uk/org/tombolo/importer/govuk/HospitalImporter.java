@@ -5,6 +5,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -22,7 +24,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class HospitalImporter extends AbstractImporter implements Importer {
-    private enum SubjectTypeLabel {hospital};
+    private Logger log = LoggerFactory.getLogger(HospitalImporter.class);
+    private enum SubjectTypeLabel {hospital, clinic, gpSurgeries};
 
     @Override
     public Provider getProvider() {
@@ -48,6 +51,13 @@ public final class HospitalImporter extends AbstractImporter implements Importer
             case hospital:
                 return makeDatasource(
                         datasourceIdObject.name(), "Hospital", "List of Hospitals in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B");
+            case clinic:
+                return makeDatasource(
+                        datasourceIdObject.name(), "Clinic", "List of Clinics in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B");
+            case gpSurgeries:
+                log.warn("GP Surgeries dataset known to have erroneous data, for an example see 'Dr Rushton & Partne.478378295898438' or watch import logs");
+                return makeDatasource(
+                        datasourceIdObject.name(), "GP Surgeries", "List of GP Surgeries in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B");
             default:
                 return null;
         }
@@ -62,19 +72,27 @@ public final class HospitalImporter extends AbstractImporter implements Importer
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        SubjectType poiType = getSubjectType(SubjectTypeLabel.valueOf(datasource.getId()));
+        SubjectType poiType = getSubjectType(datasource);
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
 
-        List<Subject> subjects = results.stream().map(hospitalObj -> {
-                String label = hospitalObj.get("organisation_id");
-                String name = hospitalObj.get("organisation_name");
-                Double longitude = Double.parseDouble(hospitalObj.get("longitude"));
-                Double latitude = Double.parseDouble(hospitalObj.get("latitude"));
+        List<Subject> subjects = results.stream().map(healthOrgObj -> {
+            String label = healthOrgObj.get("organisation_id");
+            String name = healthOrgObj.get("organisation_name");
+            Point point = null;
+            try {
+                Double longitude = Double.parseDouble(healthOrgObj.get("longitude"));
+                Double latitude = Double.parseDouble(healthOrgObj.get("latitude"));
                 Coordinate coordinate = new Coordinate(longitude, latitude);
-                Point point = geometryFactory.createPoint(coordinate);
-                return new Subject(poiType, label, name, point);
+                point = geometryFactory.createPoint(coordinate);
+            } catch (Exception e) {
+                // If we have any trouble with the geometry, e.g. the figures are blank or invalid,
+                // we use the null geometry prepopulated in the `point` variable, and log.
+                log.warn("Health organisation {} ({}) has no valid geometry", name, label);
+            }
+            return new Subject(poiType, label, name, point);
+
         }).collect(Collectors.toList());
 
         SubjectUtils.save(subjects);
@@ -87,10 +105,10 @@ public final class HospitalImporter extends AbstractImporter implements Importer
         this.downloadUtils = downloadUtils;
     }
 
-    private SubjectType getSubjectType(SubjectTypeLabel subjectTypeLabel){
-        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel.name());
+    private SubjectType getSubjectType(Datasource datasource){
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
         if (subjectType == null || subjectType.getLabel() == null){
-            subjectType = new SubjectType(subjectTypeLabel.name(), "Hospital");
+            subjectType = new SubjectType(datasource.getId(), datasource.getName());
             SubjectTypeUtils.save(subjectType);
         }
         return subjectType;
