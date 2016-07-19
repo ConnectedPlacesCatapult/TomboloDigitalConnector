@@ -12,12 +12,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class HospitalImporterTest extends AbstractTest {
-    HospitalImporter importer;
+public class HealthOrganisationImporterTest extends AbstractTest {
+    HealthOrganisationImporter importer;
 
     @Before
     public void setUp() throws Exception {
-        importer = new HospitalImporter();
+        importer = new HealthOrganisationImporter();
         mockDownloadUtils(importer);
     }
 

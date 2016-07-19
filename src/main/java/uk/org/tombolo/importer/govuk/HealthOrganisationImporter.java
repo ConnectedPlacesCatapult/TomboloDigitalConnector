@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class HospitalImporter extends AbstractImporter implements Importer {
-    private Logger log = LoggerFactory.getLogger(HospitalImporter.class);
+public final class HealthOrganisationImporter extends AbstractImporter implements Importer {
+    private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
     private enum SubjectTypeLabel {hospital, clinic, gpSurgeries};
 
     @Override
