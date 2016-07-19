@@ -22,7 +22,6 @@ public class TimedValueId implements Serializable {
 	Attribute attribute;
 	
 	@Column(name="timestamp")
-	@Type(type="uk.org.tombolo.core.utils.LocalDateTimeUserType")
 	LocalDateTime timestamp;
 
 	public TimedValueId(){

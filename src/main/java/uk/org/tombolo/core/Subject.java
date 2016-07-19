@@ -66,8 +66,7 @@ public class Subject {
 		this.name = name;
 	}
 
-	@Column(name="shape", columnDefinition="geometry(Geometry,"+SRID+")")
-	@Type(type = "org.hibernate.spatial.GeometryType")
+	@Column(name="shape", columnDefinition="Geometry")
 	public Geometry getShape() {
 		return shape;
 	}
