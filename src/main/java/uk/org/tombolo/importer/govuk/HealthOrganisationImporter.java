@@ -72,7 +72,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     @Override
     public int importDatasource(Datasource datasource) throws Exception {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        SubjectType poiType = getSubjectType(datasource);
+        SubjectType poiType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getName());
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
@@ -98,14 +98,5 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
         SubjectUtils.save(subjects);
 
         return subjects.size();
-    }
-
-    private SubjectType getSubjectType(Datasource datasource){
-        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
-        if (subjectType == null || subjectType.getLabel() == null){
-            subjectType = new SubjectType(datasource.getId(), datasource.getName());
-            SubjectTypeUtils.save(subjectType);
-        }
-        return subjectType;
     }
 }
