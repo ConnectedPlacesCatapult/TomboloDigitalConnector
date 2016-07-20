@@ -100,11 +100,6 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
         return subjects.size();
     }
 
-    @Override
-    public void setDownloadUtils(DownloadUtils downloadUtils) {
-        this.downloadUtils = downloadUtils;
-    }
-
     private SubjectType getSubjectType(Datasource datasource){
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(datasource.getId());
         if (subjectType == null || subjectType.getLabel() == null){
