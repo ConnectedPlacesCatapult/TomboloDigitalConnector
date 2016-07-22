@@ -55,7 +55,7 @@ public class DownloadUtils {
 	}
 
 	public JSONObject fetchJSON(URL url) throws IOException, ParseException {
-		String urlKey = Base64.getEncoder().encodeToString(url.toString().getBytes());
+		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory
 						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
