@@ -47,7 +47,7 @@ public class WrapperField implements Field {
             try {
                 inner.putAll(field.jsonValueForSubject(subject));
             } catch (IncomputableFieldException e) {
-                log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
+                log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
             }
         }
         obj.put(label, inner);
