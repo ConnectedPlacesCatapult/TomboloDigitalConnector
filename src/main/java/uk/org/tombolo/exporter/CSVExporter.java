@@ -84,7 +84,7 @@ public class CSVExporter implements Exporter {
 			try {
 				property.put(getFieldPropertyName(field, "latest_value"), ((SingleValueField) field).valueForSubject(subject));
 			} catch (IncomputableFieldException e) {
-				log.warn("Could not compute Field %s for Subject %s, reason: %s", field.getLabel(), subject.getLabel(), e.getMessage());
+				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
 				property.put(getFieldPropertyName(field, "latest_value"), null);
 			}
 		} else {
