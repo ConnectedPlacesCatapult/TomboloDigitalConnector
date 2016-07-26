@@ -19,6 +19,11 @@ public class LondonDatastoreImporter extends ExcelImporter implements Importer {
 	}
 
 	@Override
+	protected String getCacheKeyForDatasourceId(String datasourceId) {
+		return getClass().getCanonicalName() + "@" + datasourceId;
+	}
+
+	@Override
 	public Provider getProvider() {
 		return PROVIDER;
 	}

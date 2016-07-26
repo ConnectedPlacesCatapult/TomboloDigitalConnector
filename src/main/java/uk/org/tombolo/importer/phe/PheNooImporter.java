@@ -17,7 +17,12 @@ public class PheNooImporter extends ExcelImporter implements Importer {
 		datasourceSpecDir = DATASOURCE_SPEC_DIR;
 		timedValueBufferSize = TIMEDVALUE_BUFFER_SIZE;
 	}
-	
+
+	@Override
+	protected String getCacheKeyForDatasourceId(String datasourceId) {
+		return getClass().getCanonicalName() + "@" + datasourceId;
+	}
+
 	@Override
 	public Provider getProvider() {
 		return PROVIDER;

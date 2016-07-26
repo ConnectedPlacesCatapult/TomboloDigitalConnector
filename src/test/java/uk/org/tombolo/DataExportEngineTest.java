@@ -9,6 +9,8 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.ImportCacheMarker;
+import uk.org.tombolo.core.utils.ImportCacheMarkerUtils;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -55,6 +57,20 @@ public class DataExportEngineTest extends AbstractTest {
 
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.label", equalTo("E01000001")));
+    }
+
+    @Test
+    public void testObeysCache() throws Exception {
+        // If we mark localAuthorities as imported...
+        ImportCacheMarkerUtils.markCached("uk.org.tombolo.importer.govuk.LocalAuthorityImporter@localAuthority");
+
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
+        ).addDatasourceSpecification("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority");
+        engine.execute(builder.build(), writer, true);
+
+        // ...we expect the importer not to have imported them, so we should have zero features
+        assertThat(writer.toString(), hasJsonPath("$.features", hasSize(0)));
     }
 
     @Test

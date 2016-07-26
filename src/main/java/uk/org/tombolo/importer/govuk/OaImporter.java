@@ -75,6 +75,11 @@ public final class OaImporter extends AbstractImporter implements Importer {
     }
 
     @Override
+    protected String getCacheKeyForDatasourceId(String datasourceId) {
+        return getClass().getCanonicalName() + "@" + datasourceId;
+    }
+
+    @Override
     protected int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 

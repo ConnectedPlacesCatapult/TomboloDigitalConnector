@@ -92,7 +92,12 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		if (localAuthorities == null)
 			localAuthorities = Arrays.asList(LOCAL_AUTHORITIES);
 	}
-	
+
+	@Override
+	protected String getCacheKeyForDatasourceId(String datasourceId) {
+		return getClass().getCanonicalName() + "@" + datasourceId;
+	}
+
 	@Override
 	public Provider getProvider() {
 		return PROVIDER;

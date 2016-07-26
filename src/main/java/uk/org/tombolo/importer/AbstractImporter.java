@@ -2,6 +2,7 @@ package uk.org.tombolo.importer;
 
 import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.ImportCacheMarkerUtils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -25,12 +26,17 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws ParseException 
 	 */
 	public int importDatasource(String datasourceId) throws Exception {
+		if (ImportCacheMarkerUtils.isCached(getCacheKeyForDatasourceId(datasourceId))) { return 0; }
 		// Get the details for the data source
 		Datasource datasource = getDatasource(datasourceId);
-		return importDatasource(datasource);
+		int count = importDatasource(datasource);
+		ImportCacheMarkerUtils.markCached(getCacheKeyForDatasourceId(datasourceId));
+		return count;
 	}
 
-	abstract protected int importDatasource(Datasource datasource) throws Exception;
+	protected abstract String getCacheKeyForDatasourceId(String datasourceId);
+
+	protected abstract int importDatasource(Datasource datasource) throws Exception;
 
 	/**
 	 * Loads the given properties resource into the main properties object
