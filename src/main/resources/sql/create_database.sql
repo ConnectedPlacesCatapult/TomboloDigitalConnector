@@ -62,3 +62,9 @@ create table timed_value (
 	value			DOUBLE PRECISION NOT NULL,
 	PRIMARY KEY(subject_id,attribute_id,timestamp)
 );
+
+-- Import Cache Marker
+create table import_cache_marker (
+    key     VARCHAR(255) NOT NULL,
+    PRIMARY KEY(key)
+)

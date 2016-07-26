@@ -15,10 +15,9 @@
 
 		<mapping class="uk.org.tombolo.core.SubjectType"/>
 		<mapping class="uk.org.tombolo.core.Subject"/>
-		
 		<mapping class="uk.org.tombolo.core.Provider"/>
 		<mapping class="uk.org.tombolo.core.Attribute"/>
-		
 		<mapping class="uk.org.tombolo.core.TimedValue"/>
+        <mapping class="uk.org.tombolo.core.ImportCacheMarker"/>
     </session-factory>
 </hibernate-configuration>
