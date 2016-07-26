@@ -94,8 +94,8 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	}
 
 	@Override
-	protected String getCacheKeyForDatasourceId(String datasourceId) {
-		return getClass().getCanonicalName() + "@" + datasourceId;
+	protected ImportCacheMarker.ImportCacheMarkerId getCacheKeyForDatasourceId(String datasourceId) {
+		return new ImportCacheMarker.ImportCacheMarkerId(getClass().getCanonicalName(), datasourceId);
 	}
 
 	@Override

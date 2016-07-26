@@ -65,6 +65,7 @@ create table timed_value (
 
 -- Import Cache Marker
 create table import_cache_marker (
-    key     VARCHAR(255) NOT NULL,
-    PRIMARY KEY(key)
+	importer	VARCHAR(255) NOT NULL,
+	key			VARCHAR(255) NOT NULL,
+	PRIMARY KEY(importer, key)
 )

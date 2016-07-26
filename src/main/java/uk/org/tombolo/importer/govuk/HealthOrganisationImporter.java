@@ -7,14 +7,10 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
@@ -70,8 +66,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected String getCacheKeyForDatasourceId(String datasourceId) {
-        return getClass().getCanonicalName() + "@" + datasourceId;
+    protected ImportCacheMarker.ImportCacheMarkerId getCacheKeyForDatasourceId(String datasourceId) {
+        return new ImportCacheMarker.ImportCacheMarkerId(getClass().getCanonicalName(), datasourceId);
     }
 
     @Override

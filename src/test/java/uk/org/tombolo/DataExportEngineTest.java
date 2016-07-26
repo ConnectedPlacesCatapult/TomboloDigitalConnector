@@ -62,7 +62,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testObeysCache() throws Exception {
         // If we mark localAuthorities as imported...
-        ImportCacheMarkerUtils.markCached("uk.org.tombolo.importer.govuk.LocalAuthorityImporter@localAuthority");
+        ImportCacheMarkerUtils.markCached(new ImportCacheMarker.ImportCacheMarkerId("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")

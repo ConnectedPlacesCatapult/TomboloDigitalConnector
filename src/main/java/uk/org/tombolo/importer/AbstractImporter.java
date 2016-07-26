@@ -2,6 +2,7 @@ package uk.org.tombolo.importer;
 
 import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.ImportCacheMarker;
 import uk.org.tombolo.core.utils.ImportCacheMarkerUtils;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public abstract class AbstractImporter implements Importer {
 		return count;
 	}
 
-	protected abstract String getCacheKeyForDatasourceId(String datasourceId);
+	protected abstract ImportCacheMarker.ImportCacheMarkerId getCacheKeyForDatasourceId(String datasourceId);
 
 	protected abstract int importDatasource(Datasource datasource) throws Exception;
 
