@@ -97,7 +97,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		return datasources;
 	}
 		
-	public int importDatasource(Datasource datasource) throws IOException, ParseException{
+	protected int importDatasource(Datasource datasource) throws IOException, ParseException{
 		// Get the provider details
 		Provider provider = getProvider();
 		

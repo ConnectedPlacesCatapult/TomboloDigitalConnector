@@ -30,6 +30,8 @@ public abstract class AbstractImporter implements Importer {
 		return importDatasource(datasource);
 	}
 
+	abstract protected int importDatasource(Datasource datasource) throws Exception;
+
 	/**
 	 * Loads the given properties resource into the main properties object
 	 *

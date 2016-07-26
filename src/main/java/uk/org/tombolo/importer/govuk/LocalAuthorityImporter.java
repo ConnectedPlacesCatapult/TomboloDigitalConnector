@@ -70,7 +70,7 @@ public final class LocalAuthorityImporter extends AbstractImporter implements Im
     }
 
     @Override
-    public int importDatasource(Datasource datasource) throws Exception {
+    protected int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 
         ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
