@@ -23,7 +23,7 @@ public class DataExportRunner {
 
         String executionSpecPath = args[0];
         String outputFile = args[1];
-        Boolean forceImport = Boolean.parseBoolean(args[2]);
+        Boolean clearDatabaseCache = Boolean.parseBoolean(args[2]);
 
         HibernateUtil.startup();
 
@@ -42,7 +42,7 @@ public class DataExportRunner {
         validateSpecification(executionSpecPath);
 
         try (Writer writer = getOutputWriter(outputFile)) {
-            engine.execute(getSpecification(executionSpecPath), writer, forceImport);
+            engine.execute(getSpecification(executionSpecPath), writer, clearDatabaseCache);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,7 +75,7 @@ public class DataExportRunner {
                     DataExportRunner.class.getCanonicalName(),
                     "dataExportSpecFile",
                     "outputFile",
-                    "forceImport"
+                    "clearDatabaseCache"
             );
             System.exit(1);
         }

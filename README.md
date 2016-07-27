@@ -95,7 +95,7 @@ We use the Gradle task `runExport` to run exports. The parameters are as follows
 gradle runExport \
     -PdataExportSpecFile='path/to/spec/file.json' \
     -PoutputFile='output_file.json' \
-    -PdoImport=true
+    -PclearDatabaseCache=true
 ```
 
 For example, this exports the London borough profiles from OrganiCity to `organicity-borough-profiles.json`:
@@ -104,7 +104,7 @@ For example, this exports the London borough profiles from OrganiCity to `organi
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
     -PoutputFile='organicity-borough-profiles.json' \
-    -PdoImport=true
+    -PclearDatabaseCache=true
 ```
 
 Or without Gradle:

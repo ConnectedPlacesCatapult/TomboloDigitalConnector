@@ -3,6 +3,8 @@ package uk.org.tombolo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.utils.DatabaseJournal;
+import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
@@ -28,19 +30,21 @@ public class DataExportEngine implements ExecutionEngine{
 		this.downloadUtils = downloadUtils;
 	}
 	
-	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean clearDatabaseCache) throws Exception {
 		// Import data
-		if (forceImport) {
-			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
-				log.info("Importing {} {}",
-						datasourceSpec.getImporterClass(),
-						datasourceSpec.getDatasourceId());
-				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-				importer.configure(apiKeys);
-				importer.setDownloadUtils(downloadUtils);
-				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
-				log.info("Imported {} values", count);
-			}
+		if (clearDatabaseCache) {
+			DatabaseUtils.clearAllData();
+		}
+
+		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
+			log.info("Importing {} {}",
+					datasourceSpec.getImporterClass(),
+					datasourceSpec.getDatasourceId());
+			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+			importer.configure(apiKeys);
+			importer.setDownloadUtils(downloadUtils);
+			int count = importer.importDatasource(datasourceSpec.getDatasourceId());
+			log.info("Imported {} values", count);
 		}
 
 		// Generate fields
