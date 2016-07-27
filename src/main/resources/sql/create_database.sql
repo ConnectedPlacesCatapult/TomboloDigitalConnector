@@ -64,8 +64,8 @@ create table timed_value (
 );
 
 -- Import Cache Marker
-create table import_cache_marker (
-	importer	VARCHAR(255) NOT NULL,
+create table database_journal (
+	className	VARCHAR(255) NOT NULL,
 	key			VARCHAR(255) NOT NULL,
-	PRIMARY KEY(importer, key)
+	PRIMARY KEY(className, key)
 )

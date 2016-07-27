@@ -9,8 +9,8 @@ import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.ImportCacheMarker;
-import uk.org.tombolo.core.utils.ImportCacheMarkerUtils;
+import uk.org.tombolo.core.DatabaseJournalEntry;
+import uk.org.tombolo.core.utils.DatabaseJournal;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -62,7 +62,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testObeysCache() throws Exception {
         // If we mark localAuthorities as imported...
-        ImportCacheMarkerUtils.markCached(new ImportCacheMarker.ImportCacheMarkerId("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.logJobComplete(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")

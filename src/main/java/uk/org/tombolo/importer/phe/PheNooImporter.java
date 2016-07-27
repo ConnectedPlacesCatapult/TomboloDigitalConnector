@@ -1,6 +1,6 @@
 package uk.org.tombolo.importer.phe;
 
-import uk.org.tombolo.core.ImportCacheMarker;
+import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.ExcelImporter;
 import uk.org.tombolo.importer.Importer;
@@ -20,8 +20,8 @@ public class PheNooImporter extends ExcelImporter implements Importer {
 	}
 
 	@Override
-	protected ImportCacheMarker.ImportCacheMarkerId getCacheKeyForDatasourceId(String datasourceId) {
-		return new ImportCacheMarker.ImportCacheMarkerId(getClass().getCanonicalName(), datasourceId);
+	protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
+		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
 	}
 
 	@Override

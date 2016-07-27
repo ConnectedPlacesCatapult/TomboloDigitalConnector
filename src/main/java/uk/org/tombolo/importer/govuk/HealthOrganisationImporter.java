@@ -66,8 +66,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected ImportCacheMarker.ImportCacheMarkerId getCacheKeyForDatasourceId(String datasourceId) {
-        return new ImportCacheMarker.ImportCacheMarkerId(getClass().getCanonicalName(), datasourceId);
+    protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
+        return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
     }
 
     @Override

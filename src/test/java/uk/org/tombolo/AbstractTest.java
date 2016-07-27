@@ -22,7 +22,7 @@ public abstract class AbstractTest {
         HibernateUtil.restart();
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE timed_value, attribute, provider, subject, import_cache_marker").executeUpdate();
+            session.createSQLQuery("TRUNCATE timed_value, attribute, provider, subject, database_journal").executeUpdate();
             session.createSQLQuery("DELETE FROM subject_type WHERE label NOT IN ('unknown', 'sensor', 'poi')").executeUpdate();
             transaction.commit();
         });

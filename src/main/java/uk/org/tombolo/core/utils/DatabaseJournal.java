@@ -2,25 +2,25 @@ package uk.org.tombolo.core.utils;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import uk.org.tombolo.core.ImportCacheMarker;
+import uk.org.tombolo.core.DatabaseJournalEntry;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImportCacheMarkerUtils {
-    public static void markCached(ImportCacheMarker.ImportCacheMarkerId id) {
+public class DatabaseJournal {
+    public static void logJobComplete(DatabaseJournalEntry entry) {
         HibernateUtil.withSession(session -> {
             session.beginTransaction();
-            session.save(new ImportCacheMarker(id));
+            session.save(entry);
             session.getTransaction().commit();
         });
     }
 
-    public static boolean isCached(ImportCacheMarker.ImportCacheMarkerId id) {
+    public static boolean jobHasBeenDone(DatabaseJournalEntry entry) {
         return HibernateUtil.withSession(session -> {
-            Criteria criteria = session.createCriteria(ImportCacheMarker.class);
+            Criteria criteria = session.createCriteria(DatabaseJournalEntry.class);
             Map<String, Object> restrictions = new HashMap<String, Object>();
-            restrictions.put("id", id);
+            restrictions.put("id", entry.getId());
             return null != criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
         });
     }
