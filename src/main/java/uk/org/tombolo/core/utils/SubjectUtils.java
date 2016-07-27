@@ -3,6 +3,8 @@ package uk.org.tombolo.core.utils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
+import org.hibernate.spatial.criterion.SpatialRestrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
@@ -98,5 +100,14 @@ public class SubjectUtils {
 			criteria.add(Restrictions.like(matcher.attribute, matcher.pattern));
 
 		return criteria;
+	}
+
+	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {
+		return HibernateUtil.withSession(session -> {
+			Query query = session.createQuery("select s from Subject s where subjectType = :subjectType and contains(s.shape, :geom) = true", Subject.class);
+			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("geom", subject.getShape());
+			return (List<Subject>) query.getResultList();
+		});
 	}
 }

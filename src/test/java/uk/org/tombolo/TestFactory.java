@@ -14,9 +14,13 @@ public final class TestFactory {
     public static final String TIMESTAMP = "2011-01-01T00:00:00";
     private static final Geometry FAKE_POINT_GEOMETRY = makeFakeGeometry();
 
-    private static Geometry makeFakeGeometry() {
+    public static Geometry makeFakeGeometry() {
+        return makeFakeGeometryWithOffset(0d, 0d);
+    }
+
+    public static Geometry makeFakeGeometryWithOffset(Double x, Double y) {
         GeometryFactory geometryFactory = new GeometryFactory();
-        return geometryFactory.createPoint(new Coordinate(0d, 0d));
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 
     private TestFactory() {}
