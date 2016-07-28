@@ -28,18 +28,18 @@ public class DatabaseJournalEntry {
     }
 
     @Column(name="key")
-    public final String getKey() {
+    public String getKey() {
         return key;
     }
-    public final void setKey(String key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
     @Column(name="class_name")
-    public final String getClassName() {
+    public String getClassName() {
         return className;
     }
-    public final void setClassName(String className) {
+    public void setClassName(String className) {
         this.className = className;
     }
 }
