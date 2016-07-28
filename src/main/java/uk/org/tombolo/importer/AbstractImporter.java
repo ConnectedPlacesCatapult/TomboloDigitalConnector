@@ -17,17 +17,30 @@ public abstract class AbstractImporter implements Importer {
 	public void setDownloadUtils(DownloadUtils downloadUtils){
 		this.downloadUtils = downloadUtils;
 	}
+
+	/**
+	 * Loads the data-source identified by datasourceId into the underlying data store
+	 *
+	 * @param datasourceId
+	 * @return the number of data values loaded
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public int importDatasource(String datasourceId) throws Exception {
+		return importDatasource(datasourceId, false);
+	}
 	
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store 
 	 * 
 	 * @param datasourceId
+	 * @param force forces the importer to run even if it has already run
 	 * @return the number of data values loaded
 	 * @throws IOException
 	 * @throws ParseException 
 	 */
-	public int importDatasource(String datasourceId) throws Exception {
-		if (DatabaseJournal.jobHasBeenDone(getJournalEntryForDatasourceId(datasourceId))) { return 0; }
+	public int importDatasource(String datasourceId, Boolean force) throws Exception {
+		if (!force && DatabaseJournal.jobHasBeenDone(getJournalEntryForDatasourceId(datasourceId))) { return 0; }
 		// Get the details for the data source
 		Datasource datasource = getDatasource(datasourceId);
 		int count = importDatasource(datasource);

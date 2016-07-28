@@ -9,6 +9,7 @@ import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
+import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.*;
 import java.util.Properties;
@@ -23,7 +24,8 @@ public class DataExportRunner {
 
         String executionSpecPath = args[0];
         String outputFile = args[1];
-        Boolean clearDatabaseCache = Boolean.parseBoolean(args[2]);
+        String forceImports = args[2];
+        Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
 
         HibernateUtil.startup();
 
@@ -42,7 +44,12 @@ public class DataExportRunner {
         validateSpecification(executionSpecPath);
 
         try (Writer writer = getOutputWriter(outputFile)) {
-            engine.execute(getSpecification(executionSpecPath), writer, clearDatabaseCache);
+            engine.execute(
+                    getSpecification(executionSpecPath),
+                    writer,
+                    new ImporterMatcher(forceImports),
+                    clearDatabaseCache
+            );
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -70,12 +77,13 @@ public class DataExportRunner {
     }
 
     private static void validateArguments(String[] args) {
-        if (args.length != 3){
+        if (args.length != 4){
             log.error("Use: {} {} {} {}",
                     DataExportRunner.class.getCanonicalName(),
                     "dataExportSpecFile",
                     "outputFile",
-                    "clearDatabaseCache"
+                    "clearDatabaseCache",
+                    "forceImports (className:datasourceId,...)"
             );
             System.exit(1);
         }

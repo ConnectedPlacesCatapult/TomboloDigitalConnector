@@ -6,47 +6,40 @@ import java.io.Serializable;
 @Entity
 @Table(name="database_journal")
 public class DatabaseJournalEntry {
-    @EmbeddedId
-    private DatabaseJournalEntryId id;
+    private Integer id;
+    private String key;
+    private String className;
 
     public DatabaseJournalEntry() {}
     public DatabaseJournalEntry(String className, String key) {
-        this.id = new DatabaseJournalEntryId(className, key);
+        this.className = className;
+        this.key = key;
     }
 
-    public final DatabaseJournalEntryId getId() {
+    @Id
+    @SequenceGenerator(name="database_journal_id_sequence",sequenceName="database_journal_id_sequence", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="database_journal_id_sequence")
+    @Column(name="id")
+    public Integer getId() {
         return id;
     }
-
-    public final void setId(DatabaseJournalEntryId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    @Embeddable
-    private static class DatabaseJournalEntryId implements Serializable {
-        private String key;
-        private String className;
+    @Column(name="key")
+    public final String getKey() {
+        return key;
+    }
+    public final void setKey(String key) {
+        this.key = key;
+    }
 
-        public DatabaseJournalEntryId() {}
-        public DatabaseJournalEntryId(String className, String key) {
-            this.key = key;
-            this.className = className;
-        }
-
-        @Column(name="key")
-        public final String getKey() {
-            return key;
-        }
-        public final void setKey(String key) {
-            this.key = key;
-        }
-
-        @Column(name="className")
-        public final String getClassName() {
-            return className;
-        }
-        public final void setClassName(String className) {
-            this.className = className;
-        }
+    @Column(name="className")
+    public final String getClassName() {
+        return className;
+    }
+    public final void setClassName(String className) {
+        this.className = className;
     }
 }

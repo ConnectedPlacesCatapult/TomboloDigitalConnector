@@ -20,7 +20,8 @@ public class DatabaseJournal {
         return HibernateUtil.withSession(session -> {
             Criteria criteria = session.createCriteria(DatabaseJournalEntry.class);
             Map<String, Object> restrictions = new HashMap<String, Object>();
-            restrictions.put("id", entry.getId());
+            restrictions.put("className", entry.getClassName());
+            restrictions.put("key", entry.getKey());
             return null != criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
         });
     }

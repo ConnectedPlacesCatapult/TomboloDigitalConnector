@@ -3,7 +3,6 @@ package uk.org.tombolo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.utils.DatabaseJournal;
 import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
@@ -14,6 +13,7 @@ import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -29,8 +29,12 @@ public class DataExportEngine implements ExecutionEngine{
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 	}
-	
+
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean clearDatabaseCache) throws Exception {
+		execute(dataExportSpec, writer, new ImporterMatcher(), clearDatabaseCache);
+	}
+	
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports, boolean clearDatabaseCache) throws Exception {
 		// Import data
 		if (clearDatabaseCache) {
 			DatabaseUtils.clearAllData();
@@ -43,7 +47,10 @@ public class DataExportEngine implements ExecutionEngine{
 			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
 			importer.configure(apiKeys);
 			importer.setDownloadUtils(downloadUtils);
-			int count = importer.importDatasource(datasourceSpec.getDatasourceId());
+			int count = importer.importDatasource(
+					datasourceSpec.getDatasourceId(),
+					forceImports.doesMatch(datasourceSpec.getImporterClass(), datasourceSpec.getDatasourceId())
+			);
 			log.info("Imported {} values", count);
 		}
 
