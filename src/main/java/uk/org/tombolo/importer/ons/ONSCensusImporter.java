@@ -63,11 +63,6 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	}
 
 	@Override
-	protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-	}
-
-	@Override
 	public void verifyConfiguration() throws ConfigurationException {
 		if (properties.getProperty(PROP_ONS_API_KEY) == null)
 			throw new ConfigurationException("Property "+PROP_ONS_API_KEY+" not defined");

@@ -20,11 +20,6 @@ public class PheNooImporter extends ExcelImporter implements Importer {
 	}
 
 	@Override
-	protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-	}
-
-	@Override
 	public Provider getProvider() {
 		return PROVIDER;
 	}

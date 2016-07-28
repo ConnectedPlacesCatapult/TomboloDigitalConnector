@@ -66,11 +66,6 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-        return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-    }
-
-    @Override
     protected int importDatasource(Datasource datasource) throws Exception {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         SubjectType poiType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getName());

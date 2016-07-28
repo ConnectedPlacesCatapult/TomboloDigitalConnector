@@ -72,11 +72,6 @@ public final class OaImporter extends AbstractImporter implements Importer {
     }
 
     @Override
-    protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-        return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-    }
-
-    @Override
     protected int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 

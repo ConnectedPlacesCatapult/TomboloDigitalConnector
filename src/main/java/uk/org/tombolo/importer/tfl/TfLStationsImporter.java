@@ -41,11 +41,6 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	protected DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-	}
-
-	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
 		for (DatasourceId datasourceId : DatasourceId.values()){

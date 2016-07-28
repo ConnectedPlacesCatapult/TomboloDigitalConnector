@@ -37,17 +37,13 @@ public class DataExportEngine implements ExecutionEngine{
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import data
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
-			log.info("Importing {} {}",
-					datasourceSpec.getImporterClass(),
-					datasourceSpec.getDatasourceId());
 			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
 			importer.configure(apiKeys);
 			importer.setDownloadUtils(downloadUtils);
-			int count = importer.importDatasource(
+			importer.importDatasource(
 					datasourceSpec.getDatasourceId(),
 					forceImports.doesMatch(datasourceSpec.getImporterClass(), datasourceSpec.getDatasourceId())
 			);
-			log.info("Imported {} values", count);
 		}
 
 		// Generate fields
