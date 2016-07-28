@@ -35,7 +35,7 @@ public class DatabaseJournalEntry {
         this.key = key;
     }
 
-    @Column(name="className")
+    @Column(name="class_name")
     public final String getClassName() {
         return className;
     }

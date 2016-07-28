@@ -67,6 +67,6 @@ create table timed_value (
 create sequence database_journal_id_sequence;
 create table database_journal (
     id          integer NOT NULL DEFAULT nextval('database_journal_id_sequence'),
-	className	VARCHAR(255) NOT NULL,
-	key			VARCHAR(255) NOT NULL,
-)
+	class_name	VARCHAR(255) NOT NULL,
+	key			VARCHAR(255) NOT NULL
+);
