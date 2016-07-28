@@ -3,6 +3,7 @@ package uk.org.tombolo;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
@@ -28,6 +29,9 @@ public class DataExportRunner {
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
 
         HibernateUtil.startup();
+        if (clearDatabaseCache) {
+            DatabaseUtils.clearAllData();
+        }
 
         // Load API keys
         Properties apiKeys;
@@ -47,8 +51,7 @@ public class DataExportRunner {
             engine.execute(
                     getSpecification(executionSpecPath),
                     writer,
-                    new ImporterMatcher(forceImports),
-                    clearDatabaseCache
+                    new ImporterMatcher(forceImports)
             );
         } catch (Exception e) {
             e.printStackTrace();

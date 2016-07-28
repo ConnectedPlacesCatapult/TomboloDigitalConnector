@@ -30,16 +30,12 @@ public class DataExportEngine implements ExecutionEngine{
 		this.downloadUtils = downloadUtils;
 	}
 
-	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean clearDatabaseCache) throws Exception {
-		execute(dataExportSpec, writer, new ImporterMatcher(), clearDatabaseCache);
+	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
+		execute(dataExportSpec, writer, new ImporterMatcher());
 	}
 	
-	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports, boolean clearDatabaseCache) throws Exception {
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import data
-		if (clearDatabaseCache) {
-			DatabaseUtils.clearAllData();
-		}
-
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
 			log.info("Importing {} {}",
 					datasourceSpec.getImporterClass(),

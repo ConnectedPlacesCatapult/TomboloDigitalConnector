@@ -11,6 +11,7 @@ import org.junit.Test;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.utils.DatabaseJournal;
+import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -42,7 +43,7 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsEmptyOnBlankSpec() throws Exception {
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(0)));
     }
@@ -53,7 +54,7 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.label", equalTo("E01000001")));
@@ -67,14 +68,14 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
         ).addDatasourceSpecification("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority");
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         // ...we expect the importer not to have imported them, so we should have zero features
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(0)));
     }
 
     @Test
-    public void testReimportsWithFlag() throws Exception {
+    public void testReimportsWhenForced() throws Exception {
         // If we mark localAuthorities as imported...
         DatabaseJournal.logJobComplete(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
 
@@ -83,7 +84,7 @@ public class DataExportEngineTest extends AbstractTest {
         ).addDatasourceSpecification("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority");
 
         // And we set the clear-database flag
-        engine.execute(builder.build(), writer, true);
+        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.govuk.LocalAuthorityImporter:localAuthority"));
 
         // ...we expect the importer to ignore our fake journal and import them anyway
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
@@ -102,7 +103,7 @@ public class DataExportEngineTest extends AbstractTest {
                 ))
         );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_name")));
         assertHasOnlyTimedValues(writer.toString(),
@@ -122,7 +123,7 @@ public class DataExportEngineTest extends AbstractTest {
                 ))
         );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
         System.out.println(writer.toString());
 
         assertHasOnlyTimedValues(writer.toString(),
@@ -140,7 +141,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("Population density (per hectare) 2015")));
         assertHasOnlyTimedValues(writer.toString(),
@@ -160,7 +161,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"));
@@ -177,7 +178,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.name", equalTo("Aldgate Station")));
         assertHasOnlyTimedValues(writer.toString(),
@@ -198,7 +199,7 @@ public class DataExportEngineTest extends AbstractTest {
                                 .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                 );
 
-        engine.execute(csvBuilder.build(), writer, false);
+        engine.execute(csvBuilder.build(), writer);
 
         List<CSVRecord> records = CSVParser.parse(writer.toString(), CSVFormat.DEFAULT.withHeader()).getRecords();
 
@@ -222,7 +223,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer, false);
+        engine.execute(builder.build(), writer);
 
         assertHasOnlyTimedValues(writer.toString(),
                 new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"),
