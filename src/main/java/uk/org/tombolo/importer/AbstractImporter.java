@@ -40,11 +40,11 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws ParseException 
 	 */
 	public int importDatasource(String datasourceId, Boolean force) throws Exception {
-		if (!force && DatabaseJournal.jobHasBeenDone(getJournalEntryForDatasourceId(datasourceId))) { return 0; }
+		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) { return 0; }
 		// Get the details for the data source
 		Datasource datasource = getDatasource(datasourceId);
 		int count = importDatasource(datasource);
-		DatabaseJournal.logJobComplete(getJournalEntryForDatasourceId(datasourceId));
+		DatabaseJournal.addJournalEntry(getJournalEntryForDatasourceId(datasourceId));
 		return count;
 	}
 

@@ -63,7 +63,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testObeysCache() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.logJobComplete(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
@@ -77,7 +77,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testReimportsWhenForced() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.logJobComplete(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
