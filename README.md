@@ -95,6 +95,7 @@ We use the Gradle task `runExport` to run exports. The parameters are as follows
 gradle runExport \
     -PdataExportSpecFile='path/to/spec/file.json' \
     -PoutputFile='output_file.json' \
+    -PforceImports='com.className:datasource-id'
     -PclearDatabaseCache=true
 ```
 
@@ -103,8 +104,7 @@ For example, this exports the London borough profiles from OrganiCity to `organi
 ```bash
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
-    -PoutputFile='organicity-borough-profiles.json' \
-    -PclearDatabaseCache=true
+    -PoutputFile='organicity-borough-profiles.json'
 ```
 
 Or without Gradle:
@@ -119,6 +119,7 @@ java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
 	uk.org.tombolo.DataExportRunner \
 	src/main/resources/executions/organicity/export-borough-profiles.json \
 	organicity-borough-profiles.json \
+	"" \
 	true
 ```
 
