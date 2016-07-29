@@ -24,6 +24,7 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ShapefileImporter;
 import uk.org.tombolo.importer.ZipUtils;
 
 import java.io.File;
@@ -33,7 +34,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class LocalAuthorityImporter extends AbstractImporter implements Importer {
+public final class LocalAuthorityImporter extends ShapefileImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(LocalAuthorityImporter.class);
     private static enum SubjectTypeLabel {localAuthority};
 
@@ -74,7 +75,7 @@ public final class LocalAuthorityImporter extends AbstractImporter implements Im
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 
         ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
-        FeatureReader featureReader = getFeatureReader(store);
+        FeatureReader featureReader = getFeatureReader(store,0);
 
         List<Subject> subjects = convertFeaturesToSubjects(featureReader, subjectType);
         SubjectUtils.save(subjects);
@@ -85,44 +86,15 @@ public final class LocalAuthorityImporter extends AbstractImporter implements Im
         return subjects.size();
     }
 
-    private FeatureReader getFeatureReader(ShapefileDataStore store) throws IOException {
-        DefaultQuery query = new DefaultQuery(store.getTypeNames()[0]);
-        return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
+    @Override
+    protected String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
+        return (String) feature.getAttribute("CTYUA12CD");
     }
 
-    private List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType subjectType) throws FactoryException, IOException, TransformException {
-        MathTransform crsTransform = makeCrsTransform();
-
-        List<Subject> subjects = new ArrayList<>();
-        while (featureReader.hasNext()) {
-            SimpleFeature feature = featureReader.next();
-            String label = (String) feature.getAttribute("CTYUA12CD");
-            String name = (String) feature.getAttribute("CTYUA12NM");
-            Geometry geom = (Geometry) feature.getDefaultGeometry();
-            try {
-                Geometry transformedGeom = JTS.transform(geom, crsTransform);
-                transformedGeom.setSRID(4326); // EPSG:4326
-                subjects.add(new Subject(subjectType, label, name, transformedGeom));
-            } catch (ProjectionException e) {
-                log.warn("Rejecting {}. You will see this if you have assertions enabled (e.g. " +
-                        "you run with `-ea`) as GeoTools runs asserts. See source of OaImporter for details on this. " +
-                        "To fix this, replace `-ea` with `-ea -da:org.geotools...` in your test VM options (probably in" +
-                        "your IDE) to disable assertions in GeoTools.", label);
-            }
-        }
-        return subjects;
+    @Override
+    protected String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
+        return (String) feature.getAttribute("CTYUA12NM");
     }
-
-    private MathTransform makeCrsTransform() throws FactoryException {
-        CoordinateReferenceSystem sourceCrs = CRS.decode("EPSG:27700");
-        // The 'true' here means longitude first. Don't know why GeoTools puts lat first by default for this CRS
-        // There's a `.prj` file with this dataset, but it seems to result in transforms being ~10m off longitude-wise, so we ignore it
-        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:4326", true);
-
-        return CRS.findMathTransform(sourceCrs, targetCrs);
-    }
-
-
 
     private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource) throws IOException {
         File outerZipFile = downloadUtils.getDatasourceFile(datasource);
