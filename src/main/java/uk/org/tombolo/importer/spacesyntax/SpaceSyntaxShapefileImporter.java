@@ -22,6 +22,21 @@ import java.util.List;
 
 /**
  * Importer for Space Syntax shapefiles.
+ * This importer is different from the other importers in the sense that there is no online dataset that it imports.
+ * The importer tries to import a local data file.
+ *
+ * Some questions and assumptions:
+ *
+ * - In the shapefile, all features are road segments (nodes).
+ *   Therefore we do not import any edges.
+ *   That is anyway not needed at this stage since in this sort of graphs all the graph algorithmic stuff has been done.
+ *
+ * - In the shapefile there are no information about road name, road type, etc.
+ *   We should ask Space Syntax to add this sort of data if possible.
+ *
+ * - The feature name called Demptmap_R is assumed to be a unique id for the node in the graph.
+ *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
+ *
  */
 public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(SpaceSyntaxShapefileImporter.class);
