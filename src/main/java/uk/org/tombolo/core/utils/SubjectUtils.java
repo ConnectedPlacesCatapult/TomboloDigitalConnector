@@ -63,13 +63,12 @@ public class SubjectUtils {
 
 				if (savedSubject == null) {
 					session.saveOrUpdate(subject);
-					saved++;
 				} else {
-					// This is happening because the TFL stations contain a duplicate ID, amongst other reasons
-					log.warn("Could not save subject {} {}. Original message: {}",
-							subject.getLabel(),
-							subject.getName());
+					// The IDs must be the same so hibernate knows which 'rows' to merge
+					subject.setId(savedSubject.getId());
+					session.update(session.merge(subject));
 				}
+				saved++;
 
 				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
