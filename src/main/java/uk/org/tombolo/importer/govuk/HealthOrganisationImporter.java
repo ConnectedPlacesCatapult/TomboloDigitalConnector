@@ -14,7 +14,6 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;

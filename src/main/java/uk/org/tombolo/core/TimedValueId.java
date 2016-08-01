@@ -1,7 +1,5 @@
 package uk.org.tombolo.core;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

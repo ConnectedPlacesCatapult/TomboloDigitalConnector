@@ -1,19 +1,8 @@
 package uk.org.tombolo.importer.govuk;
 
-import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.projection.ProjectionException;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
@@ -22,7 +11,6 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ShapefileImporter;
 import uk.org.tombolo.importer.ZipUtils;

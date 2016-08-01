@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.spacesyntax;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.ProcessingInstruction;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
@@ -10,9 +9,9 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SpaceSyntaxShapefileImporterTest extends AbstractTest {
     SpaceSyntaxShapefileImporter importer;

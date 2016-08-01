@@ -1,7 +1,6 @@
 package uk.org.tombolo.core;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
