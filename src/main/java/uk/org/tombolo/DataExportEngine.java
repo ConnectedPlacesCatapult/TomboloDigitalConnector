@@ -42,7 +42,7 @@ public class DataExportEngine implements ExecutionEngine{
 			importer.setDownloadUtils(downloadUtils);
 			importer.importDatasource(
 					datasourceSpec.getDatasourceId(),
-					forceImports.doesMatch(datasourceSpec.getImporterClass(), datasourceSpec.getDatasourceId())
+					forceImports.doesMatch(datasourceSpec.getImporterClass())
 			);
 		}
 
