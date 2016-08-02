@@ -7,14 +7,10 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
@@ -70,7 +66,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    public int importDatasource(Datasource datasource) throws Exception {
+    protected int importDatasource(Datasource datasource) throws Exception {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         SubjectType poiType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getName());
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));

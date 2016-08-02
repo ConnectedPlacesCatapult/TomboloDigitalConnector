@@ -58,7 +58,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 	}
 	
 	@Override
-	public int importDatasource(Datasource datasource) throws Exception {
+	protected int importDatasource(Datasource datasource) throws Exception {
 		Map<String, Subject> subjectCache = new HashMap<String, Subject>();
 		Map<String, Attribute> attributeCache = new HashMap<String, Attribute>();
 

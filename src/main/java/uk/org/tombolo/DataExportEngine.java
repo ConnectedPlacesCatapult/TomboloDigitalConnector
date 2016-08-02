@@ -3,6 +3,7 @@ package uk.org.tombolo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
@@ -12,6 +13,7 @@ import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -27,20 +29,21 @@ public class DataExportEngine implements ExecutionEngine{
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 	}
+
+	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
+		execute(dataExportSpec, writer, new ImporterMatcher());
+	}
 	
-	public void execute(DataExportSpecification dataExportSpec, Writer writer, boolean forceImport) throws Exception {
+	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import data
-		if (forceImport) {
-			for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
-				log.info("Importing {} {}",
-						datasourceSpec.getImporterClass(),
-						datasourceSpec.getDatasourceId());
-				Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-				importer.configure(apiKeys);
-				importer.setDownloadUtils(downloadUtils);
-				int count = importer.importDatasource(datasourceSpec.getDatasourceId());
-				log.info("Imported {} values", count);
-			}
+		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
+			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+			importer.configure(apiKeys);
+			importer.setDownloadUtils(downloadUtils);
+			importer.importDatasource(
+					datasourceSpec.getDatasourceId(),
+					forceImports.doesMatch(datasourceSpec.getImporterClass(), datasourceSpec.getDatasourceId())
+			);
 		}
 
 		// Generate fields

@@ -16,10 +16,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
@@ -70,7 +67,7 @@ public final class LocalAuthorityImporter extends AbstractImporter implements Im
     }
 
     @Override
-    public int importDatasource(Datasource datasource) throws Exception {
+    protected int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 
         ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);

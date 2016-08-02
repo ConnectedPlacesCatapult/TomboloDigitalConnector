@@ -69,7 +69,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	public int importDatasource(Datasource datasource) throws Exception {
+	protected int importDatasource(Datasource datasource) throws Exception {
 		
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
