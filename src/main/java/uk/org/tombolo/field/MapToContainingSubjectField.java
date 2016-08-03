@@ -8,6 +8,13 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * MapToContainingSubjectField.java
+ * This field will find a subject of the given type (containingSubjectType) that contains the provided subject,
+ * and then evaluate the fieldSpec with that new subject. For example, if the containingSubjectType is 'City' and
+ * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
+ * city that building is in.
+ */
 public class MapToContainingSubjectField implements Field, SingleValueField {
     private final String label;
     private final String containingSubjectType;
