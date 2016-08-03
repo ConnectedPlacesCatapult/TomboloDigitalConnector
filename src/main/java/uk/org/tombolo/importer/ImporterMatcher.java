@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
  *     :datasource-id
  *   Match anything:
  *     :
+ *   Match nothing:
+ *     (an empty string)
  */
 public class ImporterMatcher {
     private final List<ImporterMatcherPair> pairs;
@@ -29,6 +31,7 @@ public class ImporterMatcher {
     }
 
     private List<ImporterMatcherPair> parseMatchString(String matchString) throws ParseException {
+        if (null == matchString || "".equals(matchString)) { return Collections.emptyList(); }
         try {
             return Arrays.asList(matchString.split("\\s*,\\s*")).stream().map(string -> {
                 String[] pair = string.split("\\s*:\\s*", -1); // Give us empty strings for stuff like "ClassName:"
@@ -37,10 +40,6 @@ public class ImporterMatcher {
         } catch (Exception e) {
             throw new ParseException(String.format("Could not parse importer match string: '%s'. See ImporterMatcher.java for examples.", matchString), 0);
         }
-    }
-
-    public ImporterMatcher() {
-        pairs = Collections.emptyList();
     }
 
     /**
