@@ -47,4 +47,16 @@ public class ImporterMatcherTest extends AbstractTest {
         assertTrue(matcher.doesMatch("com.MatchMe", "match-me"));
         assertTrue(matcher.doesMatch("com.MatchMeToo", "match-all-of-me"));
     }
+
+    @Test
+    public void testDoesMatchNothingWithNull() throws Exception {
+        ImporterMatcher matcher = new ImporterMatcher(null);
+        assertFalse(matcher.doesMatch("com.MatchMe", "match-me"));
+    }
+
+    @Test
+    public void testDoesMatchNothingWithEmptyString() throws Exception {
+        ImporterMatcher matcher = new ImporterMatcher("");
+        assertFalse(matcher.doesMatch("com.MatchMe", "match-me"));
+    }
 }
