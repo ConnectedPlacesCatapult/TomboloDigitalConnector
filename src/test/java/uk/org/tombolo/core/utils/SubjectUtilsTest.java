@@ -112,7 +112,7 @@ public class SubjectUtilsTest extends AbstractTest {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
 		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
 		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
-		islingtonLsoa.setShape(TestFactory.makeFakeGeometryWithOffset(1d, 1d));
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
 		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
 
 		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("localAuthority", islingtonLsoa);

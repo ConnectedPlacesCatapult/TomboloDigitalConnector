@@ -192,8 +192,8 @@ public class DataExportEngineTest extends AbstractTest {
     public void testMapsBetweenSubjectTypes() throws Exception {
         Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
         Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
-        cityOfLondon.setShape(TestFactory.makeFakeGeometryWithOffset(1d, 1d));
-        cityOfLondonLsoa.setShape(TestFactory.makeFakeGeometryWithOffset(1d, 1d));
+        cityOfLondon.setShape(TestFactory.makePointGeometry(1d, 1d));
+        cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
         SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
 
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
