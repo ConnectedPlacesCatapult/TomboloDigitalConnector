@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.govuk;
+package uk.org.tombolo.importer.nhschoices;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -7,7 +7,10 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
@@ -26,8 +29,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     @Override
     public Provider getProvider() {
         return new Provider(
-                "uk.gov.data",
-                "data.gov.uk"
+                "uk.nhs",
+                "NHS Choices"
         );
     }
 

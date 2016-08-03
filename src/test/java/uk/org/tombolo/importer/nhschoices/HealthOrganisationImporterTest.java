@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.govuk;
+package uk.org.tombolo.importer.nhschoices;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     @Test
     public void testGetProvider() throws Exception {
         Provider provider = importer.getProvider();
-        assertEquals("uk.gov.data", provider.getLabel());
-        assertEquals("data.gov.uk", provider.getName());
+        assertEquals("uk.nhs", provider.getLabel());
+        assertEquals("NHS Choices", provider.getName());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("hospital");
         assertEquals("hospital", datasource.getId());
-        assertEquals("uk.gov.data", datasource.getProvider().getLabel());
+        assertEquals("uk.nhs", datasource.getProvider().getLabel());
         assertEquals("Hospital", datasource.getName());
         assertEquals("List of Hospitals in England", datasource.getDescription());
         assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasource.getUrl());
