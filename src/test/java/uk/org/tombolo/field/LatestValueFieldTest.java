@@ -37,6 +37,6 @@ public class LatestValueFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         assertThat(jsonString, hasJsonPath("$.aLabel.provider", equalTo("default_provider_name")));
         assertThat(jsonString, hasJsonPath("$.aLabel.name", equalTo("attr_name")));
-        assertThat(jsonString, hasJsonPath("$.aLabel.values.latest", equalTo(100.0)));
+        assertThat(jsonString, hasJsonPath("$.aLabel.values.value", equalTo(100.0)));
     }
 }

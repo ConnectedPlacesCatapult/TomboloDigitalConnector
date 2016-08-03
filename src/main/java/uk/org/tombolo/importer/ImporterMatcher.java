@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +30,8 @@ public class ImporterMatcher {
     }
 
     private List<ImporterMatcherPair> parseMatchString(String matchString) throws ParseException {
+        if (matchString == null || "".equals(matchString))
+            return new ArrayList<>();
         try {
             return Arrays.asList(matchString.split("\\s*,\\s*")).stream().map(string -> {
                 String[] pair = string.split("\\s*:\\s*", -1); // Give us empty strings for stuff like "ClassName:"

@@ -2,12 +2,7 @@
 	"datasetSpecification" : {
 		"subjectSpecification" : [
 			{
-				"subjectType" : "sensor",
-				"attributes" : {
-					"provider" : "uk.gov.dft",
-					"service" : "trafficCount",
-					"type" : "urn:oc:entityType:manualCounter"
-				}
+				"subjectType" : "sensor"
 			}
 		],	
 		"datasourceSpecification" : [
@@ -16,50 +11,75 @@
 				"datasourceId" : "London"
 			}		
 		],
-		"attributeSpecification" : [
+		"fieldSpecification": [
 			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountPedalCycles",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyPedalCycleCount"
-				}
+				"fieldClass": "uk.org.tombolo.field.SubjectLatitudeField",
+				"label": "latitude"
 			},
 			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountMotorcycles",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyMotorcycleCount"
-				}
+				"fieldClass": "uk.org.tombolo.field.SubjectLongitudeField",
+				"label": "longitude"
 			},
 			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountCarsTaxis",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyCarTaxiCount"
-				}
+				"fieldClass": "uk.org.tombolo.field.FixedAnnotationField",
+				"label": "type",
+				"value": "urn:oc:entityType:trafficstats"
 			},
 			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountBusesCoaches",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyBusCoachCount"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountLightGoodsVehicles",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyLightGoodsVehicleCount"
-				}
-			},
-			{
-				"providerLabel" : "uk.gov.dft",
-				"attributeLabel" : "CountHeavyGoodsVehicles",
-				"attributes" : {
-					"urn" : "urn:oc:attributeType:trafficCount:dailyHeavyGoodsVehicleCount"
-				}
+				"fieldClass": "uk.org.tombolo.field.WrapperField",
+				"label": "attributes",
+				"fieldSpecification": [
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:bicycle",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountPedalCycles"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:motorcycle",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountMotorcycles"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:car",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountCarsTaxis"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:bus",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountBusesCoaches"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:lightGoodsVehicle",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountLightGoodsVehicles"
+						}
+					},
+					{
+						"fieldClass": "uk.org.tombolo.field.LatestValueField",
+						"label": "urn:oc:attributeType:trafficIntensity:heavyGoodsVehicle",
+						"attribute": {
+							"providerLabel": "uk.gov.dft",
+							"attributeLabel": "CountHeavyGoodsVehicles"
+						}
+					}
+				]
 			}
 		]
 	},
-	"exporterClass" : "uk.org.tombolo.exporter.oc.OrganiCityExporter"
+	"exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

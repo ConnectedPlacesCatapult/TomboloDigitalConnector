@@ -6,6 +6,8 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * LatestValueField.java
  * Returns the latest TimedValue for a particular Attribute on the given subject, plus metadata
@@ -27,8 +29,12 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) {
+        TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute());
+        if (timedValue == null)
+            return withinMetadata(null);
         JSONObject obj = new JSONObject();
-        obj.put("latest", getValue(subject));
+        obj.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        obj.put("value", timedValue.getValue());
         return withinMetadata(obj);
     }
 

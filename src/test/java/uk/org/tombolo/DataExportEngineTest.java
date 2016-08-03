@@ -107,7 +107,7 @@ public class DataExportEngineTest extends AbstractTest {
 
         assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_name")));
         assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01000001", "attr_label", "latest", "100.0"));
+                new TimedValueMatcher("E01000001", "attr_label", "value", "100.0"));
     }
 
     @Test
@@ -231,7 +231,7 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     private void assertHasOnlyTimedValues(String json, TimedValueMatcher ...matchers) {
-        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes..values.*");
+        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes..values.value");
         assertEquals("Number of matchers does not match number of values", matchers.length, allTimedAttributes.size());
         for (TimedValueMatcher matcher : matchers) {
             assertHasTimedValue(json, matcher);
