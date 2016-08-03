@@ -245,3 +245,5 @@ This command might come handy when we start writing the data exporters
 ```bash
 psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from subject where limit 1'
 ```
+
+ping
