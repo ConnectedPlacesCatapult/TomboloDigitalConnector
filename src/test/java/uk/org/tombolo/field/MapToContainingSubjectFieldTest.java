@@ -1,6 +1,5 @@
 package uk.org.tombolo.field;
 
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -11,20 +10,17 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
-import java.util.Collections;
-import java.util.List;
-
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
-public class ContainingSubjectFieldTest extends AbstractTest {
+public class MapToContainingSubjectFieldTest extends AbstractTest {
     private Subject subject;
-    private ContainingSubjectField field;
+    private MapToContainingSubjectField field;
 
     @Before
     public void setUp() {
-        field = new ContainingSubjectField("aLabel", "localAuthority", makeFieldSpec());
+        field = new MapToContainingSubjectField("aLabel", "localAuthority", makeFieldSpec());
         TestFactory.makeNamedSubject("E09000001"); // Subject that contains subject below
         subject = TestFactory.makeNamedSubject("E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");

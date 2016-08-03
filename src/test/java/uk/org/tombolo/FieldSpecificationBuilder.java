@@ -38,11 +38,11 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
-    public static FieldSpecificationBuilder containingSubjectField(String label, String subjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
+    public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String subjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.ContainingSubjectField")
+        spec    .setFieldClass("uk.org.tombolo.field.MapToContainingSubjectField")
                 .setLabel(label)
-                .setSubjectType(subjectType)
+                .setContainingSubjectType(subjectType)
                 .setFieldSpecification(fieldSpecificationBuilder);
         return spec;
     }
@@ -118,8 +118,8 @@ public class FieldSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public FieldSpecificationBuilder setSubjectType(String subjectType) {
-        jsonSpec.put("subjectType", subjectType);
+    public FieldSpecificationBuilder setContainingSubjectType(String subjectType) {
+        jsonSpec.put("containingSubjectType", subjectType);
         return this;
     }
 }

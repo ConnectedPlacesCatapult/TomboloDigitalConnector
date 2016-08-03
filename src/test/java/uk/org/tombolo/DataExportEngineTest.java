@@ -202,7 +202,7 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.containingSubjectField(
+                FieldSpecificationBuilder.mapToContainingSubjectField(
                         "local_authority",
                         "localAuthority",
                         FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")

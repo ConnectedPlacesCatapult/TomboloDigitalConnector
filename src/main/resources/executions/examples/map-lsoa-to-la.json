@@ -21,9 +21,9 @@
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.ContainingSubjectField",
+        "fieldClass": "uk.org.tombolo.field.MapToContainingSubjectField",
         "label": "localAuthorityPopulationDensity",
-        "subjectType": "localAuthority",
+        "containingSubjectType": "localAuthority",
         "fieldSpecification": {
           "fieldClass": "uk.org.tombolo.field.LatestValueField",
           "label": "populationDensity",

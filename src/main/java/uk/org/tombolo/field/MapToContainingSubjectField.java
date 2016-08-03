@@ -8,15 +8,15 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ContainingSubjectField implements Field, SingleValueField {
+public class MapToContainingSubjectField implements Field, SingleValueField {
     private final String label;
-    private final String subjectType;
+    private final String containingSubjectType;
     private final FieldSpecification fieldSpecification;
     private SingleValueField field;
 
-    ContainingSubjectField(String label, String subjectType, FieldSpecification fieldSpecification) {
+    MapToContainingSubjectField(String label, String containingSubjectType, FieldSpecification fieldSpecification) {
         this.label = label;
-        this.subjectType = subjectType;
+        this.containingSubjectType = containingSubjectType;
         this.fieldSpecification = fieldSpecification;
     }
 
@@ -56,13 +56,13 @@ public class ContainingSubjectField implements Field, SingleValueField {
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
-        List<Subject> subjectsContainingSubject = SubjectUtils.subjectsContainingSubject(subjectType, subject);
+        List<Subject> subjectsContainingSubject = SubjectUtils.subjectsContainingSubject(containingSubjectType, subject);
         if (subjectsContainingSubject.size() != 1) {
             throw new IncomputableFieldException(String.format(
                     "Subject %s is contained by %d subjects of type %s (%s), but should be contained by 1 only",
                     subject.getName(),
                     subjectsContainingSubject.size(),
-                    subjectType,
+                    containingSubjectType,
                     subjectsContainingSubject.stream().map(Subject::getName).collect(Collectors.joining(", "))));
         }
 
