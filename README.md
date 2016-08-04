@@ -95,7 +95,7 @@ We use the Gradle task `runExport` to run exports. The parameters are as follows
 gradle runExport \
     -PdataExportSpecFile='path/to/spec/file.json' \
     -PoutputFile='output_file.json' \
-    -PforceImports='com.className:datasource-id'
+    -PforceImports='com.className'
     -PclearDatabaseCache=true
 ```
 

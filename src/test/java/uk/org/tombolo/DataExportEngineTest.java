@@ -84,7 +84,7 @@ public class DataExportEngineTest extends AbstractTest {
         ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
 
         // And we set the clear-database flag
-        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.LocalAuthorityImporter:localAuthority"));
+        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.LocalAuthorityImporter"));
 
         // ...we expect the importer to ignore our fake journal and import them anyway
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
