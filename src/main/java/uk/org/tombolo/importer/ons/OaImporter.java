@@ -81,6 +81,11 @@ public final class OaImporter extends AbstractONSImporter implements Importer, S
         return (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11NM"));
     }
 
+    @Override
+    public String getEncoding() {
+        return "EPSG:27700";
+    }
+
     private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
         File localFile = downloadUtils.getDatasourceFile(datasource);
         Path tempDirectory = ZipUtils.unzipToTemporaryDirectory(localFile);

@@ -11,7 +11,7 @@ import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
 
     public static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
 
-    protected int timedValueBufferSize = 100000;
+    protected int timedValueBufferSize = 10000;
 
     @Override
     public Provider getProvider() {
@@ -57,24 +57,12 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         // This expects a path to a local file.
-        String id = null;
-        if (datasourceId.endsWith(".shp")){
-            File shapefile = new File(datasourceId);
-            if (shapefile.exists()) {
-                id = shapefile.getName().replaceAll("\\.shp", "");
-            }else{
-                throw new FileNotFoundException("Shapefile not found");
-            }
-        }
-        if (id == null){
-            throw new ConfigurationException("Missing shapefile location parameter");
-        }
+        File shapefile = new File(datasourceId);
+        validateShapefile(shapefile);
 
-        // FIXME: Handle zip files
-
-        String name = id;
-        String description = "";
-        Datasource datasource = new Datasource(id, getProvider(), name, description);
+        String id = shapefile.getName().replaceFirst("\\.shp$", "");
+        // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
+        Datasource datasource = new Datasource(id, getProvider(), id, "");
         datasource.setLocalDatafile(datasourceId);
 
         // Attributes
@@ -102,9 +90,19 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
         return datasource;
     }
 
+    private void validateShapefile(File shapefile) throws ConfigurationException {
+        try {
+            ShapefileDataStore store = new ShapefileDataStore(shapefile.toURI().toURL());
+            store.getNames();
+            store.dispose();
+        } catch (Exception e) {
+            throw new ConfigurationException(String.format("Shapefile invalid or not found at '%s'.", shapefile.getPath()), e);
+        }
+    }
+
+
     public int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
-        LocalDateTime importTime = LocalDateTime.now();
 
         ShapefileDataStore store = new ShapefileDataStore(Paths.get(datasource.getLocalDatafile()).toUri().toURL());
         FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
@@ -122,7 +120,17 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
         AttributeUtils.save(datasource.getAttributes());
 
         // Load timed values
-        featureReader = ShapefileUtils.getFeatureReader(store,0);
+        int valueCounter = loadTimedValues(store, datasource, subjectType);
+
+        store.dispose();
+
+        return valueCounter;
+    }
+
+    private int loadTimedValues(ShapefileDataStore store, Datasource datasource, SubjectType subjectType) throws IOException {
+        LocalDateTime importTime = LocalDateTime.now();
+
+        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
         int valueCounter = 0;
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while (featureReader.hasNext()){
@@ -147,8 +155,6 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
         log.info("Total values written: {}", valueCounter);
         featureReader.close();
 
-        store.dispose();
-
         return valueCounter;
     }
 
@@ -160,5 +166,10 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
     @Override
     public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
         return feature.getName()+":"+feature.getAttribute("Depthmap_R");
+    }
+
+    @Override
+    public String getEncoding() {
+        return "EPSG:27700";
     }
 }

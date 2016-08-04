@@ -11,4 +11,6 @@ public interface ShapefileImporter {
     String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType);
 
     String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType);
+
+    String getEncoding();
 }

@@ -76,6 +76,11 @@ public final class LocalAuthorityImporter extends AbstractONSImporter implements
         return (String) feature.getAttribute("CTYUA12NM");
     }
 
+    @Override
+    public String getEncoding() {
+        return "EPSG:27700";
+    }
+
     private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource) throws IOException {
         File outerZipFile = downloadUtils.getDatasourceFile(datasource);
         Path outerZipContentsPath = ZipUtils.unzipToTemporaryDirectory(outerZipFile);

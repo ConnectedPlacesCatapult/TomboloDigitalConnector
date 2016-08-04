@@ -31,17 +31,15 @@ public abstract class ShapefileUtils extends AbstractImporter implements Importe
         return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
     }
 
-    public static MathTransform makeCrsTransform() throws FactoryException {
-        CoordinateReferenceSystem sourceCrs = CRS.decode("EPSG:27700");
-        // The 'true' here means longitude first. Don't know why GeoTools puts lat first by default for this CRS
-        // There's a `.prj` file with this dataset, but it seems to result in transforms being ~10m off longitude-wise, so we ignore it
-        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:4326", true);
+    private static MathTransform makeCrsTransform(String inputFormat) throws FactoryException {
+        CoordinateReferenceSystem sourceCrs = CRS.decode(inputFormat);
+        CoordinateReferenceSystem targetCrs = CRS.decode("EPSG:"+Subject.SRID, true);
 
         return CRS.findMathTransform(sourceCrs, targetCrs);
     }
 
     public static List<Subject> convertFeaturesToSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, SubjectType subjectType, ShapefileImporter importer) throws FactoryException, IOException, TransformException {
-        MathTransform crsTransform = makeCrsTransform();
+        MathTransform crsTransform = makeCrsTransform(importer.getEncoding());
 
         List<Subject> subjects = new ArrayList<>();
         while (featureReader.hasNext()) {
@@ -51,7 +49,7 @@ public abstract class ShapefileUtils extends AbstractImporter implements Importe
             Geometry geom = (Geometry) feature.getDefaultGeometry();
             try {
                 Geometry transformedGeom = JTS.transform(geom, crsTransform);
-                transformedGeom.setSRID(4326); // EPSG:4326
+                transformedGeom.setSRID(Subject.SRID);
                 subjects.add(new Subject(subjectType, label, name, transformedGeom));
             } catch (ProjectionException e) {
                 log.warn("Rejecting {}. You will see this if you have assertions enabled (e.g. " +
