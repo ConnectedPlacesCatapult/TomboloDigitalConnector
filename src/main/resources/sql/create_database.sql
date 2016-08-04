@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 drop table if exists timed_value;
 
 drop table if exists subject;
@@ -9,7 +11,6 @@ drop sequence if exists attribute_id_sequence;
 
 drop table if exists provider;
 
-
 -- Provider
 create table provider (
 	label	VARCHAR(63) NOT NULL,
@@ -17,17 +18,14 @@ create table provider (
 	PRIMARY KEY(label)	
 );
 
--- Data Source
--- FIXME: Add data source table
-
-
--- Subject
+-- Subject Type
 create table subject_type (
 	label	VARCHAR(15) NOT NULL,
 	name	VARCHAR(255),
 	PRIMARY KEY(label)
 );
 
+-- Subject
 create sequence subject_id_sequence;
 create table subject (
 	id                   integer NOT NULL DEFAULT nextval('subject_id_sequence'),
@@ -37,9 +35,7 @@ create table subject (
 	shape				 geometry,
 	PRIMARY KEY(id)
 );
-
 create index subject_label on subject (label);
-
 
 -- Attribute
 create sequence attribute_id_sequence;
@@ -53,7 +49,6 @@ create table attribute (
 	PRIMARY KEY(id)
 );
 
-
 -- Timed Value
 create table timed_value (
 	subject_id		integer NOT NULL REFERENCES subject(id),
@@ -63,10 +58,16 @@ create table timed_value (
 	PRIMARY KEY(subject_id,attribute_id,timestamp)
 );
 
--- Import Cache Marker
+-- Database Journal
 create sequence database_journal_id_sequence;
 create table database_journal (
     id          integer NOT NULL DEFAULT nextval('database_journal_id_sequence'),
 	class_name	VARCHAR(255) NOT NULL,
 	key			VARCHAR(255) NOT NULL
 );
+
+-- Insert default subject types
+insert into subject_type(label, name) values
+('unknown','Unknown Subject Type'),
+('sensor', 'Sensor'),
+('poi', 'Point of interest');

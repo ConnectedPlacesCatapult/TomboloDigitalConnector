@@ -18,30 +18,27 @@ and urban models.
 * Gradle (2.12+)
 * (Optional) Wercker (1.0+)
 
-### Set up main database
+### Configure the project
 
-First copy and amend the example configuration file at
+Copy and amend the example configuration file at
 `/gradle.properties.example` to
 `/gradle.properties`.
 
-To create a user and database with the default values in the example file:
+Copy and amend the example API keys file at
+`/apikeys.properties.example` to
+`/apikeys.properties`. If you're not using the services mentioned in the file you can leave it as-is.
+
+### Set up main database
+
+Then run the following to set up your database:
 
 ```bash
-# Omit if you have set up your own database
-
+# Create a user and database
 createuser tombolo
 createdb -O tombolo tombolo
-psql -d tombolo -c "CREATE EXTENSION postgis;"
-```
 
-The following scripts will delete the existing tables in the tombolo database
-and create a new empty copy, with some initial fixtures.
-
-```bash
 # Create DB tables and load initial fixtures
-
 psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
-psql -d tombolo -U tombolo < src/main/resources/sql/initial_fixtures.sql
 ```
 
 ### Set up test database
@@ -50,24 +47,15 @@ The test database is used by the tests and is cleared routinely. We use this
 to gain control over what is in the database when our tests are running and
 to avoid affecting any important data in your main database.
 
-To create the test user and database:
+To set up the test user and database:
 
 ```bash
-# Omit if you have set up your own database
-
+# Create a user and database
 createuser tombolo_test
 createdb -O tombolo_test tombolo_test
-psql -d tombolo_test -c "CREATE EXTENSION postgis;"
-```
 
-The following scripts will delete the existing tables in the tombolo_test database
-and create a new empty copy, with some initial fixtures.
-
-```bash
 # Create DB tables and load initial fixtures
-
 psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql
-psql -d tombolo_test -U tombolo_test < src/test/resources/sql/initial_fixtures.sql
 ```
 
 ### Run tests
@@ -81,6 +69,8 @@ VM Options in your JUnit configuration (Run -> Edit Configurations -> All under 
 and Defaults -> JUnit):
 
 ```
+-enableassertions
+-disableassertions:org.geotools...
 -Denvironment=test
 -DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
 -DdatabaseUsername=tombolo_test
@@ -105,37 +95,6 @@ For example, this exports the London borough profiles from OrganiCity to `organi
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
     -PoutputFile='organicity-borough-profiles.json'
-```
-
-Or without Gradle:
-
-```bash
-gradle clean build copyDeps -x test
-java -cp "build/libs/TomboloDigitalConnector.jar:build/dependency-cache/*" \
-    -Denvironment=export \
-    -DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo \
-    -DdatabaseUsername=tombolo \
-    -DdatabasePassword=tombolo \
-	uk.org.tombolo.DataExportRunner \
-	src/main/resources/executions/organicity/export-borough-profiles.json \
-	organicity-borough-profiles.json \
-	"" \
-	true
-```
-
-### Build
-
-With or without running the unit tests
-
-```bash
-gradle clean build copyDeps
-gradle clean build copyDeps -x test
-```
-
-For Eclipse users the following command builds
-
-```bash
-gradle cleanEclipse eclipse
 ```
 
 ## Continuous Integration
