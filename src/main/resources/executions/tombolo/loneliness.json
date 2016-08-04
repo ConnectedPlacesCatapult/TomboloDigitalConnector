@@ -13,7 +13,7 @@
 		],
 		"datasourceSpecification" : [
 			{
-				"importerClass" : "uk.org.tombolo.importer.govuk.OaImporter",
+				"importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
 				"datasourceId" : "lsoa"
 			},
 			{

@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ShapefileImporter;
+import uk.org.tombolo.importer.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,7 +36,7 @@ import java.util.List;
  *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
  *
  */
-public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements Importer {
+public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Importer, ShapefileImporter {
     private static Logger log = LoggerFactory.getLogger(SpaceSyntaxShapefileImporter.class);
 
     public static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
@@ -83,7 +81,7 @@ public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements I
         // FIXME: This will break if not all features have the same number of attributes (which they do in this example)
         List<Attribute> attributes = new ArrayList<>();
         ShapefileDataStore store = new ShapefileDataStore(Paths.get(datasource.getLocalDatafile()).toUri().toURL());
-        FeatureReader featureReader = getFeatureReader(store,0);
+        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
         if (featureReader.hasNext()){
             SimpleFeature feature = (SimpleFeature) featureReader.next();
             Collection<Property> properties = feature.getProperties();
@@ -104,15 +102,14 @@ public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements I
         return datasource;
     }
 
-    @Override
     public int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
         LocalDateTime importTime = LocalDateTime.now();
 
         ShapefileDataStore store = new ShapefileDataStore(Paths.get(datasource.getLocalDatafile()).toUri().toURL());
-        FeatureReader featureReader = getFeatureReader(store,0);
+        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
 
-        List<Subject> subjects = convertFeaturesToSubjects(featureReader, subjectType);
+        List<Subject> subjects = ShapefileUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
         SubjectUtils.save(subjects);
 
         featureReader.close();
@@ -125,7 +122,7 @@ public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements I
         AttributeUtils.save(datasource.getAttributes());
 
         // Load timed values
-        featureReader = getFeatureReader(store,0);
+        featureReader = ShapefileUtils.getFeatureReader(store,0);
         int valueCounter = 0;
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while (featureReader.hasNext()){
@@ -156,12 +153,12 @@ public class SpaceSyntaxShapefileImporter extends ShapefileImporter implements I
     }
 
     @Override
-    protected String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
+    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
         return feature.getName()+":"+feature.getAttribute("Depthmap_R");
     }
 
     @Override
-    protected String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
+    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
         return feature.getName()+":"+feature.getAttribute("Depthmap_R");
     }
 }

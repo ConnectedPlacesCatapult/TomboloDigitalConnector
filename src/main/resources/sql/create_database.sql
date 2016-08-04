@@ -62,3 +62,11 @@ create table timed_value (
 	value			DOUBLE PRECISION NOT NULL,
 	PRIMARY KEY(subject_id,attribute_id,timestamp)
 );
+
+-- Import Cache Marker
+create sequence database_journal_id_sequence;
+create table database_journal (
+    id          integer NOT NULL DEFAULT nextval('database_journal_id_sequence'),
+	class_name	VARCHAR(255) NOT NULL,
+	key			VARCHAR(255) NOT NULL
+);

@@ -2,6 +2,7 @@ package uk.org.tombolo;
 
 import org.hibernate.Transaction;
 import org.junit.Before;
+import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -19,13 +20,7 @@ public abstract class AbstractTest {
             throw new Error("Not running in test mode. You're going to clobber your database!");
         };
 
-        HibernateUtil.restart();
-        HibernateUtil.withSession(session -> {
-            Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE timed_value, attribute, provider, subject").executeUpdate();
-            session.createSQLQuery("DELETE FROM subject_type WHERE label NOT IN ('unknown', 'sensor', 'poi')").executeUpdate();
-            transaction.commit();
-        });
+        DatabaseUtils.clearAllData();
     }
 
     protected void mockDownloadUtils(Importer importer){

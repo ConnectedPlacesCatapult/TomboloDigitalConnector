@@ -14,8 +14,8 @@ public interface Importer {
 	
 	public Datasource getDatasource(String datasourceId) throws Exception;
 	
-	public int importDatasource(String datasourceId) throws Exception;
-	public int importDatasource(Datasource datasource) throws Exception;
+	public Integer importDatasource(String datasourceId) throws Exception;
+	public Integer importDatasource(String datasourceId, Boolean force) throws Exception;
 
 	public void setDownloadUtils(DownloadUtils downloadUtils);
 

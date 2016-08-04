@@ -92,7 +92,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		if (localAuthorities == null)
 			localAuthorities = Arrays.asList(LOCAL_AUTHORITIES);
 	}
-	
+
 	@Override
 	public Provider getProvider() {
 		return PROVIDER;
@@ -144,7 +144,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	}
 
 	@Override
-	public int importDatasource(Datasource datasource) throws Exception {
+	protected int importDatasource(Datasource datasource) throws Exception {
 		
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
