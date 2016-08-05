@@ -12,6 +12,7 @@ import uk.org.tombolo.importer.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ import java.util.List;
  *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
  *
  */
-public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Importer, ShapefileImporter {
-    private static Logger log = LoggerFactory.getLogger(SpaceSyntaxShapefileImporter.class);
+public class OpenSpaceNetworkImporter extends AbstractImporter implements Importer, ShapefileImporter {
+    private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
     public static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
 
@@ -56,19 +57,21 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        // This expects a path to a local file.
-        File shapefile = new File(datasourceId);
-        validateShapefile(shapefile);
 
-        String id = shapefile.getName().replaceFirst("\\.shp$", "");
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
-        Datasource datasource = new Datasource(id, getProvider(), id, "");
-        datasource.setLocalDatafile(datasourceId);
+        Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
+        // FIXME: Currently the OpenSpaceNetwork has not been published.
+        // For the time being we will have to manually make sure that the file is in the right place.
+        datasource.setLocalDatafile("osn/"+datasourceId+".zip");
+        validateShapefile(datasource);
+
+        // FIXME: Add this when the OpenSpaceNetwork has been released in the wild
+        //datasource.setRemoteDatafile("http://what-ever-the-url-will-be.com");
 
         // Attributes
         // FIXME: This will break if not all features have the same number of attributes (which they do in this example)
         List<Attribute> attributes = new ArrayList<>();
-        ShapefileDataStore store = new ShapefileDataStore(Paths.get(datasource.getLocalDatafile()).toUri().toURL());
+        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
         FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
         if (featureReader.hasNext()){
             SimpleFeature feature = (SimpleFeature) featureReader.next();
@@ -90,21 +93,27 @@ public class SpaceSyntaxShapefileImporter extends AbstractImporter implements Im
         return datasource;
     }
 
-    private void validateShapefile(File shapefile) throws ConfigurationException {
+    private void validateShapefile(Datasource datasource) throws ConfigurationException {
         try {
-            ShapefileDataStore store = new ShapefileDataStore(shapefile.toURI().toURL());
+            ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
             store.getNames();
             store.dispose();
         } catch (Exception e) {
-            throw new ConfigurationException(String.format("Shapefile invalid or not found at '%s'.", shapefile.getPath()), e);
+            throw new ConfigurationException("Shapefile invalid.", e);
         }
+    }
+
+    private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource) throws IOException {
+        File localFile = downloadUtils.getDatasourceFile(datasource);
+        Path tempDirectory = ZipUtils.unzipToTemporaryDirectory(localFile);
+        return new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + datasource.getId() +".shp").toUri().toURL());
     }
 
 
     public int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
 
-        ShapefileDataStore store = new ShapefileDataStore(Paths.get(datasource.getLocalDatafile()).toUri().toURL());
+        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
         FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
 
         List<Subject> subjects = ShapefileUtils.convertFeaturesToSubjects(featureReader, subjectType, this);

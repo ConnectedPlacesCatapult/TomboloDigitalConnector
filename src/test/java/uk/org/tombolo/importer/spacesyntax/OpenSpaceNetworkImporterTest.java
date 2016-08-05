@@ -13,12 +13,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class SpaceSyntaxShapefileImporterTest extends AbstractTest {
-    SpaceSyntaxShapefileImporter importer;
+public class OpenSpaceNetworkImporterTest extends AbstractTest {
+    OpenSpaceNetworkImporter importer;
 
     @Before
     public void setUp() throws Exception {
-        importer = new SpaceSyntaxShapefileImporter();
+        importer = new OpenSpaceNetworkImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
     }
 
@@ -38,16 +38,12 @@ public class SpaceSyntaxShapefileImporterTest extends AbstractTest {
 
     @Test
     public void getDatasource() throws Exception {
-        String resourcePath = "datacache/TomboloData/com.spacesyntax/SSx_sample/SSx_sample.shp";
-        ClassLoader classLoader = getClass().getClassLoader();
-        String shapefilePath = classLoader.getResource(resourcePath).getPath();
-
-        Datasource datasource = importer.getDatasource(shapefilePath);
+        Datasource datasource = importer.getDatasource("SSx_sample");
 
         assertEquals("SSx_sample",datasource.getId());
         assertEquals("SSx_sample",datasource.getName());
         assertEquals("",datasource.getDescription());
-        assertEquals(shapefilePath, datasource.getLocalDatafile());
+        assertEquals("osn/SSx_sample.zip", datasource.getLocalDatafile());
         assertNull(datasource.getRemoteDatafile());
 
         assertEquals(61, datasource.getAttributes().size());
@@ -55,11 +51,7 @@ public class SpaceSyntaxShapefileImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        String resourcePath = "datacache/TomboloData/com.spacesyntax/SSx_sample/SSx_sample.shp";
-        ClassLoader classLoader = getClass().getClassLoader();
-        String shapefilePath = classLoader.getResource(resourcePath).getPath();
-
-        int importedCount = importer.importDatasource(shapefilePath);
+        int importedCount = importer.importDatasource("SSx_sample");
         assertEquals(61*287, importedCount);
 
         Subject streetSegment = SubjectUtils.getSubjectByLabel("SSx_sample:4702");
