@@ -2,8 +2,10 @@ bin/
 build/
 .classpath
 .gradle/
+.idea/
 .project
 .settings/
 _*
 gradle.properties
 apikeys.properties
+.DS_Store

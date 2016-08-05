@@ -4,10 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.ons.LocalAuthorityImporter;
 
 import java.util.List;
 
