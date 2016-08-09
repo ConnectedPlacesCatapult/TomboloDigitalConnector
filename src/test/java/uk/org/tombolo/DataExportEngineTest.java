@@ -63,11 +63,11 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testObeysCache() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
         engine.execute(builder.build(), writer);
 
         // ...we expect the importer not to have imported them, so we should have zero features
@@ -77,14 +77,14 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testReimportsWhenForced() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.govuk.LocalAuthorityImporter", "localAuthority");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
 
         // And we set the clear-database flag
-        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.govuk.LocalAuthorityImporter:localAuthority"));
+        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.LocalAuthorityImporter"));
 
         // ...we expect the importer to ignore our fake journal and import them anyway
         assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));

@@ -31,7 +31,7 @@ public class DataExportEngine implements ExecutionEngine{
 	}
 
 	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
-		execute(dataExportSpec, writer, new ImporterMatcher());
+		execute(dataExportSpec, writer, new ImporterMatcher(""));
 	}
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
@@ -42,7 +42,7 @@ public class DataExportEngine implements ExecutionEngine{
 			importer.setDownloadUtils(downloadUtils);
 			importer.importDatasource(
 					datasourceSpec.getDatasourceId(),
-					forceImports.doesMatch(datasourceSpec.getImporterClass(), datasourceSpec.getDatasourceId())
+					forceImports.doesMatch(datasourceSpec.getImporterClass())
 			);
 		}
 

@@ -56,8 +56,6 @@ public class DataExportRunner {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // FIXME: This method should either be responsible for the entire state of HibernateUtil, or not at all.
-            // e.g. it should set it up too, or it shouldn't have to shut it down.
             HibernateUtil.shutdown();
         }
     }
