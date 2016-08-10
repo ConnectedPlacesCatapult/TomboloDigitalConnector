@@ -1,0 +1,52 @@
+{
+	"datasetSpecification" : {
+		"subjectSpecification" : [
+			{
+				"subjectType" : "lsoa",
+				"matchers" : [
+					{
+						"attribute": "name",
+						"pattern": "Leeds%"
+					}
+				]
+			}
+		],
+		"datasourceSpecification" : [
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+				"datasourceId" : "lsoa"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS103EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS405EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS108EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS302EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS303EW"
+			},
+			{
+				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
+				"datasourceId" : "QS119EW"
+			}
+		],
+		"fieldSpecification" : [
+			{
+				"fieldClass": "uk.org.tombolo.field.PredefinedField",
+				"label": "socialrecilience/SocialIsolationAmongElderly"
+			}
+			]
+	},
+	"exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+}

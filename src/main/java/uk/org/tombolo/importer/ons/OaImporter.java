@@ -42,7 +42,8 @@ public final class OaImporter extends AbstractONSImporter implements Importer, S
         switch (datasourceIdObject) {
             case lsoa:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
-                datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                //datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                datasource.setRemoteDatafile("http://opengeography.ons.opendata.arcgis.com/datasets/c9dc234691d44524a79ccf3266af6562_2.zip");
                 datasource.setLocalDatafile("lsoa/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
                 return datasource;
             case msoa:
@@ -93,6 +94,10 @@ public final class OaImporter extends AbstractONSImporter implements Importer, S
     }
 
     private String shapefileNameForDatasource(SubjectType subjectType) {
+        if (subjectType.getLabel().equals(SubjectTypeLabel.lsoa.name())){
+            return "Lower_layer_Super_Output_Areas_December_2011_Generalised_Clipped__Boundaries_in_England_and_Wales.shp";
+        }
+
         return subjectType.getLabel().toUpperCase() + "_2011_EW_BGC_V2.shp";
     }
 
