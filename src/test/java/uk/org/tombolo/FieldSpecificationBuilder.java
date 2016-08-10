@@ -34,7 +34,16 @@ public class FieldSpecificationBuilder implements JSONAware {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.WrapperField")
                 .setLabel(label)
-                .setFieldSpecification(fieldSpecificationBuilders);
+                .set("fieldSpecification", fieldSpecificationBuilders);
+        return spec;
+    }
+
+    public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String containingSubjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.MapToContainingSubjectField")
+                .setLabel(label)
+                .set("containingSubjectType", containingSubjectType)
+                .set("fieldSpecification", fieldSpecificationBuilder);
         return spec;
     }
 
@@ -42,7 +51,7 @@ public class FieldSpecificationBuilder implements JSONAware {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.FixedAnnotationField")
                 .setLabel(label)
-                .setValue(value);
+                .set("value", value);
         return spec;
     }
 
@@ -66,24 +75,17 @@ public class FieldSpecificationBuilder implements JSONAware {
         return jsonSpec.toJSONString();
     }
 
-    public FieldSpecificationBuilder setFieldClass(String fieldClass) {
-        jsonSpec.put("fieldClass", fieldClass);
+    public FieldSpecificationBuilder set(String key, Object value) {
+        jsonSpec.put(key, value);
         return this;
+    }
+
+    public FieldSpecificationBuilder setFieldClass(String fieldClass) {
+        return set("fieldClass", fieldClass);
     }
 
     public FieldSpecificationBuilder setLabel(String label) {
-        jsonSpec.put("label", label);
-        return this;
-    }
-
-    public FieldSpecificationBuilder setFieldSpecification(List<FieldSpecificationBuilder> fields) {
-        jsonSpec.put("fieldSpecification", fields);
-        return this;
-    }
-
-    public FieldSpecificationBuilder setValue(String value) {
-        jsonSpec.put("value", value);
-        return this;
+        return set("label", label);
     }
 
     public FieldSpecificationBuilder addDividendAttribute(String providerLabel, String attributeLabel) {

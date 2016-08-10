@@ -12,6 +12,7 @@ import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -87,5 +88,34 @@ public class SubjectUtilsTest extends AbstractTest {
 		spec.setSubjectSpecification(subjectSpecification);
 		spec.setFieldSpecification(fieldSpecification);
 		return spec;
+	}
+
+	@Test
+	public void testSubjectsContainingSubjectReturnsContainingSubject() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("localAuthority", cityOfLondonLsoa);
+		assertEquals(cityOfLondon, returnedSubjects.get(0));
+		assertEquals(1, returnedSubjects.size());
+	}
+
+
+	@Test
+	public void testSubjectsContainingSubjectReturnsNullOnWrongSubjectType() throws Exception {
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("msoa", cityOfLondonLsoa);
+		assertEquals(0, returnedSubjects.size());
+	}
+
+	@Test
+	public void testSubjectsContainingSubjectReturnsNullOnNoContainingSubject() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
+		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
+		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
+
+		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("localAuthority", islingtonLsoa);
+		assertEquals(0, returnedSubjects.size());
 	}
 }
