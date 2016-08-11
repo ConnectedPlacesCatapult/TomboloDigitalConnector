@@ -1,13 +1,11 @@
 package uk.org.tombolo;
 
-import com.jayway.jsonpath.Criteria;
-import com.jayway.jsonpath.Filter;
-import com.jayway.jsonpath.JsonPath;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.utils.DatabaseJournal;
@@ -15,16 +13,10 @@ import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class DataExportEngineTest extends AbstractTest {
     DataExportEngine engine;
@@ -45,7 +37,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testReturnsEmptyOnBlankSpec() throws Exception {
         engine.execute(builder.build(), writer);
 
-        assertThat(writer.toString(), hasJsonPath("$.features", hasSize(0)));
+        JSONAssert.assertEquals(writer.toString(), "{type:'FeatureCollection', features:[]}", false);
     }
 
     @Test
@@ -55,9 +47,7 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
-        assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.label", equalTo("E01000001")));
+        JSONAssert.assertEquals("{features: [{properties: {name: 'City of London 001A', label: 'E01000001'}}]}", writer.toString(), false);
     }
 
     @Test
@@ -70,8 +60,8 @@ public class DataExportEngineTest extends AbstractTest {
         ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
         engine.execute(builder.build(), writer);
 
-        // ...we expect the importer not to have imported them, so we should have zero features
-        assertThat(writer.toString(), hasJsonPath("$.features", hasSize(0)));
+        // ...we expect the importer not to have imported them, so we should have no features
+        JSONAssert.assertEquals("{type:'FeatureCollection', features:[]}", writer.toString(), false);
     }
 
     @Test
@@ -87,7 +77,14 @@ public class DataExportEngineTest extends AbstractTest {
         engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.LocalAuthorityImporter"));
 
         // ...we expect the importer to ignore our fake journal and import them anyway
-        assertThat(writer.toString(), hasJsonPath("$.features", hasSize(1)));
+        JSONAssert.assertEquals("{" +
+                "  features: [{" +
+                "    properties: {" +
+                "      name: 'Cumbria'," +
+                "      label: 'E10000006'" +
+                "    }" +
+                "  }]" +
+                "}", writer.toString(), false);
     }
 
     @Test
@@ -104,10 +101,26 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.attr_label.name", equalTo("attr_name")));
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01000001", "attr_label", "value", "100.0"));
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'City of London 001A'," +
+                "        attributes: {" +
+                "          attr_label: {" +
+                "            provider: 'default_provider_name'," +
+                "            values: {" +
+                "              value: 100," +
+                "              timestamp: '2011-01-01T00:00:00'" +
+                "            }," +
+                "            name: 'attr_name'" +
+                "          }" +
+                "        }," +
+                "        label: 'E01000001'" +
+                "      }" +
+                "    }" +
+                "  ]" +
+                "}", writer.toString(), false);
     }
 
     @Test
@@ -124,10 +137,29 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-        System.out.println(writer.toString());
 
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01000001", "attr_label", "2011-01-01T00:00", "100.0"));
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'City of London 001A'," +
+                "        attributes: {" +
+                "          attr_label: {" +
+                "            provider: 'default_provider_name'," +
+                "            values: [" +
+                "              {" +
+                "                value: 100," +
+                "                timestamp: '2011-01-01T00:00:00'" +
+                "              }" +
+                "            ]," +
+                "            name: 'attr_name'" +
+                "          }" +
+                "        }," +
+                "        label: 'E01000001'" +
+                "      }" +
+                "    }" +
+                "  ]" +
+                "}", writer.toString(), false);
     }
 
     @Test
@@ -142,10 +174,29 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.attributes.populationDensity.name", equalTo("Population density (per hectare) 2015")));
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E09000001", "populationDensity", "2015-12-31T23:59:59", "28.237556363195576"));
+        
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'City of London'," +
+                "        attributes: {" +
+                "          populationDensity: {" +
+                "            provider: 'London Datastore - Greater London Authority'," +
+                "            values: [" +
+                "              {" +
+                "                value: 28.237556363195576," +
+                "                timestamp: '2015-12-31T23:59:59'" +
+                "              }" +
+                "            ]," +
+                "            name: 'Population density (per hectare) 2015'" +
+                "          }" +
+                "        }," +
+                "        label: 'E09000001'" +
+                "      }" +
+                "    }" +
+                "  ]" +
+                "}", writer.toString(), false);
     }
 
     @Test
@@ -163,27 +214,58 @@ public class DataExportEngineTest extends AbstractTest {
 
         engine.execute(builder.build(), writer);
 
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"));
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'Islington 015E'," +
+                "        attributes: {" +
+                "          percentage_under_1_years_old_label: {" +
+                "            values: {" +
+                "              value: 0.012263099219620958," +
+                "              timestamp: '2011-12-31T23:59:59'" +
+                "            }" +
+                "          }" +
+                "        }," +
+                "        label: 'E01002766'" +
+                "      }" +
+                "    }" +
+                "  ]" +
+                "}", writer.toString(), false);
     }
 
     @Test
     public void testRunsOnNewSubjects() throws Exception {
-        builder .addSubjectSpecification(
-                new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
-                .addFieldSpecification(
-                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.valuesByTime("uk.gov.tfl", "ServingLineCount")
-                        ))
-                );
+        builder
+            .addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006"))
+            .addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority")
+            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+            .addFieldSpecification(
+                    FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                            FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                    ))
+            );
 
         engine.execute(builder.build(), writer);
 
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.name", equalTo("Aldgate Station")));
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("tfl:station:tube:1000003", "ServingLineCount", "2010-02-04T11:54:08", "3.0"));
-
+        JSONAssert.assertEquals("{" +
+                "  type: 'FeatureCollection'," +
+                "  features: [{" +
+                "    type: 'Feature'," +
+                "    properties: {" +
+                "      name: 'Cumbria'," +
+                "      attributes: {" +
+                "        populationDensity: {" +
+                "          provider: 'London Datastore - Greater London Authority'," +
+                "          values: []," +
+                "          name: 'Population density (per hectare) 2015'" +
+                "        }" +
+                "      }," +
+                "      label: 'E10000006'" +
+                "    }" +
+                "  }]" +
+                "}", writer.toString(), false);
     }
 
     @Test
@@ -225,37 +307,37 @@ public class DataExportEngineTest extends AbstractTest {
 
         engine.execute(builder.build(), writer);
 
-        assertHasOnlyTimedValues(writer.toString(),
-                new TimedValueMatcher("E01002766", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.012263099219620958"),
-                new TimedValueMatcher("E08000035", "percentage_under_1_years_old_label", "2011-12-31T23:59:59", "0.013229804986127467"));
-    }
-
-    private void assertHasOnlyTimedValues(String json, TimedValueMatcher ...matchers) {
-        List<Integer> allTimedAttributes = JsonPath.parse(json).read("$.features..properties.attributes..values");
-        assertEquals("Number of matchers does not match number of values", matchers.length, allTimedAttributes.size());
-        for (TimedValueMatcher matcher : matchers) {
-            assertHasTimedValue(json, matcher);
-        }
-    }
-
-    private void assertHasTimedValue(String json, TimedValueMatcher matcher) {
-        ArrayList<Map<String, Object>> features = JsonPath.parse(json).read("$.features[?]",
-                Filter.filter(Criteria.where("properties.label").is(matcher.subjectLabel)));
-        assertEquals(String.format("Wrong number of features found for label %s", matcher.subjectLabel), 1, features.size());
-        assertEquals(matcher.value, JsonPath.parse(features.get(0)).read("$.properties.attributes." + matcher.attributeName + ".values['" + matcher.timestamp + "']").toString());
-    }
-
-    private static class TimedValueMatcher {
-        String subjectLabel;
-        String attributeName;
-        String timestamp;
-        String value;
-
-        TimedValueMatcher(String subjectLabel, String attributeName, String timestamp, String value) {
-            this.subjectLabel = subjectLabel;
-            this.attributeName = attributeName;
-            this.timestamp = timestamp;
-            this.value = value;
-        }
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'Islington 015E'," +
+                "        attributes: {" +
+                "          percentage_under_1_years_old_label: {" +
+                "            values: {" +
+                "              value: 0.012263099219620958," +
+                "              timestamp: '2011-12-31T23:59:59'" +
+                "            }" +
+                "          }" +
+                "        }," +
+                "        label: 'E01002766'" +
+                "      }" +
+                "    }," +
+                "    {" +
+                "      properties: {" +
+                "        name: 'Leeds'," +
+                "        attributes: {" +
+                "          percentage_under_1_years_old_label: {" +
+                "            values: {" +
+                "              value: 0.013229804986127467," +
+                "              timestamp: '2011-12-31T23:59:59'" +
+                "            }" +
+                "          }" +
+                "        }," +
+                "        label: 'E08000035'" +
+                "      }" +
+                "    }" +
+                "  ]" +
+                "}", writer.toString(), false);
     }
 }

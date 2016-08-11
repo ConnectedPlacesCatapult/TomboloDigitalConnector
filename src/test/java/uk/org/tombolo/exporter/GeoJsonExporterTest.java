@@ -1,12 +1,12 @@
 package uk.org.tombolo.exporter;
 
-import com.jayway.jsonpath.JsonPath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
@@ -57,7 +57,23 @@ public class GeoJsonExporterTest extends AbstractTest {
 				Arrays.asList(new FixedAnnotationField("some_label", "some_value"))
 		);
 
-		assertEquals("some_value", JsonPath.read(writer.toString(), "$.features[0].properties.some_label").toString());
+		JSONAssert.assertEquals("{" +
+				"  type: 'FeatureCollection'," +
+				"  features: [" +
+				"    {" +
+				"      type: 'Feature'," +
+				"      geometry: {" +
+				"        type: 'Point'," +
+				"        coordinates: [0.0, 0.0]" +
+				"      }," +
+				"      properties: {" +
+				"        some_label: 'some_value'," +
+				"        name: 'City of London'," +
+				"        label: 'E09000001'" +
+				"      }" +
+				"    }" +
+				"  ]" +
+				"}", writer.toString(), false);
 	}
 
 	private String getFirstFeatureLabel(String jsonString) throws ParseException {
