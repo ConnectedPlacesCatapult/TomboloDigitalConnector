@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatabaseJournalEntry;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.DatabaseJournal;
 import uk.org.tombolo.importer.ImporterMatcher;
+import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -270,6 +272,32 @@ public class DataExportEngineTest extends AbstractTest {
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testMapsBetweenSubjectTypes() throws Exception {
+        Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+        Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+        cityOfLondon.setShape(TestFactory.makePointGeometry(1d, 1d));
+        cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
+        SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
+
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
+
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.mapToContainingSubjectField(
+                        "local_authority",
+                        "localAuthority",
+                        FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                )
+        );
+
+        engine.execute(builder.build(), writer);
+
+        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.local_authority.attr_label.values.latest", equalTo(100d)));
     }
 
     @Test

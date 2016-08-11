@@ -1,0 +1,47 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "sensor"
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.govuk.LocalAuthorityImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter",
+        "datasourceId" : "london-borough-profiles"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "London"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.MapToContainingSubjectField",
+        "label": "localAuthorityPopulationDensity",
+        "containingSubjectType": "localAuthority",
+        "fieldSpecification": {
+          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "label": "populationDensity",
+          "attribute": {
+            "providerLabel": "uk.gov.london",
+            "attributeLabel": "populationDensity"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.LatestValueField",
+        "label": "CountPedalCycles",
+        "attribute": {
+          "providerLabel" : "uk.gov.dft",
+          "attributeLabel" : "CountPedalCycles"
+        }
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+}
