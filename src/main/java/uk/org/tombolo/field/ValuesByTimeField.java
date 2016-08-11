@@ -10,6 +10,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +33,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         JSONArray arr = new JSONArray();
         arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
-            pair.put("timestamp", timedValue.getId().getTimestamp().toString());
+            pair.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             pair.put("value", timedValue.getValue());
             return pair;
         }).collect(Collectors.toList()));

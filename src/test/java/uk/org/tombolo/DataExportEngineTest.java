@@ -149,7 +149,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "            values: [" +
                 "              {" +
                 "                value: 100," +
-                "                timestamp: '2011-01-01T00:00'" +
+                "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
                 "            ]," +
                 "            name: 'attr_name'" +

@@ -11,6 +11,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +110,7 @@ public class TimedValueUtils {
 					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
 							timedValue.getId().getSubject().getLabel(),
 							timedValue.getId().getAttribute().getName(),
-							timedValue.getId().getTimestamp().toString(),
+							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
 							e.getMessage());
 				}
 				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
