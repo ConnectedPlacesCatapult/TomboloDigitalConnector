@@ -3,6 +3,7 @@ package uk.org.tombolo.field;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
@@ -28,10 +29,10 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
+    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute());
         if (timedValue == null)
-            return withinMetadata(null);
+            throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
         JSONObject obj = new JSONObject();
         obj.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         obj.put("value", timedValue.getValue());

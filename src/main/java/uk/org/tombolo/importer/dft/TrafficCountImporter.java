@@ -203,8 +203,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue pedalCycleCount = new TimedValue(subject, pcAttribute, timestamp, pcCount);
 			timedValueBuffer.add(pedalCycleCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
-				flush(timedValueBuffer, valueCounter);
 
 			// Motorcycles
 			Attribute mcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountMotorcycles.name());
@@ -212,8 +210,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue motorcycleCount = new TimedValue(subject, mcAttribute, timestamp, mcCount);
 			timedValueBuffer.add(motorcycleCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
-				flush(timedValueBuffer, valueCounter);
 
 			// Cars & taxis
 			Attribute ctAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountCarsTaxis.name());
@@ -221,8 +217,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue carTaxiCount = new TimedValue(subject, ctAttribute, timestamp, ctCount);
 			timedValueBuffer.add(carTaxiCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
-				flush(timedValueBuffer, valueCounter);
 
 			// Buses and Coaches
 			Attribute bcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountBusesCoaches.name());
@@ -230,8 +224,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue busCoachCount = new TimedValue(subject, bcAttribute, timestamp, bcCount);
 			timedValueBuffer.add(busCoachCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
-				flush(timedValueBuffer, valueCounter);
 
 			// Light Goods Vehicles
 			Attribute lgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
@@ -239,8 +231,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue lightGoodsVehicleCount = new TimedValue(subject, lgvAttribute, timestamp, lgvCount);
 			timedValueBuffer.add(lightGoodsVehicleCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
-				flush(timedValueBuffer, valueCounter);
 
 			// Heavy Goods Vehicles
 			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountHeavyGoodsVehicles.name());
@@ -248,13 +238,12 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 			TimedValue heavyGoodsVehicleCount = new TimedValue(subject, hgvAttribute, timestamp, hgvCount);
 			timedValueBuffer.add(heavyGoodsVehicleCount);
 			valueCounter++;
-			if (valueCounter % timedValueBufferSize == 0)
+
+			if (timedValueBuffer.size() > timedValueBufferSize)
 				flush(timedValueBuffer, valueCounter);
 
 		}
-		log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-		TimedValueUtils.save(timedValueBuffer);
-		log.info("Total values written: {}", valueCounter);
+		flush(timedValueBuffer, valueCounter);
 		reader.close();
 		
 		return valueCounter;
