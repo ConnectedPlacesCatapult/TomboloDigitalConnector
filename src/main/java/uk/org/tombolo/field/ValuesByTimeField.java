@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
@@ -33,7 +34,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         JSONArray arr = new JSONArray();
         arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
-            pair.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            pair.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
             pair.put("value", timedValue.getValue());
             return pair;
         }).collect(Collectors.toList()));

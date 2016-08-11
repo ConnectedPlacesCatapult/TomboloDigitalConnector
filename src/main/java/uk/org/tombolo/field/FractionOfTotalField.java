@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
@@ -48,7 +49,7 @@ public class FractionOfTotalField implements SingleValueField {
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
-        obj.put("timestamp", valueWithTimestamp.timestamp.toString());
+        obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));
         obj.put("value", valueWithTimestamp.value);
         return withinJsonStructure(obj);
     }

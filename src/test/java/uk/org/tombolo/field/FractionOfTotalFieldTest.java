@@ -39,7 +39,7 @@ public class FractionOfTotalFieldTest extends AbstractTest {
                 "    values: [" +
                 "      {" +
                 "        value: 0.5," +
-                "        timestamp: '2011-01-03T00:00'" +
+                "        timestamp: '2011-01-03T00:00:00'" +
                 "      }" +
                 "    ]" +
                 "  }" +

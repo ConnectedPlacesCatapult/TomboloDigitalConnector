@@ -35,7 +35,7 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
         if (timedValue == null)
             throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
         JSONObject obj = new JSONObject();
-        obj.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        obj.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
         obj.put("value", timedValue.getValue());
         JSONArray values = new JSONArray();
         values.add(obj);
