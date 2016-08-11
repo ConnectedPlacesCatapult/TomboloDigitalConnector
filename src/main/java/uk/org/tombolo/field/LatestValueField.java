@@ -1,5 +1,6 @@
 package uk.org.tombolo.field;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
@@ -36,7 +37,9 @@ public class LatestValueField extends ValuesByTimeField implements SingleValueFi
         JSONObject obj = new JSONObject();
         obj.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         obj.put("value", timedValue.getValue());
-        return withinMetadata(obj);
+        JSONArray values = new JSONArray();
+        values.add(obj);
+        return withinMetadata(values);
     }
 
     private Double getValue(Subject subject) {

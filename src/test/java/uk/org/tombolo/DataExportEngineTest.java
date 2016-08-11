@@ -109,10 +109,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        attributes: {" +
                 "          attr_label: {" +
                 "            provider: 'default_provider_name'," +
-                "            values: {" +
-                "              value: 100," +
-                "              timestamp: '2011-01-01T00:00:00'" +
-                "            }," +
+                "            values: [" +
+                "              {" +
+                "                value: 100," +
+                "                timestamp: '2011-01-01T00:00:00'" +
+                "              }" +
+                "            ]," +
                 "            name: 'attr_name'" +
                 "          }" +
                 "        }," +
@@ -221,10 +223,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'Islington 015E'," +
                 "        attributes: {" +
                 "          percentage_under_1_years_old_label: {" +
-                "            values: {" +
-                "              value: 0.012263099219620958," +
-                "              timestamp: '2011-12-31T23:59:59'" +
-                "            }" +
+                "            values: [" +
+                "              {" +
+                "                value: 0.012263099219620958," +
+                "                timestamp: '2011-12-31T23:59:59'" +
+                "              }" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E01002766'" +
@@ -314,10 +318,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'Islington 015E'," +
                 "        attributes: {" +
                 "          percentage_under_1_years_old_label: {" +
-                "            values: {" +
-                "              value: 0.012263099219620958," +
-                "              timestamp: '2011-12-31T23:59:59'" +
-                "            }" +
+                "            values: [" +
+                "              {" +
+                "                value: 0.012263099219620958," +
+                "                timestamp: '2011-12-31T23:59:59'" +
+                "              }" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E01002766'" +
@@ -328,10 +334,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'Leeds'," +
                 "        attributes: {" +
                 "          percentage_under_1_years_old_label: {" +
-                "            values: {" +
-                "              value: 0.013229804986127467," +
-                "              timestamp: '2011-12-31T23:59:59'" +
-                "            }" +
+                "            values: [" +
+                "              {" +
+                "                value: 0.013229804986127467," +
+                "                timestamp: '2011-12-31T23:59:59'" +
+                "              }" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E08000035'" +

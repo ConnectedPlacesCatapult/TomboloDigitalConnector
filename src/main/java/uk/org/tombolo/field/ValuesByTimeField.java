@@ -29,7 +29,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         this.attribute = attribute;
     }
 
-    public JSONObject jsonValueForSubject(Subject subject) {
+    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         JSONArray arr = new JSONArray();
         arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
@@ -62,7 +62,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         }
     }
 
-    protected JSONObject withinMetadata(JSONAware contents) {
+    protected JSONObject withinMetadata(JSONArray contents) {
         JSONObject attr = new JSONObject();
         attr.put("name", getHumanReadableName());
         attr.put("provider", getProvider().getName());
