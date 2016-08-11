@@ -236,38 +236,35 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testRunsOnNewSubjects() throws Exception {
-        builder .addSubjectSpecification(
-                new SubjectSpecificationBuilder("TfLStation").addMatcher("name", "Aldgate Station"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.tfl.TfLStationsImporter", "StationList")
-                .addFieldSpecification(
-                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.valuesByTime("uk.gov.tfl", "ServingLineCount")
-                        ))
-                );
+        builder
+            .addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006"))
+            .addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority")
+            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+            .addFieldSpecification(
+                    FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
+                            FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                    ))
+            );
 
         engine.execute(builder.build(), writer);
 
         JSONAssert.assertEquals("{" +
-                "  features: [" +
-                "    {" +
-                "      properties: {" +
-                "        name: 'Aldgate Station'," +
-                "        attributes: {" +
-                "          ServingLineCount: {" +
-                "            provider: 'Transport for London'," +
-                "            values: [" +
-                "              {" +
-                "                value: 3," +
-                "                timestamp: '2010-02-04T11:54:08'" +
-                "              }" +
-                "            ]," +
-                "            name: 'Serving Lines'" +
-                "          }" +
-                "        }," +
-                "        label: 'tfl:station:tube:1000003'" +
-                "      }" +
+                "  type: 'FeatureCollection'," +
+                "  features: [{" +
+                "    type: 'Feature'," +
+                "    properties: {" +
+                "      name: 'Cumbria'," +
+                "      attributes: {" +
+                "        populationDensity: {" +
+                "          provider: 'London Datastore - Greater London Authority'," +
+                "          values: []," +
+                "          name: 'Population density (per hectare) 2015'" +
+                "        }" +
+                "      }," +
+                "      label: 'E10000006'" +
                 "    }" +
-                "  ]" +
+                "  }]" +
                 "}", writer.toString(), false);
     }
 
