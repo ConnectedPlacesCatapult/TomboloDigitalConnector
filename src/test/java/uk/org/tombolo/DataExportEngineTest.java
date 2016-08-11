@@ -296,8 +296,24 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
-        assertThat(writer.toString(), hasJsonPath("$.features[0].properties.local_authority.attr_label.values.latest", equalTo(100d)));
+        String jsonString = writer.toString();
+        JSONAssert.assertEquals("{" +
+                        "  features: [" +
+                        "    {" +
+                        "      properties: {" +
+                        "        local_authority: {" +
+                        "          attr_label: {" +
+                        "            values: [" +
+                        "              {" +
+                        "                value: 100d" +
+                        "              }" +
+                        "            ]" +
+                        "          }" +
+                        "        }" +
+                        "      }" +
+                        "    }" +
+                        "  ]"+
+                        "}", jsonString, false);
     }
 
     @Test

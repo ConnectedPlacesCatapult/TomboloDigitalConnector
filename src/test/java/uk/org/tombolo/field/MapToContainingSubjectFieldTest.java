@@ -2,6 +2,7 @@ package uk.org.tombolo.field;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
@@ -10,8 +11,6 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 public class MapToContainingSubjectFieldTest extends AbstractTest {
@@ -36,7 +35,17 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
     @Test
     public void testJsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
-        assertThat(jsonString, hasJsonPath("$.aLabel.attr_label.values.latest", equalTo(100.0)));
+        JSONAssert.assertEquals("{" +
+                "  aLabel: {" +
+                "    attr_label: {" +
+                "      values: [" +
+                "        {" +
+                "          value: 100.0" +
+                "        }" +
+                "      ]" +
+                "    }" +
+                "  }"+
+                "}",jsonString,false);
     }
 
     private FieldSpecification makeFieldSpec() {
