@@ -2,16 +2,14 @@ package uk.org.tombolo.field;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class LatestValueFieldTest extends AbstractTest {
     private Subject subject;
@@ -35,8 +33,15 @@ public class LatestValueFieldTest extends AbstractTest {
     public void testJsonValueForSubject() throws Exception {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
-        assertThat(jsonString, hasJsonPath("$.aLabel.provider", equalTo("default_provider_name")));
-        assertThat(jsonString, hasJsonPath("$.aLabel.name", equalTo("attr_name")));
-        assertThat(jsonString, hasJsonPath("$.aLabel.values.value", equalTo(100.0)));
+        JSONAssert.assertEquals("{" +
+                "  aLabel: {" +
+                "    provider: 'default_provider_name'," +
+                "    values: {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }," +
+                "    name: 'attr_name'" +
+                "  }" +
+                "}", jsonString, false);
     }
 }

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
@@ -12,10 +13,7 @@ import uk.org.tombolo.execution.spec.AttributeMatcher;
 
 import java.util.Arrays;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class FractionOfTotalFieldTest extends AbstractTest {
     private Subject subject;
@@ -36,14 +34,21 @@ public class FractionOfTotalFieldTest extends AbstractTest {
     @Test
     public void testJsonValueForSubject() throws Exception {
         String jsonString = makeField().jsonValueForSubject(subject).toJSONString();
-        assertThat(jsonString, hasJsonPath("$.aLabel.values['2011-01-03T00:00']", equalTo(0.5)));
+        JSONAssert.assertEquals("{" +
+                "  aLabel: {" +
+                "    values: {" +
+                "      value: 0.5," +
+                "      timestamp: '2011-01-03T00:00'" +
+                "    }" +
+                "  }" +
+                "}", jsonString, false);
     }
 
     @Test
     public void testJsonValueForSubjectWithPartiallyAbsentDividendValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr2_label");
-        String jsonString = makeFieldWithPartiallyAbsentDividendValue().jsonValueForSubject(subject).toJSONString();
+        makeFieldWithPartiallyAbsentDividendValue().jsonValueForSubject(subject).toJSONString();
     }
 
     @Test

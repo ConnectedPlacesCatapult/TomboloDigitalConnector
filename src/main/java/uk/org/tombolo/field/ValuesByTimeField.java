@@ -1,5 +1,7 @@
 package uk.org.tombolo.field;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
@@ -7,6 +9,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
+
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 /**
  * ValuesByTimeField.java
@@ -25,11 +30,14 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     }
 
     public JSONObject jsonValueForSubject(Subject subject) {
-        JSONObject obj = new JSONObject();
-        TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).forEach(timedValue -> {
-            obj.put(timedValue.getId().getTimestamp().toString(), timedValue.getValue());
-        });
-        return withinMetadata(obj);
+        JSONArray arr = new JSONArray();
+        arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
+            JSONObject pair = new JSONObject();
+            pair.put("timestamp", timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            pair.put("value", timedValue.getValue());
+            return pair;
+        }).collect(Collectors.toList()));
+        return withinMetadata(arr);
     }
 
     @Override
@@ -54,7 +62,7 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         }
     }
 
-    protected JSONObject withinMetadata(JSONObject contents) {
+    protected JSONObject withinMetadata(JSONAware contents) {
         JSONObject attr = new JSONObject();
         attr.put("name", getHumanReadableName());
         attr.put("provider", getProvider().getName());
