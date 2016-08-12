@@ -43,10 +43,8 @@ public class CSVExporterTest extends AbstractTest {
 		assertEquals("E09000001", record.get("label"));
 		assertEquals("City of London", record.get("name"));
 		assertNotNull(record.get("geometry"));
-		assertEquals("attr_label_name", record.get("attr_label_name"));
-		assertEquals("default_provider_name", record.get("attr_label_provider"));
-		assertEquals("100.0", record.get("attr_label_latest_value"));
-		assertEquals(6, record.size());
+		assertEquals("100.0", record.get("attr_label"));
+		assertEquals(4, record.size());
 	}
 
 	@Test
@@ -56,8 +54,6 @@ public class CSVExporterTest extends AbstractTest {
 		assertEquals("label", attributes.get(0));
 		assertEquals("name", attributes.get(1));
 		assertEquals("geometry", attributes.get(2));
-		assertEquals("populationDensity_name", attributes.get(3));
-		assertEquals("populationDensity_provider", attributes.get(4));
 	}
 
 	private List<Subject> makeSubjects() {

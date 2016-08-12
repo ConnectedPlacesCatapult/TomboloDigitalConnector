@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * The metadata is regarding the attribute.
  */
-public class ValuesByTimeField implements Field, FieldWithProvider {
+public class ValuesByTimeField implements Field {
     protected String label;
     private AttributeMatcher attribute;
     private Attribute cachedAttribute;
@@ -65,16 +65,9 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
 
     protected JSONObject withinMetadata(JSONArray contents) {
         JSONObject attr = new JSONObject();
-        attr.put("name", getHumanReadableName());
-        attr.put("provider", getProvider().getName());
         attr.put("values", contents);
         JSONObject obj = new JSONObject();
         obj.put(label, attr);
         return obj;
-    }
-
-    @Override
-    public Provider getProvider() {
-        return getAttribute().getProvider();
     }
 }

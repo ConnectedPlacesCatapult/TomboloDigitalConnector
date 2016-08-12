@@ -29,14 +29,12 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
-                "    provider: 'default_provider_name'," +
                 "    values: [" +
                 "      {" +
                 "        value: 100," +
                 "        timestamp: '2011-01-01T00:00:00'" +
                 "      }" +
-                "    ]," +
-                "    name: 'attr_label_name'" +
+                "    ]" +
                 "  }" +
                 "}", jsonString, false);
     }
@@ -48,7 +46,6 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
-                "    provider: 'default_provider_name'," +
                 "    values: [" +
                 "      {" +
                 "        value: 100," +
@@ -58,8 +55,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
                 "        value: 200," +
                 "        timestamp: '2011-01-02T00:00:00'" +
                 "      }" +
-                "    ]," +
-                "    name: 'attr_label_name'" +
+                "    ]" +
                 "  }" +
                 "}", jsonString, false);
     }
@@ -72,10 +68,5 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     @Test
     public void testGetHumanReadableName() throws Exception {
         assertEquals("attr_label_name", field.getHumanReadableName());
-    }
-
-    @Test
-    public void testGetProvider() throws Exception {
-        assertEquals(TestFactory.DEFAULT_PROVIDER, field.getProvider());
     }
 }

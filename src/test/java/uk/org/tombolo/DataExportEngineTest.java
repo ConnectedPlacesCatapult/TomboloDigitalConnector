@@ -112,14 +112,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'City of London 001A'," +
                 "        attributes: {" +
                 "          attr_label: {" +
-                "            provider: 'default_provider_name'," +
                 "            values: [" +
                 "              {" +
                 "                value: 100," +
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
-                "            ]," +
-                "            name: 'attr_label_name'" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -151,14 +149,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'City of London 001A'," +
                 "        attributes: {" +
                 "          attr_label: {" +
-                "            provider: 'default_provider_name'," +
                 "            values: [" +
                 "              {" +
                 "                value: 100," +
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
-                "            ]," +
-                "            name: 'attr_label_name'" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -188,14 +184,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "        name: 'City of London'," +
                 "        attributes: {" +
                 "          populationDensity: {" +
-                "            provider: 'London Datastore - Greater London Authority'," +
                 "            values: [" +
                 "              {" +
                 "                value: 28.237556363195576," +
                 "                timestamp: '2015-12-31T23:59:59'" +
                 "              }" +
-                "            ]," +
-                "            name: 'Population density (per hectare) 2015'" +
+                "            ]" +
                 "          }" +
                 "        }," +
                 "        label: 'E09000001'" +
@@ -265,9 +259,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "      name: 'Hartlepool'," +
                 "      attributes: {" +
                 "        populationDensity: {" +
-                "          provider: 'London Datastore - Greater London Authority'," +
-                "          values: []," +
-                "          name: 'Population density (per hectare) 2015'" +
+                "          values: []" +
                 "        }" +
                 "      }," +
                 "      label: 'E06000001'" +
@@ -374,7 +366,7 @@ public class DataExportEngineTest extends AbstractTest {
 
         assertEquals(1, records.size());
         assertEquals("E01002766", records.get(0).get("label"));
-        assertEquals("0.012263099219620958", records.get(0).get("percentage_under_1_years_old_label_latest_value"));
+        assertEquals("0.012263099219620958", records.get(0).get("percentage_under_1_years_old_label"));
     }
 
     @Test

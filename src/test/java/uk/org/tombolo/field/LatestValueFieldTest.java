@@ -35,14 +35,12 @@ public class LatestValueFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
-                "    provider: 'default_provider_name'," +
                 "    values: [" +
                 "      {" +
                 "        value: 100," +
                 "        timestamp: '2011-01-01T00:00:00'" +
                 "      }" +
-                "    ]," +
-                "    name: 'attr_label_name'" +
+                "    ]" +
                 "  }" +
                 "}", jsonString, false);
     }
