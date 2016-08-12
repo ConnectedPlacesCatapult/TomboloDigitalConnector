@@ -50,10 +50,8 @@ public class FieldValueSumField implements SingleValueField, ParentField {
     }
 
     protected JSONObject withinMetadata(JSONArray contents) {
-        JSONObject attr = new JSONObject();
-        attr.put("values", contents);
         JSONObject obj = new JSONObject();
-        obj.put(label, attr);
+        obj.put(label, contents);
         return obj;
     }
 

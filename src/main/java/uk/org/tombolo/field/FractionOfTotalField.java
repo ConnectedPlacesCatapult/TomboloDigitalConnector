@@ -55,9 +55,7 @@ public class FractionOfTotalField implements SingleValueField {
 
     private JSONObject withinJsonStructure(JSONAware values) {
         JSONObject obj = new JSONObject();
-        JSONObject labelObj = new JSONObject();
-        labelObj.put("values", Collections.singletonList(values));
-        obj.put(label, labelObj);
+        obj.put(label, Collections.singletonList(values));
         return obj;
     }
 

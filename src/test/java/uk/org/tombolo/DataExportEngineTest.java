@@ -111,14 +111,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'City of London 001A'," +
                 "        attributes: {" +
-                "          attr_label: {" +
-                "            values: [" +
-                "              {" +
-                "                value: 100," +
-                "                timestamp: '2011-01-01T00:00:00'" +
-                "              }" +
-                "            ]" +
-                "          }" +
+                "          attr_label: [" +
+                "            {" +
+                "              value: 100," +
+                "              timestamp: '2011-01-01T00:00:00'" +
+                "            }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E01000001'" +
                 "      }" +
@@ -148,14 +146,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'City of London 001A'," +
                 "        attributes: {" +
-                "          attr_label: {" +
-                "            values: [" +
-                "              {" +
-                "                value: 100," +
-                "                timestamp: '2011-01-01T00:00:00'" +
-                "              }" +
-                "            ]" +
-                "          }" +
+                "          attr_label: [" +
+                "            {" +
+                "              value: 100," +
+                "              timestamp: '2011-01-01T00:00:00'" +
+                "            }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E01000001'" +
                 "      }" +
@@ -183,14 +179,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'City of London'," +
                 "        attributes: {" +
-                "          populationDensity: {" +
-                "            values: [" +
-                "              {" +
-                "                value: 28.237556363195576," +
-                "                timestamp: '2015-12-31T23:59:59'" +
-                "              }" +
-                "            ]" +
-                "          }" +
+                "          populationDensity: [" +
+                "            {" +
+                "              value: 28.237556363195576," +
+                "              timestamp: '2015-12-31T23:59:59'" +
+                "            }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E09000001'" +
                 "      }" +
@@ -220,14 +214,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'Islington 015E'," +
                 "        attributes: {" +
-                "          percentage_under_1_years_old_label: {" +
-                "            values: [" +
-                "              {" +
-                "                value: 0.012263099219620958," +
-                "                timestamp: '2011-12-31T23:59:59'" +
-                "              }" +
-                "            ]" +
-                "          }" +
+                "          percentage_under_1_years_old_label: [" +
+                "            {" +
+                "              value: 0.012263099219620958," +
+                "              timestamp: '2011-12-31T23:59:59'" +
+                "            }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E01002766'" +
                 "      }" +
@@ -258,9 +250,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "    properties: {" +
                 "      name: 'Hartlepool'," +
                 "      attributes: {" +
-                "        populationDensity: {" +
-                "          values: []" +
-                "        }" +
+                "        populationDensity: []" +
                 "      }," +
                 "      label: 'E06000001'" +
                 "    }" +
@@ -296,13 +286,11 @@ public class DataExportEngineTest extends AbstractTest {
                         "    {" +
                         "      properties: {" +
                         "        local_authority: {" +
-                        "          attr_label: {" +
-                        "            values: [" +
-                        "              {" +
-                        "                value: 100.0" +
-                        "              }" +
-                        "            ]" +
-                        "          }" +
+                        "          attr_label: [" +
+                        "            {" +
+                        "              value: 100d" +
+                        "            }" +
+                        "          ]" +
                         "        }" +
                         "      }" +
                         "    }" +
@@ -392,14 +380,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'Islington 015E'," +
                 "        attributes: {" +
-                "          percentage_under_1_years_old_label: {" +
-                "            values: [" +
-                "              {" +
-                "                value: 0.012263099219620958," +
-                "                timestamp: '2011-12-31T23:59:59'" +
-                "              }" +
-                "            ]" +
-                "          }" +
+                "          percentage_under_1_years_old_label: [" +
+                "            {" +
+                "              value: 0.012263099219620958," +
+                "              timestamp: '2011-12-31T23:59:59'" +
+                "            }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E01002766'" +
                 "      }" +
@@ -408,14 +394,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'Leeds'," +
                 "        attributes: {" +
-                "          percentage_under_1_years_old_label: {" +
-                "            values: [" +
+                "          percentage_under_1_years_old_label: [" +
                 "              {" +
                 "                value: 0.013229804986127467," +
                 "                timestamp: '2011-12-31T23:59:59'" +
                 "              }" +
-                "            ]" +
-                "          }" +
+                "          ]" +
                 "        }," +
                 "        label: 'E08000035'" +
                 "      }" +
@@ -439,12 +423,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "    properties: {" +
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
-                "      aLabel: {" +
-                "        values: [{" +
+                "      aLabel: [" +
+                "        {" +
                 "          value: 0.005016722408026756," +
                 "          timestamp: '2011-12-31T23:59:59'" +
-                "        }]" +
-                "      }" +
+                "        }" +
+                "      ]" +
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
@@ -467,12 +451,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
                 "      aWrapper: {" +
-                "        aLabel: {" +
-                "          values: [{" +
+                "        aLabel: [" +
+                "          {" +
                 "            value: 0.005016722408026756," +
                 "            timestamp: '2011-12-31T23:59:59'" +
-                "          }]" +
-                "        }" +
+                "          }" +
+                "        ]" +
                 "      }" +
                 "    }" +
                 "  }]" +

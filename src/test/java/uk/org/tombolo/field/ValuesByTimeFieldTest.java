@@ -28,14 +28,12 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    values: [" +
-                "      {" +
-                "        value: 100," +
-                "        timestamp: '2011-01-01T00:00:00'" +
-                "      }" +
-                "    ]" +
-                "  }" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
@@ -45,18 +43,16 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-02T00:00", 200d);
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    values: [" +
-                "      {" +
-                "        value: 100," +
-                "        timestamp: '2011-01-01T00:00:00'" +
-                "      }," +
-                "      {" +
-                "        value: 200," +
-                "        timestamp: '2011-01-02T00:00:00'" +
-                "      }" +
-                "    ]" +
-                "  }" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }," +
+                "    {" +
+                "      value: 200," +
+                "      timestamp: '2011-01-02T00:00:00'" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
