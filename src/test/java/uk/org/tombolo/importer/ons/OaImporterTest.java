@@ -23,9 +23,10 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testGetAllDatasources() throws Exception {
         List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(2, datasources.size());
+        assertEquals(3, datasources.size());
         assertEquals("lsoa", datasources.get(0).getId());
         assertEquals("msoa", datasources.get(1).getId());
+        assertEquals("localAuthority", datasources.get(2).getId());
     }
 
     @Test
@@ -59,5 +60,17 @@ public class OaImporterTest extends AbstractTest {
         assertEquals(-0.200293982706986, lsoa.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(51.5401585405278, lsoa.getShape().getCentroid().getY(), 0.1E-6);
         assertEquals(7201, importedCount);
+    }
+
+    @Test
+    public void testImportLocalAuthorities() throws Exception {
+        int importedCount = importer.importDatasource("localAuthority");
+        Subject localAuthority = SubjectUtils.getSubjectByLabel("E09000001");
+
+        assertEquals("City of London", localAuthority.getName());
+        assertEquals("localAuthority", localAuthority.getSubjectType().getLabel());
+        assertEquals(-0.09217003024720714, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.51484632383985, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(380, importedCount);
     }
 }

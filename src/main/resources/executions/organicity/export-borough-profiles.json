@@ -13,7 +13,7 @@
 		],	
 		"datasourceSpecification" : [
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.LocalAuthorityImporter",
+				"importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
 				"datasourceId": "localAuthority"
 			},
 			{
