@@ -10,6 +10,7 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.SelfcontainedField;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
@@ -36,20 +37,22 @@ public class DataExportEngine implements ExecutionEngine{
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import data
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
-			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-			importer.configure(apiKeys);
-			importer.setDownloadUtils(downloadUtils);
-			importer.importDatasource(
-					datasourceSpec.getDatasourceId(),
-					forceImports.doesMatch(datasourceSpec.getImporterClass())
-			);
+			importDatasource(forceImports, datasourceSpec);
 		}
 
 		// Generate fields
 		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
 		List<Field> fields = new ArrayList<>();
 		for (FieldSpecification fieldSpec : fieldSpecs) {
-			fields.add(fieldSpec.toField());
+			Field field = fieldSpec.toField();
+			fields.add(field);
+
+			// FIXME: This is a bit ugly repetition
+			if (field instanceof SelfcontainedField){
+				for (DatasourceSpecification datasourceSpecification : ((SelfcontainedField) field).getDatasourceSpecifications()){
+					importDatasource(forceImports, datasourceSpecification);
+				}
+			}
 		}
 
 		// Use the new fields method
@@ -61,5 +64,15 @@ public class DataExportEngine implements ExecutionEngine{
 			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
 		}
 		exporter.write(writer, subjects, fields);
+	}
+
+	private void importDatasource(ImporterMatcher forceImports, DatasourceSpecification datasourceSpec) throws Exception {
+		Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+		importer.configure(apiKeys);
+		importer.setDownloadUtils(downloadUtils);
+		importer.importDatasource(
+				datasourceSpec.getDatasourceId(),
+				forceImports.doesMatch(datasourceSpec.getImporterClass())
+		);
 	}
 }

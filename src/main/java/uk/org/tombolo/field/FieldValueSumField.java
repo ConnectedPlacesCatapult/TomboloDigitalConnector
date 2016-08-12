@@ -2,6 +2,7 @@ package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
 import java.util.ArrayList;
