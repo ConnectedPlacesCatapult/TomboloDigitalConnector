@@ -3,8 +3,8 @@ package uk.org.tombolo.importer;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatabaseJournalEntry;
+import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.utils.DatabaseJournal;
 
 import java.io.IOException;

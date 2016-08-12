@@ -1,12 +1,15 @@
 package uk.org.tombolo.field;
 
 import org.apache.commons.collections4.ListUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
@@ -46,14 +49,15 @@ public class FractionOfTotalField implements SingleValueField {
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
-        obj.put(valueWithTimestamp.timestamp.toString(), valueWithTimestamp.value);
+        obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));
+        obj.put("value", valueWithTimestamp.value);
         return withinJsonStructure(obj);
     }
 
-    private JSONObject withinJsonStructure(JSONObject valuesObj) {
+    private JSONObject withinJsonStructure(JSONAware values) {
         JSONObject obj = new JSONObject();
         JSONObject labelObj = new JSONObject();
-        labelObj.put("values", valuesObj);
+        labelObj.put("values", Collections.singletonList(values));
         obj.put(label, labelObj);
         return obj;
     }

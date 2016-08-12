@@ -86,6 +86,8 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	
 	private static final Logger log = LoggerFactory.getLogger(TrafficCountImporter.class);
 
+	protected int timedValueBufferSize = 10000;
+
 	public TrafficCountImporter() {
 		if (regions == null)
 			regions = Arrays.asList(REGIONS);
@@ -159,6 +161,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
 		int valueCounter = 0;
+		List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 		while((line = reader.readLine()) != null){
 			String[] fields = line.split("\",\"");
 			
@@ -196,49 +199,62 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 
 			// Pedal cycles
 			Attribute pcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountPedalCycles.name());
-			double pcCount = Double.valueOf(fields[12].replaceAll("\"", ""));
+			double pcCount = Double.valueOf(fields[11].replaceAll("\"", ""));
 			TimedValue pedalCycleCount = new TimedValue(subject, pcAttribute, timestamp, pcCount);
-			TimedValueUtils.save(pedalCycleCount);
+			timedValueBuffer.add(pedalCycleCount);
 			valueCounter++;
 
 			// Motorcycles
 			Attribute mcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountMotorcycles.name());
-			double mcCount = Double.valueOf(fields[13].replaceAll("\"", ""));
+			double mcCount = Double.valueOf(fields[12].replaceAll("\"", ""));
 			TimedValue motorcycleCount = new TimedValue(subject, mcAttribute, timestamp, mcCount);
-			TimedValueUtils.save(motorcycleCount);
+			timedValueBuffer.add(motorcycleCount);
 			valueCounter++;
 
 			// Cars & taxis
 			Attribute ctAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountCarsTaxis.name());
-			double ctCount = Double.valueOf(fields[14].replaceAll("\"", ""));
+			double ctCount = Double.valueOf(fields[13].replaceAll("\"", ""));
 			TimedValue carTaxiCount = new TimedValue(subject, ctAttribute, timestamp, ctCount);
-			TimedValueUtils.save(carTaxiCount);
+			timedValueBuffer.add(carTaxiCount);
 			valueCounter++;
 
 			// Buses and Coaches
 			Attribute bcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountBusesCoaches.name());
-			double bcCount = Double.valueOf(fields[15].replaceAll("\"", ""));
+			double bcCount = Double.valueOf(fields[14].replaceAll("\"", ""));
 			TimedValue busCoachCount = new TimedValue(subject, bcAttribute, timestamp, bcCount);
-			TimedValueUtils.save(busCoachCount);
+			timedValueBuffer.add(busCoachCount);
 			valueCounter++;
 
 			// Light Goods Vehicles
 			Attribute lgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
-			double lgvCount = Double.valueOf(fields[16].replaceAll("\"", ""));
+			double lgvCount = Double.valueOf(fields[15].replaceAll("\"", ""));
 			TimedValue lightGoodsVehicleCount = new TimedValue(subject, lgvAttribute, timestamp, lgvCount);
-			TimedValueUtils.save(lightGoodsVehicleCount);
+			timedValueBuffer.add(lightGoodsVehicleCount);
 			valueCounter++;
 
 			// Heavy Goods Vehicles
-			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
-			double hgvCount = Double.valueOf(fields[23].replaceAll("\"", ""));
+			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountHeavyGoodsVehicles.name());
+			double hgvCount = Double.valueOf(fields[22].replaceAll("\"", ""));
 			TimedValue heavyGoodsVehicleCount = new TimedValue(subject, hgvAttribute, timestamp, hgvCount);
-			TimedValueUtils.save(heavyGoodsVehicleCount);
+			timedValueBuffer.add(heavyGoodsVehicleCount);
 			valueCounter++;
+
+			if (timedValueBuffer.size() > timedValueBufferSize)
+				flush(timedValueBuffer, valueCounter);
+
 		}
+		flush(timedValueBuffer, valueCounter);
 		reader.close();
 		
 		return valueCounter;
+	}
+
+	private void flush(List<TimedValue> timedValueBuffer, int valueCounter){
+		// Buffer is full ... we write values to db
+		log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
+		TimedValueUtils.save(timedValueBuffer);
+		timedValueBuffer.clear();
+		log.info("Total values written: {}", valueCounter);
 	}
 
 	private List<Attribute> getAttributes(){
