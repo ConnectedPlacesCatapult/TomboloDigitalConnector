@@ -1,6 +1,7 @@
 package uk.org.tombolo.field;
 
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.core.Subject;
@@ -10,10 +11,7 @@ import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import java.util.Collections;
 import java.util.List;
 
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.hasJsonPath;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class WrapperFieldTest extends AbstractTest {
     private WrapperField field = new WrapperField("aLabel", makeFieldSpec());
@@ -22,7 +20,7 @@ public class WrapperFieldTest extends AbstractTest {
     @Test
     public void testJsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
-        assertThat(jsonString, hasJsonPath("$.aLabel.anotherLabel", equalTo("aValue")));
+        JSONAssert.assertEquals("{aLabel: {anotherLabel: 'aValue'}}", jsonString, false);
     }
 
     @Test

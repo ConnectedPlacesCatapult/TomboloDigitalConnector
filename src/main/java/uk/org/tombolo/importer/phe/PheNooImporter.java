@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.phe;
 
-import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.ExcelImporter;
 import uk.org.tombolo.importer.Importer;

@@ -6,10 +6,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Embeddable
 public class TimedValueId implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 	@ManyToOne
 	@JoinColumn(name="subject_id")

@@ -1,7 +1,6 @@
 package uk.org.tombolo.core;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name="database_journal")
