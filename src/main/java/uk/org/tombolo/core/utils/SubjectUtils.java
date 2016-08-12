@@ -14,7 +14,9 @@ import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);

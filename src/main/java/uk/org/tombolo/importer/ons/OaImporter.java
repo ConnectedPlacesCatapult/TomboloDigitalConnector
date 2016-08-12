@@ -1,7 +1,9 @@
 package uk.org.tombolo.importer.ons;
 
-import org.geotools.data.FeatureReader;
-import org.geotools.data.shapefile.ShapefileDataStore;
+import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.geojson.feature.FeatureJSON;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,18 +13,13 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ShapefileImporter;
-import uk.org.tombolo.importer.ShapefileUtils;
-import uk.org.tombolo.importer.ZipUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OaImporter extends AbstractONSImporter implements Importer, ShapefileImporter {
+public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
     private static enum SubjectTypeLabel {lsoa, msoa};
 
@@ -42,13 +39,13 @@ public final class OaImporter extends AbstractONSImporter implements Importer, S
         switch (datasourceIdObject) {
             case lsoa:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
-                datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
-                datasource.setLocalDatafile("lsoa/Lower_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/c9dc234691d44524a79ccf3266af6562_2.geojson");
+                datasource.setLocalDatafile("lsoa/Lower_layer_Super_Output_Areas_December_2011_Generalised_Clipped__Boundaries_in_England_and_Wales.geojson");
                 return datasource;
             case msoa:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
-                datasource.setRemoteDatafile("https://geoportal.statistics.gov.uk/Docs/Boundaries/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
-                datasource.setLocalDatafile("msoa/Middle_layer_super_output_areas_(E+W)_2011_Boundaries_(Generalised_Clipped)_V2.zip");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/ff162ec973494f3291e1e99350697588_3.geojson");
+                datasource.setLocalDatafile("msoa/Middle_Layer_Super_Output_Areas_December_2011_Generalised_Clipped_Boundaries_in_England_and_Wales.geojson");
                 return datasource;
             default:
                 throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));
@@ -59,44 +56,34 @@ public final class OaImporter extends AbstractONSImporter implements Importer, S
     protected int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getDescription());
 
-        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource, subjectType);
-        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
+        InputStream inputStream = downloadUtils.fetchJSONStream(new URL(datasource.getRemoteDatafile()));
+        FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);
 
-        List<Subject> subjects = ShapefileUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
+        List<Subject> subjects = new ArrayList<Subject>();
+        while(featureIterator.hasNext()) {
+            Feature feature = featureIterator.next();
+            subjects.add(new Subject(
+                    subjectType,
+                    getFeatureSubjectLabel(feature),
+                    getFeatureSubjectName(feature),
+                    (Geometry) feature.getDefaultGeometryProperty().getValue()
+            ));
+        }
+
         SubjectUtils.save(subjects);
 
-        featureReader.close();
-        store.dispose();
-        
         return subjects.size();
     }
 
-    @Override
-    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11CD"));
+    private String getFeatureSubjectLabel(Feature feature) {
+        return (String) feature.getProperties().stream().filter(
+                property -> property.getName().toString().endsWith("CD")
+        ).findFirst().get().getValue();
     }
 
-    @Override
-    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return (String) feature.getAttribute(fieldNameForSubjectType(subjectType, "11NM"));
-    }
-
-    @Override
-    public String getEncoding() {
-        return "EPSG:27700";
-    }
-
-    private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource, SubjectType subjectType) throws IOException {
-        File localFile = downloadUtils.getDatasourceFile(datasource);
-        Path tempDirectory = ZipUtils.unzipToTemporaryDirectory(localFile);
-        return new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + shapefileNameForDatasource(subjectType)).toUri().toURL());
-    }
-
-    private String shapefileNameForDatasource(SubjectType subjectType) {
-        return subjectType.getLabel().toUpperCase() + "_2011_EW_BGC_V2.shp";
-    }
-
-    private String fieldNameForSubjectType(SubjectType subjectType, String field) {
-        return subjectType.getLabel().toUpperCase() + field;
+    private String getFeatureSubjectName(Feature feature) {
+        return (String) feature.getProperties().stream().filter(property ->
+                property.getName().toString().endsWith("NM")
+        ).findFirst().get().getValue();
     }
 }
