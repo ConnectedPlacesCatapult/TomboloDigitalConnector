@@ -1,14 +1,13 @@
 package uk.org.tombolo.importer;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.input.TeeInputStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import uk.org.tombolo.core.Datasource;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -55,6 +54,11 @@ public class DownloadUtils {
 	}
 
 	public JSONObject fetchJSON(URL url) throws IOException, ParseException {
+		JSONParser parser = new JSONParser();
+		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url)));
+	}
+
+	public InputStream fetchJSONStream(URL url) throws IOException {
 		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory
@@ -64,9 +68,9 @@ public class DownloadUtils {
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
 			connection.setRequestProperty("Accept", "application/json");
-			FileUtils.copyInputStreamToFile(connection.getInputStream(), localDatasourceFile);
+			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+		} else {
+			return new FileInputStream(localDatasourceFile);
 		}
-		JSONParser parser = new JSONParser();
-		return (JSONObject) parser.parse(new FileReader(localDatasourceFile));
 	}
 }
