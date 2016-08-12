@@ -2,7 +2,9 @@ package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.execution.spec.FieldSpecification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,11 +13,18 @@ import java.util.List;
 public class FieldValueSumField implements SingleValueField {
     String label;
     String name;
-    List<SingleValueField> fields;
+    List<FieldSpecification> fieldSpecifications;
+    List<Field> fields;
 
-    FieldValueSumField(String label, String name, List<SingleValueField> fields) {
-        this.label = label;
-        this.fields = fields;
+    public void initialize() {
+        this.fields = new ArrayList<>();
+        for (FieldSpecification fieldSpec : fieldSpecifications) {
+            try {
+                fields.add(fieldSpec.toField());
+            } catch (ClassNotFoundException e) {
+                throw new Error("Field not valid");
+            }
+        }
     }
 
     @Override
@@ -41,9 +50,11 @@ public class FieldValueSumField implements SingleValueField {
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {
+        if (fields == null)
+            initialize();
         Double sum = 0d;
-        for (SingleValueField field : fields) {
-            sum += Double.parseDouble(field.valueForSubject(subject));
+        for (Field field : fields) {
+            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
         }
         return sum;
     }

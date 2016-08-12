@@ -2,16 +2,8 @@
   "fieldClass": "uk.org.tombolo.field.FieldValueSumField",
   "label": "SocialIsolationAmongElderly",
   "name": "Social Isolation among Elderly",
-  "fields": [
-    {
-      "fieldClass": "uk.org.tombolo.field.LatestValueField",
-      "label": "CL_0000053_1",
-      "attribute": {
-        "providerLabel": "uk.gov.ons",
-        "attributeLabel": "CL_0000053_1"
-        // Age (T102A) - Total: All categories: Age
-      }
-    },
+  "fieldSpecifications": [
+
     {
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000053.fraction_over_64",

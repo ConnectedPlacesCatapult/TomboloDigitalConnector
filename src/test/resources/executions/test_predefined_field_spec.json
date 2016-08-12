@@ -44,9 +44,10 @@
 		"fieldSpecification" : [
 			{
 				"fieldClass": "uk.org.tombolo.field.PredefinedField",
-				"label": "socialrecilience/SocialIsolationAmongElderly"
+				"label": "SocialIsolationAmongElderly",
+				"fieldSpecification": "socialresilience/SocialIsolationAmongElderly"
 			}
-			]
+		]
 	},
-	"exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+	"exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }
