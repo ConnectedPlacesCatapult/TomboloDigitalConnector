@@ -23,9 +23,10 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testGetAllDatasources() throws Exception {
         List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(2, datasources.size());
+        assertEquals(3, datasources.size());
         assertEquals("lsoa", datasources.get(0).getId());
         assertEquals("msoa", datasources.get(1).getId());
+        assertEquals("localAuthority", datasources.get(2).getId());
     }
 
     @Test
@@ -46,18 +47,30 @@ public class OaImporterTest extends AbstractTest {
         assertEquals("lsoa", lsoa.getSubjectType().getLabel());
         assertEquals(-0.0925531560156143, lsoa.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(51.51821461759632, lsoa.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(34753, importedCount);
+        assertEquals(100, importedCount);
     }
 
     @Test
     public void testImportMsoas() throws Exception {
         int importedCount = importer.importDatasource("msoa");
-        Subject lsoa = SubjectUtils.getSubjectByLabel("E02000120");
+        Subject lsoa = SubjectUtils.getSubjectByLabel("E02001033");
 
-        assertEquals("Brent 028", lsoa.getName());
+        assertEquals("Bury 015", lsoa.getName());
         assertEquals("msoa", lsoa.getSubjectType().getLabel());
-        assertEquals(-0.200293982706986, lsoa.getShape().getCentroid().getX(), 0.1E-6);
-        assertEquals(51.5401585405278, lsoa.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(7201, importedCount);
+        assertEquals(-2.311700628647487, lsoa.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(53.5674238815949, lsoa.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(100, importedCount);
+    }
+
+    @Test
+    public void testImportLocalAuthorities() throws Exception {
+        int importedCount = importer.importDatasource("localAuthority");
+        Subject localAuthority = SubjectUtils.getSubjectByLabel("E06000001");
+
+        assertEquals("Hartlepool", localAuthority.getName());
+        assertEquals("localAuthority", localAuthority.getSubjectType().getLabel());
+        assertEquals(-1.2591631128836016, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(54.669375064286605, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(100, importedCount);
     }
 }

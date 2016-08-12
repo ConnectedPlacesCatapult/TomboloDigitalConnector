@@ -55,11 +55,11 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testObeysCache() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.OaImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
         engine.execute(builder.build(), writer);
 
         // ...we expect the importer not to have imported them, so we should have no features
@@ -69,21 +69,21 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testReimportsWhenForced() throws Exception {
         // If we mark localAuthorities as imported...
-        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.OaImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority");
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E06000001")
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
 
         // And we set the clear-database flag
-        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.LocalAuthorityImporter"));
+        engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.OaImporter"));
 
         // ...we expect the importer to ignore our fake journal and import them anyway
         JSONAssert.assertEquals("{" +
                 "  features: [{" +
                 "    properties: {" +
-                "      name: 'Cumbria'," +
-                "      label: 'E10000006'" +
+                "      name: 'Hartlepool'," +
+                "      label: 'E06000001'" +
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
@@ -244,8 +244,8 @@ public class DataExportEngineTest extends AbstractTest {
     public void testRunsOnNewSubjects() throws Exception {
         builder
             .addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006"))
-            .addDatasourceSpecification("uk.org.tombolo.importer.ons.LocalAuthorityImporter", "localAuthority")
+                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E06000001"))
+            .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority")
             .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
             .addFieldSpecification(
                     FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
@@ -260,7 +260,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "  features: [{" +
                 "    type: 'Feature'," +
                 "    properties: {" +
-                "      name: 'Cumbria'," +
+                "      name: 'Hartlepool'," +
                 "      attributes: {" +
                 "        populationDensity: {" +
                 "          provider: 'London Datastore - Greater London Authority'," +
@@ -268,7 +268,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "          name: 'Population density (per hectare) 2015'" +
                 "        }" +
                 "      }," +
-                "      label: 'E10000006'" +
+                "      label: 'E06000001'" +
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
