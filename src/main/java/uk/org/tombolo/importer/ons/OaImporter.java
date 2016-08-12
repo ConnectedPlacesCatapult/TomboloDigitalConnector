@@ -21,7 +21,7 @@ import java.util.List;
 
 public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    private static enum SubjectTypeLabel {lsoa, msoa};
+    private static enum SubjectTypeLabel {lsoa, msoa, localAuthority};
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
@@ -46,6 +46,11 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
                 datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/ff162ec973494f3291e1e99350697588_3.geojson");
                 datasource.setLocalDatafile("msoa/Middle_Layer_Super_Output_Areas_December_2011_Generalised_Clipped_Boundaries_in_England_and_Wales.geojson");
+                return datasource;
+            case localAuthority:
+                datasource = new Datasource(datasourceIdObject.name(), getProvider(), "Local Authority", "Local Authority");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/fb73373a89394f3b8d4c84b3d1b43de4_0.geojson");
+                datasource.setLocalDatafile("localAuthority/Local_Authority_Districts_December_2011_Generalised_Clipped_Boundaries_in_Great_Britain.geojson");
                 return datasource;
             default:
                 throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));
