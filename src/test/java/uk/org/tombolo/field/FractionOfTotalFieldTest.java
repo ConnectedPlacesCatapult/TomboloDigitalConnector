@@ -80,12 +80,6 @@ public class FractionOfTotalFieldTest extends AbstractTest {
         assertEquals("aLabel", field.getLabel());
     }
 
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        Field field = new FractionOfTotalField("aLabel", null, null);
-        assertEquals("aLabel", field.getHumanReadableName());
-    }
-
     private FractionOfTotalField makeField() {
         Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1_label");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2_label");

@@ -65,9 +65,4 @@ public class BasicPredefinedFieldTest extends AbstractTest {
     public void getLabel() throws Exception {
         assertEquals("test_label", field.getLabel());
     }
-
-    @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("Test name", field.getHumanReadableName());
-    }
 }

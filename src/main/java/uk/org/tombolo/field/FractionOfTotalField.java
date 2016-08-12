@@ -1,7 +1,6 @@
 package uk.org.tombolo.field;
 
 import org.apache.commons.collections4.ListUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -64,11 +63,6 @@ public class FractionOfTotalField implements SingleValueField {
 
     @Override
     public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
         return label;
     }
 

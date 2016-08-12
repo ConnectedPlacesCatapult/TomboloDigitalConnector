@@ -51,7 +51,6 @@ public class FieldValueSumField implements SingleValueField, ParentField {
 
     protected JSONObject withinMetadata(JSONArray contents) {
         JSONObject attr = new JSONObject();
-        attr.put("name", getHumanReadableName());
         attr.put("values", contents);
         JSONObject obj = new JSONObject();
         obj.put(label, attr);
@@ -61,11 +60,6 @@ public class FieldValueSumField implements SingleValueField, ParentField {
     @Override
     public String getLabel() {
         return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
-        return name;
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {

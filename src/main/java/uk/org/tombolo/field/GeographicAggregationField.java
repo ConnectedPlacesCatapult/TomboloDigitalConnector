@@ -102,9 +102,4 @@ public class GeographicAggregationField implements Field, SingleValueField {
     public String getLabel() {
         return this.label;
     }
-
-    @Override
-    public String getHumanReadableName() {
-        return this.label;
-    }
 }

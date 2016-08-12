@@ -73,9 +73,4 @@ public class FieldValueSumFieldTest extends AbstractTest {
         assertEquals("FVSF-label", field.getLabel());
     }
 
-    @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("FVSF-name", field.getHumanReadableName());
-    }
-
 }

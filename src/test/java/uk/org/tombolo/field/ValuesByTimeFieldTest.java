@@ -64,9 +64,4 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     public void testGetLabel() throws Exception {
         assertEquals("aLabel", field.getLabel());
     }
-
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        assertEquals("attr_label_name", field.getHumanReadableName());
-    }
 }

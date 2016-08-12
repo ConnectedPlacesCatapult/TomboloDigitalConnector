@@ -46,11 +46,6 @@ public class ValuesByTimeField implements Field {
         return label;
     }
 
-    @Override
-    public String getHumanReadableName() {
-        return getAttribute().getName();
-    }
-
     protected Attribute getAttribute() {
         if (null != cachedAttribute) return cachedAttribute;
 
