@@ -46,12 +46,12 @@ public class ValuesByTimeField implements Field {
         return label;
     }
 
-    protected Attribute getAttribute() {
+    protected Attribute getAttribute() throws IncomputableFieldException {
         if (null != cachedAttribute) return cachedAttribute;
 
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
         if (null == attr) {
-            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
+            throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
         } else {
             cachedAttribute = attr;
             return attr;
