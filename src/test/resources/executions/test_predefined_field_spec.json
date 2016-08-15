@@ -14,7 +14,7 @@
 		"datasourceSpecification" : [],
 		"fieldSpecification" : [
 			{
-				"fieldClass": "uk.org.tombolo.field.PredefinedField",
+				"fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
 				"label": "socialresilience/SocialIsolationAmongElderly"
 			}
 		]

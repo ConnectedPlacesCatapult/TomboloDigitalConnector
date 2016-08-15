@@ -10,7 +10,7 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.SelfcontainedField;
+import uk.org.tombolo.field.PredefinedField;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
@@ -35,7 +35,7 @@ public class DataExportEngine implements ExecutionEngine{
 	}
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
-		// Import data
+		// Import datasources that are in the global dataset specification
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
 			importDatasource(forceImports, datasourceSpec);
 		}
@@ -47,9 +47,9 @@ public class DataExportEngine implements ExecutionEngine{
 			Field field = fieldSpec.toField();
 			fields.add(field);
 
-			// FIXME: This is a bit ugly repetition
-			if (field instanceof SelfcontainedField){
-				for (DatasourceSpecification datasourceSpecification : ((SelfcontainedField) field).getDatasourceSpecifications()){
+			// Import datasources that are specified as part of a predefined field
+			if (field instanceof PredefinedField){
+				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()){
 					importDatasource(forceImports, datasourceSpecification);
 				}
 			}
