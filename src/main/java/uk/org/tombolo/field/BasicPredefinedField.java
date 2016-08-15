@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- *
+ * Generic class for handling predefined fields.
  */
 public class BasicPredefinedField implements Field, PredefinedField {
     String label;
@@ -34,6 +34,10 @@ public class BasicPredefinedField implements Field, PredefinedField {
 
 
     Logger log = LoggerFactory.getLogger(BasicPredefinedField.class);
+
+    public BasicPredefinedField(String label){
+        this.label = label;
+    }
 
     @Override
     public List<DatasourceSpecification> getDatasourceSpecifications() {

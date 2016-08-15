@@ -1,5 +1,6 @@
 package uk.org.tombolo.field;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
@@ -16,6 +17,12 @@ public class FieldValueSumField implements SingleValueField {
     String name;
     List<FieldSpecification> fieldSpecifications;
     List<Field> fields;
+
+    public FieldValueSumField(String label, String name, List<FieldSpecification> fieldSpecifications) {
+        this.label = label;
+        this.name = name;
+        this.fieldSpecifications = fieldSpecifications;
+    }
 
     public void initialize() {
         this.fields = new ArrayList<>();
@@ -37,6 +44,17 @@ public class FieldValueSumField implements SingleValueField {
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         JSONObject obj = new JSONObject();
         obj.put("value", sumFields(subject));
+        JSONArray array = new JSONArray();
+        array.add(obj);
+        return withinMetadata(array);
+    }
+
+    protected JSONObject withinMetadata(JSONArray contents) {
+        JSONObject attr = new JSONObject();
+        attr.put("name", getHumanReadableName());
+        attr.put("values", contents);
+        JSONObject obj = new JSONObject();
+        obj.put(label, attr);
         return obj;
     }
 

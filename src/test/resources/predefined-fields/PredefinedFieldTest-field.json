@@ -1,0 +1,15 @@
+{
+  "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+  "label": "Fraction_of_65",
+  "name": "Fraction of 65 year olds",
+  "divisorAttribute": {
+    "providerLabel": "uk.gov.ons",
+    "attributeLabel": "population_label"
+  },
+  "dividendAttributes": [
+    {
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "oldies_label"
+    }
+  ]
+}
