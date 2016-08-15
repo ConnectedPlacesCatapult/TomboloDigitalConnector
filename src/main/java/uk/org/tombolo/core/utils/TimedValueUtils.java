@@ -1,9 +1,6 @@
 package uk.org.tombolo.core.utils;
 
-import org.hibernate.Criteria;
 import org.hibernate.NonUniqueObjectException;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
@@ -13,7 +10,7 @@ import uk.org.tombolo.core.TimedValue;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,24 +21,20 @@ public class TimedValueUtils {
 
 	public static List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
-			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.subject", subject));
-			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
-
-			// FIXME: This should be paginated
-			return (List<TimedValue>) criteria.list();
+			return session.createQuery("from TimedValue t where id.subject = :subject and id.attribute = :attribute", TimedValue.class)
+					.setParameter("subject", subject)
+					.setParameter("attribute", attribute)
+					.list();
 		});
 	}
 
 	public static TimedValue getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
-			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.subject", subject));
-			criteria = criteria.add(Restrictions.eq("id.attribute", attribute));
-			criteria = criteria.addOrder(Order.desc("id.timestamp"));
-			criteria.setMaxResults(1);
-
-			return (TimedValue) criteria.uniqueResult();
+			return session.createQuery("from TimedValue t where id.subject = :subject and id.attribute = :attribute order by id.timestamp desc", TimedValue.class)
+					.setParameter("subject", subject)
+					.setParameter("attribute", attribute)
+					.setMaxResults(1)
+					.uniqueResult();
 		});
 	}
 
@@ -64,11 +57,10 @@ public class TimedValueUtils {
 	 */
 	public static List<TimedValue> getLatestBySubjectAndAttributes(Subject subject, List<Attribute> attributes) {
 		return HibernateUtil.withSession((session) -> {
-			Criteria criteria = session.createCriteria(TimedValue.class);
-			criteria = criteria.add(Restrictions.eq("id.subject", subject));
-			criteria = criteria.add(Restrictions.in("id.attribute", attributes));
-
-			List<TimedValue> results = (List<TimedValue>) criteria.list();
+			List<TimedValue> results = session.createQuery("from TimedValue t where id.subject = :subject and id.attribute in :attributes", TimedValue.class)
+					.setParameter("subject", subject)
+					.setParameter("attributes", attributes)
+					.list();
 
 			// We use stream collection to build a map of Attribute -> TimedValue while
 			// discarding duplicates that have older timestamps. In this manner we build
@@ -94,7 +86,7 @@ public class TimedValueUtils {
 	}
 	
 	public static void save(TimedValue timedValue){
-		save(Arrays.asList(timedValue));
+		save(Collections.singletonList(timedValue));
 	}
 
 	public static int save(List<TimedValue> timedValues){
