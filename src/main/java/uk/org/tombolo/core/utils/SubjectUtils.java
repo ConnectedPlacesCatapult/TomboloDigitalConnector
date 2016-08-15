@@ -20,20 +20,19 @@ public class SubjectUtils {
 
 	public static Subject getSubjectByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Subject.class);
-			return (Subject) criteria.add(Restrictions.eq("label", label)).uniqueResult();
+			return session.createQuery("select s from Subject s where label = :label", Subject.class)
+					.setParameter("label", label)
+					.uniqueResult();
 		});
 	}
 	
 	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Subject.class);
-			criteria = criteria.add(Restrictions.eq("subjectType", subjectType));
-			if (labelPattern != null)
-				criteria = criteria.add(Restrictions.like("label", labelPattern));
+			Query query = session.createQuery("select s from Subject s where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("labelPattern", labelPattern.toLowerCase());
 
-			// FIXME: This should be paginated
-			return (List<Subject>) criteria.list();
+			return (List<Subject>) query.list();
 		});
 	}
 
@@ -59,8 +58,7 @@ public class SubjectUtils {
 			session.beginTransaction();
 			int saved = 0;
 			for (Subject subject : subjects) {
-				Criteria criteria = session.createCriteria(Subject.class);
-				Subject savedSubject = (Subject) criteria.add(Restrictions.eq("label", subject.getLabel())).uniqueResult();
+				Subject savedSubject = getSubjectByLabel(subject.getLabel());
 
 				if (savedSubject == null) {
 					session.saveOrUpdate(subject);
@@ -78,15 +76,6 @@ public class SubjectUtils {
 				}
 			}
 			session.getTransaction().commit();
-		});
-	}
-	
-	public static Subject getTestSubject(){
-		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Subject.class);
-			return (Subject) criteria
-					.add(Restrictions.eq("label", "E01000001"))
-					.uniqueResult();
 		});
 	}
 
