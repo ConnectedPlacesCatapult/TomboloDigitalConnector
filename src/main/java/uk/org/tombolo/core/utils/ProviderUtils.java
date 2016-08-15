@@ -1,11 +1,6 @@
 package uk.org.tombolo.core.utils;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import uk.org.tombolo.core.Provider;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProviderUtils {
 	public static Provider getTestProvider(){
@@ -30,11 +25,9 @@ public class ProviderUtils {
 
 	public static Provider getByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			Criteria criteria = session.createCriteria(Provider.class);
-			Map<String, Object> restrictions = new HashMap<String, Object>();
-			restrictions.put("label", label);
-			Provider provider = (Provider) criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
-			return provider;
+			return session.createQuery("select p from Provider p where label = :label", Provider.class)
+					.setParameter("label", label)
+					.uniqueResult();
 		});
 	}
 }
