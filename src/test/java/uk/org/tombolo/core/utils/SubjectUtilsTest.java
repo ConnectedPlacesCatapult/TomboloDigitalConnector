@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatchRule;
 
 public class SubjectUtilsTest extends AbstractTest {
 
@@ -81,8 +81,8 @@ public class SubjectUtilsTest extends AbstractTest {
 	private DatasetSpecification makeDatasetSpecification(String subjectAttribute, String subjectAttributePattern, String subjectType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(subjectAttribute, subjectAttributePattern));
-		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
+		SubjectMatchRule matchRule = new SubjectSpecification.SubjectMatchRule(SubjectMatchRule.MatchableAttribute.valueOf(subjectAttribute), subjectAttributePattern);
+		subjectSpecification.add(new SubjectSpecification(matchRule, subjectType));
 		List<FieldSpecification> fieldSpecification = new ArrayList<FieldSpecification>();
 		fieldSpecification.add(new FieldSpecification(attributeProvider, attributeName));
 		spec.setSubjectSpecification(subjectSpecification);

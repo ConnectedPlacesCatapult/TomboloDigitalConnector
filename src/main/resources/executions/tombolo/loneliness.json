@@ -3,12 +3,10 @@
 		"subjectSpecification" : [
 			{
 				"subjectType" : "lsoa",
-				"matchers" : [
-					{
-						"attribute": "name",
-						"pattern": "Leeds%"
-					}
-				]
+				"matchRule" : {
+					"attribute": "name",
+					"pattern": "Leeds%"
+				}
 			}
 		],
 		"datasourceSpecification" : [

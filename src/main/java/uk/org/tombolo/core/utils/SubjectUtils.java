@@ -1,8 +1,6 @@
 package uk.org.tombolo.core.utils;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +8,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
+import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatchRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +26,10 @@ public class SubjectUtils {
 	
 	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
-			Query query = session.createQuery("select s from Subject s where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
+			return session.createQuery("select s from Subject s where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
 					.setParameter("subjectType", subjectType)
-					.setParameter("labelPattern", labelPattern.toLowerCase());
-
-			return (List<Subject>) query.list();
+					.setParameter("labelPattern", labelPattern.toLowerCase())
+					.list();
 		});
 	}
 
@@ -49,7 +46,7 @@ public class SubjectUtils {
 
 	public static List<Subject> getSubjectBySpecification(SubjectSpecification subjectSpecification) {
 		return HibernateUtil.withSession(session -> {
-			return (List<Subject>) criteriaFromSubjectSpecification(session, subjectSpecification).list();
+			return (List<Subject>) queryFromSubjectSpecification(session, subjectSpecification).list();
 		});
 	}
 	
@@ -79,15 +76,20 @@ public class SubjectUtils {
 		});
 	}
 
-	public static Criteria criteriaFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
+	public static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
-		Criteria criteria = session.createCriteria(Subject.class);
-		criteria.add(Restrictions.eq("subjectType", subjectType));
 
-		for (SubjectMatcher matcher : subjectSpecification.getMatchers())
-			criteria.add(Restrictions.like(matcher.attribute, matcher.pattern));
+		Query query;
+		if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.label) {
+			query = session.createQuery("from Subject s where subjectType = :subjectType and lower(label) like :pattern", Subject.class);
+		} else if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.name) {
+			query = session.createQuery("from Subject s where subjectType = :subjectType and lower(name) like :pattern", Subject.class);
+		} else {
+			throw new IllegalArgumentException(String.format("SubjectMatchRule attribute is not a valid type (is %s, can be either name or label)", subjectSpecification.getMatchRule()));
+		}
 
-		return criteria;
+		return query.setParameter("subjectType", subjectType)
+				.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
 	}
 
 	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {

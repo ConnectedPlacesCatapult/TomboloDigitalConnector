@@ -1,16 +1,16 @@
 {
   "datasetSpecification": {
     "subjectSpecification": [{
-      "matchers": [{
+      "matchRule": {
         "pattern": "E01002766",
         "attribute": "label"
-      }],
+      },
       "subjectType": "lsoa"
     }, {
-      "matchers": [{
+      "matchRule": {
         "pattern": "E08000035",
         "attribute": "label"
-      }],
+      },
       "subjectType": "localAuthority"
     }],
     "fieldSpecification": [{
