@@ -32,6 +32,7 @@ public class DownloadUtils {
 	}
 	
 	public File getDatasourceFile(Datasource datasource) throws MalformedURLException, IOException{
+		createCacheDir();
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory 
 				+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY 
@@ -59,6 +60,7 @@ public class DownloadUtils {
 	}
 
 	public InputStream fetchJSONStream(URL url) throws IOException {
+		createCacheDir();
 		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
 		File localDatasourceFile = new File(
 				tomboloDataCacheRootDirectory
@@ -72,5 +74,9 @@ public class DownloadUtils {
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}
+	}
+
+	private void createCacheDir() throws IOException {
+		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY));
 	}
 }
