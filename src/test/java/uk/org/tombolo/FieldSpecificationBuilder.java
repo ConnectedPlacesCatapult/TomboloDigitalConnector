@@ -3,6 +3,8 @@ package uk.org.tombolo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
+import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
 import java.util.List;
 
@@ -104,5 +106,9 @@ public class FieldSpecificationBuilder implements JSONAware {
         divisorAttributeObj.put("attributeLabel", attributeLabel);
         jsonSpec.put("divisorAttribute", divisorAttributeObj);
         return this;
+    }
+
+    public FieldSpecification build() {
+        return SpecificationDeserializer.fromJson(toJSONString(), FieldSpecification.class);
     }
 }
