@@ -45,7 +45,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testReturnsSubject() throws Exception {
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01000001")
         );
 
         engine.execute(builder.build(), writer);
@@ -58,7 +58,7 @@ public class DataExportEngineTest extends AbstractTest {
         DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.OaImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E10000006")
+                new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E10000006")
         ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
         engine.execute(builder.build(), writer);
 
@@ -72,7 +72,7 @@ public class DataExportEngineTest extends AbstractTest {
         DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("uk.org.tombolo.importer.ons.OaImporter", "localAuthority"));
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E06000001")
+                new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E06000001")
         ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
 
         // And we set the clear-database flag
@@ -95,7 +95,7 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
                 FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                         FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
@@ -133,7 +133,7 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
                 FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                         FieldSpecificationBuilder.valuesByTime("default_provider_label", "attr_label")
@@ -169,7 +169,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testImportsFromLondonDataStore() throws Exception {
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E09000001"))
+                new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E09000001"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
@@ -206,7 +206,7 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testTransforms() throws Exception {
         builder .addSubjectSpecification(
-                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                        new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
@@ -244,7 +244,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testRunsOnNewSubjects() throws Exception {
         builder
             .addSubjectSpecification(
-                new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E06000001"))
+                new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E06000001"))
             .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority")
             .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
             .addFieldSpecification(
@@ -286,7 +286,7 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01000001")
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
                 FieldSpecificationBuilder.mapToContainingSubjectField(
                         "local_authority",
@@ -321,7 +321,7 @@ public class DataExportEngineTest extends AbstractTest {
         DataExportSpecificationBuilder csvBuilder = DataExportSpecificationBuilder.withCSVExporter();
         csvBuilder
                 .addSubjectSpecification(
-                        new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                        new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
@@ -341,9 +341,9 @@ public class DataExportEngineTest extends AbstractTest {
     @Test
     public void testExportsMultipleSubjectTypes() throws Exception {
         builder .addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766"))
                 .addSubjectSpecification(
-                        new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+                        new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(

@@ -27,9 +27,9 @@ public class DataExportSpecificationValidatorTest extends AbstractTest {
     @Test
     public void testValidateWithValidBuilder() throws Exception {
         DataExportSpecificationBuilder spec = DataExportSpecificationBuilder.withGeoJsonExporter().addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").addMatcher("label", "E01002766"))
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766"))
                 .addSubjectSpecification(
-                        new SubjectSpecificationBuilder("localAuthority").addMatcher("label", "E08000035"))
+                        new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(

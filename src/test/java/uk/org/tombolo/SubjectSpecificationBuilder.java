@@ -6,20 +6,18 @@ import org.json.simple.JSONObject;
 
 public class SubjectSpecificationBuilder implements JSONAware {
     JSONObject jsonSpec;
-    JSONArray matchers;
+    JSONObject matchRule;
 
     public SubjectSpecificationBuilder(String subjectType) {
         jsonSpec = new JSONObject();
-        matchers = new JSONArray();
+        matchRule = new JSONObject();
         jsonSpec.put("subjectType", subjectType);
-        jsonSpec.put("matchers", matchers);
+        jsonSpec.put("matchRule", matchRule);
     }
 
-    public SubjectSpecificationBuilder addMatcher(String attribute, String pattern) {
-        JSONObject matcher = new JSONObject();
-        matcher.put("attribute", attribute);
-        matcher.put("pattern", pattern);
-        matchers.add(matcher);
+    public SubjectSpecificationBuilder setMatcher(String attribute, String pattern) {
+        matchRule.put("attribute", attribute);
+        matchRule.put("pattern", pattern);
         return this;
     }
 

@@ -13,25 +13,22 @@
               "subjectType": {
                 "type": "string"
               },
-              "matchers": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "attribute": {
-                      "type": "string",
-                      "enum": ["label", "name"]
-                    },
-                    "pattern": {
-                      "type": "string"
-                    }
+              "matchRule": {
+                "type": "object",
+                "properties": {
+                  "attribute": {
+                    "type": "string",
+                    "enum": ["label", "name"]
                   },
-                  "required": [
-                    "attribute",
-                    "pattern"
-                  ],
-                  "additionalProperties": false
-                }
+                  "pattern": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "attribute",
+                  "pattern"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [

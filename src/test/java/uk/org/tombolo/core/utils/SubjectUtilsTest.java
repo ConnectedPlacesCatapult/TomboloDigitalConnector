@@ -17,13 +17,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatcher;
+import static uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatchRule;
 
 public class SubjectUtilsTest extends AbstractTest {
 
 	@Before
 	public void addSubjectFixtures() {
 		TestFactory.makeNamedSubject("E09000001");
+		TestFactory.makeNamedSubject("E08000035"); // Need this to avoid false-positives on pattern matching
 	}
 
 	@Test
@@ -37,10 +38,9 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectByTypeAndLabelPatternLocalAuthorities(){
 		SubjectType localAuthority = SubjectTypeUtils.getSubjectTypeByLabel("localAuthority");
-		String labelPattern = null;
-		List<Subject> localAuthorities = SubjectUtils.getSubjectByTypeAndLabelPattern(localAuthority, labelPattern);
+		List<Subject> localAuthorities = SubjectUtils.getSubjectByTypeAndLabelPattern(localAuthority, "%");
 		
-		assertEquals(1, localAuthorities.size());
+		assertEquals(2, localAuthorities.size());
 	}
 	
 	@Test
@@ -81,8 +81,8 @@ public class SubjectUtilsTest extends AbstractTest {
 	private DatasetSpecification makeDatasetSpecification(String subjectAttribute, String subjectAttributePattern, String subjectType, String attributeProvider, String attributeName) {
 		DatasetSpecification spec = new DatasetSpecification();
 		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		List<SubjectMatcher> matchers = Arrays.asList(new SubjectMatcher(subjectAttribute, subjectAttributePattern));
-		subjectSpecification.add(new SubjectSpecification(matchers, subjectType));
+		SubjectMatchRule matchRule = new SubjectSpecification.SubjectMatchRule(SubjectMatchRule.MatchableAttribute.valueOf(subjectAttribute), subjectAttributePattern);
+		subjectSpecification.add(new SubjectSpecification(matchRule, subjectType));
 		List<FieldSpecification> fieldSpecification = new ArrayList<FieldSpecification>();
 		fieldSpecification.add(new FieldSpecification(attributeProvider, attributeName));
 		spec.setSubjectSpecification(subjectSpecification);
@@ -93,7 +93,11 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectsContainingSubjectReturnsContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
+		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them overlap
+		SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
+
 		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("localAuthority", cityOfLondonLsoa);
 		assertEquals(cityOfLondon, returnedSubjects.get(0));
 		assertEquals(1, returnedSubjects.size());
