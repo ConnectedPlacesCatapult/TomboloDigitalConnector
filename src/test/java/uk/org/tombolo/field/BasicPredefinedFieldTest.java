@@ -49,8 +49,6 @@ public class BasicPredefinedFieldTest extends AbstractTest {
     public void jsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
 
-        System.err.println(jsonString);
-
         JSONAssert.assertEquals("{" +
                 "  Fraction_of_65: {" +
                 "    values: [" +

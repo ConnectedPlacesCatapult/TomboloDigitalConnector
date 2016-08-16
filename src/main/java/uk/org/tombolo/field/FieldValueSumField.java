@@ -73,6 +73,8 @@ public class FieldValueSumField implements SingleValueField {
             initialize();
         Double sum = 0d;
         for (Field field : fields) {
+            if (!(field instanceof SingleValueField))
+                throw new IncomputableFieldException("Field sum only valid for single value fields");
             sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
         }
         return sum;

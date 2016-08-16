@@ -32,9 +32,6 @@ public class BasicPredefinedField implements Field, PredefinedField {
     protected static final String fieldSpecPostfix = "-field.json";
     protected static final String fieldDataPostfix = "-data.json";
 
-
-    Logger log = LoggerFactory.getLogger(BasicPredefinedField.class);
-
     public BasicPredefinedField(String label){
         this.label = label;
     }
@@ -78,7 +75,7 @@ public class BasicPredefinedField implements Field, PredefinedField {
         } catch (ClassNotFoundException e) {
             throw new Error("Field class not found", e);
         } catch (IOException e) {
-            throw new Error("Could not read specificaiton file", e);
+            throw new Error("Could not read specification file", e);
         }
 
         String dataSpecificationFilename = fieldSpecPath+label+fieldDataPostfix;
@@ -90,7 +87,7 @@ public class BasicPredefinedField implements Field, PredefinedField {
             Type type = new TypeToken<List<DatasourceSpecification>>(){}.getType();
             datasourceSpecifications =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
         } catch (IOException e) {
-            throw new Error("Could not read specificaiton file", e);
+            throw new Error("Could not read specification file", e);
         }
     }
 }
