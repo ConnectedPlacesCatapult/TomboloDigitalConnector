@@ -4,17 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class FieldValueSumFieldTest extends AbstractTest {
     FieldValueSumField field;
@@ -23,30 +21,8 @@ public class FieldValueSumFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        List<FieldSpecification> fieldSpecificationList = new ArrayList<>();
-
-        FieldSpecification fs1 = new FieldSpecification("uk.org.tombolo.field.LatestValueField",
-                "{" +
-                        "\"label\": \"f1\"," +
-                        "\"attribute\": " +
-                        "{" +
-                        "  \"providerLabel\": \"default_provider_label\", " +
-                        "  \"attributeLabel\": \"f1a_label\"" +
-                        "}" +
-                        "}");
-
-        FieldSpecification fs2 = new FieldSpecification("uk.org.tombolo.field.LatestValueField",
-                "{" +
-                        "\"label\": \"f2\"," +
-                        "\"attribute\": " +
-                        "{" +
-                        "  \"providerLabel\": \"default_provider_label\", " +
-                        "  \"attributeLabel\": \"f2a_label\"" +
-                        "}" +
-                        "}");
-
-        fieldSpecificationList.add(fs1);
-        fieldSpecificationList.add(fs2);
+        FieldSpecification fs1 = FieldSpecificationBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
+        FieldSpecification fs2 = FieldSpecificationBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
 
         subject = TestFactory.makeNamedSubject("E01002766");
         Attribute f1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f1a");
@@ -54,7 +30,7 @@ public class FieldValueSumFieldTest extends AbstractTest {
         TestFactory.makeTimedValue("E01002766", f1, "2011-01-01T00:00:00", 10d);
         TestFactory.makeTimedValue("E01002766", f2, "2011-01-01T00:00:00", 40d);
 
-        field = new FieldValueSumField("FVSF-label", "FVSF-name", fieldSpecificationList);
+        field = new FieldValueSumField("FVSF-label", "FVSF-name", Arrays.asList(fs1, fs2));
     }
 
     @Test
