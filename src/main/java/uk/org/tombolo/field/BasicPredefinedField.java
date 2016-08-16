@@ -89,9 +89,6 @@ public class BasicPredefinedField implements Field, PredefinedField {
             Gson gson = gsonBuilder.create();
             Type type = new TypeToken<List<DatasourceSpecification>>(){}.getType();
             datasourceSpecifications =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
-            for (Object o : datasourceSpecifications){
-                log.info(o.getClass().getName());
-            }
         } catch (IOException e) {
             throw new Error("Could not read specificaiton file", e);
         }
