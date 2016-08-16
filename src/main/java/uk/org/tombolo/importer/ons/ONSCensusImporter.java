@@ -31,16 +31,16 @@ import java.util.*;
  * A class for importing ONS Census data into the Tombolo Digital Connector platform.
  * 
  * All Census datasets
- * http://data.ons.gov.uk/ons/api/data/collections.xml?apikey=kil61db9uf&context=Census&firstRecord=1&noOfRecords=5
+ * http://data.ons.gov.uk/ons/api/data/collections.xml?apikey=onsApiKey&context=Census&firstRecord=1&noOfRecords=5
  * 
  * Get all Hierarchies for a dataset
- * http://data.ons.gov.uk/ons/api/data/hierarchies/OT102EW.json?context=Census&apikey=kil61db9uf
+ * http://data.ons.gov.uk/ons/api/data/hierarchies/OT102EW.json?context=Census&apikey=onsApiKey
  *
  * Get description of a dataset
- * http://data.ons.gov.uk/ons/api/data/datasetdetails/OT102EW.json?context=Census&apikey=kil61db9uf&geog=2011STATH
+ * http://data.ons.gov.uk/ons/api/data/datasetdetails/OT102EW.json?context=Census&apikey=onsApiKey&geog=2011STATH
  * 
  * Census population for LSOAs
- * http://data.ons.gov.uk/ons/api/data/dataset/OT102EW/set.json?context=Census&apikey=kil61db9uf&geog=2011STATH&startobs=1&noobs=10
+ * http://data.ons.gov.uk/ons/api/data/dataset/OT102EW/set.json?context=Census&apikey=onsApiKey&geog=2011STATH&startobs=1&noobs=10
  * 
  */
 public class ONSCensusImporter extends AbstractONSImporter implements Importer{
