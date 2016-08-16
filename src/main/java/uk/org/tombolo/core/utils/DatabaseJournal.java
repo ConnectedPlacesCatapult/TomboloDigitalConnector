@@ -1,11 +1,7 @@
 package uk.org.tombolo.core.utils;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import uk.org.tombolo.core.DatabaseJournalEntry;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * DatabaseJournal.java
@@ -24,11 +20,10 @@ public class DatabaseJournal {
 
     public static boolean journalHasEntry(DatabaseJournalEntry entry) {
         return HibernateUtil.withSession(session -> {
-            Criteria criteria = session.createCriteria(DatabaseJournalEntry.class);
-            Map<String, Object> restrictions = new HashMap<String, Object>();
-            restrictions.put("className", entry.getClassName());
-            restrictions.put("key", entry.getKey());
-            return null != criteria.add(Restrictions.allEq(restrictions)).uniqueResult();
+            Query query = session.createQuery("from DatabaseJournalEntry where className = :className and key = :key");
+            query.setParameter("className", entry.getClassName());
+            query.setParameter("key", entry.getKey());
+            return query.uniqueResultOptional().isPresent();
         });
     }
 }

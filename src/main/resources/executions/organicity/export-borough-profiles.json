@@ -3,12 +3,10 @@
 		"subjectSpecification" : [
 			{
 				"subjectType" : "localAuthority",
-				"matchers" : [
-					{
-						"attribute": "label",
-						"pattern": "E090%"
-					}
-				]
+				"matchRule" : {
+					"attribute": "label",
+					"pattern": "E090%"
+				}
 			}
 		],	
 		"datasourceSpecification" : [
