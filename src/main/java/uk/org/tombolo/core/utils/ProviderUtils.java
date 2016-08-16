@@ -8,7 +8,7 @@ public class ProviderUtils {
 			return (Provider)session.get(Provider.class, "uk.org.tombolo.test");
 		});
 	}
-	
+
 	public static void save(Provider provider){
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
@@ -25,7 +25,7 @@ public class ProviderUtils {
 
 	public static Provider getByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			return session.createQuery("select p from Provider p where label = :label", Provider.class)
+			return session.createQuery("from Provider where label = :label", Provider.class)
 					.setParameter("label", label)
 					.uniqueResult();
 		});

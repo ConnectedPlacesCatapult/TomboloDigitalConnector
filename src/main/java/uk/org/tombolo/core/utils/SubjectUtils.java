@@ -18,7 +18,7 @@ public class SubjectUtils {
 
 	public static Subject getSubjectByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			return session.createQuery("select s from Subject s where label = :label", Subject.class)
+			return session.createQuery("from Subject where label = :label", Subject.class)
 					.setParameter("label", label)
 					.uniqueResult();
 		});
@@ -26,7 +26,7 @@ public class SubjectUtils {
 	
 	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
-			return session.createQuery("select s from Subject s where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
+			return session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
 					.setParameter("subjectType", subjectType)
 					.setParameter("labelPattern", labelPattern.toLowerCase())
 					.list();
@@ -81,9 +81,9 @@ public class SubjectUtils {
 
 		Query query;
 		if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.label) {
-			query = session.createQuery("from Subject s where subjectType = :subjectType and lower(label) like :pattern", Subject.class);
+			query = session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :pattern", Subject.class);
 		} else if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.name) {
-			query = session.createQuery("from Subject s where subjectType = :subjectType and lower(name) like :pattern", Subject.class);
+			query = session.createQuery("from Subject where subjectType = :subjectType and lower(name) like :pattern", Subject.class);
 		} else {
 			throw new IllegalArgumentException(String.format("SubjectMatchRule attribute is not a valid type (is %s, can be either name or label)", subjectSpecification.getMatchRule()));
 		}
@@ -94,7 +94,7 @@ public class SubjectUtils {
 
 	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {
 		return HibernateUtil.withSession(session -> {
-			Query query = session.createQuery("select s from Subject s where subjectType = :subjectType and contains(s.shape, :geom) = true", Subject.class);
+			Query query = session.createQuery("from Subject where subjectType = :subjectType and contains(shape, :geom) = true", Subject.class);
 			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
 			query.setParameter("geom", subject.getShape());
 			return (List<Subject>) query.getResultList();

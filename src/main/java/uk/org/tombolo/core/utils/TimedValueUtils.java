@@ -21,7 +21,7 @@ public class TimedValueUtils {
 
 	public static List<TimedValue> getBySubjectAndAttribute(Subject subject, Attribute attribute){
 		return HibernateUtil.withSession((session) -> {
-			return session.createQuery("from TimedValue t where id.subject = :subject and id.attribute = :attribute", TimedValue.class)
+			return session.createQuery("from TimedValue where id.subject = :subject and id.attribute = :attribute", TimedValue.class)
 					.setParameter("subject", subject)
 					.setParameter("attribute", attribute)
 					.list();
@@ -30,7 +30,7 @@ public class TimedValueUtils {
 
 	public static TimedValue getLatestBySubjectAndAttribute(Subject subject, Attribute attribute) {
 		return HibernateUtil.withSession((session) -> {
-			return session.createQuery("from TimedValue t where id.subject = :subject and id.attribute = :attribute order by id.timestamp desc", TimedValue.class)
+			return session.createQuery("from TimedValue where id.subject = :subject and id.attribute = :attribute order by id.timestamp desc", TimedValue.class)
 					.setParameter("subject", subject)
 					.setParameter("attribute", attribute)
 					.setMaxResults(1)
@@ -57,7 +57,7 @@ public class TimedValueUtils {
 	 */
 	public static List<TimedValue> getLatestBySubjectAndAttributes(Subject subject, List<Attribute> attributes) {
 		return HibernateUtil.withSession((session) -> {
-			List<TimedValue> results = session.createQuery("from TimedValue t where id.subject = :subject and id.attribute in :attributes", TimedValue.class)
+			List<TimedValue> results = session.createQuery("from TimedValue where id.subject = :subject and id.attribute in :attributes", TimedValue.class)
 					.setParameter("subject", subject)
 					.setParameter("attributes", attributes)
 					.list();

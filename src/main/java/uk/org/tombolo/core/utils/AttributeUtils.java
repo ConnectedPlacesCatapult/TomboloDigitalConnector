@@ -40,7 +40,7 @@ public class AttributeUtils {
 
 	public static Attribute getByProviderAndLabel(String providerLabel, String attributeLabel) {
 		return HibernateUtil.withSession(session -> {
-			Query query = session.createQuery("select a from Attribute a where provider.label = :providerLabel and label = :attributeLabel", Attribute.class);
+			Query query = session.createQuery("from Attribute where provider.label = :providerLabel and label = :attributeLabel", Attribute.class);
 			query.setParameter("providerLabel", providerLabel);
 			query.setParameter("attributeLabel", attributeLabel);
 			return (Attribute) query.uniqueResult();
