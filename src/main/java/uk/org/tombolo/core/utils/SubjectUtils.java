@@ -79,6 +79,11 @@ public class SubjectUtils {
 	public static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
 
+		if (null == subjectSpecification.getMatchRule()) {
+			return session.createQuery("from Subject where subjectType = :subjectType", Subject.class)
+					.setParameter("subjectType", subjectType);
+		}
+
 		Query query;
 		if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.label) {
 			query = session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :pattern", Subject.class);
