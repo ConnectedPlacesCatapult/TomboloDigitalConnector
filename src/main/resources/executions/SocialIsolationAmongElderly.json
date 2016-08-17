@@ -1,0 +1,27 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "lsoa",
+        "matchRule" : {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.FixedAnnotationField",
+        "label": "SocialIsolationAmongElderly",
+        "value": "0.1337"
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+}
