@@ -105,4 +105,13 @@ public class SubjectUtils {
 			return (List<Subject>) query.getResultList();
 		});
 	}
+
+	public static List<Subject> subjectsWithinSubject(String subjectTypeLabel, Subject subject) {
+		return HibernateUtil.withSession(session -> {
+			Query query = session.createQuery("from Subject where subjectType = :subjectType and within(shape, :geom) = true", Subject.class);
+			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("geom", subject.getShape());
+			return (List<Subject>) query.getResultList();
+		});
+	}
 }
