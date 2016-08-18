@@ -16,6 +16,7 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -91,7 +92,7 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsSubjectAndLatestTimedValueForAttribute() throws Exception {
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(
@@ -117,7 +118,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
                 "            ]," +
-                "            name: 'attr_name'" +
+                "            name: 'attr_label_name'" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -129,7 +130,7 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsSubjectAndValuesByTimeForAttribute() throws Exception {
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
 
         builder.addSubjectSpecification(
@@ -156,7 +157,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
                 "            ]," +
-                "            name: 'attr_name'" +
+                "            name: 'attr_label_name'" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -282,7 +283,7 @@ public class DataExportEngineTest extends AbstractTest {
         cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
         SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
 
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(
@@ -390,6 +391,61 @@ public class DataExportEngineTest extends AbstractTest {
                 "      }" +
                 "    }" +
                 "  ]" +
+                "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testGeneratesPredefinedField() throws Exception {
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")
+        );
+
+        engine.execute(builder.build(), writer);
+
+        JSONAssert.assertEquals("{" +
+                "  features: [{" +
+                "    properties: {" +
+                "      name: 'Islington 015E'," +
+                "      label: 'E01002766'," +
+                "      aLabel: {" +
+                "        values: [{" +
+                "          value: 0.005016722408026756," +
+                "          timestamp: '2011-12-31T23:59:59'" +
+                "        }]" +
+                "      }" +
+                "    }" +
+                "  }]" +
+                "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testGeneratesPredefinedFieldWhenNested() throws Exception {
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.wrapperField("aWrapper", Collections.singletonList(
+                    FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")))
+        );
+
+        engine.execute(builder.build(), writer);
+
+        JSONAssert.assertEquals("{" +
+                "  features: [{" +
+                "    properties: {" +
+                "      name: 'Islington 015E'," +
+                "      label: 'E01002766'," +
+                "      aWrapper: {" +
+                "        aLabel: {" +
+                "          values: [{" +
+                "            value: 0.005016722408026756," +
+                "            timestamp: '2011-12-31T23:59:59'" +
+                "          }]" +
+                "        }" +
+                "      }" +
+                "    }" +
+                "  }]" +
                 "}", writer.toString(), false);
     }
 }

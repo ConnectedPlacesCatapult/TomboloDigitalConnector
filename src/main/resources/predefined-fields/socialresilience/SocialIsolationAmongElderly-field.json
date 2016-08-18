@@ -1,0 +1,259 @@
+{
+  "fieldClass": "uk.org.tombolo.field.FieldValueSumField",
+  "label": "SocialIsolationAmongElderly",
+  "name": "Social Isolation among Elderly",
+  "fieldSpecifications": [
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000053.fraction_over_64",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000053_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_67"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_68"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_69"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_70"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_71"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_72"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_73"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_74"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_75"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_76"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_77"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_78"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_79"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_80"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_81"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_82"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_83"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_84"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_85"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_86"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_87"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_88"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_89"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_90"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_91"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_92"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_93"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_94"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_95"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_96"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_97"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_98"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_99"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_100"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_101"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000053_102"
+        }
+      ]
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000073.fraction_renting",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000073_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000073_6"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000073_9"
+        }
+      ]
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000065.fraction_widowed_divorced_separated",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000065_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000065_9"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000065_10"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000065_11"
+        }
+      ]
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000010.fraction_bad_or_very_bad_health",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000010_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000010_5"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000010_6"
+        }
+      ]
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000004.fraction_limited",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000004_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000004_2"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000004_3"
+        }
+      ]
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+      "label": "FCC.CL_0000178.fraction_deprived_2_or_more",
+      "divisorAttribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000178_1"
+      },
+      "dividendAttributes": [
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000178_4"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000178_5"
+        },
+        {
+          "providerLabel": "uk.gov.ons",
+          "attributeLabel": "CL_0000178_6"
+        }
+      ]
+    }
+  ]
+}

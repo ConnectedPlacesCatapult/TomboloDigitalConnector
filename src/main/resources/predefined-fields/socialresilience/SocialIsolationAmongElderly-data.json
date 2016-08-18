@@ -1,0 +1,26 @@
+[
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS103EW"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS405EW"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS108EW"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS302EW"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS303EW"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS119EW"
+  }
+]

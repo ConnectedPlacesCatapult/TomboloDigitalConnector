@@ -17,7 +17,7 @@ public class TimedValueTest extends AbstractTest {
 	public void testSave(){
 		TimedValue timedValue = TestFactory.makeTimedValue(
 				TestFactory.makeNamedSubject("E01000001").getLabel(),
-				TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr"),
+				TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label"),
 				TestFactory.TIMESTAMP,
 				15.7d
 		);

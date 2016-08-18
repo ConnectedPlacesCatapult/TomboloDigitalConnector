@@ -10,6 +10,8 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.ParentField;
+import uk.org.tombolo.field.PredefinedField;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
@@ -34,23 +36,20 @@ public class DataExportEngine implements ExecutionEngine{
 	}
 	
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
-		// Import data
+		// Import datasources that are in the global dataset specification
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
-			Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
-			importer.configure(apiKeys);
-			importer.setDownloadUtils(downloadUtils);
-			importer.importDatasource(
-					datasourceSpec.getDatasourceId(),
-					forceImports.doesMatch(datasourceSpec.getImporterClass())
-			);
+			importDatasource(forceImports, datasourceSpec);
 		}
 
 		// Generate fields
 		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
 		List<Field> fields = new ArrayList<>();
 		for (FieldSpecification fieldSpec : fieldSpecs) {
-			fields.add(fieldSpec.toField());
+			Field field = fieldSpec.toField();
+			fields.add(field);
 		}
+
+		prepareFields(fields, forceImports);
 
 		// Use the new fields method
 		log.info("Exporting ...");
@@ -61,5 +60,30 @@ public class DataExportEngine implements ExecutionEngine{
 			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
 		}
 		exporter.write(writer, subjects, fields);
+	}
+
+	private void prepareFields(List<Field> fields, ImporterMatcher forceImports) throws Exception {
+		// Import datasources that are specified as part of a predefined field
+		for (Field field : fields) {
+			if (field instanceof PredefinedField) {
+				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()) {
+					importDatasource(forceImports, datasourceSpecification);
+				}
+			}
+
+			if (field instanceof ParentField) {
+				prepareFields(((ParentField) field).getChildFields(), forceImports);
+			}
+		}
+	}
+
+	private void importDatasource(ImporterMatcher forceImports, DatasourceSpecification datasourceSpec) throws Exception {
+		Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+		importer.configure(apiKeys);
+		importer.setDownloadUtils(downloadUtils);
+		importer.importDatasource(
+				datasourceSpec.getDatasourceId(),
+				forceImports.doesMatch(datasourceSpec.getImporterClass())
+		);
 	}
 }

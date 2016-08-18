@@ -19,7 +19,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     @Before
     public void setUp() throws Exception {
         subject = TestFactory.makeNamedSubject("E01000001");
-        attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }
 
@@ -36,7 +36,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
                 "        timestamp: '2011-01-01T00:00:00'" +
                 "      }" +
                 "    ]," +
-                "    name: 'attr_name'" +
+                "    name: 'attr_label_name'" +
                 "  }" +
                 "}", jsonString, false);
     }
@@ -59,7 +59,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
                 "        timestamp: '2011-01-02T00:00:00'" +
                 "      }" +
                 "    ]," +
-                "    name: 'attr_name'" +
+                "    name: 'attr_label_name'" +
                 "  }" +
                 "}", jsonString, false);
     }
@@ -71,7 +71,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
 
     @Test
     public void testGetHumanReadableName() throws Exception {
-        assertEquals("attr_name", field.getHumanReadableName());
+        assertEquals("attr_label_name", field.getHumanReadableName());
     }
 
     @Test

@@ -19,7 +19,7 @@ public class LatestValueFieldTest extends AbstractTest {
     @Before
     public void setUp() {
         subject = TestFactory.makeNamedSubject("E01000001");
-        attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         field = new LatestValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }
 
@@ -42,7 +42,7 @@ public class LatestValueFieldTest extends AbstractTest {
                 "        timestamp: '2011-01-01T00:00:00'" +
                 "      }" +
                 "    ]," +
-                "    name: 'attr_name'" +
+                "    name: 'attr_label_name'" +
                 "  }" +
                 "}", jsonString, false);
     }
