@@ -15,8 +15,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class BasicPredefinedFieldTest extends AbstractTest {
-    private static final String LABEL = "PredefinedFieldTest";
-    BasicPredefinedField field = new BasicPredefinedField(LABEL);
+    private static final String RECIPE = "PredefinedFieldTest";
+    BasicPredefinedField field = new BasicPredefinedField("test-label", "Test name", RECIPE);
 
     Subject subject;
 
@@ -63,13 +63,11 @@ public class BasicPredefinedFieldTest extends AbstractTest {
 
     @Test
     public void getLabel() throws Exception {
-        assertEquals("Fraction_of_65", field.getLabel());
+        assertEquals("test-label", field.getLabel());
     }
 
     @Test
     public void getHumanReadableName() throws Exception {
-        assertEquals("Fraction_of_65", field.getLabel());
-        // FIXME: It would be nice to get this as some point
-        //assertEquals("Fraction of 65 year old", field.getLabel());
+        assertEquals("Test name", field.getHumanReadableName());
     }
 }

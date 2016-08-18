@@ -3,19 +3,24 @@
 		"subjectSpecification" : [
 			{
 				"subjectType" : "lsoa",
-				"matchers" : [
-					{
-						"attribute": "name",
-						"pattern": "Leeds%"
-					}
-				]
+				"matchRule": {
+					"attribute": "name",
+					"pattern": "Leeds%"
+				}
 			}
 		],
-		"datasourceSpecification" : [],
+		"datasourceSpecification" : [
+			{
+				"importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+				"datasourceId": "lsoa"
+			}
+		],
 		"fieldSpecification" : [
 			{
 				"fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
-				"label": "socialresilience/SocialIsolationAmongElderly"
+				"label": "SocialIsolationAmongElderly",
+				"name": "Social isolation among the elderly",
+				"recipe": "socialresilience/SocialIsolationAmongElderly"
 			}
 		]
 	},

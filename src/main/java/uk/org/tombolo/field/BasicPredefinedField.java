@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class BasicPredefinedField implements Field, PredefinedField {
     String label;
+    String name;
+    String recipe;
     Field field;
     List<DatasourceSpecification> datasourceSpecifications;
 
@@ -32,8 +34,10 @@ public class BasicPredefinedField implements Field, PredefinedField {
     protected static final String fieldSpecPostfix = "-field.json";
     protected static final String fieldDataPostfix = "-data.json";
 
-    public BasicPredefinedField(String label){
+    public BasicPredefinedField(String label, String name, String recipe){
         this.label = label;
+        this.name = name;
+        this.recipe = recipe;
     }
 
     @Override
@@ -52,20 +56,16 @@ public class BasicPredefinedField implements Field, PredefinedField {
 
     @Override
     public String getLabel() {
-        if (field == null)
-            initialize();
-        return field.getLabel();
+        return label;
     }
 
     @Override
     public String getHumanReadableName() {
-        if (field == null)
-            initialize();
-        return field.getHumanReadableName();
+        return name;
     }
 
     private void initialize() {
-        String fieldSpecificationFilename = fieldSpecPath+label+fieldSpecPostfix;
+        String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
         try {
@@ -78,7 +78,7 @@ public class BasicPredefinedField implements Field, PredefinedField {
             throw new Error("Could not read specification file", e);
         }
 
-        String dataSpecificationFilename = fieldSpecPath+label+fieldDataPostfix;
+        String dataSpecificationFilename = fieldSpecPath+recipe+fieldDataPostfix;
         URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
         File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
         try {
