@@ -22,7 +22,7 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
         field = new MapToContainingSubjectField("aLabel", "localAuthority", makeFieldSpec());
         TestFactory.makeNamedSubject("E09000001"); // Subject that contains subject below
         subject = TestFactory.makeNamedSubject("E01000001");
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
     }
 

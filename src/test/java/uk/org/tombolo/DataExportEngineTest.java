@@ -92,7 +92,7 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsSubjectAndLatestTimedValueForAttribute() throws Exception {
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(
@@ -118,7 +118,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
                 "            ]," +
-                "            name: 'attr_name'" +
+                "            name: 'attr_label_name'" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -130,7 +130,7 @@ public class DataExportEngineTest extends AbstractTest {
 
     @Test
     public void testReturnsSubjectAndValuesByTimeForAttribute() throws Exception {
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
 
         builder.addSubjectSpecification(
@@ -157,7 +157,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "                timestamp: '2011-01-01T00:00:00'" +
                 "              }" +
                 "            ]," +
-                "            name: 'attr_name'" +
+                "            name: 'attr_label_name'" +
                 "          }" +
                 "        }," +
                 "        label: 'E01000001'" +
@@ -283,7 +283,7 @@ public class DataExportEngineTest extends AbstractTest {
         cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
         SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
 
-        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
 
         builder.addSubjectSpecification(

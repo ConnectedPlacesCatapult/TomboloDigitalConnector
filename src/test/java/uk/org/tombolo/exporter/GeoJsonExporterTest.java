@@ -33,7 +33,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 
 	@Test
 	public void testWrite() throws Exception{
-		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
+		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
 		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();

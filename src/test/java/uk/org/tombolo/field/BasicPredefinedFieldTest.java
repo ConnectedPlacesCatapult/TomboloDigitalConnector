@@ -23,8 +23,8 @@ public class BasicPredefinedFieldTest extends AbstractTest {
     @Before
     public void setUp() throws Exception {
         subject = TestFactory.makeNamedSubject("E01002766");
-        Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "population");
-        Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "oldies");
+        Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_1");
+        Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_82");
         TestFactory.makeTimedValue("E01002766", population, "2011-01-01T00:00:00", 100d);
         TestFactory.makeTimedValue("E01002766", oldies, "2011-01-01T00:00:00", 40d);
     }
@@ -50,7 +50,7 @@ public class BasicPredefinedFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
 
         JSONAssert.assertEquals("{" +
-                "  Fraction_of_65: {" +
+                "  Fraction_of_80: {" +
                 "    values: [" +
                 "      {" +
                 "        value: 0.4" +

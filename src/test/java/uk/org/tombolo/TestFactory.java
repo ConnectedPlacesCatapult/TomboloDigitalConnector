@@ -34,16 +34,16 @@ public final class TestFactory {
 
     /**
      * makeAttribute
-     * Builds and persists an Attribute with a given Provider and attributes based on the given prefix.
+     * Builds and persists an Attribute with a given Provider and attributes based on the given label.
      * It will persist the Provider to the database also.
      * Consider using {@link #DEFAULT_PROVIDER} as your provider if you don't have one handy
      * @param provider
-     * @param prefix A prefix used to construct the label, name, & description of the attribute
+     * @param label The label, also used to construct the name & description of the attribute
      * @return The persisted attribute
      */
-    public static Attribute makeAttribute(Provider provider, String prefix) {
+    public static Attribute makeAttribute(Provider provider, String label) {
         ProviderUtils.save(provider);
-        Attribute attribute = new Attribute(provider, prefix + "_label", prefix + "_name", prefix + "_description", null);
+        Attribute attribute = new Attribute(provider, label, label + "_name", label + "_description", null);
         AttributeUtils.save(attribute);
         return attribute;
     }
