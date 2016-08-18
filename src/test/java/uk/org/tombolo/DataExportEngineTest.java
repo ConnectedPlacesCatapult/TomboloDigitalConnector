@@ -16,6 +16,7 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -390,6 +391,61 @@ public class DataExportEngineTest extends AbstractTest {
                 "      }" +
                 "    }" +
                 "  ]" +
+                "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testGeneratesPredefinedField() throws Exception {
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")
+        );
+
+        engine.execute(builder.build(), writer);
+
+        JSONAssert.assertEquals("{" +
+                "  features: [{" +
+                "    properties: {" +
+                "      name: 'Islington 015E'," +
+                "      label: 'E01002766'," +
+                "      Fraction_of_80: {" +
+                "        values: [{" +
+                "          value: 0.005016722408026756," +
+                "          timestamp: '2011-12-31T23:59:59'" +
+                "        }]" +
+                "      }" +
+                "    }" +
+                "  }]" +
+                "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testGeneratesPredefinedFieldWhenNested() throws Exception {
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.wrapperField("aWrapper", Collections.singletonList(
+                    FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")))
+        );
+
+        engine.execute(builder.build(), writer);
+
+        JSONAssert.assertEquals("{" +
+                "  features: [{" +
+                "    properties: {" +
+                "      name: 'Islington 015E'," +
+                "      label: 'E01002766'," +
+                "      aWrapper: {" +
+                "        Fraction_of_80: {" +
+                "          values: [{" +
+                "            value: 0.005016722408026756," +
+                "            timestamp: '2011-12-31T23:59:59'" +
+                "          }]" +
+                "        }" +
+                "      }" +
+                "    }" +
+                "  }]" +
                 "}", writer.toString(), false);
     }
 }
