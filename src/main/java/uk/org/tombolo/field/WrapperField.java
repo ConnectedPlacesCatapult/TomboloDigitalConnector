@@ -16,7 +16,7 @@ import java.util.List;
  * Takes a fieldSpecification exactly like the root fieldSpecification does.
  * Can be nested.
  */
-public class WrapperField implements Field {
+public class WrapperField implements Field, ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
     private final List<FieldSpecification> fieldSpecification;
     private final String label;
@@ -62,5 +62,11 @@ public class WrapperField implements Field {
     @Override
     public String getHumanReadableName() {
         return label;
+    }
+
+    @Override
+    public List<Field> getChildFields() {
+        if (null == fields) { initialize(); }
+        return fields;
     }
 }

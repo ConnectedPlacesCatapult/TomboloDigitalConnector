@@ -5,6 +5,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField implements Field, SingleValueField {
+public class MapToContainingSubjectField implements Field, SingleValueField, ParentField {
     private final String label;
     private final String containingSubjectType;
     private final FieldSpecification fieldSpecification;
@@ -74,5 +75,11 @@ public class MapToContainingSubjectField implements Field, SingleValueField {
         }
 
         return subjectsContainingSubject.get(0);
+    }
+
+    @Override
+    public List<Field> getChildFields() {
+        if (null == field) { initialize(); }
+        return Collections.singletonList(field);
     }
 }

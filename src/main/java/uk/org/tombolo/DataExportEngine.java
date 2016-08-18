@@ -10,6 +10,7 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.ParentField;
 import uk.org.tombolo.field.PredefinedField;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -46,14 +47,9 @@ public class DataExportEngine implements ExecutionEngine{
 		for (FieldSpecification fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
 			fields.add(field);
-
-			// Import datasources that are specified as part of a predefined field
-			if (field instanceof PredefinedField){
-				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()){
-					importDatasource(forceImports, datasourceSpecification);
-				}
-			}
 		}
+
+		prepareFields(fields, forceImports);
 
 		// Use the new fields method
 		log.info("Exporting ...");
@@ -64,6 +60,21 @@ public class DataExportEngine implements ExecutionEngine{
 			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
 		}
 		exporter.write(writer, subjects, fields);
+	}
+
+	private void prepareFields(List<Field> fields, ImporterMatcher forceImports) throws Exception {
+		// Import datasources that are specified as part of a predefined field
+		for (Field field : fields) {
+			if (field instanceof PredefinedField) {
+				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()) {
+					importDatasource(forceImports, datasourceSpecification);
+				}
+			}
+
+			if (field instanceof ParentField) {
+				prepareFields(((ParentField) field).getChildFields(), forceImports);
+			}
+		}
 	}
 
 	private void importDatasource(ImporterMatcher forceImports, DatasourceSpecification datasourceSpec) throws Exception {

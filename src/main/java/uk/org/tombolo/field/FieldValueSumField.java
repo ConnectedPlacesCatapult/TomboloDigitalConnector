@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField implements SingleValueField {
+public class FieldValueSumField implements SingleValueField, ParentField {
     String label;
     String name;
     List<FieldSpecification> fieldSpecifications;
@@ -78,5 +78,11 @@ public class FieldValueSumField implements SingleValueField {
             sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
         }
         return sum;
+    }
+
+    @Override
+    public List<Field> getChildFields() {
+        if (null == fields) { initialize(); }
+        return fields;
     }
 }
