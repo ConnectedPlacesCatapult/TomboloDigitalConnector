@@ -51,7 +51,11 @@ public class BasicPredefinedField implements Field, PredefinedField {
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
         if (field == null)
             initialize();
-        return field.jsonValueForSubject(subject);
+        JSONObject obj = new JSONObject();
+        JSONObject fieldValue = field.jsonValueForSubject(subject);
+        // Unwrap the fieldValue by getting based on the label, then rewrap with the label the user specified
+        obj.put(label, fieldValue.get(field.getLabel()));
+        return obj;
     }
 
     @Override

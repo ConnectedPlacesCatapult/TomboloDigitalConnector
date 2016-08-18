@@ -409,7 +409,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "    properties: {" +
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
-                "      Fraction_of_80: {" +
+                "      aLabel: {" +
                 "        values: [{" +
                 "          value: 0.005016722408026756," +
                 "          timestamp: '2011-12-31T23:59:59'" +
@@ -437,7 +437,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
                 "      aWrapper: {" +
-                "        Fraction_of_80: {" +
+                "        aLabel: {" +
                 "          values: [{" +
                 "            value: 0.005016722408026756," +
                 "            timestamp: '2011-12-31T23:59:59'" +

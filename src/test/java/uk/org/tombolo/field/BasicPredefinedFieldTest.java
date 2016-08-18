@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 public class BasicPredefinedFieldTest extends AbstractTest {
     private static final String RECIPE = "PredefinedFieldTest";
-    BasicPredefinedField field = new BasicPredefinedField("test-label", "Test name", RECIPE);
+    BasicPredefinedField field = new BasicPredefinedField("test_label", "Test name", RECIPE);
 
     Subject subject;
 
@@ -50,7 +50,7 @@ public class BasicPredefinedFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
 
         JSONAssert.assertEquals("{" +
-                "  Fraction_of_80: {" +
+                "  test_label: {" +
                 "    values: [" +
                 "      {" +
                 "        value: 0.4" +
@@ -63,7 +63,7 @@ public class BasicPredefinedFieldTest extends AbstractTest {
 
     @Test
     public void getLabel() throws Exception {
-        assertEquals("test-label", field.getLabel());
+        assertEquals("test_label", field.getLabel());
     }
 
     @Test
