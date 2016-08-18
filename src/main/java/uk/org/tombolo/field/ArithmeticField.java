@@ -29,6 +29,9 @@ public class ArithmeticField implements SingleValueField {
         // Initialise operators
         operators = new HashMap<>();
         operators.put("div", (a, b) -> a / b);
+        operators.put("mul", (a, b) -> a * b);
+        operators.put("add", (a, b) -> a + b);
+        operators.put("sub", (a, b) -> a - b);
 
         try {
             this.operator = operators.get(this.operation);
