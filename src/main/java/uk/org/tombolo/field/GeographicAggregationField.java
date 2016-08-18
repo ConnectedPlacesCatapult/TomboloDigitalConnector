@@ -73,6 +73,8 @@ public class GeographicAggregationField implements Field, SingleValueField {
 
         if (retVal.isNaN()) {
             throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (possible division by zero?)", aggregationFunction));
+        } else if (retVal.isInfinite()) {
+            throw new IncomputableFieldException(String.format("Aggregation function %s returned Infinity (possible division by zero?)", aggregationFunction));
         }
 
         return retVal;
