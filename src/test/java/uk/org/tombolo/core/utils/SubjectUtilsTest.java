@@ -3,6 +3,8 @@ package uk.org.tombolo.core.utils;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.DataExportSpecificationBuilder;
+import uk.org.tombolo.SubjectSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
@@ -58,36 +60,39 @@ public class SubjectUtilsTest extends AbstractTest {
 	}
 
 	@Test
+	public void testGetSubjectBySpecificationWithoutRule() throws Exception {
+		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder("localAuthority")
+		).build().getDatasetSpecification();
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
+		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
+	}
+
+	@Test
 	public void testGetSubjectBySpecificationLabelSearch() throws Exception {
-		DatasetSpecification spec = makeDatasetSpecification("label", "E09%", "localAuthority", "uk.gov.london", "populationDensity");
+		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E09%")
+		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
 	}
 
 	@Test
 	public void testGetSubjectBySpecificationNameSearch() throws Exception {
-		DatasetSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity");
+		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder("localAuthority").setMatcher("name", "%don")
+		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
 	}
 
 	@Test
 	public void testGetSubjectBySpecificationWithSubject() throws Exception {
-		SubjectSpecification spec = makeDatasetSpecification("name", "%don", "localAuthority", "uk.gov.london", "populationDensity").getSubjectSpecification().get(0);
+		SubjectSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder("localAuthority").setMatcher("name", "%don")
+		).build().getDatasetSpecification().getSubjectSpecification().get(0);
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
-	}
-
-	private DatasetSpecification makeDatasetSpecification(String subjectAttribute, String subjectAttributePattern, String subjectType, String attributeProvider, String attributeName) {
-		DatasetSpecification spec = new DatasetSpecification();
-		List<SubjectSpecification> subjectSpecification = new ArrayList<SubjectSpecification>();
-		SubjectMatchRule matchRule = new SubjectSpecification.SubjectMatchRule(SubjectMatchRule.MatchableAttribute.valueOf(subjectAttribute), subjectAttributePattern);
-		subjectSpecification.add(new SubjectSpecification(matchRule, subjectType));
-		List<FieldSpecification> fieldSpecification = new ArrayList<FieldSpecification>();
-		fieldSpecification.add(new FieldSpecification(attributeProvider, attributeName));
-		spec.setSubjectSpecification(subjectSpecification);
-		spec.setFieldSpecification(fieldSpecification);
-		return spec;
 	}
 
 	@Test
