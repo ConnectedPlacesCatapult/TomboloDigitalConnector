@@ -66,7 +66,7 @@ public class GeographicAggregationField implements Field, SingleValueField {
             try {
                 values.add(Double.parseDouble(field.valueForSubject(subject)));
             } catch (IncomputableFieldException e) {
-                throw new IncomputableFieldException("Aggregator item failed to compute", e);
+                throw new IncomputableFieldException("Aggregator item failed to compute: " + e.getMessage(), e);
             }
         }
 
