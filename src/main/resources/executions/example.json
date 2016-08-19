@@ -1,0 +1,40 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "lsoa",
+        "matchRule" : {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.InternalImporter",
+        "datasourceId": "SocialIsolationAmongElderly"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.WrapperField",
+        "label": "attributes",
+        "fieldSpecification": [
+          {
+            "fieldClass": "uk.org.tombolo.field.LatestValueField",
+            "label": "SocialIsolationAmongElderly",
+            "attribute": {
+              "providerLabel": "uk.org.tombolo.internal",
+              "attributeLabel": "SocialIsolationAmongElderly"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

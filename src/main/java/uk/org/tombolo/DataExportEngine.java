@@ -26,7 +26,7 @@ public class DataExportEngine implements ExecutionEngine{
 	private static DownloadUtils downloadUtils;
 	private static Properties apiKeys;
 
-	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
+	public DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 	}
