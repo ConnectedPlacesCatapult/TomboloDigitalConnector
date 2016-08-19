@@ -1,0 +1,36 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "localAuthority"
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "London"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.GeographicAggregationField",
+        "label": "SumCountPedalCycles",
+        "aggregationSubjectType": "sensor",
+        "aggregationFunction": "sum",
+        "fieldSpecification": {
+          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "label": "CountPedalCycles",
+          "attribute": {
+            "providerLabel" : "uk.gov.dft",
+            "attributeLabel" : "CountPedalCycles"
+          }
+        }
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

@@ -77,6 +77,9 @@ public final class TestFactory {
             case "E01000001":
                 makeSubjectType("lsoa", "Lower Super Output Area");
                 return makeSubject("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
+            case "E01000002":
+                makeSubjectType("lsoa", "Lower Super Output Area");
+                return makeSubject("lsoa", label, "City of London 001B", FAKE_POINT_GEOMETRY);
             case "E09000001":
                 makeSubjectType("localAuthority", "Local Authority");
                 return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);

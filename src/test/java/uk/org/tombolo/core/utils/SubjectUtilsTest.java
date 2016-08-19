@@ -108,7 +108,6 @@ public class SubjectUtilsTest extends AbstractTest {
 		assertEquals(1, returnedSubjects.size());
 	}
 
-
 	@Test
 	public void testSubjectsContainingSubjectReturnsNullOnWrongSubjectType() throws Exception {
 		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
@@ -125,6 +124,38 @@ public class SubjectUtilsTest extends AbstractTest {
 		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
 
 		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("localAuthority", islingtonLsoa);
+		assertEquals(0, returnedSubjects.size());
+	}
+
+	@Test
+	public void testSubjectsWithinSubjectReturnsContainingSubject() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
+		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them overlap
+		SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
+
+		List<Subject> returnedSubjects = SubjectUtils.subjectsWithinSubject("localAuthority", cityOfLondonLsoa);
+		assertEquals(cityOfLondon, returnedSubjects.get(0));
+		assertEquals(1, returnedSubjects.size());
+	}
+
+	@Test
+	public void testSubjectsWithinSubjectReturnsNullOnWrongSubjectType() throws Exception {
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		List<Subject> returnedSubjects = SubjectUtils.subjectsWithinSubject("msoa", cityOfLondonLsoa);
+		assertEquals(0, returnedSubjects.size());
+	}
+
+	@Test
+	public void testSubjectsWithinSubjectReturnsNullOnNoContainingSubject() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
+		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
+		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
+
+		List<Subject> returnedSubjects = SubjectUtils.subjectsWithinSubject("localAuthority", islingtonLsoa);
 		assertEquals(0, returnedSubjects.size());
 	}
 }

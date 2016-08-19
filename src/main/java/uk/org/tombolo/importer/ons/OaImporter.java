@@ -67,11 +67,14 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         List<Subject> subjects = new ArrayList<Subject>();
         while(featureIterator.hasNext()) {
             Feature feature = featureIterator.next();
+            Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
+            geometry.setSRID(Subject.SRID);
+
             subjects.add(new Subject(
                     subjectType,
                     getFeatureSubjectLabel(feature),
                     getFeatureSubjectName(feature),
-                    (Geometry) feature.getDefaultGeometryProperty().getValue()
+                    geometry
             ));
         }
 

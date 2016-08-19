@@ -306,7 +306,7 @@ public class DataExportEngineTest extends AbstractTest {
                         "          attr_label: {" +
                         "            values: [" +
                         "              {" +
-                        "                value: 100d" +
+                        "                value: 100.0" +
                         "              }" +
                         "            ]" +
                         "          }" +
@@ -315,6 +315,43 @@ public class DataExportEngineTest extends AbstractTest {
                         "    }" +
                         "  ]"+
                         "}", jsonString, false);
+    }
+
+    @Test
+    public void testAggregatesGeographically() throws Exception {
+        Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+        Subject cityOfLondonLsoa1 = TestFactory.makeNamedSubject("E01000001"); // Subjects contained by 'City of London'
+        Subject cityOfLondonLsoa2 = TestFactory.makeNamedSubject("E01000002");
+        cityOfLondon.setShape(TestFactory.makePointGeometry(1d, 1d));
+        cityOfLondonLsoa1.setShape(TestFactory.makePointGeometry(1d, 1d));
+        cityOfLondonLsoa2.setShape(TestFactory.makePointGeometry(1d, 1d));
+        SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa1, cityOfLondonLsoa2));
+
+        Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
+        TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 100d);
+        TestFactory.makeTimedValue("E01000002", attribute, "2011-01-01T00:00:00", 110d);
+
+        builder.addSubjectSpecification(
+                new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E09000001")
+        ).addFieldSpecification(
+                FieldSpecificationBuilder.geographicAggregation(
+                        "local_authority",
+                        "lsoa",
+                        "mean",
+                        FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                )
+        );
+
+        engine.execute(builder.build(), writer);
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        local_authority: 105.0" +
+                "      }" +
+                "    }" +
+                "  ]"+
+                "}", writer.toString(), false);
     }
 
     @Test
