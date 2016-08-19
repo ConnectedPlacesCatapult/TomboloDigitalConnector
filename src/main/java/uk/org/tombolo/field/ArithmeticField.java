@@ -9,16 +9,18 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 public class ArithmeticField implements SingleValueField {
+    public static enum Operation {div, mul, add, sub}
     private final String label;
     private final FieldSpecification fieldSpecification1;
     private final FieldSpecification fieldSpecification2;
-    private final String operation;
-    private Map<String, BiFunction<Double, Double, Double>> operators;
+    private final Operation operation;
+
+    private Map<Operation, BiFunction<Double, Double, Double>> operators;
     private SingleValueField field1;
     private SingleValueField field2;
     private BiFunction<Double, Double, Double> operator;
 
-    ArithmeticField(String label, String operation, FieldSpecification fieldSpecification1, FieldSpecification fieldSpecification2) {
+    ArithmeticField(String label, Operation operation, FieldSpecification fieldSpecification1, FieldSpecification fieldSpecification2) {
         this.label = label;
         this.fieldSpecification1 = fieldSpecification1;
         this.operation = operation;
@@ -28,10 +30,10 @@ public class ArithmeticField implements SingleValueField {
     public void initialize() {
         // Initialise operators
         operators = new HashMap<>();
-        operators.put("div", (a, b) -> a / b);
-        operators.put("mul", (a, b) -> a * b);
-        operators.put("add", (a, b) -> a + b);
-        operators.put("sub", (a, b) -> a - b);
+        operators.put(Operation.div, (a, b) -> a / b);
+        operators.put(Operation.mul, (a, b) -> a * b);
+        operators.put(Operation.add, (a, b) -> a + b);
+        operators.put(Operation.sub, (a, b) -> a - b);
 
         try {
             this.operator = operators.get(this.operation);
