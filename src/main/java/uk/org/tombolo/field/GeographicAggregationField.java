@@ -19,15 +19,16 @@ import java.util.function.Function;
  * So far, `sum` and `mean` are implemented.
  */
 public class GeographicAggregationField implements Field, SingleValueField {
+    public static enum AggregationFunction {sum, mean}
     private final String label;
     private final String aggregationSubjectType;
     private final FieldSpecification fieldSpecification;
-    private final String aggregationFunction;
-    private Map<String, Function<List<Double>, Double>> aggregators;
+    private final AggregationFunction aggregationFunction;
+    private Map<AggregationFunction, Function<List<Double>, Double>> aggregators;
     private SingleValueField field;
     private Function<List<Double>, Double> aggregator;
 
-    GeographicAggregationField(String label, String aggregationSubjectType, String aggregationFunction, FieldSpecification fieldSpecification) {
+    GeographicAggregationField(String label, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
         this.label = label;
         this.aggregationSubjectType = aggregationSubjectType;
         this.fieldSpecification = fieldSpecification;
@@ -37,8 +38,8 @@ public class GeographicAggregationField implements Field, SingleValueField {
     public void initialize() {
         // Initialise aggregators
         aggregators = new HashMap<>();
-        aggregators.put("sum",  xs -> xs.stream().reduce(0d, Double::sum));
-        aggregators.put("mean", xs -> aggregators.get("sum").apply(xs) / xs.size());
+        aggregators.put(AggregationFunction.sum,  xs -> xs.stream().reduce(0d, Double::sum));
+        aggregators.put(AggregationFunction.mean, xs -> aggregators.get(AggregationFunction.sum).apply(xs) / xs.size());
 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
