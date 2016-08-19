@@ -72,6 +72,16 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder geographicAggregation(String label, String aggregationSubjectType, String aggregationFunction, FieldSpecificationBuilder fieldSpecificationBuilder) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.GeographicAggregationField")
+                .setLabel(label)
+                .set("aggregationSubjectType", aggregationSubjectType)
+                .set("aggregationFunction", aggregationFunction)
+                .set("fieldSpecification", fieldSpecificationBuilder);
+        return spec;
+    }
+
     private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);
