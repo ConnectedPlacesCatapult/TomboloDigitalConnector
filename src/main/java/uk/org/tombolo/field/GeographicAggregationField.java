@@ -1,5 +1,7 @@
 package uk.org.tombolo.field;
 
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
@@ -38,8 +40,8 @@ public class GeographicAggregationField implements Field, SingleValueField {
     public void initialize() {
         // Initialise aggregators
         aggregators = new HashMap<>();
-        aggregators.put(AggregationFunction.sum,  xs -> xs.stream().reduce(0d, Double::sum));
-        aggregators.put(AggregationFunction.mean, xs -> aggregators.get(AggregationFunction.sum).apply(xs) / xs.size());
+        aggregators.put(AggregationFunction.sum, runWithPrimitiveDoubleArray(new Sum()::evaluate));
+        aggregators.put(AggregationFunction.mean, runWithPrimitiveDoubleArray(new Mean()::evaluate));
 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
@@ -90,6 +92,16 @@ public class GeographicAggregationField implements Field, SingleValueField {
 
     private List<Subject> getAggregationSubjects(Subject subject) throws IncomputableFieldException {
         return SubjectUtils.subjectsWithinSubject(aggregationSubjectType, subject);
+    }
+
+    private Function<List<Double>, Double> runWithPrimitiveDoubleArray(Function<double[], Double> fn) {
+        return fn.compose((xs) -> {
+            double[] doubles = new double[xs.size()];
+            for (int i=0; i < xs.size(); i++) {
+                doubles[i] = xs.get(i);
+            }
+            return doubles;
+        });
     }
 
     @Override
