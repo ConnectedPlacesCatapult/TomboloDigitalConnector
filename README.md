@@ -34,7 +34,7 @@ Then run the following to set up your database:
 
 ```bash
 # Create a user and database
-createuser tombolo
+createuser -s tombolo
 createdb -O tombolo tombolo
 
 # Create DB tables and load initial fixtures
@@ -51,7 +51,7 @@ To set up the test user and database:
 
 ```bash
 # Create a user and database
-createuser tombolo_test
+createuser -s tombolo_test
 createdb -O tombolo_test tombolo_test
 
 # Create DB tables and load initial fixtures
