@@ -34,8 +34,9 @@ Then run the following to set up your database:
 
 ```bash
 # Create a user and database
-createuser -s tombolo
+createuser tombolo
 createdb -O tombolo tombolo
+psql -d tombolo -c "CREATE EXTENSION postgis;"
 
 # Create DB tables and load initial fixtures
 psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
@@ -51,8 +52,9 @@ To set up the test user and database:
 
 ```bash
 # Create a user and database
-createuser -s tombolo_test
+createuser tombolo_test
 createdb -O tombolo_test tombolo_test
+psql -d tombolo_test -c "CREATE EXTENSION postgis;"
 
 # Create DB tables and load initial fixtures
 psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql
