@@ -30,6 +30,7 @@ build:
       name: Set up test database
       code: |
         createdb tombolo_test
+        psql -d tombolo_test -c "CREATE EXTENSION postgis;"
         psql -d tombolo_test < src/main/resources/sql/create_database.sql
     - script:
       name: Run gradle build & test
