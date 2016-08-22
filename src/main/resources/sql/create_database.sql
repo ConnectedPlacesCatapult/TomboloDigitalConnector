@@ -1,5 +1,3 @@
-CREATE EXTENSION postgis;
-
 drop table if exists timed_value;
 
 drop table if exists subject;
