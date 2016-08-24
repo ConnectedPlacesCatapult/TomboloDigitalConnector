@@ -1,0 +1,44 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+        "datasourceId": "QS102EW"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.PercentilesField",
+        "label": "populationDensityQuantiles",
+        "percentileCount": 4,
+        "valueField": {
+          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "label": "populationDensity",
+          "attribute" : {
+            "providerLabel": "uk.gov.ons",
+            "attributeLabel": "CL_0000858"
+          }
+        },
+        "normalizationSubjects" : [
+          {
+            "subjectType" : "lsoa"
+          }
+        ]
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
