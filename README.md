@@ -79,6 +79,8 @@ and Defaults -> JUnit):
 -DdatabasePassword=tombolo_test
 ```
 
+## Run Tasks
+
 ### Run export
 
 We use the Gradle task `runExport` to run exports. The parameters are as follows:
@@ -97,6 +99,31 @@ For example, this exports the London borough profiles from OrganiCity to `organi
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
     -PoutputFile='organicity-borough-profiles.json'
+```
+
+### Run data catalogue
+
+We use the Gradle task `runCatalogue` to explore the data catalogue. The parameters are as follows:
+
+```bash
+gradle runCatalogue \
+    -PimporterClassName='full.name.of.the.importer'
+    -PdatasetId='dataset-id'
+```
+
+If the datasetId parameter is not present the program writes out all the datasets available from the importer.
+If the datasetId is specificed the program writes out all attributes available from that importer dataset pair.
+
+For example, this lists all datasets available in the ONS Census importer:
+
+```bash
+gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter'
+```
+
+For example, this lists all attributes available in the dataset QS102EW from ONS (Population density):
+
+```bash
+gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter' -PdatasetId='QS102EW'
 ```
 
 ## Continuous Integration
