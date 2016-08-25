@@ -1,7 +1,11 @@
 package uk.org.tombolo.field;
 
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
@@ -15,10 +19,15 @@ import java.util.List;
  * Field that returns for a subject the percentile in which its value falls
  */
 public class PercentilesField implements Field, SingleValueField, ParentField {
+    Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
+    // The field over which to calculate the percentiles
     FieldSpecification valueField;
+    // The subjects over which the percentiles are calculated
     List<SubjectSpecification> normalizationSubjects;
+    // The number of percentiles
     Integer percentileCount;
+    // True if the ordering of the percentiles is supposed to be inverse to the field
     Boolean inverse;
 
     String label;
@@ -90,11 +99,18 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
                 values[i] = Double.valueOf(((SingleValueField)field).valueForSubject(subjects.get(i)));
             }
             percentile.setData(values);
+            log.info("Normalising percentiles of {} over {} subjects", field.getHumanReadableName(), subjects.size());
+            log.info("Min value: {}", StatUtils.min(values));
+            log.info("Max value: {}", StatUtils.max(values));
+            log.info("Median: {}", StatUtils.mean(values));
+            log.info("Mean: {}", percentile.evaluate(50d));
+            log.info("Variance: {}", StatUtils.variance(values));
 
             percentiles = new ArrayList<>();
             for (int i=0; i< percentileCount; i++){
                 double percentage = Math.floor(100d/percentileCount)*(i+1);
                 percentiles.add(percentile.evaluate(percentage));
+                log.info("Percentile {} wiht percentage {} at value {}",i+1, percentage, percentiles.get(i));
             }
         }
     }

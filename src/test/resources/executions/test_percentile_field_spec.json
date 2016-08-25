@@ -7,6 +7,20 @@
           "attribute": "name",
           "pattern": "Leeds%"
         }
+      },
+      {
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Liverpool%"
+        }
+      },
+      {
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Kensington and Chelsea%"
+        }
       }
     ],
     "datasourceSpecification" : [
@@ -23,7 +37,8 @@
       {
         "fieldClass": "uk.org.tombolo.field.PercentilesField",
         "label": "populationDensityQuantiles",
-        "percentileCount": 4,
+        "percentileCount": 5,
+        "inverse": true,
         "valueField": {
           "fieldClass": "uk.org.tombolo.field.LatestValueField",
           "label": "populationDensity",
