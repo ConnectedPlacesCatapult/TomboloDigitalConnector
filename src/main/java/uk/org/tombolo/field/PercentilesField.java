@@ -1,7 +1,6 @@
 package uk.org.tombolo.field;
 
 import org.apache.commons.math3.stat.StatUtils;
-import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -60,6 +59,8 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
+        if (field == null)
+            initialize();
         double fieldValue = Double.valueOf(((SingleValueField)field).valueForSubject(subject));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){

@@ -105,7 +105,7 @@ public final class TestFactory {
         return SubjectTypeUtils.getOrCreate(label, name);
     }
     
-    private static Subject makeSubject(String subjectTypeLabel, String label, String name, Geometry geometry) {
+    public static Subject makeSubject(String subjectTypeLabel, String label, String name, Geometry geometry) {
         Subject subject = new Subject(SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel), label, name, geometry);
         SubjectUtils.save(Collections.singletonList(subject));
         return subject;
