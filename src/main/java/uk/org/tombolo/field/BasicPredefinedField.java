@@ -68,7 +68,7 @@ public class BasicPredefinedField implements Field, PredefinedField {
         return name;
     }
 
-    private void initialize() {
+    protected void initialize() {
         String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());

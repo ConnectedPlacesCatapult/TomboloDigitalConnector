@@ -1,0 +1,31 @@
+{
+  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "label": "CombinedSocialResilience",
+  "name": "Combined Social Resilience",
+  "percentileCount": 4,
+  "inverse": false,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.FieldValueSumField",
+    "label": "SumSocialResilience",
+    "name": "Sum Social Resilience",
+    "fieldSpecifications":[
+      {
+        "fieldClass": "uk.org.tombolo.field.SingleValuePredefinedField",
+        "label": "DisabilityResilence",
+        "name": "Disability Resilience",
+        "recipe": "socialresilience/Disability-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.SingleValuePredefinedField",
+        "label": "OvercrowdingResilence",
+        "name": "Overcrowding Resilience",
+        "recipe": "socialresilience/Overcrowding-lsoa"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}

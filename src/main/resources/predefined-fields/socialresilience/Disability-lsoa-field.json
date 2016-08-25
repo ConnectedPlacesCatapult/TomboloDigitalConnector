@@ -1,0 +1,25 @@
+{
+  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "label": "DisabilityResilience",
+  "name": "Disability Resilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+    "divisorAttribute": {
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "CL_0000004_1"
+    },
+    "dividendAttributes": [
+      {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000004_2"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}

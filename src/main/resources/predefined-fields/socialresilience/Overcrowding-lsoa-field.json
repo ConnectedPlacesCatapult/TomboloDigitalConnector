@@ -1,0 +1,29 @@
+{
+  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "label": "OvercrowdingResilience",
+  "name": "Overcrowding Resilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+    "divisorAttribute": {
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "CL_0000127_1"
+    },
+    "dividendAttributes": [
+      {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000127_5"
+      },
+      {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000127_6"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}
