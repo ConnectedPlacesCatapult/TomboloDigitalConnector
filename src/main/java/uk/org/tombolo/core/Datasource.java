@@ -73,9 +73,18 @@ public class Datasource {
 		this.remoteDatafile = remoteDatafile;
 	}
 
+	@Deprecated
+	/**
+	 * This should be handled internally by DownloadUtils
+	 */
 	public String getLocalDatafile() {
 		return localDatafile;
-	}	
+	}
+
+	@Deprecated
+	/**
+	 * This should be handled internally by DownloadUtils
+	 */
 	public void setLocalDatafile(String localDatafile) {
 		this.localDatafile = localDatafile;
 	}
