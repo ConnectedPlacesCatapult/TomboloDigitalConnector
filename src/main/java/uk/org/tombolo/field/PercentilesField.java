@@ -18,21 +18,35 @@ import java.util.List;
  * Field that returns for a subject the percentile in which its value falls
  */
 public class PercentilesField implements Field, SingleValueField, ParentField {
-    Logger log = LoggerFactory.getLogger(PercentilesField.class);
+    private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    FieldSpecification valueField;
+    private final FieldSpecification valueField;
     // The subjects over which the percentiles are calculated
-    List<SubjectSpecification> normalizationSubjects;
+    private final List<SubjectSpecification> normalizationSubjects;
     // The number of percentiles
-    Integer percentileCount;
+    private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
-    Boolean inverse;
+    private Boolean inverse = false;
 
-    String label;
-    String name;
-    Field field;
-    List<Double> percentiles;
+    private String label;
+    private String name;
+    private SingleValueField field;
+    private List<Double> percentiles;
+
+    public PercentilesField(
+            String label,
+            String name,
+            FieldSpecification valueField,
+            List<SubjectSpecification> normalizationSubjects,
+            Integer percentileCount, Boolean inverse) {
+        this.label = label;
+        this.name = name;
+        this.valueField = valueField;
+        this.normalizationSubjects = normalizationSubjects;
+        this.percentileCount = percentileCount;
+        this.inverse = inverse;
+    }
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
@@ -61,7 +75,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
         if (field == null)
             initialize();
-        double fieldValue = Double.valueOf(((SingleValueField)field).valueForSubject(subject));
+        double fieldValue = Double.valueOf(field.valueForSubject(subject));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
                 if (inverse){
@@ -75,20 +89,16 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
         throw new IncomputableFieldException("Value outside percentiles");
     }
 
-    private void initialize() throws IncomputableFieldException {
+    private void initialize() {
         if (field == null) {
             try {
-                field = valueField.toField();
+                field = (SingleValueField) valueField.toField();
             } catch (ClassNotFoundException e) {
-                throw new IncomputableFieldException("Field class not found.", e);
-            }
-            if (!(field instanceof SingleValueField)){
-                throw new IncomputableFieldException("Field must be SingleValueFiedl");
+                throw new Error("Field class not found.", e);
+            } catch (ClassCastException e){
+                throw new Error("Field must be SingleValueField");
             }
         }
-
-        if (inverse == null)
-            inverse = false;
 
         if (percentiles == null){
             List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(normalizationSubjects);
@@ -97,7 +107,11 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             double[] values = new double[subjects.size()];
 
             for (int i = 0; i< subjects.size(); i++){
-                values[i] = Double.valueOf(((SingleValueField)field).valueForSubject(subjects.get(i)));
+                try {
+                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
+                } catch (IncomputableFieldException e) {
+                    throw new Error(e);
+                }
             }
             percentile.setData(values);
             log.info("Normalising percentiles of {} over {} subjects", field.getHumanReadableName(), subjects.size());
@@ -118,13 +132,8 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (field == null) {
-            try {
+        if (field == null)
                 initialize();
-            } catch (IncomputableFieldException e) {
-                throw new Error("Field not valid",e);
-            }
-        }
 
         return Collections.singletonList(field);
     }

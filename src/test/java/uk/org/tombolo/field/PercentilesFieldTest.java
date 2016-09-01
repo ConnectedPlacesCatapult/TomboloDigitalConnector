@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
-import uk.org.tombolo.SubjectSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValueId;
+import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -20,40 +22,49 @@ import static org.junit.Assert.*;
  *
  */
 public class PercentilesFieldTest extends AbstractTest {
-    PercentilesField quartilesField;
-    PercentilesField quintilesInverseField;
+    private PercentilesField quartilesField;
+    private PercentilesField quintilesInverseField;
 
-    Subject leeds1;
-    Subject leeds2;
-    Subject leeds3;
-    Subject leeds4;
-    Subject leeds5;
+    private Subject leeds1;
+    private Subject leeds2;
+    private Subject leeds3;
+    private Subject leeds4;
+    private Subject leeds5;
 
-    Subject brighton1;
-    Subject brighton2;
-    Subject brighton3;
-    Subject brighton4;
-    Subject brighton5;
+    private Subject brighton1;
+    private Subject brighton2;
+    private Subject brighton3;
+    private Subject brighton4;
+    private Subject brighton5;
 
     @Before
     public void setUp() throws Exception {
-        quartilesField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
+        quartilesField = new PercentilesField(
                 "populationDensity",
                 "Population Density",
-                FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"),
-                Collections.singletonList(new SubjectSpecificationBuilder("lsoa")),
+                SpecificationDeserializer.fromJson(
+                        FieldSpecificationBuilder.latestValue(
+                                TestFactory.DEFAULT_PROVIDER.getLabel(),
+                                "populationDensity").toJSONString(),
+                        FieldSpecification.class
+                ),
+                Collections.singletonList(new SubjectSpecification(null, "lsoa")),
                 4,
                 false
-        ).build().toField();
+        );
 
-        quintilesInverseField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
+        quintilesInverseField = new PercentilesField(
                 "populationDensity",
                 "Population Density",
-                FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"),
-                Collections.singletonList(new SubjectSpecificationBuilder("lsoa")),
+                SpecificationDeserializer.fromJson(
+                        FieldSpecificationBuilder.latestValue(
+                                TestFactory.DEFAULT_PROVIDER.getLabel(),
+                                "populationDensity").toJSONString(),
+                        FieldSpecification.class),
+                Collections.singletonList(new SubjectSpecification(null, "lsoa")),
                 5,
                 true
-        ).build().toField();
+        );
 
         TestFactory.makeSubjectType("lsoa", "Lower Super Output Area");
 
