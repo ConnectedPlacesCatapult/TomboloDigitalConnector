@@ -104,7 +104,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
         attributes.add(new Attribute(getProvider(),"imd.score", "IMD Score", "Index of Multiple Deprivation (IMD) Score", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.rank", "IMD Rank", "Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.decile", "IMD Decile", "Index of Multiple Deprivation (IMD) Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.income.socre", "IMD Income Score", "Income Score (rate)", Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(),"imd.income.score", "IMD Income Score", "Income Score (rate)", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.income.rank", "IMD Income Rank", "Income Rank (where 1 is most deprived)", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.income.decile", "IMD Income Decile", "Income Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.employment.score", "IMD Employment Score", "Employment Score (rate)", Attribute.DataType.numeric));
