@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
@@ -27,12 +26,8 @@ import java.util.*;
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv
  */
-public class TrafficCountImporter extends AbstractImporter implements Importer {
-	public static final Provider PROVIDER = new Provider(
-			"uk.gov.dft",
-			"Department for Transport"
-			);
-	
+public class TrafficCountImporter extends AbstractDFTImporter implements Importer {
+
 	protected static enum COUNT_TYPE 
 		{CountPedalCycles, CountMotorcycles, CountCarsTaxis, CountBusesCoaches, CountLightGoodsVehicles, CountHeavyGoodsVehicles};
 		
@@ -96,11 +91,6 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	}
 
 	@Override
-	public Provider getProvider() {
-		return PROVIDER;
-	}
-
-	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<Datasource>();
 		
@@ -148,11 +138,7 @@ public class TrafficCountImporter extends AbstractImporter implements Importer {
 	@Override
 	protected int importDatasource(Datasource datasource) throws Exception {
 		
-		// Save provider
-		ProviderUtils.save(datasource.getProvider());
-		
-		// Save attributes
-		AttributeUtils.save(datasource.getAttributes());
+		saveProviderAndAttributes(datasource);
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
