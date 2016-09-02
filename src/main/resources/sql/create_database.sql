@@ -56,6 +56,13 @@ create table timed_value (
 	PRIMARY KEY(subject_id,attribute_id,timestamp)
 );
 
+create table fixed_value (
+	subject_id		integer NOT NULL REFERENCES subject(id),
+	attribute_id	integer NOT NULL REFERENCES attribute(id),
+	value			DOUBLE PRECISION NOT NULL,
+	PRIMARY KEY(subject_id,attribute_id)
+);
+
 -- Database Journal
 create sequence database_journal_id_sequence;
 create table database_journal (

@@ -18,6 +18,7 @@
 		<mapping class="uk.org.tombolo.core.Provider"/>
 		<mapping class="uk.org.tombolo.core.Attribute"/>
 		<mapping class="uk.org.tombolo.core.TimedValue"/>
+        <mapping class="uk.org.tombolo.core.FixedValue"/>
         <mapping class="uk.org.tombolo.core.DatabaseJournalEntry"/>
     </session-factory>
 </hibernate-configuration>
