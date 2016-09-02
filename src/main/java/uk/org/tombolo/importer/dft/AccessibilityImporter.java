@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.dft;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,7 +15,6 @@ import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.utils.excel.*;
 import uk.org.tombolo.importer.Importer;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +57,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             "Travel time, destination and origin indicators to Food stores by mode of travel",
             "Travel time, destination and origin indicators to Town centres by mode of travel"
     };
+
+    private int timedValueBufferSize = 1000000;
 
     ExcelUtils excelUtils;
 
@@ -121,8 +121,9 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
     protected int importDatasource(Datasource datasource) throws Exception {
         Workbook workbook = excelUtils.getWorkbook(datasource);
         int valueCount = 0;
+        List<TimedValue> timedValueBuffer = new ArrayList<>();
 
-        //
+        // Save Provider and Attributes
         saveProviderAndAttributes(datasource);
 
         // Loop over years
@@ -164,20 +165,31 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
                     ((RowCellExtractor)extractor.getValueExtractor()).setRow(row);
                     try {
                         TimedValue timedValue = extractor.extract();
-                        // FIXME: Buffering
-                        TimedValueUtils.save(timedValue);
+                        timedValueBuffer.add(timedValue);
                         valueCount++;
+                        if (valueCount % timedValueBufferSize == 0){
+                            // Buffer is full ... we write values to db
+                            saveBuffer(timedValueBuffer, valueCount);
+                        }
                     }catch (ExtractorException e){
                         // FIXME: Might want to log this although it will create a lot of rubbish
                     }
                 }
             }
         }
+        saveBuffer(timedValueBuffer, valueCount);
 
         return valueCount;
     }
 
     private void initalize(){
         excelUtils = new ExcelUtils(downloadUtils);
+    }
+
+    private static void saveBuffer(List<TimedValue> timedValueBuffer, int valueCount){
+        log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
+        TimedValueUtils.save(timedValueBuffer);
+        timedValueBuffer.clear();
+        log.info("Total values written: {}", valueCount);
     }
 }
