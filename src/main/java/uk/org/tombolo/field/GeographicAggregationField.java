@@ -1,5 +1,10 @@
 package uk.org.tombolo.field;
 
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.summary.Sum;
+import org.apache.commons.math3.util.DoubleArray;
+import org.apache.commons.math3.util.MathArrays;
+import org.apache.commons.math3.util.ResizableDoubleArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
@@ -24,9 +29,10 @@ public class GeographicAggregationField implements Field, SingleValueField {
     private final String aggregationSubjectType;
     private final FieldSpecification fieldSpecification;
     private final AggregationFunction aggregationFunction;
-    private Map<AggregationFunction, Function<List<Double>, Double>> aggregators;
+
+    private Map<AggregationFunction, MathArrays.Function> aggregators;
     private SingleValueField field;
-    private Function<List<Double>, Double> aggregator;
+    private MathArrays.Function aggregator;
 
     GeographicAggregationField(String label, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
         this.label = label;
@@ -38,8 +44,8 @@ public class GeographicAggregationField implements Field, SingleValueField {
     public void initialize() {
         // Initialise aggregators
         aggregators = new HashMap<>();
-        aggregators.put(AggregationFunction.sum,  xs -> xs.stream().reduce(0d, Double::sum));
-        aggregators.put(AggregationFunction.mean, xs -> aggregators.get(AggregationFunction.sum).apply(xs) / xs.size());
+        aggregators.put(AggregationFunction.sum, new Sum());
+        aggregators.put(AggregationFunction.mean, new Mean());
 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
@@ -59,18 +65,18 @@ public class GeographicAggregationField implements Field, SingleValueField {
         return obj;
     }
 
-    private Double aggregateSubjects(Function<List<Double>, Double> aggregator, List<Subject> aggregationSubjects) throws IncomputableFieldException {
-        ArrayList<Double> values = new ArrayList<>();
+    private Double aggregateSubjects(MathArrays.Function aggregator, List<Subject> aggregationSubjects) throws IncomputableFieldException {
+        ResizableDoubleArray doubles = new ResizableDoubleArray();
 
         for (Subject subject : aggregationSubjects) {
             try {
-                values.add(Double.parseDouble(field.valueForSubject(subject)));
+                doubles.addElement(Double.parseDouble(field.valueForSubject(subject)));
             } catch (IncomputableFieldException e) {
                 throw new IncomputableFieldException("Aggregator item failed to compute: " + e.getMessage(), e);
             }
         }
 
-        Double retVal = aggregator.apply(values);
+        Double retVal = doubles.compute(aggregator);
 
         if (retVal.isNaN()) {
             throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (possible division by zero?)", aggregationFunction));
