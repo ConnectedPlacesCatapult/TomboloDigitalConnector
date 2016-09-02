@@ -89,6 +89,9 @@ public final class TestFactory {
             case "E01002766":
                 makeSubjectType("lsoa", "Lower Super Output Area");
                 return makeSubject("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
+            case "E01002767":
+                makeSubjectType("lsoa", "Lower Super Output Area");
+                return makeSubject("lsoa", label, "Islington 011D", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
