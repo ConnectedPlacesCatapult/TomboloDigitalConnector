@@ -27,7 +27,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     // The number of percentiles
     private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
-    private Boolean inverse = false;
+    private Boolean inverse;
 
     private String label;
     private String name;
@@ -99,6 +99,9 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
                 throw new Error("Field must be SingleValueField", e);
             }
         }
+
+        if (inverse == null)
+            inverse = false;
 
         if (percentiles == null){
             List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(normalizationSubjects);
