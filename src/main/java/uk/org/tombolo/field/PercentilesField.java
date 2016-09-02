@@ -96,7 +96,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){
-                throw new Error("Field must be SingleValueField");
+                throw new Error("Field must be SingleValueField", e);
             }
         }
 
@@ -110,7 +110,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
                 try {
                     values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
                 } catch (IncomputableFieldException e) {
-                    throw new Error(e);
+                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %s for Subject %s.", field.getLabel(), subjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);
@@ -125,7 +125,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             for (int i=0; i< percentileCount; i++){
                 double percentage = Math.floor(100d/percentileCount)*(i+1);
                 percentiles.add(percentile.evaluate(percentage));
-                log.info("Percentile {} wiht percentage {} at value {}",i+1, percentage, percentiles.get(i));
+                log.info("Percentile {} with percentage {} at value {}",i+1, percentage, percentiles.get(i));
             }
         }
     }
