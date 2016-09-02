@@ -1,0 +1,55 @@
+{
+  "datasetSpecification": {
+    "subjectSpecification": [
+      {
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasourceSpecification": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+        "datasourceId": "QS408EW"
+      }
+    ],
+    "fieldSpecification": [
+      {
+        "fieldClass": "uk.org.tombolo.field.PercentilesField",
+        "label": "OvercrowdingResiliencePercentiles",
+        "name": "Overcrowding Resilience Percentiles normalized nationally",
+        "percentileCount": 4,
+        "inverse": true,
+        "valueField": {
+          "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+          "divisorAttribute": {
+            "providerLabel": "uk.gov.ons",
+            "attributeLabel": "CL_0000127_1"
+          },
+          "dividendAttributes": [
+            {
+              "providerLabel": "uk.gov.ons",
+              "attributeLabel": "CL_0000127_5"
+            },
+            {
+              "providerLabel": "uk.gov.ons",
+              "attributeLabel": "CL_0000127_6"
+            }
+          ]
+        },
+        "normalizationSubjects": [
+          {
+            "subjectType": "lsoa"
+          }
+        ]
+      }
+    ]
+  },
+  "exporterClass": "uk.org.tombolo.exporter.GeoJsonExporter"
+}
