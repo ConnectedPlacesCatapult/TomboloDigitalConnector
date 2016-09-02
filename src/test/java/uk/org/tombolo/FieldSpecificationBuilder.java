@@ -82,6 +82,15 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder percentilesField(String label, Integer percentileCount, Boolean inverse) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.PercentilesField")
+                .setLabel(label)
+                .set("percentileCount", percentileCount)
+                .set("inverse", inverse);
+        return spec;
+    }
+
     private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);

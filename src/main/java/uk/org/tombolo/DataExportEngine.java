@@ -55,10 +55,7 @@ public class DataExportEngine implements ExecutionEngine{
 		log.info("Exporting ...");
 		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
 		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
-		List<Subject> subjects = new ArrayList<>();
-		for (SubjectSpecification subjectSpec : subjectSpecList) {
-			subjects.addAll(SubjectUtils.getSubjectBySpecification(subjectSpec));
-		}
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
 		exporter.write(writer, subjects, fields);
 	}
 
@@ -66,12 +63,14 @@ public class DataExportEngine implements ExecutionEngine{
 		// Import datasources that are specified as part of a predefined field
 		for (Field field : fields) {
 			if (field instanceof PredefinedField) {
+				// This is a predefined field and hence we need to import the appropriate datasources
 				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()) {
 					importDatasource(forceImports, datasourceSpecification);
 				}
 			}
 
 			if (field instanceof ParentField) {
+				// This is a parent field and hence we need to prepare its children
 				prepareFields(((ParentField) field).getChildFields(), forceImports);
 			}
 		}

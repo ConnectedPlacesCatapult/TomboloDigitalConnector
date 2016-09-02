@@ -49,6 +49,14 @@ public class SubjectUtils {
 			return (List<Subject>) queryFromSubjectSpecification(session, subjectSpecification).list();
 		});
 	}
+
+	public static List<Subject> getSubjectBySpecifications(List<SubjectSpecification> subjectSpecifications) {
+		List<Subject> subjects = new ArrayList<>();
+		for (SubjectSpecification subjectSpec : subjectSpecifications) {
+			subjects.addAll(getSubjectBySpecification(subjectSpec));
+		}
+		return subjects;
+	}
 	
 	public static void save(List<Subject> subjects){
 		HibernateUtil.withSession(session -> {

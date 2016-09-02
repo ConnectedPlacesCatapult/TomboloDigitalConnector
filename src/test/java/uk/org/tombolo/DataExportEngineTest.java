@@ -33,6 +33,7 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeNamedSubject("E01000001");
         TestFactory.makeNamedSubject("E09000001");
         TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeNamedSubject("E01002767");
         TestFactory.makeNamedSubject("E08000035");
     }
 
@@ -483,6 +484,39 @@ public class DataExportEngineTest extends AbstractTest {
                 "      }" +
                 "    }" +
                 "  }]" +
+                "}", writer.toString(), false);
+    }
+
+    @Test
+    public void testExportsPercentiles() throws Exception {
+        builder .addSubjectSpecification(
+                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E0100276_"))
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addFieldSpecification(
+                        FieldSpecificationBuilder.percentilesField("quartile", 4, false)
+                                .set("valueField", FieldSpecificationBuilder.latestValue("uk.gov.ons", "CL_0000053_1")) // total population
+                                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E0100276_")))
+                );
+
+        engine.execute(builder.build(), writer);
+
+        JSONAssert.assertEquals("{" +
+                "  features: [" +
+                "    {" +
+                "      properties: {" +
+                "        name: 'Islington 015E'," +
+                "        label: 'E01002766'," +
+                "        quartile: 1.0" +
+                "      }" +
+                "    }," +
+                "    {" +
+                "      properties: {" +
+                "        name: 'Islington 011D'," +
+                "        label: 'E01002767'," +
+                "        quartile: 3.0" +
+                "      }" +
+                "    }" +
+                "  ]" +
                 "}", writer.toString(), false);
     }
 }
