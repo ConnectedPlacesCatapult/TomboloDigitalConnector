@@ -1,7 +1,7 @@
 package uk.org.tombolo.importer.phe;
 
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.importer.ExcelImporter;
+import uk.org.tombolo.importer.utils.excel.ExcelImporter;
 import uk.org.tombolo.importer.Importer;
 
 public class PheNooImporter extends ExcelImporter implements Importer {
