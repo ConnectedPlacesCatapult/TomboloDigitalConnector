@@ -75,26 +75,44 @@ public final class TestFactory {
     public static Subject makeNamedSubject(String label) {
         switch (label) {
             case "E01000001":
-                makeSubjectType("lsoa", "Lower Super Output Area");
+                makeNamedSubjectType("lsoa");
                 return makeSubject("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E01000002":
-                makeSubjectType("lsoa", "Lower Super Output Area");
+                makeNamedSubjectType("lsoa");
                 return makeSubject("lsoa", label, "City of London 001B", FAKE_POINT_GEOMETRY);
             case "E09000001":
-                makeSubjectType("localAuthority", "Local Authority");
+                makeNamedSubjectType("localAuthority");
                 return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
             case "E08000035":
-                makeSubjectType("localAuthority", "Local Authority");
+                makeNamedSubjectType("localAuthority");
                 return makeSubject("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
             case "E01002766":
-                makeSubjectType("lsoa", "Lower Super Output Area");
+                makeNamedSubjectType("lsoa");
                 return makeSubject("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
             case "E01002767":
-                makeSubjectType("lsoa", "Lower Super Output Area");
+                makeNamedSubjectType("lsoa");
                 return makeSubject("lsoa", label, "Islington 011D", FAKE_POINT_GEOMETRY);
+            case "E02000001":
+                makeNamedSubjectType("msoa");
+                return makeSubject("msoa", label, "City of London 001", FAKE_POINT_GEOMETRY);
+            case "E02000564":
+                makeNamedSubjectType("msoa");
+                return makeSubject("msoa", label, "Islington 011", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
+    }
+
+    private static SubjectType makeNamedSubjectType(String label) {
+        switch (label) {
+            case "localAuthority":
+                return makeSubjectType("localAuthority", "Local Authority");
+            case "lsoa":
+                return makeSubjectType("lsoa", "Lower Super Output Area");
+            case "msoa":
+                return makeSubjectType("msoa", "Middle Super Output Area");
+        }
+        return null;
     }
 
     /**
