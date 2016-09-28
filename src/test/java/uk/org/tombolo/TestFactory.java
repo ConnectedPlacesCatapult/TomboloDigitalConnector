@@ -72,7 +72,7 @@ public final class TestFactory {
      * @param value
      * @return The persisted FixedValue
      */
-    public static FixedValue makeFixedValue(String subjectLabel, Attribute attribute, Double value) {
+    public static FixedValue makeFixedValue(String subjectLabel, Attribute attribute, String value) {
         Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
         FixedValue fixedValue = new FixedValue(subject, attribute, value);
         FixedValueUtils.save(fixedValue);

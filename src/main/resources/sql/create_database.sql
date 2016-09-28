@@ -59,7 +59,7 @@ create table timed_value (
 create table fixed_value (
 	subject_id		integer NOT NULL REFERENCES subject(id),
 	attribute_id	integer NOT NULL REFERENCES attribute(id),
-	value			DOUBLE PRECISION NOT NULL,
+	value			VARCHAR(255) NOT NULL,
 	PRIMARY KEY(subject_id,attribute_id)
 );
 

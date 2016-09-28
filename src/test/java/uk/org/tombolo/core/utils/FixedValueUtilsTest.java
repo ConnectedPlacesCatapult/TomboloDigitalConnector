@@ -18,7 +18,7 @@ public class FixedValueUtilsTest extends AbstractTest {
     public void testGetBySubjectAndAttribute() throws Exception {
         Subject subject = TestFactory.makeNamedSubject("E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attrLabel");
-        FixedValue fixedValue = TestFactory.makeFixedValue(subject.getLabel(), attribute, 13d);
+        FixedValue fixedValue = TestFactory.makeFixedValue(subject.getLabel(), attribute, "thirteen");
         assertEquals(
                 fixedValue,
                 FixedValueUtils.getBySubjectAndAttribute(subject, attribute));
@@ -29,8 +29,8 @@ public class FixedValueUtilsTest extends AbstractTest {
         Subject subject = TestFactory.makeNamedSubject("E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attrLabel");
         Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attrLabel2");
-        FixedValue fixedValue = new FixedValue(subject, attribute, 13d);
-        FixedValue fixedValue2 = new FixedValue(subject, attribute2, 14d);
+        FixedValue fixedValue = new FixedValue(subject, attribute, "one");
+        FixedValue fixedValue2 = new FixedValue(subject, attribute2, "two");
         FixedValueUtils.save(Arrays.asList(fixedValue, fixedValue2));
         assertEquals(
                 fixedValue,

@@ -13,13 +13,13 @@ public class FixedValue {
     FixedValueId id;
 
     @Column(name="value")
-    Double value;
+    String value;
 
     public FixedValue(){
 
     }
 
-    public FixedValue(Subject subject, Attribute attribute, Double value){
+    public FixedValue(Subject subject, Attribute attribute, String value){
         this.id = new FixedValueId(subject, attribute);
         this.value = value;
     }
@@ -32,11 +32,11 @@ public class FixedValue {
         this.id = id;
     }
 
-    public Double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
