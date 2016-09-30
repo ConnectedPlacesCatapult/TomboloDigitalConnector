@@ -17,4 +17,11 @@ public class DatabaseJournalTest extends AbstractTest {
         DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("com.example.Importer", "hello"));
         assertEquals(true, DatabaseJournal.journalHasEntry(new DatabaseJournalEntry("com.example.Importer", "hello")));
     }
+
+    @Test
+    public void testMarkCachedReturnsTrueWhenCachedTwice() throws Exception {
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("com.example.Importer", "hello"));
+        DatabaseJournal.addJournalEntry(new DatabaseJournalEntry("com.example.Importer", "hello"));
+        assertEquals(true, DatabaseJournal.journalHasEntry(new DatabaseJournalEntry("com.example.Importer", "hello")));
+    }
 }

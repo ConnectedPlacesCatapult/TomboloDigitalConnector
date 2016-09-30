@@ -20,10 +20,11 @@ public class DatabaseJournal {
 
     public static boolean journalHasEntry(DatabaseJournalEntry entry) {
         return HibernateUtil.withSession(session -> {
-            Query query = session.createQuery("from DatabaseJournalEntry where className = :className and key = :key");
+            Query query = session.createQuery("select count(*) from DatabaseJournalEntry where className = :className and key = :key");
             query.setParameter("className", entry.getClassName());
             query.setParameter("key", entry.getKey());
-            return query.uniqueResultOptional().isPresent();
+            Integer rowCount = ((Number) query.uniqueResult()).intValue();
+            return rowCount != 0;
         });
     }
 }
