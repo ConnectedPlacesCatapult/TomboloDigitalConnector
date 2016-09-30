@@ -1,4 +1,5 @@
 drop table if exists timed_value;
+drop table if exists fixed_value;
 
 drop table if exists subject;
 drop sequence if exists subject_id_sequence;
@@ -8,6 +9,9 @@ drop table if exists attribute;
 drop sequence if exists attribute_id_sequence;
 
 drop table if exists provider;
+
+drop table if exists database_journal;
+drop sequence if exists database_journal_id_sequence;
 
 -- Provider
 create table provider (
