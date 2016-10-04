@@ -2,6 +2,12 @@ package uk.org.tombolo.importer.utils.excel;
 
 import org.json.simple.JSONObject;
 
+/**
+ * This is an outdated way of handling excel
+ *
+ * @deprecated use excel extractors instead
+ */
+@Deprecated
 public class ExcelAttribute {
 
 	// Label
