@@ -39,12 +39,12 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         switch (datasourceIdObject) {
             case lsoa:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
-                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/c9dc234691d44524a79ccf3266af6562_2.geojson");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/da831f80764346889837c72508f046fa_2.geojson");
                 datasource.setLocalDatafile("lsoa/Lower_layer_Super_Output_Areas_December_2011_Generalised_Clipped__Boundaries_in_England_and_Wales.geojson");
                 return datasource;
             case msoa:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
-                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/ff162ec973494f3291e1e99350697588_3.geojson");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/826dc85fb600440889480f4d9dbb1a24_2.geojson");
                 datasource.setLocalDatafile("msoa/Middle_Layer_Super_Output_Areas_December_2011_Generalised_Clipped_Boundaries_in_England_and_Wales.geojson");
                 return datasource;
             case localAuthority:
@@ -85,13 +85,13 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
     private String getFeatureSubjectLabel(Feature feature) {
         return (String) feature.getProperties().stream().filter(
-                property -> property.getName().toString().endsWith("CD")
+                property -> property.getName().toString().toUpperCase().endsWith("CD")
         ).findFirst().get().getValue();
     }
 
     private String getFeatureSubjectName(Feature feature) {
         return (String) feature.getProperties().stream().filter(property ->
-                property.getName().toString().endsWith("NM")
+                property.getName().toString().toUpperCase().endsWith("NM")
         ).findFirst().get().getValue();
     }
 }

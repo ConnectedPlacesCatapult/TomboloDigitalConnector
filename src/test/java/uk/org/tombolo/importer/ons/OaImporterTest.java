@@ -45,20 +45,20 @@ public class OaImporterTest extends AbstractTest {
 
         assertEquals("City of London 001B", lsoa.getName());
         assertEquals("lsoa", lsoa.getSubjectType().getLabel());
-        assertEquals(-0.0925531560156143, lsoa.getShape().getCentroid().getX(), 0.1E-6);
-        assertEquals(51.51821461759632, lsoa.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(-0.09252710274629854, lsoa.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.51821627457435, lsoa.getShape().getCentroid().getY(), 0.1E-6);
         assertEquals(100, importedCount);
     }
 
     @Test
     public void testImportMsoas() throws Exception {
         int importedCount = importer.importDatasource("msoa");
-        Subject lsoa = SubjectUtils.getSubjectByLabel("E02001033");
+        Subject lsoa = SubjectUtils.getSubjectByLabel("E02000093");
 
-        assertEquals("Bury 015", lsoa.getName());
+        assertEquals("Brent 001", lsoa.getName());
         assertEquals("msoa", lsoa.getSubjectType().getLabel());
-        assertEquals(-2.311700628647487, lsoa.getShape().getCentroid().getX(), 0.1E-6);
-        assertEquals(53.5674238815949, lsoa.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(-0.2746307279027593, lsoa.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.59338282612998, lsoa.getShape().getCentroid().getY(), 0.1E-6);
         assertEquals(100, importedCount);
     }
 
