@@ -14,12 +14,10 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
-import uk.org.tombolo.importer.utils.extraction.ExtractorException;
-import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
-import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
+import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -162,8 +160,9 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            for (int rowId = 0; rowId < sheet.getLastRowNum(); rowId++){
-                Row row = sheet.getRow(rowId);
+            Iterator<Row> rowIterator = sheet.rowIterator();
+            while(rowIterator.hasNext()){
+                Row row = rowIterator.next();
                 for (TimedValueExtractor extractor : timedValueExtractors){
                     subjectExtractor.setRow(row);
                     ((RowCellExtractor)extractor.getValueExtractor()).setRow(row);
@@ -171,12 +170,14 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
                         TimedValue timedValue = extractor.extract();
                         timedValueBuffer.add(timedValue);
                         valueCount++;
-                        if (valueCount % timedValueBufferSize == 0){
+                        if (valueCount % timedValueBufferSize == 0) {
                             // Buffer is full ... we write values to db
                             saveBuffer(timedValueBuffer, valueCount);
                         }
+                    }catch (BlankCellException e){
+                        // We ignore this since there may be multiple blank cells in the data without having to worry
                     }catch (ExtractorException e){
-                        // FIXME: Might want to log this although it will create a lot of rubbish
+                        log.warn("Could not extract value: {}",e.getMessage());
                     }
                 }
             }
