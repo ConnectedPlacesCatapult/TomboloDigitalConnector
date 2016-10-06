@@ -6,7 +6,7 @@
     <session-factory>
 
         <!-- Do not put database connection configuration here.
-             Put it in DBConnection.properties -->
+             Put it in /gradle.properties -->
 
         <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
