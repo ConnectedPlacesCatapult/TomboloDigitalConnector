@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer;
+package uk.org.tombolo.importer.utils.excel;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -16,13 +16,22 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.londondatastore.PHOFLabelExtractor;
+import uk.org.tombolo.importer.utils.ExcelUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * This is an outdated way of handling excel
+ *
+ * @deprecated use excel extractors instead
+ */
+@Deprecated
 public abstract class ExcelImporter extends AbstractImporter implements Importer {
 	protected String datasourceSpecDir;
 	protected int timedValueBufferSize;
