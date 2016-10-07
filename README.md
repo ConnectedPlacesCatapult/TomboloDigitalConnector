@@ -79,6 +79,14 @@ and Defaults -> JUnit):
 -DdatabasePassword=tombolo_test
 ```
 
+## Local deploy
+
+To deploy to your local Maven installation (`~/.m2` by default):
+
+```
+gradle install
+```
+
 ## Run Tasks
 
 ### Run export
