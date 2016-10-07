@@ -28,16 +28,12 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    provider: 'default_provider_name'," +
-                "    values: [" +
-                "      {" +
-                "        value: 100," +
-                "        timestamp: '2011-01-01T00:00:00'" +
-                "      }" +
-                "    ]," +
-                "    name: 'attr_label_name'" +
-                "  }" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
@@ -47,35 +43,21 @@ public class ValuesByTimeFieldTest extends AbstractTest {
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-02T00:00", 200d);
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    provider: 'default_provider_name'," +
-                "    values: [" +
-                "      {" +
-                "        value: 100," +
-                "        timestamp: '2011-01-01T00:00:00'" +
-                "      }," +
-                "      {" +
-                "        value: 200," +
-                "        timestamp: '2011-01-02T00:00:00'" +
-                "      }" +
-                "    ]," +
-                "    name: 'attr_label_name'" +
-                "  }" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }," +
+                "    {" +
+                "      value: 200," +
+                "      timestamp: '2011-01-02T00:00:00'" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
     @Test
     public void testGetLabel() throws Exception {
         assertEquals("aLabel", field.getLabel());
-    }
-
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        assertEquals("attr_label_name", field.getHumanReadableName());
-    }
-
-    @Test
-    public void testGetProvider() throws Exception {
-        assertEquals(TestFactory.DEFAULT_PROVIDER, field.getProvider());
     }
 }

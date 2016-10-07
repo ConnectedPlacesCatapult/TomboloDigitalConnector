@@ -67,11 +67,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
         return label;
     }
 
-    @Override
-    public String getHumanReadableName() {
-        return name;
-    }
-
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
         if (field == null)
             initialize();
@@ -117,7 +112,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
                 }
             }
             percentile.setData(values);
-            log.info("Normalising percentiles of {} over {} subjects", field.getHumanReadableName(), subjects.size());
+            log.info("Normalising percentiles of {} over {} subjects", field.getLabel(), subjects.size());
             log.info("Min value: {}", StatUtils.min(values));
             log.info("Max value: {}", StatUtils.max(values));
             log.info("Median: {}", StatUtils.mean(values));
