@@ -7,6 +7,8 @@ and urban models.
 
 * [Quick start](#quick-start)
 * [Continuous Integration](#continuous-integration)
+* [Local Deploy](#local-deploy)
+* [Run Tasks](#run-tasks)
 * [System Architecture](#system-architecture)
 * [Data model](#data-model)
 
