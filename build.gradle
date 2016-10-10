@@ -1,5 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+group = 'uk.org.tombolo'
+version = '0.1.0'
 
 repositories {
     maven { name = "osgeo"; url = "http://download.osgeo.org/webdav/geotools/" }
