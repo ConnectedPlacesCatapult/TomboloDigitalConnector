@@ -50,13 +50,11 @@ public class BasicPredefinedFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
 
         JSONAssert.assertEquals("{" +
-                "  test_label: {" +
-                "    values: [" +
-                "      {" +
-                "        value: 0.4" +
-                "      }" +
-                "    ]" +
-                "  }" +
+                "  test_label: [" +
+                "    {" +
+                "      value: 0.4" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
 
     }
@@ -64,10 +62,5 @@ public class BasicPredefinedFieldTest extends AbstractTest {
     @Test
     public void getLabel() throws Exception {
         assertEquals("test_label", field.getLabel());
-    }
-
-    @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("Test name", field.getHumanReadableName());
     }
 }

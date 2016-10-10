@@ -60,11 +60,6 @@ public class WrapperField implements Field, ParentField {
     }
 
     @Override
-    public String getHumanReadableName() {
-        return label;
-    }
-
-    @Override
     public List<Field> getChildFields() {
         if (null == fields) { initialize(); }
         return fields;

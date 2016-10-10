@@ -33,9 +33,4 @@ public class SubjectLongitudeFieldTest extends AbstractTest {
     public void testGetLabel() throws Exception {
         assertEquals("aLabel", field.getLabel());
     }
-
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        assertEquals("aLabel", field.getHumanReadableName());
-    }
 }

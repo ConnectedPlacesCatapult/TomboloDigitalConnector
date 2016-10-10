@@ -28,11 +28,6 @@ public class WrapperFieldTest extends AbstractTest {
         assertEquals("aLabel", field.getLabel());
     }
 
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        assertEquals("aLabel", field.getHumanReadableName());
-    }
-
     private List<FieldSpecification> makeFieldSpec() {
         return Collections.singletonList(
                 SpecificationDeserializer.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldSpecification.class));

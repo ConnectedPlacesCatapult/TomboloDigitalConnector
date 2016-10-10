@@ -63,11 +63,6 @@ public class BasicPredefinedField implements Field, PredefinedField {
         return label;
     }
 
-    @Override
-    public String getHumanReadableName() {
-        return name;
-    }
-
     private void initialize() {
         String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);

@@ -77,9 +77,4 @@ public class ArithmeticField implements SingleValueField {
     public String getLabel() {
         return this.label;
     }
-
-    @Override
-    public String getHumanReadableName() {
-        return this.label;
-    }
 }
