@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.utils.excel;
+package uk.org.tombolo.importer.utils.extraction;
 
 public interface SingleValueExtractor {
 

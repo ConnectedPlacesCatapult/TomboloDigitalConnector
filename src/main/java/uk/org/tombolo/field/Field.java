@@ -26,5 +26,4 @@ import uk.org.tombolo.core.Subject;
 public interface Field {
     JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException;
     String getLabel();
-    String getHumanReadableName();
 }

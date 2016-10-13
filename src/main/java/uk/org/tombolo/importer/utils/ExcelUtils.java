@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.utils.excel;
+package uk.org.tombolo.importer.utils;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

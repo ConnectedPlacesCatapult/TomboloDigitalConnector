@@ -7,6 +7,8 @@ and urban models.
 
 * [Quick start](#quick-start)
 * [Continuous Integration](#continuous-integration)
+* [Local Deploy](#local-deploy)
+* [Run Tasks](#run-tasks)
 * [System Architecture](#system-architecture)
 * [Data model](#data-model)
 
@@ -77,6 +79,14 @@ and Defaults -> JUnit):
 -DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
 -DdatabaseUsername=tombolo_test
 -DdatabasePassword=tombolo_test
+```
+
+## Local deploy
+
+To deploy to your local Maven installation (`~/.m2` by default):
+
+```
+gradle install
 ```
 
 ## Run Tasks

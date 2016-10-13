@@ -65,6 +65,21 @@ public final class TestFactory {
     }
 
     /**
+     * makeFixedValue
+     * Builds and persists a FixedValue with the given attributes
+     * @param subjectLabel
+     * @param attribute
+     * @param value
+     * @return The persisted FixedValue
+     */
+    public static FixedValue makeFixedValue(String subjectLabel, Attribute attribute, String value) {
+        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+        FixedValue fixedValue = new FixedValue(subject, attribute, value);
+        FixedValueUtils.save(fixedValue);
+        return fixedValue;
+    }
+
+    /**
      * makeNamedSubject
      * Builds and persists one of the named Subjects, so you don't have to keep making up attributes.
      * These are realistic values, aside from the geometry which is always a point at 0,0.

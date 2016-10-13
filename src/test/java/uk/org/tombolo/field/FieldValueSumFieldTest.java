@@ -54,28 +54,18 @@ public class FieldValueSumFieldTest extends AbstractTest {
     @Test
     public void jsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
-
-        System.err.println(jsonString);
-
         JSONAssert.assertEquals("{" +
-                "  FVSF-label: {" +
-                "    values: [" +
-                "      {" +
-                "        value: 50.0" +
-                "      }" +
-                "    ]" +
-                "  }" +
+                "  FVSF-label: [" +
+                "    {" +
+                "      value: 50.0" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
     @Test
     public void getLabel() throws Exception {
         assertEquals("FVSF-label", field.getLabel());
-    }
-
-    @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("FVSF-name", field.getHumanReadableName());
     }
 
 }

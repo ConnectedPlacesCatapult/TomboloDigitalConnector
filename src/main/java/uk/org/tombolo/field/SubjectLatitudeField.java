@@ -33,9 +33,4 @@ public class SubjectLatitudeField implements SingleValueField {
     public String getLabel() {
         return label;
     }
-
-    @Override
-    public String getHumanReadableName() {
-        return label;
-    }
 }

@@ -129,11 +129,6 @@ public class PercentilesFieldTest extends AbstractTest {
     }
 
     @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("Population Density", quartilesField.getHumanReadableName());
-    }
-
-    @Test
     public void getChildFields() throws Exception {
         List<Field> valueField = quartilesField.getChildFields();
         assertEquals(1, valueField.size());

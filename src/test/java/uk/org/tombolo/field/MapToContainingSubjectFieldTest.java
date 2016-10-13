@@ -37,13 +37,11 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
-                "    attr_label: {" +
-                "      values: [" +
-                "        {" +
-                "          value: 100.0" +
-                "        }" +
-                "      ]" +
-                "    }" +
+                "    attr_label: [" +
+                "      {" +
+                "        value: 100.0" +
+                "      }" +
+                "    ]" +
                 "  }"+
                 "}",jsonString,false);
     }

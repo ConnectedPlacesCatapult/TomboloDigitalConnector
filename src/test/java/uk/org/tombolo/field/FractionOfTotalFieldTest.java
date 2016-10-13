@@ -35,14 +35,12 @@ public class FractionOfTotalFieldTest extends AbstractTest {
     public void testJsonValueForSubject() throws Exception {
         String jsonString = makeField().jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    values: [" +
-                "      {" +
-                "        value: 0.5," +
-                "        timestamp: '2011-01-03T00:00:00'" +
-                "      }" +
-                "    ]" +
-                "  }" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 0.5," +
+                "      timestamp: '2011-01-03T00:00:00'" +
+                "    }" +
+                "  ]" +
                 "}", jsonString, false);
     }
 
@@ -78,12 +76,6 @@ public class FractionOfTotalFieldTest extends AbstractTest {
     public void testGetLabel() throws Exception {
         Field field = new FractionOfTotalField("aLabel", null, null);
         assertEquals("aLabel", field.getLabel());
-    }
-
-    @Test
-    public void testGetHumanReadableName() throws Exception {
-        Field field = new FractionOfTotalField("aLabel", null, null);
-        assertEquals("aLabel", field.getHumanReadableName());
     }
 
     private FractionOfTotalField makeField() {

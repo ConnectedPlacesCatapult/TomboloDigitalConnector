@@ -1,7 +1,5 @@
-package uk.org.tombolo.importer.utils.excel;
+package uk.org.tombolo.importer.utils.extraction;
 
-import org.apache.poi.ss.formula.eval.StringEval;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import static org.apache.poi.ss.usermodel.Cell.*;
@@ -25,7 +23,7 @@ public class RowCellExtractor implements SingleValueExtractor {
         if (row.getCell(columnId) == null)
             throw new ExtractorException("Column with index "+columnId+" does not exit");
         if (row.getCell(columnId).getCellType() == CELL_TYPE_BLANK)
-            throw new ExtractorException("Empty cell value");
+            throw new BlankCellException("Empty cell value");
         try{
             switch (cellType) {
                 case CELL_TYPE_BOOLEAN:
@@ -39,7 +37,8 @@ public class RowCellExtractor implements SingleValueExtractor {
             }
         }catch (IllegalStateException e){
             // Most likely trying to read a non-numeric value like '--'
-            throw new ExtractorException("Could not extract value", e);
+            // Hence we treat this as a blank cell
+            throw new BlankCellException("Could not extract value", e);
         }
     }
 }
