@@ -11,7 +11,11 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.utils.excel.*;
+import uk.org.tombolo.importer.utils.ExcelUtils;
+import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
+import uk.org.tombolo.importer.utils.extraction.ExtractorException;
+import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
+import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +35,11 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         receptionNumberObese, receptionPercentageObese,
         receptionPercentageObeseLowerLimit, receptionPercentageObeseUpperLimit,
         year6NumberObese, year6PercentageObese,
-        year6PercentageObeseLowerLimit, yeat6PercentageObeseUpperLimit,
+        year6PercentageObeseLowerLimit, year6PercentageObeseUpperLimit,
         receptionNumberExcessWeight, receptionPercentageExcessWeight,
         receptionPercentageExcessWeightLowerLimit, receptionPercentageExcessWeightUpperLimit,
         year6NumberExcessWeight, year6PercentageExcessWeight,
-        year6PercentageExcessWeightLowerLimit, yeat6PercentageExcessWeightUpperLimit
+        year6PercentageExcessWeightLowerLimit, year6PercentageExcessWeightUpperLimit
     };
 
     private ExcelUtils excelUtils;
@@ -148,7 +152,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberObese.name(), "Number Obese at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObese.name(), "Percentage Obese at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObeseLowerLimit.name(), "Lower Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.yeat6PercentageObeseUpperLimit.name(), "Upper Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObeseUpperLimit.name(), "Upper Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
 
         // Excess weight at reception
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberExcessWeight.name(), "Number Excess Weight at Reception",null, Attribute.DataType.numeric));
@@ -160,7 +164,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberExcessWeight.name(), "Number Excess Weight at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeight.name(), "Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeightLowerLimit.name(), "Lower Limit of Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.yeat6PercentageExcessWeightUpperLimit.name(), "Upper Limit of Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeightUpperLimit.name(), "Upper Limit of Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
 
         return attributes;
     }
@@ -185,7 +189,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                 return 12;
             case year6PercentageObeseLowerLimit:
                 return 13;
-            case yeat6PercentageObeseUpperLimit:
+            case year6PercentageObeseUpperLimit:
                 return 14;
             case receptionNumberExcessWeight:
                 return 17;
@@ -201,7 +205,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                 return 24;
             case year6PercentageExcessWeightLowerLimit:
                 return 25;
-            case yeat6PercentageExcessWeightUpperLimit:
+            case year6PercentageExcessWeightUpperLimit:
                 return 26;
             default:
                 return -1;
