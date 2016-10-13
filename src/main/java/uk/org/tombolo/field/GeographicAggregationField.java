@@ -2,7 +2,6 @@ package uk.org.tombolo.field;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
-import org.apache.commons.math3.util.DoubleArray;
 import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
 import org.json.simple.JSONObject;
@@ -10,11 +9,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * GeographicAggregationField.java
