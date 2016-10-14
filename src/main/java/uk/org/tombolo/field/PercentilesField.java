@@ -15,7 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Field that returns for a subject the percentile in which its value falls
+ * Field that returns for a subject the percentile in which its value falls.
+ * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
 public class PercentilesField implements Field, SingleValueField, ParentField {
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
