@@ -31,7 +31,7 @@ public class LondonDatastoreImporterBaW extends AbstractTest {
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
-		List<Attribute> attributes = datasource.getAttributes();
+		List<Attribute> attributes = datasource.getTimedValueAttributes();
 		assertEquals(2, attributes.size());
 	}
 	

@@ -13,24 +13,34 @@ public class Datasource {
 	String remoteDatafile;		// Remote datafile
 	String localDatafile; 		// Location of the local version of the datafile
 
-	List<Attribute> attributes;
+	List<Attribute> timedValueAttributes;
+	List<Attribute> fixedValueAttributes;
 	
 	public Datasource(String id, Provider provider, String name, String description){
 		this.id = id;
 		this.provider = provider;
 		this.name = name;
 		this.description = description;
-		this.attributes = new ArrayList<Attribute>();
+		this.timedValueAttributes = new ArrayList<>();
+		this.fixedValueAttributes = new ArrayList<>();
 	}
 	
-	public void addAttribute(Attribute attribute){
-		attributes.add(attribute);
+	public void addTimedValueAttribute(Attribute attribute){
+		timedValueAttributes.add(attribute);
 	}
 
-	public void addAllAttributes(List<Attribute> attributes){
-		this.attributes.addAll(attributes);
+	public void addAllTimedValueAttributes(List<Attribute> attributes){
+		this.timedValueAttributes.addAll(attributes);
 	}
-	
+
+	public void addFixedValueAttribute(Attribute attribute){
+		fixedValueAttributes.add(attribute);
+	}
+
+	public void addAllFixedValueAttributes(List<Attribute> attributes){
+		this.fixedValueAttributes.addAll(attributes);
+	}
+
 	public String getId(){
 		return id;
 	}
@@ -47,12 +57,20 @@ public class Datasource {
 		return description;
 	}
 
-	public List<Attribute> getAttributes() {
-		return attributes;
+	public List<Attribute> getTimedValueAttributes() {
+		return timedValueAttributes;
 	}
-	
+
+	public List<Attribute> getFixedValueAttributes() {
+		return fixedValueAttributes;
+	}
+
 	public Attribute getAttributeByLabel(String label){
-		for (Attribute attribute : attributes){
+		for (Attribute attribute : timedValueAttributes){
+			if (label.equals(attribute.getLabel()))
+				return attribute;
+		}
+		for (Attribute attribute : fixedValueAttributes){
 			if (label.equals(attribute.getLabel()))
 				return attribute;
 		}

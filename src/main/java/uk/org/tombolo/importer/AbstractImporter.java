@@ -91,6 +91,7 @@ public abstract class AbstractImporter implements Importer {
 		ProviderUtils.save(datasource.getProvider());
 
 		// Save attributes
-		AttributeUtils.save(datasource.getAttributes());
+		AttributeUtils.save(datasource.getTimedValueAttributes());
+		AttributeUtils.save(datasource.getFixedValueAttributes());
 	}
 }
