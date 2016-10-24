@@ -13,16 +13,14 @@ public class Datasource {
 	String remoteDatafile;		// Remote datafile
 	String localDatafile; 		// Location of the local version of the datafile
 
-	List<Attribute> timedValueAttributes;
-	List<Attribute> fixedValueAttributes;
+	List<Attribute> timedValueAttributes = new ArrayList<>();;
+	List<Attribute> fixedValueAttributes = new ArrayList<>();;
 	
 	public Datasource(String id, Provider provider, String name, String description){
 		this.id = id;
 		this.provider = provider;
 		this.name = name;
 		this.description = description;
-		this.timedValueAttributes = new ArrayList<>();
-		this.fixedValueAttributes = new ArrayList<>();
 	}
 	
 	public void addTimedValueAttribute(Attribute attribute){
@@ -65,6 +63,13 @@ public class Datasource {
 		return fixedValueAttributes;
 	}
 
+	/**
+	 * This function is deprecated since it is only used in the deprecated ExcelImporter
+	 *
+	 * @param label
+	 * @return
+	 */
+	@Deprecated
 	public Attribute getAttributeByLabel(String label){
 		for (Attribute attribute : timedValueAttributes){
 			if (label.equals(attribute.getLabel()))

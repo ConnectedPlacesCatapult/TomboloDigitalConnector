@@ -90,7 +90,7 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         Attribute metricCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "metric_cos");
         List<TimedValue> metricCosts = TimedValueUtils.getBySubjectAndAttribute(streetSegment, metricCost);
         assertEquals(1, metricCosts.size());
-        assertEquals("2016-10-11T17:44:59.75", metricCosts.get(0).getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
+        assertEquals("2016-10-11T17:44:59", metricCosts.get(0).getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
         assertEquals(63, metricCosts.get(0).getValue(), 0.1d);
     }
 

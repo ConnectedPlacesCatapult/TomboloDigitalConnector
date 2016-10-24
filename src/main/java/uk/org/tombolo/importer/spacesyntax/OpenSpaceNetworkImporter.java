@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -171,7 +172,7 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
             LocalDateTime modified = LocalDateTime.parse(
                     ((String)feature.getAttribute("modified"))
                             .replaceAll(" ", "T")
-                            .substring(0,22)
+                            .replaceAll("\\..*$" ,"")
             );
 
             for (Attribute attribute : datasource.getFixedValueAttributes()){
@@ -191,7 +192,7 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
                 Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
                 timedValueBuffer.add(new TimedValue(subject, attribute, modified, value));
                 timedValueCounter++;
-                // Flushing buffer inf full
+                // Flushing buffer if full
                 if (timedValueCounter % timedValueBufferSize == 0)
                     saveTimedValues(timedValueCounter, timedValueBuffer);
             }
