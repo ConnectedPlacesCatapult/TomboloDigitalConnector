@@ -17,7 +17,8 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Generic class for handling predefined fields.
+ * A field that takes as input a specification (recipe) of a potentially complex field
+ * and returns a value that is calculated according to the specification.
  */
 public class BasicPredefinedField implements Field, PredefinedField {
     String label;

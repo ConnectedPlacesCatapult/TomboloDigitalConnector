@@ -15,6 +15,7 @@ and urban models.
 ## Quick start
 
 ### Requirements
+* JDK (1.8+)
 * PostgreSQL (9.4+)
 * PostGIS (2.1+)
 * Gradle (2.12+)

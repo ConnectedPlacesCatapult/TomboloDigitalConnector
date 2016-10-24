@@ -7,6 +7,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
+/**
+ * For a given subject, returns the {@link FixedValue} of a specified attribute.
+ */
 public class FixedValueField extends ValuesByTimeField implements SingleValueField {
     public FixedValueField(String label, AttributeMatcher attribute) {
         super(label, attribute);
