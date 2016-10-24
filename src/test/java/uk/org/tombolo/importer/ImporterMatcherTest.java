@@ -2,9 +2,9 @@ package uk.org.tombolo.importer;
 
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.importer.ImporterMatcher;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ImporterMatcherTest extends AbstractTest {
 

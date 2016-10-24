@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.dclg;
 
-import org.apache.poi.hssf.util.HSSFColor;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -8,14 +7,12 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.DownloadUtils;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class IMDImporterTest extends AbstractTest {
     IMDImporter imdImporter = new IMDImporter();

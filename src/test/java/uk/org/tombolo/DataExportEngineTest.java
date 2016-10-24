@@ -10,8 +10,8 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.DatabaseJournal;
-import uk.org.tombolo.importer.ImporterMatcher;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.StringWriter;
 import java.io.Writer;

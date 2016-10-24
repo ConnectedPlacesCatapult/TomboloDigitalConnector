@@ -12,10 +12,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
-import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
-import uk.org.tombolo.importer.utils.extraction.ExtractorException;
-import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
-import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
+import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +61,9 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                 dataSourceName[datasourceIdEnum.ordinal()],
                 dataSourceDesc[datasourceIdEnum.ordinal()]);
 
-        datasource.setUrl("T.b.a.");
-        datasource.setRemoteDatafile("T.b.a.");
-        datasource.setLocalDatafile("uk.gov.phe/PublicHealthEngland/20150511_MSOA_Ward_Obesity.xlsx");
+        datasource.setUrl("https://www.noo.org.uk/");
+        datasource.setRemoteDatafile("http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx");
+        datasource.setLocalDatafile("PublicHealthEngland/20150511_MSOA_Ward_Obesity.xlsx");
 
         datasource.addAllAttributes(getAttributes());
 
@@ -88,7 +85,8 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         Workbook workbook = excelUtils.getWorkbook(datasource);
         Sheet sheet = null;
         String year = "2014";
-        switch (DatasourceId.valueOf(datasource.getId())) {
+        DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
+        switch (datasourceId) {
             case laChildhoodObesity2014:
                 sheet = workbook.getSheet("LAData_2011-12_2013-14");
                 break;
@@ -110,12 +108,12 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
         for (AttributeLabel attributeLabel : AttributeLabel.values()) {
             ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
-            RowCellExtractor valueExtractor = new RowCellExtractor(getAttributeColumnId(attributeLabel), Cell.CELL_TYPE_NUMERIC);
+            RowCellExtractor valueExtractor = new RowCellExtractor(getAttributeColumnId(datasourceId, attributeLabel), Cell.CELL_TYPE_NUMERIC);
             timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
         }
 
         // Extract timed values
-        for (int rowId = 0; rowId < sheet.getLastRowNum(); rowId++) {
+        for (int rowId = 0; rowId < sheet.getLastRowNum()+1; rowId++) {
             Row row = sheet.getRow(rowId);
             for (TimedValueExtractor extractor : timedValueExtractors) {
                 subjectExtractor.setRow(row);
@@ -128,8 +126,10 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                         // Buffer is full ... we write values to db
                         saveBuffer(timedValueBuffer, valueCount);
                     }
-                } catch (ExtractorException e) {
-                    // FIXME: Might want to log this although it will create a lot of rubbish
+                }catch (BlankCellException e){
+                    // We ignore this since there may be multiple blank cells in the data without having to worry
+                }catch (ExtractorException e){
+                    log.warn("Could not extract value: {}",e.getMessage());
                 }
             }
         }
@@ -169,44 +169,57 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         return attributes;
     }
 
-    private int getAttributeColumnId(AttributeLabel attributeLabel){
+    private int getAttributeColumnId(DatasourceId datasourceId, AttributeLabel attributeLabel){
+        int base = 0;
+        switch (datasourceId){
+            case msoaChildhoodObesity2014:
+                base = 3;
+                break;
+            case laChildhoodObesity2014:
+                base = 2;
+                break;
+            case wardChildhoodObesity2014:
+                base = 4;
+                break;
+        }
+
         switch (attributeLabel){
             case receptionNumberMeasured:
-                return 4;
+                return base;
             case receptionNumberObese:
-                return 5;
+                return base+1;
             case receptionPercentageObese:
-                return 6;
+                return base+2;
             case receptionPercentageObeseLowerLimit:
-                return 7;
+                return base+3;
             case receptionPercentageObeseUpperLimit:
-                return 8;
+                return base+4;
             case year6NumberMeasured:
-                return 10;
+                return base+6;
             case year6NumberObese:
-                return 11;
+                return base+7;
             case year6PercentageObese:
-                return 12;
+                return base+8;
             case year6PercentageObeseLowerLimit:
-                return 13;
+                return base+9;
             case year6PercentageObeseUpperLimit:
-                return 14;
+                return base+10;
             case receptionNumberExcessWeight:
-                return 17;
+                return base+13;
             case receptionPercentageExcessWeight:
-                return 18;
+                return base+14;
             case receptionPercentageExcessWeightLowerLimit:
-                return 19;
+                return base+15;
             case receptionPercentageExcessWeightUpperLimit:
-                return 20;
+                return base+16;
             case year6NumberExcessWeight:
-                return 23;
+                return base+19;
             case year6PercentageExcessWeight:
-                return 24;
+                return base+20;
             case year6PercentageExcessWeightLowerLimit:
-                return 25;
+                return base+21;
             case year6PercentageExcessWeightUpperLimit:
-                return 26;
+                return base+22;
             default:
                 return -1;
         }

@@ -2,7 +2,7 @@ package uk.org.tombolo.importer.utils.extraction;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ConstantExtractorTest {
 
