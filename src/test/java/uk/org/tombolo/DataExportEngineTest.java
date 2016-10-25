@@ -164,7 +164,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testImportsFromLondonDataStore() throws Exception {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E09000001"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                                 FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
@@ -172,7 +172,9 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-        
+
+        System.err.println(writer.toString());
+
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -181,7 +183,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "        attributes: {" +
                 "          populationDensity: [" +
                 "            {" +
-                "              value: 28.237556363195576," +
+                "              value: 28.2," +
                 "              timestamp: '2015-12-31T23:59:59'" +
                 "            }" +
                 "          ]" +
@@ -234,7 +236,7 @@ public class DataExportEngineTest extends AbstractTest {
             .addSubjectSpecification(
                 new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E06000001"))
             .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority")
-            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter", "london-borough-profiles")
+            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles")
             .addFieldSpecification(
                     FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                             FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
