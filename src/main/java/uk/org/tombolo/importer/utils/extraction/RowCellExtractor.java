@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.utils.extraction;
 
 import org.apache.poi.ss.usermodel.Row;
+import org.slf4j.LoggerFactory;
 
 import static org.apache.poi.ss.usermodel.Cell.*;
 
