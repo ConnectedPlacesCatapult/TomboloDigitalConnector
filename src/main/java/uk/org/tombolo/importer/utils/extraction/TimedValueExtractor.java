@@ -34,7 +34,7 @@ public class TimedValueExtractor {
     public TimedValue extract() throws ExtractorException {
         Subject subject = SubjectUtils.getSubjectByLabel(subjectLabelExtractor.extract());
         if (subject == null)
-            throw new ExtractorException("Unknown subject: "+subjectLabelExtractor.extract());
+            throw new UnknownSubjectLabelException("Unknown subject: "+subjectLabelExtractor.extract());
         Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeLabelExtractor.extract());
         if (attribute == null)
             throw new ExtractorException("Unknown attribute: "+attributeLabelExtractor.extract());

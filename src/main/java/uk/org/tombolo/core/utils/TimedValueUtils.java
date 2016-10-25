@@ -123,8 +123,12 @@ public class TimedValueUtils {
 	 * @return
 	 */
 	public static LocalDateTime parseTimestampString(String timestampString){
+		// Check if well formed to the second
+		if (timestampString.matches("^\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d$"))
+			return LocalDateTime.parse(timestampString);
+
+		// Check if is year format
 		String endOfYear = "-12-31T23:59:59";
-		
 		if (timestampString.matches("^\\d\\d\\d\\d$")){
 			return LocalDateTime.parse(timestampString+endOfYear);
 		}else if (timestampString.matches("^\\d\\d\\d\\d - \\d\\d$")){
@@ -135,6 +139,7 @@ public class TimedValueUtils {
 			return LocalDateTime.parse(year+endOfYear);
 		}
 
+		// Neither well formed to the second nor year
 		return null;
 	}
 }

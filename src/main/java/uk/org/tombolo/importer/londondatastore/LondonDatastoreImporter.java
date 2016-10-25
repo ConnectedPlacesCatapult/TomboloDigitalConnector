@@ -4,6 +4,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.utils.excel.ExcelImporter;
 import uk.org.tombolo.importer.Importer;
 
+@Deprecated
 public class LondonDatastoreImporter extends ExcelImporter implements Importer {
 	public static final Provider PROVIDER = new Provider(
 			"uk.gov.london",

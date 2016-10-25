@@ -98,6 +98,9 @@ public final class TestFactory {
             case "E09000001":
                 makeSubjectType("localAuthority", "Local Authority");
                 return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
+            case "E09000019":
+                makeSubjectType("localAuthority", "Local Authority");
+                return makeSubject("localAuthority", label, "Islington", FAKE_POINT_GEOMETRY);
             case "E08000035":
                 makeSubjectType("localAuthority", "Local Authority");
                 return makeSubject("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
