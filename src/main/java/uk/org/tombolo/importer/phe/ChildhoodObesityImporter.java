@@ -141,14 +141,14 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     private List<Attribute> getAttributes(){
         List<Attribute> attributes = new ArrayList<>();
         // Obesity at reception
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberMeasured.name(), "Number Meassured at Reception",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberMeasured.name(), "Number Measured at Reception",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberObese.name(), "Number Obese at Reception",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObese.name(), "Percentage Obese at Reception",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObeseLowerLimit.name(), "Lower Limit of Percentage Obese at Reception",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObeseUpperLimit.name(), "Upper Limit of Percentage Obese at Reception",null, Attribute.DataType.numeric));
 
         // Obesity at year 6
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberMeasured.name(), "Number Meassured at Year 6",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberMeasured.name(), "Number Measured at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberObese.name(), "Number Obese at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObese.name(), "Percentage Obese at Year 6",null, Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObeseLowerLimit.name(), "Lower Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
@@ -221,7 +221,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             case year6PercentageExcessWeightUpperLimit:
                 return base+22;
             default:
-                return -1;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }
     }
 
