@@ -12,7 +12,7 @@ import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BasicPredefinedFieldTest extends AbstractTest {
     private static final String RECIPE = "PredefinedFieldTest";

@@ -12,9 +12,8 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
-import uk.org.tombolo.importer.ConfigurationException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GeographicAggregationFieldTest extends AbstractTest {
     Attribute attribute;
