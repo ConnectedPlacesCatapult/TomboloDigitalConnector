@@ -1,9 +1,7 @@
 package uk.org.tombolo;
 
-import org.hibernate.Transaction;
 import org.junit.Before;
 import uk.org.tombolo.core.utils.DatabaseUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
