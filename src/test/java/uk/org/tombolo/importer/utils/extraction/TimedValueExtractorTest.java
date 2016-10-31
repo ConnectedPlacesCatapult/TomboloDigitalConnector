@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.utils.extraction;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +9,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.TimedValueId;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TimedValueExtractorTest extends AbstractExtractorTest {
 

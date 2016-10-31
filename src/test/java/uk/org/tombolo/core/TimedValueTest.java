@@ -1,14 +1,8 @@
 package uk.org.tombolo.core;
 
-import org.hibernate.Transaction;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.HibernateUtil;
-import uk.org.tombolo.core.utils.SubjectUtils;
-
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 

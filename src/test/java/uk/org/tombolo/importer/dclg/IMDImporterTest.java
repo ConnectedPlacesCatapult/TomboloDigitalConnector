@@ -12,7 +12,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class IMDImporterTest extends AbstractTest {
     IMDImporter imdImporter = new IMDImporter();

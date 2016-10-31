@@ -12,8 +12,8 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.util.ArrayList;

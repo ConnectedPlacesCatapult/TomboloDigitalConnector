@@ -1,6 +1,5 @@
 package uk.org.tombolo;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
