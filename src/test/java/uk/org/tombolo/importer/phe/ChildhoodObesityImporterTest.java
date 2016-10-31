@@ -47,7 +47,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("msoaChildhoodObesity2014");
 
-        assertEquals(18, datasource.getAttributes().size());
+        assertEquals(18, datasource.getTimedValueAttributes().size());
     }
 
     @Test
