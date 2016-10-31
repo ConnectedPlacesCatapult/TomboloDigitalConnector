@@ -38,28 +38,28 @@ public class AccessibilityImporterTest extends AbstractTest {
         assertEquals(8, datasources.size());
 
         assertEquals("acs0501", datasources.get(0).getId());
-        assertEquals(103, datasources.get(0).getAttributes().size());
+        assertEquals(103, datasources.get(0).getTimedValueAttributes().size());
 
         assertEquals("acs0502", datasources.get(1).getId());
-        assertEquals(67, datasources.get(1).getAttributes().size());
+        assertEquals(67, datasources.get(1).getTimedValueAttributes().size());
 
         assertEquals("acs0503", datasources.get(2).getId());
-        assertEquals(79, datasources.get(2).getAttributes().size());
+        assertEquals(79, datasources.get(2).getTimedValueAttributes().size());
 
         assertEquals("acs0504", datasources.get(3).getId());
-        assertEquals(48, datasources.get(3).getAttributes().size());
+        assertEquals(48, datasources.get(3).getTimedValueAttributes().size());
 
         assertEquals("acs0505", datasources.get(4).getId());
-        assertEquals(67, datasources.get(4).getAttributes().size());
+        assertEquals(67, datasources.get(4).getTimedValueAttributes().size());
 
         assertEquals("acs0506", datasources.get(5).getId());
-        assertEquals(67, datasources.get(5).getAttributes().size());
+        assertEquals(67, datasources.get(5).getTimedValueAttributes().size());
 
         assertEquals("acs0507", datasources.get(6).getId());
-        assertEquals(79, datasources.get(6).getAttributes().size());
+        assertEquals(79, datasources.get(6).getTimedValueAttributes().size());
 
         assertEquals("acs0508", datasources.get(7).getId());
-        assertEquals(79, datasources.get(7).getAttributes().size());
+        assertEquals(79, datasources.get(7).getTimedValueAttributes().size());
 
     }
 
@@ -70,11 +70,11 @@ public class AccessibilityImporterTest extends AbstractTest {
         assertEquals("acs0501", datasource.getId());
         assertEquals("acs0501", datasource.getName());
         assertEquals("Travel time, destination and origin indicators to Employment centres by mode of travel", datasource.getDescription());
-        assertEquals(103, datasource.getAttributes().size());
+        assertEquals(103, datasource.getTimedValueAttributes().size());
 
         // Testing attribute nr 27
         // 500emplcar40	EMPLO032	Number of employment centres with at least 500 jobs available by car within 40 minutes	Number between 0 and 10
-        Attribute attribute = datasource.getAttributes().get(26);
+        Attribute attribute = datasource.getTimedValueAttributes().get(26);
         assertEquals("500emplcar40", attribute.getName());
         assertEquals("EMPLO032", attribute.getLabel());
         assertEquals("Number of employment centres with at least 500 jobs available by car within 40 minutes", attribute.getDescription());

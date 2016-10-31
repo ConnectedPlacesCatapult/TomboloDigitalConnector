@@ -119,7 +119,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 				"Traffic Counts for "+datasourceId);
 
 		// Update attribute list
-		datasource.addAllAttributes(getAttributes());
+		datasource.addAllTimedValueAttributes(getAttributes());
 		
 		// Update links to local and remote files
 		String remoteId = datasourceId.replaceAll(" ", "+").replaceAll(",", "%2C");

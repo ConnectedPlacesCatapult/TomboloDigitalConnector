@@ -75,7 +75,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 		ProviderUtils.save(getProvider());
 		
 		// Attributes
-		AttributeUtils.save(datasource.getAttributes());
+		AttributeUtils.save(datasource.getTimedValueAttributes());
 		
 		// Get LDSAttributes
 		String datasourceSpecPath = datasourceSpecDir+"/"+datasource.getId()+".json";
@@ -238,7 +238,7 @@ public abstract class ExcelImporter extends AbstractImporter implements Importer
 			attributes = attributesFromLDSAttributes(datasource, ldsAttributes);
 		}
 		for (Attribute attribute : attributes){
-			datasource.addAttribute(attribute);
+			datasource.addTimedValueAttribute(attribute);
 		}
 		
 		return datasource;

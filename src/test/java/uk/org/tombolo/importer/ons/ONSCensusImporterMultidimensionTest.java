@@ -27,11 +27,11 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 		
 		assertEquals(datasourceId, datasourceDetails.getName());
 		assertEquals("Age by single year",datasourceDetails.getDescription());
-		assertEquals(102, datasourceDetails.getAttributes().size());
-		assertEquals("CL_0000053_1", datasourceDetails.getAttributes().get(0).getLabel());	
-		assertEquals("T.b.a.", datasourceDetails.getAttributes().get(0).getDescription());
-		assertEquals("CL_0000053_3", datasourceDetails.getAttributes().get(2).getLabel());
-		assertEquals("T.b.a.", datasourceDetails.getAttributes().get(2).getDescription());
+		assertEquals(102, datasourceDetails.getTimedValueAttributes().size());
+		assertEquals("CL_0000053_1", datasourceDetails.getTimedValueAttributes().get(0).getLabel());
+		assertEquals("T.b.a.", datasourceDetails.getTimedValueAttributes().get(0).getDescription());
+		assertEquals("CL_0000053_3", datasourceDetails.getTimedValueAttributes().get(2).getLabel());
+		assertEquals("T.b.a.", datasourceDetails.getTimedValueAttributes().get(2).getDescription());
 		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", datasourceDetails.getRemoteDatafile());
 		assertEquals("csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", datasourceDetails.getLocalDatafile());
 	}
