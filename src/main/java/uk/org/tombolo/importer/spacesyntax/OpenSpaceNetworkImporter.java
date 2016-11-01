@@ -1,24 +1,30 @@
 package uk.org.tombolo.importer.spacesyntax;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.*;
+import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.GeotoolsDataStoreImporter;
+import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Importer for Space Syntax shapefiles.
@@ -38,7 +44,7 @@ import java.util.List;
  *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
  *
  */
-public class OpenSpaceNetworkImporter extends AbstractImporter implements Importer, ShapefileImporter {
+public class OpenSpaceNetworkImporter extends AbstractImporter implements Importer, GeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
@@ -62,118 +68,90 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
 
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
         Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
-        // FIXME: Currently the OpenSpaceNetwork has not been published.
-        // For the time being we will have to manually make sure that the file is in the right place.
-        datasource.setLocalDatafile("osn/"+datasourceId+".zip");
-        validateShapefile(datasource);
 
-        // FIXME: Add this when the OpenSpaceNetwork has been released in the wild
-        //datasource.setRemoteDatafile("http://what-ever-the-url-will-be.com");
+        DataStore dataStore = getDataStoreForDatasource(datasource);
+        SimpleFeatureType schema = dataStore.getSchema(getTableNameForDatasource(datasource));
+        Iterator<AttributeType> typeIterator = schema.getTypes().iterator();
 
         // Attributes
-        // FIXME: This will break if not all features have the same number of attributes (which they do in this example)
         List<Attribute> timedValueAttributes = new ArrayList<>();
         List<Attribute> fixedValueAttributes = new ArrayList<>();
-        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
-        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
-        if (featureReader.hasNext()){
-            SimpleFeature feature = (SimpleFeature) featureReader.next();
-            Collection<Property> properties = feature.getProperties();
-
-            for(Property property : properties){
-                String propertyName = property.getName().toString();
-                switch (propertyName) {
-                    case "the_geom":
-                        // The geometry is not a proper attribute
-                        continue;
-                    case "id":
-                        // This is an id and we store that as part of the subject
-                        continue;
-                    case "modified":
-                        continue;
-                    case "custom_cos":
-                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Custom cost", "", Attribute.DataType.numeric));
-                        continue;
-                    case "metric_cos":
-                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Metric cost", "", Attribute.DataType.numeric));
-                        continue;
-                    case "angular_co":
-                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Angular cost", "", Attribute.DataType.numeric));
-                        continue;
-                    case "id_network":
-                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Network Id", "", Attribute.DataType.string));
-                        continue;
-                    case "class":
-                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Node class", "", Attribute.DataType.string));
-                        continue;
-                    case "street_nam":
-                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Street name", "", Attribute.DataType.string));
-                        continue;
-                    default:
-                        // Any attribute that we do not know we assume is a timed value attribute
-                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, propertyName, "", Attribute.DataType.numeric));
-                }
+        while (typeIterator.hasNext()) {
+            AttributeType type = typeIterator.next();
+            String columnName = type.getName().toString();
+            switch (columnName) {
+                case "geom":
+                    // The geometry is not a proper attribute
+                    break;
+                case "id":
+                    // This is an id and we store that as part of the subject
+                    break;
+                case "time_modified":
+                    break;
+                case "os_road_ids":
+                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "OS Road IDs", "", Attribute.DataType.string));
+                    break;
+                case "os_meridian_ids":
+                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "OS Meridian IDs", "", Attribute.DataType.string));
+                    break;
+                case "road_classes":
+                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road classes", "", Attribute.DataType.string));
+                    break;
+                case "road_numbers":
+                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road numbers", "", Attribute.DataType.string));
+                    break;
+                case "road_names":
+                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road names", "", Attribute.DataType.string));
+                    break;
+                case "abwc_n":
+                    timedValueAttributes.add(new Attribute(getProvider(), columnName, "Angular Cost", "", Attribute.DataType.numeric));
+                    break;
+                default:
+                    // Any attribute that we do not know we assume is a timed value attribute
+                    timedValueAttributes.add(new Attribute(getProvider(), columnName, columnName, "", Attribute.DataType.numeric));
             }
         }
+
         datasource.addAllTimedValueAttributes(timedValueAttributes);
         datasource.addAllFixedValueAttributes(fixedValueAttributes);
 
         return datasource;
     }
 
-    private void validateShapefile(Datasource datasource) throws ConfigurationException {
-        try {
-            ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
-            store.getNames();
-            store.dispose();
-        } catch (Exception e) {
-            throw new ConfigurationException("Shapefile invalid.", e);
-        }
-    }
-
-    private ShapefileDataStore getShapefileDataStoreForDatasource(Datasource datasource) throws IOException {
-        File localFile = downloadUtils.getDatasourceFile(datasource);
-        Path tempDirectory = ZipUtils.unzipToTemporaryDirectory(localFile);
-        return new ShapefileDataStore(Paths.get(tempDirectory.toString(), "/"  + datasource.getId() +".shp").toUri().toURL());
-    }
-
 
     public int importDatasource(Datasource datasource) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
 
-        ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
-        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
-
-        List<Subject> subjects = ShapefileUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
-        SubjectUtils.save(subjects);
-
-        featureReader.close();
-
         // Save provider and attributes
         saveProviderAndAttributes(datasource);
 
+        DataStore dataStore = getDataStoreForDatasource(datasource);
+
         // Load attribute values
-        int valueCounter = loadValues(store, datasource, subjectType);
-
-        store.dispose();
-
-        return valueCounter;
+        loadSubjects(datasource, dataStore, subjectType);
+        return loadValues(dataStore, datasource, subjectType);
     }
 
-    private int loadValues(ShapefileDataStore store, Datasource datasource, SubjectType subjectType) throws IOException {
-        FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
+    private int loadSubjects(Datasource datasource, DataStore dataStore, SubjectType subjectType) throws SQLException, IOException, FactoryException, TransformException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTableNameForDatasource(datasource));
+        List<Subject> subjects = GeotoolsDataStoreUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
+        SubjectUtils.save(subjects);
+        featureReader.close();
+
+        return subjects.size();
+    }
+
+    private int loadValues(DataStore dataStore, Datasource datasource, SubjectType subjectType) throws IOException {
+        FeatureReader featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTableNameForDatasource(datasource));
         int fixedValueCounter = 0;
         List<FixedValue> fixedValueBuffer = new ArrayList<>();
         int timedValueCounter = 0;
         List<TimedValue> timedValueBuffer = new ArrayList<>();
+
         while (featureReader.hasNext()){
             SimpleFeature feature = (SimpleFeature) featureReader.next();
             Subject subject = SubjectUtils.getSubjectByLabel(getFeatureSubjectLabel(feature, subjectType));
-            LocalDateTime modified = LocalDateTime.parse(
-                    ((String)feature.getAttribute("modified"))
-                            .replaceAll(" ", "T")
-                            .replaceAll("\\..*$" ,"")
-            );
+            LocalDateTime modified = ((Timestamp) feature.getAttribute("time_modified")).toLocalDateTime();
 
             for (Attribute attribute : datasource.getFixedValueAttributes()){
                 if (feature.getAttribute(attribute.getLabel()) == null)
@@ -197,10 +175,32 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
                     saveTimedValues(timedValueCounter, timedValueBuffer);
             }
         }
+
         saveTimedValues(timedValueCounter, timedValueBuffer);
         featureReader.close();
 
         return timedValueCounter + fixedValueCounter;
+    }
+
+    private String getSchemaNameForDatasource(Datasource datasource) {
+        return datasource.getId().split("\\.")[0];
+    }
+
+    private String getTableNameForDatasource(Datasource datasource) {
+        return datasource.getId().split("\\.")[1];
+    }
+
+    private DataStore getDataStoreForDatasource(Datasource datasource) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("dbtype", "postgis");
+        params.put("host", "spacesyntax.gistemp.com");
+        params.put("port", 5432);
+        params.put("schema", getSchemaNameForDatasource(datasource));
+        params.put("database", "tombolo");
+        params.put("user", "tombolo");
+        params.put("passwd", "Catapult16");
+
+        return DataStoreFinder.getDataStore(params);
     }
 
     private void saveTimedValues(int valueCounter, List<TimedValue> timedValueBuffer){
@@ -221,12 +221,12 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
 
     @Override
     public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getAttribute("id");
+        return feature.getName()+":"+feature.getID();
     }
 
     @Override
     public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getAttribute("id");
+        return feature.getName()+":"+feature.getID();
     }
 
     @Override

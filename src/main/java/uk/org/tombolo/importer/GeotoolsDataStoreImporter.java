@@ -4,9 +4,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import uk.org.tombolo.core.SubjectType;
 
 /**
- * This interface contains some extra methods needed when importing shapefiles.
+ * This interface contains some extra methods needed when importing Geotools DataStores.
  */
-public interface ShapefileImporter {
+public interface GeotoolsDataStoreImporter {
 
     String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType);
 
