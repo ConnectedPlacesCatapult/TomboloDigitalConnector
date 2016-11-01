@@ -122,4 +122,14 @@ public class SubjectUtils {
 			return (List<Subject>) query.getResultList();
 		});
 	}
+
+	public static List<Subject> subjectsNearSubject(String subjectTypeLabel, Subject subject, float radius){
+		return HibernateUtil.withSession(session -> {
+			Query query = session.createQuery("from Subject where subjectType = :subjectType and ST_DWithin(shape, :geom, :radius) = true", Subject.class);
+			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("geom", subject.getShape());
+			query.setParameter("radius", radius);
+			return (List<Subject>) query.getResultList();
+		});
+	}
 }
