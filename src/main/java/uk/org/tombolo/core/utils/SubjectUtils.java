@@ -123,13 +123,14 @@ public class SubjectUtils {
 		});
 	}
 
-	public static List<Subject> subjectsNearSubject(String subjectTypeLabel, Subject subject, float radius){
+	public static Subject subjectNearestSubject(String subjectTypeLabel, Subject subject, Double radius){
 		return HibernateUtil.withSession(session -> {
-			Query query = session.createQuery("from Subject where subjectType = :subjectType and ST_DWithin(shape, :geom, :radius) = true", Subject.class);
+			Query query = session.createQuery("from Subject where subjectType = :subjectType and st_dwithin(shape, :geom, :radius) = true order by st_distance(shape, :geom)", Subject.class);
 			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
 			query.setParameter("geom", subject.getShape());
 			query.setParameter("radius", radius);
-			return (List<Subject>) query.getResultList();
+			query.setMaxResults(1);
+			return (Subject) query.uniqueResult();
 		});
 	}
 }
