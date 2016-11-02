@@ -83,15 +83,14 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
         throw new IncomputableFieldException("Value outside percentiles");
     }
 
-    private void initialize() throws IncomputableFieldException {
+    private void initialize() {
         if (field == null) {
             try {
-                field = (SingleValueField)valueField.toField();
+                field = (SingleValueField) valueField.toField();
             } catch (ClassNotFoundException e) {
-                throw new IncomputableFieldException("Field class not found.", e);
-            }
-            if (!(field instanceof SingleValueField)){
-                throw new IncomputableFieldException("Field must be SingleValueFiedl");
+                throw new Error("Field class not found.", e);
+            } catch (ClassCastException e) {
+                throw new Error("Field must be SingleValueField", e);
             }
         }
 
@@ -130,13 +129,8 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (field == null) {
-            try {
+        if (field == null)
                 initialize();
-            } catch (IncomputableFieldException e) {
-                throw new Error("Field not valid",e);
-            }
-        }
 
         return Collections.singletonList(field);
     }

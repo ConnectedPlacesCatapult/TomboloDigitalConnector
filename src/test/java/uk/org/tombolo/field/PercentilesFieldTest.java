@@ -20,20 +20,20 @@ import static org.junit.Assert.assertEquals;
  *
  */
 public class PercentilesFieldTest extends AbstractTest {
-    PercentilesField quartilesField;
-    PercentilesField quintilesInverseField;
+    private PercentilesField quartilesField;
+    private PercentilesField quintilesInverseField;
 
-    Subject leeds1;
-    Subject leeds2;
-    Subject leeds3;
-    Subject leeds4;
-    Subject leeds5;
+    private Subject leeds1;
+    private Subject leeds2;
+    private Subject leeds3;
+    private Subject leeds4;
+    private Subject leeds5;
 
-    Subject brighton1;
-    Subject brighton2;
-    Subject brighton3;
-    Subject brighton4;
-    Subject brighton5;
+    private Subject brighton1;
+    private Subject brighton2;
+    private Subject brighton3;
+    private Subject brighton4;
+    private Subject brighton5;
 
     @Before
     public void setUp() throws Exception {
@@ -115,6 +115,7 @@ public class PercentilesFieldTest extends AbstractTest {
         assertEquals("populationDensity", quartilesField.getLabel());
     }
 
+    @Test
     public void getChildFields() throws Exception {
         List<Field> valueField = quartilesField.getChildFields();
         assertEquals(1, valueField.size());
