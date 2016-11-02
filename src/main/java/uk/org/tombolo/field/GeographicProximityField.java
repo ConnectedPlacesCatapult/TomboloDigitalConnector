@@ -12,21 +12,23 @@ import java.util.stream.Collectors;
 /**
  *
  */
-public class GeographicProximityField implements Field, SingleValueField, ParentField {
+public class GeographicProximityField implements Field, ParentField {
     private final String label;
     private final String proximalSubjectType;
     private final FieldSpecification fieldSpecification;
-    private SingleValueField field;
+    private final Double radius;
+    private Field field;
 
-    GeographicProximityField(String label, String proximalSubjectType, FieldSpecification fieldSpecification) {
+    GeographicProximityField(String label, String proximalSubjectType, Double radius, FieldSpecification fieldSpecification) {
         this.label = label;
         this.proximalSubjectType = proximalSubjectType;
+        this.radius = radius;
         this.fieldSpecification = fieldSpecification;
     }
 
     public void initialize() {
         try {
-            this.field = (SingleValueField) fieldSpecification.toField();
+            this.field = fieldSpecification.toField();
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
@@ -47,25 +49,16 @@ public class GeographicProximityField implements Field, SingleValueField, Parent
         return this.label;
     }
 
-    @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        return field.valueForSubject(
-                getSubjectProximalToSubject(subject));
-    }
-
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
-        List<Subject> subjectsContainingSubject = SubjectUtils.subjectsNearSubject(proximalSubjectType, subject, 0.001f);
-        if (subjectsContainingSubject.size() != 1) {
+        Subject nearestSubject = SubjectUtils.subjectNearestSubject(proximalSubjectType, subject, radius);
+        if (nearestSubject == null) {
             throw new IncomputableFieldException(String.format(
-                    "Subject %s is contained by %d subjects of type %s (%s), but should be near 1 only",
+                    "Subject %s has no nearby subjects of type %s, but should have 1",
                     subject.getName(),
-                    subjectsContainingSubject.size(),
-                    proximalSubjectType,
-                    subjectsContainingSubject.stream().map(Subject::getName).collect(Collectors.joining(", "))));
+                    proximalSubjectType));
         }
 
-        return subjectsContainingSubject.get(0);
+        return nearestSubject;
     }
 
     @Override
