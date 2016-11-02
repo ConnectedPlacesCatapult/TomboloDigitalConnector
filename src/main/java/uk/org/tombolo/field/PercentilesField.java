@@ -69,7 +69,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
         if (field == null)
             initialize();
-        double fieldValue = Double.valueOf(((SingleValueField)field).valueForSubject(subject));
+        double fieldValue = Double.valueOf(field.valueForSubject(subject));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
                 if (inverse){
@@ -89,7 +89,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
                 field = (SingleValueField) valueField.toField();
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
-            } catch (ClassCastException e) {
+            } catch (ClassCastException e){
                 throw new Error("Field must be SingleValueField", e);
             }
         }
