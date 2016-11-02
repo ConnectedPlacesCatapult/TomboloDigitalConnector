@@ -8,7 +8,6 @@ import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
-import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ImporterMatcher;
 

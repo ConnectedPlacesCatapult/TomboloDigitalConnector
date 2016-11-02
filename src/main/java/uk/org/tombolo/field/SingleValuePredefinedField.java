@@ -7,8 +7,8 @@ import uk.org.tombolo.core.Subject;
  */
 public class SingleValuePredefinedField extends BasicPredefinedField implements Field, SingleValueField, PredefinedField{
 
-    public SingleValuePredefinedField(String label, String name, String recipe) {
-        super(label, name, recipe);
+    public SingleValuePredefinedField(String label, String recipe) {
+        super(label, recipe);
     }
 
     @Override

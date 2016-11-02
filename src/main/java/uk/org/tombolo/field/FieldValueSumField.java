@@ -3,7 +3,6 @@ package uk.org.tombolo.field;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
 import java.util.ArrayList;
@@ -50,22 +49,14 @@ public class FieldValueSumField implements SingleValueField, ParentField {
     }
 
     protected JSONObject withinMetadata(JSONArray contents) {
-        JSONObject attr = new JSONObject();
-        attr.put("name", getHumanReadableName());
-        attr.put("values", contents);
         JSONObject obj = new JSONObject();
-        obj.put(label, attr);
+        obj.put(label, contents);
         return obj;
     }
 
     @Override
     public String getLabel() {
         return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
-        return name;
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {

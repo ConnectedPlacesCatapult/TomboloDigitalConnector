@@ -1,8 +1,8 @@
 package uk.org.tombolo.importer.londondatastore;
 
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.importer.ExcelImporter;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.utils.excel.ExcelImporter;
 
 public class LondonDatastoreImporter extends ExcelImporter implements Importer {
 	public static final Provider PROVIDER = new Provider(

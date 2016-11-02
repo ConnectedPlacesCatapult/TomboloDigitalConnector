@@ -7,12 +7,15 @@ and urban models.
 
 * [Quick start](#quick-start)
 * [Continuous Integration](#continuous-integration)
+* [Local Deploy](#local-deploy)
+* [Run Tasks](#run-tasks)
 * [System Architecture](#system-architecture)
 * [Data model](#data-model)
 
 ## Quick start
 
 ### Requirements
+* JDK (1.8+)
 * PostgreSQL (9.4+)
 * PostGIS (2.1+)
 * Gradle (2.12+)
@@ -77,6 +80,14 @@ and Defaults -> JUnit):
 -DdatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
 -DdatabaseUsername=tombolo_test
 -DdatabasePassword=tombolo_test
+```
+
+## Local deploy
+
+To deploy to your local Maven installation (`~/.m2` by default):
+
+```
+gradle install
 ```
 
 ## Run Tasks

@@ -5,8 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
@@ -19,11 +17,11 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Generic class for handling predefined fields.
+ * A field that takes as input a specification (recipe) of a potentially complex field
+ * and returns a value that is calculated according to the specification.
  */
 public class BasicPredefinedField implements Field, PredefinedField {
     String label;
-    String name;
     String recipe;
     Field field;
     List<DatasourceSpecification> datasourceSpecifications;
@@ -34,9 +32,8 @@ public class BasicPredefinedField implements Field, PredefinedField {
     protected static final String fieldSpecPostfix = "-field.json";
     protected static final String fieldDataPostfix = "-data.json";
 
-    public BasicPredefinedField(String label, String name, String recipe){
+    public BasicPredefinedField(String label, String recipe){
         this.label = label;
-        this.name = name;
         this.recipe = recipe;
     }
 
@@ -61,11 +58,6 @@ public class BasicPredefinedField implements Field, PredefinedField {
     @Override
     public String getLabel() {
         return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
-        return name;
     }
 
     protected void initialize() {

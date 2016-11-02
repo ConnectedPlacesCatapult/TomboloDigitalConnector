@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -39,21 +39,19 @@ public class PercentilesFieldTest extends AbstractTest {
     public void setUp() throws Exception {
         quartilesField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
                 "populationDensity",
-                "Population Density",
-                FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"),
-                Collections.singletonList(new SubjectSpecificationBuilder("lsoa")),
                 4,
-                false
-        ).build().toField();
+                false)
+                .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .build().toField();
 
         quintilesInverseField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
                 "populationDensity",
-                "Population Density",
-                FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"),
-                Collections.singletonList(new SubjectSpecificationBuilder("lsoa")),
                 5,
-                true
-        ).build().toField();
+                true)
+                .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .build().toField();
 
         TestFactory.makeSubjectType("lsoa", "Lower Super Output Area");
 
@@ -117,12 +115,6 @@ public class PercentilesFieldTest extends AbstractTest {
         assertEquals("populationDensity", quartilesField.getLabel());
     }
 
-    @Test
-    public void getHumanReadableName() throws Exception {
-        assertEquals("Population Density", quartilesField.getHumanReadableName());
-    }
-
-    @Test
     public void getChildFields() throws Exception {
         List<Field> valueField = quartilesField.getChildFields();
         assertEquals(1, valueField.size());

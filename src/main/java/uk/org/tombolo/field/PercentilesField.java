@@ -15,24 +15,37 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Field that returns for a subject the percentile in which its value falls
+ * Field that returns for a subject the percentile in which its value falls.
+ * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
 public class PercentilesField implements Field, SingleValueField, ParentField {
-    Logger log = LoggerFactory.getLogger(PercentilesField.class);
+    private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    FieldSpecification valueField;
+    private final FieldSpecification valueField;
     // The subjects over which the percentiles are calculated
-    List<SubjectSpecification> normalizationSubjects;
+    private final List<SubjectSpecification> normalizationSubjects;
     // The number of percentiles
-    Integer percentileCount;
+    private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
-    Boolean inverse;
+    private Boolean inverse;
 
-    String label;
-    String name;
-    Field field;
-    List<Double> percentiles;
+    private String label;
+    private SingleValueField field;
+    private List<Double> percentiles;
+
+    public PercentilesField(
+            String label,
+            String name,
+            FieldSpecification valueField,
+            List<SubjectSpecification> normalizationSubjects,
+            Integer percentileCount, Boolean inverse) {
+        this.label = label;
+        this.valueField = valueField;
+        this.normalizationSubjects = normalizationSubjects;
+        this.percentileCount = percentileCount;
+        this.inverse = inverse;
+    }
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
@@ -51,11 +64,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     @Override
     public String getLabel() {
         return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
-        return name;
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
@@ -78,7 +86,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     private void initialize() throws IncomputableFieldException {
         if (field == null) {
             try {
-                field = valueField.toField();
+                field = (SingleValueField)valueField.toField();
             } catch (ClassNotFoundException e) {
                 throw new IncomputableFieldException("Field class not found.", e);
             }
@@ -97,10 +105,14 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             double[] values = new double[subjects.size()];
 
             for (int i = 0; i< subjects.size(); i++){
-                values[i] = Double.valueOf(((SingleValueField)field).valueForSubject(subjects.get(i)));
+                try {
+                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
+                } catch (IncomputableFieldException e) {
+                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %s for Subject %s.", field.getLabel(), subjects.get(i).getLabel()), e);
+                }
             }
             percentile.setData(values);
-            log.info("Normalising percentiles of {} over {} subjects", field.getHumanReadableName(), subjects.size());
+            log.info("Normalising percentiles of {} over {} subjects", field.getLabel(), subjects.size());
             log.info("Min value: {}", StatUtils.min(values));
             log.info("Max value: {}", StatUtils.max(values));
             log.info("Median: {}", StatUtils.mean(values));
@@ -111,7 +123,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             for (int i=0; i< percentileCount; i++){
                 double percentage = Math.floor(100d/percentileCount)*(i+1);
                 percentiles.add(percentile.evaluate(percentage));
-                log.info("Percentile {} wiht percentage {} at value {}",i+1, percentage, percentiles.get(i));
+                log.info("Percentile {} with percentage {} at value {}",i+1, percentage, percentiles.get(i));
             }
         }
     }

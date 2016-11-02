@@ -33,8 +33,4 @@ public class FixedAnnotationField implements SingleValueField {
         return label;
     }
 
-    @Override
-    public String getHumanReadableName() {
-        return label;
-    }
 }

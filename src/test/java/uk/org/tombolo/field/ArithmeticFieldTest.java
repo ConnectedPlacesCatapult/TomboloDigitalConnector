@@ -10,7 +10,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ArithmeticFieldTest extends AbstractTest {
 

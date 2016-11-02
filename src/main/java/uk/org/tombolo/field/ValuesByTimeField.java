@@ -1,17 +1,14 @@
 package uk.org.tombolo.field;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 
-import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * The metadata is regarding the attribute.
  */
-public class ValuesByTimeField implements Field, FieldWithProvider {
+public class ValuesByTimeField implements Field {
     protected String label;
     private AttributeMatcher attribute;
     private Attribute cachedAttribute;
@@ -46,17 +43,12 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
         return label;
     }
 
-    @Override
-    public String getHumanReadableName() {
-        return getAttribute().getName();
-    }
-
-    protected Attribute getAttribute() {
+    protected Attribute getAttribute() throws IncomputableFieldException {
         if (null != cachedAttribute) return cachedAttribute;
 
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
         if (null == attr) {
-            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
+            throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
         } else {
             cachedAttribute = attr;
             return attr;
@@ -64,17 +56,8 @@ public class ValuesByTimeField implements Field, FieldWithProvider {
     }
 
     protected JSONObject withinMetadata(JSONArray contents) {
-        JSONObject attr = new JSONObject();
-        attr.put("name", getHumanReadableName());
-        attr.put("provider", getProvider().getName());
-        attr.put("values", contents);
         JSONObject obj = new JSONObject();
-        obj.put(label, attr);
+        obj.put(label, contents);
         return obj;
-    }
-
-    @Override
-    public Provider getProvider() {
-        return getAttribute().getProvider();
     }
 }

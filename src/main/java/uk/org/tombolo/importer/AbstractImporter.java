@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.DatabaseJournal;
+import uk.org.tombolo.core.utils.ProviderUtils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -82,5 +84,14 @@ public abstract class AbstractImporter implements Importer {
 	@Override
 	public Properties getConfiguration(){
 		return properties;
+	}
+
+	protected static void saveProviderAndAttributes(Datasource datasource){
+		// Save provider
+		ProviderUtils.save(datasource.getProvider());
+
+		// Save attributes
+		AttributeUtils.save(datasource.getTimedValueAttributes());
+		AttributeUtils.save(datasource.getFixedValueAttributes());
 	}
 }

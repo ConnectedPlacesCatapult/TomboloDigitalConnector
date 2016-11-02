@@ -30,7 +30,7 @@ public class LondonDatastoreImporterTestPhof extends AbstractTest {
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
-		List<Attribute> attributes = datasource.getAttributes();
+		List<Attribute> attributes = datasource.getTimedValueAttributes();
 		assertEquals(150, attributes.size());
 
 		PHOFLabelExtractor extractor = new PHOFLabelExtractor();

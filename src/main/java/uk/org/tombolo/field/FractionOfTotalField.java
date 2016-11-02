@@ -1,7 +1,6 @@
 package uk.org.tombolo.field;
 
 import org.apache.commons.collections4.ListUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -56,19 +55,12 @@ public class FractionOfTotalField implements SingleValueField {
 
     private JSONObject withinJsonStructure(JSONAware values) {
         JSONObject obj = new JSONObject();
-        JSONObject labelObj = new JSONObject();
-        labelObj.put("values", Collections.singletonList(values));
-        obj.put(label, labelObj);
+        obj.put(label, Collections.singletonList(values));
         return obj;
     }
 
     @Override
     public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
         return label;
     }
 

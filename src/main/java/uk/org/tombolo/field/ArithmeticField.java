@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+/**
+ * Takes as input an operation, and two fields. It returns for a given Subject the value resulting from applying
+ * the operation on the two field values.
+ */
 public class ArithmeticField implements SingleValueField {
     public static enum Operation {div, mul, add, sub}
     private final String label;
@@ -75,11 +79,6 @@ public class ArithmeticField implements SingleValueField {
 
     @Override
     public String getLabel() {
-        return this.label;
-    }
-
-    @Override
-    public String getHumanReadableName() {
         return this.label;
     }
 }

@@ -21,11 +21,11 @@ public class LondonDatastoreImporterTestLbp extends AbstractTest {
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource("london-borough-profiles");
 		
-		assertEquals(6, datasource.getAttributes().size());
+		assertEquals(6, datasource.getTimedValueAttributes().size());
 		assertEquals("Population density (per hectare) 2015", 
-				datasource.getAttributes().get(0).getName());
+				datasource.getTimedValueAttributes().get(0).getName());
 		assertEquals("% of area that is Greenspace, 2005",
-				datasource.getAttributes().get(3).getName());
+				datasource.getTimedValueAttributes().get(3).getName());
 	}
 	
 	@Test

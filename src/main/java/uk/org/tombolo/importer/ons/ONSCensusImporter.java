@@ -148,33 +148,33 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}else if (lineCounter == 9){
 						// Name of the sub theme of the attribute
-						for (int i = 2; i<datasource.getAttributes().size()+2; i++){
+						for (int i = 2; i<datasource.getTimedValueAttributes().size()+2; i++){
 							String name = attributeBaseNames.get(i);
 							if (!attributeBaseNames.get(i).equals(fields.get(i)))
 								name += " - " + fields.get(i);
-							datasource.getAttributes().get(i-2).setName(name);
-							datasource.getAttributes().get(i-2).setDescription(name);
+							datasource.getTimedValueAttributes().get(i-2).setName(name);
+							datasource.getTimedValueAttributes().get(i-2).setDescription(name);
 						}
 
 						// Store attributes in database
-						AttributeUtils.save(datasource.getAttributes());
-						log.info("Saved {} attributes", datasource.getAttributes().size());
+						AttributeUtils.save(datasource.getTimedValueAttributes());
+						log.info("Saved {} attributes", datasource.getTimedValueAttributes().size());
 					}
 					
-					if (fields.size() == 2 + datasource.getAttributes().size()){
+					if (fields.size() == 2 + datasource.getTimedValueAttributes().size()){
 						// We have an actual data line
 						try{
 							String areaId = fields.get(0);
 							List<Double> values = new ArrayList<Double>();
-							for (int i=2; i<2+datasource.getAttributes().size(); i++){
+							for (int i = 2; i<2+datasource.getTimedValueAttributes().size(); i++){
 								values.add(Double.parseDouble(fields.get(i)));
 							}
 							Subject subject = SubjectUtils.getSubjectByLabel(areaId);
 							if (subject != null
-									&& values.size() == datasource.getAttributes().size()){
+									&& values.size() == datasource.getTimedValueAttributes().size()){
 								for (int i=0; i<values.size(); i++){
 									TimedValue tv 
-										= new TimedValue(subject, datasource.getAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
+										= new TimedValue(subject, datasource.getTimedValueAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
 									valueCount++;
 									
@@ -244,7 +244,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				if (numberOfDimensionItems == 1){
 					// The attribute is one-dimensional
 					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription, attributeDescription, dataType);
-					datasource.addAttribute(attribute);
+					datasource.addTimedValueAttribute(attribute);
 				}else{
 					// The attribute is multi-dimensional
 					// We add an attribute for each dimension
@@ -252,7 +252,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					for (int i=0; i<numberOfDimensionItems; i++){
 						String multiAttributeLabel = attributeLabel+"_"+(i+1);
 						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.", "T.b.a.", dataType);
-						datasource.addAttribute(attribute);
+						datasource.addTimedValueAttribute(attribute);
 					}
 				}
 			}

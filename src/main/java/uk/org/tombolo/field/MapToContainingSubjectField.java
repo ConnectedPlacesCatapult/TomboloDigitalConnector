@@ -52,11 +52,6 @@ public class MapToContainingSubjectField implements Field, SingleValueField, Par
     }
 
     @Override
-    public String getHumanReadableName() {
-        return this.label;
-    }
-
-    @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
         if (null == field) { initialize(); }
         return field.valueForSubject(

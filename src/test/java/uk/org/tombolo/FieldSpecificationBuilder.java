@@ -84,17 +84,11 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder percentilesField(
             String label,
-            String name,
-            FieldSpecificationBuilder valueFieldBulder,
-            List<SubjectSpecificationBuilder> normalizationSubjects,
             Integer percentileCount,
             Boolean inverse){
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.PercentilesField")
                 .setLabel(label)
-                .set("name", name)
-                .set("valueField", valueFieldBulder)
-                .set("normalizationSubjects", normalizationSubjects)
                 .set("percentileCount", percentileCount)
                 .set("inverse", inverse);
         return spec;

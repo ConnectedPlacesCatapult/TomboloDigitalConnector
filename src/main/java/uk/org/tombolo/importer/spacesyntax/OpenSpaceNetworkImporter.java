@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,9 +41,10 @@ import java.util.List;
 public class OpenSpaceNetworkImporter extends AbstractImporter implements Importer, ShapefileImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
-    public static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
+    private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
 
-    protected int timedValueBufferSize = 10000;
+    private int fixedValueBufferSize = 10000;
+    private int timedValueBufferSize = 10000;
 
     @Override
     public Provider getProvider() {
@@ -70,7 +72,8 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
 
         // Attributes
         // FIXME: This will break if not all features have the same number of attributes (which they do in this example)
-        List<Attribute> attributes = new ArrayList<>();
+        List<Attribute> timedValueAttributes = new ArrayList<>();
+        List<Attribute> fixedValueAttributes = new ArrayList<>();
         ShapefileDataStore store = getShapefileDataStoreForDatasource(datasource);
         FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
         if (featureReader.hasNext()){
@@ -79,16 +82,41 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
 
             for(Property property : properties){
                 String propertyName = property.getName().toString();
-                if ("the_geom".equals(propertyName))
-                    // The geometry is not a proper attribute
-                    continue;
-                if ("Depthmap_R".equals(propertyName))
-                    // This is an id and we store that as part of the subject
-                    continue;
-                attributes.add(new Attribute(getProvider(), propertyName, propertyName, "", Attribute.DataType.numeric));
+                switch (propertyName) {
+                    case "the_geom":
+                        // The geometry is not a proper attribute
+                        continue;
+                    case "id":
+                        // This is an id and we store that as part of the subject
+                        continue;
+                    case "modified":
+                        continue;
+                    case "custom_cos":
+                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Custom cost", "", Attribute.DataType.numeric));
+                        continue;
+                    case "metric_cos":
+                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Metric cost", "", Attribute.DataType.numeric));
+                        continue;
+                    case "angular_co":
+                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, "Angular cost", "", Attribute.DataType.numeric));
+                        continue;
+                    case "id_network":
+                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Network Id", "", Attribute.DataType.string));
+                        continue;
+                    case "class":
+                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Node class", "", Attribute.DataType.string));
+                        continue;
+                    case "street_nam":
+                        fixedValueAttributes.add(new Attribute(getProvider(), propertyName, "Street name", "", Attribute.DataType.string));
+                        continue;
+                    default:
+                        // Any attribute that we do not know we assume is a timed value attribute
+                        timedValueAttributes.add(new Attribute(getProvider(), propertyName, propertyName, "", Attribute.DataType.numeric));
+                }
             }
         }
-        datasource.addAllAttributes(attributes);
+        datasource.addAllTimedValueAttributes(timedValueAttributes);
+        datasource.addAllFixedValueAttributes(fixedValueAttributes);
 
         return datasource;
     }
@@ -121,60 +149,84 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
 
         featureReader.close();
 
-        // Load attributes
-        // Save provider
-        ProviderUtils.save(datasource.getProvider());
+        // Save provider and attributes
+        saveProviderAndAttributes(datasource);
 
-        // Save attributes
-        AttributeUtils.save(datasource.getAttributes());
-
-        // Load timed values
-        int valueCounter = loadTimedValues(store, datasource, subjectType);
+        // Load attribute values
+        int valueCounter = loadValues(store, datasource, subjectType);
 
         store.dispose();
 
         return valueCounter;
     }
 
-    private int loadTimedValues(ShapefileDataStore store, Datasource datasource, SubjectType subjectType) throws IOException {
-        LocalDateTime importTime = LocalDateTime.now();
-
+    private int loadValues(ShapefileDataStore store, Datasource datasource, SubjectType subjectType) throws IOException {
         FeatureReader featureReader = ShapefileUtils.getFeatureReader(store,0);
-        int valueCounter = 0;
+        int fixedValueCounter = 0;
+        List<FixedValue> fixedValueBuffer = new ArrayList<>();
+        int timedValueCounter = 0;
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while (featureReader.hasNext()){
             SimpleFeature feature = (SimpleFeature) featureReader.next();
-            for (Attribute attribute : datasource.getAttributes()){
-                Subject subject = SubjectUtils.getSubjectByLabel(getFeatureSubjectLabel(feature, subjectType));
-                Double value = (Double) feature.getAttribute(attribute.getLabel());
-                timedValueBuffer.add(new TimedValue(subject, attribute, importTime, value));
-                valueCounter++;
-                // Flushing buffer
-                if (valueCounter % timedValueBufferSize == 0){
-                    // Buffer is full ... we write values to db
-                    log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-                    TimedValueUtils.save(timedValueBuffer);
-                    timedValueBuffer = new ArrayList<TimedValue>();
-                    log.info("Total values written: {}", valueCounter);
-                }
+            Subject subject = SubjectUtils.getSubjectByLabel(getFeatureSubjectLabel(feature, subjectType));
+            LocalDateTime modified = LocalDateTime.parse(
+                    ((String)feature.getAttribute("modified"))
+                            .replaceAll(" ", "T")
+                            .replaceAll("\\..*$" ,"")
+            );
+
+            for (Attribute attribute : datasource.getFixedValueAttributes()){
+                if (feature.getAttribute(attribute.getLabel()) == null)
+                    continue;
+                String value = feature.getAttribute(attribute.getLabel()).toString();
+                fixedValueBuffer.add(new FixedValue(subject, attribute, value));
+                fixedValueCounter++;
+                // Flushing  buffer if full
+                if (fixedValueCounter % fixedValueBufferSize == 0)
+                    saveFixedValues(fixedValueCounter, fixedValueBuffer);
+            }
+
+            for (Attribute attribute : datasource.getTimedValueAttributes()){
+                if (feature.getAttribute(attribute.getLabel()) == null)
+                    continue;
+                Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
+                timedValueBuffer.add(new TimedValue(subject, attribute, modified, value));
+                timedValueCounter++;
+                // Flushing buffer if full
+                if (timedValueCounter % timedValueBufferSize == 0)
+                    saveTimedValues(timedValueCounter, timedValueBuffer);
             }
         }
-        log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-        TimedValueUtils.save(timedValueBuffer);
-        log.info("Total values written: {}", valueCounter);
+        saveTimedValues(timedValueCounter, timedValueBuffer);
         featureReader.close();
 
-        return valueCounter;
+        return timedValueCounter + fixedValueCounter;
+    }
+
+    private void saveTimedValues(int valueCounter, List<TimedValue> timedValueBuffer){
+        log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());
+        TimedValueUtils.save(timedValueBuffer);
+        timedValueBuffer.clear();
+
+        log.info("Total values written: {}", valueCounter);
+    }
+
+    private void saveFixedValues(int valueCounter, List<FixedValue> fixedValueBuffer){
+        log.info("Preparing to write a batch of {} fixed values ...", fixedValueBuffer.size());
+        FixedValueUtils.save(fixedValueBuffer);
+        fixedValueBuffer.clear();
+
+        log.info("Total values written: {}", valueCounter);
     }
 
     @Override
     public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getAttribute("Depthmap_R");
+        return feature.getName()+":"+feature.getAttribute("id");
     }
 
     @Override
     public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getAttribute("Depthmap_R");
+        return feature.getName()+":"+feature.getAttribute("id");
     }
 
     @Override

@@ -43,7 +43,7 @@ public class DataCatalogueRunner extends AbstractRunner {
         }else{
             // datasetId is specified and hence we print a list of attributes provided by the datasource
             Datasource datasource = importer.getDatasource(datasetId);
-            for(Attribute attribute : datasource.getAttributes()){
+            for(Attribute attribute : datasource.getTimedValueAttributes()){
                 System.out.println(
                         attribute.getLabel()
                         + "\t" + attribute.getName()

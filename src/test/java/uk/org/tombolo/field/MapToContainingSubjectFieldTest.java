@@ -11,7 +11,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MapToContainingSubjectFieldTest extends AbstractTest {
     private Subject subject;
@@ -37,13 +37,11 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
-                "    attr_label: {" +
-                "      values: [" +
-                "        {" +
-                "          value: 100.0" +
-                "        }" +
-                "      ]" +
-                "    }" +
+                "    attr_label: [" +
+                "      {" +
+                "        value: 100.0" +
+                "      }" +
+                "    ]" +
                 "  }"+
                 "}",jsonString,false);
     }

@@ -62,7 +62,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
 								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
 								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
-				datasource.addAllAttributes(getStationAttributes());
+				datasource.addAllTimedValueAttributes(getStationAttributes());
 				return datasource;
 		}
 		return null;
@@ -75,7 +75,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		ProviderUtils.save(datasource.getProvider());
 
 		// Save attributes
-		AttributeUtils.save(datasource.getAttributes());
+		AttributeUtils.save(datasource.getTimedValueAttributes());
 		
 		// Save timed values
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
