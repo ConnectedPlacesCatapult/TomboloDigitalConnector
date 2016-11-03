@@ -60,7 +60,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 datasource.setLocalDatafile("/LondonDatastore/walking-and-cycling-borough.xls");
 
                 for (AttributeId attributeId : AttributeId.values()) {
-                    datasource.addAttribute(getAttribute(attributeId));
+                    datasource.addTimedValueAttribute(getAttribute(attributeId));
                 }
 
                 return datasource;

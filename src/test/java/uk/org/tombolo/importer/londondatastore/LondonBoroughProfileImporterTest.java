@@ -41,7 +41,7 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
 
         assertEquals("londonBoroughProfiles", datasource.getId());
         assertEquals("London Borough Profiles", datasource.getName());
-        assertEquals(6, datasource.getAttributes().size());
+        assertEquals(6, datasource.getTimedValueAttributes().size());
     }
 
     @Test

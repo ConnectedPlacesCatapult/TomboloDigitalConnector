@@ -12,7 +12,6 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
-		List<Attribute> attributes = datasource.getAttributes();
+		List<Attribute> attributes = datasource.getTimedValueAttributes();
 		assertEquals(2, attributes.size());
 	}
 	
@@ -63,17 +62,17 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 				AttributeUtils.getByProviderAndLabel(importer.getProvider(), "walk5xWeek"));
 		assertEquals(4, walk5xWeek.size());
 		TimedValue walk5xWeek2012 = walk5xWeek.stream().filter(a -> a.getId().getTimestamp().equals(year2012)).findFirst().orElse(null);
-		assertEquals(31d, walk5xWeek2012.getValue(), 0.1d);
+		assertEquals(31.0d, walk5xWeek2012.getValue(), 0.1d);
 		TimedValue walk5xWeek2014 = walk5xWeek.stream().filter(a -> a.getId().getTimestamp().equals(year2014)).findFirst().orElse(null);
-		assertEquals(57d, walk5xWeek2014.getValue(), 0.1d);
+		assertEquals(56.7d, walk5xWeek2014.getValue(), 0.1d);
 
 		List<TimedValue> cycle1xWeek = TimedValueUtils.getBySubjectAndAttribute(
 				cityOfLondon,
 				AttributeUtils.getByProviderAndLabel(importer.getProvider(), "cycle1xWeek"));
 		assertEquals(4, cycle1xWeek.size());
 		TimedValue cycle1xWeek2012 = cycle1xWeek.stream().filter(a -> a.getId().getTimestamp().equals(year2012)).findFirst().orElse(null);
-		assertEquals(16d, cycle1xWeek2012.getValue(), 0.1d);
+		assertEquals(16.0d, cycle1xWeek2012.getValue(), 0.1d);
 		TimedValue cycle1xWeek2014 = cycle1xWeek.stream().filter(a -> a.getId().getTimestamp().equals(year2014)).findFirst().orElse(null);
-		assertEquals(7d, cycle1xWeek2014.getValue(), 0.1d);
+		assertEquals(7.4d, cycle1xWeek2014.getValue(), 0.1d);
 	}
 }

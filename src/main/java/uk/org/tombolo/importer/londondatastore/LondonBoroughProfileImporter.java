@@ -60,7 +60,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                 datasource.setLocalDatafile("LondonDatastore/london-borough-profiles.csv");
 
                 for (AttributeId attributeId : AttributeId.values()) {
-                    datasource.addAttribute(getAttribute(attributeId));
+                    datasource.addTimedValueAttribute(getAttribute(attributeId));
                 }
                 return datasource;
             default:

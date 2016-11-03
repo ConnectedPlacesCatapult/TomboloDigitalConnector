@@ -61,7 +61,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
                 datasource.setRemoteDatafile("https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53/phof-indicators-data-london-borough.xlsx");
                 datasource.setLocalDatafile("LondonDatastore/phof-indicators-data-london-borough.xlsx");
 
-                datasource.addAllAttributes(getAttributes(datasource));
+                datasource.addAllTimedValueAttributes(getAttributes(datasource));
                 return datasource;
             default:
                 throw new ConfigurationException("Datasource not found: " + datasourceIdString);
