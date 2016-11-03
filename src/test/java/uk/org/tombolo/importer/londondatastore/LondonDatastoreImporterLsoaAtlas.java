@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.phe;
+package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,17 +11,18 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PheNooImporterTest extends AbstractTest {
-	private static final String DATASOURCE_ID = "BMI_categories_2012-2014";
-	PheNooImporter importer = new PheNooImporter();
+public class LondonDatastoreImporterLsoaAtlas extends AbstractTest {
+	private static final String DATASOURCE_ID = "lsoa-atlas";
+	LondonDatastoreImporter importer;
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E09000001");
+		TestFactory.makeNamedSubject("E01000001");
 	}
 
 	@Before
-	public void setDownloadUtils() {
+	public void before(){
+		importer = new LondonDatastoreImporter();
 		mockDownloadUtils(importer);
 	}
 	
@@ -30,14 +31,13 @@ public class PheNooImporterTest extends AbstractTest {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
 		List<Attribute> attributes = datasource.getTimedValueAttributes();
-		assertEquals(5, attributes.size());
+		assertEquals(3, attributes.size());
 	}
 	
 	@Test
 	public void testImportDatasource() throws Exception{
 		int datapoints = importer.importDatasource(DATASOURCE_ID);
 		
-		//FIXME: Find a way to match Gateshead etc.
-		assertEquals(5, datapoints);
+		assertEquals(4, datapoints);
 	}
 }

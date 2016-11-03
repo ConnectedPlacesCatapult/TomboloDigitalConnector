@@ -37,7 +37,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	public void testGetDatasource() throws Exception {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
-		List<Attribute> attributes = datasource.getAttributes();
+		List<Attribute> attributes = datasource.getTimedValueAttributes();
 		assertEquals(150, attributes.size());
 		
 		String a5Name = "1.02ii - School Readiness: The percentage of Year 1 pupils achieving the expected level in the phonics screening check";

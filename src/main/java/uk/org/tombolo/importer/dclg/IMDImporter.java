@@ -47,7 +47,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
                 datasource.setUrl("https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015");
                 datasource.setLocalDatafile("imd-2015.csv");
                 datasource.setRemoteDatafile("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv");
-                datasource.addAllAttributes(getAttributes());
+                datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
                 return null;
@@ -62,7 +62,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
         ProviderUtils.save(datasource.getProvider());
 
         // Save attributes
-        AttributeUtils.save(datasource.getAttributes());
+        AttributeUtils.save(datasource.getTimedValueAttributes());
 
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
@@ -83,10 +83,10 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
                 continue;
 
             List<TimedValue> timedValueBuffer = new ArrayList<>();
-            for (int i=0; i<datasource.getAttributes().size(); i++){
+            for (int i = 0; i<datasource.getTimedValueAttributes().size(); i++){
                 TimedValue timedValue = new TimedValue(
                         lsoa,
-                        datasource.getAttributes().get(i),
+                        datasource.getTimedValueAttributes().get(i),
                         timestamp,
                         Double.valueOf(records.get(0).get(i+4)));
                 timedValueBuffer.add(timedValue);

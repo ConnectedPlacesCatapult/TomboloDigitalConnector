@@ -42,7 +42,7 @@ public class IMDImporterTest extends AbstractTest {
 
         assertEquals("imd", datasource.getId());
         assertEquals("uk.gov.dclg", datasource.getProvider().getLabel());
-        assertEquals(53, datasource.getAttributes().size());
+        assertEquals(53, datasource.getTimedValueAttributes().size());
     }
 
     @Test

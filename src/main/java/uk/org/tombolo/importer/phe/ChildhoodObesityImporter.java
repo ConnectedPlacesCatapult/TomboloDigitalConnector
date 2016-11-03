@@ -65,7 +65,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         datasource.setRemoteDatafile("http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx");
         datasource.setLocalDatafile("PublicHealthEngland/20150511_MSOA_Ward_Obesity.xlsx");
 
-        datasource.addAllAttributes(getAttributes());
+        datasource.addAllTimedValueAttributes(getAttributes());
 
         return datasource;
     }

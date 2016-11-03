@@ -113,7 +113,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             if (parameterValue.startsWith("Reference"))
                 continue;
 
-            datasource.addAttribute(new Attribute(getProvider(), label, name, description, Attribute.DataType.numeric));
+            datasource.addTimedValueAttribute(new Attribute(getProvider(), label, name, description, Attribute.DataType.numeric));
         }
 
         return datasource;
