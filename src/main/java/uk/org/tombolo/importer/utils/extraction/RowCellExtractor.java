@@ -21,6 +21,8 @@ public class RowCellExtractor implements SingleValueExtractor {
 
     @Override
     public String extract() throws ExtractorException {
+        if (row == null)
+            throw new BlankCellException("Empty row");
         if (row.getCell(columnId) == null)
             throw new ExtractorException("Column with index "+columnId+" does not exit");
         if (row.getCell(columnId).getCellType() == CELL_TYPE_BLANK)

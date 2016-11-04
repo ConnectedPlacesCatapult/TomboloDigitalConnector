@@ -5,11 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.DatabaseJournal;
 import uk.org.tombolo.core.utils.ProviderUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractImporter implements Importer {
@@ -93,5 +97,28 @@ public abstract class AbstractImporter implements Importer {
 		// Save attributes
 		AttributeUtils.save(datasource.getTimedValueAttributes());
 		AttributeUtils.save(datasource.getFixedValueAttributes());
+	}
+
+	/**
+	 * Method for turning an enumeration of datasource identifiers into a List of Datasources.
+	 *
+	 * @param enumeration The enumeration
+	 * @param <T> The type of the enumeration
+	 * @return a List of datasources corresponding to the ids in the enumeration
+	 * @throws Exception
+	 */
+	protected <T extends Enum<T>> List<Datasource> datasourcesFromEnumeration(Class<T> enumeration) throws Exception{
+		List<Datasource> datasources = new ArrayList<>();
+		for(T datasourceId : (enumeration.getEnumConstants())){
+			datasources.add(getDatasource(datasourceId.name()));
+		}
+		return datasources;
+	}
+
+	public void saveBuffer(List<TimedValue> timedValueBuffer, int valueCount){
+		log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
+		TimedValueUtils.save(timedValueBuffer);
+		timedValueBuffer.clear();
+		log.info("Total values written: {}", valueCount);
 	}
 }

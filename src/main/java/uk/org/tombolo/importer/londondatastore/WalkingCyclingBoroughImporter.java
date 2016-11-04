@@ -36,11 +36,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
-        List<Datasource> datasources = new ArrayList<>();
-        for(DatasourceId datasourceId : DatasourceId.values()){
-            datasources.add(getDatasource(datasourceId.name()));
-        }
-        return datasources;
+        return datasourcesFromEnumeration(DatasourceId.class);
     }
 
     @Override
