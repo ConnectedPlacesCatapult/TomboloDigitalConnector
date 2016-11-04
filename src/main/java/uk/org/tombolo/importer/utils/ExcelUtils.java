@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ExcelUtils {
@@ -43,8 +44,9 @@ public class ExcelUtils {
 		List<TimedValue> timedValueBuffer = new ArrayList<>();
 
 		// Extract timed values
-		for (int rowId = 0; rowId < sheet.getLastRowNum()+1; rowId++) {
-			Row row = sheet.getRow(rowId);
+		Iterator<Row> rowIterator = sheet.iterator();
+		while (rowIterator.hasNext()) {
+			Row row = rowIterator.next();
 			for (TimedValueExtractor extractor : extractors) {
 				extractor.setRow(row);
 				try {

@@ -156,29 +156,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            Iterator<Row> rowIterator = sheet.rowIterator();
-            while(rowIterator.hasNext()){
-                Row row = rowIterator.next();
-                for (TimedValueExtractor extractor : timedValueExtractors){
-                    subjectExtractor.setRow(row);
-                    ((RowCellExtractor)extractor.getValueExtractor()).setRow(row);
-                    try {
-                        TimedValue timedValue = extractor.extract();
-                        timedValueBuffer.add(timedValue);
-                        valueCount++;
-                        if (valueCount % timedValueBufferSize == 0) {
-                            // Buffer is full ... we write values to db
-                            saveBuffer(timedValueBuffer, valueCount);
-                        }
-                    }catch (BlankCellException e){
-                        // We ignore this since there may be multiple blank cells in the data without having to worry
-                    }catch (ExtractorException e){
-                        log.warn("Could not extract value: {}",e.getMessage());
-                    }
-                }
-            }
+            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
         }
-        saveBuffer(timedValueBuffer, valueCount);
 
         return valueCount;
     }

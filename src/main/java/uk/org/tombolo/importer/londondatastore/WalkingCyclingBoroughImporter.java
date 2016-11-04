@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     public enum AttributeId {walk5xWeek,cycle1xWeek};
 
     ExcelUtils excelUtils;
+
+    private int timedValueBufferSize = 10000;
 
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
@@ -72,6 +75,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         Workbook workbook = excelUtils.getWorkbook(datasource);
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         List<TimedValue> timedValueBuffer = new ArrayList<>();
+        int valueCount = 0;
 
         // Extract walking
         ConstantExtractor walk5xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.walk5xWeek.name());
@@ -104,25 +108,8 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new ConstantExtractor("2014-12-31T23:59:59"),
                 new RowCellExtractor(40, Cell.CELL_TYPE_NUMERIC)
         ));
-        Iterator<Row> walkingIterator = workbook.getSheetAt(1).rowIterator();
-        walkingIterator.next();
-        walkingIterator.next();
-        walkingIterator.next();
-        walkingIterator.next();
-        while(walkingIterator.hasNext()){
-            Row row = walkingIterator.next();
-            subjectLabelExtractor.setRow(row);
-            for (TimedValueExtractor extractor : walk5xWeekExtractors){
-                ((RowCellExtractor)extractor.getValueExtractor()).setRow(row);
-                try {
-                    timedValueBuffer.add(extractor.extract());
-                }catch (UnknownSubjectLabelException e){
-                    // No worries if the subject does not exist
-                }catch (ExtractorException e){
-                    log.warn(e.getMessage());
-                }
-            }
-        }
+        Sheet walkSheet = workbook.getSheetAt(1);
+        valueCount += excelUtils.extractTimedValues(walkSheet, this, walk5xWeekExtractors, timedValueBufferSize);
 
         // Extract cycling
         ConstantExtractor cycle1xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.cycle1xWeek.name());
@@ -155,28 +142,10 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new ConstantExtractor("2014-12-31T23:59:59"),
                 new RowCellExtractor(38, Cell.CELL_TYPE_NUMERIC)
         ));
-        Iterator<Row> cyclingIterator = workbook.getSheetAt(2).rowIterator();
-        cyclingIterator.next();
-        cyclingIterator.next();
-        cyclingIterator.next();
-        cyclingIterator.next();
-        while(cyclingIterator.hasNext()){
-            Row row = cyclingIterator.next();
-            subjectLabelExtractor.setRow(row);
-            for (TimedValueExtractor extractor : cycle1xWeekExtractors){
-                ((RowCellExtractor)extractor.getValueExtractor()).setRow(row);
-                try {
-                    timedValueBuffer.add(extractor.extract());
-                }catch (UnknownSubjectLabelException e){
-                    // No worries if the subject does not exist
-                }catch (ExtractorException e){
-                    log.warn(e.getMessage());
-                }
-            }
-        }
+        Sheet cycleSheet = workbook.getSheetAt(2);
+        valueCount += excelUtils.extractTimedValues(cycleSheet, this, cycle1xWeekExtractors, timedValueBufferSize);
 
-        TimedValueUtils.save(timedValueBuffer);
-        return timedValueBuffer.size();
+        return valueCount;
     }
 
     private Attribute getAttribute(AttributeId attributeId){
