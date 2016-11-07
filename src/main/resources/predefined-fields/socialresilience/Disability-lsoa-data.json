@@ -1,0 +1,12 @@
+[
+  {
+    "//": "ONS Lower Super Output Areas",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "//": "QS303EW	Long-term health problem or disability",
+    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
+    "datasourceId": "QS303EW"
+  }
+]

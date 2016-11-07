@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BasicPredefinedFieldTest extends AbstractTest {
     private static final String RECIPE = "PredefinedFieldTest";
-    BasicPredefinedField field = new BasicPredefinedField("test_label", "Test name", RECIPE);
+    BasicPredefinedField field = new BasicPredefinedField("test_label", RECIPE);
 
     Subject subject;
 

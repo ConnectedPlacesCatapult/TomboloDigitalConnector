@@ -1,0 +1,32 @@
+{
+  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "label": "OvercrowdingResilience",
+  "name": "Overcrowding Resilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+    "divisorAttribute": {
+      "//": "Total: All categories: Occupancy rating (rooms)",
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "CL_0000127_1"
+    },
+    "dividendAttributes": [
+      {
+        "//": "Occupancy rating (rooms) of -1",
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000127_5"
+      },
+      {
+        "//": "Occupancy rating (rooms) of -2 or less",
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000127_6"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}

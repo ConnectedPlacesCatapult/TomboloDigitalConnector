@@ -31,7 +31,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     private Boolean inverse;
 
     private String label;
-    private String name;
     private SingleValueField field;
     private List<Double> percentiles;
 
@@ -42,7 +41,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             List<SubjectSpecification> normalizationSubjects,
             Integer percentileCount, Boolean inverse) {
         this.label = label;
-        this.name = name;
         this.valueField = valueField;
         this.normalizationSubjects = normalizationSubjects;
         this.percentileCount = percentileCount;

@@ -1,0 +1,37 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "label": "DisabilityResilence",
+        "recipe": "socialresilience/Disability-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "label": "OvercrowdingResilence",
+        "recipe": "socialresilience/Overcrowding-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "label": "CombinedSocialResilence",
+        "recipe": "socialresilience/CombinedSocialResilience-lsoa"
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
