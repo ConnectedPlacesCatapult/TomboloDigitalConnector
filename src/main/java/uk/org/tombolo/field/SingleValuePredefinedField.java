@@ -3,7 +3,9 @@ package uk.org.tombolo.field;
 import uk.org.tombolo.core.Subject;
 
 /**
- *
+ * This is an extension of the {@link BasicPredefinedField} in order to support the use of predefined fields in
+ * further calculations. E.g. in a field where we would like to algorithmically combine the values of two or more
+ * predefined fields.
  */
 public class SingleValuePredefinedField extends BasicPredefinedField implements Field, SingleValueField, PredefinedField{
 

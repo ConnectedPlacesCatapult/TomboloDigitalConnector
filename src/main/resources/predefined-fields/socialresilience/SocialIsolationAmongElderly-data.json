@@ -1,25 +1,31 @@
 [
   {
+    "//": "QS103EW	Age by single year",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS103EW"
   },
   {
+    "//": "QS405EW	Tenure - Households",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS405EW"
   },
   {
+    "//": "QS108EW	Living arrangements",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS108EW"
   },
   {
+    "//": "QS302EW	General health",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS302EW"
   },
   {
+    "//": "QS303EW	Long-term health problem or disability",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS303EW"
   },
   {
+    "//": "QS119EW	Households by deprivation dimensions",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS119EW"
   }

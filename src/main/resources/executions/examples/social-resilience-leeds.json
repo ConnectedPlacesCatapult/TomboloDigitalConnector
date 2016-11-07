@@ -19,19 +19,16 @@
       {
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "DisabilityResilence",
-        "name": "Disability Resilience",
         "recipe": "socialresilience/Disability-lsoa"
       },
       {
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "OvercrowdingResilence",
-        "name": "Overcrowding Resilience",
         "recipe": "socialresilience/Overcrowding-lsoa"
       },
       {
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "CombinedSocialResilence",
-        "name": "Combined Social Resilience",
         "recipe": "socialresilience/CombinedSocialResilience-lsoa"
       }
     ]

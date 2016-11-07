@@ -1,9 +1,11 @@
 [
   {
+    "//": "ONS Lower Super Output Areas",
     "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
     "datasourceId": "lsoa"
   },
   {
+    "//": "QS408EW	Occupancy rating (rooms)",
     "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
     "datasourceId": "QS408EW"
   }
