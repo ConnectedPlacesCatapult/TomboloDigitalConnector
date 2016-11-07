@@ -173,8 +173,6 @@ public class DataExportEngineTest extends AbstractTest {
 
         engine.execute(builder.build(), writer);
 
-        System.err.println(writer.toString());
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
