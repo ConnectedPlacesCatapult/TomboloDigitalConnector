@@ -42,11 +42,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
-		List<Datasource> datasources = new ArrayList<Datasource>();
-		for (DatasourceId datasourceId : DatasourceId.values()){
-			datasources.add(getDatasource(datasourceId.name()));
-		}
-		return datasources;
+		return datasourcesFromEnumeration(DatasourceId.class);
 	}
 
 	@Override

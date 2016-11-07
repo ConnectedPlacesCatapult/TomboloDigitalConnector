@@ -25,11 +25,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
-        List<Datasource> datasources = new ArrayList<Datasource>();
-        for (SubjectTypeLabel datasourceId : SubjectTypeLabel.values()){
-            datasources.add(getDatasource(datasourceId.name()));
-        }
-        return datasources;
+        return datasourcesFromEnumeration(SubjectTypeLabel.class);
     }
 
     @Override

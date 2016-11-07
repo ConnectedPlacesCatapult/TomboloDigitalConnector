@@ -45,11 +45,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
-        List<Datasource> datasources = new ArrayList<>();
-        for(DatasourceId datasourceId : DatasourceId.values()){
-            datasources.add(getDatasource(datasourceId.name()));
-        }
-        return datasources;
+        return datasourcesFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -74,9 +70,6 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     protected int importDatasource(Datasource datasource) throws Exception {
         if (excelUtils == null)
             initalize();
-
-        int valueCount = 0;
-        List<TimedValue> timedValueBuffer = new ArrayList<>();
 
         // Save Provider and Attributes
         saveProviderAndAttributes(datasource);
@@ -113,27 +106,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         }
 
         // Extract timed values
-        for (int rowId = 0; rowId < sheet.getLastRowNum()+1; rowId++) {
-            Row row = sheet.getRow(rowId);
-            for (TimedValueExtractor extractor : timedValueExtractors) {
-                subjectExtractor.setRow(row);
-                ((RowCellExtractor) extractor.getValueExtractor()).setRow(row);
-                try {
-                    TimedValue timedValue = extractor.extract();
-                    timedValueBuffer.add(timedValue);
-                    valueCount++;
-                    if (valueCount % timedValueBufferSize == 0) {
-                        // Buffer is full ... we write values to db
-                        saveBuffer(timedValueBuffer, valueCount);
-                    }
-                }catch (BlankCellException e){
-                    // We ignore this since there may be multiple blank cells in the data without having to worry
-                }catch (ExtractorException e){
-                    log.warn("Could not extract value: {}",e.getMessage());
-                }
-            }
-        }
-        saveBuffer(timedValueBuffer, valueCount);
+        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
 
         return valueCount;
     }
@@ -227,12 +200,5 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
     private void initalize(){
         excelUtils = new ExcelUtils(downloadUtils);
-    }
-
-    private static void saveBuffer(List<TimedValue> timedValueBuffer, int valueCount){
-        log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-        TimedValueUtils.save(timedValueBuffer);
-        timedValueBuffer.clear();
-        log.info("Total values written: {}", valueCount);
     }
 }

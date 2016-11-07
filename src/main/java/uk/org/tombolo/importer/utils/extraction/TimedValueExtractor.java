@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer.utils.extraction;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
@@ -37,7 +38,7 @@ public class TimedValueExtractor {
     public TimedValue extract() throws ExtractorException {
         Subject subject = SubjectUtils.getSubjectByLabel(subjectLabelExtractor.extract());
         if (subject == null)
-            throw new ExtractorException("Unknown subject: "+subjectLabelExtractor.extract());
+            throw new UnknownSubjectLabelException("Unknown subject: "+subjectLabelExtractor.extract());
         Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeLabelExtractor.extract());
         if (attribute == null)
             throw new ExtractorException("Unknown attribute: "+attributeLabelExtractor.extract());
@@ -52,5 +53,16 @@ public class TimedValueExtractor {
 
     public SingleValueExtractor getValueExtractor() {
         return valueExtractor;
+    }
+
+    public void setRow(Row row){
+        if (subjectLabelExtractor instanceof RowCellExtractor)
+            ((RowCellExtractor) subjectLabelExtractor).setRow(row);
+        if (attributeLabelExtractor instanceof RowCellExtractor)
+            ((RowCellExtractor) attributeLabelExtractor).setRow(row);
+        if (timestampExtractor instanceof RowCellExtractor)
+            ((RowCellExtractor) timestampExtractor).setRow(row);
+        if (valueExtractor instanceof RowCellExtractor)
+            ((RowCellExtractor) valueExtractor).setRow(row);
     }
 }
