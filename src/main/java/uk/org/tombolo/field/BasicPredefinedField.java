@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class BasicPredefinedField implements Field, PredefinedField {
     String label;
-    String name;
     String recipe;
     Field field;
     List<DatasourceSpecification> datasourceSpecifications;
@@ -33,9 +32,8 @@ public class BasicPredefinedField implements Field, PredefinedField {
     protected static final String fieldSpecPostfix = "-field.json";
     protected static final String fieldDataPostfix = "-data.json";
 
-    public BasicPredefinedField(String label, String name, String recipe){
+    public BasicPredefinedField(String label, String recipe){
         this.label = label;
-        this.name = name;
         this.recipe = recipe;
     }
 
@@ -62,7 +60,7 @@ public class BasicPredefinedField implements Field, PredefinedField {
         return label;
     }
 
-    private void initialize() {
+    protected void initialize() {
         String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());

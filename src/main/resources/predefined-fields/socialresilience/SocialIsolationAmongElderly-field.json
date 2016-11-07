@@ -4,18 +4,22 @@
   "name": "Social Isolation among Elderly",
   "fieldSpecifications": [
     {
+      "//": "Fraction of the population 65 or older",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000053.fraction_over_64",
       "divisorAttribute": {
+        "//": "Total: All categories: Age",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000053_1"
       },
       "dividendAttributes": [
         {
+          "//": "Age (T102A) - Age 65",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000053_67"
         },
         {
+          "//": "Age (T102A) - Age 66",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000053_68"
         },
@@ -148,108 +152,132 @@
           "attributeLabel": "CL_0000053_100"
         },
         {
+          "//": "Age (T102A) - Age 99",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000053_101"
         },
         {
+          "//": "Age (T102A) - Age 100 and over",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000053_102"
         }
       ]
     },
     {
+      "//": "Fraction of the population renting either in the social or private market",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000073.fraction_renting",
       "divisorAttribute": {
+        "//": "Total: All categories: Tenure",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000073_1"
       },
       "dividendAttributes": [
         {
+          "//": "Total: Social rented: Total",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000073_6"
         },
         {
+          "//": "Total: Private rented: Total",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000073_9"
         }
       ]
     },
     {
+      "//": "Fraction of population separated, divorced or widowed.",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000065.fraction_widowed_divorced_separated",
       "divisorAttribute": {
+        "//": "Total: All categories: Living arrangements ",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000065_1"
       },
       "dividendAttributes": [
         {
+          "//": "Not living in a couple: Separated (but still legally married or still legally in a same-sex civil partnership)",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000065_9"
         },
         {
+          "//": "Not living in a couple: Divorced or formerly in a same-sex civil partnership which is now legally dissolved",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000065_10"
         },
         {
+          "//": "Not living in a couple: Widowed or surviving partner from a same-sex civil partnership",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000065_11"
         }
       ]
     },
     {
+      "//": "Fraction of population suffering from bad or very bad health",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000010.fraction_bad_or_very_bad_health",
       "divisorAttribute": {
+        "//": "Total: All categories: General health",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000010_1"
       },
       "dividendAttributes": [
         {
+          "//": "Bad health",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000010_5"
         },
         {
+          "//": "Very bad health",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000010_6"
         }
       ]
     },
     {
+      "//": "Fraction of the population with some limitation of daily activities due to disability",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000004.fraction_limited",
       "divisorAttribute": {
+        "//": "Total: All categories: Long-term health problem or disability",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000004_1"
       },
       "dividendAttributes": [
         {
+          "//": "Day-to-day activities limited a lot",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000004_2"
         },
         {
+          "//": "Day-to-day activities limited a little",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000004_3"
         }
       ]
     },
     {
+      "//": "Fraction of households deprived in two or more dimensions",
       "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
       "label": "FCC.CL_0000178.fraction_deprived_2_or_more",
       "divisorAttribute": {
+        "//": "Total: All categories: Classification of household deprivation",
         "providerLabel": "uk.gov.ons",
         "attributeLabel": "CL_0000178_1"
       },
       "dividendAttributes": [
         {
+          "//": "Household is deprived in 2 dimensions",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000178_4"
         },
         {
+          "//": "Household is deprived in 3 dimensions",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000178_5"
         },
         {
+          "//": "Household is deprived in 4 dimensions",
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000178_6"
         }

@@ -1,0 +1,27 @@
+{
+  "//": "",
+  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "label": "DisabilityResilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+    "divisorAttribute": {
+      "//": "Total: All categories: Long-term health problem or disability",
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "CL_0000004_1"
+    },
+    "dividendAttributes": [
+      {
+        "//": "Long-term health problem or disability (T004A) - Day-to-day activities limited a lot",
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000004_2"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}
