@@ -45,7 +45,8 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
                 return datasource;
             case localAuthority:
                 datasource = new Datasource(datasourceIdObject.name(), getProvider(), "Local Authority", "Local Authority");
-                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/fb73373a89394f3b8d4c84b3d1b43de4_0.geojson");
+                datasource.setUrl("http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4");
+                datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson");
                 datasource.setLocalDatafile("localAuthority/Local_Authority_Districts_December_2011_Generalised_Clipped_Boundaries_in_Great_Britain.geojson");
                 return datasource;
             default:
