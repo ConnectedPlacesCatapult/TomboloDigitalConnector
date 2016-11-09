@@ -10,6 +10,7 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -21,6 +22,10 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new OpenSpaceNetworkImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
+        Properties props = new Properties();
+        props.put("openSpaceNetworkUsername", "tombolo");
+        props.put("openSpaceNetworkPassword", "Catapult16");
+        importer.configure(props);
     }
 
     @Test

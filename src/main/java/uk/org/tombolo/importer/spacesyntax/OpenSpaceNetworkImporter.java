@@ -12,6 +12,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
+import uk.org.tombolo.importer.ConfigurationException;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -39,10 +40,20 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
+    protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
+    protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
 
     @Override
     public Provider getProvider() {
         return PROVIDER;
+    }
+
+    @Override
+    public void verifyConfiguration() throws ConfigurationException {
+        if (properties.getProperty(PROP_USERNAME) == null)
+            throw new ConfigurationException("Property "+PROP_USERNAME+" not defined");
+        if (properties.getProperty(PROP_PASSWORD) == null)
+            throw new ConfigurationException("Property "+PROP_PASSWORD+" not defined");
     }
 
     @Override
@@ -113,8 +124,8 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         params.put("port", 5432);
         params.put("schema", getSchemaNameForDatasource(datasource));
         params.put("database", "tombolo");
-        params.put("user", "tombolo");
-        params.put("passwd", "Catapult16");
+        params.put("user", properties.getProperty(PROP_USERNAME));
+        params.put("passwd", properties.getProperty(PROP_PASSWORD));
 
         return params;
     }
