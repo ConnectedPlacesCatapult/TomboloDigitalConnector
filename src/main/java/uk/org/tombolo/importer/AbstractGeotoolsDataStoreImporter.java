@@ -1,11 +1,15 @@
 package uk.org.tombolo.importer;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureReader;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.operation.projection.ProjectionException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,115 +20,146 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
-public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter implements GeotoolsDataStoreImporter {
+public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(AbstractGeotoolsDataStoreImporter.class);
 
-    private int fixedValueBufferSize = 10000;
-    private int timedValueBufferSize = 10000;
+    private int bufferThreshold = 10000;
 
-    public int importDatasource(Datasource datasource) throws Exception {
+    private List<TimedValue> timedValueBuffer = new ArrayList<>();
+    private List<FixedValue> fixedValueBuffer = new ArrayList<>();
+    List<Subject> subjectBuffer = new ArrayList<>();
+
+    protected abstract Map<String, Object> getParamsForDatasource(Datasource datasource);
+    protected abstract Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature);
+    protected abstract String getSourceEncoding();
+    protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
+    protected abstract String getTypeNameForDatasource(Datasource datasource);
+
+    final public int importDatasource(Datasource datasource) throws Exception {
         // Save provider and attributes
         saveProviderAndAttributes(datasource);
 
         DataStore dataStore = getDataStoreForDatasource(datasource);
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTypeNameForDatasource(datasource));
 
         // Load attribute values
-        loadSubjects(datasource, dataStore, getSubjectType());
-        return loadValues(dataStore, datasource, getSubjectType());
+        int counter = withSubjects(featureReader, dataStore, (feature, subject) -> {
+            timedValueBuffer.addAll(buildTimedValuesFromFeature(datasource, feature, subject));
+            fixedValueBuffer.addAll(buildFixedValuesFromFeature(datasource, feature, subject));
+        });
+
+        featureReader.close();
+        dataStore.dispose();
+
+        return counter;
     }
 
-    public DataStore getDataStoreForDatasource(Datasource datasource) throws IOException {
-        return DataStoreFinder.getDataStore(getParamsForDatasource(datasource));
+    private int withSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, DataStore dataStore, BiConsumer<SimpleFeature, Subject> fn) throws IOException, FactoryException, TransformException {
+        MathTransform crsTransform = GeotoolsDataStoreUtils.makeCrsTransform(getSourceEncoding());
+        int valueCounter = 0;
+
+        while(featureReader.hasNext()) {
+            SimpleFeature feature = featureReader.next();
+            buildSubjectFromFeature(feature, crsTransform).ifPresent(subject -> {
+                fn.accept(feature, subject);
+                subjectBuffer.add(subject);
+            });
+            valueCounter += flushBufferIfRequired();
+        }
+
+        valueCounter += flushBuffer();
+
+        log.info("Total values written: {}", valueCounter);
+        return valueCounter;
     }
 
-    public <T> T withFeatureReaderForDatasource(Datasource datasource, Function<FeatureReader<SimpleFeatureType, SimpleFeature>, T> fn) throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(getDataStoreForDatasource(datasource), getTableNameForDatasource(datasource));
+    private Optional<Geometry> extractNormalizedGeometry(SimpleFeature feature, MathTransform crsTransform) throws TransformException {
         try {
-            return fn.apply(featureReader);
-        } finally {
-            featureReader.close();
+            Geometry geom = (Geometry) feature.getDefaultGeometry();
+            Geometry transformedGeom = JTS.transform(geom, crsTransform);
+            transformedGeom.setSRID(Subject.SRID);
+            return Optional.of(transformedGeom);
+        } catch (ProjectionException e) {
+            log.warn("Rejecting feature {}. You will see this if you have assertions enabled (e.g. " +
+                    "you run with `-ea`) as GeoTools runs asserts. See source of GeotoolsDataStoreUtils for details on this. " +
+                    "To fix this, replace `-ea` with `-ea -da:org.geotools...` in your test VM options (probably in" +
+                    "your IDE) to disable assertions in GeoTools.", feature.getID());
+            return Optional.empty();
         }
     }
 
-    protected abstract String getTableNameForDatasource(Datasource datasource);
-
-    private int loadSubjects(Datasource datasource, DataStore dataStore, SubjectType subjectType) throws SQLException, IOException, FactoryException, TransformException {
-        return withFeatureReaderForDatasource(datasource, featureReader -> {
-            try {
-                List<Subject> subjects = GeotoolsDataStoreUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
-                SubjectUtils.save(subjects);
-                return subjects.size();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return 0;
-            }
+    private Optional<Subject> buildSubjectFromFeature(SimpleFeature feature, MathTransform crsTransform) throws TransformException {
+        Optional<Geometry> optionalGeometry = extractNormalizedGeometry(feature, crsTransform);
+        return optionalGeometry.flatMap(geometry -> {
+            Subject subject = applyFeatureAttributesToSubject(new Subject(), feature);
+            subject.setShape(geometry);
+            return Optional.of(subject);
         });
     }
 
-    private int loadValues(DataStore dataStore, Datasource datasource, SubjectType subjectType) throws IOException {
-        FeatureReader featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTableNameForDatasource(datasource));
-        int fixedValueCounter = 0;
-        List<FixedValue> fixedValueBuffer = new ArrayList<>();
-        int timedValueCounter = 0;
-        List<TimedValue> timedValueBuffer = new ArrayList<>();
+    private List<TimedValue> buildTimedValuesFromFeature(Datasource datasource, SimpleFeature feature, Subject subject) {
+        LocalDateTime modified = getTimestampForFeature(feature);
+        List<TimedValue> timedValues = new ArrayList<>();
 
-        while (featureReader.hasNext()){
-            SimpleFeature feature = (SimpleFeature) featureReader.next();
-            Subject subject = SubjectUtils.getSubjectByLabel(getFeatureSubjectLabel(feature, subjectType));
-            LocalDateTime modified = getTimestampForFeature(feature);
-
-            for (Attribute attribute : datasource.getFixedValueAttributes()){
-                if (feature.getAttribute(attribute.getLabel()) == null)
-                    continue;
-                String value = feature.getAttribute(attribute.getLabel()).toString();
-                fixedValueBuffer.add(new FixedValue(subject, attribute, value));
-                fixedValueCounter++;
-                // Flushing  buffer if full
-                if (fixedValueCounter % fixedValueBufferSize == 0)
-                    saveFixedValues(fixedValueCounter, fixedValueBuffer);
-            }
-
-            for (Attribute attribute : datasource.getTimedValueAttributes()){
-                if (feature.getAttribute(attribute.getLabel()) == null)
-                    continue;
-                Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
-                timedValueBuffer.add(new TimedValue(subject, attribute, modified, value));
-                timedValueCounter++;
-                // Flushing buffer if full
-                if (timedValueCounter % timedValueBufferSize == 0)
-                    saveTimedValues(timedValueCounter, timedValueBuffer);
-            }
+        for (Attribute attribute : datasource.getTimedValueAttributes()){
+            if (feature.getAttribute(attribute.getLabel()) == null)
+                continue;
+            Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
+            timedValues.add(new TimedValue(subject, attribute, modified, value));
         }
 
-        saveTimedValues(timedValueCounter, timedValueBuffer);
-        saveFixedValues(fixedValueCounter, fixedValueBuffer);
-        featureReader.close();
-
-        return timedValueCounter + fixedValueCounter;
+        return timedValues;
     }
 
-    protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
+    private List<FixedValue> buildFixedValuesFromFeature(Datasource datasource, SimpleFeature feature, Subject subject) {
+        List<FixedValue> fixedValues = new ArrayList<>();
 
-    private void saveTimedValues(int valueCounter, List<TimedValue> timedValueBuffer){
+        for (Attribute attribute : datasource.getFixedValueAttributes()){
+            if (feature.getAttribute(attribute.getLabel()) == null)
+                continue;
+            String value = feature.getAttribute(attribute.getLabel()).toString();
+            fixedValues.add(new FixedValue(subject, attribute, value));
+        }
+
+        return fixedValues;
+    }
+
+    protected DataStore getDataStoreForDatasource(Datasource datasource) throws IOException {
+        return DataStoreFinder.getDataStore(getParamsForDatasource(datasource));
+    }
+
+    private int flushBufferIfRequired(){
+        int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size() + subjectBuffer.size();
+        if (bufferSize > bufferThreshold) {
+            return flushBuffer();
+        } else {
+            return 0;
+        }
+    }
+
+    private int flushBuffer() {
+        int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size();  // This isn't a bug — we don't count the subjects we've saved
+
+        // We must save the subjects first
+        log.info("Preparing to write a batch of {} subjects ...", subjectBuffer.size());
+        SubjectUtils.save(subjectBuffer);
+        subjectBuffer.clear();
+
         log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());
         TimedValueUtils.save(timedValueBuffer);
         timedValueBuffer.clear();
 
-        log.info("Total values written: {}", valueCounter);
-    }
-
-    private void saveFixedValues(int valueCounter, List<FixedValue> fixedValueBuffer){
         log.info("Preparing to write a batch of {} fixed values ...", fixedValueBuffer.size());
         FixedValueUtils.save(fixedValueBuffer);
         fixedValueBuffer.clear();
 
-        log.info("Total values written: {}", valueCounter);
+        return bufferSize;
     }
 }

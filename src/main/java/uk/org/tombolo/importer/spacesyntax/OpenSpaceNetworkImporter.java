@@ -1,25 +1,18 @@
 package uk.org.tombolo.importer.spacesyntax;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
-import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
-import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -65,7 +58,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
 
         DataStore dataStore = getDataStoreForDatasource(datasource);
-        SimpleFeatureType schema = dataStore.getSchema(getTableNameForDatasource(datasource));
+        SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
         Iterator<AttributeType> typeIterator = schema.getTypes().iterator();
 
         // Attributes
@@ -113,24 +106,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         return datasource;
     }
 
-
-    @Override
-    public SubjectType getSubjectType() {
-        return SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
-    }
-
-    @Override
-    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
-    }
-
-    @Override
-    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
-    }
-
-    @Override
-    public Map<String, Object> getParamsForDatasource(Datasource datasource) {
+    protected Map<String, Object> getParamsForDatasource(Datasource datasource) {
         Map<String, Object> params = new HashMap<>();
         params.put("dbtype", "postgis");
         params.put("host", "spacesyntax.gistemp.com");
@@ -143,21 +119,29 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         return params;
     }
 
+    @Override
+    protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
+        subject.setSubjectType(SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph"));
+        subject.setLabel(feature.getName()+":"+feature.getID());
+        subject.setName(feature.getName()+":"+feature.getID());
+        return subject;
+    }
+
     private String getSchemaNameForDatasource(Datasource datasource) {
         return datasource.getId().split("\\.")[0];
     }
 
-    protected String getTableNameForDatasource(Datasource datasource) {
+    public String getTypeNameForDatasource(Datasource datasource) {
         return datasource.getId().split("\\.")[1];
     }
 
     @Override
-    protected LocalDateTime getTimestampForFeature(SimpleFeature feature) {
+    public LocalDateTime getTimestampForFeature(SimpleFeature feature) {
         return ((Timestamp) feature.getAttribute("time_modified")).toLocalDateTime();
     }
 
     @Override
-    public String getEncoding() {
+    public String getSourceEncoding() {
         return "EPSG:27700";
     }
 }

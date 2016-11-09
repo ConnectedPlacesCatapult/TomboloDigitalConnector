@@ -6,7 +6,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.spacesyntax.OpenSpaceNetworkImporter;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
@@ -24,41 +23,34 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
         @Override
-        protected String getTableNameForDatasource(Datasource datasource) {
+        public String getTypeNameForDatasource(Datasource datasource) {
             return datasource.getId();
         }
 
         @Override
-        protected LocalDateTime getTimestampForFeature(SimpleFeature feature) {
+        public LocalDateTime getTimestampForFeature(SimpleFeature feature) {
             return TimedValueUtils.parseTimestampString((String) feature.getAttribute("time_modified"));
         }
 
         @Override
-        public SubjectType getSubjectType() {
-            return SubjectTypeUtils.getOrCreate("example", "Test Example");
-        }
-
-        @Override
-        public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-            return "example-feature:" + feature.getID();
-        }
-
-        @Override
-        public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-            return "Example feature: " + feature.getID();
-        }
-
-        @Override
-        public String getEncoding() {
+        public String getSourceEncoding() {
             return "EPSG:27700";
         }
 
-        @Override
+
         public Map<String, Object> getParamsForDatasource(Datasource datasource) {
             Map<String, Object> params = new HashMap<>();
             URL storeUrl = ClassLoader.getSystemResource("datacache/TomboloData/com.spacesyntax/osn/" + datasource.getId() + ".json");
             params.put("url", storeUrl);
             return params;
+        }
+
+        @Override
+        protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
+            subject.setSubjectType(SubjectTypeUtils.getOrCreate("example", "Test Example"));
+            subject.setLabel("example-feature:" + feature.getID());
+            subject.setName("Example feature: " + feature.getID());
+            return subject;
         }
 
         @Override

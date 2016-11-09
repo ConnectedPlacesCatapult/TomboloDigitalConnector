@@ -56,9 +56,9 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         int importedCount = importer.importDatasource("milton_keynes.osm_polyline_processed");
         assertEquals(69489, importedCount);
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.56079");
+        Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
 
-        assertEquals("osm_polyline_processed:osm_polyline_processed.56079", streetSegment.getName());
+        assertEquals("osm_polyline_processed:osm_polyline_processed.12", streetSegment.getName());
         assertEquals("SSxNode", streetSegment.getSubjectType().getLabel());
         assertEquals(-0.734972, streetSegment.getShape().getCentroid().getX(), 1.0E-6);
         assertEquals(52.043647, streetSegment.getShape().getCentroid().getY(), 1.0E-6);
