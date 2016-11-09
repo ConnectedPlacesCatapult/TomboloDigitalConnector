@@ -104,22 +104,13 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
         }
 
         saveTimedValues(timedValueCounter, timedValueBuffer);
+        saveFixedValues(fixedValueCounter, fixedValueBuffer);
         featureReader.close();
 
         return timedValueCounter + fixedValueCounter;
     }
 
     protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
-
-    @Override
-    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
-    }
-
-    @Override
-    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
-    }
 
     private void saveTimedValues(int valueCounter, List<TimedValue> timedValueBuffer){
         log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());

@@ -4,12 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.spacesyntax.OpenSpaceNetworkImporter;
 
 import java.net.URL;
@@ -17,12 +13,14 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.junit.Assert.*;
 
 public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     TestGeotoolsDataStoreImporter importer;
+    Consumer<Datasource> datasourceSetup = (o) -> {};
 
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
         @Override
@@ -38,6 +36,16 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         @Override
         public SubjectType getSubjectType() {
             return SubjectTypeUtils.getOrCreate("example", "Test Example");
+        }
+
+        @Override
+        public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
+            return "example-feature:" + feature.getID();
+        }
+
+        @Override
+        public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
+            return "Example feature: " + feature.getID();
         }
 
         @Override
@@ -66,7 +74,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         @Override
         public Datasource getDatasource(String datasourceId) throws Exception {
             Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, datasourceId);
-            datasource.addTimedValueAttribute(new Attribute(getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+            datasourceSetup.accept(datasource);
             return datasource;
         }
     }
@@ -78,8 +86,48 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testImportDatasource() throws Exception {
+    public void testImportDatasourceImportsSubjects() throws Exception {
+        int importedCount = importer.importDatasource("osm_polyline_processed");
+        assertEquals(0, importedCount);
+
+        Subject subject = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+
+        assertEquals("Example feature: feature-0", subject.getName());
+        assertEquals("example", subject.getSubjectType().getLabel());
+        assertEquals(-0.691220, subject.getShape().getCentroid().getX(), 1.0E-6);
+        assertEquals(52.053400, subject.getShape().getCentroid().getY(), 1.0E-6);
+    }
+
+    @Test
+    public void testImportDatasourceImportsTimedAttributes() throws Exception {
+        datasourceSetup = datasource -> {
+            datasource.addTimedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+        };
         int importedCount = importer.importDatasource("osm_polyline_processed");
         assertEquals(25, importedCount);
+
+        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+
+        // Test fixed values
+        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        List<TimedValue> angularCostValues = TimedValueUtils.getBySubjectAndAttribute(streetSegment, angularCostAttribute);
+        assertEquals(angularCostValues.size(), 1);
+        assertEquals(4.880167, angularCostValues.get(0).getValue(), 1.0E-6);
+    }
+
+    @Test
+    public void testImportDatasourceImportsFixedAttributes() throws Exception {
+        datasourceSetup = datasource -> {
+            datasource.addFixedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+        };
+        int importedCount = importer.importDatasource("osm_polyline_processed");
+        assertEquals(25, importedCount);
+
+        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+
+        // Test fixed values
+        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        FixedValue angularCostValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, angularCostAttribute);
+        assertEquals("4.88016738443536", angularCostValue.getValue());
     }
 }

@@ -120,6 +120,16 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     }
 
     @Override
+    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
+        return feature.getName()+":"+feature.getID();
+    }
+
+    @Override
+    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
+        return feature.getName()+":"+feature.getID();
+    }
+
+    @Override
     public Map<String, Object> getParamsForDatasource(Datasource datasource) {
         Map<String, Object> params = new HashMap<>();
         params.put("dbtype", "postgis");
