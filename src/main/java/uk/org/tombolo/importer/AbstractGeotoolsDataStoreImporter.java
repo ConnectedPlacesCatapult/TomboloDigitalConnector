@@ -8,6 +8,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.operation.projection.ProjectionException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -21,12 +22,22 @@ import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
 
+/**
+ * AbstractGeotoolsDataStoreImporter.java
+ * This is an abstract importer that can be extended to import any sort of
+ * Geotools DataStore. This includes GeoJSON and PostGIS now but you can add
+ * any DataStore dependency you like and it should work seamlessly (but more
+ * likely than not you might discover it needs tweaking).
+ *
+ * Your responsibility as an implementer is to implement all the abstract
+ * methods, and then populate the Datasource objects returned by getDatasource
+ * with the relevant Attributes. The methods on this class will do all of the
+ * importing for you based on this information. This is possible because all
+ * Geotools DataStores have roughly the same form and can be treated similarly.
+ */
 public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(AbstractGeotoolsDataStoreImporter.class);
 
@@ -36,12 +47,66 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
     private List<FixedValue> fixedValueBuffer = new ArrayList<>();
     List<Subject> subjectBuffer = new ArrayList<>();
 
+    /**
+     * getParamsForDatasource
+     * Returns a params object that will be passed to the Geotools DataStoreFinder.
+     * These are often not well documented, but you should be able to scour some
+     * examples from the docs for your given DataStore.
+     * @param datasource The datasource being imported
+     * @return A map of params for DataStoreFinder
+     */
     protected abstract Map<String, Object> getParamsForDatasource(Datasource datasource);
+
+    /**
+     * applyFeatureAttributesToSubject
+     * Passed a Subject and a Feature, builds out the attributes on the subject
+     * based presumably on the attributes of the feature.
+     * @param subject An empty subject
+     * @param feature A geographic feature
+     * @return The given subject
+     */
     protected abstract Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature);
+
+    /**
+     * getSourceEncoding
+     * Returns a string representing the coordinate system the source dataset
+     * is in. This will be used to normalize it to a common coordinate system.
+     * @return A string representing a coordinate system (e.g. "EPSG:27700")
+     */
     protected abstract String getSourceEncoding();
+
+    /**
+     * getTimestampForFeature
+     * Given a geographic feature, return the timestamp for use in its
+     * TimedValues
+     * @param feature A geographic feature
+     * @return A timestamp for the feature's TimedValues
+     */
     protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
+
+    /**
+     * getTypeNameForDatasource
+     * In Geotools world each DataStore has a list of types, which are analogous
+     * to tables in a database. This method returns the name of the type that
+     * should be imported for a given datasource. More often than not there will
+     * only be one type, and it might be the name of a table, or the name of
+     * the file.
+     * @param datasource The datasource being imported
+     * @return The name of the type to import
+     */
     protected abstract String getTypeNameForDatasource(Datasource datasource);
 
+    /**
+     * getAttributesForDatasource
+     * Returns a list of attribute types for a datasource. If your DataStore was
+     * a database, this would return the columns in the table to be imported.
+     * You will probably use this when setting up the attributes on the Datasource.
+     * Note that these are Geotools AttributeTypes and have nothing to do with
+     * Tombolo's Attribute objects.
+     * @param datasource The datasource being imported
+     * @return A list of attributes for the datasource
+     * @throws IOException
+     */
     protected List<AttributeType> getAttributesForDatasource(Datasource datasource) throws IOException {
         DataStore dataStore = getDataStoreForDatasource(datasource);
         SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
