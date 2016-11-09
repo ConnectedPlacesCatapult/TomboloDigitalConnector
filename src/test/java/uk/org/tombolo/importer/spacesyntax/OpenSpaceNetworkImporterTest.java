@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.spacesyntax;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
@@ -23,8 +24,8 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         importer = new OpenSpaceNetworkImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
         Properties props = new Properties();
-        props.put("openSpaceNetworkUsername", "tombolo");
-        props.put("openSpaceNetworkPassword", "Catapult16");
+        props.put("openSpaceNetworkUsername", "");
+        props.put("openSpaceNetworkPassword", ""); // Fill these in if you want to run the @Ignored tests
         importer.configure(props);
     }
 
@@ -42,7 +43,12 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(0,datasources.size());
     }
 
-    @Test
+
+    // These next two are @Ignored because they contact a live PostGIS server.
+    // Don't be surprised if when you connect them up again the data has changed
+    // — ideally you'll get the tests working before your change, then check
+    // they work again after the change.
+    @Test @Ignore
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("milton_keynes.osm_polyline_processed");
 
@@ -56,7 +62,7 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(5, datasource.getFixedValueAttributes().size());
     }
 
-    @Test
+    @Test @Ignore
     public void importDatasource() throws Exception {
         int importedCount = importer.importDatasource("milton_keynes.osm_polyline_processed");
         assertEquals(69489, importedCount);
