@@ -15,9 +15,7 @@ import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.GeotoolsDataStoreImporter;
-import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
 import java.io.IOException;
@@ -44,13 +42,10 @@ import java.util.*;
  *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
  *
  */
-public class OpenSpaceNetworkImporter extends AbstractImporter implements Importer, GeotoolsDataStoreImporter {
+public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
-
-    private int fixedValueBufferSize = 10000;
-    private int timedValueBufferSize = 10000;
 
     @Override
     public Provider getProvider() {
@@ -119,78 +114,13 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
     }
 
 
-    public int importDatasource(Datasource datasource) throws Exception {
-        SubjectType subjectType = SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
-
-        // Save provider and attributes
-        saveProviderAndAttributes(datasource);
-
-        DataStore dataStore = getDataStoreForDatasource(datasource);
-
-        // Load attribute values
-        loadSubjects(datasource, dataStore, subjectType);
-        return loadValues(dataStore, datasource, subjectType);
+    @Override
+    public SubjectType getSubjectType() {
+        return SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph");
     }
 
-    private int loadSubjects(Datasource datasource, DataStore dataStore, SubjectType subjectType) throws SQLException, IOException, FactoryException, TransformException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTableNameForDatasource(datasource));
-        List<Subject> subjects = GeotoolsDataStoreUtils.convertFeaturesToSubjects(featureReader, subjectType, this);
-        SubjectUtils.save(subjects);
-        featureReader.close();
-
-        return subjects.size();
-    }
-
-    private int loadValues(DataStore dataStore, Datasource datasource, SubjectType subjectType) throws IOException {
-        FeatureReader featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTableNameForDatasource(datasource));
-        int fixedValueCounter = 0;
-        List<FixedValue> fixedValueBuffer = new ArrayList<>();
-        int timedValueCounter = 0;
-        List<TimedValue> timedValueBuffer = new ArrayList<>();
-
-        while (featureReader.hasNext()){
-            SimpleFeature feature = (SimpleFeature) featureReader.next();
-            Subject subject = SubjectUtils.getSubjectByLabel(getFeatureSubjectLabel(feature, subjectType));
-            LocalDateTime modified = ((Timestamp) feature.getAttribute("time_modified")).toLocalDateTime();
-
-            for (Attribute attribute : datasource.getFixedValueAttributes()){
-                if (feature.getAttribute(attribute.getLabel()) == null)
-                    continue;
-                String value = feature.getAttribute(attribute.getLabel()).toString();
-                fixedValueBuffer.add(new FixedValue(subject, attribute, value));
-                fixedValueCounter++;
-                // Flushing  buffer if full
-                if (fixedValueCounter % fixedValueBufferSize == 0)
-                    saveFixedValues(fixedValueCounter, fixedValueBuffer);
-            }
-
-            for (Attribute attribute : datasource.getTimedValueAttributes()){
-                if (feature.getAttribute(attribute.getLabel()) == null)
-                    continue;
-                Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
-                timedValueBuffer.add(new TimedValue(subject, attribute, modified, value));
-                timedValueCounter++;
-                // Flushing buffer if full
-                if (timedValueCounter % timedValueBufferSize == 0)
-                    saveTimedValues(timedValueCounter, timedValueBuffer);
-            }
-        }
-
-        saveTimedValues(timedValueCounter, timedValueBuffer);
-        featureReader.close();
-
-        return timedValueCounter + fixedValueCounter;
-    }
-
-    private String getSchemaNameForDatasource(Datasource datasource) {
-        return datasource.getId().split("\\.")[0];
-    }
-
-    private String getTableNameForDatasource(Datasource datasource) {
-        return datasource.getId().split("\\.")[1];
-    }
-
-    private DataStore getDataStoreForDatasource(Datasource datasource) throws IOException {
+    @Override
+    public Map<String, Object> getParamsForDatasource(Datasource datasource) {
         Map<String, Object> params = new HashMap<>();
         params.put("dbtype", "postgis");
         params.put("host", "spacesyntax.gistemp.com");
@@ -200,33 +130,20 @@ public class OpenSpaceNetworkImporter extends AbstractImporter implements Import
         params.put("user", "tombolo");
         params.put("passwd", "Catapult16");
 
-        return DataStoreFinder.getDataStore(params);
+        return params;
     }
 
-    private void saveTimedValues(int valueCounter, List<TimedValue> timedValueBuffer){
-        log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());
-        TimedValueUtils.save(timedValueBuffer);
-        timedValueBuffer.clear();
-
-        log.info("Total values written: {}", valueCounter);
+    private String getSchemaNameForDatasource(Datasource datasource) {
+        return datasource.getId().split("\\.")[0];
     }
 
-    private void saveFixedValues(int valueCounter, List<FixedValue> fixedValueBuffer){
-        log.info("Preparing to write a batch of {} fixed values ...", fixedValueBuffer.size());
-        FixedValueUtils.save(fixedValueBuffer);
-        fixedValueBuffer.clear();
-
-        log.info("Total values written: {}", valueCounter);
+    protected String getTableNameForDatasource(Datasource datasource) {
+        return datasource.getId().split("\\.")[1];
     }
 
     @Override
-    public String getFeatureSubjectLabel(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
-    }
-
-    @Override
-    public String getFeatureSubjectName(SimpleFeature feature, SubjectType subjectType) {
-        return feature.getName()+":"+feature.getID();
+    protected LocalDateTime getTimestampForFeature(SimpleFeature feature) {
+        return ((Timestamp) feature.getAttribute("time_modified")).toLocalDateTime();
     }
 
     @Override
