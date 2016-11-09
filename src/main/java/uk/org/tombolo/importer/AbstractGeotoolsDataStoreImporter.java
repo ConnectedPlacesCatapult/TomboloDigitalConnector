@@ -42,6 +42,12 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
     protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
     protected abstract String getTypeNameForDatasource(Datasource datasource);
 
+    protected List<AttributeType> getAttributesForDatasource(Datasource datasource) throws IOException {
+        DataStore dataStore = getDataStoreForDatasource(datasource);
+        SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
+        return schema.getTypes();
+    }
+
     final public int importDatasource(Datasource datasource) throws Exception {
         // Save provider and attributes
         saveProviderAndAttributes(datasource);

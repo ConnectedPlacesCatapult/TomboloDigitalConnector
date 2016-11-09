@@ -68,9 +68,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
         Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
 
-        DataStore dataStore = getDataStoreForDatasource(datasource);
-        SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
-        Iterator<AttributeType> typeIterator = schema.getTypes().iterator();
+        Iterator<AttributeType> typeIterator = getAttributesForDatasource(datasource).iterator();
 
         // Attributes
         List<Attribute> timedValueAttributes = new ArrayList<>();
