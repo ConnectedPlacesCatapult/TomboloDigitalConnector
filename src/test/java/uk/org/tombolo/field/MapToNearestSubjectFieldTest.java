@@ -14,7 +14,7 @@ import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
 import java.util.Collections;
 
-public class GeographicProximityFieldTest extends AbstractTest {
+public class MapToNearestSubjectFieldTest extends AbstractTest {
     private Subject subject;
     private Subject nearbySubject;
 
@@ -31,7 +31,7 @@ public class GeographicProximityFieldTest extends AbstractTest {
         nearbySubject.setShape(TestFactory.makePointGeometry(0.09d, 0d)); // Just inside the given radius
         SubjectUtils.save(Collections.singletonList(nearbySubject));
 
-        GeographicProximityField field = new GeographicProximityField("aLabel", "localAuthority", 0.1d, makeFieldSpec());
+        MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", "localAuthority", 0.1d, makeFieldSpec());
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
@@ -49,7 +49,7 @@ public class GeographicProximityFieldTest extends AbstractTest {
         nearbySubject.setShape(TestFactory.makePointGeometry(0.0009d, 0d)); // Just inside the default radius
         SubjectUtils.save(Collections.singletonList(nearbySubject));
 
-        GeographicProximityField field = new GeographicProximityField("aLabel", "localAuthority", null, makeFieldSpec());
+        MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", "localAuthority", null, makeFieldSpec());
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +

@@ -11,19 +11,19 @@ import java.util.List;
 /**
  *
  */
-public class GeographicProximityField implements Field, SingleValueField, ParentField {
+public class MapToNearestSubjectField implements Field, SingleValueField, ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final String label;
-    private final String proximalSubjectType;
+    private final String nearestSubjectType;
     private final FieldSpecification fieldSpecification;
     private Double maxRadius;
     private SingleValueField field;
 
-    GeographicProximityField(String label, String proximalSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
+    MapToNearestSubjectField(String label, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
         this.label = label;
         this.maxRadius = maxRadius;
-        this.proximalSubjectType = proximalSubjectType;
+        this.nearestSubjectType = nearestSubjectType;
         this.fieldSpecification = fieldSpecification;
     }
 
@@ -53,12 +53,12 @@ public class GeographicProximityField implements Field, SingleValueField, Parent
     }
 
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
-        Subject nearestSubject = SubjectUtils.subjectNearestSubject(proximalSubjectType, subject, maxRadius);
+        Subject nearestSubject = SubjectUtils.subjectNearestSubject(nearestSubjectType, subject, maxRadius);
         if (nearestSubject == null) {
             throw new IncomputableFieldException(String.format(
                     "Subject %s has no nearby subjects of type %s, but should have 1",
                     subject.getName(),
-                    proximalSubjectType));
+                    nearestSubjectType));
         }
 
         return nearestSubject;
