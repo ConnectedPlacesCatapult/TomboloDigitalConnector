@@ -8,19 +8,19 @@ import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 
-import static org.junit.Assert.*;
+import java.util.Collections;
 
 public class GeographicProximityFieldTest extends AbstractTest {
     private Subject subject;
-    private GeographicProximityField field;
+    private Subject nearbySubject;
 
     @Before
     public void setUp() {
-        field = new GeographicProximityField("aLabel", "localAuthority", 0.001d, makeFieldSpec());
-        TestFactory.makeNamedSubject("E09000001"); // Subject nearby the subject below
+        nearbySubject = TestFactory.makeNamedSubject("E09000001");
         subject = TestFactory.makeNamedSubject("E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
@@ -28,6 +28,10 @@ public class GeographicProximityFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubject() throws Exception {
+        nearbySubject.setShape(TestFactory.makePointGeometry(0.09d, 0d)); // Just inside the given radius
+        SubjectUtils.save(Collections.singletonList(nearbySubject));
+
+        GeographicProximityField field = new GeographicProximityField("aLabel", "localAuthority", 0.1d, makeFieldSpec());
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: {" +
@@ -37,7 +41,25 @@ public class GeographicProximityFieldTest extends AbstractTest {
                 "      }" +
                 "    ]" +
                 "  }"+
-                "}",jsonString,false);
+                "}", jsonString,false);
+    }
+
+    @Test
+    public void testJsonValueForSubjectWithNullMaxRadius() throws Exception {
+        nearbySubject.setShape(TestFactory.makePointGeometry(0.0009d, 0d)); // Just inside the default radius
+        SubjectUtils.save(Collections.singletonList(nearbySubject));
+
+        GeographicProximityField field = new GeographicProximityField("aLabel", "localAuthority", null, makeFieldSpec());
+        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        JSONAssert.assertEquals("{" +
+                "  aLabel: {" +
+                "    attr_label: [" +
+                "      {" +
+                "        value: 100.0" +
+                "      }" +
+                "    ]" +
+                "  }"+
+                "}", jsonString,false);
     }
 
     private FieldSpecification makeFieldSpec() {

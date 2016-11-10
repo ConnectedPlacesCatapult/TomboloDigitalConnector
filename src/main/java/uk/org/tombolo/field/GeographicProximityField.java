@@ -13,20 +13,24 @@ import java.util.stream.Collectors;
  *
  */
 public class GeographicProximityField implements Field, ParentField {
+    private static final Double DEFAULT_MAX_RADIUS = 0.01;
+
     private final String label;
     private final String proximalSubjectType;
     private final FieldSpecification fieldSpecification;
-    private final Double radius;
     private Field field;
+    private Double maxRadius;
 
-    GeographicProximityField(String label, String proximalSubjectType, Double radius, FieldSpecification fieldSpecification) {
+    GeographicProximityField(String label, String proximalSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
         this.label = label;
+        this.maxRadius = maxRadius;
         this.proximalSubjectType = proximalSubjectType;
-        this.radius = radius;
         this.fieldSpecification = fieldSpecification;
     }
 
     public void initialize() {
+        // Initialize maxRadius with a default value
+        if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
             this.field = fieldSpecification.toField();
         } catch (ClassNotFoundException e) {
@@ -50,7 +54,7 @@ public class GeographicProximityField implements Field, ParentField {
     }
 
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
-        Subject nearestSubject = SubjectUtils.subjectNearestSubject(proximalSubjectType, subject, radius);
+        Subject nearestSubject = SubjectUtils.subjectNearestSubject(proximalSubjectType, subject, maxRadius);
         if (nearestSubject == null) {
             throw new IncomputableFieldException(String.format(
                     "Subject %s has no nearby subjects of type %s, but should have 1",
