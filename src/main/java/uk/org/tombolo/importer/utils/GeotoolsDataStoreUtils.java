@@ -18,9 +18,7 @@ import uk.org.tombolo.importer.Importer;
 
 import java.io.IOException;
 
-public abstract class GeotoolsDataStoreUtils extends AbstractImporter implements Importer {
-    private static Logger log = LoggerFactory.getLogger(GeotoolsDataStoreUtils.class);
-
+public abstract class GeotoolsDataStoreUtils {
     public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(DataStore store, String typeName) throws IOException {
         DefaultQuery query = new DefaultQuery(typeName);
         return store.getFeatureReader(query, Transaction.AUTO_COMMIT);
