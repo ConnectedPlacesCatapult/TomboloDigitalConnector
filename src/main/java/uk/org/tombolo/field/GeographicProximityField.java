@@ -7,19 +7,18 @@ import uk.org.tombolo.execution.spec.FieldSpecification;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
  */
-public class GeographicProximityField implements Field, ParentField {
+public class GeographicProximityField implements Field, SingleValueField, ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final String label;
     private final String proximalSubjectType;
     private final FieldSpecification fieldSpecification;
-    private Field field;
     private Double maxRadius;
+    private SingleValueField field;
 
     GeographicProximityField(String label, String proximalSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
         this.label = label;
@@ -32,7 +31,7 @@ public class GeographicProximityField implements Field, ParentField {
         // Initialize maxRadius with a default value
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
-            this.field = fieldSpecification.toField();
+            this.field = (SingleValueField) fieldSpecification.toField();
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
@@ -69,5 +68,11 @@ public class GeographicProximityField implements Field, ParentField {
     public List<Field> getChildFields() {
         if (null == field) { initialize(); }
         return Collections.singletonList(field);
+    }
+
+    @Override
+    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+        return field.valueForSubject(
+                getSubjectProximalToSubject(subject));
     }
 }
