@@ -9,8 +9,7 @@ and urban models.
 * [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
-* [System Architecture](#system-architecture)
-* [Data model](#data-model)
+* [Documentation](#documentation)
 
 ## Quick start
 
@@ -163,55 +162,9 @@ docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
 ```
 
-## System Architecture
+## Documentation
 
-![Use cases and connector](documentation/images/use-cases-connector.png)
-
-![High level system architecture](documentation/images/high-level-system-architecture.png)
-
-![Data importing](documentation/images/data-importing.png)
-
-## Data model
-
-**Provider** is a data object representing sources of data. 
-A provider could be a governmental source of data, such as ONS; 
-or a private but publicly available data source, such as Twitter feeds. 
-In the future we may extend it to represent internal processes for aggregating or manipulating data, 
-such as a process that aggregates age distribution data from the ONS Census 
-and generates statistics on the fraction of the population that is 65 or older.
-
-* _label:_ a unique label for the provider
-* _name:_ a name of the provider
-
-
-**Subject** is a data object representing any type of subject or entity, 
-which can include geographic objects, individuals and businesses. 
-
-* _label:_ a unique label for the subject.
-* _name:_ a name of the subject.
-* _entity type:_ type of the subject (e.g. point, street segment, building, lsoa, msoa, local authority, individual, business, etc.)
-* _geometry:_ in case the subject has an associated geometry
-
-**Attribute** is a data object representing anything that could be measured or calculated, 
-such as population density, CO2 concentration, obesity rate, etc. 
-There are two fundamentally different types of attributes: 
-Prime Attributes representing data that is imported from data providers; 
-and Derived Attributes representing data that has been derived by processes running within the Digital Connector.
-Currently we only support Prime Attributes in our implemntation, 
-but going forwared we might extend it to handle Derived Attributes.
-
-* _provider:_ For prime attributes this refer to the organisation or source of the data values for this attribute. 
-For derived attributes this refers to the internal process that generated the values for this attribute.
-* _label:_ a label of the attribute, unique for each provider
-* _name:_ name of the attribute (e.g. Population density, Obesity rate, CO2 concentration, etc.)
-* _datatype:_ datatype of the attribute (e.g. integer, float, string, etc.)
-
-**Timed Value** is a data object representing the value of an attribute for a certain subject, taken at a certain time point.
-
-* _subject_id:_ foreign key to a Subject
-* _attribute id:_ foreign key to Attribute
-* _timestamp:_ time point (or interval) to which the value refers (e.g. 2015-03-04T10:33:44Z, 2015, March 2015, etc.)
-* _value:_ the actual value
+For further information see the [documentation section](documentation/README.md)
 
 
 ## Useful database queries
