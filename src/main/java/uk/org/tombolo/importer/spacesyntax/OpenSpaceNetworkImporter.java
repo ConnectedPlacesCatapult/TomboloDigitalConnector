@@ -1,8 +1,6 @@
 package uk.org.tombolo.importer.spacesyntax;
 
-import org.geotools.data.DataStore;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,22 +17,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * Importer for Space Syntax shapefiles.
- * This importer is different from the other importers in the sense that there is no online dataset that it imports.
- * The importer tries to import a local data file.
+ * Importer for Space Syntax PostGIS database tables
  *
- * Some questions and assumptions:
- *
- * - In the shapefile, all features are road segments (nodes).
- *   Therefore we do not import any edges.
- *   That is anyway not needed at this stage since in this sort of graphs all the graph algorithmic stuff has been done.
- *
- * - In the shapefile there are no information about road name, road type, etc.
- *   We should ask Space Syntax to add this sort of data if possible.
- *
- * - The feature name called Demptmap_R is assumed to be a unique id for the node in the graph.
- *   Hence the subject id that is created is a combination of shapefile name and the Depthmap_R field.
- *
+ * Takes a datasource id of the form "schema_name.table_name"
  */
 public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
@@ -64,7 +49,6 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
         Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
 
@@ -137,10 +121,13 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     }
 
     private String getSchemaNameForDatasource(Datasource datasource) {
+        // E.g. for milton_keynes.osm_polyline_processed this returns milton_keynes
         return datasource.getId().split("\\.")[0];
     }
 
-    public String getTypeNameForDatasource(Datasource datasource) {
+    protected String getTypeNameForDatasource(Datasource datasource) {
+        // E.g. for milton_keynes.osm_polyline_processed this returns osm_polyline_processed
+        // Analogous to the table name in the PostGIS database
         return datasource.getId().split("\\.")[1];
     }
 
