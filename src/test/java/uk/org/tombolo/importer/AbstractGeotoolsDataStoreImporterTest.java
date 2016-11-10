@@ -21,6 +21,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     TestGeotoolsDataStoreImporter importer;
     Consumer<Datasource> datasourceSetup = (o) -> {};
 
+    // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
         @Override
         public String getTypeNameForDatasource(Datasource datasource) {
