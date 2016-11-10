@@ -9,7 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * MapToNearestSubjectField.java
+ * This field will find the nearest subject of a given SubjectType and then
+ * evaluate the fieldSpec with that new subject. For example, if the
+ * nearestSubjectType is 'Street' and it is given a subject representing a
+ * building, it will evaluate the fieldSpec with a subject representing the
+ * Street that building is on (notwithstanding oddities in the data)
  */
 public class MapToNearestSubjectField implements Field, SingleValueField, ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
