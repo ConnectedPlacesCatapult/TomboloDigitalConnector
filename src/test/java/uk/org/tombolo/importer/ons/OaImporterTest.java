@@ -69,8 +69,8 @@ public class OaImporterTest extends AbstractTest {
 
         assertEquals("Hartlepool", localAuthority.getName());
         assertEquals("localAuthority", localAuthority.getSubjectType().getLabel());
-        assertEquals(-1.2591631128836016, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
-        assertEquals(54.669375064286605, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(100, importedCount);
+        assertEquals(-1.2592784934731256, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(54.66957856523336, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(7, importedCount);
     }
 }
