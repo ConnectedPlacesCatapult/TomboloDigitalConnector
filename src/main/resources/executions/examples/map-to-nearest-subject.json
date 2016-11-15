@@ -1,0 +1,48 @@
+// We want to work out the correlation between the number of taxis passing by a
+// road sensor, and the angular cost of the road segment that sensor is on
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        "subjectType" : "sensor"
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "Milton Keynes"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.spacesyntax.OpenSpaceNetworkImporter",
+        "datasourceId" : "ssx_polyline_shapefile"
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.LatestValueField",
+        "label": "CountPedalCycles",
+        "attribute": {
+          "providerLabel" : "uk.gov.dft",
+          "attributeLabel" : "CountCarsTaxis"
+        }
+      },
+      // We use 'nearest road segment' as a means to determine which segment
+      // the sensor is on
+      {
+        "fieldClass": "uk.org.tombolo.field.MapToNearestSubjectField",
+        "label": "SSxNode",
+        "nearestSubjectType": "SSxNode",
+        "maxRadius": 0.001,
+        "fieldSpecification": {
+          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "label": "angularCost",
+          "attribute": {
+            "providerLabel": "com.spacesyntax",
+            "attributeLabel": "ABWC_N"
+          }
+        }
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+}

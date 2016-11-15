@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SubjectUtilsTest extends AbstractTest {
@@ -145,7 +146,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	}
 
 	@Test
-	public void testSubjectsWithinSubjectReturnsNullOnNoContainingSubject() throws Exception {
+	public void testSubjectsWithinSubjectReturnsEmptyOnNoContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
 		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
 		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
@@ -154,5 +155,43 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		List<Subject> returnedSubjects = SubjectUtils.subjectsWithinSubject("localAuthority", islingtonLsoa);
 		assertEquals(0, returnedSubjects.size());
+	}
+
+	@Test
+	public void testSubjectNearestSubjectReturnsNearestSubject() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(100.005d, 100d)); // make this one further
+		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100.002d, 100d)); // make this one nearer
+		SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa, islingtonLsoa));
+
+		Subject returnedSubject = SubjectUtils.subjectNearestSubject("lsoa", cityOfLondon, 0.01d);
+		assertEquals(cityOfLondonLsoa, returnedSubject);
+	}
+
+	@Test
+	public void testSubjectNearestSubjectReturnsOnlySubjectsWithinRadius() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(100.1d, 100d)); // make this one outside the radius
+		SubjectUtils.save(Arrays.asList(cityOfLondon, islingtonLsoa));
+
+		Subject returnedSubject = SubjectUtils.subjectNearestSubject("lsoa", cityOfLondon, 0.01d);
+		assertNull(returnedSubject);
+	}
+
+	@Test
+	public void testSubjectNearestSubjectReturnsNullOnWrongSubjectType() throws Exception {
+		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
+		islingtonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them very nearby
+		SubjectUtils.save(Arrays.asList(cityOfLondon, islingtonLsoa));
+
+		Subject returnedSubject = SubjectUtils.subjectNearestSubject("msoa", cityOfLondon, 1d);
+		assertNull(returnedSubject);
 	}
 }
