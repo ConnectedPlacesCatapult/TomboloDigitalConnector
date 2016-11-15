@@ -108,9 +108,14 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
      * @throws IOException
      */
     protected List<AttributeType> getAttributesForDatasource(Datasource datasource) throws IOException {
-        DataStore dataStore = getDataStoreForDatasource(datasource);
-        SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
-        return schema.getTypes();
+        DataStore dataStore = null;
+        try {
+            dataStore = getDataStoreForDatasource(datasource);
+            SimpleFeatureType schema = dataStore.getSchema(getTypeNameForDatasource(datasource));
+            return schema.getTypes();
+        } finally {
+            if (null != dataStore) dataStore.dispose();
+        }
     }
 
     final public int importDatasource(Datasource datasource) throws Exception {
