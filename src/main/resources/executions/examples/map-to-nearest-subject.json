@@ -1,4 +1,4 @@
-// We want to work out the correlation between the number of bikes passing by a
+// We want to work out the correlation between the number of taxis passing by a
 // road sensor, and the angular cost of the road segment that sensor is on
 {
   "datasetSpecification" : {
@@ -23,7 +23,7 @@
         "label": "CountPedalCycles",
         "attribute": {
           "providerLabel" : "uk.gov.dft",
-          "attributeLabel" : "CountPedalCycles"
+          "attributeLabel" : "CountCarsTaxis"
         }
       },
       // We use 'nearest road segment' as a means to determine which segment
