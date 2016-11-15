@@ -1,5 +1,6 @@
-// We want to work out the correlation between the number of taxis passing by a
-// road sensor, and the angular cost of the road segment that sensor is on
+// We want to work out the correlation between the number of cars (incl. taxis)
+// passing by a road sensor, and the angular cost of the road segment that sensor
+// is on
 {
   "datasetSpecification" : {
     "subjectSpecification" : [
