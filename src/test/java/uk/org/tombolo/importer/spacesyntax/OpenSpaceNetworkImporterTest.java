@@ -58,8 +58,11 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertNull(datasource.getLocalDatafile());
         assertNull(datasource.getRemoteDatafile());
 
-        assertEquals(1, datasource.getTimedValueAttributes().size());
-        assertEquals(5, datasource.getFixedValueAttributes().size());
+        assertEquals(0, datasource.getTimedValueAttributes().size());
+        assertEquals(6, datasource.getFixedValueAttributes().size());
+
+        assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), "os_road_ids");
+        assertEquals(datasource.getFixedValueAttributes().get(0).getName(), "os road ids");
     }
 
     @Test @Ignore
@@ -87,11 +90,9 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         FixedValue osRoadIdsValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, osRoadIdsAttribute);
         assertEquals("{114eecf0-4d7a-4c61-9ce0-63cfdeaca735}", osRoadIdsValue.getValue());
 
-        // Test timed values
         Attribute angularCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
-        List<TimedValue> angularCosts = TimedValueUtils.getBySubjectAndAttribute(streetSegment, angularCost);
-        assertEquals(1, angularCosts.size());
-        assertEquals(4.12235391281414, angularCosts.get(0).getValue(), 1.0E-6);
+        FixedValue angularCosts = FixedValueUtils.getBySubjectAndAttribute(streetSegment, angularCost);
+        assertEquals("4.12235391281414", angularCosts.getValue());
     }
 
 }

@@ -27,6 +27,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
+    static final List<String> NON_ATTRIBUTE_COLUMNS = Arrays.asList("geom", "id", "time_modified");
 
     @Override
     public Provider getProvider() {
@@ -52,45 +53,27 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
         Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
 
+        // Add the attributes
         Iterator<AttributeType> typeIterator = getAttributesForDatasource(datasource).iterator();
-
-        // Attributes
         List<Attribute> timedValueAttributes = new ArrayList<>();
         List<Attribute> fixedValueAttributes = new ArrayList<>();
+
+
         while (typeIterator.hasNext()) {
             AttributeType type = typeIterator.next();
             String columnName = type.getName().toString();
-            switch (columnName) {
-                case "geom":
-                    // The geometry is not a proper attribute
-                    break;
-                case "id":
-                    // This is an id and we store that as part of the subject
-                    break;
-                case "time_modified":
-                    break;
-                case "os_road_ids":
-                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "OS Road IDs", "", Attribute.DataType.string));
-                    break;
-                case "os_meridian_ids":
-                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "OS Meridian IDs", "", Attribute.DataType.string));
-                    break;
-                case "road_classes":
-                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road classes", "", Attribute.DataType.string));
-                    break;
-                case "road_numbers":
-                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road numbers", "", Attribute.DataType.string));
-                    break;
-                case "road_names":
-                    fixedValueAttributes.add(new Attribute(getProvider(), columnName, "Road names", "", Attribute.DataType.string));
-                    break;
-                case "abwc_n":
-                    timedValueAttributes.add(new Attribute(getProvider(), columnName, "Angular Cost", "", Attribute.DataType.numeric));
-                    break;
-                default:
-                    // Any attribute that we do not know we assume is a timed value attribute
-                    timedValueAttributes.add(new Attribute(getProvider(), columnName, columnName, "", Attribute.DataType.numeric));
+            if (NON_ATTRIBUTE_COLUMNS.contains(columnName)) { continue; }
+            Attribute attribute = new Attribute();
+            attribute.setProvider(getProvider());
+            attribute.setLabel(columnName);
+            attribute.setName(columnName.replace("_", " "));
+            if (null != type.getDescription()) {
+                attribute.setDescription(type.getDescription().toString());
+            } else {
+                // If no description, we'll just duplicate the name
+                attribute.setDescription(attribute.getName());
             }
+            fixedValueAttributes.add(attribute);
         }
 
         datasource.addAllTimedValueAttributes(timedValueAttributes);
