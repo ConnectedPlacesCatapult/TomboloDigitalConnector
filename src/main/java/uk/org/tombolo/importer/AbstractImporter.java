@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractImporter implements Importer {
+	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
+	protected static final Integer BUFFER_THRESHOLD = 10000;
+
 	private static final Logger log = LoggerFactory.getLogger(AbstractImporter.class);
 	protected Properties properties = new Properties();
 	protected DownloadUtils downloadUtils;

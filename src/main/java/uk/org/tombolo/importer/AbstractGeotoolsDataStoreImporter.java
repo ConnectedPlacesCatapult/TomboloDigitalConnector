@@ -41,8 +41,6 @@ import java.util.function.BiConsumer;
 public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(AbstractGeotoolsDataStoreImporter.class);
 
-    private int bufferThreshold = 10000;
-
     private List<TimedValue> timedValueBuffer = new ArrayList<>();
     private List<FixedValue> fixedValueBuffer = new ArrayList<>();
     List<Subject> subjectBuffer = new ArrayList<>();
@@ -213,7 +211,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
 
     private int flushBufferIfRequired(){
         int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size() + subjectBuffer.size();
-        if (bufferSize > bufferThreshold) {
+        if (bufferSize > BUFFER_THRESHOLD) {
             return flushBuffer();
         } else {
             return 0;

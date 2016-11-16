@@ -41,8 +41,6 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
     private ExcelUtils excelUtils;
 
-    private static final int timedValueBufferSize = 100000;
-
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
         return datasourcesFromEnumeration(DatasourceId.class);
@@ -106,7 +104,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         }
 
         // Extract timed values
-        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
+        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
 
         return valueCount;
     }
