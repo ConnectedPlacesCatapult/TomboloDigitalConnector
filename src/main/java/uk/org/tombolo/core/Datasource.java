@@ -13,8 +13,8 @@ public class Datasource {
 	String remoteDatafile;		// Remote datafile
 	String localDatafile; 		// Location of the local version of the datafile
 
-	List<Attribute> timedValueAttributes = new ArrayList<>();;
-	List<Attribute> fixedValueAttributes = new ArrayList<>();;
+	List<Attribute> timedValueAttributes = new ArrayList<>();
+	List<Attribute> fixedValueAttributes = new ArrayList<>();
 	
 	public Datasource(String id, Provider provider, String name, String description){
 		this.id = id;
@@ -61,25 +61,6 @@ public class Datasource {
 
 	public List<Attribute> getFixedValueAttributes() {
 		return fixedValueAttributes;
-	}
-
-	/**
-	 * This function is deprecated since it is only used in the deprecated ExcelImporter
-	 *
-	 * @param label
-	 * @return
-	 */
-	@Deprecated
-	public Attribute getAttributeByLabel(String label){
-		for (Attribute attribute : timedValueAttributes){
-			if (label.equals(attribute.getLabel()))
-				return attribute;
-		}
-		for (Attribute attribute : fixedValueAttributes){
-			if (label.equals(attribute.getLabel()))
-				return attribute;
-		}
-		return null;
 	}
 	
 	public String getUrl() {
