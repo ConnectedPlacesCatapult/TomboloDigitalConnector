@@ -6,3 +6,7 @@ apiKeyOns=<INSERT-YOUR-API-KEY-HERE>
 ! https://api.tfl.gov.uk/
 apiIdTfl=<INSERT-YOUR-API-ID-HERE>
 apiKeyTfl=<INSERT-YOUR-API-KEY-HERE>
+
+! Space Syntax OpenSpaceNework Authentication
+openSpaceNetworkUsername=<INSERT-YOUR-OSN-POSTGIS-USERNAME-HERE>
+openSpaceNetworkPassword=<INSERT-YOUR-OSN-POSTGIS-PASSWORD-HERE>
