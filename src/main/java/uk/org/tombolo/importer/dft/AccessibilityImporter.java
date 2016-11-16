@@ -60,8 +60,6 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             "Travel time, destination and origin indicators to Town centres by mode of travel"
     };
 
-    private int timedValueBufferSize = 1000000;
-
     ExcelUtils excelUtils;
 
     @Override
@@ -156,7 +154,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
+            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
 
         return valueCount;

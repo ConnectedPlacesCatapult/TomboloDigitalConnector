@@ -84,8 +84,6 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	
 	private static final Logger log = LoggerFactory.getLogger(TrafficCountImporter.class);
 
-	protected int timedValueBufferSize = 10000;
-
 	public TrafficCountImporter() {
 		if (regions == null)
 			regions = Arrays.asList(REGIONS);
@@ -228,7 +226,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			timedValueBuffer.add(heavyGoodsVehicleCount);
 			valueCounter++;
 
-			if (timedValueBuffer.size() > timedValueBufferSize)
+			if (timedValueBuffer.size() > BUFFER_THRESHOLD)
 				flush(timedValueBuffer, valueCounter);
 
 		}
