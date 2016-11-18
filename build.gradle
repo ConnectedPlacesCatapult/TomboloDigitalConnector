@@ -95,8 +95,10 @@ task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
 
 		def argumentsSet = project.hasProperty('dataExportSpecificationPath') && project.hasProperty('dataExportOutputPath') && project.hasProperty('correlationAnalysisOutputPath');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
+		if (!project.hasProperty('forceImports')) { ext.forceImports = "" }
 
-		args(dataExportSpecificationPath, dataExportOutputPath, correlationAnalysisOutputPath)
+		args(dataExportSpecificationPath, dataExportOutputPath, correlationAnalysisOutputPath, forceImports, clearDatabaseCache)
 	}
 }
 

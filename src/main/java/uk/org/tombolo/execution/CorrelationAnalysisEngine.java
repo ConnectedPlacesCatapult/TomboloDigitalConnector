@@ -58,6 +58,9 @@ public class CorrelationAnalysisEngine {
             for (FieldSpecification fieldSpecification : fieldSpecifications) {
                 String fieldLabel = fieldSpecification.toField().getLabel();
                 try {
+                    // In case there are multiple values with different timestamp we take the latest.
+                    // This is just a heuristics that we choose for generalisation purposes.
+                    // In most practical cases the output will be a SingleValueField
                     JsonArray values = properties.getAsJsonArray(fieldLabel);
                     LocalDateTime latestTimestamp = LocalDateTime.parse(
                             ((JsonObject)values.get(0)).getAsJsonPrimitive("timestamp").getAsString(),
@@ -65,6 +68,7 @@ public class CorrelationAnalysisEngine {
                     Double latestValue = ((JsonObject)values.get(0)).getAsJsonPrimitive("value").getAsDouble();
 
                     for (int i=1; i<values.size(); i++){
+                        // There are more than one value so we check if it is newer than the latest one
                         LocalDateTime timestamp = LocalDateTime.parse(
                                 ((JsonObject)values.get(i)).getAsJsonPrimitive("timestamp").getAsString(),
                                 TimedValueId.DATE_TIME_FORMATTER);

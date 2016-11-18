@@ -37,6 +37,9 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
         String dataExportSpecificationPath = args[0];
         String dataExportOutputPath = args[1];
         String correlationAnalysisOutputPath = args[2]; // We might want to extend this directory
+        String forceImports = args[3];
+        Boolean clearDatabaseCache = Boolean.parseBoolean(args[4]);
+
 
         // Loading the data export specification for future use
         DataExportSpecification dataExportSpecification =
@@ -51,7 +54,7 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
         // If datafile does not exist create it
         if (!Files.exists(Paths.get(dataExportOutputPath))){
             DataExportRunner.run(dataExportSpecificationPath, dataExportOutputPath,
-                    "", Boolean.FALSE);
+                    forceImports, clearDatabaseCache);
         }
 
         List<FieldSpecification> fieldSpecifications
@@ -65,12 +68,14 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
     }
 
     private static void validateArguments(String[] args){
-        if (args.length != 3){
-            log.error("Use: {} {} {} {}",
+        if (args.length != 5){
+            log.error("Use: {} {} {} {} {} {}",
                     CorrelationAnalysisRunner.class.getCanonicalName(),
                     "dataExportSpecificationFile",
                     "dataExportOutputFile",
-                    "correlationAnalysisOutputFile");
+                    "correlationAnalysisOutputFile",
+                    "forceImports",
+                    "clearDatabaseCache");
         }
     }
 }
