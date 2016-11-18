@@ -25,6 +25,11 @@ public class DataExportRunner extends AbstractRunner {
         String forceImports = args[2];
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
 
+        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache);
+    }
+
+    protected static void run(String executionSpecPath, String outputFile,
+                              String forceImports, Boolean clearDatabaseCache) throws Exception {
         HibernateUtil.startup();
         if (clearDatabaseCache) {
             DatabaseUtils.clearAllData();
@@ -59,7 +64,7 @@ public class DataExportRunner extends AbstractRunner {
         }
     }
 
-    private static DataExportSpecification getSpecification(String specificationPath) throws IOException {
+    protected static DataExportSpecification getSpecification(String specificationPath) throws IOException {
         File file = new File(specificationPath);
         if (!file.exists()){
             log.error("File not found: {}", specificationPath);
