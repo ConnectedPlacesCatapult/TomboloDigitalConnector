@@ -37,8 +37,6 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
 
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
-    private static final int timedValueBufferSize = 100000;
-
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
         return datasourcesFromEnumeration(DatasourceId.class);
@@ -88,7 +86,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
                     timestampExtractor,
                     valueExtractor));
         }
-        return excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
+        return excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
     }
 
     private List<Attribute> getAttributes() {
