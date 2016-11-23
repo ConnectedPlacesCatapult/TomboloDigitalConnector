@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.execution.CorrelationAnalysisEngine;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
 import java.nio.file.Files;
@@ -45,12 +46,6 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
         DataExportSpecification dataExportSpecification =
                 DataExportRunner.getSpecification(dataExportSpecificationPath);
 
-        // Exit if the specified exporter is not GeoJsonExporter
-        if (!dataExportSpecification.getExporterClass().equals(GeoJsonExporter.class.getCanonicalName())){
-            log.error("At the moment we only support GeoJson intermeditate export");
-            System.exit(1);
-        }
-
         // If datafile does not exist create it
         if (!Files.exists(Paths.get(dataExportOutputPath))){
             DataExportRunner.run(dataExportSpecificationPath, dataExportOutputPath,
@@ -61,7 +56,14 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
                 = dataExportSpecification.getDatasetSpecification().getFieldSpecification();
 
         // Read in data file
-        RealMatrix matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(dataExportOutputPath, fieldSpecifications);
+        RealMatrix matrix;
+        if (dataExportSpecification.getExporterClass().equals(GeoJsonExporter.class.getCanonicalName())){
+            matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(dataExportOutputPath, fieldSpecifications);
+        }else if(dataExportSpecification.getExporterClass().equals(CSVExporter.class.getCanonicalName())){
+            matrix = CorrelationAnalysisEngine.readCSVDataExport(dataExportOutputPath, fieldSpecifications);
+        }else {
+            throw new Error("Unknown exporter class for intermdiate data");
+        }
 
         // Calculate and output correlations
         CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fieldSpecifications, correlationAnalysisOutputPath);

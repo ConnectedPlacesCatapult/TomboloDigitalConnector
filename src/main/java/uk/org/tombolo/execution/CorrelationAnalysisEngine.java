@@ -5,16 +5,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,6 +27,55 @@ import java.util.List;
  * Execution engine for the correlation analysis
  */
 public class CorrelationAnalysisEngine {
+
+    /**
+     * Reads in a Data Export file in CSV format and turns it into a RealMatrix having a column for each field
+     * in the fields specification and a row for each subject in the data export that has a non-NaN value for
+     * each of the fields.
+     *
+     * @param dataExportOutputPath is the location of the otput data.
+     * @param fieldSpecifications is a list of field specifications to use in the correlation calculation.
+     * @return a matrix of the subject values for the different fields
+     * @throws ClassNotFoundException is thrown if the FieldSpecification cannot be cast to a Field
+     * @throws IOException if there is a problem reading the data export output file
+     */
+    public static RealMatrix readCSVDataExport(String dataExportOutputPath, List<FieldSpecification> fieldSpecifications)
+            throws ClassNotFoundException, IOException {
+
+        CSVParser csvParser = CSVParser.parse(new File(dataExportOutputPath), StandardCharsets.UTF_8, CSVFormat.DEFAULT.withHeader());
+
+        Iterator<CSVRecord> csvRecords = csvParser.iterator();
+        List<List<Double>> valueMatrix = new ArrayList<>();
+        while (csvRecords.hasNext()){
+            CSVRecord csvRecord = csvRecords.next();
+            List<Double> valueList = new ArrayList<>();
+            for (FieldSpecification fieldSpecification : fieldSpecifications) {
+                String fieldLabel = fieldSpecification.toField().getLabel();
+                try {
+                    Double value = Double.parseDouble(csvRecord.get(fieldLabel));
+                    if (!value.isNaN()) {
+                        valueList.add(value);
+                    }else{
+                        valueList = null;
+                        break;
+                    }
+                }catch (NumberFormatException e){
+                    // Not a number
+                    valueList = null;
+                    break;
+                }catch (IllegalArgumentException e){
+                    // Too few arguments
+                    valueList = null;
+                    break;
+                }
+            }
+            if (valueList!= null && valueList.size() == fieldSpecifications.size()){
+                // The value list is the same size as the number of fields
+                valueMatrix.add(valueList);
+            }
+        }
+        return valueMatrixToRealMatrix(valueMatrix, fieldSpecifications);
+    }
 
     /**
      * Reads in a Data Export file in GeoJson format and turns it into a RealMatrix having a column for each field
@@ -105,6 +157,10 @@ public class CorrelationAnalysisEngine {
         jsonReader.close();
 
         // Turn the valueMatrix List into a RealMatrix
+        return valueMatrixToRealMatrix(valueMatrix, fieldSpecifications);
+    }
+
+    private static RealMatrix valueMatrixToRealMatrix(List<List<Double>> valueMatrix, List<FieldSpecification> fieldSpecifications){
         RealMatrix matrix = new BlockRealMatrix(valueMatrix.size(), fieldSpecifications.size());
         for(int i=0; i<valueMatrix.size(); i++){
             // The i-th subject with non NaN values for all fields
