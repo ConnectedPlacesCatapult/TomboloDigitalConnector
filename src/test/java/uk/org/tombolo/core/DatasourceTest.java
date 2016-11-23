@@ -18,15 +18,39 @@ public class DatasourceTest extends AbstractTest {
         Datasource datasource = new Datasource("id", TestFactory.DEFAULT_PROVIDER, "name", "description");
         datasource.setUrl("http://example.com/info-page");
         datasource.setRemoteDatafile("http://example.com/remote-data-file.json");
+        datasource.addFixedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "fixed_label"));
+        datasource.addTimedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "timed_label"));
 
         datasource.writeJSON(jsonWriter);
 
         JSONAssert.assertEquals("{" +
-                    "id: 'id'," +
-                    "name: 'name'," +
-                    "description: 'description'," +
-                    "url: 'http://example.com/info-page'," +
-                    "remoteDatafile: 'http://example.com/remote-data-file.json'" +
+                "  id: 'id'," +
+                "  name: 'name'," +
+                "  description: 'description'," +
+                "  url: 'http://example.com/info-page'," +
+                "  remoteDatafile: 'http://example.com/remote-data-file.json'," +
+                "  provider: {" +
+                "    label: 'default_provider_label'," +
+                "    name: 'default_provider_name'" +
+                "  }," +
+                "  timedValueAttributes: [{" +
+                "    label: 'timed_label'," +
+                "    name: 'timed_label_name'," +
+                "    description: 'timed_label_description'," +
+                "    provider: {" +
+                "      label: 'default_provider_label'," +
+                "      name: 'default_provider_name'" +
+                "    }" +
+                "  }]," +
+                "  fixedValueAttributes: [{" +
+                "    label: 'fixed_label'," +
+                "    name: 'fixed_label_name'," +
+                "    description: 'fixed_label_description'," +
+                "    provider: {" +
+                "      label: 'default_provider_label'," +
+                "      name: 'default_provider_name'" +
+                "    }" +
+                "  }]" +
                 "}", writer.toString(), false);
     }
 }

@@ -1,10 +1,8 @@
 package uk.org.tombolo.core;
 
 import com.google.gson.stream.JsonWriter;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +103,20 @@ public class Datasource {
 		writer.name("description").value(description);
 		writer.name("url").value(url);
 		writer.name("remoteDatafile").value(remoteDatafile);
+		writer.name("provider");
+		provider.writeJSON(writer);
+		writer.name("timedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getTimedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
+		writer.name("fixedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getFixedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
 		writer.endObject();
 	}
 	
