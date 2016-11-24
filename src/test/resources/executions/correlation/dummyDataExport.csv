@@ -1,0 +1,6 @@
+label,name,geometry,field1,field2,field3
+s1,"Subject 1,5",geo1,0.4,1,4
+s2,Missing value,geo2,0.6,100,
+s3,Nan value,geo3,Nan,NaaN,456
+s4,Subject 4,geo4,0.6,2,8
+s4,Too few values,geo5,5
