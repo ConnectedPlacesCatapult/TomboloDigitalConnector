@@ -35,7 +35,7 @@ public class ExcelUtils {
 	public Workbook getWorkbook(Datasource datasource) throws MalformedURLException, IOException, EncryptedDocumentException, InvalidFormatException{
 		File localDatafile = downloadUtils.getDatasourceFile(datasource);		
 		Workbook wb = null;
-		wb = WorkbookFactory.create(localDatafile);
+		wb = WorkbookFactory.create(localDatafile,null,true);
 		return wb;
 	}
 
