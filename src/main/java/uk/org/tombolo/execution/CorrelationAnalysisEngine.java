@@ -64,7 +64,8 @@ public class CorrelationAnalysisEngine {
                     valueList = null;
                     break;
                 }catch (IllegalArgumentException e){
-                    // Too few arguments
+                    // This happens when there are too few arguments/columns in the line of the csv file
+                    // I.e. fewer than the list of fieldSpecifications
                     valueList = null;
                     break;
                 }
@@ -93,6 +94,8 @@ public class CorrelationAnalysisEngine {
         /*
             I tried both using GeoTools DataStore and GeometryJSON parsing but both had problems with our
             GeoJson formatted files. We might want to take another look at some later point.
+            In both cases the process of reading of the file did not read anything without outputting a good reason.
+            Gave up due to lack of error output for debugging.
          */
         JsonReader jsonReader = new JsonReader(new FileReader(dataExportOutputPath));
         JsonObject jsonObject = new JsonParser().parse(jsonReader).getAsJsonObject();

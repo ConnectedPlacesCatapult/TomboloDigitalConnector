@@ -64,15 +64,6 @@ public class DataExportRunner extends AbstractRunner {
         }
     }
 
-    protected static DataExportSpecification getSpecification(String specificationPath) throws IOException {
-        File file = new File(specificationPath);
-        if (!file.exists()){
-            log.error("File not found: {}", specificationPath);
-            System.exit(1);
-        }
-        return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class);
-    }
-
     private static void validateArguments(String[] args) {
         if (args.length != 4){
             log.error("Use: {} {} {} {}",
