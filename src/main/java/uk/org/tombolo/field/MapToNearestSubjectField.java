@@ -47,8 +47,7 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
         if (null == field) { initialize(); }
         JSONObject obj = new JSONObject();
         obj.put(this.label,
-                field.jsonValueForSubject(
-                        getSubjectProximalToSubject(subject)));
+                Double.valueOf(field.valueForSubject(getSubjectProximalToSubject(subject))));
         return obj;
     }
 
