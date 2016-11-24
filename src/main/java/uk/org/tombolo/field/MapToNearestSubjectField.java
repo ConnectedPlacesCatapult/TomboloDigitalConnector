@@ -1,7 +1,9 @@
 package uk.org.tombolo.field;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 
@@ -47,8 +49,7 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
         if (null == field) { initialize(); }
         JSONObject obj = new JSONObject();
         obj.put(this.label,
-                field.jsonValueForSubject(
-                        getSubjectProximalToSubject(subject)));
+                Double.valueOf(field.valueForSubject(getSubjectProximalToSubject(subject))));
         return obj;
     }
 
