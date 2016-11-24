@@ -34,13 +34,7 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
         MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", "localAuthority", 0.1d, makeFieldSpec());
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    attr_label: [" +
-                "      {" +
-                "        value: 100.0" +
-                "      }" +
-                "    ]" +
-                "  }"+
+                "  aLabel: 100.0" +
                 "}", jsonString,false);
     }
 
@@ -52,13 +46,7 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
         MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", "localAuthority", null, makeFieldSpec());
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    attr_label: [" +
-                "      {" +
-                "        value: 100.0" +
-                "      }" +
-                "    ]" +
-                "  }"+
+                "  aLabel: 100.0" +
                 "}", jsonString,false);
     }
 
