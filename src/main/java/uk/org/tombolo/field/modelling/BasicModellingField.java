@@ -71,7 +71,6 @@ public class BasicModellingField implements Field, ModellingField {
                     .fromJsonFile(fieldSpecificationFile, FieldSpecification.class)
                     .toField();
         } catch (ClassNotFoundException e) {
-            System.err.println(fieldSpecificationFile);
             throw new Error("Field class not found", e);
         } catch (IOException e) {
             throw new Error("Could not read specification file", e);
