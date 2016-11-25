@@ -137,6 +137,14 @@ For example, this lists all attributes available in the dataset QS102EW from ONS
 gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter' -PdatasetId='QS102EW'
 ```
 
+### Export data catalogue
+
+We us the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector.
+
+```bash
+gradle exportCatalogue -PoutputFile=catalogue.json
+```
+
 ## Continuous Integration
 
 We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
