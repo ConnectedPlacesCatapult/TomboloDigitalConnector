@@ -409,11 +409,11 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testGeneratesPredefinedField() throws Exception {
+    public void testGeneratesModellingField() throws Exception {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")
+                FieldSpecificationBuilder.modellingField("aLabel", "ModellingFieldTest")
         );
 
         engine.execute(builder.build(), writer);
@@ -435,12 +435,12 @@ public class DataExportEngineTest extends AbstractTest {
     }
 
     @Test
-    public void testGeneratesPredefinedFieldWhenNested() throws Exception {
+    public void testGeneratesModellingFieldWhenNested() throws Exception {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766")
         ).addFieldSpecification(
                 FieldSpecificationBuilder.wrapperField("aWrapper", Collections.singletonList(
-                    FieldSpecificationBuilder.predefinedField("aLabel", "PredefinedFieldTest")))
+                    FieldSpecificationBuilder.modellingField("aLabel", "ModellingFieldTest")))
         );
 
         engine.execute(builder.build(), writer);

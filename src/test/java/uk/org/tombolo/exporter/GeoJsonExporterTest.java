@@ -12,8 +12,8 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
-import uk.org.tombolo.field.FixedAnnotationField;
-import uk.org.tombolo.field.ValuesByTimeField;
+import uk.org.tombolo.field.value.FixedAnnotationField;
+import uk.org.tombolo.field.value.ValuesByTimeField;
 
 import java.io.StringWriter;
 import java.io.Writer;

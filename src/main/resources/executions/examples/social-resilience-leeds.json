@@ -17,17 +17,17 @@
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
         "label": "DisabilityResilence",
         "recipe": "socialresilience/Disability-lsoa"
       },
       {
-        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
         "label": "OvercrowdingResilence",
         "recipe": "socialresilience/Overcrowding-lsoa"
       },
       {
-        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
         "label": "CombinedSocialResilence",
         "recipe": "socialresilience/CombinedSocialResilience-lsoa"
       }

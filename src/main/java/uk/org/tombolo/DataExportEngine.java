@@ -11,7 +11,7 @@ import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.PredefinedField;
+import uk.org.tombolo.field.modelling.ModellingField;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
@@ -62,9 +62,9 @@ public class DataExportEngine implements ExecutionEngine{
 	private void prepareFields(List<Field> fields, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are specified as part of a predefined field
 		for (Field field : fields) {
-			if (field instanceof PredefinedField) {
+			if (field instanceof ModellingField) {
 				// This is a predefined field and hence we need to import the appropriate datasources
-				for (DatasourceSpecification datasourceSpecification : ((PredefinedField) field).getDatasourceSpecifications()) {
+				for (DatasourceSpecification datasourceSpecification : ((ModellingField) field).getDatasourceSpecifications()) {
 					importDatasource(forceImports, datasourceSpecification);
 				}
 			}

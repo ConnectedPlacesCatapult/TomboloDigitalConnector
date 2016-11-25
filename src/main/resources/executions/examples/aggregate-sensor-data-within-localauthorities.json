@@ -17,12 +17,12 @@
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.GeographicAggregationField",
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
         "label": "SumCountPedalCycles",
         "aggregationSubjectType": "sensor",
         "aggregationFunction": "sum",
         "fieldSpecification": {
-          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
             "providerLabel" : "uk.gov.dft",

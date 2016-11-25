@@ -11,7 +11,7 @@ import uk.org.tombolo.exporter.GeoJsonExporter;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
 
 /**
  * A Runner class for performing correlation analysis.

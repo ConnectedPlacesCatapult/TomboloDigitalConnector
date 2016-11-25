@@ -25,7 +25,7 @@
           "attributeLabel": "CL_0000053_1"
         },
         "label": "percentage_under_1_years_old_label",
-        "fieldClass": "uk.org.tombolo.field.FractionOfTotalField"
+        "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField"
       }],
       "fieldClass": "uk.org.tombolo.field.WrapperField"
     }],

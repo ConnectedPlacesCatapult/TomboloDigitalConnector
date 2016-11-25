@@ -21,13 +21,13 @@
     ],
     "fieldSpecification": [
       {
-        "fieldClass": "uk.org.tombolo.field.PercentilesField",
+        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
         "label": "OvercrowdingResiliencePercentiles",
         "name": "Overcrowding Resilience Percentiles normalized nationally",
         "percentileCount": 4,
         "inverse": true,
         "valueField": {
-          "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+          "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
           "divisorAttribute": {
             "providerLabel": "uk.gov.ons",
             "attributeLabel": "CL_0000127_1"

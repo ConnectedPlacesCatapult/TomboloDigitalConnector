@@ -17,12 +17,12 @@
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.ArithmeticField",
+        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
         "label": "theOutput",
         "operation": "div",
 
         "fieldSpecification1": {
-          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
             "providerLabel" : "uk.gov.dft",
@@ -30,18 +30,18 @@
           }
         },
         "fieldSpecification2": {
-          "fieldClass": "uk.org.tombolo.field.MapToContainingSubjectField",
+          "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
           "label": "localAuthoritySumCountPedalCycles",
           "containingSubjectType": "localAuthority",
 
           "fieldSpecification": {
-            "fieldClass": "uk.org.tombolo.field.GeographicAggregationField",
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
             "label": "SumCountPedalCycles",
             "aggregationSubjectType": "sensor",
             "aggregationFunction": "sum",
 
             "fieldSpecification": {
-              "fieldClass": "uk.org.tombolo.field.LatestValueField",
+              "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
               "label": "CountPedalCycles",
               "attribute": {
                 "providerLabel" : "uk.gov.dft",

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
-import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
@@ -13,7 +12,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class LondonBoroughProfileImporterTest extends AbstractTest {
     LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter();

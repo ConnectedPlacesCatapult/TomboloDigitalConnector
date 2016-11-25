@@ -20,7 +20,7 @@
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.LatestValueField",
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
           "providerLabel" : "uk.gov.dft",
@@ -30,7 +30,7 @@
       // We use 'nearest road segment' as a means to determine which segment
       // the sensor is on
       {
-        "fieldClass": "uk.org.tombolo.field.MapToNearestSubjectField",
+        "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
         "label": "SSxNode",
         "nearestSubjectType": "SSxNode",
         "maxRadius": 0.001,
