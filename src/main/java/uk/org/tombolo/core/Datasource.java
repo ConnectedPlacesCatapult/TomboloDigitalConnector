@@ -1,5 +1,8 @@
 package uk.org.tombolo.core;
 
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +94,30 @@ public class Datasource {
 	 */
 	public void setLocalDatafile(String localDatafile) {
 		this.localDatafile = localDatafile;
+	}
+
+	public void writeJSON(JsonWriter writer) throws IOException {
+		writer.beginObject();
+		writer.name("id").value(id);
+		writer.name("name").value(name);
+		writer.name("description").value(description);
+		writer.name("url").value(url);
+		writer.name("remoteDatafile").value(remoteDatafile);
+		writer.name("provider");
+		provider.writeJSON(writer);
+		writer.name("timedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getTimedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
+		writer.name("fixedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getFixedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
+		writer.endObject();
 	}
 	
 }

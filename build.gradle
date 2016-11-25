@@ -49,7 +49,10 @@ dependencies {
 	testCompile group: 'org.hamcrest', 		name: 'hamcrest-core', 		version: '1.3'
 
 	// Logging
-	compile group: 'ch.qos.logback',	name: 'logback-classic',	version: '1.1.3'
+	compile group: 'ch.qos.logback',		name: 'logback-classic',	version: '1.1.3'
+
+	// Reflection
+	compile group: 'org.reflections', 		name: 'reflections',		version: '0.9.10'
 	
 }
 
@@ -115,6 +118,19 @@ task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
 		if (!project.hasProperty('datasetId')) { ext.datasetId = "" }
 
 		args(importerClassName, datasetId)
+	}
+}
+
+task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
+	main = 'uk.org.tombolo.CatalogueExportRunner'
+	classpath = sourceSets.main.runtimeClasspath
+	jvmArgs '-disableassertions'
+
+	doFirst {
+		def argumentsSet = project.hasProperty('outputFile');
+		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+
+		args(outputFile)
 	}
 }
 
