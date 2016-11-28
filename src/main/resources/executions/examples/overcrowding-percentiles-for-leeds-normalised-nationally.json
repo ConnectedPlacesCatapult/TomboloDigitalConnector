@@ -2,6 +2,7 @@
   "datasetSpecification": {
     "subjectSpecification": [
       {
+        // We output each LSOA whose name starts with 'Leeds'
         "subjectType": "lsoa",
         "matchRule": {
           "attribute": "name",
@@ -11,39 +12,50 @@
     ],
     "datasourceSpecification": [
       {
+        // Importer for the geographic objects for all LSOAs in the UK
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       },
       {
+        // Importer for the ONS Census dataset for overcrowding
         "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
         "datasourceId": "QS408EW"
       }
     ],
     "fieldSpecification": [
       {
+        // Overcrowding Resilience Percentiles normalized nationally
+        // I.e. we caluclate percentile boundaries using values for all lsoas in the country
         "fieldClass": "uk.org.tombolo.field.PercentilesField",
         "label": "OvercrowdingResiliencePercentiles",
-        "name": "Overcrowding Resilience Percentiles normalized nationally",
         "percentileCount": 4,
         "inverse": true,
         "valueField": {
+          // The value field calcualates the overcrowded households in an LSOA
+          // as a fraction of the total number of households in the LSOA
           "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
           "divisorAttribute": {
+            // Attribute for the total number of households in the geography
+            // We use this attribute as the denominaor of the fraction
             "providerLabel": "uk.gov.ons",
             "attributeLabel": "CL_0000127_1"
           },
           "dividendAttributes": [
+            // We sum up the following fields and use in the nominator of the fraction
             {
+              // Attribute for overcrowding value of -1
               "providerLabel": "uk.gov.ons",
               "attributeLabel": "CL_0000127_5"
             },
             {
+              // Attribute for overcrowding value of -2
               "providerLabel": "uk.gov.ons",
               "attributeLabel": "CL_0000127_6"
             }
           ]
         },
         "normalizationSubjects": [
+          // Specification that determines that we calculate percentile boundaries nationally
           {
             "subjectType": "lsoa"
           }

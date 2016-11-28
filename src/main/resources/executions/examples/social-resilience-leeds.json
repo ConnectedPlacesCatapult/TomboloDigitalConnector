@@ -2,6 +2,7 @@
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
+        // The output subjects are all LSOAs whose name starts with 'Leeds'
         "subjectType" : "lsoa",
         "matchRule": {
           "attribute": "name",
@@ -11,22 +12,26 @@
     ],
     "datasourceSpecification" : [
       {
+        // Importer for LSOA geographies
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       }
     ],
     "fieldSpecification" : [
       {
+        // Modelling field for Disability Resilience (built-in model)
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "DisabilityResilence",
         "recipe": "socialresilience/Disability-lsoa"
       },
       {
+        // Modelling field for Overcrowding Resilience (built-in model)
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "OvercrowdingResilence",
         "recipe": "socialresilience/Overcrowding-lsoa"
       },
       {
+        // Modelling field for Combined Community Resiliece (built-in model)
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "CombinedSocialResilence",
         "recipe": "socialresilience/CombinedSocialResilience-lsoa"
