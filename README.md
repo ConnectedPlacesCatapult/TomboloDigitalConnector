@@ -104,12 +104,12 @@ gradle runExport \
     -PclearDatabaseCache=true
 ```
 
-For example, this exports the London borough profiles from OrganiCity to `organicity-borough-profiles.json`:
+For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic in a given borough  and outputs the results to the file `reaggregate-sensor-to-la.json`:
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
-    -PoutputFile='organicity-borough-profiles.json'
+    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-sensor-to-la.json' \
+    -PoutputFile='reaggregate-sensor-to-la.json'
 ```
 
 ### Run data catalogue
