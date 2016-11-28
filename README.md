@@ -104,12 +104,12 @@ gradle runExport \
     -PclearDatabaseCache=true
 ```
 
-For example, this exports the London borough profiles from OrganiCity to `organicity-borough-profiles.json`:
+For example, this compares vehicle counts from road sensors to angular cost estimated in the space syntax method and outputs the results to the file `map-to-nearest-subject.json`:
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
-    -PoutputFile='organicity-borough-profiles.json'
+    -PdataExportSpecFile='src/main/resources/executions/examples/map-to-nearest-subject.json' \
+    -PoutputFile='map-to-nearest-subject.json'
 ```
 
 ### Run data catalogue
