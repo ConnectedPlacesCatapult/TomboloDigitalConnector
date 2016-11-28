@@ -104,12 +104,12 @@ gradle runExport \
     -PclearDatabaseCache=true
 ```
 
-For example, this compares vehicle counts from road sensors to angular cost estimated in the space syntax method and outputs the results to the file `map-to-nearest-subject.json`:
+For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic in a given borough  and outputs the results to the file `reaggregate-sensor-to-la.json`:
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/examples/map-to-nearest-subject.json' \
-    -PoutputFile='map-to-nearest-subject.json'
+    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-sensor-to-la.json' \
+    -PoutputFile='reaggregate-sensor-to-la.json'
 ```
 
 ### Run data catalogue
