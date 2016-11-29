@@ -3,7 +3,7 @@
     "subjectSpecification" : [
       {
         // The output geographies are sensors (traffic counters)
-        "subjectType" : "sensor"
+        "subjectType" : "trafficCounter"
       }
     ],
     "datasourceSpecification" : [
@@ -48,7 +48,7 @@
           "fieldSpecification": {
             "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
             "label": "SumCountPedalCycles",
-            "aggregationSubjectType": "sensor",
+            "aggregationSubjectType": "trafficCounter",
             "aggregationFunction": "sum",
 
             "fieldSpecification": {

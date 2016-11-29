@@ -6,7 +6,7 @@
     "subjectSpecification" : [
       {
         // The subject output is a sensor (traffic counter) from DfT
-        "subjectType" : "sensor"
+        "subjectType" : "trafficCounter"
       }
     ],
     "datasourceSpecification" : [

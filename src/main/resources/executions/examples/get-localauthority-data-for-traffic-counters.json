@@ -3,7 +3,7 @@
     "subjectSpecification" : [
       {
         // This specifies that all subjects of type "sensor" should be returned.
-        "subjectType" : "sensor"
+        "subjectType" : "trafficCounter"
       }
     ],
     "datasourceSpecification" : [

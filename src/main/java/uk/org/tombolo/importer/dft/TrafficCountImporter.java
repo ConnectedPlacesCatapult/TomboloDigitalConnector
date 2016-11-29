@@ -31,6 +31,9 @@ import java.util.*;
  */
 public class TrafficCountImporter extends AbstractDFTImporter implements Importer {
 
+	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL = "trafficCounter";
+	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_DESC = "Traffic counter from Department of Transport";
+
 	protected static enum COUNT_TYPE 
 		{CountPedalCycles, CountMotorcycles, CountCarsTaxis, CountBusesCoaches, CountLightGoodsVehicles, CountHeavyGoodsVehicles};
 		
@@ -143,7 +146,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		SubjectType sensorType = SubjectTypeUtils.getSubjectTypeByLabel("sensor");
+		SubjectType sensorType = SubjectTypeUtils.getOrCreate(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC);
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
