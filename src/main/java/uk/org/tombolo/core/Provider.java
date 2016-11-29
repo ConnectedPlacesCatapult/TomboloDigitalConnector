@@ -1,9 +1,12 @@
 package uk.org.tombolo.core;
 
+import com.google.gson.stream.JsonWriter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.IOException;
 
 @Entity
 @Table(name="provider")
@@ -36,5 +39,11 @@ public class Provider {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public void writeJSON(JsonWriter writer) throws IOException {
+		writer.beginObject();
+		writer.name("label").value(label);
+		writer.name("name").value(name);
+		writer.endObject();
+	}
 }

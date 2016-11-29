@@ -10,14 +10,14 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
-import uk.org.tombolo.importer.utils.extraction.*;
+import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
+import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
+import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -59,8 +59,6 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             "Travel time, destination and origin indicators to Food stores by mode of travel",
             "Travel time, destination and origin indicators to Town centres by mode of travel"
     };
-
-    private int timedValueBufferSize = 1000000;
 
     ExcelUtils excelUtils;
 
@@ -156,7 +154,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
+            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
 
         return valueCount;

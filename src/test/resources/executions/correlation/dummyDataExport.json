@@ -1,0 +1,66 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "field1": [
+          {
+            "value": 0.8,
+            "timestamp": "2010-12-31T23:59:59"
+          },
+          {
+            "value": 0.4,
+            "timestamp": "2011-12-31T23:59:59"
+          },
+          {
+            "value": 0.3,
+            "timestamp": "2009-12-31T23:59:59"
+          }
+        ],
+        "field2": [
+          {
+            "value": 1,
+            "timestamp": "2011-12-31T23:59:59"
+          }
+        ],
+        "field3": 4
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field1": [
+          {
+            "value": 0.6,
+            "timestamp": "2011-12-31T23:59:59"
+          }
+        ],
+        "field2": [
+          {
+            "value": 100,
+            "timestamp": "2011-12-31T23:59:59"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "field1": [
+          {
+            "value": 0.6,
+            "timestamp": "2011-12-31T23:59:59"
+          }
+        ],
+        "field2": [
+          {
+            "value": 2,
+            "timestamp": "2011-12-31T23:59:59"
+          }
+        ],
+        "field3": 8
+      }
+    }
+  ]
+}

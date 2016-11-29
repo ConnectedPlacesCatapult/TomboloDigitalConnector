@@ -1,6 +1,9 @@
 package uk.org.tombolo.core;
 
+import com.google.gson.stream.JsonWriter;
+
 import javax.persistence.*;
+import java.io.IOException;
 
 @Entity
 @Table(name="attribute")
@@ -94,5 +97,15 @@ public class Attribute {
 //	public DataType getDataType(){
 //		return dataType;
 //	}
+
+	public void writeJSON(JsonWriter writer) throws IOException {
+		writer.beginObject();
+		writer.name("label").value(label);
+		writer.name("name").value(name);
+		writer.name("description").value(description);
+		writer.name("provider");
+		provider.writeJSON(writer);
+		writer.endObject();
+	}
 	
 }

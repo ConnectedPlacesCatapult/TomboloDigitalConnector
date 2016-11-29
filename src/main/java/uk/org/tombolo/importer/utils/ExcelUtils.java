@@ -14,7 +14,6 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.BlankCellException;
 import uk.org.tombolo.importer.utils.extraction.ExtractorException;
-import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
@@ -35,7 +34,7 @@ public class ExcelUtils {
 	public Workbook getWorkbook(Datasource datasource) throws MalformedURLException, IOException, EncryptedDocumentException, InvalidFormatException{
 		File localDatafile = downloadUtils.getDatasourceFile(datasource);		
 		Workbook wb = null;
-		wb = WorkbookFactory.create(localDatafile);
+		wb = WorkbookFactory.create(localDatafile,null,true);
 		return wb;
 	}
 

@@ -103,12 +103,12 @@ gradle runExport \
     -PclearDatabaseCache=true
 ```
 
-For example, this exports the London borough profiles from OrganiCity to `organicity-borough-profiles.json`:
+For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic in a given borough  and outputs the results to the file `reaggregate-sensor-to-la.json`:
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/organicity/export-borough-profiles.json' \
-    -PoutputFile='organicity-borough-profiles.json'
+    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-sensor-to-la.json' \
+    -PoutputFile='reaggregate-sensor-to-la.json'
 ```
 
 ### Run data catalogue
@@ -134,6 +134,14 @@ For example, this lists all attributes available in the dataset QS102EW from ONS
 
 ```bash
 gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter' -PdatasetId='QS102EW'
+```
+
+### Export data catalogue
+
+We us the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector.
+
+```bash
+gradle exportCatalogue -PoutputFile=catalogue.json
 ```
 
 ## Continuous Integration

@@ -1,15 +1,16 @@
 package uk.org.tombolo.importer.spacesyntax;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -21,6 +22,10 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new OpenSpaceNetworkImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
+        Properties props = new Properties();
+        props.put("openSpaceNetworkUsername", "");
+        props.put("openSpaceNetworkPassword", ""); // Fill these in if you want to run the @Ignored tests
+        importer.configure(props);
     }
 
     @Test
@@ -37,61 +42,56 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(0,datasources.size());
     }
 
-    @Test
-    public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("Exeter_segment_model");
 
-        assertEquals("Exeter_segment_model",datasource.getId());
-        assertEquals("Exeter_segment_model",datasource.getName());
+    // These next two are @Ignored because they contact a live PostGIS server.
+    // Don't be surprised if when you connect them up again the data has changed
+    // — ideally you'll get the tests working before your change, then check
+    // they work again after the change.
+    @Test @Ignore
+    public void getDatasource() throws Exception {
+        Datasource datasource = importer.getDatasource("milton_keynes.osm_polyline_processed");
+
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
         assertEquals("",datasource.getDescription());
-        assertEquals("osn/Exeter_segment_model.zip", datasource.getLocalDatafile());
+        assertNull(datasource.getLocalDatafile());
         assertNull(datasource.getRemoteDatafile());
 
-        assertEquals(3, datasource.getTimedValueAttributes().size());
-        assertEquals(3, datasource.getFixedValueAttributes().size());
+        assertEquals(0, datasource.getTimedValueAttributes().size());
+        assertEquals(6, datasource.getFixedValueAttributes().size());
+
+        assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), "os_road_ids");
+        assertEquals(datasource.getFixedValueAttributes().get(0).getName(), "os road ids");
     }
 
-    @Test
+    @Test @Ignore
     public void importDatasource() throws Exception {
-        int importedCount = importer.importDatasource("Exeter_segment_model");
-        //assertEquals(6*12319, importedCount);
+        int importedCount = importer.importDatasource("milton_keynes.osm_polyline_processed");
+        assertEquals(69489, importedCount);
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("Exeter_segment_model:6632");
+        Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
 
-        assertEquals("Exeter_segment_model:6632", streetSegment.getName());
+        assertEquals("osm_polyline_processed:osm_polyline_processed.12", streetSegment.getName());
         assertEquals("SSxNode", streetSegment.getSubjectType().getLabel());
-        assertEquals(-3.537614, streetSegment.getShape().getCentroid().getX(), 1.0E-6);
-        assertEquals(50.720291, streetSegment.getShape().getCentroid().getY(), 1.0E-6);
+        assertEquals(-0.734972, streetSegment.getShape().getCentroid().getX(), 1.0E-6);
+        assertEquals(52.043647, streetSegment.getShape().getCentroid().getY(), 1.0E-6);
 
         // Test fixed values
-        Attribute streetClass = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "class");
-        FixedValue streetClassValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, streetClass);
-        assertEquals("Unclassified", streetClassValue.getValue());
+        Attribute roadClassesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "road_classes");
+        FixedValue roadClassesValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, roadClassesAttribute);
+        assertEquals("{Unclassified}", roadClassesValue.getValue());
 
-        Attribute streetName = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "street_nam");
-        FixedValue streetNameValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, streetName);
-        assertEquals("Tudor Street", streetNameValue.getValue());
+        Attribute roadNamesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "road_names");
+        FixedValue roadNamesValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, roadNamesAttribute);
+        assertEquals("{\"Walbrook Avenue\"}", roadNamesValue.getValue());
 
-        Attribute networkId = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "id_network");
-        FixedValue networkIdValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, networkId);
-        assertEquals("2090", networkIdValue.getValue());
+        Attribute osRoadIdsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "os_road_ids");
+        FixedValue osRoadIdsValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, osRoadIdsAttribute);
+        assertEquals("{114eecf0-4d7a-4c61-9ce0-63cfdeaca735}", osRoadIdsValue.getValue());
 
-        // Test timed values
-        Attribute angularCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "angular_co");
-        List<TimedValue> angularCosts = TimedValueUtils.getBySubjectAndAttribute(streetSegment, angularCost);
-        // FIXME: Enable when SSx adds angular cost to the graph
-        assertEquals(0, angularCosts.size());
-
-        Attribute customCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "custom_cos");
-        List<TimedValue> customCosts = TimedValueUtils.getBySubjectAndAttribute(streetSegment, customCost);
-        // FIXME: Enable when SSx adds angular cost to the graph
-        assertEquals(0, customCosts.size());
-
-        Attribute metricCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "metric_cos");
-        List<TimedValue> metricCosts = TimedValueUtils.getBySubjectAndAttribute(streetSegment, metricCost);
-        assertEquals(1, metricCosts.size());
-        assertEquals("2016-10-11T17:44:59", metricCosts.get(0).getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
-        assertEquals(63, metricCosts.get(0).getValue(), 0.1d);
+        Attribute angularCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        FixedValue angularCosts = FixedValueUtils.getBySubjectAndAttribute(streetSegment, angularCost);
+        assertEquals("4.12235391281414", angularCosts.getValue());
     }
 
 }

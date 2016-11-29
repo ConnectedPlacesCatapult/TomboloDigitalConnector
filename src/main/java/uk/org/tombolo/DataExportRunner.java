@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ImporterMatcher;
 
@@ -25,6 +23,11 @@ public class DataExportRunner extends AbstractRunner {
         String forceImports = args[2];
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
 
+        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache);
+    }
+
+    protected static void run(String executionSpecPath, String outputFile,
+                              String forceImports, Boolean clearDatabaseCache) throws Exception {
         HibernateUtil.startup();
         if (clearDatabaseCache) {
             DatabaseUtils.clearAllData();
@@ -57,15 +60,6 @@ public class DataExportRunner extends AbstractRunner {
             DataExportSpecificationValidator.display(report);
             System.exit(1);
         }
-    }
-
-    private static DataExportSpecification getSpecification(String specificationPath) throws IOException {
-        File file = new File(specificationPath);
-        if (!file.exists()){
-            log.error("File not found: {}", specificationPath);
-            System.exit(1);
-        }
-        return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class);
     }
 
     private static void validateArguments(String[] args) {

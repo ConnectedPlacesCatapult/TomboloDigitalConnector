@@ -1,18 +1,17 @@
 package uk.org.tombolo.importer.phe;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
-import uk.org.tombolo.importer.utils.extraction.*;
+import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
+import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
+import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,6 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     };
 
     private ExcelUtils excelUtils;
-
-    private static final int timedValueBufferSize = 100000;
 
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
@@ -106,7 +103,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         }
 
         // Extract timed values
-        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, timedValueBufferSize);
+        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
 
         return valueCount;
     }

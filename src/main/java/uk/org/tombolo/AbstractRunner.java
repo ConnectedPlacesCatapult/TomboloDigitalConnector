@@ -1,7 +1,12 @@
 package uk.org.tombolo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import uk.org.tombolo.execution.spec.DataExportSpecification;
+import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.importer.ConfigurationException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,6 +16,7 @@ import java.util.Properties;
  *
  */
 public abstract class AbstractRunner {
+    private static final Logger log = LoggerFactory.getLogger(AbstractRunner.class);
     // FIXME: At some point we might want to make this configurable
     private static final String API_KEYS_FILENAME = "apikeys.properties";
 
@@ -26,4 +32,14 @@ public abstract class AbstractRunner {
         }
         return apiKeys;
     }
+
+    protected static DataExportSpecification getSpecification(String specificationPath) throws IOException {
+        File file = new File(specificationPath);
+        if (!file.exists()){
+            log.error("File not found: {}", specificationPath);
+            System.exit(1);
+        }
+        return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class);
+    }
+
 }

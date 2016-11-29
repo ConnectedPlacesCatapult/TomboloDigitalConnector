@@ -1,5 +1,8 @@
 package uk.org.tombolo.core;
 
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ public class Datasource {
 	String remoteDatafile;		// Remote datafile
 	String localDatafile; 		// Location of the local version of the datafile
 
-	List<Attribute> timedValueAttributes = new ArrayList<>();;
-	List<Attribute> fixedValueAttributes = new ArrayList<>();;
+	List<Attribute> timedValueAttributes = new ArrayList<>();
+	List<Attribute> fixedValueAttributes = new ArrayList<>();
 	
 	public Datasource(String id, Provider provider, String name, String description){
 		this.id = id;
@@ -62,25 +65,6 @@ public class Datasource {
 	public List<Attribute> getFixedValueAttributes() {
 		return fixedValueAttributes;
 	}
-
-	/**
-	 * This function is deprecated since it is only used in the deprecated ExcelImporter
-	 *
-	 * @param label
-	 * @return
-	 */
-	@Deprecated
-	public Attribute getAttributeByLabel(String label){
-		for (Attribute attribute : timedValueAttributes){
-			if (label.equals(attribute.getLabel()))
-				return attribute;
-		}
-		for (Attribute attribute : fixedValueAttributes){
-			if (label.equals(attribute.getLabel()))
-				return attribute;
-		}
-		return null;
-	}
 	
 	public String getUrl() {
 		return url;
@@ -110,6 +94,30 @@ public class Datasource {
 	 */
 	public void setLocalDatafile(String localDatafile) {
 		this.localDatafile = localDatafile;
+	}
+
+	public void writeJSON(JsonWriter writer) throws IOException {
+		writer.beginObject();
+		writer.name("id").value(id);
+		writer.name("name").value(name);
+		writer.name("description").value(description);
+		writer.name("url").value(url);
+		writer.name("remoteDatafile").value(remoteDatafile);
+		writer.name("provider");
+		provider.writeJSON(writer);
+		writer.name("timedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getTimedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
+		writer.name("fixedValueAttributes");
+		writer.beginArray();
+		for (Attribute attribute : getFixedValueAttributes()) {
+			attribute.writeJSON(writer);
+		}
+		writer.endArray();
+		writer.endObject();
 	}
 	
 }

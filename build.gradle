@@ -17,6 +17,8 @@ dependencies {
 	compile group:'org.geotools',			name: 'gt-shapefile', 		version: '14.0'
 	compile group:'org.geotools',			name: 'gt-epsg-extension', 	version: '14.0'
 	compile group:'org.geotools',			name: 'gt-epsg-hsql',		version: '14.0'
+	compile group:'org.geotools.jdbc',		name: 'gt-jdbc-postgis',	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-geojsondatastore',	version: '15.0'
 
     // POI Excel file manipulation
 	compile group: 'org.apache.poi',		name: 'poi',		version: '3.13'
@@ -47,7 +49,10 @@ dependencies {
 	testCompile group: 'org.hamcrest', 		name: 'hamcrest-core', 		version: '1.3'
 
 	// Logging
-	compile group: 'ch.qos.logback',	name: 'logback-classic',	version: '1.1.3'
+	compile group: 'ch.qos.logback',		name: 'logback-classic',	version: '1.1.3'
+
+	// Reflection
+	compile group: 'org.reflections', 		name: 'reflections',		version: '0.9.10'
 	
 }
 
@@ -79,6 +84,29 @@ task runExport(dependsOn: ['classes'], type: JavaExec) {
 	}
 }
 
+task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
+	main = 'uk.org.tombolo.CorrelationAnalysisRunner'
+	classpath = sourceSets.main.runtimeClasspath
+	jvmArgs '-disableassertions'
+
+	doFirst {
+		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
+		if (!configured) throw new GradleException('Environment not configured. See the README.')
+
+		systemProperty("databaseURI", databaseURI)
+		systemProperty("databaseUsername", databaseUsername)
+		systemProperty("databasePassword", databasePassword)
+		systemProperty("environment", "export")
+
+		def argumentsSet = project.hasProperty('dataExportSpecificationPath') && project.hasProperty('dataExportOutputPath') && project.hasProperty('correlationAnalysisOutputPath');
+		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
+		if (!project.hasProperty('forceImports')) { ext.forceImports = "" }
+
+		args(dataExportSpecificationPath, dataExportOutputPath, correlationAnalysisOutputPath, forceImports, clearDatabaseCache)
+	}
+}
+
 task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
 	main = 'uk.org.tombolo.DataCatalogueRunner'
 	classpath = sourceSets.main.runtimeClasspath
@@ -90,6 +118,19 @@ task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
 		if (!project.hasProperty('datasetId')) { ext.datasetId = "" }
 
 		args(importerClassName, datasetId)
+	}
+}
+
+task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
+	main = 'uk.org.tombolo.CatalogueExportRunner'
+	classpath = sourceSets.main.runtimeClasspath
+	jvmArgs '-disableassertions'
+
+	doFirst {
+		def argumentsSet = project.hasProperty('outputFile');
+		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+
+		args(outputFile)
 	}
 }
 

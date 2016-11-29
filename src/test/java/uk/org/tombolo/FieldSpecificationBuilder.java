@@ -17,7 +17,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder latestValue(String providerLabel, String attributeLabel) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.LatestValueField")
+        spec    .setFieldClass("uk.org.tombolo.field.value.LatestValueField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
         return spec;
@@ -25,7 +25,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder valuesByTime(String providerLabel, String attributeLabel) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.ValuesByTimeField")
+        spec    .setFieldClass("uk.org.tombolo.field.value.ValuesByTimeField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
         return spec;
@@ -42,7 +42,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String containingSubjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.MapToContainingSubjectField")
+        spec    .setFieldClass("uk.org.tombolo.field.aggregation.MapToContainingSubjectField")
                 .setLabel(label)
                 .set("containingSubjectType", containingSubjectType)
                 .set("fieldSpecification", fieldSpecificationBuilder);
@@ -51,7 +51,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder fixedAnnotationField(String label, String value) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.FixedAnnotationField")
+        spec    .setFieldClass("uk.org.tombolo.field.value.FixedAnnotationField")
                 .setLabel(label)
                 .set("value", value);
         return spec;
@@ -59,14 +59,14 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder fractionOfTotal(String label) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.FractionOfTotalField")
+        spec    .setFieldClass("uk.org.tombolo.field.transformation.FractionOfTotalField")
                 .setLabel(label);
         return spec;
     }
 
-    public static FieldSpecificationBuilder predefinedField(String label, String recipe) {
+    public static FieldSpecificationBuilder modellingField(String label, String recipe) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.BasicPredefinedField")
+        spec    .setFieldClass("uk.org.tombolo.field.modelling.BasicModellingField")
                 .setLabel(label)
                 .set("recipe", recipe);
         return spec;
@@ -74,7 +74,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder geographicAggregation(String label, String aggregationSubjectType, String aggregationFunction, FieldSpecificationBuilder fieldSpecificationBuilder) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.GeographicAggregationField")
+        spec    .setFieldClass("uk.org.tombolo.field.aggregation.GeographicAggregationField")
                 .setLabel(label)
                 .set("aggregationSubjectType", aggregationSubjectType)
                 .set("aggregationFunction", aggregationFunction)
@@ -84,7 +84,7 @@ public class FieldSpecificationBuilder implements JSONAware {
 
     public static FieldSpecificationBuilder percentilesField(String label, Integer percentileCount, Boolean inverse) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.PercentilesField")
+        spec    .setFieldClass("uk.org.tombolo.field.transformation.PercentilesField")
                 .setLabel(label)
                 .set("percentileCount", percentileCount)
                 .set("inverse", inverse);
