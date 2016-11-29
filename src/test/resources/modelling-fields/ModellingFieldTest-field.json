@@ -1,0 +1,15 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+  "label": "Fraction_of_80",
+  "name": "Fraction of 80 year olds",
+  "divisorAttribute": {
+    "providerLabel": "uk.gov.ons",
+    "attributeLabel": "CL_0000053_1" // total population
+  },
+  "dividendAttributes": [
+    {
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "CL_0000053_82" // no. of 80 year olds
+    }
+  ]
+}

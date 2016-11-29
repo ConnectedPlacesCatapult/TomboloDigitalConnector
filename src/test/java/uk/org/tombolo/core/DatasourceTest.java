@@ -8,8 +8,6 @@ import uk.org.tombolo.TestFactory;
 
 import java.io.StringWriter;
 
-import static org.junit.Assert.*;
-
 public class DatasourceTest extends AbstractTest {
     @Test
     public void testWriteJSON() throws Exception {

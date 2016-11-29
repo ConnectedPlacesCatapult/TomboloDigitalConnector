@@ -14,7 +14,6 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.BlankCellException;
 import uk.org.tombolo.importer.utils.extraction.ExtractorException;
-import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;

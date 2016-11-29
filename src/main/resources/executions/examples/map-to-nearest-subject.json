@@ -24,7 +24,7 @@
     "fieldSpecification" : [
       {
         // Filed for returning the latest count of cars and taxis for the sensor (traffic counter)
-        "fieldClass": "uk.org.tombolo.field.LatestValueField",
+      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
           "providerLabel" : "uk.gov.dft",
@@ -34,7 +34,7 @@
       {
         // Field for returning the angular betweenness centrality for the 'nearest road segment' to the sensor.
         // We use the 'nearest road segment' as a means to determine which segment the sensor is on
-        "fieldClass": "uk.org.tombolo.field.MapToNearestSubjectField",
+        "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
         "label": "centrality",
         "nearestSubjectType": "SSxNode",
         "maxRadius": 0.001,

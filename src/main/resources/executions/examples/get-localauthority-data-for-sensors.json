@@ -27,11 +27,11 @@
       {
         // A field that assigns to each output geography (traffic count sensor) the population density value from the
         // Borough Profile of the borough (local authority) containing the sensor.
-        "fieldClass": "uk.org.tombolo.field.MapToContainingSubjectField",
+      "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
         "label": "localAuthorityPopulationDensity",
         "containingSubjectType": "localAuthority",
         "fieldSpecification": {
-          "fieldClass": "uk.org.tombolo.field.LatestValueField",
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "populationDensity",
           "attribute": {
             "providerLabel": "uk.gov.london",
@@ -41,7 +41,7 @@
       },
       {
         // The latest count of pedal cycles for that sensor
-        "fieldClass": "uk.org.tombolo.field.LatestValueField",
+      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
           "providerLabel" : "uk.gov.dft",

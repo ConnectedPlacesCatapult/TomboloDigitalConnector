@@ -26,14 +26,14 @@
       {
         // Overcrowding Resilience Percentiles normalized nationally
         // I.e. we caluclate percentile boundaries using values for all lsoas in the country
-        "fieldClass": "uk.org.tombolo.field.PercentilesField",
+      "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
         "label": "OvercrowdingResiliencePercentiles",
         "percentileCount": 4,
         "inverse": true,
         "valueField": {
           // The value field calcualates the overcrowded households in an LSOA
           // as a fraction of the total number of households in the LSOA
-          "fieldClass": "uk.org.tombolo.field.FractionOfTotalField",
+        "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
           "divisorAttribute": {
             // Attribute for the total number of households in the geography
             // We use this attribute as the denominaor of the fraction
