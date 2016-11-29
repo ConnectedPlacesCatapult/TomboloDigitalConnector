@@ -2,26 +2,32 @@
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
+        // This specifies that all subjects of type "sensor" should be returned.
         "subjectType" : "sensor"
       }
     ],
     "datasourceSpecification" : [
       {
+        // Importer for geographies of all Local Authorities in the UK
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.londondatastore.LondonDatastoreImporter",
-        "datasourceId" : "london-borough-profiles"
+        // Importer for London Borough Profiles
+        "importerClass" : "uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter",
+        "datasourceId" : "londonBoroughProfiles"
       },
       {
+        // Importer for DfT traffic counts in London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
         "datasourceId" : "London"
       }
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+        // A field that assigns to each output geography (traffic count sensor) the population density value from the
+        // Borough Profile of the borough (local authority) containing the sensor.
+      "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
         "label": "localAuthorityPopulationDensity",
         "containingSubjectType": "localAuthority",
         "fieldSpecification": {
@@ -34,7 +40,8 @@
         }
       },
       {
-        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        // The latest count of pedal cycles for that sensor
+      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
           "providerLabel" : "uk.gov.dft",

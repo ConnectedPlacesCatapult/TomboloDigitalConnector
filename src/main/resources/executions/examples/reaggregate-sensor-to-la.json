@@ -2,26 +2,34 @@
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
+        // The output geographies are sensors (traffic counters)
         "subjectType" : "sensor"
       }
     ],
     "datasourceSpecification" : [
       {
+        // Importer for Local Authorities in the UK
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
+        // Importer for the DfT traffic counts for London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
         "datasourceId" : "London"
       }
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+        // An arthmetic field that divides one field value with another
+        // In this case we calcluate for each sensor (traffic counter)
+        // the number of bicicles counted as nominator
+        // the sum of all bicicles counted in the surrounding local authority (denominator)
+      "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
         "label": "theOutput",
         "operation": "div",
 
         "fieldSpecification1": {
+          // This field returns the bicicle count for the particular output sensor
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
@@ -30,7 +38,10 @@
           }
         },
         "fieldSpecification2": {
-          "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+          // This field retuns the sum of all bicicles counted for all sensors (traffic counters)
+          // aggregated to local authority level and then the local authority level value is mapped to the output sensor
+          // and used as denominator
+        "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
           "label": "localAuthoritySumCountPedalCycles",
           "containingSubjectType": "localAuthority",
 

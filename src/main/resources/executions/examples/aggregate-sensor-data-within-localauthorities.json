@@ -2,22 +2,32 @@
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
-        "subjectType" : "localAuthority"
+        // The output of the export includes one record for each local authority whose label starts with 'E090'.
+        // Effectively this will export one record for each of the London Boroughs.
+        "subjectType" : "localAuthority",
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090%"
+        }
       }
     ],
     "datasourceSpecification" : [
       {
+        // Importer for importing the geographic areas of local authorities
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
+        // Importer for DfT traffic counts in London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
         "datasourceId" : "London"
       }
     ],
     "fieldSpecification" : [
       {
-        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        // Geographic aggregation field that adds toghether all cycle counts geographically within the output subject.
+        // In this case the output subjects are London Boroughs (see above).
+      "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
         "label": "SumCountPedalCycles",
         "aggregationSubjectType": "sensor",
         "aggregationFunction": "sum",
