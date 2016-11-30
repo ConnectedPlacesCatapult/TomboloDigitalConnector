@@ -9,13 +9,18 @@
     "fieldSpecifications":[
       {
         "fieldClass": "uk.org.tombolo.field.SingleValuePredefinedField",
-        "label": "DisabilityResilence",
+        "label": "DisabilityResilience",
         "recipe": "socialresilience/Disability-lsoa"
       },
       {
         "fieldClass": "uk.org.tombolo.field.SingleValuePredefinedField",
-        "label": "OvercrowdingResilence",
+        "label": "OvercrowdingResilience",
         "recipe": "socialresilience/Overcrowding-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.SingleValuePredefinedField",
+        "label": "GPResilience",
+        "recipe": "socialresilience/GPs-lsoa"
       }
     ]
   },

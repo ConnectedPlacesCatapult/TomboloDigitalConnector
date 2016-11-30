@@ -28,6 +28,11 @@
       },
       {
         "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
+        "label": "GPResilence",
+        "recipe": "socialresilience/GPs-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.BasicPredefinedField",
         "label": "CombinedSocialResilence",
         "recipe": "socialresilience/CombinedSocialResilience-lsoa"
       }
