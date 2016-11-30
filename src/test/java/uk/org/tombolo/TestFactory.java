@@ -30,6 +30,25 @@ public final class TestFactory {
         return geometryFactory.createPoint(new Coordinate(xOffset, yOffset));
     }
 
+    /**
+     * Returns a square gometry
+     * @param lowerLeftXOffset x-coordinate of lower left corner
+     * @param lowerLeftYOffset y-coordinate of lower left corner
+     * @param edgeSize the edge size of the square
+     * @return A square geometry with left corner at lowerLeftXOffset, lowerLeftYOffset
+     */
+    public static Geometry makeSquareGeometry(Double lowerLeftXOffset, Double lowerLeftYOffset, Double edgeSize){
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate[] corners = {
+                new Coordinate(lowerLeftXOffset, lowerLeftYOffset),
+                new Coordinate(lowerLeftXOffset, lowerLeftYOffset+edgeSize),
+                new Coordinate(lowerLeftXOffset+edgeSize, lowerLeftYOffset+edgeSize),
+                new Coordinate(lowerLeftXOffset+edgeSize, lowerLeftYOffset),
+                new Coordinate(lowerLeftXOffset, lowerLeftYOffset)
+        };
+        return geometryFactory.createPolygon(corners);
+    }
+
     private TestFactory() {}
 
     /**
