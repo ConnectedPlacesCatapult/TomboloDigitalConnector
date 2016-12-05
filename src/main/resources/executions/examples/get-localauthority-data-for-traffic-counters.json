@@ -2,7 +2,7 @@
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
-        // This specifies that all subjects of type "sensor" should be returned.
+        // This specifies that all subjects of type "trafficCounter" should be returned.
         "subjectType" : "trafficCounter"
       }
     ],
@@ -25,8 +25,8 @@
     ],
     "fieldSpecification" : [
       {
-        // A field that assigns to each output geography (traffic count sensor) the population density value from the
-        // Borough Profile of the borough (local authority) containing the sensor.
+        // A field that assigns to each output geography (traffic counter) the population density value from the
+        // Borough Profile of the borough (local authority) containing the traffic counter.
       "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
         "label": "localAuthorityPopulationDensity",
         "containingSubjectType": "localAuthority",
@@ -40,7 +40,7 @@
         }
       },
       {
-        // The latest count of pedal cycles for that sensor
+        // The latest count of pedal cycles for that traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {

@@ -146,7 +146,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		SubjectType sensorType = SubjectTypeUtils.getOrCreate(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC);
+		SubjectType subjectType = SubjectTypeUtils.getOrCreate(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC);
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
@@ -178,7 +178,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 				
 				String name = road+" ("+startJunction+" to "+endJunction+")";
 				
-				Subject subject = new Subject(sensorType, label, name, point);
+				Subject subject = new Subject(subjectType, label, name, point);
 				List<Subject> subjectList = new ArrayList<Subject>();
 				subjectList.add(subject);
 				SubjectUtils.save(subjectList);
