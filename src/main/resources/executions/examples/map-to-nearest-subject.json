@@ -39,7 +39,7 @@
         "nearestSubjectType": "SSxNode",
         "maxRadius": 0.001,
         "fieldSpecification": {
-          "fieldClass": "uk.org.tombolo.field.FixedValueField",
+          "fieldClass": "uk.org.tombolo.field.value.FixedValueField",
           "label": "centrality",
           "attribute": {
             "providerLabel": "com.spacesyntax",
