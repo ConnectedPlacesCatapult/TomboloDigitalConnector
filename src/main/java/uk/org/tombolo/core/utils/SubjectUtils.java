@@ -11,8 +11,10 @@ import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectAttributeMatchRule;
 
+import javax.persistence.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
@@ -112,31 +114,29 @@ public class SubjectUtils {
 						"SubjectGeoMatchRule attribute is not a valid type (is %s, can only be within)",
 						subjectSpecification.getGeoMatchRule().geoRelation.name()));
 			}
-
 		}
 
 		// Create the basic query with obligatory paramaters
-		Query query = session.createQuery(hqlQuery, Subject.class)
-				.setParameter("subjectType", subjectType);
+		Query query = session.createQuery(hqlQuery, Subject.class);
 
-		// Add Attribute pattern parameter if exists
-		if (null != subjectSpecification.getMatchRule()){
-			query.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
-		}
+		for (Parameter parameter : query.getParameters()) {
+			if (Objects.equals(parameter.getName(), "subjectType")) {
+				query.setParameter("subjectType", subjectType);
+			} else if (Objects.equals(parameter.getName(), "pattern")) {
+				query.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
+			} else if (Objects.equals(parameter.getName(), "geom")) {
+				List<Subject> parents = getSubjectBySpecifications(subjectSpecification.getGeoMatchRule().subjectSpecifications);
 
-		// Add Geo Match Rule if exists
-		if (null != subjectSpecification.getGeoMatchRule()){
-			List<Subject> parents = getSubjectBySpecifications(subjectSpecification.getGeoMatchRule().subjectSpecifications);
-
-			Geometry union = null;
-			for (Subject parent : parents){
-				if (union == null)
-					union = parent.getShape();
-				else
-					union = union.union(parent.getShape());
+				Geometry union = null;
+				for (Subject parent : parents){
+					if (union == null)
+						union = parent.getShape();
+					else
+						union = union.union(parent.getShape());
+				}
+				union.setSRID(Subject.SRID);
+				query.setParameter("geom", union);
 			}
-			union.setSRID(Subject.SRID);
-			query.setParameter("geom", union);
 		}
 
 		return query;
