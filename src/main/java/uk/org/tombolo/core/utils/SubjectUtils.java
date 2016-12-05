@@ -88,7 +88,7 @@ public class SubjectUtils {
 	private static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
 
-		String hqlQuery = "from Subject where subjectType = :subjectType";
+		String hqlQuery = "from Subject s where s.subjectType = :subjectType";
 
 		// Add Attribute Match Rule if exists
 		if (null != subjectSpecification.getMatchRule()){
@@ -135,6 +135,7 @@ public class SubjectUtils {
 				else
 					union = union.union(parent.getShape());
 			}
+			union.setSRID(Subject.SRID);
 			query.setParameter("geom", union);
 		}
 

@@ -27,7 +27,9 @@ public final class TestFactory {
      */
     public static Geometry makePointGeometry(Double xOffset, Double yOffset) {
         GeometryFactory geometryFactory = new GeometryFactory();
-        return geometryFactory.createPoint(new Coordinate(xOffset, yOffset));
+        Geometry point =  geometryFactory.createPoint(new Coordinate(xOffset, yOffset));
+        point.setSRID(Subject.SRID);
+        return point;
     }
 
     /**
@@ -46,7 +48,9 @@ public final class TestFactory {
                 new Coordinate(lowerLeftXOffset+edgeSize, lowerLeftYOffset),
                 new Coordinate(lowerLeftXOffset, lowerLeftYOffset)
         };
-        return geometryFactory.createPolygon(corners);
+        Geometry square = geometryFactory.createPolygon(corners);
+        square.setSRID(Subject.SRID);
+        return square;
     }
 
     private TestFactory() {}
