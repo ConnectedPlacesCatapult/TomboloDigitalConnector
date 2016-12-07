@@ -139,6 +139,69 @@ public class TimedValueUtils {
 			return LocalDateTime.parse(year+endOfYear);
 		}
 
+		// Check if Mon-yr format that is occasionally used by ONS
+		if (timestampString.matches("^\\w\\w\\w-\\d\\d")) {
+			String[] dateParts = timestampString.split("-");
+
+			// FIXME: This will break in a few decades time
+			String year = "20"+dateParts[1];
+
+			String month = null;
+			String day = null;
+			switch(dateParts[0]){
+				case "Jan":
+					month = "01";
+					day = "31";
+					break;
+				case "Feb":
+					month = "02";
+					day = "28"; // Ignoring leap years
+					break;
+				case "Mar":
+					month = "03";
+					day = "31";
+					break;
+				case "Apr":
+					month = "04";
+					day = "30";
+					break;
+				case "May":
+					month = "05";
+					day = "31";
+					break;
+				case "Jun":
+					month = "06";
+					day = "30";
+					break;
+				case "Jul":
+					month = "07";
+					day = "31";
+					break;
+				case "Aug":
+					month = "08";
+					day = "31";
+					break;
+				case "Sep":
+					month = "09";
+					day = "30";
+					break;
+				case "Oct":
+					month = "10";
+					day = "31";
+					break;
+				case "Nov":
+					month = "11";
+					day = "30";
+					break;
+				case "Dec":
+					month = "12";
+					day = "31";
+					break;
+			}
+
+			return LocalDateTime.parse(year+"-"+month+"-"+day+"T23:59:59");
+		}
+
 		// Neither well formed to the second nor year
 		return null;
 	}

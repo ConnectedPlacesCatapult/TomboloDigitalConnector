@@ -51,6 +51,15 @@ public class TimedValueExtractor {
         return new TimedValue(subject, attribute, timestamp, value);
     }
 
+    public SingleValueExtractor getSubjectLabelExtractor() {
+        return subjectLabelExtractor;
+    }
+    public SingleValueExtractor getAttributeLabelExtractor() {
+        return attributeLabelExtractor;
+    }
+    public SingleValueExtractor getTimestampExtractor() {
+        return timestampExtractor;
+    }
     public SingleValueExtractor getValueExtractor() {
         return valueExtractor;
     }
