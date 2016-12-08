@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -8,10 +9,12 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectMatchRule;
+import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectAttributeMatchRule;
 
+import javax.persistence.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
@@ -84,25 +87,59 @@ public class SubjectUtils {
 		});
 	}
 
-	public static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
+	private static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
 
-		if (null == subjectSpecification.getMatchRule()) {
-			return session.createQuery("from Subject where subjectType = :subjectType", Subject.class)
-					.setParameter("subjectType", subjectType);
+		String hqlQuery = "from Subject s where s.subjectType = :subjectType";
+
+		// Add Attribute Match Rule if exists
+		if (null != subjectSpecification.getMatchRule()){
+			if (subjectSpecification.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.label) {
+				hqlQuery += " and lower(label) like :pattern";
+			} else if (subjectSpecification.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.name) {
+				hqlQuery += " and lower(name) like :pattern";
+			} else {
+				throw new IllegalArgumentException(String.format(
+						"SubjectAttributeMatchRule attribute is not a valid type (is %s, can be either name or label)",
+						subjectSpecification.getMatchRule().attribute.name()));
+			}
 		}
 
-		Query query;
-		if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.label) {
-			query = session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :pattern", Subject.class);
-		} else if (subjectSpecification.getMatchRule().attribute == SubjectMatchRule.MatchableAttribute.name) {
-			query = session.createQuery("from Subject where subjectType = :subjectType and lower(name) like :pattern", Subject.class);
-		} else {
-			throw new IllegalArgumentException(String.format("SubjectMatchRule attribute is not a valid type (is %s, can be either name or label)", subjectSpecification.getMatchRule()));
+		// Add Geo Match Rule if exists
+		if (null != subjectSpecification.getGeoMatchRule()){
+			if (subjectSpecification.getGeoMatchRule().geoRelation == SubjectSpecification.SubjectGeoMatchRule.GeoRelation.within){
+				hqlQuery += " and within(shape, :geom) = true";
+			}else{
+				throw new IllegalArgumentException(String.format(
+						"SubjectGeoMatchRule attribute is not a valid type (is %s, can only be within)",
+						subjectSpecification.getGeoMatchRule().geoRelation.name()));
+			}
 		}
 
-		return query.setParameter("subjectType", subjectType)
-				.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
+		// Create the basic query with obligatory paramaters
+		Query query = session.createQuery(hqlQuery, Subject.class);
+
+		for (Parameter parameter : query.getParameters()) {
+			if (Objects.equals(parameter.getName(), "subjectType")) {
+				query.setParameter("subjectType", subjectType);
+			} else if (Objects.equals(parameter.getName(), "pattern")) {
+				query.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
+			} else if (Objects.equals(parameter.getName(), "geom")) {
+				List<Subject> parents = getSubjectBySpecifications(subjectSpecification.getGeoMatchRule().subjectSpecifications);
+
+				Geometry union = null;
+				for (Subject parent : parents){
+					if (union == null)
+						union = parent.getShape();
+					else
+						union = union.union(parent.getShape());
+				}
+				union.setSRID(Subject.SRID);
+				query.setParameter("geom", union);
+			}
+		}
+
+		return query;
 	}
 
 	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {
