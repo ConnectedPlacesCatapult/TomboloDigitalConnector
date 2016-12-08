@@ -29,7 +29,25 @@
                   "pattern"
                 ],
                 "additionalProperties": false
+              },
+              "geoMatchRule": {
+                "type": "object",
+                "properties": {
+                  "geoRelation": {
+                    "type": "string",
+                    "enum": ["within"]
+                  },
+                  "subjectSpecifications": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "geoRelation",
+                  "subjectSpecifications"
+                ],
+                "additionalProperties": false
               }
+
             },
             "required": [
               "subjectType"

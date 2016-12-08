@@ -1,12 +1,12 @@
 // We want to work out the correlation between the number of cars (incl. taxis)
-// passing by a road sensor, and the angular betweenness centrality
-// of the road segment that sensor is on
+// passing by a road traffic counter, and the angular betweenness centrality
+// of the road segment that traffic counter is on
 {
   "datasetSpecification" : {
     "subjectSpecification" : [
       {
-        // The subject output is a sensor (traffic counter) from DfT
-        "subjectType" : "sensor"
+        // The subject output is a traffic counter from DfT
+        "subjectType" : "trafficCounter"
       }
     ],
     "datasourceSpecification" : [
@@ -23,7 +23,7 @@
     ],
     "fieldSpecification" : [
       {
-        // Filed for returning the latest count of cars and taxis for the sensor (traffic counter)
+        // Filed for returning the latest count of cars and taxis for the traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
@@ -32,8 +32,8 @@
         }
       },
       {
-        // Field for returning the angular betweenness centrality for the 'nearest road segment' to the sensor.
-        // We use the 'nearest road segment' as a means to determine which segment the sensor is on
+        // Field for returning the angular betweenness centrality for the 'nearest road segment' to the traffic counter.
+        // We use the 'nearest road segment' as a means to determine which segment the traffic counter is on
         "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
         "label": "centrality",
         "nearestSubjectType": "SSxNode",
