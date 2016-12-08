@@ -26,7 +26,10 @@ public class TimedValueUtilsTest extends AbstractTest {
 		testCases.put("2013 - 15", LocalDateTime.parse("2015-12-31T23:59:59"));
 		testCases.put("2014/15", LocalDateTime.parse("2015-12-31T23:59:59"));
 		testCases.put("bla", null);
-		
+		testCases.put("Feb-15", LocalDateTime.parse("2015-02-28T23:59:59"));
+		testCases.put("Feb-16", LocalDateTime.parse("2016-02-29T23:59:59"));
+		testCases.put("Oct-16", LocalDateTime.parse("2016-10-31T23:59:59"));
+
 		for (String testCase : testCases.keySet()){
 			assertEquals(testCase, testCases.get(testCase), TimedValueUtils.parseTimestampString(testCase));
 		}

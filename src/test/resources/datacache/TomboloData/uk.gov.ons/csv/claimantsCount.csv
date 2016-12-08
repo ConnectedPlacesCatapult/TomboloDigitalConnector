@@ -1,7 +1,7 @@
 DATE_NAME,GEOGRAPHY_NAME,GEOGRAPHY_CODE,GENDER_NAME,AGE_NAME,MEASURE_NAME,MEASURES_NAME,OBS_VALUE,OBS_STATUS_NAME
 Jan-16,City of London 001A,E01000001,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
-Feb-17,City of London 001B,E01000002,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
-Mar-16,City of London 001C,E01000003,Total,All categories: Age 16+,Claimant count,Value,15,Normal Value
+Feb-16,City of London 001B,E01000002,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
+Feb-17,City of London 001C,E01000003,Total,All categories: Age 16+,Claimant count,Value,15,Normal Value
 Apr-17,City of London 001E,E01000005,Total,All categories: Age 16+,Claimant count,Value,30,Normal Value
 May-16,Wyre 011A,E01025541,Total,All categories: Age 16+,Claimant count,Value,20,Normal Value
 Jun-17,Wyre 010A,E01025542,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value

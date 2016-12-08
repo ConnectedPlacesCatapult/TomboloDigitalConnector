@@ -9,6 +9,9 @@ import uk.org.tombolo.core.TimedValue;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -141,65 +144,16 @@ public class TimedValueUtils {
 
 		// Check if Mon-yr format that is occasionally used by ONS
 		if (timestampString.matches("^\\w\\w\\w-\\d\\d")) {
-			String[] dateParts = timestampString.split("-");
 
-			// FIXME: This will break in a few decades time
-			String year = "20"+dateParts[1];
-
-			String month = null;
-			String day = null;
-			switch(dateParts[0]){
-				case "Jan":
-					month = "01";
-					day = "31";
-					break;
-				case "Feb":
-					month = "02";
-					day = "28"; // Ignoring leap years
-					break;
-				case "Mar":
-					month = "03";
-					day = "31";
-					break;
-				case "Apr":
-					month = "04";
-					day = "30";
-					break;
-				case "May":
-					month = "05";
-					day = "31";
-					break;
-				case "Jun":
-					month = "06";
-					day = "30";
-					break;
-				case "Jul":
-					month = "07";
-					day = "31";
-					break;
-				case "Aug":
-					month = "08";
-					day = "31";
-					break;
-				case "Sep":
-					month = "09";
-					day = "30";
-					break;
-				case "Oct":
-					month = "10";
-					day = "31";
-					break;
-				case "Nov":
-					month = "11";
-					day = "30";
-					break;
-				case "Dec":
-					month = "12";
-					day = "31";
-					break;
-			}
-
-			return LocalDateTime.parse(year+"-"+month+"-"+day+"T23:59:59");
+			DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+					.appendPattern("MMM-yy")
+					.parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+					.parseDefaulting(ChronoField.HOUR_OF_DAY, 23)
+					.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 59)
+					.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
+					.toFormatter();
+			return LocalDateTime.parse(timestampString, formatter)
+					.with(TemporalAdjusters.lastDayOfMonth());
 		}
 
 		// Neither well formed to the second nor year

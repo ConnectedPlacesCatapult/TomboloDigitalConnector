@@ -43,6 +43,9 @@ public class ONSClaimantsImporterTest extends AbstractTest {
 
         TestFactory.makeSubjectType("lsoa", "Lower Layer Super Output Areas");
         Subject london001A = TestFactory.makeSubject("lsoa","E01000001","City of London 001A",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject london001B = TestFactory.makeSubject("lsoa","E01000002","City of London 001B",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject london001C = TestFactory.makeSubject("lsoa","E01000003","City of London 001C",TestFactory.FAKE_POINT_GEOMETRY);
+
         Subject wyre010A = TestFactory.makeSubject("lsoa", "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
         Subject blaby010A = TestFactory.makeSubject("lsoa", "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
@@ -51,9 +54,19 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "claimantCount");
 
         //Jan-16,City of London 001A,E01000001,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
-        TimedValue londonValue = TimedValueUtils.getLatestBySubjectAndAttribute(london001A, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2016-01-31T23:59:59"),londonValue.getId().getTimestamp());
-        assertEquals(0d, londonValue.getValue(), 0.1d);
+        TimedValue londonValueA = TimedValueUtils.getLatestBySubjectAndAttribute(london001A, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2016-01-31T23:59:59"),londonValueA.getId().getTimestamp());
+        assertEquals(0d, londonValueA.getValue(), 0.1d);
+
+        //Feb-16,City of London 001B,E01000002,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(london001B, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2016-02-29T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(0d, londonValueB.getValue(), 0.1d);
+
+        //Feb-17,City of London 001C,E01000003,Total,All categories: Age 16+,Claimant count,Value,15,Normal Value
+        TimedValue londonValueC = TimedValueUtils.getLatestBySubjectAndAttribute(london001C, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2017-02-28T23:59:59"),londonValueC.getId().getTimestamp());
+        assertEquals(15d, londonValueC.getValue(), 0.1d);
 
         //Jun-17,Wyre 010A,E01025542,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
         TimedValue wyreValue = TimedValueUtils.getLatestBySubjectAndAttribute(wyre010A, claimantsAttribute);
