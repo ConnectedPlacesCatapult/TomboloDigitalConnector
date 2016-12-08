@@ -9,6 +9,9 @@ import uk.org.tombolo.core.TimedValue;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -137,6 +140,20 @@ public class TimedValueUtils {
 		}else if (timestampString.matches("^\\d\\d\\d\\d\\/\\d\\d$")){
 			String year = timestampString.substring(0,2)+timestampString.substring(timestampString.length()-2, timestampString.length());
 			return LocalDateTime.parse(year+endOfYear);
+		}
+
+		// Check if Mon-yr format that is occasionally used by ONS
+		if (timestampString.matches("^\\w\\w\\w-\\d\\d")) {
+
+			DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+					.appendPattern("MMM-yy")
+					.parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+					.parseDefaulting(ChronoField.HOUR_OF_DAY, 23)
+					.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 59)
+					.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
+					.toFormatter();
+			return LocalDateTime.parse(timestampString, formatter)
+					.with(TemporalAdjusters.lastDayOfMonth());
 		}
 
 		// Neither well formed to the second nor year

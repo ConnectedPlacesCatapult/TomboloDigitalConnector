@@ -1,0 +1,94 @@
+package uk.org.tombolo.importer.ons;
+
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.utils.CSVUtils;
+import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
+import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
+import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Nomisweb Claimants count importer
+ *
+ * https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72
+ *
+ */
+public class ONSClaimantsImporter extends AbstractONSImporter implements Importer {
+
+    private enum DatasourceId {lsoaClaimants};
+    private Datasource[] datasources = {
+            new Datasource(
+                    DatasourceId.lsoaClaimants.name(),
+                    getProvider(),
+                    "Claimants per LSOA",
+                    "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
+                            "who claim Universal Credit and are required to seek work and be available for work and " +
+                            "replaces the number of people claiming Jobseeker's Allowance as the headline indicator " +
+                            "of the number of people claiming benefits principally for the reason of being unemployed. " +
+                            "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.")
+    };
+
+    private enum AttributeId {claimantCount};
+
+    @Override
+    public List<Datasource> getAllDatasources() throws Exception {
+        return datasourcesFromEnumeration(DatasourceId.class);
+    }
+
+    @Override
+    public Datasource getDatasource(String datasourceIdString) throws Exception {
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
+            case lsoaClaimants:
+                Datasource datasource = datasources[datasourceId.ordinal()];
+                datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
+                datasource.setRemoteDatafile("http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
+                        "geography=1249902593...1249937345&" +
+                        "date=latest&" +
+                        "gender=0&" +
+                        "age=0&" +
+                        "measure=1&" +
+                        "measures=20100&" +
+                        "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name");
+                datasource.setLocalDatafile("csv/claimantsCount.csv");
+                datasource.addAllTimedValueAttributes(getAttributes());
+                return datasource;
+            default:
+                throw new Error("Unknown datasource");
+        }
+    }
+    @Override
+    protected int importDatasource(Datasource datasource) throws Exception {
+        saveProviderAndAttributes(datasource);
+
+        CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
+        CSVExtractor timestampExtractor = new CSVExtractor(0);
+        CSVExtractor valueExtractor = new CSVExtractor(7);
+        List<TimedValueExtractor> extractors = new ArrayList<>();
+        extractors.add(new TimedValueExtractor(
+                getProvider(),
+                subjectLabelExtractor,
+                new ConstantExtractor(AttributeId.claimantCount.name()),
+                timestampExtractor,
+                valueExtractor
+                )
+        );
+
+        File localFile = downloadUtils.getDatasourceFile(datasource);
+
+        return CSVUtils.extractTimedValues(extractors,localFile);
+    }
+
+    private List<Attribute> getAttributes(){
+        List<Attribute> attributes = new ArrayList<>();
+
+        attributes.add(new Attribute(getProvider(), AttributeId.claimantCount.name(), "Claimant Count", "Number of claimants", Attribute.DataType.numeric));
+
+        return attributes;
+    }
+}
