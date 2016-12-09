@@ -40,7 +40,7 @@
         // Modelling field for Combined Community Resiliece (built-in model)
         "fieldClass": "uk.org.tombolo.field.BasicModellingField",
         "label": "CombinedSocialResilence",
-        
+        "recipe": "socialresilience/CombinedSocialResilience-lsoa"
     ]
   },
   "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
