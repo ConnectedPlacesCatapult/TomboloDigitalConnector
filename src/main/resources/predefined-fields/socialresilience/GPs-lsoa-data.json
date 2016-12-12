@@ -1,0 +1,13 @@
+[
+  {
+    "//": "ONS Lower Super Output Areas",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "//": "List of GP Surgeries in England",
+    "importerClass": "uk.org.tombolo.importer.nhschoices.HealthOrganisationImporter",
+    "datasourceId": "gpSurgeries"
+  }
+]
+

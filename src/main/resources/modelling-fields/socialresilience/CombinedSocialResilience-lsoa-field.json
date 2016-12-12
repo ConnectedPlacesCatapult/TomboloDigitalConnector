@@ -16,6 +16,11 @@
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "OvercrowdingResilence",
         "recipe": "socialresilience/Overcrowding-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "GPResilence",
+        "recipe": "socialresilience/GPs-lsoa"
       }
     ]
   },
