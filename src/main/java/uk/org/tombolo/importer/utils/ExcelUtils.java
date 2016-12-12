@@ -18,6 +18,7 @@ import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,10 +33,16 @@ public class ExcelUtils {
 	}
 	
 	public Workbook getWorkbook(Datasource datasource) throws MalformedURLException, IOException, EncryptedDocumentException, InvalidFormatException{
-		File localDatafile = downloadUtils.getDatasourceFile(datasource);		
-		Workbook wb = null;
-		wb = WorkbookFactory.create(localDatafile,null,true);
-		return wb;
+		File localDatafile = downloadUtils.getDatasourceFile(datasource);
+		return getWorkbook(localDatafile);
+	}
+
+	public Workbook getWorkbook(File file) throws MalformedURLException, IOException, EncryptedDocumentException, InvalidFormatException{
+		return WorkbookFactory.create(file,null,true);
+	}
+
+	public Workbook getWorkbook(InputStream is) throws IOException, InvalidFormatException {
+		return WorkbookFactory.create(is);
 	}
 
 	public int extractTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors, int timedValueBufferSize){
