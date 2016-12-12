@@ -5,6 +5,8 @@ import org.apache.commons.io.input.TeeInputStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 
 import java.io.*;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DownloadUtils {
+	private static Logger log = LoggerFactory.getLogger(DownloadUtils.class);
 
 	public static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
 	
@@ -40,6 +43,7 @@ public class DownloadUtils {
 				+ "/" + datasource.getLocalDatafile());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
+			log.info("Downloading external resource: {}",datasource.getRemoteDatafile());
 			FileUtils.copyURLToFile(new URL(datasource.getRemoteDatafile()), localDatasourceFile);
 		}
 		
