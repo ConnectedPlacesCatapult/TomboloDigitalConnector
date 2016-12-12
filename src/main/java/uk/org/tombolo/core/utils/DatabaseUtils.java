@@ -8,7 +8,7 @@ public class DatabaseUtils {
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();
             session.createSQLQuery("TRUNCATE timed_value, fixed_value, attribute, provider, subject, database_journal").executeUpdate();
-            session.createSQLQuery("DELETE FROM subject_type WHERE label NOT IN ('unknown', 'sensor', 'poi')").executeUpdate();
+            session.createSQLQuery("DELETE FROM subject_type WHERE label NOT IN ('unknown', 'poi')").executeUpdate();
             transaction.commit();
         });
     }

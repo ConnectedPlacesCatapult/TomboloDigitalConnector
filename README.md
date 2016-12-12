@@ -103,12 +103,13 @@ gradle runExport \
     -PclearDatabaseCache=true
 ```
 
-For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic in a given borough  and outputs the results to the file `reaggregate-sensor-to-la.json`:
+For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic
+in a given borough and outputs the results to the file `reaggregate-traffic-count-to-la.json`:
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-sensor-to-la.json' \
-    -PoutputFile='reaggregate-sensor-to-la.json'
+    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
+    -PoutputFile='reaggregate-traffic-count-to-la.json'
 ```
 
 ### Run data catalogue

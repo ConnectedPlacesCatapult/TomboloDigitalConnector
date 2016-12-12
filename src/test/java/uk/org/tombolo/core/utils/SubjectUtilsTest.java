@@ -11,6 +11,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasetSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -89,6 +90,51 @@ public class SubjectUtilsTest extends AbstractTest {
 		).build().getDatasetSpecification().getSubjectSpecification().get(0);
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
+	}
+
+	@Test
+	public void testGetSubjectsBySpecificationWithGeoMatchRule(){
+		SubjectType squareAuthority = TestFactory.makeSubjectType("squareAuthority", "Square Authority");
+		SubjectType pointSensor = TestFactory.makeSubjectType("pointSensor", "Point Sensor");
+
+		// Creating a square with two sensors inside
+		Subject squareOne = TestFactory.makeSubject(squareAuthority.getLabel(), "SquareOne","Square One", TestFactory.makeSquareGeometry(0d,0d,10d));
+		TestFactory.makeSubject(pointSensor.getLabel(), "SOSenosor01", "SOSensor01", TestFactory.makePointGeometry(1d,1d));
+		TestFactory.makeSubject(pointSensor.getLabel(), "SOSenosor02", "SOSensor02", TestFactory.makePointGeometry(5d,5d));
+
+		// Creating a square with one sensor inside
+		Subject squareTwo = TestFactory.makeSubject(squareAuthority.getLabel(), "SquareTwo","Square Two", TestFactory.makeSquareGeometry(20d,20d,10d));
+		TestFactory.makeSubject(pointSensor.getLabel(), "STSenosor01", "STSensor01", TestFactory.makePointGeometry(25d,25d));
+
+		// Creating a sensors outside either square
+		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(0d,0d));
+		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(30d,30d));
+		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(100d,100d));
+
+		// Testing sensors inside Square One
+		SubjectSpecificationBuilder squareOneSpec =
+				new SubjectSpecificationBuilder(squareAuthority.getLabel()).setMatcher("name",squareOne.getName());
+		List<SubjectSpecificationBuilder> parentSpecs = new ArrayList<>();
+		parentSpecs.add(squareOneSpec);
+		SubjectSpecification childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder(pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
+		).build().getDatasetSpecification().getSubjectSpecification().get(0);
+
+		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(childSpec);
+
+		assertEquals(2, subjects.size());
+
+		// Testing sensors inside Square One and Two
+		SubjectSpecificationBuilder squareTwoSpec =
+				new SubjectSpecificationBuilder(squareAuthority.getLabel()).setMatcher("label",squareTwo.getLabel());
+		parentSpecs.add(squareTwoSpec);
+		childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+				new SubjectSpecificationBuilder(pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
+		).build().getDatasetSpecification().getSubjectSpecification().get(0);
+
+		subjects = SubjectUtils.getSubjectBySpecification(childSpec);
+
+		assertEquals(3, subjects.size());
 	}
 
 	@Test
