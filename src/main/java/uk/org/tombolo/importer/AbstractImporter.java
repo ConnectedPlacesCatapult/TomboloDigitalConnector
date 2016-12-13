@@ -6,10 +6,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.DatabaseJournal;
-import uk.org.tombolo.core.utils.ProviderUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.core.utils.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,7 +90,10 @@ public abstract class AbstractImporter implements Importer {
 		return properties;
 	}
 
-	protected static void saveProviderAndAttributes(Datasource datasource){
+	protected static void saveDatasourceMetadata(Datasource datasource){
+		// Save SubjectType
+		SubjectTypeUtils.save(datasource.getSubjectTypes());
+
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
 

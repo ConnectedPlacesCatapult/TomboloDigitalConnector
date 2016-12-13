@@ -17,6 +17,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     private enum DatasourceId {laWages2016};
     private Datasource[] datasources = {
             new Datasource(
+                    getClass(),
                     DatasourceId.laWages2016.name(),
                     getProvider(),
                     "Wages per Local Authority",

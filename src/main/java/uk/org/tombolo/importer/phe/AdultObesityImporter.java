@@ -27,6 +27,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     private enum DatasourceId {laAdultObesity2014};
     private Datasource[] datasources = {
         new Datasource(
+                getClass(),
                 DatasourceId.laAdultObesity2014.name(),
                 getProvider(),
                 "Local Authority Adult Obesity",
@@ -64,7 +65,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
             initalize();
 
         // Save Provider and Attributes
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(datasource);

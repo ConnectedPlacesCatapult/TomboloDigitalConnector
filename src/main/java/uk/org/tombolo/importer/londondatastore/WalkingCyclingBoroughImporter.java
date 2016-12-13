@@ -45,6 +45,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         switch (datasourceId){
             case walkingCyclingBorough:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         DatasourceId.walkingCyclingBorough.name(),
                         getProvider(),
                         "Walking and Cycling in London Boroughs",
@@ -67,7 +68,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         Workbook workbook = excelUtils.getWorkbook(datasource);
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);

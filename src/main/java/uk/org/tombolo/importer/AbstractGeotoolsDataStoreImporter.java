@@ -121,7 +121,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
 
     final public int importDatasource(Datasource datasource) throws Exception {
         // Save provider and attributes
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         DataStore dataStore = getDataStoreForDatasource(datasource);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTypeNameForDatasource(datasource));
