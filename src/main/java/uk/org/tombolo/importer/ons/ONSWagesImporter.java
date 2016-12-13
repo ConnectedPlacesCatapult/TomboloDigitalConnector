@@ -140,7 +140,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 
