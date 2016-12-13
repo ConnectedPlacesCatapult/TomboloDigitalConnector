@@ -67,7 +67,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         Workbook workbook = excelUtils.getWorkbook(datasource);
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);

@@ -66,7 +66,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         RowCellExtractor subjectExtractor = new RowCellExtractor(4, Cell.CELL_TYPE_STRING);

@@ -64,7 +64,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
             initalize();
 
         // Save Provider and Attributes
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(datasource);

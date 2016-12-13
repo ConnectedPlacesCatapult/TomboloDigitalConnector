@@ -67,7 +67,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(0);
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);

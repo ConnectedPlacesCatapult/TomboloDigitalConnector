@@ -69,7 +69,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             initalize();
 
         // Save Provider and Attributes
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(datasource);

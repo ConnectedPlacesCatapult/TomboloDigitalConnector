@@ -64,7 +64,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     }
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
         CSVExtractor timestampExtractor = new CSVExtractor(0);

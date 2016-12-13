@@ -4,11 +4,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.ConfigurationException;
 
@@ -24,6 +20,7 @@ import java.util.*;
 public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
+    private static final SubjectType subjectType = new SubjectType("SSxNode", "Street segment (node) from an SSx graph");
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
@@ -78,6 +75,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
         datasource.addAllTimedValueAttributes(timedValueAttributes);
         datasource.addAllFixedValueAttributes(fixedValueAttributes);
+        datasource.addSubjectType(subjectType);
 
         return datasource;
     }
@@ -97,7 +95,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
     @Override
     protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
-        subject.setSubjectType(SubjectTypeUtils.getOrCreate("SSxNode", "Street segment (node) from an SSx graph"));
+        subject.setSubjectType(subjectType);
         subject.setLabel(feature.getName()+":"+feature.getID());
         subject.setName(feature.getName()+":"+feature.getID());
         return subject;
