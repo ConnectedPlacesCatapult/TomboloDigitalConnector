@@ -36,6 +36,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
         switch(datasourceIdItem){
             case imd:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         datasourceIdItem.name(),
                         getProvider(),
                         "English indices of deprivation 2015",

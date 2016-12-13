@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
@@ -114,6 +113,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			return null;
 		
 		Datasource datasource = new Datasource(
+				getClass(),
 				datasourceId,
 				getProvider(), 
 				"Traffic Counts for "+datasourceId, 
@@ -135,6 +135,8 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			datasource.setLocalDatafile("dft/traffic/la/"+localId+".csv");
 			datasource.setRemoteDatafile("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/"+remoteId+".csv");			
 		}
+
+		datasource.addSubjectType(new SubjectType(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
 		
 		return datasource;
 	}
@@ -142,11 +144,10 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	@Override
 	protected int importDatasource(Datasource datasource) throws Exception {
 		
-		saveProviderAndAttributes(datasource);
+		saveDatasourceMetadata(datasource);
 		
 		// Read timed values
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		SubjectType subjectType = SubjectTypeUtils.getOrCreate(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC);
 		Set<Long> trafficCounters = new HashSet<Long>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
 		String line = null;
@@ -178,7 +179,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 				
 				String name = road+" ("+startJunction+" to "+endJunction+")";
 				
-				Subject subject = new Subject(subjectType, label, name, point);
+				Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point);
 				List<Subject> subjectList = new ArrayList<Subject>();
 				subjectList.add(subject);
 				SubjectUtils.save(subjectList);

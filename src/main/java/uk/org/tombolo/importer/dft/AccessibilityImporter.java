@@ -76,6 +76,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
 
         Datasource datasource = new Datasource(
+                getClass(),
                 datasourceId,
                 getProvider(),
                 datasourceId,
@@ -120,7 +121,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
         List<TimedValue> timedValueBuffer = new ArrayList<>();
 
         // Save Provider and Attributes
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         // Loop over years
         for (int sheetId = 0; sheetId < workbook.getNumberOfSheets(); sheetId++){

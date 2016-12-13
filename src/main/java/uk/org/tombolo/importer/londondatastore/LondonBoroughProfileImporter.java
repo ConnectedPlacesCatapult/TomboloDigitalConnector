@@ -48,6 +48,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         switch (datasourceId){
             case londonBoroughProfiles:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         datasourceId.name(),
                         getProvider(),
                         "London Borough Profiles",
@@ -67,7 +68,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(0);
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);

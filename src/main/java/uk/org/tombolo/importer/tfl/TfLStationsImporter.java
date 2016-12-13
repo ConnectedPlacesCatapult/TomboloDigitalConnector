@@ -11,7 +11,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,7 +53,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
 		switch (datasourceIdObject){
 			case StationList:
-				Datasource datasource = new Datasource(DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
+				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 
 				datasource.setRemoteDatafile(
@@ -59,6 +61,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
 								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
 				datasource.addAllTimedValueAttributes(getStationAttributes());
+				datasource.addSubjectType(new SubjectType(SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 				return datasource;
 		}
 		return null;
@@ -66,19 +69,13 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	@Override
 	protected int importDatasource(Datasource datasource) throws Exception {
-		
-		// Save provider
-		ProviderUtils.save(datasource.getProvider());
-
-		// Save attributes
-		AttributeUtils.save(datasource.getTimedValueAttributes());
+		saveDatasourceMetadata(datasource);
 		
 		// Save timed values
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-			SubjectType poiType = getSubjectType(SubjectTypeName.TfLStation);
 			File xmlFile = downloadUtils.getDatasourceFile(datasource);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -108,7 +105,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				Coordinate coordinate = new Coordinate(longitude,latitude);
 				Point point = geometryFactory.createPoint(coordinate);
 
-				subjects.add(new Subject(poiType, stationLabel, stationName, point));
+				subjects.add(new Subject(datasource.getUniqueSubjectType(), stationLabel, stationName, point));
 			}
 			SubjectUtils.save(subjects);
 
@@ -144,18 +141,5 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		List<Attribute> attributes = new ArrayList<Attribute>();
 		attributes.add(new Attribute(getProvider(), AttributeName.ServingLineCount.name(), "Serving Lines", "The number of lines serving a station", Attribute.DataType.numeric));
 		return attributes;
-	}
-
-	private SubjectType getSubjectType(SubjectTypeName subjectTypeName){
-		switch(subjectTypeName){
-		case TfLStation:
-			SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeName.name());
-			if (subjectType == null || subjectType.getLabel() == null){
-				subjectType = new SubjectType(subjectTypeName.name(), "Transport for London Station");
-				SubjectTypeUtils.save(subjectType);
-			}
-			return subjectType;
-		}
-		return null;
 	}
 }

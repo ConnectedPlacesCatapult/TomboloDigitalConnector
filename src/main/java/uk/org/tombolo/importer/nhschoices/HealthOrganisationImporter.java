@@ -11,7 +11,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
@@ -57,16 +56,18 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
         }
     }
 
-    private Datasource makeDatasource(String name, String humanName, String description, String url) {
-        Datasource datasource = new Datasource(name, getProvider(), humanName, description);
+    private Datasource makeDatasource(String id, String name, String description, String url) {
+        Datasource datasource = new Datasource(getClass(), id, getProvider(), name, description);
+        datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getName()));
         datasource.setUrl(url);
         return datasource;
     }
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
+        saveDatasourceMetadata(datasource);
+
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        SubjectType poiType = SubjectTypeUtils.getOrCreate(datasource.getId(), datasource.getName());
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
@@ -85,7 +86,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
                 // we use the null geometry prepopulated in the `point` variable, and log.
                 log.warn("Health organisation {} ({}) has no valid geometry", name, label);
             }
-            return new Subject(poiType, label, name, point);
+            return new Subject(datasource.getUniqueSubjectType(), label, name, point);
 
         }).collect(Collectors.toList());
 

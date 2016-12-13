@@ -88,7 +88,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 			JSONArray names = (JSONArray)((JSONObject)collection.get("names")).get("name");
 			String datasetDescription = getEnglishValue(names);
 			
-			Datasource datasourceDetails = new Datasource(datasetId,getProvider(),datasetId,datasetDescription);
+			Datasource datasourceDetails = new Datasource(getClass(), datasetId,getProvider(),datasetId,datasetDescription);
 			datasources.add(datasourceDetails);
 		}
 		
@@ -222,7 +222,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		JSONArray names = (JSONArray)((JSONObject)datasetDetail.get("names")).get("name");
 		String datasourceDescription = getEnglishValue(names);
 		
-		Datasource datasource = new Datasource(datasourceId,getProvider(),datasourceId,datasourceDescription);
+		Datasource datasource = new Datasource(getClass(),datasourceId,getProvider(),datasourceId,datasourceDescription);
 		
 		// Get dataset dimensions
 		JSONArray dimensions = (JSONArray)((JSONObject)datasetDetail.get("dimensions")).get("dimension");
