@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
+import uk.org.tombolo.importer.Importer;
 
 import java.io.StringWriter;
 
@@ -13,11 +14,12 @@ public class DatasourceTest extends AbstractTest {
     public void testWriteJSON() throws Exception {
         StringWriter writer = new StringWriter();
         JsonWriter jsonWriter = new JsonWriter(writer);
-        Datasource datasource = new Datasource("id", TestFactory.DEFAULT_PROVIDER, "name", "description");
+        Datasource datasource = new Datasource(Importer.class, "id", TestFactory.DEFAULT_PROVIDER, "name", "description");
         datasource.setUrl("http://example.com/info-page");
         datasource.setRemoteDatafile("http://example.com/remote-data-file.json");
         datasource.addFixedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "fixed_label"));
         datasource.addTimedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "timed_label"));
+        datasource.addSubjectType(TestFactory.makeSubjectType("st_label", "st_name"));
 
         datasource.writeJSON(jsonWriter);
 
@@ -48,6 +50,10 @@ public class DatasourceTest extends AbstractTest {
                 "      label: 'default_provider_label'," +
                 "      name: 'default_provider_name'" +
                 "    }" +
+                "  }]," +
+                "  subjectTypes: [{" +
+                "    label: 'st_label'," +
+                "    name: 'st_name'" +
                 "  }]" +
                 "}", writer.toString(), false);
     }

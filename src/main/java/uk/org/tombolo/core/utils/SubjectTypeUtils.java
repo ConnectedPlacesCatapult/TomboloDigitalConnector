@@ -1,6 +1,9 @@
 package uk.org.tombolo.core.utils;
 
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
+
+import java.util.List;
 
 public class SubjectTypeUtils {
 	public static SubjectType getSubjectTypeByLabel(String label){
@@ -8,11 +11,22 @@ public class SubjectTypeUtils {
 			return (SubjectType) session.get(SubjectType.class, label);
 		});
 	}
+
+	public static void save(List<SubjectType> subjectTypes) {
+		for (SubjectType subjectType : subjectTypes) {
+			save(subjectType);
+		}
+	}
 	
-	public static void save(SubjectType subjectType){
+	public static void save(SubjectType subjectType) {
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
-			session.saveOrUpdate(subjectType);
+			SubjectType existingSubjectType = (SubjectType) session.get(SubjectType.class, subjectType.getLabel());
+			if (existingSubjectType != null) {
+				session.update(session.merge(subjectType));
+			} else {
+				session.save(subjectType);
+			}
 			session.getTransaction().commit();
 		});
 	}

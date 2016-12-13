@@ -23,6 +23,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     private enum DatasourceId {lsoaClaimants};
     private Datasource[] datasources = {
             new Datasource(
+                    getClass(),
                     DatasourceId.lsoaClaimants.name(),
                     getProvider(),
                     "Claimants per LSOA",
@@ -64,7 +65,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     }
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        saveProviderAndAttributes(datasource);
+        saveDatasourceMetadata(datasource);
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
         CSVExtractor timestampExtractor = new CSVExtractor(0);
