@@ -48,7 +48,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
-        Datasource datasource = new Datasource(datasourceId, getProvider(), datasourceId, "");
+        Datasource datasource = new Datasource(getClass(), datasourceId, getProvider(), datasourceId, "");
 
         // Add the attributes
         Iterator<AttributeType> typeIterator = getAttributesForDatasource(datasource).iterator();

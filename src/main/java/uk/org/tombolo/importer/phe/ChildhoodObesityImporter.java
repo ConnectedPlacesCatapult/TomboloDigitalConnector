@@ -49,6 +49,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     public Datasource getDatasource(String datasourceId) throws Exception {
         DatasourceId datasourceIdEnum = DatasourceId.valueOf(datasourceId);
         Datasource datasource = new Datasource(
+                getClass(),
                 datasourceId,
                 getProvider(),
                 dataSourceName[datasourceIdEnum.ordinal()],

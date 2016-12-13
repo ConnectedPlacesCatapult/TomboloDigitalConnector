@@ -45,6 +45,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         switch (datasourceId){
             case walkingCyclingBorough:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         DatasourceId.walkingCyclingBorough.name(),
                         getProvider(),
                         "Walking and Cycling in London Boroughs",

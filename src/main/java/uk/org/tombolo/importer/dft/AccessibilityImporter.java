@@ -76,6 +76,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
 
         Datasource datasource = new Datasource(
+                getClass(),
                 datasourceId,
                 getProvider(),
                 datasourceId,

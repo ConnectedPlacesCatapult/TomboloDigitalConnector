@@ -48,6 +48,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
         switch (datasourceId){
             case phofIndicatorsLondonBorough:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         DatasourceId.phofIndicatorsLondonBorough.name(),
                         getProvider(),
                         "PHOF Indicators London Borough",

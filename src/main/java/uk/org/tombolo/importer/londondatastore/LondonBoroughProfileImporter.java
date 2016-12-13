@@ -48,6 +48,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         switch (datasourceId){
             case londonBoroughProfiles:
                 Datasource datasource = new Datasource(
+                        getClass(),
                         datasourceId.name(),
                         getProvider(),
                         "London Borough Profiles",

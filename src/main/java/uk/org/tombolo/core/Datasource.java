@@ -1,6 +1,7 @@
 package uk.org.tombolo.core;
 
 import com.google.gson.stream.JsonWriter;
+import uk.org.tombolo.importer.Importer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class Datasource {
 	
+	Class<? extends Importer> importerClass;
 	String id;
 	Provider provider;
 	String name;
@@ -20,7 +22,8 @@ public class Datasource {
 	List<Attribute> fixedValueAttributes = new ArrayList<>();
 	List<SubjectType> subjectTypes = new ArrayList<>();
 	
-	public Datasource(String id, Provider provider, String name, String description){
+	public Datasource(Class<? extends Importer> importerClass, String id, Provider provider, String name, String description){
+		this.importerClass = importerClass;
 		this.id = id;
 		this.provider = provider;
 		this.name = name;
@@ -49,6 +52,14 @@ public class Datasource {
 
 	public void addAllFixedValueAttributes(List<Attribute> attributes){
 		this.fixedValueAttributes.addAll(attributes);
+	}
+
+	public Class<? extends Importer> getImporterClass() {
+		return importerClass;
+	}
+
+	public void setImporterClass(Class<? extends Importer> importerClass) {
+		this.importerClass = importerClass;
 	}
 
 	public String getId(){
@@ -117,6 +128,7 @@ public class Datasource {
 	public void writeJSON(JsonWriter writer) throws IOException {
 		writer.beginObject();
 		writer.name("id").value(id);
+		writer.name("importerClass").value(importerClass.getCanonicalName());
 		writer.name("name").value(name);
 		writer.name("description").value(description);
 		writer.name("url").value(url);

@@ -53,7 +53,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
 		switch (datasourceIdObject){
 			case StationList:
-				Datasource datasource = new Datasource(DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
+				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 
 				datasource.setRemoteDatafile(

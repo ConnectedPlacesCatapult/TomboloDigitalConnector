@@ -27,6 +27,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     private enum DatasourceId {laAdultObesity2014};
     private Datasource[] datasources = {
         new Datasource(
+                getClass(),
                 DatasourceId.laAdultObesity2014.name(),
                 getProvider(),
                 "Local Authority Adult Obesity",

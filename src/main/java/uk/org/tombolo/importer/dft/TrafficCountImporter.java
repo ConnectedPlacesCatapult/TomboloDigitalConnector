@@ -113,6 +113,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			return null;
 		
 		Datasource datasource = new Datasource(
+				getClass(),
 				datasourceId,
 				getProvider(), 
 				"Traffic Counts for "+datasourceId, 

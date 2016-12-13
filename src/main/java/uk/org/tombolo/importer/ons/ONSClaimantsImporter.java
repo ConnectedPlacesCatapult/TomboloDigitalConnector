@@ -23,6 +23,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     private enum DatasourceId {lsoaClaimants};
     private Datasource[] datasources = {
             new Datasource(
+                    getClass(),
                     DatasourceId.lsoaClaimants.name(),
                     getProvider(),
                     "Claimants per LSOA",
