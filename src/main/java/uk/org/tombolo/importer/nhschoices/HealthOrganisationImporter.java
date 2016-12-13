@@ -56,8 +56,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
         }
     }
 
-    private Datasource makeDatasource(String name, String humanName, String description, String url) {
-        Datasource datasource = new Datasource(getClass(), name, getProvider(), humanName, description);
+    private Datasource makeDatasource(String id, String name, String description, String url) {
+        Datasource datasource = new Datasource(getClass(), id, getProvider(), name, description);
         datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getName()));
         datasource.setUrl(url);
         return datasource;
