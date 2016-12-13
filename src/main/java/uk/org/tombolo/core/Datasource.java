@@ -18,6 +18,7 @@ public class Datasource {
 
 	List<Attribute> timedValueAttributes = new ArrayList<>();
 	List<Attribute> fixedValueAttributes = new ArrayList<>();
+	List<SubjectType> subjectTypes = new ArrayList<>();
 	
 	public Datasource(String id, Provider provider, String name, String description){
 		this.id = id;
@@ -25,7 +26,15 @@ public class Datasource {
 		this.name = name;
 		this.description = description;
 	}
-	
+
+	public void addSubjectType(SubjectType subjectType){
+		subjectTypes.add(subjectType);
+	}
+
+	public void addAllSubjectTypes(List<SubjectType> subjectTypes){
+		this.subjectTypes.addAll(subjectTypes);
+	}
+
 	public void addTimedValueAttribute(Attribute attribute){
 		timedValueAttributes.add(attribute);
 	}
@@ -56,6 +65,15 @@ public class Datasource {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public List<SubjectType> getSubjectTypes() {
+		return subjectTypes;
+	}
+
+	public SubjectType getUniqueSubjectType() {
+		if (subjectTypes.size() != 1) { throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %s", getId(), subjectTypes.size())); }
+		return subjectTypes.get(0);
 	}
 
 	public List<Attribute> getTimedValueAttributes() {
@@ -105,6 +123,12 @@ public class Datasource {
 		writer.name("remoteDatafile").value(remoteDatafile);
 		writer.name("provider");
 		provider.writeJSON(writer);
+		writer.name("subjectTypes");
+		writer.beginArray();
+		for (SubjectType subjectType : getSubjectTypes()) {
+			subjectType.writeJSON(writer);
+		}
+		writer.endArray();
 		writer.name("timedValueAttributes");
 		writer.beginArray();
 		for (Attribute attribute : getTimedValueAttributes()) {
