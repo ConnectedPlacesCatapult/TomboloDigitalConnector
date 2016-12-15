@@ -21,6 +21,11 @@
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "GPResilence",
         "recipe": "socialresilience/GPs-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "WagesResilence",
+        "recipe": "socialresilience/Wages-lsoa"
       }
     ]
   },
