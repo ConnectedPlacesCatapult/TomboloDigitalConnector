@@ -1,26 +1,31 @@
 {
   "//": "",
+  //Translate the outcome of the result into four percentiles (quartiles)
   "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
   "label": "GPResilience",
   "percentileCount": 4,
   "inverse": true,
   "valueField": {
+    //Aggregate the number of GP surgeries by LSOA
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "gpResilience",
-    "aggregationSubjectType": "lsoa",
+    "aggregationSubjectType": "gpSurgeries",
     "aggregationFunction": "sum",
     "fieldSpecification": {
-      "fieldClass": "uk.org.tombolo.field.LatestValueField",
+      //Assign a value of 1 to each instance of a surgery in England
+      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
       "label": "List of GP Surgeries in England",
+      "value": "1",
       "attribute": {
         "providerLabel": "uk.nhs",
         "attributeLabel": "gpSurgeries"
       }
-    },
-    "normalizationSubjects": [
-      {
-        "subjectType": "lsoa"
-      }
-    ]
-  }
+    }
+  },
+  "normalizationSubjects": [
+    {
+      //Select the level of geographic aggregation
+      "subjectType": "lsoa"
+    }
+  ]
 }
