@@ -5,6 +5,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.FileWriter;
@@ -47,7 +48,12 @@ public class CatalogueExportRunner extends AbstractRunner {
 
     private static Stream<Datasource> getDatasources(Class<? extends Importer> importerClass) {
         try {
-            return importerClass.newInstance().getAllDatasources().stream();
+            log.info(String.format("Getting datasources for %s", importerClass.getCanonicalName()));
+            Importer importer = importerClass.newInstance();
+            importer.setDownloadUtils(new DownloadUtils());
+            importer.configure(loadApiKeys());
+
+            return importer.getAllDatasources().stream();
         } catch (Exception e) {
             log.warn(String.format("Could not get datasources for class %s", importerClass.toString()), e);
             return Stream.empty();
