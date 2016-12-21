@@ -53,7 +53,14 @@ public class CatalogueExportRunner extends AbstractRunner {
             importer.setDownloadUtils(new DownloadUtils());
             importer.configure(loadApiKeys());
 
-            return importer.getAllDatasources().stream();
+            return importer.getAllDatasources().stream().flatMap(datasource -> {
+                try {
+                    return Stream.of(importer.getDatasource(datasource.getId()));
+                } catch (Exception e) {
+                    log.warn(String.format("Could not get datasources for class %s", importerClass.toString()), e);
+                    return Stream.empty();
+                }
+            });
         } catch (Exception e) {
             log.warn(String.format("Could not get datasources for class %s", importerClass.toString()), e);
             return Stream.empty();
