@@ -47,6 +47,12 @@
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "WagesResilence",
         "recipe": "socialresilience/Wages-lsoa"
+      },
+      {
+        // Modelling field for Claimants (built-in model)
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+        "label": "ClaimantsResilence",
+        "recipe": "socialresilience/Claimants-lsoa"
       }
     ]
   },

@@ -26,6 +26,15 @@
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "WagesResilence",
         "recipe": "socialresilience/Wages-lsoa"
+      },      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "WagesResilence",
+        "recipe": "socialresilience/Wages-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "ClaimantsResilence",
+        "recipe": "socialresilience/Claimants-lsoa"
       }
     ]
   },
