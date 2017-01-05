@@ -5,6 +5,11 @@
     "datasourceId": "lsoa"
   },
   {
+    "//": "ONS Local Authorities",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "localAuthority"
+  },
+  {
     "//": "List of GP Surgeries in England",
     "importerClass": "uk.org.tombolo.importer.nhschoices.HealthOrganisationImporter",
     "datasourceId": "gpSurgeries"
