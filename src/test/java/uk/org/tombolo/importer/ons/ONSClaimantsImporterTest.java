@@ -15,7 +15,7 @@ import uk.org.tombolo.importer.Importer;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ONSClaimantsImporterTest extends AbstractTest {
     public Importer importer;

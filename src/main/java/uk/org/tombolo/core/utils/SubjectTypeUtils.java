@@ -1,6 +1,5 @@
 package uk.org.tombolo.core.utils;
 
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
 
 import java.util.List;

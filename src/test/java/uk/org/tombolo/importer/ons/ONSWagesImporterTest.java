@@ -14,7 +14,8 @@ import uk.org.tombolo.importer.Importer;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ONSWagesImporterTest extends AbstractTest {
     Subject cityOfLondon;

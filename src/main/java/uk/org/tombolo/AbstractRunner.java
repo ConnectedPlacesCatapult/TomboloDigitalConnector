@@ -53,7 +53,7 @@ public abstract class AbstractRunner {
 
     protected static DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
         Properties properties = loadProperties(SYSTEM_PROERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
-        log.info("Setting file dowloadCache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));
+        log.info("Setting file download cache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));
         DownloadUtils downloadUtils = new DownloadUtils(DownloadUtils.DEFAULT_DATA_CACHE_ROOT);
         if (properties.getProperty(FILE_DOWNLOAD_CACHE) != null)
             downloadUtils = new DownloadUtils(properties.getProperty(FILE_DOWNLOAD_CACHE));
