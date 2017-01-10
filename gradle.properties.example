@@ -7,5 +7,5 @@ testDatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
 testDatabaseUsername=tombolo_test
 testDatabasePassword=tombolo_test
 
-! Where to download temporary files while importing
+! Where to download temporary files while importing data
 fileDownloadCache=/tmp
