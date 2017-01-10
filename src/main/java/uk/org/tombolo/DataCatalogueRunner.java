@@ -27,7 +27,7 @@ public class DataCatalogueRunner extends AbstractRunner {
         // Initialise Importer
         Importer importer = (Importer)Class.forName(className).newInstance();
         importer.configure(apiKeys);
-        importer.setDownloadUtils(new DownloadUtils());
+        importer.setDownloadUtils(initialiseDowloadUtils());
 
         // Output catalogue
         if (datasetId == null || "".equals(datasetId)) {

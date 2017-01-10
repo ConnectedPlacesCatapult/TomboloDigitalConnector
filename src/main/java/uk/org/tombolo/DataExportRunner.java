@@ -37,7 +37,7 @@ public class DataExportRunner extends AbstractRunner {
         Properties apiKeys = loadApiKeys();
 
         // Create engine
-        DataExportEngine engine = new DataExportEngine(apiKeys, new DownloadUtils());
+        DataExportEngine engine = new DataExportEngine(apiKeys, initialiseDowloadUtils());
 
         validateSpecification(executionSpecPath);
 

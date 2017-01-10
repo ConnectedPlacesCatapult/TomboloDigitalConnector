@@ -22,14 +22,11 @@ import java.util.stream.Collectors;
 public class DownloadUtils {
 	private static Logger log = LoggerFactory.getLogger(DownloadUtils.class);
 
-	public static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
+	public static final String DEFAULT_DATA_CACHE_ROOT = "/tmp";
+	private static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
 	
-	public String tomboloDataCacheRootDirectory = "/tmp";	// Configurable root to where to store cached data
+	private String tomboloDataCacheRootDirectory = DEFAULT_DATA_CACHE_ROOT;	// Configurable root to where to store cached data
 
-	public DownloadUtils(){
-		
-	}
-	
 	public DownloadUtils(String dataCacheRootDirectory){
 		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
 	}

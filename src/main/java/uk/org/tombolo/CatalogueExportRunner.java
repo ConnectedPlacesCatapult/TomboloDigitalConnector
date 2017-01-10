@@ -50,7 +50,7 @@ public class CatalogueExportRunner extends AbstractRunner {
         try {
             log.info(String.format("Getting datasources for %s", importerClass.getCanonicalName()));
             Importer importer = importerClass.newInstance();
-            importer.setDownloadUtils(new DownloadUtils());
+            importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
 
             return importer.getAllDatasources().stream();
