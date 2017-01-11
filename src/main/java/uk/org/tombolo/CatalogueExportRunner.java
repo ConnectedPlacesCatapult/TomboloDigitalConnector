@@ -5,7 +5,6 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.FileWriter;
@@ -50,7 +49,7 @@ public class CatalogueExportRunner extends AbstractRunner {
         try {
             log.info(String.format("Getting datasources for %s", importerClass.getCanonicalName()));
             Importer importer = importerClass.newInstance();
-            importer.setDownloadUtils(new DownloadUtils());
+            importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
 
             return importer.getAllDatasources().stream();

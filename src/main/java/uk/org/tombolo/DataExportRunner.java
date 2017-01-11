@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
 import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.*;
@@ -37,7 +36,7 @@ public class DataExportRunner extends AbstractRunner {
         Properties apiKeys = loadApiKeys();
 
         // Create engine
-        DataExportEngine engine = new DataExportEngine(apiKeys, new DownloadUtils());
+        DataExportEngine engine = new DataExportEngine(apiKeys, initialiseDowloadUtils());
 
         validateSpecification(executionSpecPath);
 

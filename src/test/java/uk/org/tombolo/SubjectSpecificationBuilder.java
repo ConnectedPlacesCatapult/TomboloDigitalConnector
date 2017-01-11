@@ -2,8 +2,6 @@ package uk.org.tombolo;
 
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
 
 import java.util.List;
 

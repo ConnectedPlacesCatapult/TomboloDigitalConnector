@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class DataCatalogueRunner extends AbstractRunner {
         // Initialise Importer
         Importer importer = (Importer)Class.forName(className).newInstance();
         importer.configure(apiKeys);
-        importer.setDownloadUtils(new DownloadUtils());
+        importer.setDownloadUtils(initialiseDowloadUtils());
 
         // Output catalogue
         if (datasetId == null || "".equals(datasetId)) {
