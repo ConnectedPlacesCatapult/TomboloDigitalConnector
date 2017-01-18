@@ -6,7 +6,7 @@
         "subjectType" : "lsoa",
         "matchRule": {
           "attribute": "name",
-          "pattern": "Leeds%"
+          "pattern": "Manchester%"
         }
       }
     ],
@@ -41,19 +41,19 @@
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "GPResilence",
         "recipe": "socialresilience/GPs-lsoa"
-      },
-      {
-        // Modelling field for Wages (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "WagesResilence",
-        "recipe": "socialresilience/Wages-lsoa"
-      },
-      {
-        // Modelling field for Claimants (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "ClaimantsResilence",
-        "recipe": "socialresilience/Claimants-lsoa"
       }
+//      {
+//        // Modelling field for Wages (built-in model)
+//        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+//        "label": "WagesResilence",
+//        "recipe": "socialresilience/Wages-lsoa"
+//      },
+//      {
+//        // Modelling field for Claimants (built-in model)
+//        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+//        "label": "ClaimantsResilence",
+//        "recipe": "socialresilience/Claimants-lsoa"
+//      }
     ]
   },
   "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
