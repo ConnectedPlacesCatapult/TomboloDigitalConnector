@@ -5,7 +5,7 @@
     "datasourceId": "lsoa"
   },
   {
-    "//": "QS303EW	Long-term health problem or disability",
+    "//": "IMD Importer - imd score",
     "importerClass": "uk.org.tombolo.importer.dclg.IMDImporter",
     "datasourceId": "imd"
   }
