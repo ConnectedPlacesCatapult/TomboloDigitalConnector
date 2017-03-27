@@ -1,16 +1,11 @@
 package uk.org.tombolo.importer.schools;
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
-import com.sun.tools.doclint.HtmlTag;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -84,21 +79,33 @@ public abstract class XLSImporter extends AbstractImporter {
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        /*
         List<Subject> subjects = new ArrayList<Subject>();
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();
 
-        foreach row in file
-            Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point: null);
+        Iterator<Row> rowIterator = workbook.getSheetAt(1).rowIterator();
+        DataFormatter dataFormatter = new DataFormatter();
+        Row header = rowIterator.next();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            String label = datasource.getProvider().getLabel() + "_schools_" + row.getCell(0).toString();
+            String name = row.getCell(4).getStringCellValue();
+
+            Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name,null);
             subjects.add(subject);
 
-            foreach attribute in datasource.getAllFixedValueAttributes
-                fixedValues.add(new FixedValue(subject, attribute, attributeExtractor.extract()));
+            // Maybe find another way to get the index
+            int attributeIndex = 0;
+            for (Attribute attribute : datasource.getFixedValueAttributes()) {
+                fixedValues.add(new FixedValue(
+                        subject,
+                        attribute,
+                        dataFormatter.formatCellValue(row.getCell(attributeIndex++))));
+            }
+        }
 
         SubjectUtils.save(subjects);
         FixedValueUtils.save(fixedValues);
 
-         */
         return 0;
     }
 
@@ -131,6 +138,16 @@ public abstract class XLSImporter extends AbstractImporter {
     ////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 
+    /**
+     * Gets the attributes specified in the enumerator. Used in case we don't need to get all the attributes in the
+     * dataset.
+     *
+     * @param enumerator attribute enumerator
+     * @param datasource
+     * @param <T>
+     * @return
+     */
+
     private <T extends Enum<T> & AttributeID> List<Attribute> getPreCompiledAttributes(Class<T> enumerator, Datasource datasource) {
         List<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -146,7 +163,18 @@ public abstract class XLSImporter extends AbstractImporter {
         return attributes;
     }
 
-    // set to be only two columns: label and description
+    /**
+     * Get the attributes from a metadata sheet if available and in a specific format.
+     * The accepted format is a two columns format for the attributes' names and description
+     *
+     * @param metadataSheetIndex index of the metadata sheet
+     * @param labelRowStart start row to parse the attributes
+     * @param labelRowEnd end row to parse the attributes
+     * @param labelColumnStart start column to parse the attributes
+     * @param labelColumnEnd end column to parse the attributes
+     * @return returns the attributes described in the metadata sheet
+     * @throws Exception
+     */
     private List<Attribute> getAttributes(int metadataSheetIndex, int labelRowStart, int labelRowEnd,
         int labelColumnStart, int labelColumnEnd) throws Exception {
         List<Attribute> attributes = new ArrayList<>();
