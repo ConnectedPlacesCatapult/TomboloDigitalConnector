@@ -48,10 +48,10 @@ public class SchoolsImporterTest extends AbstractTest {
         List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByLabel("schools"),"uk.gov.education_schools_100000.0");
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
-        assertEquals("Castleford Half Acres Primary School", subject.getName());
+        assertEquals("Sir John Cass's Foundation Primary School", subject.getName());
 
         String header = "URN\tLocal authority (code)\tLocal authority (name)\tEstablishment number\tEstablishment name\tStreet\tLocality\tAddress3\tTown\tCounty\tPostcode\tType of establishment\tStatutory highest age\tStatutory lowest age\tBoarders\tSixth form\tUKPRN\tPhase of education\tGender\tReligious character\tReligious ethos\tAdmissions policy\tWebsite address\tTelephone number\tHeadteacher\tEstablishment status\tReason establishment opened\tOpening date\tParliamentary Constituency (code)\tParliamentary Constituency (name)\tRegion\n";
-        String value = "144332\t384\tWakefield\t2182\tCastleford Half Acres Primary School\tTemple Street\t\t\tCastleford\tWest Yorkshire\tWF10 5RE\tAcademy Converter\t11\t3\tNo Boarders\tDoes not have a sixth form\t10062845\tPrimary\tMixed\tDoes not apply\tDoes not apply\tNot applicable\twww.halfacres.com/\t01977723010\tMrs Mandy Pickles\tOpen\tAcademy Converter\t01/03/2017\tE14000836\tNormanton, Pontefract and Castleford\tYorkshire and the Humber";
+        String value = "100000\t201\tCity of London\t3614\tSir John Cass's Foundation Primary School\tSt James's Passage\tDuke's Place\t\tLondon\t\tEC3A 5DE\tVoluntary Aided School\t11\t3\tNo Boarders\tDoes not have a sixth form\t\tPrimary\tMixed\tChurch of England\tDoes not apply\tNot applicable\twww.sirjohncassprimary.org\t02072831147\tMr Tim Wilson\tOpen\tNot applicable\t\tE14000639\tCities of London and Westminster\tLondon";
         String[] headers = header.split("\\t,\\n");
         String[] values = value.split("\\t,\\n");
 
