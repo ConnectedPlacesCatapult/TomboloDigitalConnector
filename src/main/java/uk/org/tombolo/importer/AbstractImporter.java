@@ -27,6 +27,7 @@ public abstract class AbstractImporter implements Importer {
 		this.downloadUtils = downloadUtils;
 	}
 
+
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
@@ -49,10 +50,10 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws ParseException 
 	 */
 	public Integer importDatasource(String datasourceId, Boolean force) throws Exception {
-		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) {
-			log.info("Skipped importing {}:{} as this import has been completed previously", this.getClass().getCanonicalName(), datasourceId);
-			return null;
-		} else {
+//		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) {
+//			log.info("Skipped importing {}:{} as this import has been completed previously", this.getClass().getCanonicalName(), datasourceId);
+//			return null;
+//		} else {
 			log.info("Importing {}:{}", this.getClass().getCanonicalName(), datasourceId);
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
@@ -60,7 +61,7 @@ public abstract class AbstractImporter implements Importer {
 			DatabaseJournal.addJournalEntry(getJournalEntryForDatasourceId(datasourceId));
 			log.info("Imported {} values", count);
 			return count;
-		}
+//		}
 	}
 
 	private DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {

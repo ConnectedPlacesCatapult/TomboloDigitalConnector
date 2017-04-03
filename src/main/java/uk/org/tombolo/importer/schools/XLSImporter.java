@@ -13,9 +13,7 @@ import uk.org.tombolo.importer.utils.extraction.ExtractorException;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.SingleValueExtractor;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 
 /**
@@ -42,6 +40,7 @@ public abstract class XLSImporter extends AbstractImporter {
         public String getDescription();
         public String getUrl();
         public String getRemoteDataFile();
+        public String getLocalDataFile();
         public int getSheet();
     }
 
@@ -62,9 +61,10 @@ public abstract class XLSImporter extends AbstractImporter {
         );
         dataSource.setUrl(dataSourceID.getUrl());
         dataSource.setRemoteDatafile(dataSourceID.getRemoteDataFile());
+        dataSource.setLocalDatafile(dataSourceID.getLocalDataFile());
 
-        //add subject type, in this case is similar to the datasource
-        dataSource.addSubjectType(new SubjectType(dataSourceID.getEnumConstantName(), dataSourceID.getName()));
+        //add subject type, in this case is a unique one
+        dataSource.addSubjectType(new SubjectType("schools", dataSourceID.getName()));
 
         // Get the attributes iterating through the file rows
         /* @FIXME could do this in other method so getDatasource can be use for all formats and also include the
@@ -79,19 +79,31 @@ public abstract class XLSImporter extends AbstractImporter {
 
     @Override
     protected int importDatasource(Datasource datasource) throws Exception {
-        List<Subject> subjects = new ArrayList<Subject>();
+        saveDatasourceMetadata(datasource);
+
+        List<Subject> subjects = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();
 
-        Iterator<Row> rowIterator = workbook.getSheetAt(1).rowIterator();
+        Iterator<Row> rowIterator = workbook.getSheetAt(0).rowIterator();
         DataFormatter dataFormatter = new DataFormatter();
         Row header = rowIterator.next();
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
-            String label = datasource.getProvider().getLabel() + "_schools_" + row.getCell(0).toString();
-            String name = row.getCell(4).getStringCellValue();
+            String label;
+            String name;
+
+            try {
+                label = datasource.getProvider().getLabel() + "_schools_" + row.getCell(0).toString();
+                name = row.getCell(4).toString();
+
+            } catch (Exception e) {
+                // Continue with the other data, if any.
+                continue;
+            }
 
             Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name,null);
             subjects.add(subject);
+
 
             // Maybe find another way to get the index
             int attributeIndex = 0;
@@ -126,10 +138,10 @@ public abstract class XLSImporter extends AbstractImporter {
         List<Attribute> attributes = new ArrayList<>();
 
         Row attributeHeader = workbook.getSheetAt(sheetIdx).rowIterator().next();
-        IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getFirstCellNum())
+        IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
                             String name = attributeHeader.getCell(idx).getStringCellValue();
-                            attributes.add(new Attribute(getProvider(), nameToLabel(name), name, name, Attribute.DataType.string));
+                            attributes.add(new Attribute(getProvider(), name, name, name, Attribute.DataType.string));
                         }
                 );
         return attributes;

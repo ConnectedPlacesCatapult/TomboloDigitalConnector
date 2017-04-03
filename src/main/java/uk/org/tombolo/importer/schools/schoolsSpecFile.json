@@ -1,0 +1,17 @@
+{
+ "datasetSpecification": {
+    "subjectSpecification": [
+      {
+        "subjectType": "schoolsinEnglandx"
+      }
+    ],
+    "datasourceSpecification": [
+      {
+        "importerClass": "uk.org.tombolo.importer.schools.SchoolsImporter",
+        "datasourceId": "schoolsInEngland"
+      }
+    ],
+    "fieldSpecification": []
+  },
+  "exporterClass": "uk.org.tombolo.exporter.CSVExporter"
+}

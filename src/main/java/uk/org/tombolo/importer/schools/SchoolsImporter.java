@@ -8,6 +8,8 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.SingleValueExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -18,25 +20,34 @@ import java.util.List;
  */
 public class SchoolsImporter extends AbstractSchoolsImporter {
 
+    private static String getFormattedMonthYear() {
+        DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMMM_yyyy");
+        LocalDate localDate = LocalDate.now();
+        return dft.format(localDate).toString();
+    }
+
     private enum schoolsDataSourceID implements DataSourceID {
         schoolsInEngland("Schools in England",
                 "Schools in England",
-                "https://www.gov.uk/government/publications/schools-in-england",
-                "https://www.gov.uk/government/publications/schools-in-england/EduBase_Schools_February_2017.ods",
-                1
+                "https://www.gov.uk/government/publications/schools-in-england/",
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + getFormattedMonthYear() + ".xlsx",
+                "EduBase_Schools_March_2017.xlsx",
+                0
         );
 
         private String name;
         private String description;
         private String url;
         private String remoteDataFile;
+        private String localDataFile;
         private int sheet;
 
-        private schoolsDataSourceID(String name, String description, String url, String remoteDataFile, int sheet) {
+        private schoolsDataSourceID(String name, String description, String url, String remoteDataFile, String localDataFile, int sheet) {
             this.name = name;
             this.description = description;
             this.url = url;
             this.remoteDataFile = remoteDataFile;
+            this.localDataFile = localDataFile;
             this.sheet = sheet;
         }
 
@@ -64,6 +75,9 @@ public class SchoolsImporter extends AbstractSchoolsImporter {
         public String getRemoteDataFile() {
             return remoteDataFile;
         }
+
+        @Override
+        public String getLocalDataFile() { return localDataFile; }
 
         @Override
         public int getSheet() { return sheet; }
@@ -108,7 +122,6 @@ public class SchoolsImporter extends AbstractSchoolsImporter {
         }
     }
 
-    private Range<Integer> sheetRange = Range.range(0, BoundType.CLOSED, 2, BoundType.CLOSED);
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
         return datasourcesFromEnumeration(schoolsDataSourceID.class);
@@ -127,13 +140,9 @@ public class SchoolsImporter extends AbstractSchoolsImporter {
 
 
     @Override
+    @Deprecated
     protected <T extends Enum<T> & AttributeID> Object getExtractor(SingleValueExtractor subjectLabelExtractor, T attribute) {
         return new TimedValueExtractor(getProvider(), subjectLabelExtractor, new ConstantExtractor(""),
                 new ConstantExtractor(""), new ConstantExtractor(""));
-    }
-
-    @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        return 0;
     }
 }
