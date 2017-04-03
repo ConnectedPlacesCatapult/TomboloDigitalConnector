@@ -50,12 +50,13 @@ public class SchoolsImporterTest extends AbstractTest {
         Subject subject = subjects.get(0);
         assertEquals("Sir John Cass's Foundation Primary School", subject.getName());
 
-        String header = "URN\tLocal authority (code)\tLocal authority (name)\tEstablishment number\tEstablishment name\tStreet\tLocality\tAddress3\tTown\tCounty\tPostcode\tType of establishment\tStatutory highest age\tStatutory lowest age\tBoarders\tSixth form\tUKPRN\tPhase of education\tGender\tReligious character\tReligious ethos\tAdmissions policy\tWebsite address\tTelephone number\tHeadteacher\tEstablishment status\tReason establishment opened\tOpening date\tParliamentary Constituency (code)\tParliamentary Constituency (name)\tRegion\n";
-        String value = "100000\t201\tCity of London\t3614\tSir John Cass's Foundation Primary School\tSt James's Passage\tDuke's Place\t\tLondon\t\tEC3A 5DE\tVoluntary Aided School\t11\t3\tNo Boarders\tDoes not have a sixth form\t\tPrimary\tMixed\tChurch of England\tDoes not apply\tNot applicable\twww.sirjohncassprimary.org\t02072831147\tMr Tim Wilson\tOpen\tNot applicable\t\tE14000639\tCities of London and Westminster\tLondon";
-        String[] headers = header.split("\\t,\\n");
-        String[] values = value.split("\\t,\\n");
+        String header = "URN\tLocal authority (code)\tLocal authority (name)\tEstablishment number\tEstablishment name\tStreet\tLocality\tAddress3\tTown\tCounty\tPostcode\tType of establishment\tStatutory highest age\tStatutory lowest age\tBoarders\tSixth form\tUKPRN\tPhase of education\tGender\tReligious character\tReligious ethos\tAdmissions policy\tWebsite address\tTelephone number\tHeadteacher\tEstablishment status\tReason establishment opened\tOpening date\tParliamentary Constituency (code)\tParliamentary Constituency (name)\tRegion\t";
+        String value = "100000\t201\tCity of London\t3614\tSir John Cass's Foundation Primary School\tSt James's Passage\tDuke's Place\t\tLondon\t\tEC3A 5DE\tVoluntary Aided School\t11\t3\tNo Boarders\tDoes not have a sixth form\t\tPrimary\tMixed\tChurch of England\tDoes not apply\tNot applicable\twww.sirjohncassprimary.org\t02072831147\tMr Tim Wilson\tOpen\tNot applicable\t\tE14000639\tCities of London and Westminster\tLondon\t";
+        String[] headers = header.split("[\t\n]");
+        String[] values = value.split("[\t\n]");
 
         for (int i = 0; i < headers.length; i++) {
+            System.out.println(headers[i]);
             testFixedValue(subject, headers[i], values[i]);
         }
     }
