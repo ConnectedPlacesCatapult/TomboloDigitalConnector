@@ -18,6 +18,7 @@ import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ import java.util.List;
 public class AccessibilityImporter extends AbstractDFTImporter implements Importer{
     private static final Logger log = LoggerFactory.getLogger(AccessibilityImporter.class);
 
-    private enum DatasourceId {
+    private enum DatasourceLabel {
         acs0501, acs0502, acs0503, acs0504, acs0505, acs0506, acs0507, acs0508
     };
 
@@ -62,16 +63,16 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
 
     ExcelUtils excelUtils;
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public AccessibilityImporter(){
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         if (excelUtils == null)
             initalize();
-        DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
+        DatasourceLabel datasourceIdValue = DatasourceLabel.valueOf(datasourceId);
         if (datasourceIdValue == null)
             throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
 
@@ -115,13 +116,9 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         Workbook workbook = excelUtils.getWorkbook(datasource);
-        int valueCount = 0;
         List<TimedValue> timedValueBuffer = new ArrayList<>();
-
-        // Save Provider and Attributes
-        saveDatasourceMetadata(datasource);
 
         // Loop over years
         for (int sheetId = 0; sheetId < workbook.getNumberOfSheets(); sheetId++){
@@ -155,10 +152,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+            timedValueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
-
-        return valueCount;
     }
 
     private void initalize(){

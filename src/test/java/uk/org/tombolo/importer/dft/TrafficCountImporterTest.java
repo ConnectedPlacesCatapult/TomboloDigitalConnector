@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TrafficCountImporterTest extends AbstractTest {
 
-	private static Importer importer;
+	private static TrafficCountImporter importer;
 
 	@Before
 	public void before(){
@@ -35,7 +35,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 	@Test
 	public void testGetAllDatasources() throws Exception {
 		List<Datasource> datasources = importer.getAllDatasources();
-		assertEquals(220,datasources.size());
+		assertEquals(1,datasources.size());
 	}
 
 	@Test
@@ -59,12 +59,12 @@ public class TrafficCountImporterTest extends AbstractTest {
 
 	@Test
 	public void testImportDatasource() throws Exception {
-		int importCount = importer.importDatasource("London");
+		importer.importDatasource("London");
 		assertEquals(
 				3		// Sensors
 				* 15	// Years
 				* TrafficCountImporter.COUNT_TYPE.values().length,	// Attributes
-				importCount);
+				importer.getTimedValueCount());
 
 		// Test the following subject from the input file
 		//Year,CP,Region,LocalAuthority,Road,RoadCategory,Easting,Northing,StartJunction,EndJunction,LinkLength_miles,PedalCycles,Motorcycles,CarsTaxis,BusesCoaches,LightGoodsVehicles,V2AxleRigidHGV,V3AxleRigidHGV,V4or5AxleRigidHGV,V3or4AxleArticHGV,V5AxleArticHGV,V6orMoreAxleArticHGV,AllHGVs,AllMotorVehicles

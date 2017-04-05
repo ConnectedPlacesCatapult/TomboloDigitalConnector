@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,28 +29,23 @@ import java.util.List;
  * A more rigorous importing is desired but will be implemented on demand.
  */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter implements Importer{
-    private enum DatasourceId {londonBoroughProfiles};
+    private enum DatasourceLabel {londonBoroughProfiles};
     private enum AttributeId {populationDensity, householdIncome, medianHousePrice, fractionGreenspace, carbonEmission,
         carsPerHousehold};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public LondonBoroughProfileImporter() {
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId;
-        try {
-            datasourceId = DatasourceId.valueOf(datasourceIdString);
-        }catch(IllegalArgumentException e){
-            throw new ConfigurationException("Unknown datasource " + datasourceIdString);
-        }
-        switch (datasourceId){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
             case londonBoroughProfiles:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        datasourceId.name(),
+                        datasourceLabel.name(),
                         getProvider(),
                         "London Borough Profiles",
                         "Various London borough statistics");
@@ -67,8 +63,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(0);
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);
@@ -85,6 +80,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                 ((CSVExtractor)extractor.getValueExtractor()).setCsvRecord(records.get(0));
                 try {
                     timedValueBuffer.add(extractor.extract());
+                    timedValueCount++;
                 }catch (UnknownSubjectLabelException e){
                     // No reason to panic even if Subject does not exist and no reason to run the rest of the extractors
                     // Keep Calm and Break
@@ -93,8 +89,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             }
         }
         br.close();
-        TimedValueUtils.save(timedValueBuffer);
-        return timedValueBuffer.size();
+        saveBuffer(timedValueBuffer, timedValueCount);
     }
 
     private Attribute getAttribute(AttributeId attributeId){

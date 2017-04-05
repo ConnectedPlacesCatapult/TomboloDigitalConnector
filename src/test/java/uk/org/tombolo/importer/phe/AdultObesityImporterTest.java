@@ -43,10 +43,10 @@ public class AdultObesityImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		int datapoints = importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID);
 		
 		//FIXME: Find a way to match Gateshead etc.
-		assertEquals(5, datapoints);
+		assertEquals(5, importer.getTimedValueCount());
 
 		Map<String, Double> groundTruthCoL = new HashMap();
 

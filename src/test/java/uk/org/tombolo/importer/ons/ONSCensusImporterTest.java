@@ -22,9 +22,9 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 	}
 	
 	@Test
-	public void testGetAllDatasources() throws Exception{
+	public void testGetAllDatasourceLabels() throws Exception{
 		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
-		List<Datasource> datasources = importer.getAllDatasources();
+		List<String> datasources = importer.getDatasourceLabels();
 		
 		// FIXME: For some reason this has changed in the API
 		//assertEquals(701, datasources.size());
@@ -53,9 +53,9 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		
 	@Test
 	public void testLoadDataset() throws Exception{
-		int count = importer.importDatasource(datasourceId);
+		importer.importDatasource(datasourceId);
 		
-		assertEquals(3 + 3, count);
+		assertEquals(3 + 3, importer.getTimedValueCount());
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
 		assertEquals("Area (Hectares)", attribute.getName());

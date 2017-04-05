@@ -119,23 +119,19 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
         }
     }
 
-    final public int importDatasource(Datasource datasource) throws Exception {
-        // Save provider and attributes
-        saveDatasourceMetadata(datasource);
-
+    @Override
+    final public void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         DataStore dataStore = getDataStoreForDatasource(datasource);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTypeNameForDatasource(datasource));
 
         // Load attribute values
-        int counter = withSubjects(featureReader, dataStore, (feature, subject) -> {
+        subjectCount = withSubjects(featureReader, dataStore, (feature, subject) -> {
             timedValueBuffer.addAll(buildTimedValuesFromFeature(datasource, feature, subject));
             fixedValueBuffer.addAll(buildFixedValuesFromFeature(datasource, feature, subject));
         });
 
         featureReader.close();
         dataStore.dispose();
-
-        return counter;
     }
 
     private int withSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, DataStore dataStore, BiConsumer<SimpleFeature, Subject> fn) throws IOException, FactoryException, TransformException {
@@ -190,6 +186,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
                 continue;
             Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
             timedValues.add(new TimedValue(subject, attribute, modified, value));
+            timedValueCount++;
         }
 
         return timedValues;
@@ -203,6 +200,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
                 continue;
             String value = feature.getAttribute(attribute.getLabel()).toString();
             fixedValues.add(new FixedValue(subject, attribute, value));
+            fixedValueCount++;
         }
 
         return fixedValues;

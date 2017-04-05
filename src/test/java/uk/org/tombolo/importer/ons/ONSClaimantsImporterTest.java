@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class ONSClaimantsImporterTest extends AbstractTest {
-    public Importer importer;
+    public ONSClaimantsImporter importer;
 
     @Before
     public void before() throws Exception {

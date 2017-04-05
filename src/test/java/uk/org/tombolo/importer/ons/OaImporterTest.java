@@ -40,37 +40,37 @@ public class OaImporterTest extends AbstractTest {
 
     @Test
     public void testImportLsoas() throws Exception {
-        int importedCount = importer.importDatasource("lsoa");
+        importer.importDatasource("lsoa");
         Subject lsoa = SubjectUtils.getSubjectByLabel("E01000002");
 
         assertEquals("City of London 001B", lsoa.getName());
         assertEquals("lsoa", lsoa.getSubjectType().getLabel());
         assertEquals(-0.09252710274629854, lsoa.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(51.51821627457435, lsoa.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(100, importedCount);
+        assertEquals(100, importer.getSubjectCount());
     }
 
     @Test
     public void testImportMsoas() throws Exception {
-        int importedCount = importer.importDatasource("msoa");
+        importer.importDatasource("msoa");
         Subject lsoa = SubjectUtils.getSubjectByLabel("E02000093");
 
         assertEquals("Brent 001", lsoa.getName());
         assertEquals("msoa", lsoa.getSubjectType().getLabel());
         assertEquals(-0.2746307279027593, lsoa.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(51.59338282612998, lsoa.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(100, importedCount);
+        assertEquals(100, importer.getSubjectCount());
     }
 
     @Test
     public void testImportLocalAuthorities() throws Exception {
-        int importedCount = importer.importDatasource("localAuthority");
+        importer.importDatasource("localAuthority");
         Subject localAuthority = SubjectUtils.getSubjectByLabel("E06000001");
 
         assertEquals("Hartlepool", localAuthority.getName());
         assertEquals("localAuthority", localAuthority.getSubjectType().getLabel());
         assertEquals(-1.2592784934731256, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(54.66957856523336, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
-        assertEquals(7, importedCount);
+        assertEquals(7, importer.getSubjectCount());
     }
 }

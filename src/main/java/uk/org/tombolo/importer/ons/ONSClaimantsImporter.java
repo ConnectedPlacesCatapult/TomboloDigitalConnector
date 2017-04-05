@@ -20,11 +20,12 @@ import java.util.List;
  */
 public class ONSClaimantsImporter extends AbstractONSImporter implements Importer {
 
-    private enum DatasourceId {lsoaClaimants};
+    private enum DatasourceLabel {lsoaClaimants};
+
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceId.lsoaClaimants.name(),
+                    DatasourceLabel.lsoaClaimants.name(),
                     getProvider(),
                     "Claimants per LSOA",
                     "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
@@ -36,17 +37,17 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
 
     private enum AttributeId {claimantCount};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public ONSClaimantsImporter(){
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
             case lsoaClaimants:
-                Datasource datasource = datasources[datasourceId.ordinal()];
+                Datasource datasource = datasources[datasourceLabel.ordinal()];
                 datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
                 datasource.setRemoteDatafile("http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
                         "geography=1249902593...1249937345&" +
@@ -64,9 +65,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         }
     }
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
         CSVExtractor timestampExtractor = new CSVExtractor(0);
         CSVExtractor valueExtractor = new CSVExtractor(7);
@@ -81,8 +80,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         );
 
         File localFile = downloadUtils.getDatasourceFile(datasource);
-
-        return CSVUtils.extractTimedValues(extractors,localFile);
+        timedValueCount = CSVUtils.extractTimedValues(extractors,localFile);
     }
 
     private List<Attribute> getAttributes(){

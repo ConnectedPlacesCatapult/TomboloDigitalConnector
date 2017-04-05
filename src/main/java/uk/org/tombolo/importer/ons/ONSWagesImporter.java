@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
-    private enum DatasourceId {laWages2016};
+    private enum DatasourceLabel {wages};
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceId.laWages2016.name(),
+                    DatasourceLabel.wages.name(),
                     getProvider(),
                     "Wages per Local Authority",
                     "Estimates of paid hours worked, weekly, hourly and annual earnings for UK employees by gender " +
@@ -114,17 +114,17 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             "Female Full-Time", "Female Part-Time"};
     private String[] metricNames = {"Mean", "Median"};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public ONSWagesImporter(){
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case laWages2016:
-                Datasource datasource = datasources[datasourceId.ordinal()];
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
+            case wages:
+                Datasource datasource = datasources[datasourceLabel.ordinal()];
                 datasource.setUrl("http://www.ons.gov.uk/employmentandlabourmarket/" +
                         "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8");
                 datasource.setRemoteDatafile("http://www.ons.gov.uk/file?" +
@@ -139,14 +139,11 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
 
         File localFile = downloadUtils.getDatasourceFile(datasource);
         ZipFile zipFile = new ZipFile(localFile);
-        int valueCount = 0;
         for (AttributePrefix attributePrefix : AttributePrefix.values()){
             ZipArchiveEntry zipEntry = zipFile.getEntry(bookNames[attributePrefix.ordinal()]);
             Workbook workbook = excelUtils.getWorkbook(zipFile.getInputStream(zipEntry));
@@ -173,10 +170,9 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                 }
 
                 Sheet sheet = workbook.getSheet(sheetName);
-                valueCount += excelUtils.extractTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
+                timedValueCount += excelUtils.extractTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
             }
         }
-        return valueCount;
     }
 
     private List<Attribute> getTimedValueAttributes(){

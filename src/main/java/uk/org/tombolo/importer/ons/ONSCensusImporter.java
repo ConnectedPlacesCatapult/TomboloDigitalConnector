@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -56,25 +54,31 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
-	public ONSCensusImporter() throws IOException {
+	public ONSCensusImporter() throws IOException, ParseException, ConfigurationException {
 		super();
+		datasourceLables = null;
 	}
 
 	@Override
-	public void verifyConfiguration() throws ConfigurationException {
-		if (properties.getProperty(PROP_ONS_API_KEY) == null)
-			throw new ConfigurationException("Property "+PROP_ONS_API_KEY+" not defined");
+	public List<String> getDatasourceLabels() {
+		if (datasourceLables == null)
+			try {
+				datasourceLables = getAllDatasourceNames();
+			}catch (Exception e){
+				throw new Error(e);
+			}
+
+		return datasourceLables;
 	}
 
-	@Override
-	public List<Datasource> getAllDatasources() throws IOException, ParseException, ConfigurationException {
+	private List<String> getAllDatasourceNames() throws ConfigurationException, IOException, ParseException {
 		verifyConfiguration();
-		List<Datasource> datasources = new ArrayList<Datasource>();
-	
+		List<String> datasources = new ArrayList<String>();
+
 		String baseUrl = ONS_API_URL + "collections.json?";
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("apikey", properties.getProperty(PROP_ONS_API_KEY));
-		params.put("context", "Census");		
+		params.put("context", "Census");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
 		JSONObject rootObject = downloadUtils.fetchJSON(url);
@@ -85,29 +89,26 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		for (int i=0; i<collections.size(); i++){
 			JSONObject collection = (JSONObject)collections.get(i);
 			String datasetId = (String)collection.get("id");
-			JSONArray names = (JSONArray)((JSONObject)collection.get("names")).get("name");
-			String datasetDescription = getEnglishValue(names);
-			
-			Datasource datasourceDetails = new Datasource(getClass(), datasetId,getProvider(),datasetId,datasetDescription);
-			datasources.add(datasourceDetails);
+			datasources.add(datasetId);
 		}
-		
+
 		return datasources;
 	}
-		
-	protected int importDatasource(Datasource datasource) throws IOException, ParseException{
-		// Get the provider details
-		Provider provider = getProvider();
-		
-		// Store the provider
-		ProviderUtils.save(provider);
-				
+
+	@Override
+	public void verifyConfiguration() throws ConfigurationException {
+		if (properties.getProperty(PROP_ONS_API_KEY) == null)
+			throw new ConfigurationException("Property "+PROP_ONS_API_KEY+" not defined");
+	}
+
+	@Override
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws IOException, ParseException{
+
 		// Store data in database
 		File localFile = downloadUtils.getDatasourceFile(datasource);
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
-		int valueCount = 0;
 		while(entries.hasMoreElements()){
 			zipEntry = entries.nextElement();
 			
@@ -174,15 +175,11 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									TimedValue tv 
 										= new TimedValue(subject, datasource.getTimedValueAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
-									valueCount++;
+									timedValueCount++;
 									
 									// Flushing buffer
-									if (valueCount % BUFFER_THRESHOLD == 0){
-										// Buffer is full ... we write values to db
-										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-										TimedValueUtils.save(timedValueBuffer);
-										timedValueBuffer = new ArrayList<TimedValue>();
-										log.info("Total values written: {}", valueCount);
+									if (timedValueCount % BUFFER_THRESHOLD == 0){
+										saveBuffer(timedValueBuffer, timedValueCount);
 									}
 								}								
 							}							
@@ -191,16 +188,12 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}
 				}
-				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-				TimedValueUtils.save(timedValueBuffer);
-				log.info("Total values written: {}", valueCount);
+				saveBuffer(timedValueBuffer, timedValueCount);
 				br.close();
 			}
 			
 		}
 		zipFile.close();		
-		
-		return valueCount;
 	}
 	
 	public Datasource getDatasource(String datasourceId) throws IOException, ParseException, ConfigurationException {

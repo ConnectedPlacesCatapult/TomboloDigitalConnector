@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TfLStationsImporter extends TfLImporter implements Importer {
-	protected static enum DatasourceId {StationList};
+	protected static enum DatasourceLabel {StationList};
 	private static enum AttributeName {ServingLineCount};
 	private static enum SubjectTypeName {TfLStation};
 
@@ -40,20 +40,21 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	public TfLStationsImporter() throws IOException {
 		super();
+		datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
 	}
 
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
-		return datasourcesFromEnumeration(DatasourceId.class);
+		return datasourcesFromEnumeration(DatasourceLabel.class);
 	}
 
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		verifyConfiguration();
-		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
-		switch (datasourceIdObject){
+		DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceId);
+		switch (datasourceLabel){
 			case StationList:
-				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
+				Datasource datasource = new Datasource(getClass(), DatasourceLabel.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 
 				datasource.setRemoteDatafile(
@@ -68,11 +69,10 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	protected int importDatasource(Datasource datasource) throws Exception {
-		saveDatasourceMetadata(datasource);
-		
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+
 		// Save timed values
-		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
+		DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
@@ -108,6 +108,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				subjects.add(new Subject(datasource.getUniqueSubjectType(), stationLabel, stationName, point));
 			}
 			SubjectUtils.save(subjects);
+			subjectCount += subjects.size();
 
 			// Timed Values
 			List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -123,11 +124,8 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(subject,servingLines, timestamp, count));
 			}
-			int saved = TimedValueUtils.save(timedValues);
-
-			return saved;
+			timedValueCount =  TimedValueUtils.save(timedValues);
 		}
-		return 0;
 	}
 	
 	private String stationLabelFromNode(Node station) throws XPathExpressionException{

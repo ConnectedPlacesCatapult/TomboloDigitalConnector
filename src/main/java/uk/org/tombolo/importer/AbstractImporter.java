@@ -9,22 +9,67 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public abstract class AbstractImporter implements Importer {
 	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
 	protected static final Integer BUFFER_THRESHOLD = 10000;
 
+	protected List<String> datasourceLables = Collections.EMPTY_LIST;
+	protected List<String> geographyLabels = Collections.EMPTY_LIST;
+	protected List<String> temporalLabels = Collections.EMPTY_LIST;
+
+	protected final static String DEFAULT_GEOGRAPHY = "uk";
+	protected final static String DEFAULT_TEMPORAL = "latest";
+
+	protected int subjectCount = 0;		// Count of subjects imported during the lifetime of this class instance
+	protected int fixedValueCount = 0;	// Count of fixed values imported during the lifetime of this class instance
+	protected int timedValueCount = 0;	// Count of timed values imported during the lifetime of this class instance
+
 	private static final Logger log = LoggerFactory.getLogger(AbstractImporter.class);
 	protected Properties properties = new Properties();
 	protected DownloadUtils downloadUtils;
 
-	public AbstractImporter() { }
+	public AbstractImporter() {
+		geographyLabels = Arrays.asList(DEFAULT_GEOGRAPHY);
+		temporalLabels = Arrays.asList(DEFAULT_TEMPORAL);
+	}
+
+	@Override
+	public List<Datasource> getAllDatasources() throws Exception {
+		List<Datasource> datasources = new ArrayList<>();
+		for(String datasourceLabel : getDatasourceLabels()){
+			datasources.add(getDatasource(datasourceLabel));
+		}
+		return datasources;
+	}
+
+	@Override
+	public List<String> getDatasourceLabels() {
+		return datasourceLables;
+	}
+
+	@Override
+	public List<String> getGeographyLabels() {
+		return geographyLabels;
+	}
+
+	@Override
+	public List<String> getTemporalLabels() {
+		return temporalLabels;
+	}
 
 	public void setDownloadUtils(DownloadUtils downloadUtils){
 		this.downloadUtils = downloadUtils;
+	}
+
+	/**
+	 * Syntactic sugar for global scope import
+	 * @param datasourceLabel
+	 * @throws Exception
+	 */
+	public void importDatasource(String datasourceLabel) throws Exception{
+		importDatasource(datasourceLabel, null, null);
 	}
 
 	/**
@@ -35,8 +80,9 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public Integer importDatasource(String datasourceId) throws Exception {
-		return importDatasource(datasourceId, false);
+	@Override
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception {
+		importDatasource(datasourceId, geographyScope, temporalScope, false);
 	}
 	
 	/**
@@ -48,18 +94,21 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws IOException
 	 * @throws ParseException 
 	 */
-	public Integer importDatasource(String datasourceId, Boolean force) throws Exception {
+	@Override
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception {
 		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) {
-			log.info("Skipped importing {}:{} as this import has been completed previously", this.getClass().getCanonicalName(), datasourceId);
-			return null;
+			log.info("Skipped importing {}:{} as this import has been completed previously",
+					this.getClass().getCanonicalName(), datasourceId);
 		} else {
-			log.info("Importing {}:{}", this.getClass().getCanonicalName(), datasourceId);
+			log.info("Importing {}:{}",
+					this.getClass().getCanonicalName(), datasourceId);
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
-			Integer count = importDatasource(datasource);
+			saveDatasourceMetadata(datasource);
+			importDatasource(datasource, geographyScope, temporalScope);
 			DatabaseJournal.addJournalEntry(getJournalEntryForDatasourceId(datasourceId));
-			log.info("Imported {} values", count);
-			return count;
+			log.info("Imported {} subjects, {} fixed values and {} timedValues",
+					subjectCount, fixedValueCount, timedValueCount);
 		}
 	}
 
@@ -67,7 +116,15 @@ public abstract class AbstractImporter implements Importer {
 		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
 	};
 
-	protected abstract int importDatasource(Datasource datasource) throws Exception;
+	/**
+	 * The import function to be implemented in all none abstract sub-classes.
+	 *
+	 * @param datasource
+	 * @param geographyScope
+	 * @param temporalScope
+	 * @throws Exception
+	 */
+	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception;
 
 	/**
 	 * Loads the given properties resource into the main properties object
@@ -118,10 +175,30 @@ public abstract class AbstractImporter implements Importer {
 		return datasources;
 	}
 
+	protected <T extends Enum<T>> List<String> stringsFromEnumeration(Class<T> enumeration) {
+		List<String> strings = new ArrayList<>();
+		for(T item : (enumeration.getEnumConstants())){
+			strings.add(item.name());
+		}
+		return strings;
+	}
+
 	public void saveBuffer(List<TimedValue> timedValueBuffer, int valueCount){
 		log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
 		TimedValueUtils.save(timedValueBuffer);
 		timedValueBuffer.clear();
 		log.info("Total values written: {}", valueCount);
+	}
+
+	public int getSubjectCount() {
+		return subjectCount;
+	}
+
+	public int getFixedValueCount() {
+		return fixedValueCount;
+	}
+
+	public int getTimedValueCount() {
+		return timedValueCount;
 	}
 }

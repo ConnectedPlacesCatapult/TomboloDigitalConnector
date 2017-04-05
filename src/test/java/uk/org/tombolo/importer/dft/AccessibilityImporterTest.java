@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class AccessibilityImporterTest extends AbstractTest {
-    Importer importer;
+    AccessibilityImporter importer;
 
     @Before
     public void setUp() throws Exception {
@@ -82,7 +82,7 @@ public class AccessibilityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        int valueCount = importer.importDatasource("acs0501");
+        importer.importDatasource("acs0501");
 
         Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E01000002");
         Subject islington = SubjectUtils.getSubjectByLabel("E01002766");
@@ -145,7 +145,7 @@ public class AccessibilityImporterTest extends AbstractTest {
                         - 3         // FIXME: Find out why these are missing
                 ;
 
-        assertEquals(expectedValueCount, valueCount);
+        assertEquals(expectedValueCount, importer.getTimedValueCount());
     }
 
 }

@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -52,7 +54,12 @@ public class CatalogueExportRunner extends AbstractRunner {
             importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
 
-            return importer.getAllDatasources().stream();
+            List<Datasource> datasouces = Collections.emptyList();
+
+            for (String datasourceId: importer.getDatasourceLabels())
+                datasouces.add(importer.getDatasource(datasourceId));
+
+            return datasouces.stream();
         } catch (Exception e) {
             log.warn(String.format("Could not get datasources for class %s", importerClass.toString()), e);
             return Stream.empty();

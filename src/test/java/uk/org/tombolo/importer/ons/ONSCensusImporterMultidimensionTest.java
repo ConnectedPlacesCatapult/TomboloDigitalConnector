@@ -39,9 +39,9 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 	@Test
 	public void testLoadDataset() throws Exception{
 		
-		int count = importer.importDatasource(datasourceId);
+		importer.importDatasource(datasourceId);
 		
-		assertEquals(102, count);
+		assertEquals(102, importer.getTimedValueCount());
 
 		Attribute attribute0 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_0");
 		assertNull(attribute0);

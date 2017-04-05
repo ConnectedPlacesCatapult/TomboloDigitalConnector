@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "walkingCyclingBorough";
-	public Importer importer;
+	public WalkingCyclingBoroughImporter importer;
 
 	Subject cityOfLondon;
 
@@ -50,9 +50,9 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		int datapoints = importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID);
 		
-		assertEquals(8, datapoints);
+		assertEquals(8, importer.getTimedValueCount());
 
 		LocalDateTime year2012 = LocalDateTime.parse("2012-12-31T23:59:59");
 		LocalDateTime year2014 = LocalDateTime.parse("2014-12-31T23:59:59");

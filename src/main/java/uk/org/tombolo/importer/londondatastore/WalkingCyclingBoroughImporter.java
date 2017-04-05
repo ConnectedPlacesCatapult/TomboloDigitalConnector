@@ -16,6 +16,7 @@ import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,10 +24,16 @@ import java.util.List;
  */
 public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImporter implements Importer{
     Logger log = LoggerFactory.getLogger(WalkingCyclingBoroughImporter.class);
-    public enum DatasourceId {walkingCyclingBorough};
+
+    private enum DatasourceLabel {walkingCyclingBorough};
     public enum AttributeId {walk5xWeek,cycle1xWeek};
 
     ExcelUtils excelUtils;
+
+    public WalkingCyclingBoroughImporter() {
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+    }
 
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
@@ -35,18 +42,13 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     }
 
     @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
-    }
-
-    @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
             case walkingCyclingBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        DatasourceId.walkingCyclingBorough.name(),
+                        datasourceLabel.name(),
                         getProvider(),
                         "Walking and Cycling in London Boroughs",
                         "Walking and Cycling in London Boroughs"
@@ -67,13 +69,11 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         Workbook workbook = excelUtils.getWorkbook(datasource);
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         List<TimedValue> timedValueBuffer = new ArrayList<>();
-        int valueCount = 0;
 
         // Extract walking
         ConstantExtractor walk5xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.walk5xWeek.name());
@@ -107,7 +107,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new RowCellExtractor(40, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet walkSheet = workbook.getSheetAt(1);
-        valueCount += excelUtils.extractTimedValues(walkSheet, this, walk5xWeekExtractors, BUFFER_THRESHOLD);
+        timedValueCount += excelUtils.extractTimedValues(walkSheet, this, walk5xWeekExtractors, BUFFER_THRESHOLD);
 
         // Extract cycling
         ConstantExtractor cycle1xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.cycle1xWeek.name());
@@ -141,9 +141,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new RowCellExtractor(38, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet cycleSheet = workbook.getSheetAt(2);
-        valueCount += excelUtils.extractTimedValues(cycleSheet, this, cycle1xWeekExtractors, BUFFER_THRESHOLD);
-
-        return valueCount;
+        timedValueCount += excelUtils.extractTimedValues(cycleSheet, this, cycle1xWeekExtractors, BUFFER_THRESHOLD);
     }
 
     private Attribute getAttribute(AttributeId attributeId){

@@ -30,9 +30,9 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportHospitals() throws Exception {
-        int recordsImported = importer.importDatasource("hospital");
+        importer.importDatasource("hospital");
         Subject subject = SubjectUtils.getSubjectByLabel("40918");
-        assertEquals(1106, recordsImported);
+        assertEquals(1106, importer.getSubjectCount());
         assertEquals("Guy's Hospital", subject.getName());
         assertEquals(51.5046, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         // This is in the form 0.0Ex in the JSON so we test on this
@@ -41,9 +41,9 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportClinics() throws Exception {
-        int recordsImported = importer.importDatasource("clinic");
+        importer.importDatasource("clinic");
         Subject subject = SubjectUtils.getSubjectByLabel("12366");
-        assertEquals(8416, recordsImported);
+        assertEquals(8416, importer.getSubjectCount());
         assertEquals("Frinton Road Medical Centre", subject.getName());
         assertEquals(51.8042, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         assertEquals(1.1863, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
@@ -51,9 +51,9 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportGpSurgeries() throws Exception {
-        int recordsImported = importer.importDatasource("gpSurgeries");
+        importer.importDatasource("gpSurgeries");
         Subject subject = SubjectUtils.getSubjectByLabel("2915");
-        assertEquals(9767, recordsImported);
+        assertEquals(9767, importer.getSubjectCount());
         assertEquals("Blackfriars", subject.getName());
         assertEquals(53.4839, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         assertEquals(-2.2547, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);

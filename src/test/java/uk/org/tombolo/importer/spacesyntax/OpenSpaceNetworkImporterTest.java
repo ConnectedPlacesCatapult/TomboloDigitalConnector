@@ -66,8 +66,8 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
 
     @Test @Ignore
     public void importDatasource() throws Exception {
-        int importedCount = importer.importDatasource("milton_keynes.osm_polyline_processed");
-        assertEquals(69489, importedCount);
+        importer.importDatasource("milton_keynes.osm_polyline_processed");
+        assertEquals(69489, importer.getTimedValueCount());
 
         Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
 

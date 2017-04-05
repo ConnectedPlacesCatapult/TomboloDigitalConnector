@@ -23,21 +23,26 @@ import java.util.List;
  * https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv
  */
 public class IMDImporter extends AbstractDCLGImporter implements Importer {
-    private enum DatasourceId {imd};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    private enum DatasourceLabel {imd};
+    private enum GeographyLabel {england};
+    private enum TemporalLabel {y2015};
+
+    public IMDImporter() {
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        geographyLabels = stringsFromEnumeration(GeographyLabel.class);
+        temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceId datasourceIdItem = DatasourceId.valueOf(datasourceId);
-        switch(datasourceIdItem){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceId);
+        switch(datasourceLabel){
             case imd:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        datasourceIdItem.name(),
+                        datasourceLabel.name(),
                         getProvider(),
                         "English indices of deprivation 2015",
                         "Statistics on relative deprivation in small areas in England.");
@@ -52,15 +57,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        int valueCount = 0;
-
-        // Save provider
-        ProviderUtils.save(datasource.getProvider());
-
-        // Save attributes
-        AttributeUtils.save(datasource.getTimedValueAttributes());
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
         File localFile = downloadUtils.getDatasourceFile(datasource);
@@ -87,14 +84,11 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
                         timestamp,
                         Double.valueOf(records.get(0).get(i+4)));
                 timedValueBuffer.add(timedValue);
-                valueCount++;
+                timedValueCount++;
             }
             TimedValueUtils.save(timedValueBuffer);
         }
-
-        return valueCount;
     }
-
 
     private List<Attribute> getAttributes(){
         List<Attribute> attributes = new ArrayList<>();

@@ -22,7 +22,12 @@ import java.util.stream.Collectors;
 
 public final class HealthOrganisationImporter extends AbstractImporter implements Importer {
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
-    private enum SubjectTypeLabel {hospital, clinic, gpSurgeries};
+    private enum DatasourceLabel {hospital, clinic, gpSurgeries};
+
+    public HealthOrganisationImporter() {
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+    }
 
     @Override
     public Provider getProvider() {
@@ -33,13 +38,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(SubjectTypeLabel.class);
-    }
-
-    @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        SubjectTypeLabel datasourceIdObject = SubjectTypeLabel.valueOf(datasourceId);
+        DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasourceId);
         switch (datasourceIdObject) {
             case hospital:
                 return makeDatasource(
@@ -64,8 +64,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
@@ -81,6 +80,9 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
                 Double latitude = Double.parseDouble(healthOrgObj.get("latitude"));
                 Coordinate coordinate = new Coordinate(longitude, latitude);
                 point = geometryFactory.createPoint(coordinate);
+
+                // FIXME: Add fixed values
+
             } catch (Exception e) {
                 // If we have any trouble with the geometry, e.g. the figures are blank or invalid,
                 // we use the null geometry prepopulated in the `point` variable, and log.
@@ -91,7 +93,6 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
         }).collect(Collectors.toList());
 
         SubjectUtils.save(subjects);
-
-        return subjects.size();
+        subjectCount = subjects.size();
     }
 }

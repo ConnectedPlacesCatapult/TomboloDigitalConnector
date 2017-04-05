@@ -25,11 +25,15 @@ import java.util.*;
  * http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators
  */
 public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implements Importer {
+    private enum DatasourceLabel {phofIndicatorsLondonBorough};
     Logger log = LoggerFactory.getLogger(LondonPHOFImporter.class);
 
-    private enum DatasourceId {phofIndicatorsLondonBorough};
-
     ExcelUtils excelUtils;
+
+    public LondonPHOFImporter(){
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+    }
 
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
@@ -38,18 +42,13 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
     }
 
     @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
-    }
-
-    @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
             case phofIndicatorsLondonBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        DatasourceId.phofIndicatorsLondonBorough.name(),
+                        datasourceLabel.name(),
                         getProvider(),
                         "PHOF Indicators London Borough",
                         "Public Health Outcomes Framework Indicators for London Boroughs"
@@ -66,8 +65,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         RowCellExtractor subjectExtractor = new RowCellExtractor(4, Cell.CELL_TYPE_STRING);
@@ -97,6 +95,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             );
             try {
                 timedValueBuffer.add(timedValueExtractor.extract());
+                timedValueCount++;
             }catch (UnknownSubjectLabelException e){
                 // No worries if the subject does not exist
             }catch (ExtractorException e){
@@ -104,8 +103,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             }
         }
         workbook.close();
-        TimedValueUtils.save(timedValueBuffer);
-        return timedValueBuffer.size();
+        saveBuffer(timedValueBuffer, timedValueCount);
     }
 
     private List<Attribute> getAttributes(Datasource datasource) throws Exception {

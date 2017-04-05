@@ -24,11 +24,11 @@ import java.util.List;
 public class AdultObesityImporter extends AbstractPheImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
-    private enum DatasourceId {laAdultObesity2014};
+    private enum DatasourceLabel {laAdultObesity2014};
     private Datasource[] datasources = {
         new Datasource(
                 getClass(),
-                DatasourceId.laAdultObesity2014.name(),
+                DatasourceLabel.laAdultObesity2014.name(),
                 getProvider(),
                 "Local Authority Adult Obesity",
                 "Self reported adult obesity")
@@ -38,17 +38,16 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
 
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public AdultObesityImporter(){
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
+        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
+        switch (datasourceLabel){
             case laAdultObesity2014:
-                Datasource datasource = datasources[datasourceId.ordinal()];
+                Datasource datasource = datasources[datasourceLabel.ordinal()];
                 datasource.setUrl("http://www.noo.org.uk/visualisation");
                 datasource.setRemoteDatafile("https://www.noo.org.uk/gsf.php5?f=314008&fv=21761");
                 datasource.setLocalDatafile("/PublicHealthEngland/BMI_categories_2012-2014.xlsx");
@@ -60,12 +59,9 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         if (excelUtils == null)
             initalize();
-
-        // Save Provider and Attributes
-        saveDatasourceMetadata(datasource);
 
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(datasource);
@@ -87,7 +83,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
                     timestampExtractor,
                     valueExtractor));
         }
-        return excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+        timedValueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
     }
 
     private List<Attribute> getAttributes() {

@@ -5,7 +5,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.importer.Importer;
 
 public abstract class AbstractONSCensusImporterTest extends AbstractTest {
-	public Importer importer;
+	public ONSCensusImporter importer;
 
 	@Before
 	public void before() throws Exception {

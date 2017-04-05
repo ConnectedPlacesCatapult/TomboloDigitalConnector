@@ -45,8 +45,8 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        int valueCount = importer.importDatasource("londonBoroughProfiles");
-        assertEquals(12, valueCount);
+        importer.importDatasource("londonBoroughProfiles");
+        assertEquals(12, importer.getTimedValueCount());
 
         TimedValue populationDensity = TimedValueUtils.getLatestBySubjectAndAttribute(
                 cityOfLondon,

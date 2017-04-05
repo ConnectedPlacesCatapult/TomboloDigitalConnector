@@ -42,14 +42,14 @@ public class ONSWagesImporterTest extends AbstractTest {
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("laWages2016");
+        Datasource datasource = importer.getDatasource("wages");
 
         assertEquals(198, datasource.getTimedValueAttributes().size());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("laWages2016");
+        importer.importDatasource("wages", null, null);
 
         Attribute weeklyPayGrossAllMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),

@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer.phe;
 
+import org.apache.commons.collections.ArrayStack;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -12,6 +13,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class ChildhoodObesityImporterTest extends AbstractTest {
-    private Importer importer;
+    private ChildhoodObesityImporter importer;
 
     private Subject cityOfLondon001;
     private Subject islington011;
@@ -40,12 +42,12 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     @Test
     public void getAllDatasources() throws Exception {
         List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(3, datasources.size());
+        assertEquals(1, datasources.size());
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("msoaChildhoodObesity2014");
+        Datasource datasource = importer.getDatasource("childhoodObesity");
 
         assertEquals(18, datasource.getTimedValueAttributes().size());
     }
@@ -57,7 +59,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOA() throws Exception {
-        importer.importDatasource("msoaChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -89,7 +91,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOAWithEmpty() throws Exception {
-        importer.importDatasource("msoaChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -125,7 +127,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceLA() throws Exception {
-        importer.importDatasource("laChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 

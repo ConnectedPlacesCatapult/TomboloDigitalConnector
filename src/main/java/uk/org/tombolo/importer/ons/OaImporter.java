@@ -20,16 +20,16 @@ import java.util.List;
 
 public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    private static enum SubjectTypeLabel {lsoa, msoa, localAuthority};
+    private enum DatasourceLabel {lsoa, msoa, localAuthority};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(SubjectTypeLabel.class);
+    public OaImporter(){
+        super();
+        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        SubjectTypeLabel datasourceIdObject = SubjectTypeLabel.valueOf(datasourceId);
+        DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasourceId);
         Datasource datasource;
         switch (datasourceIdObject) {
             case lsoa:
@@ -57,9 +57,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         InputStream inputStream = downloadUtils.fetchJSONStream(new URL(datasource.getRemoteDatafile()));
         FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);
 
@@ -78,8 +76,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         }
 
         SubjectUtils.save(subjects);
-
-        return subjects.size();
+        subjectCount = subjects.size();
     }
 
     private String getFeatureSubjectLabel(Feature feature) {
