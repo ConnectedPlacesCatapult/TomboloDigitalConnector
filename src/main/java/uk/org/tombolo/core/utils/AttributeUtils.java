@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.query.Query;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
@@ -46,5 +47,10 @@ public class AttributeUtils {
 			return (Attribute) query.uniqueResult();
 		});
 	}
-	
+
+	public static String nameToLabel(String name){
+		return DigestUtils.md5Hex(name);
+	}
+
+
 }

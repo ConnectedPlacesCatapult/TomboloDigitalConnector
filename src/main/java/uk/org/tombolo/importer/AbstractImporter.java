@@ -27,7 +27,6 @@ public abstract class AbstractImporter implements Importer {
 		this.downloadUtils = downloadUtils;
 	}
 
-
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *

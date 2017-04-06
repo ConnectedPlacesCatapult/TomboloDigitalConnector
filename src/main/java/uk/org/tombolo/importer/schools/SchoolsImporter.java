@@ -1,12 +1,6 @@
 package uk.org.tombolo.importer.schools;
 
-import com.google.common.collect.BoundType;
-import com.google.common.collect.Range;
-import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
-import uk.org.tombolo.importer.utils.extraction.SingleValueExtractor;
-import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,13 +15,13 @@ import java.util.List;
 public class SchoolsImporter extends AbstractSchoolsImporter {
 
     private static String getFormattedMonthYear() {
-        DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMMM_yyyy");
+        DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMM_yyyy");
         LocalDate localDate = LocalDate.now();
         return dft.format(localDate).toString();
     }
 
     private enum schoolsDataSourceID implements DataSourceID {
-        schoolsInEngland("Schools in England",
+        schools("Schools in England",
                 "Schools in England",
                 "https://www.gov.uk/government/publications/schools-in-england/",
                 "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + getFormattedMonthYear() + ".xlsx",
@@ -83,45 +77,6 @@ public class SchoolsImporter extends AbstractSchoolsImporter {
         public int getSheet() { return sheet; }
     }
 
-    //This enum would be populated in case the dataset contains many irrelevant attributes
-    // This enum allows to specify the attributes we are interested to.
-    // In the specific case we are getting all the attributes from the dataset.
-    private enum schoolsAttributeID implements AttributeID {
-        ;
-
-        private String name;
-        private String description;
-        private int columnID;
-        private Attribute.DataType type;
-
-        private schoolsAttributeID(String name, String description, int columnID, Attribute.DataType type) {
-            this.name = name;
-            this.description = description;
-            this.columnID = columnID;
-            this.type = type;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getDescription() {
-            return description;
-        }
-
-        @Override
-        public int columnID() {
-            return columnID;
-        }
-
-        @Override
-        public Attribute.DataType getType() {
-            return type;
-        }
-    }
-
     @Override
     public List<Datasource> getAllDatasources() throws Exception {
         return datasourcesFromEnumeration(schoolsDataSourceID.class);
@@ -135,14 +90,6 @@ public class SchoolsImporter extends AbstractSchoolsImporter {
         } catch (IllegalArgumentException e) {
             throw new Error("Unknown DataSourceID " + datasourceId);
         }
-        return getDatasource(getClass(), id, schoolsAttributeID.class);
-    }
-
-
-    @Override
-    @Deprecated
-    protected <T extends Enum<T> & AttributeID> Object getExtractor(SingleValueExtractor subjectLabelExtractor, T attribute) {
-        return new TimedValueExtractor(getProvider(), subjectLabelExtractor, new ConstantExtractor(""),
-                new ConstantExtractor(""), new ConstantExtractor(""));
+        return getDatasource(getClass(), id);
     }
 }

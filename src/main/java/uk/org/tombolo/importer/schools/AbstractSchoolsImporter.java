@@ -5,7 +5,7 @@ import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 
 /**
- * Abstract class fot the school importer indicating the provider
+ * Abstract class for the school importer indicating the provider
  */
 public abstract class AbstractSchoolsImporter extends XLSImporter {
     private static final Provider PROVIDER = new Provider("uk.gov.education", "Department of Education");
