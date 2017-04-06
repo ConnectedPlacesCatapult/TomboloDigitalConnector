@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SchoolsImporter extends AbstractSchoolsImporter {
 
-    private static String getFormattedMonthYear() {
+    public static String getFormattedMonthYear() {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMM_yyyy");
         LocalDate localDate = LocalDate.now();
         return dft.format(localDate).toString();

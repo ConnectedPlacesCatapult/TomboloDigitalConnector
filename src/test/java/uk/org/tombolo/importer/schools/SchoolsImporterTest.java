@@ -36,8 +36,8 @@ public class SchoolsImporterTest extends AbstractTest {
 
     @Test
     public void testGetDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("schoolsInEngland");
-        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_March_2017.xlsx",datasource.getRemoteDatafile());
+        Datasource datasource = importer.getDatasource("schools");
+        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + SchoolsImporter.getFormattedMonthYear() + ".xlsx",datasource.getRemoteDatafile());
         assertEquals("EduBase_Schools_March_2017.xlsx", datasource.getLocalDatafile());
     }
 
