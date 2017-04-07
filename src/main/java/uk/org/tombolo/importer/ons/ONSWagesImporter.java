@@ -116,7 +116,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
     public ONSWagesImporter(){
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

@@ -16,7 +16,6 @@ import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     public WalkingCyclingBoroughImporter() {
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

@@ -15,7 +15,7 @@ public abstract class AbstractImporter implements Importer {
 	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
 	protected static final Integer BUFFER_THRESHOLD = 10000;
 
-	protected List<String> datasourceLables = Collections.EMPTY_LIST;
+	protected List<String> datasourceIds = Collections.EMPTY_LIST;
 	protected List<String> geographyLabels = Collections.EMPTY_LIST;
 	protected List<String> temporalLabels = Collections.EMPTY_LIST;
 
@@ -38,15 +38,20 @@ public abstract class AbstractImporter implements Importer {
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
 		List<Datasource> datasources = new ArrayList<>();
-		for(String datasourceLabel : getDatasourceLabels()){
+		for(String datasourceLabel : getDatasourceIds()){
 			datasources.add(getDatasource(datasourceLabel));
 		}
 		return datasources;
 	}
 
 	@Override
-	public List<String> getDatasourceLabels() {
-		return datasourceLables;
+	public List<String> getDatasourceIds() {
+		return datasourceIds;
+	}
+
+	@Override
+	public boolean datasourceExists(String datasourceId) {
+		return getDatasourceIds().contains(datasourceId);
 	}
 
 	@Override
@@ -65,11 +70,11 @@ public abstract class AbstractImporter implements Importer {
 
 	/**
 	 * Syntactic sugar for global scope import
-	 * @param datasourceLabel
+	 * @param datasourceId
 	 * @throws Exception
 	 */
-	public void importDatasource(String datasourceLabel) throws Exception{
-		importDatasource(datasourceLabel, null, null);
+	public void importDatasource(String datasourceId) throws Exception{
+		importDatasource(datasourceId, null, null);
 	}
 
 	/**
@@ -96,6 +101,9 @@ public abstract class AbstractImporter implements Importer {
 	 */
 	@Override
 	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception {
+		if (!datasourceExists(datasourceId))
+			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
+
 		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) {
 			log.info("Skipped importing {}:{} as this import has been completed previously",
 					this.getClass().getCanonicalName(), datasourceId);

@@ -10,12 +10,14 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -87,7 +89,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 	public TrafficCountImporter() {
 		super();
-		datasourceLables = stringsFromEnumeration(DatasetLabel.class);
+		datasourceIds = stringsFromEnumeration(DatasetLabel.class);
 		geographyLabels = new ArrayList<>(regions);
 		geographyLabels.addAll(localAuthorities);
 	}
@@ -95,56 +97,47 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 
-		if (!regions.contains(datasourceId) && !localAuthorities.contains(datasourceId))
-			return null;
-		
 		Datasource datasource = new Datasource(
 				getClass(),
 				datasourceId,
 				getProvider(), 
-				"Traffic Counts for "+datasourceId, 
-				"Traffic Counts for "+datasourceId);
+				"Traffic Counts",
+				"Traffic Counts from Department for Transport.");
 
 		// Update attribute list
 		datasource.addAllTimedValueAttributes(getAttributes());
-		
-		// Update links to local and remote files
-		String remoteId = datasourceId.replaceAll(" ", "+").replaceAll(",", "%2C");
-		String localId = datasourceId.replaceAll(" ", "_").replaceAll(",", "_");
-		
-		if (regions.contains(datasourceId)){
-			datasource.setUrl("http://www.dft.gov.uk/traffic-counts/");
-			datasource.setLocalDatafile("dft/traffic/region/"+localId+".csv");
-			datasource.setRemoteDatafile("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/"+remoteId+".csv");
-		}else if (localAuthorities.contains(datasourceId)){
-			datasource.setUrl("http://www.dft.gov.uk/traffic-counts/");
-			datasource.setLocalDatafile("dft/traffic/la/"+localId+".csv");
-			datasource.setRemoteDatafile("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/"+remoteId+".csv");			
-		}
+		datasource.setUrl("http://www.dft.gov.uk/traffic-counts/");
 
 		datasource.addSubjectType(new SubjectType(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
-		
+
 		return datasource;
 	}
 
 	@Override
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
-		// Read timed values
-		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-		Set<Long> trafficCounters = new HashSet<Long>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(downloadUtils.getDatasourceFile(datasource)), "utf8"));
-		String line = null;
-		List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
-		while((line = reader.readLine()) != null){
-			String[] fields = line.split("\",\"");
-			
-			if (fields.length == 1)
-				continue;
-			
-			long id = Long.valueOf(fields[1].replaceAll("\"", ""));
-			String label = "DfT-TrafficCounter-"+id;
-			String year = fields[0].replaceAll("\"", "");
+		if (geographyScope == null || geographyScope.isEmpty())
+			throw new ConfigurationException("Missing geography scope");
+
+		for (String geogrpahyLabel : geographyScope) {
+
+			URL url = new URL(getTrafficCountUrl(geogrpahyLabel));
+
+			// Read timed values
+			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+			Set<Long> trafficCounters = new HashSet<Long>();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(downloadUtils.fetchCSVStream(url)));
+			String line = null;
+			List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
+			while ((line = reader.readLine()) != null) {
+				String[] fields = line.split("\",\"");
+
+				if (fields.length == 1)
+					continue;
+
+				long id = Long.valueOf(fields[1].replaceAll("\"", ""));
+				String label = "DfT-TrafficCounter-" + id;
+				String year = fields[0].replaceAll("\"", "");
 
 			// Save subject object
 			if (!trafficCounters.contains(id)){
@@ -157,22 +150,23 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 				String startJunction = fields[8].replaceAll("\"", "");
 				String endJunction = fields[9].replaceAll("\"", "");
 
-				Coordinate coordinate = CoordinateUtils.osgbToWgs84(easting, northing);
-				Point point = geometryFactory.createPoint(coordinate);
-				
-				String name = road+" ("+startJunction+" to "+endJunction+")";
+					Coordinate coordinate = CoordinateUtils.osgbToWgs84(easting, northing);
+					Point point = geometryFactory.createPoint(coordinate);
 
-				// FIXME: Add fixed values
-				
-				Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point);
-				List<Subject> subjectList = new ArrayList<Subject>();
-				subjectList.add(subject);
-				SubjectUtils.save(subjectList);
-				subjectCount++;
-			}
-			
-			Subject subject = SubjectUtils.getSubjectByLabel(label);
-			LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+					String name = road + " (" + startJunction + " to " + endJunction + ")";
+
+					// FIXME: Add fixed values
+
+					Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point);
+					List<Subject> subjectList = new ArrayList<Subject>();
+					subjectList.add(subject);
+					SubjectUtils.save(subjectList);
+					trafficCounters.add(id);
+					subjectCount++;
+				}
+
+				Subject subject = SubjectUtils.getSubjectByLabel(label);
+				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 			// Pedal cycles
 			Attribute pcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountPedalCycles.name());
@@ -216,12 +210,24 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			timedValueBuffer.add(heavyGoodsVehicleCount);
 			timedValueCount++;
 
-			if (timedValueBuffer.size() > BUFFER_THRESHOLD)
-				saveBuffer(timedValueBuffer, timedValueCount);
+				if (timedValueBuffer.size() > BUFFER_THRESHOLD)
+					saveBuffer(timedValueBuffer, timedValueCount);
 
+			}
+			saveBuffer(timedValueBuffer, timedValueCount);
+			reader.close();
 		}
-		saveBuffer(timedValueBuffer, timedValueCount);
-		reader.close();
+	}
+
+	protected String getTrafficCountUrl(String geographyLabel) throws ConfigurationException {
+		String remoteId = geographyLabel.replaceAll(" ", "+").replaceAll(",", "%2C");
+
+		if (regions.contains(geographyLabel)){
+			return "http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/"+remoteId+".csv";
+		}else if (localAuthorities.contains(geographyLabel)){
+			return "http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/"+remoteId+".csv";
+		}
+		throw new ConfigurationException("Unknown Geography Scope: " + geographyLabel);
 	}
 
 	private List<Attribute> getAttributes(){

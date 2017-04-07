@@ -56,19 +56,19 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 
 	public ONSCensusImporter() throws IOException, ParseException, ConfigurationException {
 		super();
-		datasourceLables = null;
+		datasourceIds = null;
 	}
 
 	@Override
-	public List<String> getDatasourceLabels() {
-		if (datasourceLables == null)
+	public List<String> getDatasourceIds() {
+		if (datasourceIds == null)
 			try {
-				datasourceLables = getAllDatasourceNames();
+				datasourceIds = getAllDatasourceNames();
 			}catch (Exception e){
 				throw new Error(e);
 			}
 
-		return datasourceLables;
+		return datasourceIds;
 	}
 
 	private List<String> getAllDatasourceNames() throws ConfigurationException, IOException, ParseException {

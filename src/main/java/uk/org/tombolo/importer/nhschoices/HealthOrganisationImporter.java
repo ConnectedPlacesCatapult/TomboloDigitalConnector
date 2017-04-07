@@ -26,7 +26,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
 
     public HealthOrganisationImporter() {
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

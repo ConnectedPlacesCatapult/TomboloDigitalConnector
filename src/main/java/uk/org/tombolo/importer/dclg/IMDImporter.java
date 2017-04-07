@@ -4,8 +4,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
@@ -30,7 +28,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
 
     public IMDImporter() {
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }

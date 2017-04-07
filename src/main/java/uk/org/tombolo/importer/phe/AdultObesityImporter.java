@@ -39,7 +39,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
     public AdultObesityImporter(){
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

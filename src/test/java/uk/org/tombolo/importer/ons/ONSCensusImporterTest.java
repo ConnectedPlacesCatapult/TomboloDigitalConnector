@@ -24,7 +24,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 	@Test
 	public void testGetAllDatasourceLabels() throws Exception{
 		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
-		List<String> datasources = importer.getDatasourceLabels();
+		List<String> datasources = importer.getDatasourceIds();
 		
 		// FIXME: For some reason this has changed in the API
 		//assertEquals(701, datasources.size());

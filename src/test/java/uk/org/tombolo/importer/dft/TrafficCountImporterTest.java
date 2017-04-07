@@ -1,23 +1,38 @@
 package uk.org.tombolo.importer.dft;
 
+import org.hamcrest.core.StringStartsWith;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *
+ * Using ...
+ *
+ * Remote: http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/London.csv
+ * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YyL3RyYWZmaWNjb3VudHMvZXhwb3J0L2RhdGEvdHJhZmZpYy9yZWdpb24vTG9uZG9uLmNzdg==.csv
+ */
 public class TrafficCountImporterTest extends AbstractTest {
 
 	private static TrafficCountImporter importer;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void before(){
@@ -39,27 +54,46 @@ public class TrafficCountImporterTest extends AbstractTest {
 	}
 
 	@Test
-	public void testGetDatasource() throws Exception {
-		Datasource datasource = importer.getDatasource("London");
-		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/London.csv",datasource.getRemoteDatafile());
-		assertEquals("dft/traffic/region/London.csv", datasource.getLocalDatafile());
-		
-		datasource = importer.getDatasource("North East");
-		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/North+East.csv",datasource.getRemoteDatafile());
-		assertEquals("dft/traffic/region/North_East.csv", datasource.getLocalDatafile());
-		
-		datasource = importer.getDatasource("Aberdeen City");
-		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Aberdeen+City.csv",datasource.getRemoteDatafile());
-		assertEquals("dft/traffic/la/Aberdeen_City.csv", datasource.getLocalDatafile());
-		
-		datasource = importer.getDatasource("Bristol, City of");
-		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv",datasource.getRemoteDatafile());
-		assertEquals("dft/traffic/la/Bristol__City_of.csv", datasource.getLocalDatafile());
+	public void testGetTrafficCountUrl() throws Exception {
+		String url = importer.getTrafficCountUrl("London");
+		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/London.csv",url);
+
+		url = importer.getTrafficCountUrl("North East");
+		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/North+East.csv",url);
+
+		url = importer.getTrafficCountUrl("Aberdeen City");
+		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Aberdeen+City.csv",url);
+
+		url = importer.getTrafficCountUrl("Bristol, City of");
+		assertEquals("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv",url);
 	}
 
 	@Test
-	public void testImportDatasource() throws Exception {
-		importer.importDatasource("London");
+	public void testImportDatasourceUnknown() throws Exception{
+		thrown.expect(ConfigurationException.class);
+		thrown.expectMessage(new StringStartsWith("Unknown DatasourceId:"));
+		importer.importDatasource("xyz");
+	}
+
+	@Test
+	public void testImportDatasourceNowhere() throws Exception {
+		thrown.expect(ConfigurationException.class);
+		thrown.expectMessage(new StringStartsWith("Missing geography scope"));
+		importer.importDatasource("trafficCounts");
+	}
+
+	@Test
+	public void testImportDatasourceNorthPole() throws Exception {
+		thrown.expect(ConfigurationException.class);
+		thrown.expectMessage(new StringStartsWith("Unknown Geography Scope:"));
+		importer.importDatasource("trafficCounts", Arrays.asList("North Pole"), null);
+	}
+
+
+	@Test
+	public void testImportDatasourceLondon() throws Exception {
+		importer.importDatasource("trafficCounts", Arrays.asList("London"), null);
+		assertEquals(3, importer.getSubjectCount());
 		assertEquals(
 				3		// Sensors
 				* 15	// Years

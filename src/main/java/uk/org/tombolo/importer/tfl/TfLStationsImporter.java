@@ -40,7 +40,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	public TfLStationsImporter() throws IOException {
 		super();
-		datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+		datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
 	}
 
 	@Override

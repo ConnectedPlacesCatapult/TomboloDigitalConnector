@@ -21,7 +21,15 @@ public interface Importer {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getDatasourceLabels();
+	public List<String> getDatasourceIds();
+
+	/**
+	 * Returns true iff a datasource with said id exists
+	 *
+	 * @param datasourceId
+	 * @return
+	 */
+	boolean datasourceExists(String datasourceId);
 
 	/**
 	 * Returns all labels that can be used to restrict the geographical scope of the import.

@@ -16,15 +16,22 @@ import uk.org.tombolo.importer.Importer;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
     private enum DatasourceLabel {lsoa, msoa, localAuthority};
 
+    List<String> subjectTypeNames = Arrays.asList("LSOA", "MSOA", "Local Authority");
+    List<String> subjectTYpeDesc = Arrays.asList(
+            "Lower Layer Super Output Areas",
+            "Middle Layer Super Output Areas",
+            "Local Authority");
+
     public OaImporter(){
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override
@@ -33,7 +40,12 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         Datasource datasource;
         switch (datasourceIdObject) {
             case lsoa:
-                datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
+                datasource = new Datasource(
+                        getClass(),
+                        datasourceIdObject.name(),
+                        getProvider(),
+                        subjectTypeNames.get(datasourceIdObject.ordinal()),
+                        subjectTYpeDesc.get(datasourceIdObject.ordinal()));
                 datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/da831f80764346889837c72508f046fa_2.geojson");
                 datasource.setLocalDatafile("lsoa/Lower_layer_Super_Output_Areas_December_2011_Generalised_Clipped__Boundaries_in_England_and_Wales.geojson");
                 datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));

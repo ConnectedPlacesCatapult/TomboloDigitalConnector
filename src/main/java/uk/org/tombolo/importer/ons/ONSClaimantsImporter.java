@@ -39,7 +39,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
 
     public ONSClaimantsImporter(){
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

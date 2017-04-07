@@ -6,7 +6,6 @@ import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.*;
@@ -15,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,7 +33,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
 
     public LondonBoroughProfileImporter() {
         super();
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
     }
 
     @Override

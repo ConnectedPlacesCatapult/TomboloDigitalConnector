@@ -56,7 +56,7 @@ public class CatalogueExportRunner extends AbstractRunner {
 
             List<Datasource> datasouces = Collections.emptyList();
 
-            for (String datasourceId: importer.getDatasourceLabels())
+            for (String datasourceId: importer.getDatasourceIds())
                 datasouces.add(importer.getDatasource(datasourceId));
 
             return datasouces.stream();

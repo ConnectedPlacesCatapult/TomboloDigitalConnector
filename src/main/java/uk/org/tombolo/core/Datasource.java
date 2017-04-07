@@ -102,9 +102,11 @@ public class Datasource {
 		this.url = url;
 	}
 
+	@Deprecated
 	public String getRemoteDatafile() {
 		return remoteDatafile;
 	}
+	@Deprecated
 	public void setRemoteDatafile(String remoteDatafile) {
 		this.remoteDatafile = remoteDatafile;
 	}

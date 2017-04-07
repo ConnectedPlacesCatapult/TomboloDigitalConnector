@@ -46,7 +46,18 @@ public class DownloadUtils {
 		
 		return localDatasourceFile;
 	}
-	
+
+	public InputStream fetchCSVStream(URL url) throws IOException {
+		createCacheDir();
+		File localDatasourceFile = urlToLocalFile(url, ".csv");
+		if (!localDatasourceFile.exists()){
+			URLConnection connection = url.openConnection();
+			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+		} else {
+			return new FileInputStream(localDatasourceFile);
+		}
+	}
+
 	public static String paramsToString(Map<String,String> params){
 		List<String> paramList = new ArrayList<String>();
 		for (String key : params.keySet()){
@@ -62,11 +73,7 @@ public class DownloadUtils {
 
 	public InputStream fetchJSONStream(URL url) throws IOException {
 		createCacheDir();
-		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
-		File localDatasourceFile = new File(
-				tomboloDataCacheRootDirectory
-						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
-						+ "/" + urlKey + ".json");
+		File localDatasourceFile = urlToLocalFile(url, ".json");
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
@@ -75,6 +82,14 @@ public class DownloadUtils {
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}
+	}
+
+	private File urlToLocalFile (URL url, String suffix){
+		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
+		return new File(
+				tomboloDataCacheRootDirectory
+						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
+						+ "/" + urlKey + suffix);
 	}
 
 	private void createCacheDir() throws IOException {

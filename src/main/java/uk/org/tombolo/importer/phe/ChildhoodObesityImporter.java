@@ -43,7 +43,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     private ExcelUtils excelUtils;
 
     public ChildhoodObesityImporter(){
-        datasourceLables = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }

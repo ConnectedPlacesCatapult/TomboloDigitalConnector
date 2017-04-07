@@ -31,7 +31,7 @@ public class DataCatalogueRunner extends AbstractRunner {
         // Output catalogue
         if (datasetId == null || "".equals(datasetId)) {
             // datasetId is null and hence we print a list of datasets
-            List<String> datasourceList = importer.getDatasourceLabels();
+            List<String> datasourceList = importer.getDatasourceIds();
             for (String datasourceId : datasourceList) {
                 Datasource datasource = importer.getDatasource(datasourceId);
                 System.out.println(
