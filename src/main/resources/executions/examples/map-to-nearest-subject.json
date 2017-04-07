@@ -13,7 +13,8 @@
       {
         // Importer for DfT traffic counts for Milton Keynes
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "Milton Keynes"
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["Milton Keynes"]
       },
       {
         // Importer for the Space Syntax Open Space Map

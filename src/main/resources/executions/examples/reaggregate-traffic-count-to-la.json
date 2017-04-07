@@ -15,7 +15,8 @@
       {
         // Importer for the DfT traffic counts for London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "London"
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
       }
     ],
     "fieldSpecification" : [

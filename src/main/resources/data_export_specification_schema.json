@@ -65,6 +65,18 @@
               },
               "datasourceId": {
                 "type": "string"
+              },
+              "geographyScope": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "temporalScope": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [

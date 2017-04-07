@@ -22,7 +22,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * 
+ * This importer imports traffic count information from Department for Transport.
+ * The subjects imported are "trafficCounter".
+ * The geography scopes can be any local-authority or region in the UK.
+ * There is no temporal scope.
  * 
  * - https://data.gov.uk/dataset/gb-road-traffic-counts/datapackage.zip
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/London.csv

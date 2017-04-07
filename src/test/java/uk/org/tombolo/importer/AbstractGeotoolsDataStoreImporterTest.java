@@ -9,6 +9,7 @@ import uk.org.tombolo.core.utils.*;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,11 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
+
+        public TestGeotoolsDataStoreImporter() {
+            datasourceIds = Arrays.asList("osm_polyline_processed");
+        }
+
         @Override
         public String getTypeNameForDatasource(Datasource datasource) {
             return datasource.getId();

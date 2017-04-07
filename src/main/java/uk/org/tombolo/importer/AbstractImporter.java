@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +8,11 @@ import uk.org.tombolo.core.DatabaseJournalEntry;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.importer.utils.JournalEntryUtils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractImporter implements Importer {
 	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
@@ -19,8 +22,8 @@ public abstract class AbstractImporter implements Importer {
 	protected List<String> geographyLabels = Collections.EMPTY_LIST;
 	protected List<String> temporalLabels = Collections.EMPTY_LIST;
 
-	protected final static String DEFAULT_GEOGRAPHY = "uk";
-	protected final static String DEFAULT_TEMPORAL = "latest";
+	protected final static String DEFAULT_GEOGRAPHY = "all";
+	protected final static String DEFAULT_TEMPORAL = "all";
 
 	protected int subjectCount = 0;		// Count of subjects imported during the lifetime of this class instance
 	protected int fixedValueCount = 0;	// Count of fixed values imported during the lifetime of this class instance
@@ -81,30 +84,31 @@ public abstract class AbstractImporter implements Importer {
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
 	 * @param datasourceId
-	 * @return the number of data values loaded
-	 * @throws IOException
-	 * @throws ParseException
+	 * @param geographyScope
+	 * @param temporalScope
+	 * @throws Exception
 	 */
 	@Override
 	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception {
 		importDatasource(datasourceId, geographyScope, temporalScope, false);
 	}
-	
+
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store 
 	 * 
 	 * @param datasourceId
+	 * @param geographyScope
+	 * @param temporalScope
 	 * @param force forces the importer to run even if it has already run
-	 * @return the number of data values loaded
-	 * @throws IOException
-	 * @throws ParseException 
+	 * @throws Exception
 	 */
 	@Override
 	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
-		if (!force && DatabaseJournal.journalHasEntry(getJournalEntryForDatasourceId(datasourceId))) {
+		if (!force && DatabaseJournal.journalHasEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
+						getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope))) {
 			log.info("Skipped importing {}:{} as this import has been completed previously",
 					this.getClass().getCanonicalName(), datasourceId);
 		} else {
@@ -114,15 +118,12 @@ public abstract class AbstractImporter implements Importer {
 			Datasource datasource = getDatasource(datasourceId);
 			saveDatasourceMetadata(datasource);
 			importDatasource(datasource, geographyScope, temporalScope);
-			DatabaseJournal.addJournalEntry(getJournalEntryForDatasourceId(datasourceId));
+			DatabaseJournal.addJournalEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
+					getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope));
 			log.info("Imported {} subjects, {} fixed values and {} timedValues",
 					subjectCount, fixedValueCount, timedValueCount);
 		}
 	}
-
-	private DatabaseJournalEntry getJournalEntryForDatasourceId(String datasourceId) {
-		return new DatabaseJournalEntry(getClass().getCanonicalName(), datasourceId);
-	};
 
 	/**
 	 * The import function to be implemented in all none abstract sub-classes.
