@@ -6,13 +6,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.Importer;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -48,9 +50,9 @@ public class TrafficCountImporterTest extends AbstractTest {
 	}
 
 	@Test
-	public void testGetAllDatasources() throws Exception {
-		List<Datasource> datasources = importer.getAllDatasources();
-		assertEquals(1,datasources.size());
+	public void testGetDatasourcIds() throws Exception {
+		List<String> datasources = importer.getDatasourceIds();
+		assertEquals(Arrays.asList("trafficCounts"),datasources);
 	}
 
 	@Test

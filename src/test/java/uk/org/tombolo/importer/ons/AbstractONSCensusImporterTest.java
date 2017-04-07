@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.ons;
 
 import org.junit.Before;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.importer.Importer;
 
 public abstract class AbstractONSCensusImporterTest extends AbstractTest {
 	public ONSCensusImporter importer;

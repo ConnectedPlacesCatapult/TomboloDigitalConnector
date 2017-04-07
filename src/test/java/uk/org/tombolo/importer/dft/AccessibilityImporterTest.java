@@ -11,9 +11,9 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -33,34 +33,48 @@ public class AccessibilityImporterTest extends AbstractTest {
 
     @Test
     public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
+        List<String> datasources = importer.getDatasourceIds();
 
         assertEquals(8, datasources.size());
 
-        assertEquals("acs0501", datasources.get(0).getId());
-        assertEquals(103, datasources.get(0).getTimedValueAttributes().size());
+        assertEquals(Arrays.asList(
+                "acs0501", "acs0502", "acs0503", "acs0504", "acs0505", "acs0506", "acs0507", "acs0508"),
+                datasources);
+    }
 
-        assertEquals("acs0502", datasources.get(1).getId());
-        assertEquals(67, datasources.get(1).getTimedValueAttributes().size());
+    @Test
+    public void getDataSourceAttributeCount() throws Exception {
+        Datasource asc0501 = importer.getDatasource("acs0501");
+        assertEquals("acs0501", asc0501.getId());
+        assertEquals(103, asc0501.getTimedValueAttributes().size());
 
-        assertEquals("acs0503", datasources.get(2).getId());
-        assertEquals(79, datasources.get(2).getTimedValueAttributes().size());
+        Datasource asc0502 = importer.getDatasource("acs0502");
+        assertEquals("acs0502", asc0502.getId());
+        assertEquals(67, asc0502.getTimedValueAttributes().size());
 
-        assertEquals("acs0504", datasources.get(3).getId());
-        assertEquals(48, datasources.get(3).getTimedValueAttributes().size());
+        Datasource asc0503 = importer.getDatasource("acs0503");
+        assertEquals("acs0503", asc0503.getId());
+        assertEquals(79, asc0503.getTimedValueAttributes().size());
 
-        assertEquals("acs0505", datasources.get(4).getId());
-        assertEquals(67, datasources.get(4).getTimedValueAttributes().size());
+        Datasource asc0504 = importer.getDatasource("acs0504");
+        assertEquals("acs0504", asc0504.getId());
+        assertEquals(48, asc0504.getTimedValueAttributes().size());
 
-        assertEquals("acs0506", datasources.get(5).getId());
-        assertEquals(67, datasources.get(5).getTimedValueAttributes().size());
+        Datasource asc0505 = importer.getDatasource("acs0505");
+        assertEquals("acs0505", asc0505.getId());
+        assertEquals(67, asc0505.getTimedValueAttributes().size());
 
-        assertEquals("acs0507", datasources.get(6).getId());
-        assertEquals(79, datasources.get(6).getTimedValueAttributes().size());
+        Datasource asc0506 = importer.getDatasource("acs0506");
+        assertEquals("acs0506", asc0506.getId());
+        assertEquals(67, asc0506.getTimedValueAttributes().size());
 
-        assertEquals("acs0508", datasources.get(7).getId());
-        assertEquals(79, datasources.get(7).getTimedValueAttributes().size());
+        Datasource asc0507 = importer.getDatasource("acs0507");
+        assertEquals("acs0507", asc0507.getId());
+        assertEquals(79, asc0507.getTimedValueAttributes().size());
 
+        Datasource asc0508 = importer.getDatasource("acs0508");
+        assertEquals("acs0508", asc0508.getId());
+        assertEquals(79, asc0508.getTimedValueAttributes().size());
     }
 
     @Test

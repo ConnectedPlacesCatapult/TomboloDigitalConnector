@@ -7,6 +7,7 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -21,12 +22,9 @@ public class OaImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(3, datasources.size());
-        assertEquals("lsoa", datasources.get(0).getId());
-        assertEquals("msoa", datasources.get(1).getId());
-        assertEquals("localAuthority", datasources.get(2).getId());
+    public void testGetDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("lsoa", "msoa", "localAuthority"), datasources);
     }
 
     @Test

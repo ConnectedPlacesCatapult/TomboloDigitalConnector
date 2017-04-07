@@ -10,9 +10,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -27,14 +27,14 @@ public class ONSClaimantsImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(1,datasources.size());
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("claimants"),datasources);
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("lsoaClaimants");
+        Datasource datasource = importer.getDatasource("claimants");
         assertEquals(1, datasource.getTimedValueAttributes().size());
     }
 
@@ -49,7 +49,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         Subject wyre010A = TestFactory.makeSubject("lsoa", "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
         Subject blaby010A = TestFactory.makeSubject("lsoa", "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
-        importer.importDatasource("lsoaClaimants");
+        importer.importDatasource("claimants");
 
         Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "claimantCount");
 

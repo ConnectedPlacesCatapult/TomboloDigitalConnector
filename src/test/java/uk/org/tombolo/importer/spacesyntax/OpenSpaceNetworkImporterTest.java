@@ -37,8 +37,9 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        // FIXME: We should change this when we re-implement the ssx importers
         assertEquals(0,datasources.size());
     }
 

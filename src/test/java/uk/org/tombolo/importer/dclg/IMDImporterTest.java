@@ -29,11 +29,11 @@ public class IMDImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = imdImporter.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = imdImporter.getDatasourceIds();
 
         assertEquals(1, datasources.size());
-        assertEquals("imd", datasources.get(0).getId());
+        assertEquals("imd", datasources.get(0));
     }
 
     @Test

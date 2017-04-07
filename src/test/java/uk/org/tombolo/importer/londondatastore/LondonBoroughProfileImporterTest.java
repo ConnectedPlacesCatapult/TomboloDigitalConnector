@@ -10,6 +10,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -28,10 +29,10 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasourceList = importer.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasourceList = importer.getDatasourceIds();
         assertEquals(1, datasourceList.size());
-        assertEquals("londonBoroughProfiles", datasourceList.get(0).getId());
+        assertEquals(Arrays.asList("londonBoroughProfiles"), datasourceList);
     }
 
     @Test

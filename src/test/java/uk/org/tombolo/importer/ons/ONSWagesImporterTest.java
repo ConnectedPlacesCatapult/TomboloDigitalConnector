@@ -12,6 +12,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -34,10 +35,9 @@ public class ONSWagesImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasourceList = importer.getAllDatasources();
-
-        assertEquals(1, datasourceList.size());
+    public void getDatasourceIds() throws Exception {
+        List<String> datasourceList = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("wages"), datasourceList);
     }
 
     @Test

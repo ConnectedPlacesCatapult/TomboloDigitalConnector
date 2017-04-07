@@ -10,9 +10,9 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -35,9 +35,9 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	};
 
 	@Test
-	public void testGetAllDatasources() throws Exception {
-		List<Datasource> datasources = importer.getAllDatasources();
-		assertEquals(1, datasources.size());
+	public void testGetDatasourceIds() throws Exception {
+		List<String> datasources = importer.getDatasourceIds();
+		assertEquals(Arrays.asList("walkingCyclingBorough"), datasources);
 	}
 
 	@Test

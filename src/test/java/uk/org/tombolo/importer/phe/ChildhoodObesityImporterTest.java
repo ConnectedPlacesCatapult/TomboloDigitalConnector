@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.phe;
 
-import org.apache.commons.collections.ArrayStack;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -11,7 +10,6 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,9 +38,9 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(1, datasources.size());
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("childhoodObesity"), datasources);
     }
 
     @Test

@@ -2,7 +2,6 @@ package uk.org.tombolo.importer;
 
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 
 import java.util.List;
@@ -11,9 +10,6 @@ import java.util.Properties;
 public interface Importer {
 
 	public Provider getProvider();
-
-	@Deprecated
-	public List<Datasource> getAllDatasources() throws Exception;
 
 	/**
 	 * Returns all the identifiers of datasouces importable by this importer

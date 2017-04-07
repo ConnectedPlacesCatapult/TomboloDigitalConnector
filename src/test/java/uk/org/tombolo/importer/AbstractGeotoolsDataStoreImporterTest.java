@@ -66,11 +66,6 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         }
 
         @Override
-        public List<Datasource> getAllDatasources() throws Exception {
-            return null;
-        }
-
-        @Override
         public Datasource getDatasource(String datasourceId) throws Exception {
             Datasource datasource = new Datasource(TestGeotoolsDataStoreImporter.class, datasourceId, getProvider(), datasourceId, datasourceId);
             datasourceSetup.accept(datasource);
