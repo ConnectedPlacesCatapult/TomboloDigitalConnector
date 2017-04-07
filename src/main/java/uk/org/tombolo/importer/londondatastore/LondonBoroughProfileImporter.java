@@ -27,23 +27,23 @@ import java.util.List;
  * A more rigorous importing is desired but will be implemented on demand.
  */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter implements Importer{
-    private enum DatasourceLabel {londonBoroughProfiles};
+    private enum DatasourceId {londonBoroughProfiles};
     private enum AttributeId {populationDensity, householdIncome, medianHousePrice, fractionGreenspace, carbonEmission,
         carsPerHousehold};
 
     public LondonBoroughProfileImporter() {
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
             case londonBoroughProfiles:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        datasourceLabel.name(),
+                        datasourceId.name(),
                         getProvider(),
                         "London Borough Profiles",
                         "Various London borough statistics");

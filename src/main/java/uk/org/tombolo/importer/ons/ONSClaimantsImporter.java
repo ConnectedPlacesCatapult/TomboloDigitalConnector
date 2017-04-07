@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class ONSClaimantsImporter extends AbstractONSImporter implements Importer {
 
-    private enum DatasourceLabel {lsoaClaimants};
+    private enum DatasourceId {lsoaClaimants};
 
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceLabel.lsoaClaimants.name(),
+                    DatasourceId.lsoaClaimants.name(),
                     getProvider(),
                     "Claimants per LSOA",
                     "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
@@ -39,15 +39,15 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
 
     public ONSClaimantsImporter(){
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
             case lsoaClaimants:
-                Datasource datasource = datasources[datasourceLabel.ordinal()];
+                Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
                 datasource.setRemoteDatafile("http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
                         "geography=1249902593...1249937345&" +

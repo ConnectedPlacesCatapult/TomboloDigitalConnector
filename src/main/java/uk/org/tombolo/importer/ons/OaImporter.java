@@ -21,7 +21,7 @@ import java.util.List;
 
 public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    private enum DatasourceLabel {lsoa, msoa, localAuthority};
+    private enum DatasourceId {lsoa, msoa, localAuthority};
 
     List<String> subjectTypeNames = Arrays.asList("LSOA", "MSOA", "Local Authority");
     List<String> subjectTYpeDesc = Arrays.asList(
@@ -31,12 +31,12 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
     public OaImporter(){
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasourceId);
+        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
         Datasource datasource;
         switch (datasourceIdObject) {
             case lsoa:

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TfLStationsImporter extends TfLImporter implements Importer {
-	protected static enum DatasourceLabel {StationList};
+	protected static enum DatasourceId {StationList};
 	private static enum AttributeName {ServingLineCount};
 	private static enum SubjectTypeName {TfLStation};
 
@@ -40,21 +40,21 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	public TfLStationsImporter() throws IOException {
 		super();
-		datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 	}
 
 	@Override
 	public List<Datasource> getAllDatasources() throws Exception {
-		return datasourcesFromEnumeration(DatasourceLabel.class);
+		return datasourcesFromEnumeration(DatasourceId.class);
 	}
 
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		verifyConfiguration();
-		DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceId);
+		DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
 		switch (datasourceLabel){
 			case StationList:
-				Datasource datasource = new Datasource(getClass(), DatasourceLabel.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
+				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
 
 				datasource.setRemoteDatafile(
@@ -72,7 +72,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
 		// Save timed values
-		DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasource.getId());
+		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);

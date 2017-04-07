@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class AdultObesityImporterTest extends AbstractTest {
-	private static final String DATASOURCE_ID = "laAdultObesity2014";
+	private static final String DATASOURCE_ID = "adultObesity";
 	AdultObesityImporter importer = new AdultObesityImporter();
 
 	private Subject cityOfLondon;

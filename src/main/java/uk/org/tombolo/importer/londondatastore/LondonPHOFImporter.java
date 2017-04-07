@@ -24,14 +24,14 @@ import java.util.*;
  * http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators
  */
 public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implements Importer {
-    private enum DatasourceLabel {phofIndicatorsLondonBorough};
+    private enum DatasourceId {phofIndicatorsLondonBorough};
     Logger log = LoggerFactory.getLogger(LondonPHOFImporter.class);
 
     ExcelUtils excelUtils;
 
     public LondonPHOFImporter(){
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
             case phofIndicatorsLondonBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        datasourceLabel.name(),
+                        datasourceId.name(),
                         getProvider(),
                         "PHOF Indicators London Borough",
                         "Public Health Outcomes Framework Indicators for London Boroughs"

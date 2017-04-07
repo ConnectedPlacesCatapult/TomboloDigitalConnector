@@ -15,7 +15,6 @@ import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -34,7 +33,7 @@ import java.util.*;
  * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv
  */
 public class TrafficCountImporter extends AbstractDFTImporter implements Importer {
-	private enum DatasetLabel {trafficCounts};
+	private enum DatasourceId {trafficCounts};
 
 	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL = "trafficCounter";
 	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_DESC = "Traffic counter from Department of Transport";
@@ -92,7 +91,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 	public TrafficCountImporter() {
 		super();
-		datasourceIds = stringsFromEnumeration(DatasetLabel.class);
+		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 		geographyLabels = new ArrayList<>(regions);
 		geographyLabels.addAll(localAuthorities);
 	}

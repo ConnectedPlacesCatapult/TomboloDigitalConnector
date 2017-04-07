@@ -29,7 +29,7 @@ import java.util.List;
 public class AccessibilityImporter extends AbstractDFTImporter implements Importer{
     private static final Logger log = LoggerFactory.getLogger(AccessibilityImporter.class);
 
-    private enum DatasourceLabel {
+    private enum DatasourceId {
         acs0501, acs0502, acs0503, acs0504, acs0505, acs0506, acs0507, acs0508
     };
 
@@ -64,14 +64,14 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
 
     public AccessibilityImporter(){
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         if (excelUtils == null)
             initalize();
-        DatasourceLabel datasourceIdValue = DatasourceLabel.valueOf(datasourceId);
+        DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
         if (datasourceIdValue == null)
             throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
 

@@ -24,14 +24,14 @@ import java.util.List;
 public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImporter implements Importer{
     Logger log = LoggerFactory.getLogger(WalkingCyclingBoroughImporter.class);
 
-    private enum DatasourceLabel {walkingCyclingBorough};
+    private enum DatasourceId {walkingCyclingBorough};
     public enum AttributeId {walk5xWeek,cycle1xWeek};
 
     ExcelUtils excelUtils;
 
     public WalkingCyclingBoroughImporter() {
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
             case walkingCyclingBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        datasourceLabel.name(),
+                        datasourceId.name(),
                         getProvider(),
                         "Walking and Cycling in London Boroughs",
                         "Walking and Cycling in London Boroughs"

@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 
 public final class HealthOrganisationImporter extends AbstractImporter implements Importer {
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
-    private enum DatasourceLabel {hospital, clinic, gpSurgeries};
+    private enum DatasourceId {hospital, clinic, gpSurgeries};
 
     public HealthOrganisationImporter() {
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -39,7 +39,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceLabel datasourceIdObject = DatasourceLabel.valueOf(datasourceId);
+        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
         switch (datasourceIdObject) {
             case hospital:
                 return makeDatasource(

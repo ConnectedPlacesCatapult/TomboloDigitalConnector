@@ -26,7 +26,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception {
-		importer.importDatasource(TfLStationsImporter.DatasourceLabel.StationList.name());
+		importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
 		assertEquals(301, importer.getTimedValueCount());
 	}
 

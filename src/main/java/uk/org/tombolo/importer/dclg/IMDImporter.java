@@ -22,20 +22,20 @@ import java.util.List;
  */
 public class IMDImporter extends AbstractDCLGImporter implements Importer {
 
-    private enum DatasourceLabel {imd};
+    private enum DatasourceId {imd};
     private enum GeographyLabel {england};
     private enum TemporalLabel {y2015};
 
     public IMDImporter() {
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceId);
+        DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
         switch(datasourceLabel){
             case imd:
                 Datasource datasource = new Datasource(

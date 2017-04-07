@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
-    private enum DatasourceLabel {wages};
+    private enum DatasourceId {wages};
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceLabel.wages.name(),
+                    DatasourceId.wages.name(),
                     getProvider(),
                     "Wages per Local Authority",
                     "Estimates of paid hours worked, weekly, hourly and annual earnings for UK employees by gender " +
@@ -116,15 +116,15 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
     public ONSWagesImporter(){
         super();
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
             case wages:
-                Datasource datasource = datasources[datasourceLabel.ordinal()];
+                Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.ons.gov.uk/employmentandlabourmarket/" +
                         "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8");
                 datasource.setRemoteDatafile("http://www.ons.gov.uk/file?" +

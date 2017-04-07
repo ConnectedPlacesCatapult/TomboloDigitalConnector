@@ -24,11 +24,11 @@ import java.util.List;
 public class AdultObesityImporter extends AbstractPheImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
-    private enum DatasourceLabel {laAdultObesity2014};
+    private enum DatasourceId {adultObesity};
     private Datasource[] datasources = {
         new Datasource(
                 getClass(),
-                DatasourceLabel.laAdultObesity2014.name(),
+                DatasourceId.adultObesity.name(),
                 getProvider(),
                 "Local Authority Adult Obesity",
                 "Self reported adult obesity")
@@ -39,15 +39,15 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
     public AdultObesityImporter(){
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceIdString);
-        switch (datasourceLabel){
-            case laAdultObesity2014:
-                Datasource datasource = datasources[datasourceLabel.ordinal()];
+        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
+        switch (datasourceId){
+            case adultObesity:
+                Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.noo.org.uk/visualisation");
                 datasource.setRemoteDatafile("https://www.noo.org.uk/gsf.php5?f=314008&fv=21761");
                 datasource.setLocalDatafile("/PublicHealthEngland/BMI_categories_2012-2014.xlsx");

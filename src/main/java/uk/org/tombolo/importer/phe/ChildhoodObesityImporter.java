@@ -23,7 +23,7 @@ import java.util.List;
 public class ChildhoodObesityImporter extends AbstractPheImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
-    private enum DatasourceLabel {childhoodObesity};
+    private enum DatasourceId {childhoodObesity};
     private enum GeographyLabel {msoa, ward, la};
     private enum TemporalLabel {y2014};
     private String[] dataSourceName = {"MSOA Childhood Obesity", "Local AuthorityChildhoodObesity", "Ward ChildhoodObesity"};
@@ -43,14 +43,14 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     private ExcelUtils excelUtils;
 
     public ChildhoodObesityImporter(){
-        datasourceIds = stringsFromEnumeration(DatasourceLabel.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceLabel datasourceLabel = DatasourceLabel.valueOf(datasourceId);
+        DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
         Datasource datasource = new Datasource(
                 getClass(),
                 datasourceId,
