@@ -33,12 +33,21 @@ public class OaImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetDatasource() throws Exception {
+    public void testGetDatasourceLSOA() throws Exception {
         Datasource datasource = importer.getDatasource("lsoa");
         assertEquals("lsoa", datasource.getId());
         assertEquals("uk.gov.ons", datasource.getProvider().getLabel());
         assertEquals("LSOA", datasource.getName());
         assertEquals("Lower Layer Super Output Areas", datasource.getDescription());
+    }
+
+    @Test
+    public void testGetDatasourceMSOA() throws Exception {
+        Datasource datasource = importer.getDatasource("msoa");
+        assertEquals("msoa", datasource.getId());
+        assertEquals("uk.gov.ons", datasource.getProvider().getLabel());
+        assertEquals("MSOA", datasource.getName());
+        assertEquals("Middle Layer Super Output Areas", datasource.getDescription());
     }
 
     @Test

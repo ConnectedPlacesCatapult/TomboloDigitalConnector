@@ -42,29 +42,14 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
-        Datasource datasource;
-        switch (datasourceIdObject) {
-            case lsoa:
-                datasource = new Datasource(
+        Datasource datasource = new Datasource(
                         getClass(),
                         datasourceIdObject.name(),
                         getProvider(),
                         subjectTypeNames.get(datasourceIdObject.ordinal()),
                         subjectTYpeDesc.get(datasourceIdObject.ordinal()));
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
-                return datasource;
-            case msoa:
-                datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
-                return datasource;
-            case localAuthority:
-                datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "Local Authority", "Local Authority");
-                datasource.setUrl("http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4");
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
-                return datasource;
-            default:
-                throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));
-        }
+        datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
+        return datasource;
     }
 
     @Override
