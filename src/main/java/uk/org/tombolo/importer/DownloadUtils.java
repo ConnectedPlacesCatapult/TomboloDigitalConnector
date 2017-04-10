@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.TeeInputStream;
 import org.json.simple.JSONObject;
@@ -30,26 +31,24 @@ public class DownloadUtils {
 	public DownloadUtils(String dataCacheRootDirectory){
 		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
 	}
-	
-	public File getDatasourceFile(Datasource datasource) throws MalformedURLException, IOException{
+
+	public File fetchFile(URL url, String prefix, String suffix) throws MalformedURLException, IOException{
 		createCacheDir();
-		File localDatasourceFile = new File(
-				tomboloDataCacheRootDirectory 
-				+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY 
-				+ "/" + datasource.getProvider().getLabel()
-				+ "/" + datasource.getLocalDatafile());
+		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
+		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
-			log.info("Downloading external resource: {}",datasource.getRemoteDatafile());
-			FileUtils.copyURLToFile(new URL(datasource.getRemoteDatafile()), localDatasourceFile);
+			log.info("Downloading external resource: {}",url.toString());
+			FileUtils.copyURLToFile(url, localDatasourceFile);
 		}
-		
+
 		return localDatasourceFile;
 	}
 
-	public InputStream fetchCSVStream(URL url) throws IOException {
+	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
 		createCacheDir();
-		File localDatasourceFile = urlToLocalFile(url, ".csv");
+		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
+		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
@@ -66,14 +65,15 @@ public class DownloadUtils {
 		return paramList.stream().collect(Collectors.joining("&"));
 	}
 
-	public JSONObject fetchJSON(URL url) throws IOException, ParseException {
+	public JSONObject fetchJSON(URL url, String prefix) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();
-		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url)));
+		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url, prefix)));
 	}
 
-	public InputStream fetchJSONStream(URL url) throws IOException {
+	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
 		createCacheDir();
-		File localDatasourceFile = urlToLocalFile(url, ".json");
+		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
+		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
@@ -84,12 +84,17 @@ public class DownloadUtils {
 		}
 	}
 
-	private File urlToLocalFile (URL url, String suffix){
+	private File urlToLocalFile (URL url, String prefix, String suffix){
 		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
+		if (urlKey.length() > 250)
+			// The urlKey is too long for createing a file
+			urlKey = DigestUtils.md5Hex(urlKey);
 		return new File(
 				tomboloDataCacheRootDirectory
 						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
-						+ "/" + urlKey + suffix);
+						+ "/" + prefix
+						+ "/" + urlKey
+						+ suffix);
 	}
 
 	private void createCacheDir() throws IOException {

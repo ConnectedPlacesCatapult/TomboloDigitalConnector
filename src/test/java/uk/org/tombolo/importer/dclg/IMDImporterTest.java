@@ -14,6 +14,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Remote file: "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
+                "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
+ * Local file: ec39e8bd9a41062d17c80ed6f9d81361.csv
+ */
 public class IMDImporterTest extends AbstractTest {
     IMDImporter imdImporter = new IMDImporter();
 

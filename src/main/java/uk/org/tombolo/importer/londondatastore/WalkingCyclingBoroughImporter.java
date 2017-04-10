@@ -15,6 +15,7 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,11 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     private enum DatasourceId {walkingCyclingBorough};
     public enum AttributeId {walk5xWeek,cycle1xWeek};
 
-    ExcelUtils excelUtils;
+    ExcelUtils excelUtils = new ExcelUtils();
+
+    private static final String DATAFILE_SUFFIX = ".xls";
+    private static final String DATAFILE
+            = "https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls";
 
     public WalkingCyclingBoroughImporter() {
         super();
@@ -37,7 +42,6 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
         super.setDownloadUtils(downloadUtils);
-        excelUtils = new ExcelUtils(downloadUtils);
     }
 
     @Override
@@ -54,8 +58,6 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 );
 
                 datasource.setUrl("http://data.london.gov.uk/dataset/walking-and-cycling-borough");
-                datasource.setRemoteDatafile("https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls");
-                datasource.setLocalDatafile("/LondonDatastore/walking-and-cycling-borough.xls");
 
                 for (AttributeId attributeId : AttributeId.values()) {
                     datasource.addTimedValueAttribute(getAttribute(attributeId));
@@ -70,7 +72,8 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         List<TimedValue> timedValueBuffer = new ArrayList<>();
 

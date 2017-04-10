@@ -13,6 +13,7 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     private String[] dataSourceName = {"MSOA Childhood Obesity", "Local AuthorityChildhoodObesity", "Ward ChildhoodObesity"};
     private String[] dataSourceDesc = {"MSOA Childhood Obesity", "Local AuthorityChildhoodObesity", "Ward ChildhoodObesity"};
 
+    private static final String DATASOURCE_SUFFIX = ".xlsx";
+    private static final String DATASOURCE = "http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx";
+
     private enum AttributeLabel {receptionNumberMeasured, year6NumberMeasured,
         receptionNumberObese, receptionPercentageObese,
         receptionPercentageObeseLowerLimit, receptionPercentageObeseUpperLimit,
@@ -40,7 +44,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         year6PercentageExcessWeightLowerLimit, year6PercentageExcessWeightUpperLimit
     };
 
-    private ExcelUtils excelUtils;
+    private ExcelUtils excelUtils = new ExcelUtils();;
 
     public ChildhoodObesityImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
@@ -59,8 +63,6 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                 "");
 
         datasource.setUrl("https://www.noo.org.uk/");
-        datasource.setRemoteDatafile("http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx");
-        datasource.setLocalDatafile("PublicHealthEngland/20150511_MSOA_Ward_Obesity.xlsx");
 
         datasource.addAllTimedValueAttributes(getAttributes());
 
@@ -69,11 +71,10 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-        if (excelUtils == null)
-            initalize();
-
         // Choose the apppropriate workbook sheet
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX)
+        );
         Sheet sheet = null;
         String year = "2014";
         for (String geographyScopeString : geographyScope) {
@@ -194,9 +195,5 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             default:
                 throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }
-    }
-
-    private void initalize(){
-        excelUtils = new ExcelUtils(downloadUtils);
     }
 }

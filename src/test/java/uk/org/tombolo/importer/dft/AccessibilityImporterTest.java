@@ -18,6 +18,33 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357458/acs0501.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NTgvYWNzMDUwMS54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357460/acs0502.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjAvYWNzMDUwMi54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357461/acs0503.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjEvYWNzMDUwMy54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357464/acs0504.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjQvYWNzMDUwNC54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0505.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjcvYWNzMDUwNS54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357468/acs0506.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjgvYWNzMDUwNi54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjkvYWNzMDUwNy54bHM=.xls
+ *
+ * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0508.xls
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjcvYWNzMDUwOC54bHM=.xls
+ *
+ */
 public class AccessibilityImporterTest extends AbstractTest {
     AccessibilityImporter importer;
 

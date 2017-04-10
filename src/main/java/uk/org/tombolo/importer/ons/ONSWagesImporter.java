@@ -14,6 +14,7 @@ import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +84,11 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             "Paid Hours Worked Overtime"
             //"Paid Hours Worked Overtime (Coefficients of Variation)"
     };
+
+    private static final String DATAFILE = "http://www.ons.gov.uk/file?" +
+            "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
+            "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip";
+
     private String[] bookNames = {
             "PROV - Home Geography Table 8.1a   Weekly pay - Gross 2016.xls",
             //"PROV - Home Geography Table 8.1b   Weekly pay - Gross 2016 CV.xls",
@@ -127,10 +133,6 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.ons.gov.uk/employmentandlabourmarket/" +
                         "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8");
-                datasource.setRemoteDatafile("http://www.ons.gov.uk/file?" +
-                        "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
-                        "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip");
-                datasource.setLocalDatafile("WagesTable82016provisional.zip");
                 datasource.addAllTimedValueAttributes(getTimedValueAttributes());
                 return datasource;
             default:
@@ -140,9 +142,9 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-        ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
+        ExcelUtils excelUtils = new ExcelUtils();
 
-        File localFile = downloadUtils.getDatasourceFile(datasource);
+        File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".zip");
         ZipFile zipFile = new ZipFile(localFile);
         for (AttributePrefix attributePrefix : AttributePrefix.values()){
             ZipArchiveEntry zipEntry = zipFile.getEntry(bookNames[attributePrefix.ordinal()]);

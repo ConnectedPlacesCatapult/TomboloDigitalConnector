@@ -13,6 +13,7 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,10 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
                 "Self reported adult obesity")
     };
 
-    private ExcelUtils excelUtils;
+    private static final String DATASOURCE_SUFFIX = ".xlsx";
+    private static final String DATASOURCE = "https://www.noo.org.uk/gsf.php5?f=314008&fv=21761";
+
+    private ExcelUtils excelUtils = new ExcelUtils();
 
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
@@ -49,8 +53,6 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
             case adultObesity:
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.noo.org.uk/visualisation");
-                datasource.setRemoteDatafile("https://www.noo.org.uk/gsf.php5?f=314008&fv=21761");
-                datasource.setLocalDatafile("/PublicHealthEngland/BMI_categories_2012-2014.xlsx");
                 datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
@@ -60,11 +62,9 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-        if (excelUtils == null)
-            initalize();
-
         // Choose the apppropriate workbook sheet
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX));
         Sheet sheet = workbook.getSheetAt(1);
         String year = "2014";
 
@@ -121,9 +121,5 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
             default:
                 throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }
-    }
-
-    private void initalize(){
-        excelUtils = new ExcelUtils(downloadUtils);
     }
 }

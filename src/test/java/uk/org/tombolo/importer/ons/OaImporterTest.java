@@ -12,6 +12,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * lsoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy9kYTgzMWY4MDc2NDM0Njg4OTgzN2M3MjUwOGYwNDZmYV8yLmdlb2pzb24=.json
+ * msoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy84MjZkYzg1ZmI2MDA0NDA4ODk0ODBmNGQ5ZGJiMWEyNF8yLmdlb2pzb24=.json
+ * las aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy8zOTQzYzIxMTRkNzY0Mjk0YTdjMDA3OWM0MDIwZDU1OF80Lmdlb2pzb24=.json
+ */
 public class OaImporterTest extends AbstractTest {
     OaImporter importer;
 

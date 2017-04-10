@@ -19,6 +19,10 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Remote: http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx
+ * Local: aHR0cDovL3d3dy5ub28ub3JnLnVrL3NlY3VyZWZpbGVzLzE2MTAyNF8xMzUyLzIwMTUwNTExX01TT0FfV2FyZF9PYmVzaXR5Lnhsc3g=.xlsx
+ */
 public class ChildhoodObesityImporterTest extends AbstractTest {
     private ChildhoodObesityImporter importer;
 

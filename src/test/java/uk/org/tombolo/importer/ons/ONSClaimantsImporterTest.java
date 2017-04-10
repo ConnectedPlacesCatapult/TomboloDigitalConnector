@@ -17,6 +17,18 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *
+ * Remote: "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
+ *      "geography=1249902593...1249937345&" +
+ *      "date=latest&" +
+ *      "gender=0&" +
+ *      "age=0&" +
+ *      "measure=1&" +
+ *      "measures=20100&" +
+ *      "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
+ * Local: ab9d3499b5faf5a8b6c3c49271ff2c19.csv
+ */
 public class ONSClaimantsImporterTest extends AbstractTest {
     public ONSClaimantsImporter importer;
 

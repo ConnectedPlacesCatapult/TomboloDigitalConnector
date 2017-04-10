@@ -13,6 +13,17 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBncF9zdXJnZXJpZXMlM0I=.json
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBjbGluaWNzJTNC.json
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBob3NwaXRhbHMlM0I=
+ */
 public class HealthOrganisationImporterTest extends AbstractTest {
     HealthOrganisationImporter importer;
 

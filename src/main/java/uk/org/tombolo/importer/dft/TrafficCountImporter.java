@@ -128,7 +128,8 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			// Read timed values
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 			Set<Long> trafficCounters = new HashSet<Long>();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(downloadUtils.fetchCSVStream(url)));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")));
 			String line = null;
 			List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 			while ((line = reader.readLine()) != null) {

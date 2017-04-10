@@ -9,6 +9,7 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,15 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
                             "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.")
     };
 
+    private static final String DATAFILE = "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
+            "geography=1249902593...1249937345&" +
+            "date=latest&" +
+            "gender=0&" +
+            "age=0&" +
+            "measure=1&" +
+            "measures=20100&" +
+            "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
+
     private enum AttributeId {claimantCount};
 
     public ONSClaimantsImporter(){
@@ -49,15 +59,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
             case claimants:
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
-                datasource.setRemoteDatafile("http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
-                        "geography=1249902593...1249937345&" +
-                        "date=latest&" +
-                        "gender=0&" +
-                        "age=0&" +
-                        "measure=1&" +
-                        "measures=20100&" +
-                        "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name");
-                datasource.setLocalDatafile("csv/claimantsCount.csv");
+
                 datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
@@ -79,7 +81,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
                 )
         );
 
-        File localFile = downloadUtils.getDatasourceFile(datasource);
+        File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".csv");
         timedValueCount = CSVUtils.extractTimedValues(extractors,localFile);
     }
 

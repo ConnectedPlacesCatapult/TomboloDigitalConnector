@@ -13,6 +13,8 @@ import uk.org.tombolo.importer.utils.extraction.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +27,17 @@ import java.util.List;
  * It is not the most beautiful of implementations
  * but I am not willing to invest time in it until I know it is used more widely.
  * A more rigorous importing is desired but will be implemented on demand.
+ *
+ * Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
  */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter implements Importer{
     private enum DatasourceId {londonBoroughProfiles};
     private enum AttributeId {populationDensity, householdIncome, medianHousePrice, fractionGreenspace, carbonEmission,
         carsPerHousehold};
+
+    private static final String DATAFILE_SUFFIX = ".csv";
+    private static final String DATAFILE
+            = "https://files.datapress.com/london/dataset/london-borough-profiles/2015-09-24T15:49:52/london-borough-profiles.csv";
 
     public LondonBoroughProfileImporter() {
         super();
@@ -48,8 +56,6 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         "London Borough Profiles",
                         "Various London borough statistics");
                 datasource.setUrl("http://data.london.gov.uk/dataset/london-borough-profiles");
-                datasource.setRemoteDatafile("https://files.datapress.com/london/dataset/london-borough-profiles/2015-09-24T15:49:52/london-borough-profiles.csv");
-                datasource.setLocalDatafile("LondonDatastore/london-borough-profiles.csv");
 
                 for (AttributeId attributeId : AttributeId.values()) {
                     datasource.addTimedValueAttribute(getAttribute(attributeId));
@@ -66,9 +72,9 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         CSVExtractor subjectLabelExtractor = new CSVExtractor(0);
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);
 
-        File localFile = downloadUtils.getDatasourceFile(datasource);
         String line = null;
-        BufferedReader br = new BufferedReader(new FileReader(localFile));
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX)));
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while ((line = br.readLine())!=null) {
             CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);

@@ -10,6 +10,10 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Remote: http://data.statistics.gov.uk/ons/datasets/csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip
+ * Local: aHR0cDovL2RhdGEuc3RhdGlzdGljcy5nb3YudWsvb25zL2RhdGFzZXRzL2Nzdi9DU1ZfUVMxMDNFV18yMDExU1RBVEhfTkFUX09BX1JFTF8xLkEuQV9FTi56aXA=.zip
+ */
 public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImporterTest {
 
 	// Age by single year
@@ -33,7 +37,6 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 		assertEquals("CL_0000053_3", datasourceDetails.getTimedValueAttributes().get(2).getLabel());
 		assertEquals("T.b.a.", datasourceDetails.getTimedValueAttributes().get(2).getDescription());
 		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", datasourceDetails.getRemoteDatafile());
-		assertEquals("csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", datasourceDetails.getLocalDatafile());
 	}
 
 	@Test

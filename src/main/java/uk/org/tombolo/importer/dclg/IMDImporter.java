@@ -9,8 +9,8 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,10 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
     private enum DatasourceId {imd};
     private enum GeographyLabel {england};
     private enum TemporalLabel {y2015};
+
+    private static final String IMD_DATA_CSV
+            = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
+            "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
 
     public IMDImporter() {
         super();
@@ -45,8 +49,6 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
                         "English indices of deprivation 2015",
                         "Statistics on relative deprivation in small areas in England.");
                 datasource.setUrl("https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015");
-                datasource.setLocalDatafile("imd-2015.csv");
-                datasource.setRemoteDatafile("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv");
                 datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
@@ -58,9 +60,9 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
-        File localFile = downloadUtils.getDatasourceFile(datasource);
         String line = null;
-        BufferedReader br = new BufferedReader(new FileReader(localFile));
+        BufferedReader br = new BufferedReader(new InputStreamReader(
+                downloadUtils.fetchInputStream(new URL(IMD_DATA_CSV), getProvider().getLabel(), ".csv")));
         while ((line = br.readLine())!=null){
             CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
             List<CSVRecord> records = parser.getRecords();

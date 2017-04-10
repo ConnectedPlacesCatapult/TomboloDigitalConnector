@@ -55,7 +55,6 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
         assertEquals("",datasource.getDescription());
-        assertNull(datasource.getLocalDatafile());
         assertNull(datasource.getRemoteDatafile());
 
         assertEquals(0, datasource.getTimedValueAttributes().size());

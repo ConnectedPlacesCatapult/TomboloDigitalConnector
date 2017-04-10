@@ -24,6 +24,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	protected static enum DatasourceId {StationList};
 	private static enum AttributeName {ServingLineCount};
 	private static enum SubjectTypeName {TfLStation};
+
+	private static final String STATIONS_API_SUFFIX = ".xml";
+	private static final String STATIONS_API = "https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml";
 
 	Logger log = LoggerFactory.getLogger(TfLStationsImporter.class);
 	
@@ -50,12 +54,6 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		switch (datasourceLabel){
 			case StationList:
 				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
-				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
-
-				datasource.setRemoteDatafile(
-						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
-								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
-								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
 				datasource.addAllTimedValueAttributes(getStationAttributes());
 				datasource.addSubjectType(new SubjectType(SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 				return datasource;
@@ -71,7 +69,13 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-			File xmlFile = downloadUtils.getDatasourceFile(datasource);
+			File xmlFile = downloadUtils.fetchFile(
+					new URL(STATIONS_API
+							+"?app_id="+properties.getProperty(PROP_API_APP_ID)
+							+"&app_key="+properties.getProperty(PROP_API_APP_KEY)),
+					getProvider().getLabel(),
+					STATIONS_API_SUFFIX
+			);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();

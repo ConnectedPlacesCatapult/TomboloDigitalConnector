@@ -84,7 +84,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		params.put("context", "Census");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
-		JSONObject rootObject = downloadUtils.fetchJSON(url);
+		JSONObject rootObject = downloadUtils.fetchJSON(url, getProvider().getLabel());
 
 		JSONObject ons = (JSONObject)rootObject.get("ons");
 
@@ -108,7 +108,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws IOException, ParseException{
 
 		// Store data in database
-		File localFile = downloadUtils.getDatasourceFile(datasource);
+		File localFile = downloadUtils.fetchFile(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".zip");
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
@@ -209,7 +209,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		params.put("geog", "2011STATH");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
-		JSONObject rootObject = downloadUtils.fetchJSON(url);
+		JSONObject rootObject = downloadUtils.fetchJSON(url, getProvider().getLabel());
 		
 		JSONObject ons = (JSONObject)rootObject.get("ons");
 		JSONObject datasetDetail = (JSONObject)ons.get("datasetDetail");
@@ -269,8 +269,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		
 		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
 		datasource.setRemoteDatafile(remoteDatafile);	// Remote file
-		datasource.setLocalDatafile(localDatafile);		// Local file (relative to local data root)
-		
+
 		return datasource;
 	}
 	
