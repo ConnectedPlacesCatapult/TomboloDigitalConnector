@@ -24,15 +24,13 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		TestFactory.makeNamedSubject("E01002766");
 		TestFactory.makeNamedSubject("E08000035");
 	}
-	
+
+
+
 	@Test
-	public void testGetAllDatasourceLabels() throws Exception{
-		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
+	public void testGetDatasourceIds() throws Exception{
 		List<String> datasources = importer.getDatasourceIds();
-		
-		// FIXME: For some reason this has changed in the API
-		//assertEquals(701, datasources.size());
-		
+
 		assertEquals(695, datasources.size());
 	}
 	

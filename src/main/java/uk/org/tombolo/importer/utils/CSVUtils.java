@@ -4,7 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
 import uk.org.tombolo.importer.utils.extraction.ExtractorException;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class CSVUtils {
 
-    public static int extractTimedValues(List<TimedValueExtractor> extractors, File localFile)
+    public static void extractAndSaveTimedValues(List<TimedValueExtractor> extractors, Importer importer, File localFile)
             throws IOException, ExtractorException {
 
         String line = null;
@@ -50,7 +50,6 @@ public class CSVUtils {
             }
         }
         br.close();
-        TimedValueUtils.save(timedValueBuffer);
-        return timedValueBuffer.size();
+        importer.saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 }

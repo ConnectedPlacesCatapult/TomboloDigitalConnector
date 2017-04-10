@@ -82,7 +82,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         );
 
         File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".csv");
-        timedValueCount = CSVUtils.extractTimedValues(extractors,localFile);
+        CSVUtils.extractAndSaveTimedValues(extractors, this, localFile);
     }
 
     private List<Attribute> getAttributes(){

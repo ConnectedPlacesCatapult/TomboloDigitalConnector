@@ -153,7 +153,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            timedValueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+            excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
     }
 

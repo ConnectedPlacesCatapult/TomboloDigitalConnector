@@ -11,8 +11,6 @@ import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,7 +82,6 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                 ((CSVExtractor)extractor.getValueExtractor()).setCsvRecord(records.get(0));
                 try {
                     timedValueBuffer.add(extractor.extract());
-                    timedValueCount++;
                 }catch (UnknownSubjectLabelException e){
                     // No reason to panic even if Subject does not exist and no reason to run the rest of the extractors
                     // Keep Calm and Break
@@ -93,7 +90,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             }
         }
         br.close();
-        saveBuffer(timedValueBuffer, timedValueCount);
+        saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     private Attribute getAttribute(AttributeId attributeId){

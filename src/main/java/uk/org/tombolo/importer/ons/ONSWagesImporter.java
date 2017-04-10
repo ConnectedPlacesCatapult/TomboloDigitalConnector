@@ -172,7 +172,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                 }
 
                 Sheet sheet = workbook.getSheet(sheetName);
-                timedValueCount += excelUtils.extractTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
+                excelUtils.extractAndSaveTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
             }
         }
     }

@@ -15,9 +15,6 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.utils.GeotoolsDataStoreUtils;
 
 import java.io.IOException;
@@ -46,7 +43,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
 
     private List<TimedValue> timedValueBuffer = new ArrayList<>();
     private List<FixedValue> fixedValueBuffer = new ArrayList<>();
-    List<Subject> subjectBuffer = new ArrayList<>();
+    private List<Subject> subjectBuffer = new ArrayList<>();
 
     /**
      * getParamsForDatasource
@@ -125,7 +122,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTypeNameForDatasource(datasource));
 
         // Load attribute values
-        subjectCount = withSubjects(featureReader, dataStore, (feature, subject) -> {
+        withSubjects(featureReader, dataStore, (feature, subject) -> {
             timedValueBuffer.addAll(buildTimedValuesFromFeature(datasource, feature, subject));
             fixedValueBuffer.addAll(buildFixedValuesFromFeature(datasource, feature, subject));
         });
@@ -134,9 +131,8 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
         dataStore.dispose();
     }
 
-    private int withSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, DataStore dataStore, BiConsumer<SimpleFeature, Subject> fn) throws IOException, FactoryException, TransformException {
+    private void withSubjects(FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, DataStore dataStore, BiConsumer<SimpleFeature, Subject> fn) throws IOException, FactoryException, TransformException {
         MathTransform crsTransform = GeotoolsDataStoreUtils.makeCrsTransform(getSourceEncoding());
-        int valueCounter = 0;
 
         while(featureReader.hasNext()) {
             SimpleFeature feature = featureReader.next();
@@ -144,13 +140,10 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
                 fn.accept(feature, subject);
                 subjectBuffer.add(subject);
             });
-            valueCounter += flushBufferIfRequired();
+            flushBufferIfRequired();
         }
 
-        valueCounter += flushBuffer();
-
-        log.info("Total values written: {}", valueCounter);
-        return valueCounter;
+        flushBuffer();
     }
 
     private Optional<Geometry> extractNormalizedGeometry(SimpleFeature feature, MathTransform crsTransform) throws TransformException {
@@ -186,9 +179,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
                 continue;
             Double value = Double.parseDouble(feature.getAttribute(attribute.getLabel()).toString());
             timedValues.add(new TimedValue(subject, attribute, modified, value));
-            timedValueCount++;
         }
-
         return timedValues;
     }
 
@@ -200,9 +191,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
                 continue;
             String value = feature.getAttribute(attribute.getLabel()).toString();
             fixedValues.add(new FixedValue(subject, attribute, value));
-            fixedValueCount++;
         }
-
         return fixedValues;
     }
 
@@ -210,31 +199,17 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
         return DataStoreFinder.getDataStore(getParamsForDatasource(datasource));
     }
 
-    private int flushBufferIfRequired(){
+    private void flushBufferIfRequired(){
         int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size() + subjectBuffer.size();
         if (bufferSize > BUFFER_THRESHOLD) {
-            return flushBuffer();
-        } else {
-            return 0;
+            flushBuffer();
         }
     }
 
-    private int flushBuffer() {
-        int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size();  // This isn't a bug — we don't count the subjects we've saved
-
+    private void flushBuffer() {
         // We must save the subjects first
-        log.info("Preparing to write a batch of {} subjects ...", subjectBuffer.size());
-        SubjectUtils.save(subjectBuffer);
-        subjectBuffer.clear();
-
-        log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());
-        TimedValueUtils.save(timedValueBuffer);
-        timedValueBuffer.clear();
-
-        log.info("Preparing to write a batch of {} fixed values ...", fixedValueBuffer.size());
-        FixedValueUtils.save(fixedValueBuffer);
-        fixedValueBuffer.clear();
-
-        return bufferSize;
+        saveAndClearSubjectBuffer(subjectBuffer);
+        saveAndClearTimedValueBuffer(timedValueBuffer);
+        saveAndClearFixedValueBuffer(fixedValueBuffer);
     }
 }

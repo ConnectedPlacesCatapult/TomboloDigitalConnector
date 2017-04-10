@@ -5,7 +5,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.BufferedReader;
@@ -84,9 +83,8 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
                         timestamp,
                         Double.valueOf(records.get(0).get(i+4)));
                 timedValueBuffer.add(timedValue);
-                timedValueCount++;
             }
-            TimedValueUtils.save(timedValueBuffer);
+            saveAndClearTimedValueBuffer(timedValueBuffer);
         }
     }
 

@@ -59,12 +59,11 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 
 	public ONSCensusImporter() throws IOException, ParseException, ConfigurationException {
 		super();
-		datasourceIds = null;
 	}
 
 	@Override
 	public List<String> getDatasourceIds() {
-		if (datasourceIds == null)
+		if (datasourceIds == null || datasourceIds.isEmpty())
 			try {
 				datasourceIds = getAllDatasourceNames();
 			}catch (Exception e){
@@ -178,11 +177,10 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									TimedValue tv 
 										= new TimedValue(subject, datasource.getTimedValueAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
-									timedValueCount++;
-									
+
 									// Flushing buffer
-									if (timedValueCount % BUFFER_THRESHOLD == 0){
-										saveBuffer(timedValueBuffer, timedValueCount);
+									if (timedValueBuffer.size() % BUFFER_THRESHOLD == 0){
+										saveAndClearTimedValueBuffer(timedValueBuffer);
 									}
 								}								
 							}							
@@ -191,7 +189,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}
 				}
-				saveBuffer(timedValueBuffer, timedValueCount);
+				saveAndClearTimedValueBuffer(timedValueBuffer);
 				br.close();
 			}
 			

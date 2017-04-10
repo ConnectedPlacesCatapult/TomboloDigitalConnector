@@ -17,7 +17,6 @@ import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -100,7 +99,6 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             );
             try {
                 timedValueBuffer.add(timedValueExtractor.extract());
-                timedValueCount++;
             }catch (UnknownSubjectLabelException e){
                 // No worries if the subject does not exist
             }catch (ExtractorException e){
@@ -108,7 +106,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             }
         }
         workbook.close();
-        saveBuffer(timedValueBuffer, timedValueCount);
+        saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     private List<Attribute> getAttributes(Datasource datasource) throws Exception {

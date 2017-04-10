@@ -106,7 +106,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             }
 
             // Extract timed values
-            timedValueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+            excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
     }
 

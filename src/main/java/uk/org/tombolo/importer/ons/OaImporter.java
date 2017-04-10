@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.InputStream;
@@ -88,8 +87,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
             ));
         }
 
-        SubjectUtils.save(subjects);
-        subjectCount = subjects.size();
+        saveAndClearSubjectBuffer(subjects);
     }
 
     private String getFeatureSubjectLabel(Feature feature) {

@@ -13,7 +13,6 @@ import org.w3c.dom.NodeList;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -106,8 +105,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 				subjects.add(new Subject(datasource.getUniqueSubjectType(), stationLabel, stationName, point));
 			}
-			SubjectUtils.save(subjects);
-			subjectCount += subjects.size();
+			saveAndClearSubjectBuffer(subjects);
 
 			// Timed Values
 			List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -123,7 +121,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(subject,servingLines, timestamp, count));
 			}
-			timedValueCount =  TimedValueUtils.save(timedValues);
+			saveAndClearTimedValueBuffer(timedValues);
 		}
 	}
 	

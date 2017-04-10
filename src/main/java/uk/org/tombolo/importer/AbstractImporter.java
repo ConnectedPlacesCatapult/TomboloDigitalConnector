@@ -3,34 +3,40 @@ package uk.org.tombolo.importer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.FixedValue;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.utils.JournalEntryUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 public abstract class AbstractImporter implements Importer {
 	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
 	protected static final Integer BUFFER_THRESHOLD = 10000;
 
-	protected List<String> datasourceIds = Collections.EMPTY_LIST;
-	protected List<String> geographyLabels = Collections.EMPTY_LIST;
-	protected List<String> temporalLabels = Collections.EMPTY_LIST;
+	protected List<String> datasourceIds;
+	protected List<String> geographyLabels;
+	protected List<String> temporalLabels;
 
 	protected final static String DEFAULT_GEOGRAPHY = "all";
 	protected final static String DEFAULT_TEMPORAL = "all";
 
-	protected int subjectCount = 0;		// Count of subjects imported during the lifetime of this class instance
-	protected int fixedValueCount = 0;	// Count of fixed values imported during the lifetime of this class instance
-	protected int timedValueCount = 0;	// Count of timed values imported during the lifetime of this class instance
+	private int subjectCount = 0;		// Count of subjects imported during the lifetime of this class instance
+	private int fixedValueCount = 0;	// Count of fixed values imported during the lifetime of this class instance
+	private int timedValueCount = 0;	// Count of timed values imported during the lifetime of this class instance
 
 	private static final Logger log = LoggerFactory.getLogger(AbstractImporter.class);
 	protected Properties properties = new Properties();
 	protected DownloadUtils downloadUtils;
 
 	public AbstractImporter() {
-		geographyLabels = Arrays.asList(DEFAULT_GEOGRAPHY);
-		temporalLabels = Arrays.asList(DEFAULT_TEMPORAL);
+		datasourceIds = Collections.emptyList();
+		geographyLabels = Collections.singletonList(DEFAULT_GEOGRAPHY);
+		temporalLabels = Collections.singletonList(DEFAULT_TEMPORAL);
 	}
 
 	@Override
@@ -162,11 +168,28 @@ public abstract class AbstractImporter implements Importer {
 		return strings;
 	}
 
-	public void saveBuffer(List<TimedValue> timedValueBuffer, int valueCount){
-		log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
+	public void saveAndClearSubjectBuffer(List<Subject> subjectBuffer){
+		log.info("Preparing to write a batch of {} subjects ... ", subjectBuffer.size());
+		SubjectUtils.save(subjectBuffer);
+		subjectCount += subjectBuffer.size();
+		subjectBuffer.clear();
+		log.info("Total subjects written: {}", subjectCount);
+	}
+
+	public void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer){
+		log.info("Preparing to write a batch of {} timed values ...", timedValueBuffer.size());
+		timedValueCount += timedValueBuffer.size();
 		TimedValueUtils.save(timedValueBuffer);
 		timedValueBuffer.clear();
-		log.info("Total values written: {}", valueCount);
+		log.info("Total timed values written: {}", timedValueCount);
+	}
+
+	public void saveAndClearFixedValueBuffer(List<FixedValue> fixedValueBuffer){
+		log.info("Preparing to write a batch of {} fixed values ...", fixedValueBuffer.size());
+		fixedValueCount += fixedValueBuffer.size();
+		FixedValueUtils.save(fixedValueBuffer);
+		fixedValueBuffer.clear();
+		log.info("Total fixed values written: {}", fixedValueCount);
 	}
 
 	public int getSubjectCount() {

@@ -26,7 +26,7 @@ public class ExcelUtils {
 		return WorkbookFactory.create(is);
 	}
 
-	public int extractTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors, int timedValueBufferSize){
+	public void extractAndSaveTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors, int timedValueBufferSize){
 		int valueCount = 0;
 		List<TimedValue> timedValueBuffer = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class ExcelUtils {
 					valueCount++;
 					if (valueCount % timedValueBufferSize == 0) {
 						// Buffer is full ... we write values to db
-						importer.saveBuffer(timedValueBuffer, valueCount);
+						importer.saveAndClearTimedValueBuffer(timedValueBuffer);
 					}
 				}catch (BlankCellException e){
 					// We ignore this since there may be multiple blank cells in the data without having to worry
@@ -51,9 +51,7 @@ public class ExcelUtils {
 				}
 			}
 		}
-		importer.saveBuffer(timedValueBuffer, valueCount);
-
-		return valueCount;
+		importer.saveAndClearTimedValueBuffer(timedValueBuffer);
 	}
 	
 }
