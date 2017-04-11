@@ -38,9 +38,9 @@ create sequence subject_id_sequence;
 create table subject (
 	id              integer NOT NULL DEFAULT nextval('subject_id_sequence'),
 	subject_type_id integer NOT NULL REFERENCES subject_type(id),
-	label		    VARCHAR(63) NOT NULL,
+	label           VARCHAR(63) NOT NULL,
 	name	        VARCHAR(255),
-	shape		    geometry,
+	shape           geometry,
 	UNIQUE(subject_type_id, label),
 	PRIMARY KEY(id)
 );
