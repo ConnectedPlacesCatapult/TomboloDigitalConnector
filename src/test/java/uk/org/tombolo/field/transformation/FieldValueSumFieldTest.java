@@ -25,7 +25,7 @@ public class FieldValueSumFieldTest extends AbstractTest {
         FieldSpecification fs1 = FieldSpecificationBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
         FieldSpecification fs2 = FieldSpecificationBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
 
-        subject = TestFactory.makeNamedSubject("E01002766");
+        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
         Attribute f1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f1a_label");
         Attribute f2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f2a_label");
         TestFactory.makeTimedValue("E01002766", f1, "2011-01-01T00:00:00", 10d);

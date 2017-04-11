@@ -61,7 +61,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
 								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
 				datasource.addAllTimedValueAttributes(getStationAttributes());
-				datasource.addSubjectType(new SubjectType(SubjectTypeName.TfLStation.name(), "Transport for London Station"));
+				datasource.addSubjectType(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 				return datasource;
 		}
 		return null;

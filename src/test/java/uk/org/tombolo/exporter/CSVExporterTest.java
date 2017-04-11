@@ -28,7 +28,7 @@ public class CSVExporterTest extends AbstractTest {
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E09000001");
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
 	}
 
 	@Test

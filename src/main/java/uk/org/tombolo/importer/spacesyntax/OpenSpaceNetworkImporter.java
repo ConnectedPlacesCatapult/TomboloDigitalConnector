@@ -20,8 +20,8 @@ import java.util.*;
 public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
-    private static final SubjectType subjectType = new SubjectType("SSxNode", "Street segment (node) from an SSx graph");
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
+    private static final SubjectType subjectType = new SubjectType(PROVIDER, "SSxNode", "Street segment (node) from an SSx graph");
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
     static final List<String> NON_ATTRIBUTE_COLUMNS = Arrays.asList("geom", "id", "time_modified");

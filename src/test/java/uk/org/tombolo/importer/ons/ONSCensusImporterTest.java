@@ -17,8 +17,8 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E01002766");
-		TestFactory.makeNamedSubject("E08000035");
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E08000035");
 	}
 	
 	@Test

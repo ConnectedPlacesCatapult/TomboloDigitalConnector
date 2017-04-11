@@ -88,7 +88,7 @@ public class SubjectUtils {
 	}
 
 	private static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subjectSpecification.getProvider(), subjectSpecification.getSubjectType());
 
 		String hqlQuery = "from Subject s where s.subjectType = :subjectType";
 

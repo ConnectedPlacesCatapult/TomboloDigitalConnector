@@ -28,8 +28,8 @@ public class TimedValueExtractorTest extends AbstractExtractorTest {
 
     @Before
     public void setUp() throws Exception {
-        TestFactory.makeNamedSubject("E01000001");
-        TestFactory.makeNamedSubject("E01000002");
+        TestFactory.makeNamedSubject(provider, "E01000001");
+        TestFactory.makeNamedSubject(provider, "E01000002");
         TestFactory.makeAttribute(provider, "Attribute");
     }
 

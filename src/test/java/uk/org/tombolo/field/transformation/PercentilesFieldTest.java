@@ -43,7 +43,7 @@ public class PercentilesFieldTest extends AbstractTest {
                 4,
                 false)
                 .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
-                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 
         quintilesInverseField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
@@ -51,10 +51,10 @@ public class PercentilesFieldTest extends AbstractTest {
                 5,
                 true)
                 .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
-                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 
-        TestFactory.makeSubjectType("lsoa", "Lower Super Output Area");
+        TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "lsoa", "Lower Super Output Area");
 
         leeds1 = TestFactory.makeSubject("lsoa", "leeds1", "Leeds 1", null);
         leeds2 = TestFactory.makeSubject("lsoa", "leeds2", "Leeds 2", null);
