@@ -40,7 +40,6 @@ public class DownloadUtils {
 			log.info("Downloading external resource: {}",url.toString());
 			FileUtils.copyURLToFile(url, localDatasourceFile);
 		}
-
 		return localDatasourceFile;
 	}
 

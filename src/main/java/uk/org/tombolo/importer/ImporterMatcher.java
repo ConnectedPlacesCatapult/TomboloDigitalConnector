@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * ImportMatcher.java
- * Parses a string indicating a list of classs, then matches on them.
+ * Parses a string indicating a list of classes, then matches on them.
  * The string can be in the following formats
  *   Just match one class:
  *     uk.org.tombolo.something.ImporterClassName

@@ -21,7 +21,7 @@ public abstract class AbstractRunner {
     // FIXME: At some point we might want to make this configurable
     private static final String API_KEYS_PROPERTY_NAME = "API keys";
     private static final String API_KEYS_FILENAME = "apikeys.properties";
-    private static final String SYSTEM_PROERTIES_PROPERTY_NAME = "System properties";
+    private static final String SYSTEM_PROPERTIES_PROPERTY_NAME = "System properties";
     private static final String SYSTEM_PROPERTIES_FILENAME = "gradle.properties";
     private static final String FILE_DOWNLOAD_CACHE = "fileDownloadCache";
 
@@ -52,7 +52,7 @@ public abstract class AbstractRunner {
     }
 
     protected static DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
-        Properties properties = loadProperties(SYSTEM_PROERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
+        Properties properties = loadProperties(SYSTEM_PROPERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
         log.info("Setting file download cache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));
         DownloadUtils downloadUtils = new DownloadUtils(DownloadUtils.DEFAULT_DATA_CACHE_ROOT);
         if (properties.getProperty(FILE_DOWNLOAD_CACHE) != null)

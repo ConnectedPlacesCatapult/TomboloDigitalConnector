@@ -9,16 +9,16 @@ import java.util.List;
 
 public class Datasource {
 	
-	Class<? extends Importer> importerClass;
-	String id;
-	Provider provider;
-	String name;
-	String description;
-	String url;					// Url of the datasource for that series
-	String remoteDatafile;		// Remote datafile
+	private Class<? extends Importer> importerClass;
+	private String id;
+	private Provider provider;
+	private String name;
+	private String description;
+	private String url;					// Url of the datasource for that series
+	private String remoteDatafile;		// Remote datafile
 
-	List<Attribute> timedValueAttributes = new ArrayList<>();
-	List<Attribute> fixedValueAttributes = new ArrayList<>();
+	private List<Attribute> timedValueAttributes = new ArrayList<>();
+	private List<Attribute> fixedValueAttributes = new ArrayList<>();
 	List<SubjectType> subjectTypes = new ArrayList<>();
 	
 	public Datasource(Class<? extends Importer> importerClass, String id, Provider provider, String name, String description){
@@ -82,7 +82,9 @@ public class Datasource {
 	}
 
 	public SubjectType getUniqueSubjectType() {
-		if (subjectTypes.size() != 1) { throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %s", getId(), subjectTypes.size())); }
+		if (subjectTypes.size() != 1) {
+			throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %d", getId(), subjectTypes.size()));
+		}
 		return subjectTypes.get(0);
 	}
 

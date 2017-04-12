@@ -18,7 +18,7 @@ public class ZipUtils {
         Path tempDirectory = Files.createTempDirectory("temp");
         while (zipEntries.hasMoreElements()) {
             ZipArchiveEntry entry = zipEntries.nextElement();
-            FileUtils.copyInputStreamToFile(zipFile.getInputStream(entry), new File(Paths.get(tempDirectory.toString(), "/" + entry.getName()).toString()));
+            FileUtils.copyInputStreamToFile(zipFile.getInputStream(entry), new File(Paths.get(tempDirectory.toString(),"/" + entry.getName()).toString()));
         }
 
         zipFile.close();
