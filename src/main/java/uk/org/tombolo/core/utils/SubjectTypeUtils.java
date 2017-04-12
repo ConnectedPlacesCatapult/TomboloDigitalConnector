@@ -8,6 +8,7 @@ import uk.org.tombolo.core.SubjectType;
 import java.util.List;
 
 public class SubjectTypeUtils {
+	@Deprecated
 	public static SubjectType getSubjectTypeByLabel(String label){
 		return getSubjectTypeByProviderAndLabel("default_provider_label", label);
 	}
@@ -23,7 +24,7 @@ public class SubjectTypeUtils {
 			session.beginTransaction();
 			SubjectType existingSubjectType = getSubjectTypeByProviderAndLabel(subjectType.getProvider().getLabel(), subjectType.getLabel());
 
-			if (existingSubjectType != null && !existingSubjectType.equals(subjectType)) {
+			if (existingSubjectType != null) {
 				session.update(session.merge(subjectType));
 			} else {
 				session.save(subjectType);

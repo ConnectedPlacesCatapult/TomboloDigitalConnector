@@ -88,5 +88,4 @@ insert into provider(label, name) values
 
 -- Insert default subject types
 insert into subject_type(provider_label, label, name) values
-('default_provider_label', 'unknown', 'Unknown Subject Type'),
-('default_provider_label', 'poi', 'Point of interest');
+('default_provider_label', 'unknown', 'Unknown Subject Type');
