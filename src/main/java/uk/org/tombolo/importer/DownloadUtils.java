@@ -43,7 +43,7 @@ public class DownloadUtils {
 			log.info("Downloading external resource: {}",datasource.getRemoteDatafile());
 			FileUtils.copyURLToFile(new URL(datasource.getRemoteDatafile()), localDatasourceFile);
 		}
-		
+		log.info("datasource file {}", datasource.getLocalDatafile());
 		return localDatasourceFile;
 	}
 	
