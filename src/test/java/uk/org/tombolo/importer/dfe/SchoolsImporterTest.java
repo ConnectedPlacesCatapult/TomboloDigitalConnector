@@ -1,12 +1,12 @@
-package uk.org.tombolo.importer.schools;
+package uk.org.tombolo.importer.dfe;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.dfe.SchoolsImporter;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class SchoolsImporterTest extends AbstractTest {
     public void testGetProvider(){
         Provider provider = importer.getProvider();
         assertEquals("uk.gov.education", provider.getLabel());
-        assertEquals("Department of Education", provider.getName());
+        assertEquals("Department for Education", provider.getName());
     }
 
     @Test

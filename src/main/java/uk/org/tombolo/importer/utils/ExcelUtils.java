@@ -17,7 +17,6 @@ import uk.org.tombolo.importer.utils.extraction.ExtractorException;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;

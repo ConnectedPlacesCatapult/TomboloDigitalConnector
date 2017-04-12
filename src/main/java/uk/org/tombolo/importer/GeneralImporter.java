@@ -11,25 +11,9 @@ import java.util.List;
  */
 public abstract class GeneralImporter extends AbstractImporter {
 
-    public interface DataSourceID {
-        String getEnumConstantName();
-
-        String getName();
-
-        String getDescription();
-
-        String getUrl();
-
-        String getRemoteDataFile();
-
-        String getLocalDataFile();
-
-        int getSheet();
-    }
-
     public Datasource getDatasource(Class<? extends Importer> importerClass, DataSourceID dataSourceID) throws Exception {
         Datasource dataSource = new Datasource(importerClass,
-                dataSourceID.getEnumConstantName(),
+                dataSourceID.getLabel(),
                 getProvider(),
                 dataSourceID.getName(),
                 dataSourceID.getDescription()
@@ -38,7 +22,7 @@ public abstract class GeneralImporter extends AbstractImporter {
         dataSource.setRemoteDatafile(dataSourceID.getRemoteDataFile());
         dataSource.setLocalDatafile(dataSourceID.getLocalDataFile());
 
-        dataSource.addSubjectType(new SubjectType(dataSourceID.getEnumConstantName(), dataSourceID.getName()));
+        dataSource.addSubjectType(getSubjectType(dataSourceID));
 
         setupUtils(dataSource);
 
@@ -46,6 +30,8 @@ public abstract class GeneralImporter extends AbstractImporter {
 
         return dataSource;
     }
+
+    protected abstract SubjectType getSubjectType(DataSourceID dataSourceID);
 
     protected abstract List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID);
 
