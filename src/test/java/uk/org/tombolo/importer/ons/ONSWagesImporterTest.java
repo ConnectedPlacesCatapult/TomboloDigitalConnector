@@ -19,6 +19,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
+ * Using the following test data files:
+ *
  * Remote: "http://www.ons.gov.uk/file?" +
  *          "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
  *          "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip"

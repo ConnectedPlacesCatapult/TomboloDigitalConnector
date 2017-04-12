@@ -15,16 +15,18 @@ public class JournalEntryUtils {
             String className, String datasourceId,
             List<String> geographyScope, List<String> temporalScope) {
 
-        String geographyScopes = (geographyScope == null || geographyScope.isEmpty())
-                ?""
-                :geographyScope.stream().sorted().collect(Collectors.joining("\t"));
-        String temporalScopes = (temporalScope == null || temporalScope.isEmpty())
-                ?""
-                :temporalScope.stream().sorted().collect(Collectors.joining("\t"));
+        String geographyScopes = "";
+        if (geographyScope != null && !geographyScope.isEmpty())
+            geographyScopes = geographyScope.stream().sorted().collect(Collectors.joining("\t"));
 
-        String scopeKey = ((geographyScope == null || geographyScope.isEmpty()) && (temporalScope == null || temporalScope.isEmpty()))
-                ?""
-                :":"+DigestUtils.md5Hex(geographyScopes+"|"+temporalScopes);
+        String temporalScopes = "";
+        if (temporalScope != null && !temporalScope.isEmpty())
+            temporalScopes = temporalScope.stream().sorted().collect(Collectors.joining("\t"));
+
+        String scopeKey = "";
+        if (!"".equals(geographyScopes) || !"".equals(temporalScopes))
+            scopeKey = ":"+DigestUtils.md5Hex(geographyScopes+"|"+temporalScopes);
+
         String importKey = datasourceId+scopeKey;
 
         return new DatabaseJournalEntry(className, importKey);

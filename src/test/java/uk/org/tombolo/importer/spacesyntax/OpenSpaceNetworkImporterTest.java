@@ -15,6 +15,11 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Using the following test data files:
+ *
+ * Local: t.b.a.
+ */
 public class OpenSpaceNetworkImporterTest extends AbstractTest {
     OpenSpaceNetworkImporter importer;
 

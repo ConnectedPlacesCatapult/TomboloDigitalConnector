@@ -12,6 +12,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * Using the following test data files:
+ *
  * Remote; http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip
  * Local: aHR0cDovL2RhdGEuc3RhdGlzdGljcy5nb3YudWsvb25zL2RhdGFzZXRzL2Nzdi9DU1ZfT1QxMDJFV18yMDExU1RBVEhfMV9FTi56aXA=.zip
  */

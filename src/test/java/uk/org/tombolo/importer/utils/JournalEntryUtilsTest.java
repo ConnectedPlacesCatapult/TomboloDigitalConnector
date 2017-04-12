@@ -49,6 +49,30 @@ public class JournalEntryUtilsTest {
     }
 
     @Test
+    public void getJournalEntryForDatasourceIdGeoNull() throws Exception {
+
+        DatabaseJournalEntry entry = JournalEntryUtils.getJournalEntryForDatasourceId(
+                "class.name",
+                "datasource-id",
+                Arrays.asList("geo"),
+                null);
+        assertEquals("class.name", entry.getClassName());
+        assertEquals("datasource-id:"+ DigestUtils.md5Hex("geo|"), entry.getKey());
+    }
+
+    @Test
+    public void getJournalEntryForDatasourceIdEmptyTime() throws Exception {
+
+        DatabaseJournalEntry entry = JournalEntryUtils.getJournalEntryForDatasourceId(
+                "class.name",
+                "datasource-id",
+                Collections.emptyList(),
+                Arrays.asList("time"));
+        assertEquals("class.name", entry.getClassName());
+        assertEquals("datasource-id:" + DigestUtils.md5Hex("|time"), entry.getKey());
+    }
+
+    @Test
     public void getJournalEntryForDatasourceIdGeoTime() throws Exception {
 
         DatabaseJournalEntry entry = JournalEntryUtils.getJournalEntryForDatasourceId(

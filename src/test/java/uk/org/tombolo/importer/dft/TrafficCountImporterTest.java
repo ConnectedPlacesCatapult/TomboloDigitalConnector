@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  *
- * Using ...
+ * Using the following test data files:
  *
  * Remote: http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/London.csv
  * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YyL3RyYWZmaWNjb3VudHMvZXhwb3J0L2RhdGEvdHJhZmZpYy9yZWdpb24vTG9uZG9uLmNzdg==.csv
