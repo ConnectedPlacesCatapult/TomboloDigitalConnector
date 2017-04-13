@@ -14,6 +14,7 @@ import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +25,11 @@ import java.util.List;
  */
 public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
-    private enum DatasourceId {laWages2016};
+    private enum DatasourceId {wages};
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceId.laWages2016.name(),
+                    DatasourceId.wages.name(),
                     getProvider(),
                     "Wages per Local Authority",
                     "Estimates of paid hours worked, weekly, hourly and annual earnings for UK employees by gender " +
@@ -83,6 +84,11 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             "Paid Hours Worked Overtime"
             //"Paid Hours Worked Overtime (Coefficients of Variation)"
     };
+
+    private static final String DATAFILE = "http://www.ons.gov.uk/file?" +
+            "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
+            "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip";
+
     private String[] bookNames = {
             "PROV - Home Geography Table 8.1a   Weekly pay - Gross 2016.xls",
             //"PROV - Home Geography Table 8.1b   Weekly pay - Gross 2016 CV.xls",
@@ -114,23 +120,19 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             "Female Full-Time", "Female Part-Time"};
     private String[] metricNames = {"Mean", "Median"};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public ONSWagesImporter(){
+        super();
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
         DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
         switch (datasourceId){
-            case laWages2016:
+            case wages:
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.ons.gov.uk/employmentandlabourmarket/" +
                         "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8");
-                datasource.setRemoteDatafile("http://www.ons.gov.uk/file?" +
-                        "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
-                        "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip");
-                datasource.setLocalDatafile("WagesTable82016provisional.zip");
                 datasource.addAllTimedValueAttributes(getTimedValueAttributes());
                 return datasource;
             default:
@@ -139,14 +141,11 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        ExcelUtils excelUtils = new ExcelUtils();
 
-        ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
-
-        File localFile = downloadUtils.getDatasourceFile(datasource);
+        File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".zip");
         ZipFile zipFile = new ZipFile(localFile);
-        int valueCount = 0;
         for (AttributePrefix attributePrefix : AttributePrefix.values()){
             ZipArchiveEntry zipEntry = zipFile.getEntry(bookNames[attributePrefix.ordinal()]);
             Workbook workbook = excelUtils.getWorkbook(zipFile.getInputStream(zipEntry));
@@ -173,10 +172,9 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                 }
 
                 Sheet sheet = workbook.getSheet(sheetName);
-                valueCount += excelUtils.extractTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
+                excelUtils.extractAndSaveTimedValues(sheet,this,extractors,BUFFER_THRESHOLD);
             }
         }
-        return valueCount;
     }
 
     private List<Attribute> getTimedValueAttributes(){

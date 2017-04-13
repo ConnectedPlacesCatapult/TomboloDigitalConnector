@@ -13,7 +13,6 @@ import org.w3c.dom.NodeList;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +23,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,9 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	private static enum AttributeName {ServingLineCount};
 	private static enum SubjectTypeName {TfLStation};
 
+	private static final String STATIONS_API_SUFFIX = ".xml";
+	private static final String STATIONS_API = "https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml";
+
 	Logger log = LoggerFactory.getLogger(TfLStationsImporter.class);
 	
 	XPathFactory xPathFactory = XPathFactory.newInstance();
@@ -40,26 +43,16 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 	public TfLStationsImporter() throws IOException {
 		super();
-	}
-
-	@Override
-	public List<Datasource> getAllDatasources() throws Exception {
-		return datasourcesFromEnumeration(DatasourceId.class);
+		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 	}
 
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		verifyConfiguration();
-		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
-		switch (datasourceIdObject){
+		DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
+		switch (datasourceLabel){
 			case StationList:
 				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
-				datasource.setLocalDatafile("tfl/stations/stations-facilities.xml");
-
-				datasource.setRemoteDatafile(
-						"https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml"
-								+"?app_id="+properties.getProperty(PROP_API_APP_ID)
-								+"&app_key="+properties.getProperty(PROP_API_APP_KEY));
 				datasource.addAllTimedValueAttributes(getStationAttributes());
 				datasource.addSubjectType(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 				return datasource;
@@ -68,15 +61,20 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	protected int importDatasource(Datasource datasource) throws Exception {
-		saveDatasourceMetadata(datasource);
-		
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+
 		// Save timed values
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-			File xmlFile = downloadUtils.getDatasourceFile(datasource);
+			File xmlFile = downloadUtils.fetchFile(
+					new URL(STATIONS_API
+							+"?app_id="+properties.getProperty(PROP_API_APP_ID)
+							+"&app_key="+properties.getProperty(PROP_API_APP_KEY)),
+					getProvider().getLabel(),
+					STATIONS_API_SUFFIX
+			);
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -107,7 +105,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 
 				subjects.add(new Subject(datasource.getUniqueSubjectType(), stationLabel, stationName, point));
 			}
-			SubjectUtils.save(subjects);
+			saveAndClearSubjectBuffer(subjects);
 
 			// Timed Values
 			List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -123,11 +121,8 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 				
 				timedValues.add(new TimedValue(subject,servingLines, timestamp, count));
 			}
-			int saved = TimedValueUtils.save(timedValues);
-
-			return saved;
+			saveAndClearTimedValueBuffer(timedValues);
 		}
-		return 0;
 	}
 	
 	private String stationLabelFromNode(Node station) throws XPathExpressionException{

@@ -11,7 +11,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Importer;
 
@@ -22,7 +21,12 @@ import java.util.stream.Collectors;
 
 public final class HealthOrganisationImporter extends AbstractImporter implements Importer {
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
-    private enum SubjectTypeLabel {hospital, clinic, gpSurgeries};
+    private enum DatasourceId {hospital, clinic, gpSurgeries};
+
+    public HealthOrganisationImporter() {
+        super();
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+    }
 
     @Override
     public Provider getProvider() {
@@ -33,13 +37,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(SubjectTypeLabel.class);
-    }
-
-    @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        SubjectTypeLabel datasourceIdObject = SubjectTypeLabel.valueOf(datasourceId);
+        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
         switch (datasourceIdObject) {
             case hospital:
                 return makeDatasource(
@@ -64,11 +63,10 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()));
+        JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()), getProvider().getLabel());
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
 
@@ -81,6 +79,9 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
                 Double latitude = Double.parseDouble(healthOrgObj.get("latitude"));
                 Coordinate coordinate = new Coordinate(longitude, latitude);
                 point = geometryFactory.createPoint(coordinate);
+
+                // FIXME: Add fixed values
+
             } catch (Exception e) {
                 // If we have any trouble with the geometry, e.g. the figures are blank or invalid,
                 // we use the null geometry prepopulated in the `point` variable, and log.
@@ -90,8 +91,6 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
 
         }).collect(Collectors.toList());
 
-        SubjectUtils.save(subjects);
-
-        return subjects.size();
+        saveAndClearSubjectBuffer(subjects);
     }
 }

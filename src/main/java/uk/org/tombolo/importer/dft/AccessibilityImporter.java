@@ -17,6 +17,8 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
                 "acs05-travel-time-destination-and-origin-indicators-to-key-sites-and-services-" +
                 "by-lower-super-output-area-lsoa";
 
-    private String[] datasetFiles = {
+    private static final String DATASET_FILE_SUFFIX = ".xls";
+    private static final String[] datasetFiles = {
             "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357458/acs0501.xls",
             "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357460/acs0502.xls",
             "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357461/acs0503.xls",
@@ -60,17 +63,15 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             "Travel time, destination and origin indicators to Town centres by mode of travel"
     };
 
-    ExcelUtils excelUtils;
+    ExcelUtils excelUtils = new ExcelUtils();
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public AccessibilityImporter(){
+        super();
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        if (excelUtils == null)
-            initalize();
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
         if (datasourceIdValue == null)
             throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
@@ -82,8 +83,6 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
                 datasourceId,
                 datasetDescriptions[datasourceIdValue.ordinal()]);
         datasource.setUrl(DATASOURCE_URL);
-        datasource.setLocalDatafile("dft/accessibility/"+datasourceIdValue.name()+".xls");
-        datasource.setRemoteDatafile(datasetFiles[datasourceIdValue.ordinal()]);
 
         // Attributes
         // In order to get the attributes we need to download the entire xls file, which is a bit of an overload.
@@ -91,7 +90,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
         // An alternative would be to use a pre-compiled list of attributes with the downside that it is not
         // robust to changes in the underlying xls file.
         // FIXME: Consider using a pre-compiled list of attributes
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(getDatasourceUrl(datasourceIdValue), getProvider().getLabel(), DATASET_FILE_SUFFIX));
         Sheet metadataSheet = workbook.getSheet("Metadata");
 
         int rowId = 12;
@@ -115,13 +115,11 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        Workbook workbook = excelUtils.getWorkbook(datasource);
-        int valueCount = 0;
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(getDatasourceUrl(datasourceId), getProvider().getLabel(), DATASET_FILE_SUFFIX));
         List<TimedValue> timedValueBuffer = new ArrayList<>();
-
-        // Save Provider and Attributes
-        saveDatasourceMetadata(datasource);
 
         // Loop over years
         for (int sheetId = 0; sheetId < workbook.getNumberOfSheets(); sheetId++){
@@ -155,14 +153,11 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
             }
 
             // Extract timed values
-            valueCount += excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+            excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
         }
-
-        return valueCount;
     }
 
-    private void initalize(){
-        excelUtils = new ExcelUtils(downloadUtils);
+    private static URL getDatasourceUrl(DatasourceId datasourceId) throws MalformedURLException {
+        return new URL(datasetFiles[datasourceId.ordinal()]);
     }
-
 }

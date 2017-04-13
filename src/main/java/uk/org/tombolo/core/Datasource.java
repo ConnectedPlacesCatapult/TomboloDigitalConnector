@@ -16,7 +16,6 @@ public class Datasource {
 	private String description;
 	private String url;					// Url of the datasource for that series
 	private String remoteDatafile;		// Remote datafile
-	private String localDatafile; 		// Location of the local version of the datafile
 
 	private List<Attribute> timedValueAttributes = new ArrayList<>();
 	private List<Attribute> fixedValueAttributes = new ArrayList<>();
@@ -104,27 +103,21 @@ public class Datasource {
 		this.url = url;
 	}
 
+	/**
+	 * The use of the remote datafile is discouraged since the one-to-one relation between a datasource and datafile
+	 * is not applicable for all importers.
+	 *
+	 * When we have found out how to solve the Census Importer then this will be deleted
+	 *
+	 * @return
+	 */
+	@Deprecated
 	public String getRemoteDatafile() {
 		return remoteDatafile;
 	}
+	@Deprecated
 	public void setRemoteDatafile(String remoteDatafile) {
 		this.remoteDatafile = remoteDatafile;
-	}
-
-	@Deprecated
-	/**
-	 * This should be handled internally by DownloadUtils
-	 */
-	public String getLocalDatafile() {
-		return localDatafile;
-	}
-
-	@Deprecated
-	/**
-	 * This should be handled internally by DownloadUtils
-	 */
-	public void setLocalDatafile(String localDatafile) {
-		this.localDatafile = localDatafile;
 	}
 
 	public void writeJSON(JsonWriter writer) throws IOException {

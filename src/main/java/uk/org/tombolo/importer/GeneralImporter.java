@@ -20,7 +20,6 @@ public abstract class GeneralImporter extends AbstractImporter {
         );
         dataSource.setUrl(dataSourceID.getUrl());
         dataSource.setRemoteDatafile(dataSourceID.getRemoteDataFile());
-        dataSource.setLocalDatafile(dataSourceID.getLocalDataFile());
 
         dataSource.addSubjectType(getSubjectType(dataSourceID));
 

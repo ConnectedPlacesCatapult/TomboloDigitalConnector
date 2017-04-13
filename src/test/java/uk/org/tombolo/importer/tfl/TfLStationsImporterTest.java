@@ -11,6 +11,11 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using the following test data files:
+ *
+ * Local: aHR0cHM6Ly9kYXRhLnRmbC5nb3YudWsvdGZsL3N5bmRpY2F0aW9uL2ZlZWRzL3N0YXRpb25zLWZhY2lsaXRpZXMueG1sP2FwcF9pZD10ZmxBcHBJZFRlc3QmYXBwX2tleT10ZmxBcHBLZXlUZXN0.xml
+ */
 public class TfLStationsImporterTest extends AbstractTest {
 	public TfLStationsImporter importer;
 
@@ -26,8 +31,8 @@ public class TfLStationsImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception {
-		int count = importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
-		assertEquals(301, count);
+		importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
+		assertEquals(302, importer.getTimedValueCount());	// FIXME: Double check this when we get to refactor importer
 	}
 
 	@Test

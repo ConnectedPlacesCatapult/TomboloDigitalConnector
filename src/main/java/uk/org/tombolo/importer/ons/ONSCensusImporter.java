@@ -10,11 +10,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.ProviderUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -56,8 +57,44 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
-	public ONSCensusImporter() throws IOException {
+	public ONSCensusImporter() throws IOException, ParseException, ConfigurationException {
 		super();
+	}
+
+	@Override
+	public List<String> getDatasourceIds() {
+		if (datasourceIds == null || datasourceIds.isEmpty())
+			try {
+				datasourceIds = getAllDatasourceNames();
+			}catch (Exception e){
+				throw new Error(e);
+			}
+
+		return datasourceIds;
+	}
+
+	private List<String> getAllDatasourceNames() throws ConfigurationException, IOException, ParseException {
+		verifyConfiguration();
+		List<String> datasources = new ArrayList<String>();
+
+		String baseUrl = ONS_API_URL + "collections.json?";
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("apikey", properties.getProperty(PROP_ONS_API_KEY));
+		params.put("context", "Census");
+		String paramsString = DownloadUtils.paramsToString(params);
+		URL url = new URL(baseUrl + paramsString);
+		JSONObject rootObject = downloadUtils.fetchJSON(url, getProvider().getLabel());
+
+		JSONObject ons = (JSONObject)rootObject.get("ons");
+
+		JSONArray collections = (JSONArray)((JSONObject)ons.get("collectionList")).get("collection");
+		for (int i=0; i<collections.size(); i++){
+			JSONObject collection = (JSONObject)collections.get(i);
+			String datasetId = (String)collection.get("id");
+			datasources.add(datasetId);
+		}
+
+		return datasources;
 	}
 
 	@Override
@@ -67,47 +104,13 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	}
 
 	@Override
-	public List<Datasource> getAllDatasources() throws IOException, ParseException, ConfigurationException {
-		verifyConfiguration();
-		List<Datasource> datasources = new ArrayList<Datasource>();
-	
-		String baseUrl = ONS_API_URL + "collections.json?";
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("apikey", properties.getProperty(PROP_ONS_API_KEY));
-		params.put("context", "Census");		
-		String paramsString = DownloadUtils.paramsToString(params);
-		URL url = new URL(baseUrl + paramsString);
-		JSONObject rootObject = downloadUtils.fetchJSON(url);
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws IOException, ParseException{
 
-		JSONObject ons = (JSONObject)rootObject.get("ons");
-
-		JSONArray collections = (JSONArray)((JSONObject)ons.get("collectionList")).get("collection");
-		for (int i=0; i<collections.size(); i++){
-			JSONObject collection = (JSONObject)collections.get(i);
-			String datasetId = (String)collection.get("id");
-			JSONArray names = (JSONArray)((JSONObject)collection.get("names")).get("name");
-			String datasetDescription = getEnglishValue(names);
-			
-			Datasource datasourceDetails = new Datasource(getClass(), datasetId,getProvider(),datasetId,datasetDescription);
-			datasources.add(datasourceDetails);
-		}
-		
-		return datasources;
-	}
-		
-	protected int importDatasource(Datasource datasource) throws IOException, ParseException{
-		// Get the provider details
-		Provider provider = getProvider();
-		
-		// Store the provider
-		ProviderUtils.save(provider);
-				
 		// Store data in database
-		File localFile = downloadUtils.getDatasourceFile(datasource);
+		File localFile = downloadUtils.fetchFile(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".zip");
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
-		int valueCount = 0;
 		while(entries.hasMoreElements()){
 			zipEntry = entries.nextElement();
 			
@@ -174,15 +177,10 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									TimedValue tv 
 										= new TimedValue(subject, datasource.getTimedValueAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
 									timedValueBuffer.add(tv);
-									valueCount++;
-									
+
 									// Flushing buffer
-									if (valueCount % BUFFER_THRESHOLD == 0){
-										// Buffer is full ... we write values to db
-										log.info("Preparing to write a batch of {} values ...", timedValueBuffer.size());
-										TimedValueUtils.save(timedValueBuffer);
-										timedValueBuffer = new ArrayList<TimedValue>();
-										log.info("Total values written: {}", valueCount);
+									if (timedValueBuffer.size() % BUFFER_THRESHOLD == 0){
+										saveAndClearTimedValueBuffer(timedValueBuffer);
 									}
 								}								
 							}							
@@ -191,16 +189,12 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}
 				}
-				log.info("Preparing to write a batch of {} values", timedValueBuffer.size());
-				TimedValueUtils.save(timedValueBuffer);
-				log.info("Total values written: {}", valueCount);
+				saveAndClearTimedValueBuffer(timedValueBuffer);
 				br.close();
 			}
 			
 		}
 		zipFile.close();		
-		
-		return valueCount;
 	}
 	
 	public Datasource getDatasource(String datasourceId) throws IOException, ParseException, ConfigurationException {
@@ -213,7 +207,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		params.put("geog", "2011STATH");
 		String paramsString = DownloadUtils.paramsToString(params);
 		URL url = new URL(baseUrl + paramsString);
-		JSONObject rootObject = downloadUtils.fetchJSON(url);
+		JSONObject rootObject = downloadUtils.fetchJSON(url, getProvider().getLabel());
 		
 		JSONObject ons = (JSONObject)rootObject.get("ons");
 		JSONObject datasetDetail = (JSONObject)ons.get("datasetDetail");
@@ -273,8 +267,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		
 		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
 		datasource.setRemoteDatafile(remoteDatafile);	// Remote file
-		datasource.setLocalDatafile(localDatafile);		// Local file (relative to local data root)
-		
+
 		return datasource;
 	}
 	

@@ -12,11 +12,20 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Importer;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Using the following test data files:
+ *
+ * Remote: "http://www.ons.gov.uk/file?" +
+ *          "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
+ *          "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip"
+ * Local: aHR0cDovL3d3dy5vbnMuZ292LnVrL2ZpbGU_dXJpPS9lbXBsb3ltZW50YW5kbGFib3VybWFya2V0L3Blb3BsZWlud29yay9lYXJuaW5nc2FuZHdvcmtpbmdob3Vycy9kYXRhc2V0cy9wbGFjZW9mcmVzaWRlbmNlYnlsb2NhbGF1dGhvcml0eWFzaGV0YWJsZTgvMjAxNi90YWJsZTgyMDE2cHJvdmlzaW9uYWwuemlw.zip
+ */
 public class ONSWagesImporterTest extends AbstractTest {
     Subject cityOfLondon;
     Subject islington;
@@ -34,22 +43,21 @@ public class ONSWagesImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasourceList = importer.getAllDatasources();
-
-        assertEquals(1, datasourceList.size());
+    public void getDatasourceIds() throws Exception {
+        List<String> datasourceList = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("wages"), datasourceList);
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("laWages2016");
+        Datasource datasource = importer.getDatasource("wages");
 
         assertEquals(198, datasource.getTimedValueAttributes().size());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("laWages2016");
+        importer.importDatasource("wages", null, null);
 
         Attribute weeklyPayGrossAllMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),

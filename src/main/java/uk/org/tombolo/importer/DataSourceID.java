@@ -10,15 +10,13 @@ public class DataSourceID {
     private String description;
     private String url;
     private String remoteDataFile;
-    private String localDataFile;
 
-    public DataSourceID(String label, String name, String description, String url, String remoteDataFile, String localDataFile) {
+    public DataSourceID(String label, String name, String description, String url, String remoteDataFile) {
         this.label = label;
         this.name = name;
         this.description = description;
         this.url = url;
         this.remoteDataFile = remoteDataFile;
-        this.localDataFile = localDataFile;
     }
 
     public String getLabel() {
@@ -41,5 +39,4 @@ public class DataSourceID {
         return remoteDataFile;
     }
 
-    public String getLocalDataFile() { return localDataFile; }
 }

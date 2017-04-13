@@ -8,9 +8,11 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.DataSourceID;
+import uk.org.tombolo.importer.dclg.IMDImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,8 +45,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
                 "Schools in England",
                 "Schools in England",
                 "https://www.gov.uk/government/publications/schools-in-england/",
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + getFormattedMonthYear() + ".xlsx",
-                "EduBase_Schools_March_2017.xlsx"
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + getFormattedMonthYear() + ".xlsx"
                 ),
                 0
         );
@@ -58,9 +59,9 @@ public class SchoolsImporter extends AbstractDfEImporter {
         }
     }
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(schoolsDataSourceID.class);
+    public SchoolsImporter() {
+        super();
+        datasourceIds = stringsFromEnumeration(schoolsDataSourceID.class);
     }
 
     @Override
@@ -79,13 +80,12 @@ public class SchoolsImporter extends AbstractDfEImporter {
 
     @Override
     protected void setupUtils(Datasource datasource) throws Exception {
-        ExcelUtils excelUtils = new ExcelUtils(downloadUtils);
-        workbook = excelUtils.getWorkbook(datasource);
+        ExcelUtils excelUtils = new ExcelUtils();
+        workbook = excelUtils.getWorkbook(downloadUtils.fetchInputStream(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".xlsx"));
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
         List<Subject> subjects = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();
@@ -118,11 +118,8 @@ public class SchoolsImporter extends AbstractDfEImporter {
                         dataFormatter.formatCellValue(row.getCell(attributeIndex++))));
             }
         }
-
-        SubjectUtils.save(subjects);
-        FixedValueUtils.save(fixedValues);
-
-        return 0;
+        saveAndClearSubjectBuffer(subjects);
+        saveAndClearFixedValueBuffer(fixedValues);
     }
 
     protected List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID) {

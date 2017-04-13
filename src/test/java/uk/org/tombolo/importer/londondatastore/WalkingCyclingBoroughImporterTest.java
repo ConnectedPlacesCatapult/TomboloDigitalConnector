@@ -10,16 +10,21 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *  Using the following test data files:
+ *
+ *  Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L3dhbGtpbmctYW5kLWN5Y2xpbmctYm9yb3VnaC93YWxraW5nLWN5Y2xpbmctYm9yb3VnaC54bHM=.xls
+ */
 public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "walkingCyclingBorough";
-	public Importer importer;
+	public WalkingCyclingBoroughImporter importer;
 
 	Subject cityOfLondon;
 
@@ -35,9 +40,9 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	};
 
 	@Test
-	public void testGetAllDatasources() throws Exception {
-		List<Datasource> datasources = importer.getAllDatasources();
-		assertEquals(1, datasources.size());
+	public void testGetDatasourceIds() throws Exception {
+		List<String> datasources = importer.getDatasourceIds();
+		assertEquals(Arrays.asList("walkingCyclingBorough"), datasources);
 	}
 
 	@Test
@@ -50,9 +55,9 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		int datapoints = importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID);
 		
-		assertEquals(8, datapoints);
+		assertEquals(8, importer.getTimedValueCount());
 
 		LocalDateTime year2012 = LocalDateTime.parse("2012-12-31T23:59:59");
 		LocalDateTime year2014 = LocalDateTime.parse("2014-12-31T23:59:59");

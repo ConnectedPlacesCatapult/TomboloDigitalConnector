@@ -12,8 +12,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using files for test:
+ *
+ * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS81OTc5NjUvRWR1QmFzZV9TY2hvb2xzX0FwcmlsXzIwMTcueGxzeA==.xlsx
+ */
 public class SchoolsImporterTest extends AbstractTest {
-    private static Importer importer;
+    private static SchoolsImporter importer;
 
     @Before
     public void before(){
@@ -29,8 +34,8 @@ public class SchoolsImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
+    public void testGetDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
         assertEquals(1,datasources.size());
     }
 
@@ -38,7 +43,6 @@ public class SchoolsImporterTest extends AbstractTest {
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("schools");
         assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + SchoolsImporter.getFormattedMonthYear() + ".xlsx",datasource.getRemoteDatafile());
-        assertEquals("EduBase_Schools_March_2017.xlsx", datasource.getLocalDatafile());
     }
 
     @Test

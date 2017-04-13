@@ -11,6 +11,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using the following test data files:
+ *
+ * Remote; http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip
+ * Local: aHR0cDovL2RhdGEuc3RhdGlzdGljcy5nb3YudWsvb25zL2RhdGFzZXRzL2Nzdi9DU1ZfT1QxMDJFV18yMDExU1RBVEhfMV9FTi56aXA=.zip
+ */
 public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
 	public static final String datasourceId = "OT102EW";
@@ -20,15 +26,13 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E08000035");
 	}
-	
+
+
+
 	@Test
-	public void testGetAllDatasources() throws Exception{
-		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
-		List<Datasource> datasources = importer.getAllDatasources();
-		
-		// FIXME: For some reason this has changed in the API
-		//assertEquals(701, datasources.size());
-		
+	public void testGetDatasourceIds() throws Exception{
+		List<String> datasources = importer.getDatasourceIds();
+
 		assertEquals(695, datasources.size());
 	}
 	
@@ -48,14 +52,13 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		assertEquals("CL_0000858", datasourceDetails.getTimedValueAttributes().get(2).getLabel());
 		assertEquals("Density (Persons per hectare)", datasourceDetails.getTimedValueAttributes().get(2).getDescription());
 		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip", datasourceDetails.getRemoteDatafile());
-		assertEquals("csv/CSV_OT102EW_2011STATH_1_EN.zip", datasourceDetails.getLocalDatafile());
 	}
 		
 	@Test
 	public void testLoadDataset() throws Exception{
-		int count = importer.importDatasource(datasourceId);
+		importer.importDatasource(datasourceId);
 		
-		assertEquals(3 + 3, count);
+		assertEquals(3 + 3, importer.getTimedValueCount());
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
 		assertEquals("Area (Hectares)", attribute.getName());

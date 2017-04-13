@@ -10,10 +10,16 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ *  Using the following test data files:
+ *
+ *  Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
+ */
 public class LondonBoroughProfileImporterTest extends AbstractTest {
     LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter();
 
@@ -28,10 +34,10 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasourceList = importer.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasourceList = importer.getDatasourceIds();
         assertEquals(1, datasourceList.size());
-        assertEquals("londonBoroughProfiles", datasourceList.get(0).getId());
+        assertEquals(Arrays.asList("londonBoroughProfiles"), datasourceList);
     }
 
     @Test
@@ -45,8 +51,8 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        int valueCount = importer.importDatasource("londonBoroughProfiles");
-        assertEquals(12, valueCount);
+        importer.importDatasource("londonBoroughProfiles");
+        assertEquals(12, importer.getTimedValueCount());
 
         TimedValue populationDensity = TimedValueUtils.getLatestBySubjectAndAttribute(
                 cityOfLondon,

@@ -14,6 +14,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using the following test data files:
+ *
+ * Remote file: "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
+                "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
+ * Local file: ec39e8bd9a41062d17c80ed6f9d81361.csv
+ */
 public class IMDImporterTest extends AbstractTest {
     IMDImporter imdImporter = new IMDImporter();
 
@@ -29,11 +36,11 @@ public class IMDImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = imdImporter.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = imdImporter.getDatasourceIds();
 
         assertEquals(1, datasources.size());
-        assertEquals("imd", datasources.get(0).getId());
+        assertEquals("imd", datasources.get(0));
     }
 
     @Test
@@ -47,8 +54,8 @@ public class IMDImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        int valueCount = imdImporter.importDatasource("imd");
-        assertEquals(2*53, valueCount);
+        imdImporter.importDatasource("imd");
+        assertEquals(2*53, imdImporter.getTimedValueCount());
 
         Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.score");
         Attribute attribute2 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.disability.rank");

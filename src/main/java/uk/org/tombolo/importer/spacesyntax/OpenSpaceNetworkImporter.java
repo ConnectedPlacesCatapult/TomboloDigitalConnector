@@ -40,12 +40,6 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     }
 
     @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        // This function returns an empty list of datasources since it is a local file import
-        return new ArrayList<Datasource>();
-    }
-
-    @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
         Datasource datasource = new Datasource(getClass(), datasourceId, getProvider(), datasourceId, "");

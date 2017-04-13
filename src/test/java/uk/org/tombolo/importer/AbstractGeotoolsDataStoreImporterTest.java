@@ -9,6 +9,7 @@ import uk.org.tombolo.core.utils.*;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,11 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
+
+        public TestGeotoolsDataStoreImporter() {
+            datasourceIds = Arrays.asList("osm_polyline_processed");
+        }
+
         @Override
         public String getTypeNameForDatasource(Datasource datasource) {
             return datasource.getId();
@@ -60,11 +66,6 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         }
 
         @Override
-        public List<Datasource> getAllDatasources() throws Exception {
-            return null;
-        }
-
-        @Override
         public Datasource getDatasource(String datasourceId) throws Exception {
             Datasource datasource = new Datasource(TestGeotoolsDataStoreImporter.class, datasourceId, getProvider(), datasourceId, datasourceId);
             datasourceSetup.accept(datasource);
@@ -80,8 +81,8 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasourceImportsSubjects() throws Exception {
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(0, importedCount);
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(0, importer.getTimedValueCount());
 
         Subject subject = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
 
@@ -96,8 +97,8 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addTimedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(25, importedCount);
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(25, importer.getTimedValueCount());
 
         Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
 
@@ -113,8 +114,8 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addFixedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(25, importedCount);
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(25, importer.getFixedValueCount());
 
         Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
 
