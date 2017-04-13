@@ -18,7 +18,7 @@ public class FixedValueFieldTest extends AbstractTest {
 
     @Before
     public void setUp() {
-        subject = TestFactory.makeNamedSubject("E01000001");
+        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         field = new FixedValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }

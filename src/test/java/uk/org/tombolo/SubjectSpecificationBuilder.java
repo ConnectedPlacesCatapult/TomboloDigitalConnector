@@ -7,8 +7,9 @@ import java.util.List;
 
 public class SubjectSpecificationBuilder implements JSONAware {
     JSONObject jsonSpec;
-    public SubjectSpecificationBuilder(String subjectType) {
+    public SubjectSpecificationBuilder(String provider, String subjectType) {
         jsonSpec = new JSONObject();
+        jsonSpec.put("provider", provider);
         jsonSpec.put("subjectType", subjectType);
     }
 

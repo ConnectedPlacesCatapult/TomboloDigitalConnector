@@ -55,9 +55,9 @@ public class AccessibilityImporterTest extends AbstractTest {
         importer = new AccessibilityImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
 
-        TestFactory.makeNamedSubject("E01000001");
-        TestFactory.makeNamedSubject("E01000002");
-        TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000002");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
     }
 
     @Test

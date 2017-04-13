@@ -29,13 +29,17 @@ public class SubjectSpecification {
 	// Required Subject type
 	String subjectType;
 
+	// Required Provider
+	String provider;
+
 	// Optional Attribute Match Rule
 	SubjectAttributeMatchRule matchRule;
 
 	// Optional Geo Match Rule
 	SubjectGeoMatchRule geoMatchRule;
 
-	public SubjectSpecification(String subjectType, SubjectAttributeMatchRule matchRule, SubjectGeoMatchRule geoMatchRule){
+	public SubjectSpecification(String provider, String subjectType, SubjectAttributeMatchRule matchRule, SubjectGeoMatchRule geoMatchRule){
+		this.provider = provider;
 		this.subjectType = subjectType;
 		this.matchRule = matchRule;
 		this.geoMatchRule = geoMatchRule;
@@ -52,5 +56,7 @@ public class SubjectSpecification {
 	public String getSubjectType() {
 		return subjectType;
 	}
+
+	public String getProvider() { return provider; }
 
 }

@@ -2,10 +2,7 @@ package uk.org.tombolo.execution.spec;
 
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.DataExportSpecificationBuilder;
-import uk.org.tombolo.FieldSpecificationBuilder;
-import uk.org.tombolo.SubjectSpecificationBuilder;
+import uk.org.tombolo.*;
 
 import java.io.FileReader;
 import java.io.StringReader;
@@ -27,9 +24,9 @@ public class DataExportSpecificationValidatorTest extends AbstractTest {
     @Test
     public void testValidateWithValidBuilder() throws Exception {
         DataExportSpecificationBuilder spec = DataExportSpecificationBuilder.withGeoJsonExporter().addSubjectSpecification(
-                new SubjectSpecificationBuilder("lsoa").setMatcher("label", "E01002766"))
+                new SubjectSpecificationBuilder("uk.gov.ons", "lsoa").setMatcher("label", "E01002766"))
                 .addSubjectSpecification(
-                        new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E08000035"))
+                        new SubjectSpecificationBuilder("uk.gov.ons", "localAuthority").setMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(

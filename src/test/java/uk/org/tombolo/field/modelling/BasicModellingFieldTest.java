@@ -22,7 +22,7 @@ public class BasicModellingFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        subject = TestFactory.makeNamedSubject("E01002766");
+        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
         Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_1");
         Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_82");
         TestFactory.makeTimedValue("E01002766", population, "2011-01-01T00:00:00", 100d);

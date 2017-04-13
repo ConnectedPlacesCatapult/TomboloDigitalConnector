@@ -110,8 +110,8 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		datasource.addAllTimedValueAttributes(getAttributes());
 		datasource.setUrl("http://www.dft.gov.uk/traffic-counts/");
 
-		datasource.addSubjectType(new SubjectType(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
-
+		datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
+		
 		return datasource;
 	}
 

@@ -54,7 +54,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
-            subject.setSubjectType(SubjectTypeUtils.getOrCreate("example", "Test Example"));
+            subject.setSubjectType(SubjectTypeUtils.getOrCreate(getProvider(), "example", "Test Example"));
             subject.setLabel("example-feature:" + feature.getID());
             subject.setName("Example feature: " + feature.getID());
             return subject;

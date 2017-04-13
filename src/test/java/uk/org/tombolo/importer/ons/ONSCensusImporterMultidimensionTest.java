@@ -23,7 +23,7 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E01002766");
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 	}
 		
 	@Test

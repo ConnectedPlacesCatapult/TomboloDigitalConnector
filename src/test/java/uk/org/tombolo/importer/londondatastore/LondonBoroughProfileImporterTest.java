@@ -29,8 +29,8 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
     @Before
     public void setUp() throws Exception {
         mockDownloadUtils(importer);
-        cityOfLondon = TestFactory.makeNamedSubject("E09000001");
-        islington = TestFactory.makeNamedSubject("E09000019");
+        cityOfLondon = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
+        islington = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000019");
     }
 
     @Test

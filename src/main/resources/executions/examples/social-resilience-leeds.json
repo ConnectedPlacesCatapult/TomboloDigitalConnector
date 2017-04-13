@@ -20,25 +20,25 @@
     "fieldSpecification" : [
       {
         // Modelling field for Disability Resilience (built-in model)
-        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "DisabilityResilence",
         "recipe": "socialresilience/Disability-lsoa"
       },
       {
         // Modelling field for Overcrowding Resilience (built-in model)
-        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "OvercrowdingResilence",
         "recipe": "socialresilience/Overcrowding-lsoa"
       },
       {
         // Modelling field for Combined Community Resiliece (built-in model)
-        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "CombinedSocialResilence",
         "recipe": "socialresilience/CombinedSocialResilience-lsoa"
       },
       {
         // Modelling field for GP density (built-in model)
-        "fieldClass": "uk.org.tombolo.field.BasicModellingField",
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "GPResilence",
         "recipe": "socialresilience/GPs-lsoa"
       }

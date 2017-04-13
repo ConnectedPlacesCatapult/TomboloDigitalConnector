@@ -35,7 +35,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 
 	@Before
 	public void addSubjectFixtures() {
-		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
+		cityOfLondon = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
 	}
 
 	@Test

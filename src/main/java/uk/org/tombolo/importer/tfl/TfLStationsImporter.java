@@ -54,7 +54,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			case StationList:
 				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
 				datasource.addAllTimedValueAttributes(getStationAttributes());
-				datasource.addSubjectType(new SubjectType(SubjectTypeName.TfLStation.name(), "Transport for London Station"));
+				datasource.addSubjectType(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 				return datasource;
 		}
 		return null;

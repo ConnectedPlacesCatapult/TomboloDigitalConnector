@@ -106,7 +106,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 		//Year,CP,Region,LocalAuthority,Road,RoadCategory,Easting,Northing,StartJunction,EndJunction,LinkLength_miles,PedalCycles,Motorcycles,CarsTaxis,BusesCoaches,LightGoodsVehicles,V2AxleRigidHGV,V3AxleRigidHGV,V4or5AxleRigidHGV,V3or4AxleArticHGV,V5AxleArticHGV,V6orMoreAxleArticHGV,AllHGVs,AllMotorVehicles
 		//"2008","6075","London","Islington","A1","PU","530600","185870","A503 Camden Road","A503 Seven Sisters/Parkhurst Road","0.12","66","85","1334","57","329","57","6","5","3","3","3","77","1883"
 
-		List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByLabel("trafficCounter"),"DfT-TrafficCounter-6075");
+		List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "trafficCounter"),"DfT-TrafficCounter-6075");
 		assertEquals(1, subjects.size());
 		Subject subject = subjects.get(0);
 		assertEquals("A1"+" ("+"A503 Camden Road"+" to "+"A503 Seven Sisters/Parkhurst Road"+")", subject.getName());

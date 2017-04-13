@@ -1,12 +1,14 @@
 {
   "datasetSpecification": {
     "subjectSpecification": [{
+      "provider":"uk.gov.ons",
       "matchRule": {
         "pattern": "E01002766",
         "attribute": "label"
       },
       "subjectType": "lsoa"
     }, {
+      "provider":"uk.gov.ons",
       "matchRule": {
         "pattern": "E08000035",
         "attribute": "label"

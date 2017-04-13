@@ -49,7 +49,7 @@ public class SchoolsImporterTest extends AbstractTest {
     public void testImportDatasource() throws Exception {
         importer.importDatasource("schools");
 
-        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByLabel("schools"),"uk.gov.education_schools_100000.0");
+        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","schools"),"uk.gov.education_schools_100000.0");
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("Sir John Cass's Foundation Primary School", subject.getName());

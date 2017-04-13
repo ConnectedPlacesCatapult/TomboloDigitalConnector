@@ -20,8 +20,8 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
 
     @Before
     public void setUp() {
-        nearbySubject = TestFactory.makeNamedSubject("E09000001");
-        subject = TestFactory.makeNamedSubject("E01000001");
+        nearbySubject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
+        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         TestFactory.makeTimedValue("E09000001", attribute, "2011-01-01T00:00:00", 100d);
     }

@@ -13,6 +13,9 @@
               "subjectType": {
                 "type": "string"
               },
+              "provider": {
+                "type": "string"
+              },
               "matchRule": {
                 "type": "object",
                 "properties": {
@@ -50,7 +53,8 @@
 
             },
             "required": [
-              "subjectType"
+              "subjectType",
+              "provider"
             ],
             "additionalProperties": false
           }

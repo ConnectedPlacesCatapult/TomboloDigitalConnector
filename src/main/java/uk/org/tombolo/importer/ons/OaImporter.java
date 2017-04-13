@@ -48,7 +48,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
                         getProvider(),
                         subjectTypeNames.get(datasourceIdObject.ordinal()),
                         subjectTYpeDesc.get(datasourceIdObject.ordinal()));
-        datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
+        datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getDescription()));
         return datasource;
     }
 
