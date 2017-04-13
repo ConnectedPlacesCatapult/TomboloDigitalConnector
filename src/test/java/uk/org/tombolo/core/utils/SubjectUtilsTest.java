@@ -62,7 +62,12 @@ public class SubjectUtilsTest extends AbstractTest {
 				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority")
 		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
-		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
+		assertEquals(2, subjects.size());
+
+		for (int i=0; i < subjects.size(); i++) {
+			String label = subjects.get(i).getLabel();
+			assertTrue("Label " + label + " matches searched pattern E08% or E09%", label.contains("E08") || label.contains("E09"));
+		}
 	}
 
 	@Test
