@@ -19,7 +19,7 @@ public class DatasourceTest extends AbstractTest {
         datasource.setRemoteDatafile("http://example.com/remote-data-file.json");
         datasource.addFixedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "fixed_label"));
         datasource.addTimedValueAttribute(TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "timed_label"));
-        datasource.addSubjectType(TestFactory.makeSubjectType("st_label", "st_name"));
+        datasource.addSubjectType(TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "st_label", "st_name"));
 
         datasource.writeJSON(jsonWriter);
 

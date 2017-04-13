@@ -29,9 +29,9 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectSum() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
-        TestFactory.makeNamedSubject("E01000001");
-        TestFactory.makeNamedSubject("E01002766");
+        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001"); // Subject that contains subjects below
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue("E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 
@@ -43,7 +43,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectSumWithNoValues() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject with no contents
+        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001"); // Subject with no contents
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", "lsoa", GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
         String value = field.valueForSubject(subject);
@@ -52,9 +52,9 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectMean() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
-        TestFactory.makeNamedSubject("E01000001");
-        TestFactory.makeNamedSubject("E01002766");
+        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001"); // Subject that contains subjects below
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue("E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 
@@ -66,7 +66,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectMeanWithNoValues() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
+        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001"); // Subject that contains subjects below
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", "lsoa", GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
 
@@ -78,9 +78,9 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
-        TestFactory.makeNamedSubject("E01000001");
-        TestFactory.makeNamedSubject("E01002766");
+        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001"); // Subject that contains subjects below
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
         TestFactory.makeTimedValue("E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue("E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 

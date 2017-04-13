@@ -36,20 +36,20 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
                 datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "LSOA", "Lower Layer Super Output Areas");
                 datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/da831f80764346889837c72508f046fa_2.geojson");
                 datasource.setLocalDatafile("lsoa/Lower_layer_Super_Output_Areas_December_2011_Generalised_Clipped__Boundaries_in_England_and_Wales.geojson");
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
+                datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getDescription()));
                 return datasource;
             case msoa:
                 datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "MSOA", "Middle Layer Super Output Areas");
                 datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/826dc85fb600440889480f4d9dbb1a24_2.geojson");
                 datasource.setLocalDatafile("msoa/Middle_Layer_Super_Output_Areas_December_2011_Generalised_Clipped_Boundaries_in_England_and_Wales.geojson");
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
+                datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getDescription()));
                 return datasource;
             case localAuthority:
                 datasource = new Datasource(getClass(),datasourceIdObject.name(), getProvider(), "Local Authority", "Local Authority");
                 datasource.setUrl("http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4");
                 datasource.setRemoteDatafile("http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson");
                 datasource.setLocalDatafile("localAuthority/Local_Authority_Districts_December_2011_Generalised_Clipped_Boundaries_in_Great_Britain.geojson");
-                datasource.addSubjectType(new SubjectType(datasource.getId(), datasource.getDescription()));
+                datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getDescription()));
                 return datasource;
             default:
                 throw new IllegalArgumentException(String.format("Datasource is not valid: %s", datasourceId));

@@ -18,7 +18,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        subject = TestFactory.makeNamedSubject("E01000001");
+        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }

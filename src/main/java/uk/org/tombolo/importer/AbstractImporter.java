@@ -91,11 +91,11 @@ public abstract class AbstractImporter implements Importer {
 	}
 
 	protected static void saveDatasourceMetadata(Datasource datasource){
-		// Save SubjectType
-		SubjectTypeUtils.save(datasource.getSubjectTypes());
-
 		// Save provider
 		ProviderUtils.save(datasource.getProvider());
+
+		// Save SubjectType
+		SubjectTypeUtils.save(datasource.getSubjectTypes());
 
 		// Save attributes
 		AttributeUtils.save(datasource.getTimedValueAttributes());

@@ -37,7 +37,7 @@ public class TimedValueUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetLatestBySubjectAndAttributes() {
-		Subject subject = TestFactory.makeNamedSubject("E01000001");
+		Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
 		Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1_label");
 		Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2_label");
 

@@ -22,8 +22,8 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E09000001");
-		TestFactory.makeNamedSubject("E08000035"); // Need this to avoid false-positives on pattern matching
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
+		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E08000035"); // Need this to avoid false-positives on pattern matching
 	}
 
 	@Test
@@ -59,16 +59,21 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationWithoutRule() throws Exception {
 		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder("localAuthority")
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority")
 		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
-		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
+		assertEquals(2, subjects.size());
+
+		for (int i=0; i < subjects.size(); i++) {
+			String label = subjects.get(i).getLabel();
+			assertTrue("Label " + label + " matches searched pattern E08% or E09%", label.contains("E08") || label.contains("E09"));
+		}
 	}
 
 	@Test
 	public void testGetSubjectBySpecificationLabelSearch() throws Exception {
 		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder("localAuthority").setMatcher("label", "E09%")
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09%")
 		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
@@ -77,7 +82,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationNameSearch() throws Exception {
 		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder("localAuthority").setMatcher("name", "%don")
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
 		).build().getDatasetSpecification();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
@@ -86,7 +91,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationWithSubject() throws Exception {
 		SubjectSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder("localAuthority").setMatcher("name", "%don")
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
 		).build().getDatasetSpecification().getSubjectSpecification().get(0);
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
@@ -94,8 +99,8 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetSubjectsBySpecificationWithGeoMatchRule(){
-		SubjectType squareAuthority = TestFactory.makeSubjectType("squareAuthority", "Square Authority");
-		SubjectType pointSensor = TestFactory.makeSubjectType("pointSensor", "Point Sensor");
+		SubjectType squareAuthority = TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "squareAuthority", "Square Authority");
+		SubjectType pointSensor = TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "pointSensor", "Point Sensor");
 
 		// Creating a square with two sensors inside
 		Subject squareOne = TestFactory.makeSubject(squareAuthority.getLabel(), "SquareOne","Square One", TestFactory.makeSquareGeometry(0d,0d,10d));
@@ -113,11 +118,11 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		// Testing sensors inside Square One
 		SubjectSpecificationBuilder squareOneSpec =
-				new SubjectSpecificationBuilder(squareAuthority.getLabel()).setMatcher("name",squareOne.getName());
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("name",squareOne.getName());
 		List<SubjectSpecificationBuilder> parentSpecs = new ArrayList<>();
 		parentSpecs.add(squareOneSpec);
 		SubjectSpecification childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder(pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
 		).build().getDatasetSpecification().getSubjectSpecification().get(0);
 
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(childSpec);
@@ -126,10 +131,10 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		// Testing sensors inside Square One and Two
 		SubjectSpecificationBuilder squareTwoSpec =
-				new SubjectSpecificationBuilder(squareAuthority.getLabel()).setMatcher("label",squareTwo.getLabel());
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("label",squareTwo.getLabel());
 		parentSpecs.add(squareTwoSpec);
 		childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder(pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
 		).build().getDatasetSpecification().getSubjectSpecification().get(0);
 
 		subjects = SubjectUtils.getSubjectBySpecification(childSpec);
@@ -140,7 +145,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectsContainingSubjectReturnsContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them overlap
 		SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
@@ -152,7 +157,7 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testSubjectsContainingSubjectReturnsNullOnWrongSubjectType() throws Exception {
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001"); // Subject contained by 'City of London'
 		List<Subject> returnedSubjects = SubjectUtils.subjectsContainingSubject("msoa", cityOfLondonLsoa);
 		assertEquals(0, returnedSubjects.size());
 	}
@@ -161,7 +166,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	public void testSubjectsContainingSubjectReturnsNullOnNoContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
 		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
-		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
 		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
 
@@ -172,7 +177,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectsWithinSubjectReturnsContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them overlap
 		SubjectUtils.save(Arrays.asList(cityOfLondon, cityOfLondonLsoa));
@@ -184,7 +189,7 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testSubjectsWithinSubjectReturnsNullOnWrongSubjectType() throws Exception {
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001"); // Subject contained by 'City of London'
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001"); // Subject contained by 'City of London'
 		List<Subject> returnedSubjects = SubjectUtils.subjectsWithinSubject("msoa", cityOfLondonLsoa);
 		assertEquals(0, returnedSubjects.size());
 	}
@@ -193,7 +198,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	public void testSubjectsWithinSubjectReturnsEmptyOnNoContainingSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
 		// We make Islington, but our fake geoms are all 0, 0 - so we move it a unit away
-		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(1d, 1d));
 		SubjectUtils.save(Collections.singletonList(islingtonLsoa));
 
@@ -204,8 +209,8 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectNearestSubjectReturnsNearestSubject() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
-		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject("E01000001");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
+		Subject cityOfLondonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(100.005d, 100d)); // make this one further
 		cityOfLondonLsoa.setShape(TestFactory.makePointGeometry(100.002d, 100d)); // make this one nearer
@@ -218,7 +223,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectNearestSubjectReturnsOnlySubjectsWithinRadius() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(100.1d, 100d)); // make this one outside the radius
 		SubjectUtils.save(Arrays.asList(cityOfLondon, islingtonLsoa));
@@ -230,7 +235,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testSubjectNearestSubjectReturnsNullOnWrongSubjectType() throws Exception {
 		Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E09000001");
-		Subject islingtonLsoa = TestFactory.makeNamedSubject("E01002766");
+		Subject islingtonLsoa = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(100d, 100d)); // make them very nearby
 		SubjectUtils.save(Arrays.asList(cityOfLondon, islingtonLsoa));

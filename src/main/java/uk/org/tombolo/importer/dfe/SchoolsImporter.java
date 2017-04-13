@@ -140,6 +140,6 @@ public class SchoolsImporter extends AbstractDfEImporter {
     }
 
     protected SubjectType getSubjectType(DataSourceID dataSourceID){
-        return new SubjectType(dataSourceID.getLabel(), dataSourceID.getName());
+        return new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName());
     }
 }

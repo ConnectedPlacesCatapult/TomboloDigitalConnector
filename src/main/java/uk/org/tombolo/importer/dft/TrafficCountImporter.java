@@ -136,7 +136,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			datasource.setRemoteDatafile("http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/"+remoteId+".csv");			
 		}
 
-		datasource.addSubjectType(new SubjectType(TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
+		datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
 		
 		return datasource;
 	}
