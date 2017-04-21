@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Utitilities class for importing CSV files
+ * Utilities class for importing CSV files
  */
 public class CSVUtils {
 

@@ -14,18 +14,24 @@ import org.opengis.referencing.operation.TransformException;
 
 public class CoordinateUtils {
 
-	public static Coordinate osgbToWgs84(long easting, long northing) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException{
-        CoordinateReferenceSystem wgs84crs = CRS.decode("EPSG:4326"); 
-        CoordinateReferenceSystem osgbCrs = CRS.decode("EPSG:27700");
-		
+    private static final String WGS84CRS = "EPSG:4326";
+    private static final String OSGBCRS = "EPSG:27700";
+
+    public static Coordinate eastNorthToLatLong(long easting, long northing, String crs) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
+        CoordinateReferenceSystem wgs84crs = CRS.decode(WGS84CRS);
+        CoordinateReferenceSystem osgbCrs = CRS.decode(crs);
+
         CoordinateOperation op = new DefaultCoordinateOperationFactory().createOperation(osgbCrs, wgs84crs);
 
         DirectPosition eastNorth = new GeneralDirectPosition(easting, northing);
         DirectPosition latLng = op.getMathTransform().transform(eastNorth, null);
         Double latitude = latLng.getOrdinate(0);
         Double longitude = latLng.getOrdinate(1);
-        	            
-		return new Coordinate(longitude,latitude);
-	}
-	
+
+        return new Coordinate(longitude, latitude);
+    }
+
+    public static Coordinate osgbToWgs84(long easting, long northing) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
+        return eastNorthToLatLong(easting, northing, OSGBCRS);
+    }
 }
