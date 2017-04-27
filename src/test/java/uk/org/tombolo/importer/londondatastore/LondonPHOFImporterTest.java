@@ -29,7 +29,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 
 	@Before
 	public void before(){
-		importer = new LondonPHOFImporter();
+		importer = new LondonPHOFImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 	}
 

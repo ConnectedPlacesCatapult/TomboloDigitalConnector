@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -120,8 +121,8 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             "Female Full-Time", "Female Part-Time"};
     private String[] metricNames = {"Mean", "Median"};
 
-    public ONSWagesImporter(){
-        super();
+    public ONSWagesImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

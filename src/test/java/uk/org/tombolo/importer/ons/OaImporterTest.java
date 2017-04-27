@@ -3,6 +3,7 @@ package uk.org.tombolo.importer.ons;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
@@ -24,7 +25,7 @@ public class OaImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new OaImporter();
+        importer = new OaImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
     }
 

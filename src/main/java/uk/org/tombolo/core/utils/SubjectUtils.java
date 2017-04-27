@@ -19,6 +19,7 @@ import java.util.Objects;
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 
+	@Deprecated
 	public static Subject getSubjectByLabel(String label){
 		return HibernateUtil.withSession(session -> {
 			return session.createQuery("from Subject where label = :label", Subject.class)
@@ -33,6 +34,15 @@ public class SubjectUtils {
 					.setParameter("subjectType", subjectType)
 					.setParameter("labelPattern", labelPattern.toLowerCase())
 					.list();
+		});
+	}
+
+	public static Subject getSubjectByTypeAndLabel(SubjectType subjectType, String label){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and label = :label", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("label", label)
+					.uniqueResult();
 		});
 	}
 

@@ -14,7 +14,7 @@ import org.opengis.referencing.operation.TransformException;
 
 public class CoordinateUtils {
 
-    private static final String WGS84CRS = "EPSG:4326";
+    public static final String WGS84CRS = "EPSG:4326";
     private static final String OSGBCRS = "EPSG:27700";
 
     public static Coordinate eastNorthToLatLong(long easting, long northing, String crs) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {

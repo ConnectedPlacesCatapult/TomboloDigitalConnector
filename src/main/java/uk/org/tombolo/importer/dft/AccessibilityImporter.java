@@ -10,6 +10,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -65,8 +66,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
 
     ExcelUtils excelUtils = new ExcelUtils();
 
-    public AccessibilityImporter(){
-        super();
+    public AccessibilityImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

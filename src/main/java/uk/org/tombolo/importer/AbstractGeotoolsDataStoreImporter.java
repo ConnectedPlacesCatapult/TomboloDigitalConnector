@@ -43,6 +43,11 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
 
     private List<TimedValue> timedValueBuffer = new ArrayList<>();
     private List<FixedValue> fixedValueBuffer = new ArrayList<>();
+
+    public AbstractGeotoolsDataStoreImporter(Config config) {
+        super(config);
+    }
+
     private List<Subject> subjectBuffer = new ArrayList<>();
 
     /**

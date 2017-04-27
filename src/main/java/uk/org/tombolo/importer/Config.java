@@ -1,5 +1,7 @@
 package uk.org.tombolo.importer;
 
+import uk.org.tombolo.core.SubjectType;
+
 /**
  * Class representing the configuration file specified by the user.
  * Contains mandatory and optional fields.
@@ -9,8 +11,7 @@ public class Config {
     private final int subjectIDIndex;
     private final String existingSubject;
     private final String provider;
-    private final String subjectTypeProvider;
-    private final String subjectTypeLabel;
+    private final SubjectType subjectType;
     private final String geographyProjection;
     private final int geographyXIndex;
     private final int geographyYIndex;
@@ -28,12 +29,8 @@ public class Config {
         return provider;
     }
 
-    public String getSubjectTypeProvider() {
-        return subjectTypeProvider;
-    }
-
-    public String getSubjectTypeLabel() {
-        return subjectTypeLabel;
+    public SubjectType getSubjectType() {
+        return subjectType;
     }
 
     public String getGeographyProjection() {
@@ -57,27 +54,20 @@ public class Config {
         private final int subjectIDIndex;
         private final String existingSubject;
         private final String fileLocation;
+        private final String provider;
+        private final SubjectType subjectType;
 
         // Optional parameters with default values
-        private String provider = "";
-        private String subjectTypeProvider = "";
-        private String subjectTypeLabel = "";
         private String geographyProjection = "";
         private int geographyXIndex = -1;
         private int geographyYIndex = -1;
 
-        public Builder(int subjectIDIndex, String existingSubject, String fileLocation) {
+        public Builder(int subjectIDIndex, String existingSubject, String fileLocation, String provider, SubjectType subjectType) {
             this.subjectIDIndex = subjectIDIndex;
             this.existingSubject = existingSubject;
             this.fileLocation = fileLocation;
-        }
-
-        public Builder newSubject(String provider, String subjectTypeProvider, String subjectTypeLabel) {
             this.provider = provider;
-            this.subjectTypeProvider = subjectTypeProvider;
-            this.subjectTypeLabel = subjectTypeLabel;
-
-            return this;
+            this.subjectType = subjectType;
         }
 
         public Builder geography(String geographyProjection, int geographyXIndex, int geographyYIndex) {
@@ -98,8 +88,7 @@ public class Config {
         existingSubject = builder.existingSubject;
         fileLocation = builder.fileLocation;
         provider = builder.provider;
-        subjectTypeProvider = builder.subjectTypeProvider;
-        subjectTypeLabel = builder.subjectTypeLabel;
+        subjectType = builder.subjectType;
         geographyProjection = builder.geographyProjection;
         geographyXIndex = builder.geographyXIndex;
         geographyYIndex = builder.geographyYIndex;

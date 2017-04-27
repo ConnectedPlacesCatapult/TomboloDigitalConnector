@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.ons;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
@@ -47,8 +48,8 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
 
     private enum AttributeId {claimantCount};
 
-    public ONSClaimantsImporter(){
-        super();
+    public ONSClaimantsImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

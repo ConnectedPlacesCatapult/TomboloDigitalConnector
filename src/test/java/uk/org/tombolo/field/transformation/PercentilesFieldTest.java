@@ -56,17 +56,17 @@ public class PercentilesFieldTest extends AbstractTest {
 
         TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "lsoa", "Lower Super Output Area");
 
-        leeds1 = TestFactory.makeSubject("lsoa", "leeds1", "Leeds 1", null);
-        leeds2 = TestFactory.makeSubject("lsoa", "leeds2", "Leeds 2", null);
-        leeds3 = TestFactory.makeSubject("lsoa", "leeds3", "Leeds 3", null);
-        leeds4 = TestFactory.makeSubject("lsoa", "leeds4", "Leeds 4", null);
-        leeds5 = TestFactory.makeSubject("lsoa", "leeds5", "Leeds 5", null);
+        leeds1 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "leeds1", "Leeds 1", null);
+        leeds2 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "leeds2", "Leeds 2", null);
+        leeds3 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "leeds3", "Leeds 3", null);
+        leeds4 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "leeds4", "Leeds 4", null);
+        leeds5 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "leeds5", "Leeds 5", null);
 
-        brighton1 = TestFactory.makeSubject("lsoa", "brighton1", "Brighton 1", null);
-        brighton2 = TestFactory.makeSubject("lsoa", "brighton2", "Brighton 2", null);
-        brighton3 = TestFactory.makeSubject("lsoa", "brighton3", "Brighton 3", null);
-        brighton4 = TestFactory.makeSubject("lsoa", "brighton4", "Brighton 4", null);
-        brighton5 = TestFactory.makeSubject("lsoa", "brighton5", "Brighton 5", null);
+        brighton1 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "brighton1", "Brighton 1", null);
+        brighton2 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "brighton2", "Brighton 2", null);
+        brighton3 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "brighton3", "Brighton 3", null);
+        brighton4 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "brighton4", "Brighton 4", null);
+        brighton5 = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "brighton5", "Brighton 5", null);
 
         Attribute populationDensity = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "populationDensity");
         String timestamp = LocalDateTime.now().format(TimedValueId.DATE_TIME_FORMATTER);

@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatabaseJournalEntry;
-import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.DatabaseJournal;
 import uk.org.tombolo.core.utils.SubjectUtils;
@@ -62,7 +61,7 @@ public class DataExportEngineTest extends AbstractTest {
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", "");
         engine.execute(builder.build(), writer);
 
         // ...we expect the importer not to have imported them, so we should have no features
@@ -76,7 +75,7 @@ public class DataExportEngineTest extends AbstractTest {
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder("uk.gov.ons", "localAuthority").setMatcher("label", "E06000001")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", "");
 
         // And we set the clear-database flag
         engine.execute(builder.build(), writer, new ImporterMatcher("uk.org.tombolo.importer.ons.OaImporter"));
@@ -165,7 +164,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testImportsFromLondonDataStore() throws Exception {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09000001"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles")
+                .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                                 FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
@@ -198,7 +197,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testTransforms() throws Exception {
         builder .addSubjectSpecification(
                         new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                                 FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
@@ -234,8 +233,8 @@ public class DataExportEngineTest extends AbstractTest {
         builder
             .addSubjectSpecification(
                 new SubjectSpecificationBuilder("uk.gov.ons", "localAuthority").setMatcher("label", "E06000001"))
-            .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority")
-            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles")
+            .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", "")
+            .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles", "")
             .addFieldSpecification(
                     FieldSpecificationBuilder.wrapperField("attributes", Collections.singletonList(
                             FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
@@ -342,7 +341,7 @@ public class DataExportEngineTest extends AbstractTest {
         csvBuilder
                 .addSubjectSpecification(
                         new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
                                 .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
@@ -364,7 +363,7 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766"))
                 .addSubjectSpecification(
                         new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E08000035"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                                 FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
@@ -468,7 +467,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testExportsPercentiles() throws Exception {
         builder .addSubjectSpecification(
                 new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.percentilesField("quartile", 4, false)
                                 .set("valueField", FieldSpecificationBuilder.latestValue("uk.gov.ons", "CL_0000053_1")) // total population

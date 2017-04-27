@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 
 import java.sql.Timestamp;
@@ -25,6 +26,10 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
     static final List<String> NON_ATTRIBUTE_COLUMNS = Arrays.asList("geom", "id", "time_modified");
+
+    public OpenSpaceNetworkImporter(Config config) {
+        super(config);
+    }
 
     @Override
     public Provider getProvider() {

@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.importer.ConfigurationException;
 
 import java.util.Properties;
@@ -24,7 +25,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 
 	@Before
 	public void before() throws Exception {
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 		importer.configure(makeApiKeyProperties());
 	}
@@ -43,7 +44,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 
 	@Test
 	public void testNonConfigured() throws Exception {
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 
 		thrown.expect(ConfigurationException.class);
@@ -56,7 +57,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 		Properties properties = new Properties();
 		properties.put(TfLImporter.PROP_API_APP_ID, "dummy id");
 
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 
 		thrown.expect(ConfigurationException.class);

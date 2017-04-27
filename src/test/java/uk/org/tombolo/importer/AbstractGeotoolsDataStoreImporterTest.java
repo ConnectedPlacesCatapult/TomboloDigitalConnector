@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 
@@ -25,7 +26,8 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
 
-        public TestGeotoolsDataStoreImporter() {
+        public TestGeotoolsDataStoreImporter(Config config) {
+            super(config);
             datasourceIds = Arrays.asList("osm_polyline_processed");
         }
 
@@ -75,7 +77,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new TestGeotoolsDataStoreImporter();
+        importer = new TestGeotoolsDataStoreImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
     }
 

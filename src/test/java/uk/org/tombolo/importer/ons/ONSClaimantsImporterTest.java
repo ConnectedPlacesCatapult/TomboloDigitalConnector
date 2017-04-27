@@ -35,7 +35,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        importer = new ONSClaimantsImporter();
+        importer = new ONSClaimantsImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
     }
 
@@ -55,12 +55,12 @@ public class ONSClaimantsImporterTest extends AbstractTest {
     public void importDatasource() throws Exception {
 
         TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "lsoa", "Lower Layer Super Output Areas");
-        Subject london001A = TestFactory.makeSubject("lsoa","E01000001","City of London 001A",TestFactory.FAKE_POINT_GEOMETRY);
-        Subject london001B = TestFactory.makeSubject("lsoa","E01000002","City of London 001B",TestFactory.FAKE_POINT_GEOMETRY);
-        Subject london001C = TestFactory.makeSubject("lsoa","E01000003","City of London 001C",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject london001A = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa","E01000001","City of London 001A",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject london001B = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa","E01000002","City of London 001B",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject london001C = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa","E01000003","City of London 001C",TestFactory.FAKE_POINT_GEOMETRY);
 
-        Subject wyre010A = TestFactory.makeSubject("lsoa", "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
-        Subject blaby010A = TestFactory.makeSubject("lsoa", "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
+        Subject wyre010A = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
+        Subject blaby010A = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER,"lsoa", "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
         importer.importDatasource("claimants");
 

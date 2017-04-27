@@ -3,6 +3,7 @@ package uk.org.tombolo.importer.nhschoices;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -30,7 +31,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new HealthOrganisationImporter();
+        importer = new HealthOrganisationImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
     }
 

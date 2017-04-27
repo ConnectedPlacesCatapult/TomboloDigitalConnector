@@ -12,6 +12,7 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
@@ -23,8 +24,8 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
     private enum DatasourceId {hospital, clinic, gpSurgeries};
 
-    public HealthOrganisationImporter() {
-        super();
+    public HealthOrganisationImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

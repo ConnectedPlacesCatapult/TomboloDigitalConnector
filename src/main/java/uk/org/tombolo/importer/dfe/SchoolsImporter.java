@@ -5,17 +5,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
-import uk.org.tombolo.importer.dclg.IMDImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
-
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -59,8 +57,8 @@ public class SchoolsImporter extends AbstractDfEImporter {
         }
     }
 
-    public SchoolsImporter() {
-        super();
+    public SchoolsImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(schoolsDataSourceID.class);
     }
 
@@ -136,7 +134,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         return attributes;
     }
 
-    protected SubjectType getSubjectType(DataSourceID dataSourceID){
-        return new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName());
+    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID){
+        return Arrays.asList(new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName()));
     }
 }

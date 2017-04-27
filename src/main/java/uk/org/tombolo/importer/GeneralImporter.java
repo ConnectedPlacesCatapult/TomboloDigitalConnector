@@ -11,6 +11,10 @@ import java.util.List;
  */
 public abstract class GeneralImporter extends AbstractImporter {
 
+    public GeneralImporter(Config config) {
+        super(config);
+    }
+
     public Datasource getDatasource(Class<? extends Importer> importerClass, DataSourceID dataSourceID) throws Exception {
         Datasource dataSource = new Datasource(importerClass,
                 dataSourceID.getLabel(),
@@ -21,7 +25,7 @@ public abstract class GeneralImporter extends AbstractImporter {
         dataSource.setUrl(dataSourceID.getUrl());
         dataSource.setRemoteDatafile(dataSourceID.getRemoteDataFile());
 
-        dataSource.addSubjectType(getSubjectType(dataSourceID));
+        dataSource.addAllSubjectTypes(getSubjectTypes(dataSourceID));
 
         setupUtils(dataSource);
 
@@ -30,7 +34,7 @@ public abstract class GeneralImporter extends AbstractImporter {
         return dataSource;
     }
 
-    protected abstract SubjectType getSubjectType(DataSourceID dataSourceID);
+    protected abstract List<SubjectType> getSubjectTypes(DataSourceID dataSourceID);
 
     protected abstract List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID);
 

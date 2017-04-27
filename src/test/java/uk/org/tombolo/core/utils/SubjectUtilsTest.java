@@ -103,18 +103,18 @@ public class SubjectUtilsTest extends AbstractTest {
 		SubjectType pointSensor = TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "pointSensor", "Point Sensor");
 
 		// Creating a square with two sensors inside
-		Subject squareOne = TestFactory.makeSubject(squareAuthority.getLabel(), "SquareOne","Square One", TestFactory.makeSquareGeometry(0d,0d,10d));
-		TestFactory.makeSubject(pointSensor.getLabel(), "SOSenosor01", "SOSensor01", TestFactory.makePointGeometry(1d,1d));
-		TestFactory.makeSubject(pointSensor.getLabel(), "SOSenosor02", "SOSensor02", TestFactory.makePointGeometry(5d,5d));
+		Subject squareOne = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, squareAuthority.getLabel(), "SquareOne","Square One", TestFactory.makeSquareGeometry(0d,0d,10d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "SOSenosor01", "SOSensor01", TestFactory.makePointGeometry(1d,1d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "SOSenosor02", "SOSensor02", TestFactory.makePointGeometry(5d,5d));
 
 		// Creating a square with one sensor inside
-		Subject squareTwo = TestFactory.makeSubject(squareAuthority.getLabel(), "SquareTwo","Square Two", TestFactory.makeSquareGeometry(20d,20d,10d));
-		TestFactory.makeSubject(pointSensor.getLabel(), "STSenosor01", "STSensor01", TestFactory.makePointGeometry(25d,25d));
+		Subject squareTwo = TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, squareAuthority.getLabel(), "SquareTwo","Square Two", TestFactory.makeSquareGeometry(20d,20d,10d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "STSenosor01", "STSensor01", TestFactory.makePointGeometry(25d,25d));
 
 		// Creating a sensors outside either square
-		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(0d,0d));
-		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(30d,30d));
-		TestFactory.makeSubject(pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(100d,100d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(0d,0d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(30d,30d));
+		TestFactory.makeSubject(TestFactory.DEFAULT_PROVIDER, pointSensor.getLabel(), "NSSenosor01", "NSSensor01", TestFactory.makePointGeometry(100d,100d));
 
 		// Testing sensors inside Square One
 		SubjectSpecificationBuilder squareOneSpec =

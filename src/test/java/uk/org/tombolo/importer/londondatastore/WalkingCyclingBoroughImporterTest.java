@@ -35,7 +35,7 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 
 	@Before
 	public void before(){
-		importer = new WalkingCyclingBoroughImporter();
+		importer = new WalkingCyclingBoroughImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 	};
 

@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer;
+package uk.org.tombolo.importer.generalcsv;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -7,13 +7,15 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.utils.ConfigUtils;
+import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.DataSourceID;
+import uk.org.tombolo.importer.GeneralImporter;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.File;
@@ -30,18 +32,15 @@ import java.util.stream.IntStream;
 public class GeneralCSVImporter extends GeneralImporter {
     static Logger log = LoggerFactory.getLogger(GeneralCSVImporter.class);
 
-    //TODO add config file as attribute
-    static final String CONFIG_FILE = "src/main/java/uk/org/tombolo/importer/config.properties";
-
-    private Config config = ConfigUtils.loadConfig(CONFIG_FILE);
     private List csvRecords;
 
     private DataSourceID dataSourceID;
 
-    public GeneralCSVImporter() {
-        super();
+    public GeneralCSVImporter(Config config) {
+        super(config);
+
         dataSourceID = new DataSourceID(
-                "datasource" + config.getSubjectTypeLabel().substring(0, 1).toUpperCase() + config.getSubjectTypeLabel().substring(1),
+                "datasource" + config.getProvider().substring(0, 1).toUpperCase() + config.getProvider().substring(1),
                 "",
                 "",
                 "",
@@ -65,11 +64,11 @@ public class GeneralCSVImporter extends GeneralImporter {
     }
 
     @Override
-    protected SubjectType getSubjectType(DataSourceID dataSourceID) {
-        return new SubjectType(
-                new Provider(config.getSubjectTypeProvider(),""),
-                config.getSubjectTypeLabel(),
-                "");
+    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID) {
+        if ("yes".equalsIgnoreCase(config.getExistingSubject())) {
+            return Collections.EMPTY_LIST;
+        }
+        return Arrays.asList(config.getSubjectType());
     }
 
     @Override
@@ -80,6 +79,11 @@ public class GeneralCSVImporter extends GeneralImporter {
 
         List<Integer> attributeIndexes;
         attributeIndexes = IntStream.rangeClosed(1, attributeHeader.size() - 1).boxed().collect(Collectors.toList());
+
+        if (!config.getGeographyProjection().equals("")) {
+            attributeIndexes.remove(config.getGeographyXIndex());
+            attributeIndexes.remove(config.getGeographyYIndex());
+        }
 
         for (int index : attributeIndexes) {
             String attrString = attributeHeader.get(index);
@@ -136,12 +140,19 @@ public class GeneralCSVImporter extends GeneralImporter {
                         "",
                         getShape(record)
                 );
+                subjects.add(subject);
 
             } else {
-                subject = SubjectUtils.getSubjectByLabel(header.get(subjectIDIdx));
+                subject = SubjectUtils.getSubjectByTypeAndLabel(
+                        SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                                config.getSubjectType().getProvider().getLabel(),
+                                config.getSubjectType().getLabel()
+                        ),
+                        record.get(subjectIDIdx)
+                );
             }
 
-            int attributeIndex = 0;
+            int attributeIndex = 1;
             for (Attribute attribute : datasource.getFixedValueAttributes()) {
                 fixedValues.add(new FixedValue(
                         subject,
@@ -150,7 +161,7 @@ public class GeneralCSVImporter extends GeneralImporter {
             }
         }
 
-        if (newSubject) { saveAndClearSubjectBuffer(subjects); }
+        if (newSubject) saveAndClearSubjectBuffer(subjects);
         saveAndClearFixedValueBuffer(fixedValues);
     }
 
@@ -162,7 +173,7 @@ public class GeneralCSVImporter extends GeneralImporter {
             GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
             Coordinate coordinate = null;
-            if (config.getGeographyProjection().equals(Subject.SRID)) {
+            if (config.getGeographyProjection().equals(CoordinateUtils.WGS84CRS)) {
                 Double longitude = Double.parseDouble(record.get(config.getGeographyXIndex()));
                 Double latitude = Double.parseDouble(record.get(config.getGeographyYIndex()));
                 coordinate = new Coordinate(longitude, latitude);
