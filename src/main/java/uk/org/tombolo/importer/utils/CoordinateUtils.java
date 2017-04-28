@@ -15,23 +15,23 @@ import org.opengis.referencing.operation.TransformException;
 public class CoordinateUtils {
 
     public static final String WGS84CRS = "EPSG:4326";
-    private static final String OSGBCRS = "EPSG:27700";
+    public static final String OSGBCRS = "EPSG:27700";
 
-    public static Coordinate eastNorthToLatLong(long easting, long northing, String crs) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
-        CoordinateReferenceSystem wgs84crs = CRS.decode(WGS84CRS);
-        CoordinateReferenceSystem osgbCrs = CRS.decode(crs);
+    public static Coordinate eastNorthToLatLong(double x, double y, String sourceCrs, String targetCrs) throws FactoryException, MismatchedDimensionException, TransformException {
+        CoordinateReferenceSystem targetCrsDecoded = CRS.decode(targetCrs);
+        CoordinateReferenceSystem sourceCrsDecoded = CRS.decode(sourceCrs);
 
-        CoordinateOperation op = new DefaultCoordinateOperationFactory().createOperation(osgbCrs, wgs84crs);
+        CoordinateOperation op = new DefaultCoordinateOperationFactory().createOperation(sourceCrsDecoded, targetCrsDecoded);
 
-        DirectPosition eastNorth = new GeneralDirectPosition(easting, northing);
-        DirectPosition latLng = op.getMathTransform().transform(eastNorth, null);
-        Double latitude = latLng.getOrdinate(0);
-        Double longitude = latLng.getOrdinate(1);
+        DirectPosition source = new GeneralDirectPosition(x, y);
+        DirectPosition target = op.getMathTransform().transform(source, null);
+        Double targetX = target.getOrdinate(0);
+        Double targetY = target.getOrdinate(1);
 
-        return new Coordinate(longitude, latitude);
+        return new Coordinate(targetY, targetX);
     }
 
-    public static Coordinate osgbToWgs84(long easting, long northing) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
-        return eastNorthToLatLong(easting, northing, OSGBCRS);
+    public static Coordinate osgbToWgs84(double easting, double northing) throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
+        return eastNorthToLatLong(easting, northing, OSGBCRS, WGS84CRS);
     }
 }

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 public class GeneralCSVImporterTest extends AbstractTest {
     private GeneralCSVImporter importer;
 
-    private static final String LOCATION_FILE = "/Users/lqendro/TomboloDigitalConnector/src/test/resources/datacache/TomboloData/general.csv.provider/testGeneralCSVFileGeo.csv";
+    private static final String LOCATION_FILE = "src/test/resources/datacache/TomboloData/general.csv.provider/testGeneralCSVFileGeo.csv";
     private static final SubjectType DEFAULT_SUBJECT_TYPE = new SubjectType(
             new Provider("subject.type.provider", ""),
             "lsoa",
@@ -59,7 +59,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
             LOCATION_FILE,
             "general.csv.provider",
             DEFAULT_SUBJECT_TYPE)
-            .geography("EPSG:27770", 2, 1);
+            .geography("EPSG:27700", 2, 1);
 
     @Before
     public void before(){
@@ -70,7 +70,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testConfigUtils() throws Exception {
         Config testConfig = NEW_SUBJECT_WITH_GEO.build();
-        Config fileConfig = ConfigUtils.loadConfig(AbstractRunner.loadProperties("Configuration file", "/Users/lqendro/TomboloDigitalConnector/src/main/java/uk/org/tombolo/importer/generalcsv/config.properties"));
+        Config fileConfig = ConfigUtils.loadConfig(AbstractRunner.loadProperties("Configuration file", "src/main/java/uk/org/tombolo/importer/generalcsv/config.properties"));
 
         assertEquals(testConfig.getExistingSubject(), fileConfig.getExistingSubject());
         assertEquals(testConfig.getFileLocation(), fileConfig.getFileLocation());
@@ -137,17 +137,19 @@ public class GeneralCSVImporterTest extends AbstractTest {
 
         assertEquals(-2.8906469345092773, subject.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(53.482330322265625, subject.getShape().getCentroid().getY(), 0.1E-6);
+    }
 
+    @Test
+    public void testImportDatasorceEastNorth()  throws Exception {
         importer.setConfig(NEW_SUBJECT_GEO_EAST_NORTH.build());
         importer.importDatasource("datasourceGeneral.csv.provider");
 
-        subject = SubjectUtils.getSubjectByTypeAndLabel(
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
                 "E01000002");
 
-        assertEquals(530600, subject.getShape().getCentroid().getX(), 0.1E-6);
-        assertEquals(185870, subject.getShape().getCentroid().getY(), 0.1E-6);
-
+        assertEquals(-0.117539388132, subject.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.5566037738, subject.getShape().getCentroid().getY(), 0.1E-6);
     }
 
     private void testImport(Subject subject) {

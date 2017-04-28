@@ -173,15 +173,16 @@ public class GeneralCSVImporter extends GeneralImporter {
             GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
             Coordinate coordinate = null;
+            Double x = Double.parseDouble(record.get(config.getGeographyXIndex()));
+            Double y = Double.parseDouble(record.get(config.getGeographyYIndex()));
             if (config.getGeographyProjection().equals(CoordinateUtils.WGS84CRS)) {
-                Double longitude = Double.parseDouble(record.get(config.getGeographyXIndex()));
-                Double latitude = Double.parseDouble(record.get(config.getGeographyYIndex()));
-                coordinate = new Coordinate(longitude, latitude);
+
+                coordinate = new Coordinate(x, y);
             } else {
-                Long easting = Long.parseLong(record.get(config.getGeographyXIndex()));
-                Long northing = Long.parseLong(record.get(config.getGeographyYIndex()));
+//                Long easting = Long.parseLong(record.get(config.getGeographyXIndex()));
+//                Long northing = Long.parseLong(record.get(config.getGeographyYIndex()));
                 try {
-                    coordinate = CoordinateUtils.eastNorthToLatLong(easting, northing, config.getGeographyProjection());
+                    coordinate = CoordinateUtils.eastNorthToLatLong(x, y, config.getGeographyProjection(), CoordinateUtils.WGS84CRS);
                 } catch (Exception e) {
                     log.warn("Coordinates will not be considered: " + e.getMessage());
                     return null;
