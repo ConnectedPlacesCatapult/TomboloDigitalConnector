@@ -18,7 +18,7 @@ public class ConfigUtils {
 
     private enum PROPERTIES {
         FILE_LOCATION("file_location"),
-        SUBJECT_ID_INDEX("subjectID"),
+        SUBJECT_ID_INDEX("subjectIDIndex"),
         EXISTING_SUBJECT("existingSubject"),
         PROVIDER("provider"),
 
@@ -26,8 +26,8 @@ public class ConfigUtils {
         SUBJECT_TYPE_LABEL("subject_type_label"),
 
         GEO_PROJECTION("geography_projection"),
-        GEO_X_INDEX("longitude(easting)"),
-        GEO_Y_INDEX("latitude(northing)");
+        GEO_X_INDEX("longitude(easting)Index"),
+        GEO_Y_INDEX("latitude(northing)Index");
 
         String name;
 
