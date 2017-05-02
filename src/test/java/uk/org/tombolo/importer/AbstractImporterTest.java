@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer;
 
 import org.junit.Test;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 
@@ -12,11 +13,11 @@ import static org.junit.Assert.assertTrue;
 
 public class AbstractImporterTest {
 
-    TestAbstractImporter importer = new TestAbstractImporter();
+    TestAbstractImporter importer = new TestAbstractImporter(TestFactory.DEFAULT_CONFIG);
 
     class TestAbstractImporter extends AbstractImporter {
-        public TestAbstractImporter(){
-            super();
+        public TestAbstractImporter(Config config){
+            super(config);
         }
 
         @Override

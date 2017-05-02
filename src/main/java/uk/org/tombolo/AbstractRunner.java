@@ -29,7 +29,7 @@ public abstract class AbstractRunner {
         return loadProperties(API_KEYS_PROPERTY_NAME, API_KEYS_FILENAME);
     }
 
-    private static Properties loadProperties(String propertyName, String propertyFilename) throws ConfigurationException {
+    public static Properties loadProperties(String propertyName, String propertyFilename) throws ConfigurationException {
         Properties properties;
         try {
             properties = new Properties();

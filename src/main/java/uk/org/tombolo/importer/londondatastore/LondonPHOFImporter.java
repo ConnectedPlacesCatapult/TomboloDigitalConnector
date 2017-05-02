@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -36,8 +37,8 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
 
     ExcelUtils excelUtils = new ExcelUtils();;
 
-    public LondonPHOFImporter(){
-        super();
+    public LondonPHOFImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

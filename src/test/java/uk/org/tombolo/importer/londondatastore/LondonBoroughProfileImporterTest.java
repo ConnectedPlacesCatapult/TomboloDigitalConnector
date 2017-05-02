@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
  *  Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
  */
 public class LondonBoroughProfileImporterTest extends AbstractTest {
-    LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter();
+    LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter(TestFactory.DEFAULT_CONFIG);
 
     Subject cityOfLondon;
     Subject islington;

@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.extraction.*;
@@ -37,8 +38,8 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     private static final String DATAFILE
             = "https://files.datapress.com/london/dataset/london-borough-profiles/2015-09-24T15:49:52/london-borough-profiles.csv";
 
-    public LondonBoroughProfileImporter() {
-        super();
+    public LondonBoroughProfileImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

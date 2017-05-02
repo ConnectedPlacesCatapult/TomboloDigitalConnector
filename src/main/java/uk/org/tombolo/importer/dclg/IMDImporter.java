@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.BufferedReader;
@@ -29,8 +30,8 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
             = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
             "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
 
-    public IMDImporter() {
-        super();
+    public IMDImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);

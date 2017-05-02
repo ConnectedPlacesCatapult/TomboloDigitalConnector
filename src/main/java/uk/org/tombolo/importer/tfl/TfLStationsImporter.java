@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -41,8 +42,8 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	XPathFactory xPathFactory = XPathFactory.newInstance();
 	XPath xpath = xPathFactory.newXPath();
 
-	public TfLStationsImporter() throws IOException {
-		super();
+	public TfLStationsImporter(Config config) throws IOException {
+		super(config);
 		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 	}
 

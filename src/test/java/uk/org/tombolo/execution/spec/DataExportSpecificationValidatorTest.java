@@ -27,7 +27,7 @@ public class DataExportSpecificationValidatorTest extends AbstractTest {
                 new SubjectSpecificationBuilder("uk.gov.ons", "lsoa").setMatcher("label", "E01002766"))
                 .addSubjectSpecification(
                         new SubjectSpecificationBuilder("uk.gov.ons", "localAuthority").setMatcher("label", "E08000035"))
-                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW")
+                .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
                         FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
                                 FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")

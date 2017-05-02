@@ -16,6 +16,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
@@ -57,8 +58,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
-	public ONSCensusImporter() throws IOException, ParseException, ConfigurationException {
-		super();
+	public ONSCensusImporter(Config config) throws IOException, ParseException, ConfigurationException {
+		super(config);
 	}
 
 	@Override

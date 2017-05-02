@@ -70,6 +70,9 @@
               "datasourceId": {
                 "type": "string"
               },
+              "configurationFile": {
+                "type": "string"
+              },
               "geographyScope": {
                 "type": "array",
                 "items": {

@@ -10,6 +10,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
@@ -89,8 +90,8 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 	private static final Logger log = LoggerFactory.getLogger(TrafficCountImporter.class);
 
-	public TrafficCountImporter() {
-		super();
+	public TrafficCountImporter(Config config) {
+		super(config);
 		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 		geographyLabels = new ArrayList<>(regions);
 		geographyLabels.addAll(localAuthorities);

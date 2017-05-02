@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -46,7 +47,8 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
 
     private ExcelUtils excelUtils = new ExcelUtils();;
 
-    public ChildhoodObesityImporter(){
+    public ChildhoodObesityImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);

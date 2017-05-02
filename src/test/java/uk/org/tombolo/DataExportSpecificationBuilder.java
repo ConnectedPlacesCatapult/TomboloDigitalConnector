@@ -51,10 +51,11 @@ public class DataExportSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public DataExportSpecificationBuilder addDatasourceSpecification(String importerClass, String datasourceId) {
+    public DataExportSpecificationBuilder addDatasourceSpecification(String importerClass, String datasourceId, String configFile) {
         JSONObject datasource = new JSONObject();
         datasource.put("importerClass", importerClass);
         datasource.put("datasourceId", datasourceId);
+        datasource.put("configurationFile", configFile);
         datasourceSpec.add(datasource);
         return this;
     }

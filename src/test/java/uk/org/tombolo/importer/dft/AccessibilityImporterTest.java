@@ -52,7 +52,7 @@ public class AccessibilityImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new AccessibilityImporter();
+        importer = new AccessibilityImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
 
         TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");

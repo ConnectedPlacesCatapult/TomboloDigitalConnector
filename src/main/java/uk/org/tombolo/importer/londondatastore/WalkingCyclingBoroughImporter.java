@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -34,8 +35,8 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     private static final String DATAFILE
             = "https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls";
 
-    public WalkingCyclingBoroughImporter() {
-        super();
+    public WalkingCyclingBoroughImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

@@ -85,7 +85,7 @@ public class DownloadUtils {
 	private File urlToLocalFile (URL url, String prefix, String suffix){
 		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
 		if (urlKey.length() > 250)
-			// The urlKey is too long for createing a file
+			// The urlKey is too long for creating a file
 			urlKey = DigestUtils.md5Hex(urlKey);
 		return new File(
 				tomboloDataCacheRootDirectory

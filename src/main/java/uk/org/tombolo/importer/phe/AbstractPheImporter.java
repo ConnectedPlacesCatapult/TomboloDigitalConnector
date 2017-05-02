@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.phe;
 
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 /**
@@ -12,6 +13,10 @@ public abstract class AbstractPheImporter extends AbstractImporter implements Im
             "uk.gov.phe",
             "Public Health England"
     );
+
+    public AbstractPheImporter(Config config) {
+        super(config);
+    }
 
     @Override
     public Provider getProvider() {

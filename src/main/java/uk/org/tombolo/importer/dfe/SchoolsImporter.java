@@ -5,17 +5,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
-import uk.org.tombolo.importer.dclg.IMDImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
-
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -24,7 +22,7 @@ import java.util.stream.IntStream;
  * Class importing schools in England
  *
  * Data sourced here: https://www.gov.uk/government/publications/schools-in-england
- * NOTE the file containing the schools is updated monthly.
+ * NOTE the file containing the schools is updated monthly (in theory).
  */
 public class SchoolsImporter extends AbstractDfEImporter {
 
@@ -33,6 +31,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
     // Column index for the subject name
     private static final int NAME_COLUMN_INDEX = 4;
 
+    // Method used to get the dataset if it is actually updated monthly
     public static String getFormattedMonthYear() {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMM_yyyy");
         LocalDate localDate = LocalDate.now();
@@ -45,7 +44,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
                 "Schools in England",
                 "Schools in England",
                 "https://www.gov.uk/government/publications/schools-in-england/",
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + getFormattedMonthYear() + ".xlsx"
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx"
                 ),
                 0
         );
@@ -59,8 +58,8 @@ public class SchoolsImporter extends AbstractDfEImporter {
         }
     }
 
-    public SchoolsImporter() {
-        super();
+    public SchoolsImporter(Config config) {
+        super(config);
         datasourceIds = stringsFromEnumeration(schoolsDataSourceID.class);
     }
 
@@ -136,7 +135,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         return attributes;
     }
 
-    protected SubjectType getSubjectType(DataSourceID dataSourceID){
-        return new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName());
+    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID){
+        return Arrays.asList(new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName()));
     }
 }

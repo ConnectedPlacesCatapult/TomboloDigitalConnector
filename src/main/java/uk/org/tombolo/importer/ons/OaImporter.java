@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.InputStream;
@@ -34,8 +35,8 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
             "http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson" // LA
     );
 
-    public OaImporter(){
-        super();
+    public OaImporter(Config config){
+        super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

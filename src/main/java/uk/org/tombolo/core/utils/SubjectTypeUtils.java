@@ -1,7 +1,5 @@
 package uk.org.tombolo.core.utils;
 
-import org.hibernate.query.Query;
-import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
 
@@ -20,10 +18,10 @@ public class SubjectTypeUtils {
 	}
 	
 	public static void save(SubjectType subjectType) {
+		ProviderUtils.save(subjectType.getProvider());
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
 			SubjectType existingSubjectType = getSubjectTypeByProviderAndLabel(subjectType.getProvider().getLabel(), subjectType.getLabel());
-
 			if (existingSubjectType != null) {
 				session.update(session.merge(subjectType));
 			} else {

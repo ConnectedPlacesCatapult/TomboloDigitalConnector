@@ -3,10 +3,12 @@ package uk.org.tombolo.importer.dfe;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.dfe.SchoolsImporter;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class SchoolsImporterTest extends AbstractTest {
 
     @Before
     public void before(){
-        importer = new SchoolsImporter();
+        importer = new SchoolsImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
     }
 
@@ -42,7 +44,8 @@ public class SchoolsImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("schools");
-        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + SchoolsImporter.getFormattedMonthYear() + ".xlsx",datasource.getRemoteDatafile());
+        // Month hardcoded to "March" because the dataset is not regularly updated every month as it should be
+        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx",datasource.getRemoteDatafile());
     }
 
     @Test
