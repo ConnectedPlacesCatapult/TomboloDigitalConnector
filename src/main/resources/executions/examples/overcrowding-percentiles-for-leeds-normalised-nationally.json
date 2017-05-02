@@ -4,6 +4,7 @@
       {
         // We output each LSOA whose name starts with 'Leeds'
         "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
         "matchRule": {
           "attribute": "name",
           "pattern": "Leeds%"

@@ -2,7 +2,8 @@
 	"datasetSpecification": {
 		"subjectSpecification": [
 			{
-				"subjectType": "localAuthority"
+				"subjectType": "localAuthority",
+				"provider":"uk.gov.ons"
 			}
 		],
 		"datasourceSpecification": [

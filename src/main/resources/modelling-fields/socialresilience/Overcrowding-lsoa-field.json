@@ -26,7 +26,8 @@
   },
   "normalizationSubjects": [
     {
-      "subjectType": "lsoa"
+      "subjectType": "lsoa",
+      "provider":"uk.gov.ons"
     }
   ]
 }

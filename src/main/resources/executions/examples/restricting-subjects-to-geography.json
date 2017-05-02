@@ -10,6 +10,7 @@
           "subjectSpecifications" : [
             {
               "subjectType" : "localAuthority",
+              "provider": "uk.gov.ons",
               "matchRule" : {
                 "attribute" : "name",
                 "pattern" : "Greenwich"
@@ -17,6 +18,7 @@
             },
             {
               "subjectType" : "localAuthority",
+              "provider": "uk.gov.ons",
               "matchRule" : {
                 "attribute" : "name",
                 "pattern" : "Islington"
