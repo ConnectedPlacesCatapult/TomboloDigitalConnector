@@ -179,8 +179,6 @@ public class GeneralCSVImporter extends GeneralImporter {
 
                 coordinate = new Coordinate(x, y);
             } else {
-//                Long easting = Long.parseLong(record.get(config.getGeographyXIndex()));
-//                Long northing = Long.parseLong(record.get(config.getGeographyYIndex()));
                 try {
                     coordinate = CoordinateUtils.eastNorthToLatLong(x, y, config.getGeographyProjection(), CoordinateUtils.WGS84CRS);
                 } catch (Exception e) {

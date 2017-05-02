@@ -44,7 +44,8 @@ public class SchoolsImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("schools");
-        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_" + SchoolsImporter.getFormattedMonthYear() + ".xlsx",datasource.getRemoteDatafile());
+        // Month hardcoded to "March" because the dataset is not regularly updated every month as it should be
+        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx",datasource.getRemoteDatafile());
     }
 
     @Test

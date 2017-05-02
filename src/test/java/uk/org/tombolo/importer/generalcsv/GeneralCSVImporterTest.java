@@ -70,7 +70,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testConfigUtils() throws Exception {
         Config testConfig = NEW_SUBJECT_WITH_GEO.build();
-        Config fileConfig = ConfigUtils.loadConfig(AbstractRunner.loadProperties("Configuration file", "src/main/java/uk/org/tombolo/importer/generalcsv/config.properties"));
+        Config fileConfig = ConfigUtils.loadConfig(AbstractRunner.loadProperties("Configuration file", "src/test/resources/datacache/TomboloData/general.csv.provider/config.properties"));
 
         assertEquals(testConfig.getExistingSubject(), fileConfig.getExistingSubject());
         assertEquals(testConfig.getFileLocation(), fileConfig.getFileLocation());

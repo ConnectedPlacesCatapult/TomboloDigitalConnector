@@ -61,7 +61,7 @@ public class DataExportEngineTest extends AbstractTest {
 
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E10000006")
-        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", "");
+        ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", null);
         engine.execute(builder.build(), writer);
 
         // ...we expect the importer not to have imported them, so we should have no features
