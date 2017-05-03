@@ -1,0 +1,12 @@
+[
+  {
+    "//": "ONS Lower Super Output Areas",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "//": "ONS Annual Wages",
+    "importerClass": "uk.org.tombolo.importer.ons.ONSWagesImporter",
+    "datasourceId": "laWages2016"
+  }
+]

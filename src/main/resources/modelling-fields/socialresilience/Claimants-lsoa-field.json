@@ -1,0 +1,27 @@
+{
+  "//": "",
+  "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+  "label": "ClaimantsResilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+    "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+    "divisorAttribute": {
+      "//": "Total number of claimants",
+      "providerLabel": "uk.gov.ons",
+      "attributeLabel": "claimantCount"
+    },
+    "dividendAttributes": [
+      {
+        "//": "People in region",
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "CL_0000855"
+      }
+    ]
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}

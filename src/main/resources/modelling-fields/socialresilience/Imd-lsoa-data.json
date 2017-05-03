@@ -1,0 +1,12 @@
+[
+  {
+    "//": "ONS Lower Super Output Areas",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "//": "IMD Importer - imd score",
+    "importerClass": "uk.org.tombolo.importer.dclg.IMDImporter",
+    "datasourceId": "imd"
+  }
+]

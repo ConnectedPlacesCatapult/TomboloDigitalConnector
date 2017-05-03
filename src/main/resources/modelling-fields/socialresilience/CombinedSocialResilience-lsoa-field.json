@@ -21,12 +21,32 @@
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "GPResilence",
         "recipe": "socialresilience/GPs-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "ImdResilence",
+        "recipe": "socialresilience/Imd-lsoa"
       }
+//      {
+//        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+//        "label": "WagesResilence",
+//        "recipe": "socialresilience/Wages-lsoa"
+//      },
+//      {
+//        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+//        "label": "ClaimantsResilence",
+//        "recipe": "socialresilience/Claimants-lsoa"
+//      }
     ]
   },
   "normalizationSubjects": [
     {
-      "subjectType": "lsoa"
+      "subjectType": "lsoa",
+//      We're subsetting this to English LSOA's only as IMD data does not exist for Wales
+      "matchRule": {
+        "attribute": "label",
+        "pattern": "E%"
+      }
     }
   ]
 }

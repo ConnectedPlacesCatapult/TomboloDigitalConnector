@@ -1,0 +1,28 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+  "label": "WagesResilience",
+  "name": "Wages Resilience",
+  "percentileCount": 4,
+  "inverse": true,
+  "valueField":{
+
+    "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+    "label": "localAuthorityONSAnnualWages",
+    "containingSubjectType": "localAuthority",
+
+    "fieldSpecification": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+      "label": "ONS Annual Wages",
+      "attribute": {
+        "providerLabel": "uk.gov.ons",
+        "attributeLabel": "asheTable81aWeeklyPayGross"}
+      }
+
+
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa"
+    }
+  ]
+}

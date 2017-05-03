@@ -1,0 +1,24 @@
+{
+  "//": "",
+  "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+  "label": "ImdResilience",
+  "percentileCount": 4,
+  "inverse": false,
+  "valueField": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "label": "imd.score",
+    "attribute": {
+      "providerLabel": "uk.gov.dclg",
+      "attributeLabel": "imd.score"
+    }
+  },
+  "normalizationSubjects": [
+    {
+      "subjectType": "lsoa",
+      "matchRule": {
+        "attribute": "label",
+        "pattern": "E%"
+      }
+    }
+  ]
+}

@@ -51,7 +51,7 @@ public class GeographicAggregationField implements Field, SingleValueField {
             this.aggregator = aggregators.get(this.aggregationFunction);
             this.field = (SingleValueField) fieldSpecification.toField();
         } catch (Exception e) {
-            throw new Error("Field not valid");
+            throw new Error("Field not valid", e);
         }
     }
 
