@@ -3,7 +3,8 @@
     "subjectSpecification" : [
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
-        "subjectType" : "trafficCounter"
+        "subjectType" : "trafficCounter",
+        "provider":"uk.gov.dft"
       }
     ],
     "datasourceSpecification" : [

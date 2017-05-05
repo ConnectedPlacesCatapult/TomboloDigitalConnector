@@ -3,7 +3,8 @@
     "subjectSpecification" : [
       {
         // The output geographies are traffic counters
-        "subjectType" : "trafficCounter"
+        "subjectType" : "trafficCounter",
+        "provider" : "uk.gov.dft"
       }
     ],
     "datasourceSpecification" : [

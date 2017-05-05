@@ -6,7 +6,8 @@
     "subjectSpecification" : [
       {
         // The subject output is a traffic counter from DfT
-        "subjectType" : "trafficCounter"
+        "subjectType" : "trafficCounter",
+        "provider": "uk.gov.dft"
       }
     ],
     "datasourceSpecification" : [
