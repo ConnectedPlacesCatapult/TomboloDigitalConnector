@@ -1,12 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 group = 'uk.org.tombolo'
 version = '0.1.0'
 
 repositories {
     maven { name = "osgeo"; url = "http://download.osgeo.org/webdav/geotools/" }
+	maven { name = "osm4j"; url = "http://mvn.topobyte.de" }
     mavenCentral()
 }
 
@@ -53,6 +55,14 @@ dependencies {
 
 	// Reflection
 	compile group: 'org.reflections', 		name: 'reflections',		version: '0.9.10'
+
+	// osm4j
+	compile 'de.topobyte:osm4j-core:0.0.20'
+	compile 'de.topobyte:osm4j-utils:0.0.23'
+	compile 'de.topobyte:osm4j-xml:0.0.5'
+	compile 'de.topobyte:osm4j-pbf:0.0.10'
+	compile 'de.topobyte:osm4j-tbo:0.0.10'
+	compile 'de.topobyte:osm4j-geometry:0.0.15'
 	
 }
 
