@@ -66,6 +66,10 @@ dependencies {
 	
 }
 
+configurations.all {
+	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+
 task copyDeps(type: Copy) {
 	from configurations.runtime
 	into 'build/dependency-cache/'
