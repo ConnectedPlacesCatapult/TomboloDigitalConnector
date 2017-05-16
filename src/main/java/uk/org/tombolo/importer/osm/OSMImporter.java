@@ -40,13 +40,13 @@ public class OSMImporter extends GeneralImporter {
             builder.append("(way(area);._; >;);out;");
         }
         for (String category : categories.keySet()) {
-            builder.append("(way[\"" + category + "\"~\"(");
+            builder.append("(way[~\"" + category + ".*$\"~\"^(");
             String delim = "";
             for (String subcategory : categories.get(category)) {
                 builder.append(delim + subcategory);
                 delim = "|";
             }
-            builder.append(")\"](area);._; >;);out;");
+            builder.append(")$\"](area);._; >;);out;");
         }
 
         return builder.toString()
