@@ -37,8 +37,8 @@ public class GreenSpaceImporterTest extends AbstractTest {
         Subject subject = subjects.get(0);
         assertEquals("Whitegates-South", subject.getName());
 
-        String header = "category,value\n";
-        String value = "leisure,dog_park\n";
+        String header = "barrier,landuse,leisure,name,opening_hours\n";
+        String value = "fence,grass,dog_park,Whitegates-South,24/7\n";
         String[] headers = header.split("[,\n]");
         String[] values = value.split("[,\n]");
 

@@ -14,35 +14,39 @@ import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.GeneralImporter;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.*;
 
 /**
- * Created
+ * Open street map importer
  */
 public class OSMImporter extends GeneralImporter {
 
-    protected DataSourceID dataSourceID;
+    protected static final String URL = "http://overpass-api.de/";
+    private File localFile;
 
-    protected String area;
-    protected Map<String, List<String>> categories;
+    protected DataSourceID dataSourceID;
 
     public OSMImporter(Config config) {
         super(config);
     }
 
-    protected String compileURL() {
+    protected String compileURL(String area, Map<String, List<String>> categories) {
         StringBuilder builder = new StringBuilder("http://overpass-api.de/api/interpreter?data=");
         builder.append("area[name=\"" + area +"\"];");
+        if (categories.isEmpty()) {
+            builder.append("(way(area);._; >;);out;");
+        }
         for (String category : categories.keySet()) {
-            builder.append("(way[\"" + category + "\"~\"^(");
+            builder.append("(way[\"" + category + "\"~\"(");
             String delim = "";
             for (String subcategory : categories.get(category)) {
                 builder.append(delim + subcategory);
                 delim = "|";
             }
-            builder.append(")$\"](area);._; >;);out;");
+            builder.append(")\"](area);._; >;);out;");
         }
 
         return builder.toString()
@@ -75,22 +79,34 @@ public class OSMImporter extends GeneralImporter {
 
     @Override
     protected List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID) {
+        Set<String> labels = new HashSet<>();
         List<Attribute> attributes = new ArrayList<>();
-        for (String label: Arrays.asList("category", "value")) {
-            Attribute attribute = new Attribute(getProvider(),
-                    label,
-                    "",
-                    "",
-                    Attribute.DataType.string
-            );
-            attributes.add(attribute);
+
+        OsmIterator osmIterator;
+        InMemoryMapDataSet data;
+
+        try {
+            osmIterator = new OsmXmlIterator(new FileInputStream(localFile), false);
+            data = MapDataSetLoader.read(osmIterator, false, true,
+                    false);
+        } catch (Exception e) {
+            return Collections.emptyList();
         }
+        // Iterate contained entities
+        Iterator wayIterator = data.getWays().valueCollection().iterator();
+        while (wayIterator.hasNext()) {
+            labels.addAll(OsmModelUtil.getTagsAsMap((OsmWay) wayIterator.next()).keySet());
+        }
+
+        labels.stream().forEach(e -> attributes.add(
+                new Attribute(getProvider(), e, "", "", Attribute.DataType.string)));
 
         return attributes;
     }
 
     @Override
     protected void setupUtils(Datasource datasource) throws Exception {
+        localFile = downloadUtils.fetchFile(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".osm");
     }
 
     @Override
@@ -98,11 +114,10 @@ public class OSMImporter extends GeneralImporter {
         List<FixedValue> fixedValues = new ArrayList<>();
         List<Subject> subjects = new ArrayList<>();
 
-        InputStream input = downloadUtils.fetchInputStream(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".osm");
 
         // Create a reader for XML data and cache it
-        OsmIterator osmIterator = new OsmXmlIterator(input, false);
-        InMemoryMapDataSet data = MapDataSetLoader.read(osmIterator, true, true,
+        OsmIterator osmIterator = new OsmXmlIterator(new FileInputStream(localFile), false);
+        InMemoryMapDataSet data = MapDataSetLoader.read(osmIterator, false, true,
                 false);
         // Iterate contained entities
         Iterator wayIterator = data.getWays().valueCollection().iterator();
@@ -129,22 +144,12 @@ public class OSMImporter extends GeneralImporter {
             );
             subjects.add(subject);
 
-            String value = "";
             for (Attribute attribute: datasource.getFixedValueAttributes()) {
-                switch (attribute.getLabel()) {
-                    case "category" :
-                        for (String category : categories.keySet()) {
-                            if (tags.get(category) == null) continue;
-                            value = category;
-                        }
-                        break;
-                    case "value" :
-                        value = tags.get(value);
-                        break;
-
+                String value = tags.get(attribute.getLabel());
+                if (value != null) {
+                    FixedValue fixedValue = new FixedValue(subject, attribute, value);
+                    fixedValues.add(fixedValue);
                 }
-                FixedValue fixedValue = new FixedValue(subject, attribute, value);
-                fixedValues.add(fixedValue);
             }
         }
         saveAndClearSubjectBuffer(subjects);

@@ -36,9 +36,9 @@ public class FixedValueUtils {
                     saved++;
                 }catch(NonUniqueObjectException e){
                     // This is happening because the TFL stations contain a duplicate ID
-                    log.warn("Could not save timed value for subject {}, attribute {}: {}",
+                    log.warn("Could not save fixed value for subject {}, attribute {}: {}",
                             fixedValue.getId().getSubject().getLabel(),
-                            fixedValue.getId().getAttribute().getName(),
+                            fixedValue.getId().getAttribute().getLabel(),
                             e.getMessage());
                 }
                 if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
