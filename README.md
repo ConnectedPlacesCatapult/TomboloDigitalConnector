@@ -10,6 +10,7 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
+* Wiki to PDF
 
 ## Quick start
 
@@ -169,4 +170,13 @@ docker images
 # Look for `tombolo` and note the IMAGE ID
 docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
+```
+
+## Wiki to PDF
+
+To create a PDF version of the Wiki documentation clone the wiki respository 
+and run the gradel build in the wiki repository root folder.
+
+```
+gradle build
 ```
