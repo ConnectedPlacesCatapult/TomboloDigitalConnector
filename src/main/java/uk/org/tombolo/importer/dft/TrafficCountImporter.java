@@ -4,6 +4,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
@@ -12,6 +15,7 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
+import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
@@ -26,26 +30,215 @@ import java.util.*;
  * The subjects imported are "trafficCounter".
  * The geography scopes can be any local-authority or region in the UK.
  * There is no temporal scope.
- * 
- * - https://data.gov.uk/dataset/gb-road-traffic-counts/datapackage.zip
- * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/London.csv
- * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/North+East.csv
- * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
- * - http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/Bristol%2C+City+of.csv
+ *
+ * Traffic volume
+ * - http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/region/London.csv
+ * - http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
+ *
+ * Traffic counts
+ * - http://api.dft.gov.uk/v3/trafficcounts/export/region/London.csv
+ * - http://api.dft.gov.uk/v3/trafficcounts/export/la/Aberdeen+City.csv
+ *
  */
 public class TrafficCountImporter extends AbstractDFTImporter implements Importer {
-	private enum DatasourceId {trafficCounts};
+	private static final String REGION = "region/";
+	private static final String LA = "la/";
+	private static final String CSV_POSTFIX = ".csv";
+	private static final int YEAR_INDEX = 0;
+	private static final int ID_INDEX = 1;
+	private static final int EASTING_INDEX = 8;
+	private static final int NORTHING_INDEX = 9;
+	private static final int ROADNAME_INDEX = 6;
+	private static final int STARTJUNCTION_INDEX = 10;
+	private static final int ENDJUNCTION_INDEX = 11;
+
+	protected enum DatasourceId {
+		trafficVolume(new DataSourceID(
+				"trafficVolume",
+				"Annual volume of traffic",
+				"Total volume of traffic on the stretch of road for the whole year. " +
+						"Units = thousand vehicle miles.",
+				"http://www.dft.gov.uk/traffic-counts/",
+				null),
+				"http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/"
+				),
+		trafficCounts(new DataSourceID(
+				"trafficCounts",
+				"Annual average daily flow",
+				"The number of vehicles that will drive on that stretch of road on an average day of the year. " +
+						"Units = vehicles per day.",
+				"http://www.dft.gov.uk/traffic-counts/",
+				null),
+				"http://api.dft.gov.uk/v3/trafficcounts/export/"
+		);
+
+		private DataSourceID dataSourceID;
+		private String urlPrefix;
+
+		DatasourceId(DataSourceID dataSourceID, String urlPrefix) {
+			this.dataSourceID = dataSourceID;
+			this.urlPrefix = urlPrefix;
+		}
+	};
 
 	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL = "trafficCounter";
-	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_DESC = "Traffic counter from Department of Transport";
+	private static final String TRAFFIC_COUNTER_SUBJECT_TYPE_DESC = "Traffic counter from Department for Transport";
 
-	protected static enum COUNT_TYPE 
-		{CountPedalCycles, CountMotorcycles, CountCarsTaxis, CountBusesCoaches, CountLightGoodsVehicles, CountHeavyGoodsVehicles};
+	// Fixed attributes that are only necessary once per traffic counter
+	protected enum FixedAttribute {
+		RoadName(new Attribute(
+				null,
+				"RoadName",
+				"Road Name",
+				"Road Name",
+				Attribute.DataType.string),
+				6),
+		RoadCategory(new Attribute(
+				null,
+				"RoadCategory",
+				"Road Category",
+				"Road Category",
+				Attribute.DataType.string),
+				7),
+		StartJunction(new Attribute(
+				null,
+				"StartJunction",
+				"Start Junction",
+				"Start Junction",
+				Attribute.DataType.string),
+				10),
+		EndJunction(new Attribute(
+				null,
+				"EndJunction",
+				"End Junction",
+				"End Junction",
+				Attribute.DataType.string),
+				11);
 
+		private Attribute attribute;
+		private int columnIndex;
+
+		FixedAttribute(Attribute attribute, int columnIndex){
+			this.attribute = attribute;
+			this.columnIndex = columnIndex;
+		}
+	}
+
+	// Timed Value Attributes in the traffic count file
+	protected enum CountAttribute {
+		CountPedalCycles(new Attribute(
+				null,
+				"CountPedalCycles",
+				"Pedal Cycle Count",
+				"Pedal Cycle Count",
+				Attribute.DataType.numeric),
+				14),
+		CountMotorcycles(new Attribute(
+				null,
+				"CountMotorcycles",
+				"Motorycle Count",
+				"Motorcycle Count",
+				Attribute.DataType.numeric),
+				15),
+		CountCarsTaxis(new Attribute(
+				null,
+				"CountCarsTaxis",
+				"Count of cars and taxis",
+				"Count of cars and taxis",
+				Attribute.DataType.numeric),
+				16),
+		CountBusesCoaches(new Attribute(
+				null,
+				"CountBusesCoaches",
+				"Count of buses and coaches",
+				"Count of buses and coaches",
+				Attribute.DataType.numeric),
+				17),
+		CountLightGoodsVehicles(new Attribute(
+				null,
+				"CountLightGoodsVehicles",
+				"Count of light goods vehicles",
+				"Count of light goods vehicles",
+				Attribute.DataType.numeric),
+				18),
+		CountHeavyGoodsVehicles(new Attribute(
+				null,
+				"CountHeavyGoodsVehicles",
+				"Count of heavy goods vehicles",
+				"Count of heavy goods vehicles",
+				Attribute.DataType.numeric),
+				25);
+
+			private Attribute attribute;
+			private int columnIndex;
+
+			CountAttribute(Attribute attribute, int columnIndex){
+				this.attribute = attribute;
+				this.columnIndex = columnIndex;
+			}
+		};
+
+	// Timed Value Attributes in the traffic volume file
+	protected static enum VolumeAttribute
+	{
+		VolumePedalCycles(new Attribute(
+				null,
+				"VolumePedalCycles",
+				"Pedal Cycle Volume",
+				"Pedal Cycle Volume",
+				Attribute.DataType.numeric),
+				13),
+		VolumeMotorcycles(new Attribute(
+				null,
+				"VolumeMotorcycles",
+				"Motorycle Volume",
+				"Motorcycle Volume",
+				Attribute.DataType.numeric),
+				14),
+		VolumeCarsTaxis(new Attribute(
+				null,
+				"VolumeCarsTaxis",
+				"Volume of cars and taxis",
+				"Volume of cars and taxis",
+				Attribute.DataType.numeric),
+				15),
+		VolumeBusesCoaches(new Attribute(
+				null,
+				"VolumeBusesCoaches",
+				"Volume of buses and coaches",
+				"Volume of buses and coaches",
+				Attribute.DataType.numeric),
+				16),
+		VolumeLightGoodsVehicles(new Attribute(
+				null,
+				"VolumeLightGoodsVehicles",
+				"Volume of light goods vehicles",
+				"Volume of light goods vehicles",
+				Attribute.DataType.numeric),
+				17),
+		VolumeHeavyGoodsVehicles(new Attribute(
+				null,
+				"VolumeHeavyGoodsVehicles",
+				"Volume of heavy goods vehicles",
+				"Volume of heavy goods vehicles",
+				Attribute.DataType.numeric),
+				24);
+
+		private Attribute attribute;
+		private int columnIndex;
+
+		VolumeAttribute(Attribute attribute, int columnIndex){
+			this.attribute = attribute;
+			this.columnIndex = columnIndex;
+		}
+	};
+
+	// Regions for which data is served by DfT
 	private static final List<String> regions = Arrays.asList("East Midlands","East of England","London",
 			"Merseyside","North East","North West","Scotland","South East","South West",
 			"Wales","West Midlands","Yorkshire and The Humber");
 
+	// Local Authorities for which data is served by DfT
 	private static final List<String> localAuthorities = Arrays.asList("Aberdeen City","Aberdeenshire",
 			"Angus","Argyll and Bute","Barking and Dagenham","Barnet","Barnsley",
 			"Bath and North East Somerset","Bedford","Bedfordshire","Bexley","Birmingham",
@@ -98,18 +291,20 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	}
 
 	@Override
-	public Datasource getDatasource(String datasourceId) throws Exception {
+	public Datasource getDatasource(String datasourceIdString) throws Exception {
+		DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
 
 		Datasource datasource = new Datasource(
 				getClass(),
-				datasourceId,
-				getProvider(), 
-				"Traffic Counts",
-				"Traffic Counts from Department for Transport.");
+				datasourceId.dataSourceID.getLabel(),
+				getProvider(),
+				datasourceId.dataSourceID.getName(),
+				datasourceId.dataSourceID.getDescription()
+		);
 
 		// Update attribute list
-		datasource.addAllTimedValueAttributes(getAttributes());
-		datasource.setUrl("http://www.dft.gov.uk/traffic-counts/");
+		datasource.addAllTimedValueAttributes(getTimedValueAttributes(datasourceId));
+		datasource.setUrl(datasourceId.dataSourceID.getUrl());
 
 		datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
 		
@@ -118,94 +313,91 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 	@Override
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+		DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
 
 		if (geographyScope == null || geographyScope.isEmpty())
 			throw new ConfigurationException("Missing geography scope");
 
 		for (String geogrpahyLabel : geographyScope) {
 
-			URL url = new URL(getTrafficCountUrl(geogrpahyLabel));
+			URL url = new URL(getTrafficCountUrl(datasourceId, geogrpahyLabel));
 
 			// Read timed values
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 			Set<Long> trafficCounters = new HashSet<Long>();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")));
-			String line = null;
+			String line = reader.readLine(); // Skipping first line
 			List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
 			while ((line = reader.readLine()) != null) {
-				String[] fields = line.split("\",\"");
+				CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
+				List<CSVRecord> records = parser.getRecords();
+				CSVRecord record = records.get(0);
 
-				if (fields.length == 1)
+				if (record.size() == 1)
 					continue;
 
-				long id = Long.valueOf(fields[1].replaceAll("\"", ""));
+				long id = Long.valueOf(record.get(ID_INDEX));
 				String label = "DfT-TrafficCounter-" + id;
-				String year = fields[0].replaceAll("\"", "");
+				String year = record.get(YEAR_INDEX);
 
-			// Save subject object
-			if (!trafficCounters.contains(id)){
-				// We have not seen this id before
-				long easting = Long.valueOf(fields[6].replaceAll("\"", ""));
-				long northing = Long.valueOf(fields[7].replaceAll("\"", ""));
-				String localAuthority = fields[3].replaceAll("\"", "");
-				String road = fields[4].replaceAll("\"", "");
-				String roadCategory = fields[5].replaceAll("\"", "");
-				String startJunction = fields[8].replaceAll("\"", "");
-				String endJunction = fields[9].replaceAll("\"", "");
+				// Save subject object
+				if (!trafficCounters.contains(id)){
+					// We have not seen this id before
+					long easting = Long.valueOf(record.get(EASTING_INDEX));
+					long northing = Long.valueOf(record.get(NORTHING_INDEX));
+					String road = record.get(ROADNAME_INDEX);
+					String startJunction = record.get(STARTJUNCTION_INDEX);
+					String endJunction = record.get(ENDJUNCTION_INDEX);
 
 					Coordinate coordinate = CoordinateUtils.osgbToWgs84(easting, northing);
 					Point point = geometryFactory.createPoint(coordinate);
 
 					String name = road + " (" + startJunction + " to " + endJunction + ")";
 
-					// FIXME: Add fixed values
-
+					// Save subject
 					Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point);
 					List<Subject> subjectList = new ArrayList<Subject>();
 					subjectList.add(subject);
 					saveAndClearSubjectBuffer(subjectList);
+					subject = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), label);
+
+					// Add fixed values
+					List<FixedValue> fixedValueBuffer = new ArrayList<>();
+					for (FixedAttribute fixedAttribute : FixedAttribute.values()){
+						Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), fixedAttribute.attribute.getLabel());
+						String stringValue = record.get(fixedAttribute.columnIndex);
+						FixedValue fixedValue = new FixedValue(subject, attribute, stringValue);
+						fixedValueBuffer.add(fixedValue);
+					}
+					saveAndClearFixedValueBuffer(fixedValueBuffer);
+
+					// Add subject to list of added subjects
 					trafficCounters.add(id);
 				}
 
-				Subject subject = SubjectUtils.getSubjectByLabel(label);
+				Subject subject = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), label);
 				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
-			// Pedal cycles
-			Attribute pcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountPedalCycles.name());
-			double pcCount = Double.valueOf(fields[11].replaceAll("\"", ""));
-			TimedValue pedalCycleCount = new TimedValue(subject, pcAttribute, timestamp, pcCount);
-			timedValueBuffer.add(pedalCycleCount);
-
-			// Motorcycles
-			Attribute mcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountMotorcycles.name());
-			double mcCount = Double.valueOf(fields[12].replaceAll("\"", ""));
-			TimedValue motorcycleCount = new TimedValue(subject, mcAttribute, timestamp, mcCount);
-			timedValueBuffer.add(motorcycleCount);
-
-			// Cars & taxis
-			Attribute ctAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountCarsTaxis.name());
-			double ctCount = Double.valueOf(fields[13].replaceAll("\"", ""));
-			TimedValue carTaxiCount = new TimedValue(subject, ctAttribute, timestamp, ctCount);
-			timedValueBuffer.add(carTaxiCount);
-
-			// Buses and Coaches
-			Attribute bcAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountBusesCoaches.name());
-			double bcCount = Double.valueOf(fields[14].replaceAll("\"", ""));
-			TimedValue busCoachCount = new TimedValue(subject, bcAttribute, timestamp, bcCount);
-			timedValueBuffer.add(busCoachCount);
-
-			// Light Goods Vehicles
-			Attribute lgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name());
-			double lgvCount = Double.valueOf(fields[15].replaceAll("\"", ""));
-			TimedValue lightGoodsVehicleCount = new TimedValue(subject, lgvAttribute, timestamp, lgvCount);
-			timedValueBuffer.add(lightGoodsVehicleCount);
-
-			// Heavy Goods Vehicles
-			Attribute hgvAttribute = AttributeUtils.getByProviderAndLabel(getProvider(), COUNT_TYPE.CountHeavyGoodsVehicles.name());
-			double hgvCount = Double.valueOf(fields[22].replaceAll("\"", ""));
-			TimedValue heavyGoodsVehicleCount = new TimedValue(subject, hgvAttribute, timestamp, hgvCount);
-			timedValueBuffer.add(heavyGoodsVehicleCount);
+				// Import timed values
+				switch (datasourceId){
+					case trafficCounts:
+						for (CountAttribute countAttribute : CountAttribute.values()){
+							Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), countAttribute.attribute.getLabel());
+							double count = Double.valueOf(record.get(countAttribute.columnIndex));
+							TimedValue timedValue = new TimedValue(subject, attribute, timestamp, count);
+							timedValueBuffer.add(timedValue);
+						}
+						break;
+					case trafficVolume:
+						for (VolumeAttribute volumeAttribute : VolumeAttribute.values()){
+							Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), volumeAttribute.attribute.getLabel());
+							double count = Double.valueOf(record.get(volumeAttribute.columnIndex));
+							TimedValue timedValue = new TimedValue(subject, attribute, timestamp, count);
+							timedValueBuffer.add(timedValue);
+						}
+						break;
+				}
 
 				if (timedValueBuffer.size() > BUFFER_THRESHOLD)
 					saveAndClearTimedValueBuffer(timedValueBuffer);
@@ -216,27 +408,40 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		}
 	}
 
-	protected String getTrafficCountUrl(String geographyLabel) throws ConfigurationException {
+	protected String getTrafficCountUrl(DatasourceId datasourceId, String geographyLabel) throws ConfigurationException {
 		String remoteId = geographyLabel.replaceAll(" ", "+").replaceAll(",", "%2C");
 
 		if (regions.contains(geographyLabel)){
-			return "http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/region/"+remoteId+".csv";
+			return datasourceId.urlPrefix+REGION+remoteId+CSV_POSTFIX;
 		}else if (localAuthorities.contains(geographyLabel)){
-			return "http://api.dft.gov.uk/v2/trafficcounts/export/data/traffic/la/"+remoteId+".csv";
+			return datasourceId.urlPrefix+LA+remoteId+CSV_POSTFIX;
 		}
 		throw new ConfigurationException("Unknown Geography Scope: " + geographyLabel);
 	}
 
-	private List<Attribute> getAttributes(){
+	private List<Attribute> getTimedValueAttributes(DatasourceId datasourceId){
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountPedalCycles.name(), "Pedal Cycle Count", "Pedal Cycle Count", Attribute.DataType.numeric));
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountMotorcycles.name(), "Motorcycle Count", "Motorcycle Count", Attribute.DataType.numeric));
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountCarsTaxis.name(), "Car and Taxi Count", "Car and Taxi Count", Attribute.DataType.numeric));
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountBusesCoaches.name(), "Bus and Coach Count", "Bus and Coach Count", Attribute.DataType.numeric));
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountLightGoodsVehicles.name(), "Light Goods Vehicle Count", "Light Goods Vehicle Count", Attribute.DataType.numeric));
-		attributes.add(new Attribute(getProvider(), COUNT_TYPE.CountHeavyGoodsVehicles.name(), "Heavy Goods Vehicle Count", "Heavy Goods Vehicle Count", Attribute.DataType.numeric));
-		
+		// Add fixed attributes
+		for(FixedAttribute fixedAttribute : FixedAttribute.values()){
+			fixedAttribute.attribute.setProvider(getProvider());
+			attributes.add(fixedAttribute.attribute);
+		}
+		// Add timed value attributes
+		switch (datasourceId){
+			case trafficCounts:
+				for(CountAttribute countAttribute : CountAttribute.values()){
+					countAttribute.attribute.setProvider(getProvider());
+					attributes.add(countAttribute.attribute);
+				}
+				break;
+			case trafficVolume:
+				for(VolumeAttribute volumeAttribute : VolumeAttribute.values()){
+					volumeAttribute.attribute.setProvider(getProvider());
+					attributes.add(volumeAttribute.attribute);
+				}
+				break;
+		}
+
 		return attributes;
 	}
 }
