@@ -11,6 +11,7 @@ import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.GeneralImporter;
 
@@ -67,9 +68,9 @@ public class OSMImporter extends GeneralImporter {
     public Datasource getDatasource(String datasourceId) throws Exception {
         if (dataSourceID.getLabel().equals(datasourceId)) {
             return getDatasource(getClass(), dataSourceID);
+        } else {
+            throw new ConfigurationException("Unknown datasourceId: " + datasourceId);
         }
-
-        return null;
     }
 
     @Override
@@ -99,7 +100,7 @@ public class OSMImporter extends GeneralImporter {
         }
 
         labels.stream().forEach(e -> attributes.add(
-                new Attribute(getProvider(), e, "", "", Attribute.DataType.string)));
+                new Attribute(getProvider(), e, e, "", Attribute.DataType.string)));
 
         return attributes;
     }

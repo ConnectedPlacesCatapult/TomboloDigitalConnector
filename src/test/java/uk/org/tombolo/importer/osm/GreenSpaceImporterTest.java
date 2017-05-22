@@ -18,6 +18,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Test for green space importer from open street map
+ *
+ * File: 8f97288ba27a34e5c76ddfa3dfc2383b.osm
  */
 public class GreenSpaceImporterTest extends AbstractTest {
     private static GreenSpaceImporter importer;
@@ -29,7 +31,25 @@ public class GreenSpaceImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testImportDatasource() throws Exception {
+    public void getDatasource() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+
+        assertEquals(1, datasources.size());
+        assertEquals("OSMGreenSpace", datasources.get(0));
+    }
+
+    @Test
+    public void getAttribute() throws Exception {
+        importer.importDatasource("OSMGreenSpace");
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
+        assertEquals("de.overpass-api", attribute.getProvider().getLabel());
+        assertEquals("landuse", attribute.getLabel());
+        assertEquals("landuse", attribute.getName());
+
+    }
+
+    @Test
+    public void importDatasource() throws Exception {
         importer.importDatasource("OSMGreenSpace");
 
         List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("de.overpass-api","OSMEntity"),"osm34597927");
