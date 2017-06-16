@@ -76,7 +76,7 @@ public class SubjectUtils {
 			session.beginTransaction();
 			int saved = 0;
 			for (Subject subject : subjects) {
-				Subject savedSubject = getSubjectByLabel(subject.getLabel());
+				Subject savedSubject = getSubjectByTypeAndLabel(subject.getSubjectType(), subject.getLabel());
 
 				if (savedSubject == null) {
 					session.saveOrUpdate(subject);

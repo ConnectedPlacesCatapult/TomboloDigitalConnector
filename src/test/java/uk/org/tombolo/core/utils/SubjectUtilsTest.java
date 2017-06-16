@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -24,6 +25,33 @@ public class SubjectUtilsTest extends AbstractTest {
 	public void addSubjectFixtures() {
 		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
 		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E08000035"); // Need this to avoid false-positives on pattern matching
+	}
+
+	@Test
+	public void testSave(){
+		SubjectType testSubjectType = TestFactory.makeSubjectType(TestFactory.DEFAULT_PROVIDER, "awsomeSubjectType1", "Awasome Subject Type");
+		Geometry geometry = TestFactory.makePointGeometry(1d,1d);
+
+		Subject subject1 = new Subject(testSubjectType, "subject1", "Subject 1a", TestFactory.FAKE_POINT_GEOMETRY);
+		Subject subject2 = new Subject(testSubjectType, "subject1", "Subject 1b", TestFactory.FAKE_POINT_GEOMETRY);
+		Subject subject3 = new Subject(testSubjectType, "subject1", "Subject 1b", geometry);
+
+		Subject testSubject;
+
+		SubjectUtils.save(Arrays.asList(subject1));
+		testSubject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "subject1");
+		assertEquals("Subject 1a", testSubject.getName());
+		assertEquals(TestFactory.FAKE_POINT_GEOMETRY, testSubject.getShape());
+
+		SubjectUtils.save(Arrays.asList(subject2));
+		testSubject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "subject1");
+		assertEquals("Subject 1b", testSubject.getName());
+		assertEquals(TestFactory.FAKE_POINT_GEOMETRY, testSubject.getShape());
+
+		SubjectUtils.save(Arrays.asList(subject3));
+		testSubject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "subject1");
+		assertEquals("Subject 1b", testSubject.getName());
+		assertEquals(geometry, testSubject.getShape());
 	}
 
 	@Test
