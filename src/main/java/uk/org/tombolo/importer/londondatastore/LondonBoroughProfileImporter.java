@@ -5,10 +5,12 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.io.BufferedReader;
@@ -140,10 +142,12 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     private TimedValueExtractor getExtractor(AttributeId attributeId, SingleValueExtractor subjectLabelExtractor){
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
         switch (attributeId){
             case populationDensity:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.populationDensity.name()),
                         new ConstantExtractor("2015-12-31T23:59:59"),
@@ -152,6 +156,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             case householdIncome:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.householdIncome.name()),
                         new ConstantExtractor("2013-12-31T23:59:59"),
@@ -160,6 +165,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             case medianHousePrice:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.medianHousePrice.name()),
                         new ConstantExtractor("2014-12-31T23:59:59"),
@@ -168,6 +174,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             case fractionGreenspace:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.fractionGreenspace.name()),
                         new ConstantExtractor("2005-12-31T23:59:59"),
@@ -176,6 +183,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             case carbonEmission:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.carbonEmission.name()),
                         new ConstantExtractor("2013-12-31T23:59:59"),
@@ -184,6 +192,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
             case carsPerHousehold:
                 return new TimedValueExtractor(
                         getProvider(),
+                        subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.carsPerHousehold.name()),
                         new ConstantExtractor("2011-12-31T23:59:59"),

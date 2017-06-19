@@ -6,10 +6,6 @@ import uk.org.tombolo.core.SubjectType;
 import java.util.List;
 
 public class SubjectTypeUtils {
-	@Deprecated
-	public static SubjectType getSubjectTypeByLabel(String label){
-		return getSubjectTypeByProviderAndLabel("default_provider_label", label);
-	}
 
 	public static void save(List<SubjectType> subjectTypes) {
 		for (SubjectType subjectType : subjectTypes) {

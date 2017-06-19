@@ -152,28 +152,28 @@ public class SubjectUtils {
 		return query;
 	}
 
-	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {
+	public static List<Subject> subjectsContainingSubject(SubjectType subjectType, Subject subject) {
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and contains(shape, :geom) = true", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			return (List<Subject>) query.getResultList();
 		});
 	}
 
-	public static List<Subject> subjectsWithinSubject(String subjectTypeLabel, Subject subject) {
+	public static List<Subject> subjectsWithinSubject(SubjectType subjectType, Subject subject) {
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and within(shape, :geom) = true", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			return (List<Subject>) query.getResultList();
 		});
 	}
 
-	public static Subject subjectNearestSubject(String subjectTypeLabel, Subject subject, Double radius){
+	public static Subject subjectNearestSubject(SubjectType subjectType, Subject subject, Double radius){
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and st_dwithin(shape, :geom, :radius) = true order by st_distance(shape, :geom)", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			query.setParameter("radius", radius);
 			query.setMaxResults(1);

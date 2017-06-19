@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -78,19 +80,23 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                 downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX)
         );
         Sheet sheet = null;
+        SubjectType subjectType = null;
         String year = "2014";
         for (String geographyScopeString : geographyScope) {
             GeographyLabel geographyLabel = GeographyLabel.valueOf(geographyScopeString);
             switch (geographyLabel) {
                 case la:
                     sheet = workbook.getSheet("LAData_2011-12_2013-14");
+                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
                     break;
                 case msoa:
                     sheet = workbook.getSheet("MSOAData_2011-12_2013-14");
+                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
                     break;
                 case ward:
-                    sheet = workbook.getSheet("WardData_2011-12_2013-14");
-                    break;
+                    throw new Error("Wards are not yet supported");
+                    //sheet = workbook.getSheet("WardData_2011-12_2013-14");
+                    //break;
             }
             if (sheet == null)
                 throw new Error("Sheet not found for datasource: " + datasource.getId());
@@ -104,7 +110,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             for (AttributeLabel attributeLabel : AttributeLabel.values()) {
                 ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
                 RowCellExtractor valueExtractor = new RowCellExtractor(getAttributeColumnId(geographyLabel, attributeLabel), Cell.CELL_TYPE_NUMERIC);
-                timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
+                timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectType, subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
             }
 
             // Extract timed values

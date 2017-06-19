@@ -9,6 +9,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.Field;
@@ -28,13 +29,14 @@ public class CSVExporterTest extends AbstractTest {
 
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E09000001");
+		TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
 	public void testWrite() throws Exception {
 		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
+		SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+		TestFactory.makeTimedValue(localAuthority,"E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
 		exporter.write(writer, makeSubjects(), makeFields("default_provider_label", "attr_label"));

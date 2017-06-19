@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -83,8 +84,8 @@ public final class TestFactory {
      * @param value
      * @return The persisted TimedValue
      */
-    public static TimedValue makeTimedValue(String subjectLabel, Attribute attribute, String timestamp, Double value) {
-        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+    public static TimedValue makeTimedValue(SubjectType subjectType, String subjectLabel, Attribute attribute, String timestamp, Double value) {
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, subjectLabel);
         TimedValue timedValue = new TimedValue(subject, attribute, LocalDateTime.parse(timestamp), value);
         TimedValueUtils.save(timedValue);
         return timedValue;
@@ -98,8 +99,8 @@ public final class TestFactory {
      * @param value
      * @return The persisted FixedValue
      */
-    public static FixedValue makeFixedValue(String subjectLabel, Attribute attribute, String value) {
-        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+    public static FixedValue makeFixedValue(SubjectType subjectType, String subjectLabel, Attribute attribute, String value) {
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, subjectLabel);
         FixedValue fixedValue = new FixedValue(subject, attribute, value);
         FixedValueUtils.save(fixedValue);
         return fixedValue;
@@ -113,50 +114,57 @@ public final class TestFactory {
      * @param label The label of the namedSubject
      * @return The persisted subject
      */
-    public static Subject makeNamedSubject(Provider provider, String label) {
+    public static Subject makeNamedSubject(String label) {
+        SubjectType subjectType;
         switch (label) {
             case "E01000001":
-                makeNamedSubjectType(provider, "lsoa");
-                return makeSubject(provider, "lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E01000002":
-                makeNamedSubjectType(provider, "lsoa");
-                return makeSubject(provider, "lsoa", label, "City of London 001B", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "City of London 001B", FAKE_POINT_GEOMETRY);
             case "E09000001":
-                makeNamedSubjectType(provider, "localAuthority");
-                return makeSubject(provider, "localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "City of London", FAKE_POINT_GEOMETRY);
             case "E09000019":
-                makeSubjectType(provider, "localAuthority", "Local Authority");
-                return makeSubject(provider, "localAuthority", label, "Islington", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "Islington", FAKE_POINT_GEOMETRY);
             case "E08000035":
-                makeNamedSubjectType(provider, "localAuthority");
-                return makeSubject(provider, "localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "Leeds", FAKE_POINT_GEOMETRY);
             case "E01002766":
-                makeNamedSubjectType(provider, "lsoa");
-                return makeSubject(provider, "lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "Islington 015E", FAKE_POINT_GEOMETRY);
             case "E01002767":
-                makeNamedSubjectType(provider, "lsoa");
-                return makeSubject(provider, "lsoa", label, "Islington 011D", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "Islington 011D", FAKE_POINT_GEOMETRY);
             case "E02000001":
-                makeNamedSubjectType(provider, "msoa");
-                return makeSubject(provider, "msoa", label, "City of London 001", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("msoa");
+                return makeSubject(subjectType, label, "City of London 001", FAKE_POINT_GEOMETRY);
             case "E02000564":
-                makeNamedSubjectType(provider, "msoa");
-                return makeSubject(provider,"msoa", label, "Islington 011", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("msoa");
+                return makeSubject(subjectType, label, "Islington 011", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
     }
 
-    private static SubjectType makeNamedSubjectType(Provider provider, String label) {
+    public static SubjectType makeNamedSubjectType(String label) {
+        SubjectType subjectType;
         switch (label) {
             case "localAuthority":
-                return makeSubjectType(provider, "localAuthority", "Local Authority");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+                break;
             case "lsoa":
-                return makeSubjectType(provider, "lsoa", "Lower Super Output Area");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+                break;
             case "msoa":
-                return makeSubjectType(provider, "msoa", "Middle Super Output Area");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                break;
+            default:
+                return null;
         }
-        return null;
+        return makeSubjectType(subjectType.getProvider(), subjectType.getLabel(), subjectType.getName());
     }
 
     /**
@@ -170,8 +178,8 @@ public final class TestFactory {
         return SubjectTypeUtils.getOrCreate(provider, label, name);
     }
     
-    public static Subject makeSubject(Provider provider, String subjectTypeLabel, String label, String name, Geometry geometry) {
-        Subject subject = new Subject(SubjectTypeUtils.getSubjectTypeByProviderAndLabel(provider.getLabel(), subjectTypeLabel), label, name, geometry);
+    public static Subject makeSubject(SubjectType subjectType, String label, String name, Geometry geometry) {
+        Subject subject = new Subject(subjectType, label, name, geometry);
         SubjectUtils.save(Collections.singletonList(subject));
         return subject;
     }

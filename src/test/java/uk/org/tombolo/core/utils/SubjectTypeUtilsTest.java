@@ -11,7 +11,7 @@ public class SubjectTypeUtilsTest extends AbstractTest {
 	
 	@Test
 	public void testGetSubjectTypeByLabel(){
-		SubjectType lsoa = SubjectTypeUtils.getSubjectTypeByLabel("unknown");
+		SubjectType lsoa = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(TestFactory.DEFAULT_PROVIDER.getLabel(), "unknown");
 		assertEquals("unknown", lsoa.getLabel());
 		assertEquals("Unknown Subject Type", lsoa.getName());
 	}

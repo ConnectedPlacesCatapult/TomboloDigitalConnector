@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -72,6 +74,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
 
         Workbook workbook = excelUtils.getWorkbook(
                 downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
@@ -83,6 +86,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         List<TimedValueExtractor> walk5xWeekExtractors = new ArrayList<>();
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2011-12-31T23:59:59"),
@@ -90,6 +94,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2012-12-31T23:59:59"),
@@ -97,6 +102,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2013-12-31T23:59:59"),
@@ -104,6 +110,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2014-12-31T23:59:59"),
@@ -117,6 +124,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         List<TimedValueExtractor> cycle1xWeekExtractors = new ArrayList<>();
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2011-12-31T23:59:59"),
@@ -124,6 +132,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2012-12-31T23:59:59"),
@@ -131,6 +140,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2013-12-31T23:59:59"),
@@ -138,6 +148,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2014-12-31T23:59:59"),

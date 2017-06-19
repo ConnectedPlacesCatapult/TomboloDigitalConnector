@@ -31,8 +31,8 @@ public class IMDImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         imdImporter.setDownloadUtils(makeTestDownloadUtils());
 
-        subject1 = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
-        subject2 = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000002");
+        subject1 = TestFactory.makeNamedSubject("E01000001");
+        subject2 = TestFactory.makeNamedSubject("E01000002");
     }
 
     @Test

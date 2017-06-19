@@ -7,8 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -74,12 +76,14 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
         RowCellExtractor subjectExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
         ConstantExtractor timestampExtractor = new ConstantExtractor(year);
 
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
         for (AttributeLabel attributeLabel : AttributeLabel.values()){
             ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
             RowCellExtractor valueExtractor
                     = new RowCellExtractor(getAttributeColumnId(attributeLabel), Cell.CELL_TYPE_NUMERIC);
             timedValueExtractors.add(new TimedValueExtractor(
                     getProvider(),
+                    subjectType,
                     subjectExtractor,
                     attributeExtractor,
                     timestampExtractor,

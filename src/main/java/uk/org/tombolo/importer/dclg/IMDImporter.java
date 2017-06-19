@@ -7,6 +7,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,6 +59,8 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectTypeLsoa = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
         String line = null;
@@ -71,7 +74,7 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
 
             if (lsoaLabel.startsWith("LSOA"))
                 continue;
-            Subject lsoa = SubjectUtils.getSubjectByLabel(lsoaLabel);
+            Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectTypeLsoa, lsoaLabel);
 
             if (lsoa == null)
                 continue;

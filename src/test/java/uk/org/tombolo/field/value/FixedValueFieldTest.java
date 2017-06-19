@@ -18,20 +18,20 @@ public class FixedValueFieldTest extends AbstractTest {
 
     @Before
     public void setUp() {
-        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
         field = new FixedValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
     }
 
     @Test
     public void testValueForSubject() throws Exception {
-        TestFactory.makeFixedValue("E01000001", attribute, "one-hundred");
+        TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
         assertEquals("one-hundred", field.valueForSubject(subject));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        TestFactory.makeFixedValue("E01000001", attribute, "one-hundred");
+        TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
         String jsonString = field.jsonValueForSubject(subject).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +

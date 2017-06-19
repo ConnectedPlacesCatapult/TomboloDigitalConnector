@@ -8,11 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -31,6 +35,7 @@ import java.util.List;
  */
 public class AccessibilityImporter extends AbstractDFTImporter implements Importer{
     private static final Logger log = LoggerFactory.getLogger(AccessibilityImporter.class);
+    private static SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
 
     private enum DatasourceId {
         acs0501, acs0502, acs0503, acs0504, acs0505, acs0506, acs0507, acs0508
@@ -149,7 +154,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
                 if (attribute != null){
                     ConstantExtractor attributeExtractor = new ConstantExtractor(attribute.getLabel());
                     RowCellExtractor valueExtractor = new RowCellExtractor(columnId, Cell.CELL_TYPE_NUMERIC);
-                    timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
+                    timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectType, subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
                 }
             }
 
