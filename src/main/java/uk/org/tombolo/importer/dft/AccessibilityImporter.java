@@ -35,7 +35,6 @@ import java.util.List;
  */
 public class AccessibilityImporter extends AbstractDFTImporter implements Importer{
     private static final Logger log = LoggerFactory.getLogger(AccessibilityImporter.class);
-    private static SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
 
     private enum DatasourceId {
         acs0501, acs0502, acs0503, acs0504, acs0505, acs0506, acs0507, acs0508
@@ -122,6 +121,8 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+
         DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
         Workbook workbook = excelUtils.getWorkbook(
                 downloadUtils.fetchInputStream(getDatasourceUrl(datasourceId), getProvider().getLabel(), DATASET_FILE_SUFFIX));
