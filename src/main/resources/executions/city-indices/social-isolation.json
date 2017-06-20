@@ -19,13 +19,13 @@
       {
         // Modelling field for Disability Resilience (built-in model)
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "Index:Social_Isolation",
+        "label": "index:social_isolation",
         "recipe": "city-indices/social-isolation/SocialIsolationAmongElderly"
       },
       {
         "//": "Fraction of the population 65 or older",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:Fraction_over_65",
+        "label": "component:fraction_over_65",
         "divisorAttribute": {
           "//": "Total: All categories: Age",
           "providerLabel": "uk.gov.ons",
@@ -185,7 +185,7 @@
       {
         "//": "Fraction of the population renting either in the social or private market",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:fraction_renting",
+        "label": "component:fraction_renting",
         "divisorAttribute": {
           "//": "Total: All categories: Tenure",
           "providerLabel": "uk.gov.ons",
@@ -207,7 +207,7 @@
       {
         "//": "Fraction of population separated, divorced or widowed.",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:fraction_widowed_divorced_separated",
+        "label": "component:fraction_widowed_divorced_separated",
         "divisorAttribute": {
           "//": "Total: All categories: Living arrangements ",
           "providerLabel": "uk.gov.ons",
@@ -234,7 +234,7 @@
       {
         "//": "Fraction of population suffering from bad or very bad health",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:fraction_bad_or_very_bad_health",
+        "label": "component:fraction_bad_or_very_bad_health",
         "divisorAttribute": {
           "//": "Total: All categories: General health",
           "providerLabel": "uk.gov.ons",
@@ -256,7 +256,7 @@
       {
         "//": "Fraction of the population with some limitation of daily activities due to disability",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:fraction_limited",
+        "label": "component:fraction_limited",
         "divisorAttribute": {
           "//": "Total: All categories: Long-term health problem or disability",
           "providerLabel": "uk.gov.ons",
@@ -278,7 +278,7 @@
       {
         "//": "Fraction of households deprived in two or more dimensions",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-        "label": "Component:fraction_deprived_2_or_more",
+        "label": "component:fraction_deprived_2_or_more",
         "divisorAttribute": {
           "//": "Total: All categories: Classification of household deprivation",
           "providerLabel": "uk.gov.ons",
