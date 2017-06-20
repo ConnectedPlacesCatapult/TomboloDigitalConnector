@@ -17,18 +17,18 @@
     "fieldSpecification": [
       {
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "Index:Active Transport",
+        "label": "Index:Active_Transport",
         "recipe": "city-indices/active-transport/ActiveTransportIndex"
       },
       {
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "Component:Proportion of Cycles to Cars",
+        "label": "Component:Proportion_of_Cycles_to_Cars",
         "recipe": "city-indices/active-transport/CyclingCount-lsoa"
       },
       {
         // Modelling field for Cycle to car proportion (built-in model)
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "Cycle Lane Score",
+        "label": "Component:Cycle_Lane_Score",
         "recipe": "city-indices/active-transport/CyclingLane"
       }
     ]
