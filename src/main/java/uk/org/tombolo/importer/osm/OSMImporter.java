@@ -1,6 +1,8 @@
 package uk.org.tombolo.importer.osm;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
 import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
@@ -10,6 +12,7 @@ import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.xml.dynsax.OsmXmlIterator;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DataSourceID;
@@ -27,6 +30,8 @@ public class OSMImporter extends GeneralImporter {
 
     protected static final String URL = "http://overpass-api.de/";
     private File localFile;
+
+    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
     protected DataSourceID dataSourceID;
 
@@ -115,6 +120,11 @@ public class OSMImporter extends GeneralImporter {
         List<FixedValue> fixedValues = new ArrayList<>();
         List<Subject> subjects = new ArrayList<>();
 
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(
+                datasource.getUniqueSubjectType().getProvider(),
+                datasource.getUniqueSubjectType().getLabel(),
+                datasource.getUniqueSubjectType().getName()
+        );
 
         // Create a reader for XML data and cache it
         OsmIterator osmIterator = new OsmXmlIterator(new FileInputStream(localFile), false);
@@ -132,13 +142,13 @@ public class OSMImporter extends GeneralImporter {
 
             Geometry geometry;
             try {
-                geometry = new GeometryBuilder().build(way, data);
+                geometry = new GeometryBuilder(geometryFactory).build(way, data);
             } catch (EntityNotFoundException e) {
                 continue;
             }
 
             Subject subject = new Subject(
-                    datasource.getUniqueSubjectType(),
+                    subjectType,
                     "osm" + way.getId(),
                     tags.get("name"),
                     geometry
