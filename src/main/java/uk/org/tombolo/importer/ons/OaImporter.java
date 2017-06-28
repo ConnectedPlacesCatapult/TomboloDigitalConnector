@@ -24,6 +24,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
     public enum OaType {lsoa, msoa, localAuthority};
 
+    // FIXME: Replace the three lists below by a richer object in the OaType above
     List<String> subjectTypeNames = Arrays.asList("LSOA", "MSOA", "Local Authority");
     private static List<String> subjectTYpeDesc = Arrays.asList(
             "Lower Layer Super Output Areas",

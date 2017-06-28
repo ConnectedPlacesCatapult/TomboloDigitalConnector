@@ -26,11 +26,7 @@ public class SubjectTypeUtilsTest extends AbstractTest {
 		testSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(TestFactory.DEFAULT_PROVIDER.getLabel(), "test");
 		assertEquals(subjectType1.getName(), testSubjectType.getName());
 
-		SubjectTypeUtils.save(subjectType1);
-		testSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(TestFactory.DEFAULT_PROVIDER.getLabel(), "test");
-		assertEquals(subjectType1.getName(), testSubjectType.getName());
-
-
+		// Test updated subject type
 		SubjectTypeUtils.save(subjectType2);
 		testSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(TestFactory.DEFAULT_PROVIDER.getLabel(), "test");
 		assertEquals(subjectType2.getName(), testSubjectType.getName());

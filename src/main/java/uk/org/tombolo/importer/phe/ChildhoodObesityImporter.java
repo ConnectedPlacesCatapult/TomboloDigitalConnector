@@ -95,6 +95,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
                     break;
                 case ward:
                     throw new Error("Wards are not yet supported");
+                    // FIXME: In case we want to suport wards at some point, here is the sheet to use
                     //sheet = workbook.getSheet("WardData_2011-12_2013-14");
                     //break;
             }
