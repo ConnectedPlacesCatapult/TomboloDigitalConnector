@@ -206,7 +206,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
 
     private void flushBufferIfRequired(){
         int bufferSize = timedValueBuffer.size() + fixedValueBuffer.size() + subjectBuffer.size();
-        if (bufferSize > BUFFER_THRESHOLD) {
+        if (bufferSize > getCombinedBufferSize()) {
             flushBuffer();
         }
     }

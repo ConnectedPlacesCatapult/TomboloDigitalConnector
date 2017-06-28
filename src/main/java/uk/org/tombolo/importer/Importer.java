@@ -85,4 +85,9 @@ public interface Importer {
 	int getSubjectCount();
 	int getFixedValueCount();
 	int getTimedValueCount();
+
+	int getCombinedBufferSize();
+	int getTimedValueBufferSize();
+	int getFixedValueBufferSize();
+	int getSubjectBufferSize();
 }

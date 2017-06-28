@@ -55,11 +55,18 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final String ONS_DATASET_BASE_URL = "http://data.statistics.gov.uk/ons/datasets/";
 	
 	private static final LocalDateTime CENSUS_2011_DATE_TIME = LocalDateTime.of(2011,12,31,23,59,59);
-	
+
+	private static final int TIMED_VALUE_BUFFER_SIZE = 100000;
+
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
 
 	public ONSCensusImporter(Config config) throws IOException, ParseException, ConfigurationException {
 		super(config);
+	}
+
+	@Override
+	public int getTimedValueBufferSize() {
+		return TIMED_VALUE_BUFFER_SIZE;
 	}
 
 	@Override
@@ -180,7 +187,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 									timedValueBuffer.add(tv);
 
 									// Flushing buffer
-									if (timedValueBuffer.size() % BUFFER_THRESHOLD == 0){
+									if (timedValueBuffer.size() % getTimedValueBufferSize() == 0){
 										saveAndClearTimedValueBuffer(timedValueBuffer);
 									}
 								}								
