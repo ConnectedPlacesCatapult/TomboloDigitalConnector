@@ -7,6 +7,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
@@ -22,11 +23,12 @@ public class BasicModellingFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
+        SubjectType lsoa = TestFactory.makeNamedSubjectType("lsoa");
+        subject = TestFactory.makeNamedSubject("E01002766");
         Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_1");
         Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_82");
-        TestFactory.makeTimedValue("E01002766", population, "2011-01-01T00:00:00", 100d);
-        TestFactory.makeTimedValue("E01002766", oldies, "2011-01-01T00:00:00", 40d);
+        TestFactory.makeTimedValue(lsoa, "E01002766", population, "2011-01-01T00:00:00", 100d);
+        TestFactory.makeTimedValue(lsoa, "E01002766", oldies, "2011-01-01T00:00:00", 40d);
     }
 
     @Test

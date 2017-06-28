@@ -6,10 +6,6 @@ import uk.org.tombolo.core.SubjectType;
 import java.util.List;
 
 public class SubjectTypeUtils {
-	@Deprecated
-	public static SubjectType getSubjectTypeByLabel(String label){
-		return getSubjectTypeByProviderAndLabel("default_provider_label", label);
-	}
 
 	public static void save(List<SubjectType> subjectTypes) {
 		for (SubjectType subjectType : subjectTypes) {
@@ -23,6 +19,7 @@ public class SubjectTypeUtils {
 			session.beginTransaction();
 			SubjectType existingSubjectType = getSubjectTypeByProviderAndLabel(subjectType.getProvider().getLabel(), subjectType.getLabel());
 			if (existingSubjectType != null) {
+				subjectType.setId(existingSubjectType.getId());
 				session.update(session.merge(subjectType));
 			} else {
 				session.save(subjectType);
@@ -31,10 +28,10 @@ public class SubjectTypeUtils {
 		});
 	}
 
-	public static SubjectType getOrCreate(Provider provider, String label, String description) {
+	public static SubjectType getOrCreate(Provider provider, String label, String name) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(provider.getLabel(), label);
 		if (null == subjectType) {
-			subjectType = new SubjectType(provider, label, description);
+			subjectType = new SubjectType(provider, label, name);
 			SubjectTypeUtils.save(subjectType);
 		}
 

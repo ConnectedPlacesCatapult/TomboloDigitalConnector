@@ -15,7 +15,7 @@ public class SubjectLongitudeFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        subject = TestFactory.makeNamedSubject("E01000001");
     }
 
     @Test

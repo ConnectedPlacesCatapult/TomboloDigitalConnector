@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.ons;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CSVUtils;
@@ -69,12 +70,15 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     }
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+
         CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
         CSVExtractor timestampExtractor = new CSVExtractor(0);
         CSVExtractor valueExtractor = new CSVExtractor(7);
         List<TimedValueExtractor> extractors = new ArrayList<>();
         extractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 new ConstantExtractor(AttributeId.claimantCount.name()),
                 timestampExtractor,

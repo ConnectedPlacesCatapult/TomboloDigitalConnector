@@ -11,6 +11,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -49,15 +50,18 @@ import static org.junit.Assert.assertEquals;
  */
 public class AccessibilityImporterTest extends AbstractTest {
     AccessibilityImporter importer;
+    private Subject cityofLondon001A;
+    private Subject cityofLondon001B;
+    private Subject islington015E;
 
     @Before
     public void setUp() throws Exception {
         importer = new AccessibilityImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
 
-        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
-        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000002");
-        TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01002766");
+        cityofLondon001A = TestFactory.makeNamedSubject("E01000001");
+        cityofLondon001B = TestFactory.makeNamedSubject("E01000002");
+        islington015E = TestFactory.makeNamedSubject("E01002766");
     }
 
     @Test
@@ -127,48 +131,46 @@ public class AccessibilityImporterTest extends AbstractTest {
     public void importDatasource() throws Exception {
         importer.importDatasource("acs0501");
 
-        Subject cityOfLondon = SubjectUtils.getSubjectByLabel("E01000002");
-        Subject islington = SubjectUtils.getSubjectByLabel("E01002766");
         Attribute emplo032 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO032");
         Attribute emplo070 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO070");
         Attribute emplo108 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO108");
 
         // This value only exist up to 2010
-        TimedValue tvLonA032 = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, emplo032);
+        TimedValue tvLonA032 = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon001B, emplo032);
         assertEquals(10d, tvLonA032.getValue(), 0.1d);
         assertEquals(LocalDateTime.of(2010, 12, 31, 23, 59, 59),tvLonA032.getId().getTimestamp());
 
-        List<TimedValue> tvLonA32s = TimedValueUtils.getBySubjectAndAttribute(cityOfLondon, emplo032);
+        List<TimedValue> tvLonA32s = TimedValueUtils.getBySubjectAndAttribute(cityofLondon001B, emplo032);
         assertEquals(4, tvLonA32s.size());
 
         // This value is available for all years
-        TimedValue tvLonA070 = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, emplo070);
+        TimedValue tvLonA070 = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon001B, emplo070);
         assertEquals(14d, tvLonA070.getValue(), 0.1d);
         assertEquals(LocalDateTime.of(2013, 12, 31, 23, 59, 59),tvLonA070.getId().getTimestamp());
 
-        List<TimedValue> tvLonA070s = TimedValueUtils.getBySubjectAndAttribute(cityOfLondon, emplo070);
+        List<TimedValue> tvLonA070s = TimedValueUtils.getBySubjectAndAttribute(cityofLondon001B, emplo070);
         assertEquals(7, tvLonA070s.size());
 
-        TimedValue tvIslA070 = TimedValueUtils.getLatestBySubjectAndAttribute(islington, emplo070);
+        TimedValue tvIslA070 = TimedValueUtils.getLatestBySubjectAndAttribute(islington015E, emplo070);
         assertEquals(90d, tvIslA070.getValue(), 0.1d);
         assertEquals(LocalDateTime.of(2013, 12, 31, 23, 59, 59),tvIslA070.getId().getTimestamp());
 
-        List<TimedValue> tvIslA070s = TimedValueUtils.getBySubjectAndAttribute(islington, emplo070);
+        List<TimedValue> tvIslA070s = TimedValueUtils.getBySubjectAndAttribute(islington015E, emplo070);
         assertEquals(7, tvIslA070s.size());
 
         // This has some values missing for City London
-        TimedValue tvLonA108 = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, emplo108);
+        TimedValue tvLonA108 = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon001B, emplo108);
         assertEquals(89.3d, tvLonA108.getValue(), 0.1d);
         assertEquals(LocalDateTime.of(2013, 12, 31, 23, 59, 59),tvLonA108.getId().getTimestamp());
 
-        List<TimedValue> tvLonA108s = TimedValueUtils.getBySubjectAndAttribute(cityOfLondon, emplo108);
+        List<TimedValue> tvLonA108s = TimedValueUtils.getBySubjectAndAttribute(cityofLondon001B, emplo108);
         assertEquals(5, tvLonA108s.size());
 
-        TimedValue tvIslA108 = TimedValueUtils.getLatestBySubjectAndAttribute(islington, emplo108);
+        TimedValue tvIslA108 = TimedValueUtils.getLatestBySubjectAndAttribute(islington015E, emplo108);
         assertEquals(88.8d, tvIslA108.getValue(), 0.1d);
         assertEquals(LocalDateTime.of(2013, 12, 31, 23, 59, 59),tvIslA108.getId().getTimestamp());
 
-        List<TimedValue> tvIslA108s = TimedValueUtils.getBySubjectAndAttribute(islington, emplo108);
+        List<TimedValue> tvIslA108s = TimedValueUtils.getBySubjectAndAttribute(islington015E, emplo108);
         assertEquals(6, tvIslA108s.size());
 
 

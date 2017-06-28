@@ -11,6 +11,7 @@ import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.utils.ConfigUtils;
 
 import java.util.List;
@@ -29,12 +30,17 @@ public class GeneralCSVImporterTest extends AbstractTest {
             "lsoa",
             ""
     );
+    private static final SubjectType EXISTING_SUBJECT_TYPE = new SubjectType(
+            new Provider(AbstractONSImporter.PROVIDER.getLabel(), ""),
+            "lsoa",
+            ""
+    );
     private static final Config.Builder EXISTING_SUBJECT_CONFIG = new Config.Builder(
             0,
             "yes",
             LOCATION_FILE,
             "general.csv.provider",
-            DEFAULT_SUBJECT_TYPE
+            EXISTING_SUBJECT_TYPE
     );
 
     private static final Config.Builder NEW_SUBJECT_WITHOUT_GEO = new Config.Builder(
@@ -115,8 +121,8 @@ public class GeneralCSVImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasourceExSubject() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(new Provider("subject.type.provider", ""), "E01000001");
-        TestFactory.makeNamedSubject(new Provider("subject.type.provider", ""), "E01000002");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
+        TestFactory.makeNamedSubject("E01000002");
 
         // Testing import with existing subject
         importer.setConfig(EXISTING_SUBJECT_CONFIG.build());

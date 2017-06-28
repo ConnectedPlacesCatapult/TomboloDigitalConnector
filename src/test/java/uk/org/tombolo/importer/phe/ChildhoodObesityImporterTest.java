@@ -38,9 +38,9 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         importer = new ChildhoodObesityImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
 
-        cityOfLondon001 = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E02000001");  // City of London 001
-        islington011 = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E02000564");  // Islington 011
-        leeds = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E08000035"); // Leeds
+        cityOfLondon001 = TestFactory.makeNamedSubject("E02000001");  // City of London 001
+        islington011 = TestFactory.makeNamedSubject("E02000564");  // Islington 011
+        leeds = TestFactory.makeNamedSubject("E08000035"); // Leeds
     }
 
     @Test

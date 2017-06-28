@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
@@ -21,10 +22,11 @@ import java.util.List;
 
 public final class OaImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    private enum DatasourceId {lsoa, msoa, localAuthority};
+    public enum OaType {lsoa, msoa, localAuthority};
 
+    // FIXME: Replace the three lists below by a richer object in the OaType above
     List<String> subjectTypeNames = Arrays.asList("LSOA", "MSOA", "Local Authority");
-    List<String> subjectTYpeDesc = Arrays.asList(
+    private static List<String> subjectTYpeDesc = Arrays.asList(
             "Lower Layer Super Output Areas",
             "Middle Layer Super Output Areas",
             "Local Authority");
@@ -37,25 +39,29 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
     public OaImporter(Config config){
         super(config);
-        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+        datasourceIds = stringsFromEnumeration(OaType.class);
+    }
+
+    public static SubjectType getSubjectType(OaType oaType){
+        return SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, oaType.name(), subjectTYpeDesc.get(oaType.ordinal()));
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
+        OaType datasourceIdObject = OaType.valueOf(datasourceId);
         Datasource datasource = new Datasource(
                         getClass(),
                         datasourceIdObject.name(),
                         getProvider(),
                         subjectTypeNames.get(datasourceIdObject.ordinal()),
                         subjectTYpeDesc.get(datasourceIdObject.ordinal()));
-        datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getDescription()));
+        datasource.addSubjectType(getSubjectType(datasourceIdObject));
         return datasource;
     }
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
+        OaType datasourceId = OaType.valueOf(datasource.getId());
         InputStream inputStream = downloadUtils.fetchJSONStream(new URL(datafiles.get(datasourceId.ordinal())), getProvider().getLabel());
         FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);
 

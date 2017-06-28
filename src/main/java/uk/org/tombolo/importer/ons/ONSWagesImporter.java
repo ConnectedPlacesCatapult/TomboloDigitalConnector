@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -143,6 +144,8 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+
         ExcelUtils excelUtils = new ExcelUtils();
 
         File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".zip");
@@ -169,7 +172,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                         default:
                             throw new Error("Unknown metric name: " + metricName);
                     }
-                    extractors.add(new TimedValueExtractor(getProvider(), subjectLabelExtractor, attributeLabelExtractor, timestampExtractor, valueExtractor));
+                    extractors.add(new TimedValueExtractor(getProvider(), subjectType, subjectLabelExtractor, attributeLabelExtractor, timestampExtractor, valueExtractor));
                 }
 
                 Sheet sheet = workbook.getSheet(sheetName);

@@ -2,6 +2,8 @@ package uk.org.tombolo.field.aggregation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.field.Field;
@@ -24,19 +26,24 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final String label;
+    private final String nearestSubjectProvider;
     private final String nearestSubjectType;
     private final FieldSpecification fieldSpecification;
     private Double maxRadius;
     private SingleValueField field;
+    private SubjectType nearestSubjectTypeObject;
 
-    MapToNearestSubjectField(String label, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
+    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
         this.label = label;
         this.maxRadius = maxRadius;
+        this.nearestSubjectProvider = nearestSubjectProvider;
         this.nearestSubjectType = nearestSubjectType;
         this.fieldSpecification = fieldSpecification;
     }
 
     public void initialize() {
+        nearestSubjectTypeObject = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(nearestSubjectProvider, nearestSubjectType);
+
         // Initialize maxRadius with a default value
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
@@ -61,7 +68,7 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
     }
 
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
-        Subject nearestSubject = SubjectUtils.subjectNearestSubject(nearestSubjectType, subject, maxRadius);
+        Subject nearestSubject = SubjectUtils.subjectNearestSubject(nearestSubjectTypeObject, subject, maxRadius);
         if (nearestSubject == null) {
             throw new IncomputableFieldException(String.format(
                     "Subject %s has no nearby subjects of type %s, but should have 1",

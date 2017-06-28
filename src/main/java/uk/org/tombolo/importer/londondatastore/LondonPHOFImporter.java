@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.*;
 
@@ -70,7 +72,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         RowCellExtractor subjectExtractor = new RowCellExtractor(4, Cell.CELL_TYPE_STRING);
         RowCellExtractor timestampExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
@@ -93,6 +95,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             String attributeLabel = nameToLabel(attributeNameExtractor.extract());
             TimedValueExtractor timedValueExtractor = new TimedValueExtractor(
                     getProvider(),
+                    subjectType,
                     subjectExtractor,
                     new ConstantExtractor(attributeLabel),
                     timestampExtractor,

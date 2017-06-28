@@ -20,14 +20,14 @@ public class ArithmeticFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectDivision() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.div, makeFieldSpec("fixed1", "1"), makeFieldSpec("fixed2", "2"));
         assertEquals(field.valueForSubject(subject), "0.5");
     }
 
     @Test
     public void testValueForSubjectDivisionByZero() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.div, makeFieldSpec("fixed1", "1"), makeFieldSpec("fixed2", "0"));
 
         thrown.expect(IncomputableFieldException.class);
@@ -38,21 +38,21 @@ public class ArithmeticFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubjectAddition() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.add, makeFieldSpec("fixed1", "1"), makeFieldSpec("fixed2", "2"));
         assertEquals(field.valueForSubject(subject), "3.0");
     }
 
     @Test
     public void testValueForSubjectSubtraction() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.sub, makeFieldSpec("fixed1", "0"), makeFieldSpec("fixed2", "2"));
         assertEquals(field.valueForSubject(subject), "-2.0");
     }
 
     @Test
     public void testValueForSubjectMultiplication() throws Exception {
-        Subject subject = TestFactory.makeNamedSubject(TestFactory.DEFAULT_PROVIDER, "E01000001");
+        Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.mul, makeFieldSpec("fixed1", "3"), makeFieldSpec("fixed2", "2"));
         assertEquals(field.valueForSubject(subject), "6.0");
     }
