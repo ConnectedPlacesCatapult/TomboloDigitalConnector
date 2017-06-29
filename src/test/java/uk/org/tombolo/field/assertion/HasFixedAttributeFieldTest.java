@@ -43,6 +43,7 @@ public class HasFixedAttributeFieldTest extends AbstractTest {
 
         // Test
         assertEquals("1",field.valueForSubject(subjectWithAttributeAndOneValueMatch));
+        assertEquals("1", field.valueForSubject(subjectWithAttribtueAndTwoValueMatches));
         assertEquals("0", field.valueForSubject(subjectWithAttributeButOtherValue));
         assertEquals("0", field.valueForSubject(subjectWithoutAttribute));
     }
