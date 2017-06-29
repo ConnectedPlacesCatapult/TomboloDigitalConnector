@@ -117,7 +117,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new RowCellExtractor(40, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet walkSheet = workbook.getSheetAt(1);
-        excelUtils.extractAndSaveTimedValues(walkSheet, this, walk5xWeekExtractors, BUFFER_THRESHOLD);
+        excelUtils.extractAndSaveTimedValues(walkSheet, this, walk5xWeekExtractors);
 
         // Extract cycling
         ConstantExtractor cycle1xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.cycle1xWeek.name());
@@ -155,7 +155,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                 new RowCellExtractor(38, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet cycleSheet = workbook.getSheetAt(2);
-        excelUtils.extractAndSaveTimedValues(cycleSheet, this, cycle1xWeekExtractors, BUFFER_THRESHOLD);
+        excelUtils.extractAndSaveTimedValues(cycleSheet, this, cycle1xWeekExtractors);
     }
 
     private Attribute getAttribute(AttributeId attributeId){

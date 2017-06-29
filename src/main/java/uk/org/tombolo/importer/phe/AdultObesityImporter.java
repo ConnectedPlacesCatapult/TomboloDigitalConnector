@@ -89,7 +89,7 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
                     timestampExtractor,
                     valueExtractor));
         }
-        excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+        excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors);
     }
 
     private List<Attribute> getAttributes() {

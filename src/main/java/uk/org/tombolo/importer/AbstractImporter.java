@@ -16,7 +16,7 @@ import java.util.Properties;
 
 public abstract class AbstractImporter implements Importer {
 	// Flushing threshold for TimedValue/FixedValue/Subject save buffers
-	protected static final Integer BUFFER_THRESHOLD = 10000;
+	private static final Integer BUFFER_THRESHOLD = 10000;
 
 	protected List<String> datasourceIds;
 	protected List<String> geographyLabels;
@@ -206,5 +206,25 @@ public abstract class AbstractImporter implements Importer {
 
 	public int getTimedValueCount() {
 		return timedValueCount;
+	}
+
+	@Override
+	public int getCombinedBufferSize() {
+		return BUFFER_THRESHOLD;
+	}
+
+	@Override
+	public int getSubjectBufferSize() {
+		return BUFFER_THRESHOLD;
+	}
+
+	@Override
+	public int getFixedValueBufferSize() {
+		return BUFFER_THRESHOLD;
+	}
+
+	@Override
+	public int getTimedValueBufferSize() {
+		return BUFFER_THRESHOLD;
 	}
 }

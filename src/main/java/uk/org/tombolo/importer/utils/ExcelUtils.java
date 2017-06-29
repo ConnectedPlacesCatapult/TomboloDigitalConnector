@@ -26,7 +26,7 @@ public class ExcelUtils {
 		return WorkbookFactory.create(is);
 	}
 
-	public void extractAndSaveTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors, int timedValueBufferSize){
+	public void extractAndSaveTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors){
 		int valueCount = 0;
 		List<TimedValue> timedValueBuffer = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class ExcelUtils {
 					TimedValue timedValue = extractor.extract();
 					timedValueBuffer.add(timedValue);
 					valueCount++;
-					if (valueCount % timedValueBufferSize == 0) {
+					if (valueCount % importer.getTimedValueBufferSize() == 0) {
 						// Buffer is full ... we write values to db
 						importer.saveAndClearTimedValueBuffer(timedValueBuffer);
 					}

@@ -52,6 +52,8 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	private static final int STARTJUNCTION_INDEX = 10;
 	private static final int ENDJUNCTION_INDEX = 11;
 
+	private static final int TIMED_VALUE_BUFFER_SIZE = 100000;
+
 	protected enum DatasourceId {
 		trafficVolume(new DataSourceID(
 				"trafficVolume",
@@ -291,6 +293,11 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	}
 
 	@Override
+	public int getTimedValueBufferSize() {
+		return TIMED_VALUE_BUFFER_SIZE;
+	}
+
+	@Override
 	public Datasource getDatasource(String datasourceIdString) throws Exception {
 		DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
 
@@ -399,7 +406,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 						break;
 				}
 
-				if (timedValueBuffer.size() > BUFFER_THRESHOLD)
+				if (timedValueBuffer.size() > getTimedValueBufferSize())
 					saveAndClearTimedValueBuffer(timedValueBuffer);
 
 			}
