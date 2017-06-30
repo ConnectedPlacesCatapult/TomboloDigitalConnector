@@ -14,15 +14,15 @@ import uk.org.tombolo.field.SingleValueField;
 import java.util.List;
 
 /**
- * Returns 1 if subjcet has attribute with value
+ * Returns 1 if subject has attribute with value
  */
-public class HasFixedAttributeField implements Field, SingleValueField {
+public class HasFixedAttributeField implements SingleValueField {
 
     private final String label;
     private AttributeMatcher attribute;
     private final List<String> values;
 
-    Attribute cachedAttribute;
+    private Attribute cachedAttribute;
 
     public HasFixedAttributeField(String label, AttributeMatcher attribute, List<String> values){
         this.label = label;
