@@ -1,8 +1,6 @@
 package uk.org.tombolo.importer.osm;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.*;
 import de.topobyte.osm4j.core.access.OsmIterator;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
 import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
@@ -142,7 +140,8 @@ public class OSMImporter extends GeneralImporter {
 
             Geometry geometry;
             try {
-                geometry = new GeometryBuilder(geometryFactory).build(way, data);
+                LinearRing linearRing = (LinearRing) new GeometryBuilder(geometryFactory).build(way, data);
+                geometry = new Polygon(linearRing, null, geometryFactory);
             } catch (EntityNotFoundException e) {
                 continue;
             }
