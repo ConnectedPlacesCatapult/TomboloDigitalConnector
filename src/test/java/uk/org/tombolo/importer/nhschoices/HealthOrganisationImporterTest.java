@@ -57,7 +57,6 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     public void testImportClinics() throws Exception {
         importer.importDatasource("clinic");
         Subject subject = SubjectUtils.getSubjectByLabel("12366");
-
         assertEquals(8416, importer.getSubjectCount());
         assertEquals("Frinton Road Medical Centre", subject.getName());
         assertEquals(51.8042, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);

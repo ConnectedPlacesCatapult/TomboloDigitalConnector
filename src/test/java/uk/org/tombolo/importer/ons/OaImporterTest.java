@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.ons;
 
-import org.geotools.filter.AreaFunction;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -58,13 +57,7 @@ public class OaImporterTest extends AbstractTest {
     public void testImportLsoas() throws Exception {
         importer.importDatasource("lsoa");
         Subject lsoa = SubjectUtils.getSubjectByLabel("E01000002");
-        AreaFunction af = new AreaFunction();
 
-
-        System.out.print("Geography class: " + lsoa.getShape().getGeometryType());
-        System.out.print("Geography area: " + lsoa.getShape().getArea());
-
-//        2.929916682740156E-5
         assertEquals("City of London 001B", lsoa.getName());
         assertEquals("lsoa", lsoa.getSubjectType().getLabel());
         assertEquals(-0.09252710274629854, lsoa.getShape().getCentroid().getX(), 0.1E-6);

@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.osm;
 
-import org.geotools.filter.AreaFunction;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -57,11 +56,6 @@ public class GreenSpaceImporterTest extends AbstractTest {
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("Whitegates-South", subject.getName());
-
-        AreaFunction af = new AreaFunction();
-
-
-        System.out.print("Geography class: " + subject.getShape().getGeometryType());
 
         String header = "barrier,landuse,leisure,name,opening_hours\n";
         String value = "fence,grass,dog_park,Whitegates-South,24/7\n";
