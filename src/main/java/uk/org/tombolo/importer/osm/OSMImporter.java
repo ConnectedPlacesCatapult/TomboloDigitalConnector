@@ -140,8 +140,12 @@ public class OSMImporter extends GeneralImporter {
 
             Geometry geometry;
             try {
-                LinearRing linearRing = (LinearRing) new GeometryBuilder(geometryFactory).build(way, data);
-                geometry = new Polygon(linearRing, null, geometryFactory);
+                Geometry osmGeometry = new GeometryBuilder(geometryFactory).build(way, data);
+                if (osmGeometry instanceof LinearRing) {
+                    geometry = new Polygon((LinearRing) osmGeometry, null, geometryFactory);
+                } else {
+                    geometry = osmGeometry;
+                }
             } catch (EntityNotFoundException e) {
                 continue;
             }
