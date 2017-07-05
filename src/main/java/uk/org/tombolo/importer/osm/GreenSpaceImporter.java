@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  */
 public class GreenSpaceImporter extends OSMImporter {
 
-    private static final String AREA = "Great Britain";
+    private static final String AREA = "London";
     private static final Map<String, List<String>> CATEGORIES = Collections.unmodifiableMap(Stream.of(
             new AbstractMap.SimpleEntry<>("leisure", Arrays.asList("park", "garden", "dog_park")),
             new AbstractMap.SimpleEntry<>("landuse", Arrays.asList("meadow", "wood", "forest", "orchard", "grass")))

@@ -56,6 +56,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("Whitegates-South", subject.getName());
+        System.out.println("Area Whitegates-South: " + subject.getShape().getArea());
 
         String header = "barrier,landuse,leisure,name,opening_hours\n";
         String value = "fence,grass,dog_park,Whitegates-South,24/7\n";

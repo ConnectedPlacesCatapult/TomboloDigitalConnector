@@ -1,0 +1,7 @@
+[
+  {
+    //": "Green space data for the entire UK",
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  }
+]

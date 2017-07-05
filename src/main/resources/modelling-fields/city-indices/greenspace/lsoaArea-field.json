@@ -1,0 +1,5 @@
+{
+  //": "Area of LSOA",
+  "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+  "label": "Area LSOA"
+}

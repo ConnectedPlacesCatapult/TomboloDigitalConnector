@@ -71,12 +71,13 @@ public class DownloadUtils {
 	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
 		createCacheDir();
 		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
-		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
+			log.info("Feching local file: {}", localDatasourceFile.getName());
+
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
 			connection.setRequestProperty("Accept", "application/json");
-			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+			return new TeeInputStream(connection.getInputStream(), new FileOutputStream("test"));
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}
