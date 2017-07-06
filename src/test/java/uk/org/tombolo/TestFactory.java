@@ -23,7 +23,7 @@ public final class TestFactory {
             new SubjectType(new Provider("", ""), "", "")).build();
 
     /**
-     * makeFakeGeomtry
+     * makeFakeGeometry
      * Returns a point at the offset provided
      * @param xOffset
      * @param yOffset
@@ -37,7 +37,7 @@ public final class TestFactory {
     }
 
     /**
-     * makeFakeGeomtry
+     * makeFakeGeometry
      * Returns a lineString at the offset provided
      * @param xOffset
      * @param yOffset
@@ -47,14 +47,14 @@ public final class TestFactory {
     public static Geometry makeLineStringGeometry(Double xOffset, Double yOffset, Double length) {
         GeometryFactory geometryFactory = new GeometryFactory();
         Coordinate[] coordinates = {new Coordinate(xOffset, yOffset),
-                new Coordinate(xOffset + length, yOffset = length)};
+                new Coordinate(xOffset + length, yOffset)};
         Geometry lineString =  geometryFactory.createLineString(coordinates);
         lineString.setSRID(Subject.SRID);
         return lineString;
     }
 
     /**
-     * Returns a square gometry
+     * Returns a square geometry
      * @param lowerLeftXOffset x-coordinate of lower left corner
      * @param lowerLeftYOffset y-coordinate of lower left corner
      * @param edgeSize the edge size of the square
