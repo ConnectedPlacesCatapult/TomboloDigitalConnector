@@ -7,26 +7,58 @@ import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Field for providing backed off values when none exist.
+ * An example back-off would be mapping to a value for a parent geography.
  */
-public class BackOffField implements Field, SingleValueField {
+public class BackOffField implements SingleValueField {
 
     private String label;
     private List<FieldSpecification> fields;
 
     private List<Field> materialisedFields;
 
+    public BackOffField(String label, List<FieldSpecification> fields){
+        this.label = label;
+        this.fields = fields;
+    }
+
+    public void initialize() {
+        this.materialisedFields = new ArrayList<>();
+        for (FieldSpecification field : fields) {
+            try {
+                materialisedFields.add(field.toField());
+            } catch (ClassNotFoundException e) {
+                throw new Error("Field not valid");
+            }
+        }
+    }
+
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        return null;
+        if (materialisedFields == null)
+            initialize();
+        for (Field field : materialisedFields) {
+            String value = null;
+            try {
+                value = ((SingleValueField) field).valueForSubject(subject);
+            } catch (IncomputableFieldException e){
+                // Keep calm and continue processing ... we will back-off
+            }
+            if (value != null)
+                return ((SingleValueField) field).valueForSubject(subject);
+        }
+        throw new IncomputableFieldException("No Backed-off value found");
     }
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        return null;
+        JSONObject obj = new JSONObject();
+        obj.put("value", valueForSubject(subject));
+        return obj;
     }
 
     @Override
