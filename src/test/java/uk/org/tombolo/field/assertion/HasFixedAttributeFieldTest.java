@@ -13,39 +13,44 @@ import uk.org.tombolo.execution.spec.AttributeMatcher;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HasFixedAttributeFieldTest extends AbstractTest {
-    private static final String ATTRIBUTE_LABEL = "tobecounted";
-
     @Test
     public void valueForSubject() throws Exception {
+
         // Create dummy subjects
-        Subject subjectWithAttributeAndOneValueMatch = TestFactory.makeNamedSubject("E01000001");
-        Subject subjectWithAttribtueAndTwoValueMatches = TestFactory.makeNamedSubject("E09000019");
-        Subject subjectWithAttributeButOtherValue = TestFactory.makeNamedSubject("E09000001");
+        Subject subjectWithOneAttributeMatch = TestFactory.makeNamedSubject("E01000001");
+        Subject subjectWithTwoAttribtueMatches = TestFactory.makeNamedSubject("E09000019");
+        Subject subjectWithNoAttributeMatches = TestFactory.makeNamedSubject("E09000001");
         Subject subjectWithoutAttribute = TestFactory.makeNamedSubject("E01000002");
 
         // Crate dummy attribute
-        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "", "", Attribute.DataType.string);
-        AttributeUtils.save(testAttribute);
+        Attribute testAttribute1 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute1", "", "", Attribute.DataType.string);
+        AttributeUtils.save(testAttribute1);
+        Attribute testAttribute2 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute2", "", "", Attribute.DataType.string);
+        AttributeUtils.save(testAttribute2);
+        Attribute testAttribute3 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute3", "", "", Attribute.DataType.string);
+        AttributeUtils.save(testAttribute3);
+
 
         // Assign attribute values
-        FixedValueUtils.save(new FixedValue(subjectWithAttributeAndOneValueMatch, testAttribute, "value1"));
-        FixedValueUtils.save(new FixedValue(subjectWithAttribtueAndTwoValueMatches, testAttribute, "value1"));
-        FixedValueUtils.save(new FixedValue(subjectWithAttribtueAndTwoValueMatches, testAttribute, "value2"));
-        FixedValueUtils.save(new FixedValue(subjectWithAttributeButOtherValue, testAttribute, "value3"));
+        FixedValueUtils.save(new FixedValue(subjectWithOneAttributeMatch, testAttribute1, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithTwoAttribtueMatches, testAttribute1, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithTwoAttribtueMatches, testAttribute2, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithNoAttributeMatches, testAttribute3, "value"));
 
         // Create field
-        AttributeMatcher attributeMatcher = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL);
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), testAttribute1.getLabel());
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), testAttribute2.getLabel());
         List<String> testValues = Arrays.asList("value1", "value2");
-        HasFixedAttributeField field = new HasFixedAttributeField("blafield", attributeMatcher, testValues);
+        HasFixedAttributeField field = new HasFixedAttributeField("blafield", Arrays.asList(attributeMatcher1, attributeMatcher2));
 
         // Test
-        assertEquals("1",field.valueForSubject(subjectWithAttributeAndOneValueMatch));
-        assertEquals("1", field.valueForSubject(subjectWithAttribtueAndTwoValueMatches));
-        assertEquals("0", field.valueForSubject(subjectWithAttributeButOtherValue));
-        assertEquals("0", field.valueForSubject(subjectWithoutAttribute));
+        assertEquals("1",field.valueForSubject(subjectWithOneAttributeMatch));
+        assertEquals("1",field.valueForSubject(subjectWithTwoAttribtueMatches));
+        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches));
+        assertEquals("0",field.valueForSubject(subjectWithoutAttribute));
     }
 
 }
