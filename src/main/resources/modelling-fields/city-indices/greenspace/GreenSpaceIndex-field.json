@@ -1,21 +1,5 @@
-//{
-//
-//    //": "Sum of green space areas",
-//    "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
-//    "label": "Green space sum",
-//    "name": "test",
-////    "aggregationSubjectProvider": "uk.gov.ons",
-////    "aggregationSubjectType": "LSOA",
-////    "aggregationFunction": "sum",
-//    "fieldSpecifications": [{
-//      "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
-//      "label": "Green Space geography area"
-//    }]
-//
-//}
-
 {
-  //": "Proportion of green space",
+  //Proportion of green space
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "Green Space Fraction",
   "operation": "div",

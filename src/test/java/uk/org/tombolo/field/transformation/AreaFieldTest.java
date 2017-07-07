@@ -20,35 +20,36 @@ public class AreaFieldTest extends AbstractTest {
                 "areaSubjectType"
         );
 
-        AreaField areaField = new AreaField("area");
+        AreaField areaField = new AreaField("area", Subject.SRID);
 
         Subject subjectSquare5 = TestFactory.makeSubject(subjectType,
                 "square5",
                 "square5",
                 TestFactory.makeSquareGeometry(0d, 0d, 5d)
         );
-        assertEquals(areaField.valueForSubject(subjectSquare5), "25.0");
+
+        assertEquals(areaField.valueForSubject(subjectSquare5), "25.00");
 
         Subject subjectSquare7 = TestFactory.makeSubject(subjectType,
                 "square7",
                 "square7",
                 TestFactory.makeSquareGeometry(5d, 5d, 7d)
         );
-        assertEquals(areaField.valueForSubject(subjectSquare7), "49.0");
+        assertEquals(areaField.valueForSubject(subjectSquare7), "49.00");
 
         Subject subjectPoint = TestFactory.makeSubject(subjectType,
                 "point",
                 "point",
                 TestFactory.makePointGeometry(10d, 10d)
         );
-        assertEquals(areaField.valueForSubject(subjectPoint), "0.0");
+        assertEquals(areaField.valueForSubject(subjectPoint), "0.00");
 
         Subject subjectLine = TestFactory.makeSubject(subjectType,
                 "line",
                 "line",
                 TestFactory.makeLineStringGeometry(2d, 3d, 15d)
         );
-        assertEquals(areaField.valueForSubject(subjectLine), "0.0");
+        assertEquals(areaField.valueForSubject(subjectLine), "0.00");
     }
 
 }

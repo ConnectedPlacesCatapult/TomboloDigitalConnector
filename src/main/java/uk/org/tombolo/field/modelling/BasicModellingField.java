@@ -64,10 +64,7 @@ public class BasicModellingField implements Field, ModellingField {
 
     protected void initialize() {
         String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
-        System.out.print("fieldSpecificationFilename: " + fieldSpecificationFilename + "\n");
-
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
-        System.out.print("fieldSpecificationFileURL: " + fieldSpecificationFileURL + "\n");
 
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
 
@@ -82,10 +79,7 @@ public class BasicModellingField implements Field, ModellingField {
         }
 
         String dataSpecificationFilename = fieldSpecPath+recipe+fieldDataPostfix;
-        System.out.print("dataSpecificationFilename: " + dataSpecificationFilename + "\n");
-
         URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
-        System.out.print("URL: " + dataSpecificationFileURL + "\n");
 
         File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
         try {

@@ -1,10 +1,5 @@
 {
-  //": "Proportion of green space",
-  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-  "label": "Green Space Fraction",
-  "operation": "div",
-  "fieldSpecification1": {
-    //": "Sum of green space areas",
+    // Sum of green space areas
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "Green space sum",
     "aggregationSubjectProvider": "de.overpass-api",
@@ -12,12 +7,7 @@
     "aggregationFunction": "sum",
     "fieldSpecification": {
       "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
-      "label": "Green Space geography area"
+      "label": "Green Space geography area",
+      "targetCRSCode": 27700
     }
-  },
-  "fieldSpecification2": {
-    //": "Area of LSOA",
-    "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
-    "label": "Area LSOA"
-  }
 }
