@@ -72,12 +72,10 @@ public class DownloadUtils {
 		createCacheDir();
 		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
 		if (!localDatasourceFile.exists()){
-			log.info("Feching local file: {}", localDatasourceFile.getName());
-
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
 			connection.setRequestProperty("Accept", "application/json");
-			return new TeeInputStream(connection.getInputStream(), new FileOutputStream("test"));
+			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}

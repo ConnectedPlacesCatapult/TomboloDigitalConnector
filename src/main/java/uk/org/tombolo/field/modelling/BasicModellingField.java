@@ -65,9 +65,7 @@ public class BasicModellingField implements Field, ModellingField {
     protected void initialize() {
         String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
-
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
-
         try {
             field = SpecificationDeserializer
                     .fromJsonFile(fieldSpecificationFile, FieldSpecification.class)
@@ -80,7 +78,6 @@ public class BasicModellingField implements Field, ModellingField {
 
         String dataSpecificationFilename = fieldSpecPath+recipe+fieldDataPostfix;
         URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
-
         File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
