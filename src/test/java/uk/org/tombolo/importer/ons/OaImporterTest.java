@@ -6,6 +6,8 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.util.Arrays;
@@ -56,7 +58,8 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testImportLsoas() throws Exception {
         importer.importDatasource("lsoa");
-        Subject lsoa = SubjectUtils.getSubjectByLabel("E01000002");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "lsoa");
+        Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "E01000002");
 
         assertEquals("City of London 001B", lsoa.getName());
         assertEquals("lsoa", lsoa.getSubjectType().getLabel());
@@ -68,7 +71,8 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testImportMsoas() throws Exception {
         importer.importDatasource("msoa");
-        Subject lsoa = SubjectUtils.getSubjectByLabel("E02000093");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "msoa");
+        Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E02000093");
 
         assertEquals("Brent 001", lsoa.getName());
         assertEquals("msoa", lsoa.getSubjectType().getLabel());
@@ -80,7 +84,8 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testImportLocalAuthorities() throws Exception {
         importer.importDatasource("localAuthority");
-        Subject localAuthority = SubjectUtils.getSubjectByLabel("E06000001");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "localAuthority");
+        Subject localAuthority = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E06000001");
 
         assertEquals("Hartlepool", localAuthority.getName());
         assertEquals("localAuthority", localAuthority.getSubjectType().getLabel());
