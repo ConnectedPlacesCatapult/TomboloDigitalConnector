@@ -27,9 +27,11 @@ import static org.junit.Assert.assertNotNull;
 public class CSVExporterTest extends AbstractTest {
 	CSVExporter exporter = new CSVExporter();
 
+	Subject testSubject;
+
 	@Before
 	public void addSubjectFixtures() {
-		TestFactory.makeNamedSubject("E09000001");
+		testSubject = TestFactory.makeNamedSubject("E09000001");
 	}
 
 	@Test
@@ -59,7 +61,7 @@ public class CSVExporterTest extends AbstractTest {
 	}
 
 	private List<Subject> makeSubjects() {
-		return Collections.singletonList(SubjectUtils.getSubjectByLabel("E09000001"));
+		return Collections.singletonList(SubjectUtils.getSubjectByTypeAndLabel(testSubject.getSubjectType(), testSubject.getLabel()));
 	}
 
 	private List<Field> makeFields(String providerLabel, String attributeLabel) {

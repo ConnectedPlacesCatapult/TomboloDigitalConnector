@@ -23,6 +23,8 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     TestGeotoolsDataStoreImporter importer;
     Consumer<Datasource> datasourceSetup = (o) -> {};
 
+    private SubjectType testSubjectType;
+
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
 
@@ -56,7 +58,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
-            subject.setSubjectType(SubjectTypeUtils.getOrCreate(getProvider(), "example", "Test Example"));
+            subject.setSubjectType(testSubjectType);
             subject.setLabel("example-feature:" + feature.getID());
             subject.setName("Example feature: " + feature.getID());
             return subject;
@@ -64,7 +66,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         public Provider getProvider() {
-            return new Provider("org.example", "Example");
+            return TestFactory.DEFAULT_PROVIDER;
         }
 
         @Override
@@ -79,14 +81,16 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     public void setUp() throws Exception {
         importer = new TestGeotoolsDataStoreImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
+        testSubjectType = SubjectTypeUtils.getOrCreate(TestFactory.DEFAULT_PROVIDER, "example", "Test Example");
     }
 
     @Test
     public void testImportDatasourceImportsSubjects() throws Exception {
+
         importer.importDatasource("osm_polyline_processed", null, null);
         assertEquals(0, importer.getTimedValueCount());
 
-        Subject subject = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         assertEquals("Example feature: feature-0", subject.getName());
         assertEquals("example", subject.getSubjectType().getLabel());
@@ -102,7 +106,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         importer.importDatasource("osm_polyline_processed", null, null);
         assertEquals(25, importer.getTimedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
         Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
@@ -119,7 +123,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         importer.importDatasource("osm_polyline_processed", null, null);
         assertEquals(25, importer.getFixedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
         Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");

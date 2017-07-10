@@ -8,6 +8,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.util.List;
@@ -61,7 +62,6 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
         assertEquals("",datasource.getDescription());
-        assertNull(datasource.getRemoteDatafile());
 
         assertEquals(0, datasource.getTimedValueAttributes().size());
         assertEquals(6, datasource.getFixedValueAttributes().size());
@@ -75,7 +75,8 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         importer.importDatasource("milton_keynes.osm_polyline_processed");
         assertEquals(69489, importer.getTimedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "SSxNode");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
 
         assertEquals("osm_polyline_processed:osm_polyline_processed.12", streetSegment.getName());
         assertEquals("SSxNode", streetSegment.getSubjectType().getLabel());
