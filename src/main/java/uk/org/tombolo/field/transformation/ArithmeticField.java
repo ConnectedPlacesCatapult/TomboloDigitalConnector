@@ -46,7 +46,7 @@ public class ArithmeticField implements SingleValueField {
             this.field1 = (SingleValueField) fieldSpecification1.toField();
             this.field2 = (SingleValueField) fieldSpecification2.toField();
         } catch (Exception e) {
-            throw new Error("Field not valid");
+            throw new Error("Field not valid: " + e.getClass());
         }
     }
 
