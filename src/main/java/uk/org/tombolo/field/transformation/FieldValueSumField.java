@@ -4,10 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +12,13 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField implements SingleValueField, ParentField {
-    String label;
+public class FieldValueSumField extends AbstractField implements SingleValueField, ParentField {
     String name;
     List<FieldSpecification> fieldSpecifications;
     List<Field> fields;
 
     public FieldValueSumField(String label, String name, List<FieldSpecification> fieldSpecifications) {
-        this.label = label;
+        super(label);
         this.name = name;
         this.fieldSpecifications = fieldSpecifications;
     }
@@ -58,12 +54,10 @@ public class FieldValueSumField implements SingleValueField, ParentField {
         return obj;
     }
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
-
     private Double sumFields(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
         if (fields == null)
             initialize();
         Double sum = 0d;
@@ -72,6 +66,7 @@ public class FieldValueSumField implements SingleValueField, ParentField {
                 throw new IncomputableFieldException("Field sum only valid for single value fields");
             sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
         }
+        setCachedValue(subject, sum.toString());
         return sum;
     }
 

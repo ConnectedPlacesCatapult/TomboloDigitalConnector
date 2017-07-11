@@ -6,10 +6,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +19,9 @@ import java.util.List;
  * building, it will evaluate the fieldSpec with a subject representing the
  * Street that building is on (notwithstanding oddities in the data)
  */
-public class MapToNearestSubjectField implements Field, SingleValueField, ParentField {
+public class MapToNearestSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
-    private final String label;
     private final String nearestSubjectProvider;
     private final String nearestSubjectType;
     private final FieldSpecification fieldSpecification;
@@ -34,7 +30,7 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
     private SubjectType nearestSubjectTypeObject;
 
     MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
-        this.label = label;
+        super(label);
         this.maxRadius = maxRadius;
         this.nearestSubjectProvider = nearestSubjectProvider;
         this.nearestSubjectType = nearestSubjectType;
@@ -60,11 +56,6 @@ public class MapToNearestSubjectField implements Field, SingleValueField, Parent
         obj.put(this.label,
                 Double.valueOf(field.valueForSubject(getSubjectProximalToSubject(subject))));
         return obj;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {

@@ -9,6 +9,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 
@@ -22,8 +23,7 @@ import java.util.List;
  * A field that takes as input a specification (recipe) of a potentially complex field or model
  * and returns a value that is calculated according to the specification.
  */
-public class BasicModellingField implements Field, ModellingField {
-    String label;
+public class BasicModellingField extends AbstractField implements Field, ModellingField {
     String recipe;
     Field field;
     List<DatasourceSpecification> datasourceSpecifications;
@@ -35,7 +35,7 @@ public class BasicModellingField implements Field, ModellingField {
     protected static final String fieldDataPostfix = "-data.json";
 
     public BasicModellingField(String label, String recipe){
-        this.label = label;
+        super(label);
         this.recipe = recipe;
     }
 
@@ -55,11 +55,6 @@ public class BasicModellingField implements Field, ModellingField {
         // Unwrap the fieldValue by getting based on the label, then rewrap with the label the user specified
         obj.put(label, fieldValue.get(field.getLabel()));
         return obj;
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     protected void initialize() {

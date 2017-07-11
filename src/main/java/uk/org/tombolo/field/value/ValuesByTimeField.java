@@ -8,6 +8,7 @@ import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 
@@ -19,13 +20,12 @@ import java.util.stream.Collectors;
  *
  * The metadata is regarding the attribute.
  */
-public class ValuesByTimeField implements Field {
-    protected String label;
+public class ValuesByTimeField extends AbstractField implements Field {
     private AttributeMatcher attribute;
     private Attribute cachedAttribute;
 
     public ValuesByTimeField(String label, AttributeMatcher attribute) {
-        this.label = label;
+        super(label);
         this.attribute = attribute;
     }
 
@@ -38,11 +38,6 @@ public class ValuesByTimeField implements Field {
             return pair;
         }).collect(Collectors.toList()));
         return withinMetadata(arr);
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     protected Attribute getAttribute() throws IncomputableFieldException {
