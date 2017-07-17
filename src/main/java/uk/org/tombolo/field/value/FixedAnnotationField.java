@@ -28,4 +28,5 @@ public class FixedAnnotationField extends AbstractField implements SingleValueFi
         obj.put(label, value);
         return obj;
     }
+
 }

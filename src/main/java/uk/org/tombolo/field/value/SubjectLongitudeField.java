@@ -29,4 +29,5 @@ public class SubjectLongitudeField extends AbstractField implements SingleValueF
         obj.put(label, centroid.getX());
         return obj;
     }
+
 }

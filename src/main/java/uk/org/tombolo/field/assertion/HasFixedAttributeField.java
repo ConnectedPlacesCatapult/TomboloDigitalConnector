@@ -60,4 +60,5 @@ public class HasFixedAttributeField extends AbstractField implements SingleValue
         obj.put("value", valueForSubject(subject));
         return obj;
     }
+
 }

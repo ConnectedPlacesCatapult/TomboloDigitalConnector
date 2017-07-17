@@ -28,4 +28,5 @@ public class SubjectNameField extends AbstractField implements Field, SingleValu
         obj.put(label, valueForSubject(subject));
         return obj;
     }
+
 }

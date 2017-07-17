@@ -84,4 +84,5 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
         setCachedValue(subject, retVal.toString());
         return retVal;
     }
+
 }

@@ -29,4 +29,5 @@ public class SubjectLatitudeField extends AbstractField implements SingleValueFi
         obj.put(label, centroid.getY());
         return obj;
     }
+
 }

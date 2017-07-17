@@ -62,4 +62,5 @@ public class AreaField extends AbstractField implements SingleValueField {
         obj.put(this.label, Double.valueOf(getTransformedArea(subject)));
         return obj;
     }
+
 }
