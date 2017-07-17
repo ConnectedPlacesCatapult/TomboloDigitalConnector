@@ -12,6 +12,7 @@ import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
@@ -27,8 +28,7 @@ import java.util.stream.Collectors;
  * For a subject, returns the sum of its TimedValues for a list of dividend
  * attributes divided by a divisor attribute.
  */
-public class FractionOfTotalField implements SingleValueField {
-    private final String label;
+public class FractionOfTotalField extends AbstractField implements SingleValueField {
     private final List<AttributeMatcher> dividendAttributes;
     private final AttributeMatcher divisorAttribute;
     private Map<AttributeMatcher, Attribute> cachedAttributes;
@@ -36,7 +36,7 @@ public class FractionOfTotalField implements SingleValueField {
     private Logger log = LoggerFactory.getLogger(FractionOfTotalField.class);
 
     FractionOfTotalField(String label, List<AttributeMatcher> dividendAttributes, AttributeMatcher divisorAttribute) {
-        this.label = label;
+        super(label);
         this.dividendAttributes = dividendAttributes;
         this.divisorAttribute = divisorAttribute;
     }
@@ -59,11 +59,6 @@ public class FractionOfTotalField implements SingleValueField {
         JSONObject obj = new JSONObject();
         obj.put(label, Collections.singletonList(values));
         return obj;
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     private ValueWithTimestamp getValue(Subject subject) throws IncomputableFieldException {

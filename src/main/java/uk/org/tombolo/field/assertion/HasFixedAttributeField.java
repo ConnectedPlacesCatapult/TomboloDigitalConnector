@@ -7,6 +7,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
@@ -16,16 +17,15 @@ import java.util.List;
 /**
  * Returns 1 if subject has attribute with value
  */
-public class HasFixedAttributeField implements SingleValueField {
+public class HasFixedAttributeField extends AbstractField implements SingleValueField {
 
-    private final String label;
     private AttributeMatcher attribute;
     private final List<String> values;
 
     private Attribute cachedAttribute;
 
     public HasFixedAttributeField(String label, AttributeMatcher attribute, List<String> values){
-        this.label = label;
+        super(label);
         this.attribute = attribute;
         this.values = values;
     }
@@ -55,8 +55,4 @@ public class HasFixedAttributeField implements SingleValueField {
         return obj;
     }
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
 }

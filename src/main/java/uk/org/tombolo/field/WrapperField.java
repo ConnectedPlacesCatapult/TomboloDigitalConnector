@@ -16,14 +16,13 @@ import java.util.List;
  * Takes a fieldSpecification exactly like the root fieldSpecification does.
  * Can be nested.
  */
-public class WrapperField implements Field, ParentField {
+public class WrapperField extends AbstractField implements Field, ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
     private final List<FieldSpecification> fieldSpecification;
-    private final String label;
     private ArrayList<Field> fields;
 
     WrapperField(String label, List<FieldSpecification> fieldSpecification) {
-        this.label = label;
+        super(label);
         this.fieldSpecification = fieldSpecification;
     }
 
@@ -52,11 +51,6 @@ public class WrapperField implements Field, ParentField {
         }
         obj.put(label, inner);
         return obj;
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     @Override
