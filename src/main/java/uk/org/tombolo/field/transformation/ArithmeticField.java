@@ -3,6 +3,7 @@ package uk.org.tombolo.field.transformation;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
@@ -14,9 +15,8 @@ import java.util.function.BiFunction;
  * Takes as input an operation, and two fields. It returns for a given Subject the value resulting from applying
  * the operation on the two field values.
  */
-public class ArithmeticField implements SingleValueField {
+public class ArithmeticField extends AbstractField implements SingleValueField {
     public static enum Operation {div, mul, add, sub}
-    private final String label;
     private final FieldSpecification fieldSpecification1;
     private final FieldSpecification fieldSpecification2;
     private final Operation operation;
@@ -27,7 +27,7 @@ public class ArithmeticField implements SingleValueField {
     private BiFunction<Double, Double, Double> operator;
 
     ArithmeticField(String label, Operation operation, FieldSpecification fieldSpecification1, FieldSpecification fieldSpecification2) {
-        this.label = label;
+        super(label);
         this.fieldSpecification1 = fieldSpecification1;
         this.operation = operation;
         this.fieldSpecification2 = fieldSpecification2;
@@ -46,7 +46,7 @@ public class ArithmeticField implements SingleValueField {
             this.field1 = (SingleValueField) fieldSpecification1.toField();
             this.field2 = (SingleValueField) fieldSpecification2.toField();
         } catch (Exception e) {
-            throw new Error("Field not valid");
+            throw new Error("Field not valid: " + e.getClass());
         }
     }
 
@@ -79,8 +79,4 @@ public class ArithmeticField implements SingleValueField {
         return retVal;
     }
 
-    @Override
-    public String getLabel() {
-        return this.label;
-    }
 }

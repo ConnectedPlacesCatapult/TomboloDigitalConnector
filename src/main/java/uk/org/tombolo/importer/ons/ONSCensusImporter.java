@@ -10,10 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
@@ -178,7 +175,13 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							for (int i = 2; i<2+datasource.getTimedValueAttributes().size(); i++){
 								values.add(Double.parseDouble(fields.get(i)));
 							}
-							Subject subject = SubjectUtils.getSubjectByLabel(areaId);
+							Subject subject = null;
+							for (OaImporter.OaType oaType : OaImporter.OaType.values()){
+								subject = SubjectUtils.getSubjectByTypeAndLabel(OaImporter.getSubjectType(oaType), areaId);
+								if (subject != null)
+									break;
+							}
+
 							if (subject != null
 									&& values.size() == datasource.getTimedValueAttributes().size()){
 								for (int i=0; i<values.size(); i++){

@@ -7,6 +7,8 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.util.Arrays;
@@ -45,7 +47,8 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     @Test
     public void testImportHospitals() throws Exception {
         importer.importDatasource("hospital");
-        Subject subject = SubjectUtils.getSubjectByLabel("40918");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "hospital");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"40918");
         assertEquals(1106, importer.getSubjectCount());
         assertEquals("Guy's Hospital", subject.getName());
         assertEquals(51.5046, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
@@ -56,7 +59,8 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     @Test
     public void testImportClinics() throws Exception {
         importer.importDatasource("clinic");
-        Subject subject = SubjectUtils.getSubjectByLabel("12366");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "clinic");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "12366");
         assertEquals(8416, importer.getSubjectCount());
         assertEquals("Frinton Road Medical Centre", subject.getName());
         assertEquals(51.8042, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
@@ -66,7 +70,8 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     @Test
     public void testImportGpSurgeries() throws Exception {
         importer.importDatasource("gpSurgeries");
-        Subject subject = SubjectUtils.getSubjectByLabel("2915");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "gpSurgeries");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "2915");
         assertEquals(9767, importer.getSubjectCount());
         assertEquals("Blackfriars", subject.getName());
         assertEquals(53.4839, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);

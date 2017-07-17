@@ -45,11 +45,13 @@
           // and used as denominator
         "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
           "label": "localAuthoritySumCountPedalCycles",
+          "containingSubjectProvider": "uk.gov.ons",
           "containingSubjectType": "localAuthority",
 
           "fieldSpecification": {
             "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
             "label": "SumCountPedalCycles",
+            "aggregationSubjectProvider": "uk.gov.dft",
             "aggregationSubjectType": "trafficCounter",
             "aggregationFunction": "sum",
 

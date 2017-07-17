@@ -32,7 +32,7 @@ public class DownloadUtils {
 	}
 
 	public File fetchFile(URL url, String prefix, String suffix) throws MalformedURLException, IOException{
-		createCacheDir();
+		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
 		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
@@ -44,7 +44,7 @@ public class DownloadUtils {
 	}
 
 	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
-		createCacheDir();
+		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
 		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
@@ -69,9 +69,8 @@ public class DownloadUtils {
 	}
 
 	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
-		createCacheDir();
+		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
-		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
@@ -95,7 +94,7 @@ public class DownloadUtils {
 						+ suffix);
 	}
 
-	private void createCacheDir() throws IOException {
-		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY));
+	private void createCacheDir(String prefix) throws IOException {
+		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY + "/" + prefix));
 	}
 }
