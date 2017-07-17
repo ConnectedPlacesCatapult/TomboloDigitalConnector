@@ -27,7 +27,9 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
         this.fields = new ArrayList<>();
         for (FieldSpecification fieldSpec : fieldSpecifications) {
             try {
-                fields.add(fieldSpec.toField());
+                Field field = fieldSpec.toField();
+                field.setFieldCache(fieldCache);
+                fields.add(field);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }

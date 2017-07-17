@@ -28,11 +28,12 @@ public class DataExportEngine implements ExecutionEngine{
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	private static DownloadUtils downloadUtils;
 	private static Properties apiKeys;
-	private static FieldCache fieldCache;
+	private FieldCache fieldCache;
 
 	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
+		fieldCache = new FieldCache();
 	}
 
 	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
@@ -50,6 +51,7 @@ public class DataExportEngine implements ExecutionEngine{
 		List<Field> fields = new ArrayList<>();
 		for (FieldSpecification fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
+			field.setFieldCache(fieldCache);
 			fields.add(field);
 		}
 
@@ -97,11 +99,5 @@ public class DataExportEngine implements ExecutionEngine{
 				datasourceSpec.getTemporalScope(),
 				forceImports.doesMatch(datasourceSpec.getImporterClass())
 		);
-	}
-
-	public static FieldCache getFieldCache(){
-		if (fieldCache == null)
-			fieldCache = new FieldCache();
-		return fieldCache;
 	}
 }

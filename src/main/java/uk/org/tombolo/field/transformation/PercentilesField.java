@@ -89,6 +89,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
         if (field == null) {
             try {
                 field = (SingleValueField) valueField.toField();
+                field.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){

@@ -38,6 +38,7 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
 
         try {
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }

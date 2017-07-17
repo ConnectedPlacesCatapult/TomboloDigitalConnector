@@ -44,7 +44,9 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
         try {
             this.operator = operators.get(this.operation);
             this.field1 = (SingleValueField) fieldSpecification1.toField();
+            field1.setFieldCache(fieldCache);
             this.field2 = (SingleValueField) fieldSpecification2.toField();
+            field2.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid: " + e.getClass());
         }

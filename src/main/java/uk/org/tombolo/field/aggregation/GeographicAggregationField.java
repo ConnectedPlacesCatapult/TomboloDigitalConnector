@@ -57,6 +57,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid");
         }
