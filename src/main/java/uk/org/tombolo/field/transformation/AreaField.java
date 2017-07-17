@@ -9,6 +9,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
@@ -17,13 +18,12 @@ import uk.org.tombolo.field.SingleValueField;
  * It will give the area only for polygons and multi-polygons,
  * the other shapes(e.g. Points) will return 0.0.
  */
-public class AreaField implements SingleValueField {
+public class AreaField extends AbstractField implements SingleValueField {
 
-    private final String label;
     private final int targetCRSCode;
 
     public AreaField(String label, int targetCRSCode) {
-        this.label = label;
+        super(label);
         this.targetCRSCode = targetCRSCode;
     }
 
@@ -58,8 +58,4 @@ public class AreaField implements SingleValueField {
         return obj;
     }
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
 }

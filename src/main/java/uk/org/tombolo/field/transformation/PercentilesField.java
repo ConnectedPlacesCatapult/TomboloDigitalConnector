@@ -9,10 +9,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
 import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +19,7 @@ import java.util.List;
  * Field that returns for a subject the percentile in which its value falls.
  * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
-public class PercentilesField implements Field, SingleValueField, ParentField {
+public class PercentilesField extends AbstractField implements Field, SingleValueField, ParentField {
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
@@ -34,7 +31,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     // True if the ordering of the percentiles is supposed to be inverse to the field
     private Boolean inverse;
 
-    private String label;
     private SingleValueField field;
     private List<Double> percentiles;
 
@@ -44,7 +40,7 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
             FieldSpecification valueField,
             List<SubjectSpecification> normalizationSubjects,
             Integer percentileCount, Boolean inverse) {
-        this.label = label;
+        super(label);
         this.valueField = valueField;
         this.normalizationSubjects = normalizationSubjects;
         this.percentileCount = percentileCount;
@@ -63,11 +59,6 @@ public class PercentilesField implements Field, SingleValueField, ParentField {
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
         return String.valueOf(calculateValueForSubject(subject));
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
