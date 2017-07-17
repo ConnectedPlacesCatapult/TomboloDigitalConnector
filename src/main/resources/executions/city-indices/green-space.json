@@ -1,0 +1,36 @@
+{
+"datasetSpecification": {
+"subjectSpecification": [
+{
+  // The output subjects are all LSOAs
+"provider": "uk.gov.ons",
+"subjectType": "lsoa"
+}
+],
+"datasourceSpecification": [
+{
+// Importer for LSOA geographies
+"importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+"datasourceId": "lsoa"
+}
+],
+"fieldSpecification": [
+  {
+  "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+  "label": "index:green_space",
+  "recipe": "city-indices/greenspace/GreenSpaceIndex"
+  },
+  {
+    "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+    "label": "component:sum_of_green_space_areas",
+    "recipe": "city-indices/greenspace/GreenSpaceArea"
+  },
+  {
+    "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+    "label": "component:area",
+    "recipe": "city-indices/greenspace/lsoaArea"
+  }
+  ]
+},
+"exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

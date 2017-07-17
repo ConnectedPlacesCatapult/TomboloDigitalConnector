@@ -19,15 +19,6 @@ import java.util.Objects;
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 
-	@Deprecated
-	public static Subject getSubjectByLabel(String label){
-		return HibernateUtil.withSession(session -> {
-			return session.createQuery("from Subject where label = :label", Subject.class)
-					.setParameter("label", label)
-					.uniqueResult();
-		});
-	}
-	
 	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
 			return session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)

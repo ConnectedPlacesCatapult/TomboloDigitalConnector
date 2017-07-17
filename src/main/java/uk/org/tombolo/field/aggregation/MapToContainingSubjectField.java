@@ -6,10 +6,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,8 +19,7 @@ import java.util.stream.Collectors;
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField implements Field, SingleValueField, ParentField {
-    private final String label;
+public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
     private final String containingSubjectProvider;
     private final String containingSubjectType;
     private final FieldSpecification fieldSpecification;
@@ -31,7 +27,7 @@ public class MapToContainingSubjectField implements Field, SingleValueField, Par
     private SubjectType containerSubjectType;
 
     MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldSpecification fieldSpecification) {
-        this.label = label;
+        super(label);
         this.containingSubjectProvider = containingSubjectProvider;
         this.containingSubjectType = containingSubjectType;
         this.fieldSpecification = fieldSpecification;
@@ -55,11 +51,6 @@ public class MapToContainingSubjectField implements Field, SingleValueField, Par
                 field.jsonValueForSubject(
                         getSubjectContainingSubject(subject)));
         return obj;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
     }
 
     @Override

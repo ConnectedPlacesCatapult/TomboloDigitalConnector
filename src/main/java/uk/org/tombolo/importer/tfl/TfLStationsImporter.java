@@ -114,7 +114,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 			for (int i=0; i< stations.getLength(); i++){
 				Node station = stations.item(i);
 				String stationLabel = stationLabelFromNode(station);
-				Subject subject = SubjectUtils.getSubjectByLabel(stationLabel);
+				Subject subject = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), stationLabel);
 
 				// Serving Line Count
 				NodeList servingLineList = (NodeList) xpath.evaluate("./servingLines/servingLine", station, XPathConstants.NODESET);
