@@ -23,6 +23,14 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder fixedValueField(String providerLabel, String attributeLabel) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.value.FixedValueField")
+                .setLabel(attributeLabel)
+                .setAttribute(providerLabel, attributeLabel);
+        return spec;
+    }
+
     public static FieldSpecificationBuilder valuesByTime(String providerLabel, String attributeLabel) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.ValuesByTimeField")
