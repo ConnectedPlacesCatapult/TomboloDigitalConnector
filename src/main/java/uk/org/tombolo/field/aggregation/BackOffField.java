@@ -47,9 +47,10 @@ public class BackOffField extends AbstractField implements SingleValueField {
                 value = ((SingleValueField) field).valueForSubject(subject);
             } catch (IncomputableFieldException e){
                 // Keep calm and continue processing ... we will back-off
+                continue;
             }
             if (value != null)
-                return ((SingleValueField) field).valueForSubject(subject);
+                return value;
         }
         throw new IncomputableFieldException("No Backed-off value found");
     }
