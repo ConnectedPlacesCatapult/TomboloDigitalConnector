@@ -75,7 +75,7 @@ public class JSONReader {
 
     private final static String EMPTY_KEY = null;
 
-    private static String PRIMARY_NODE = null;
+    private String primaryNode = null;
 
     private static boolean IS_FIRST = true;
 
@@ -166,6 +166,14 @@ public class JSONReader {
         this.tags = tags;
     }
 
+    public String getPrimaryNode() {
+        return primaryNode;
+    }
+
+    public void setPrimaryNode(String primaryNode) {
+        this.primaryNode = primaryNode;
+    }
+
 
     /*
      * The method is responsible for return the flat structure of JSON file to the caller
@@ -227,7 +235,7 @@ public class JSONReader {
 
     private void createFlatStructure (String key, String value) {
 
-        if (key.equalsIgnoreCase(PRIMARY_NODE)) {
+        if (key.equalsIgnoreCase(getPrimaryNode())) {
             flatJsonTree.add(individualSectionOfTree);
             individualSectionOfTree = new LinkedHashMap<>();
         }
@@ -237,10 +245,7 @@ public class JSONReader {
 
         individualSectionOfTree.get(key).add(value);
 
-        if (IS_FIRST) {
-            PRIMARY_NODE = key;
-            IS_FIRST = false;
-        }
+        if (primaryNode == null) setPrimaryNode(key);
 
     }
 
