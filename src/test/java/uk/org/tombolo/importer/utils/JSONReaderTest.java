@@ -16,7 +16,7 @@ public class JSONReaderTest {
 
     @Before
     public void setUp() throws IOException {
-        String resourcePath = "executions/air_quality_test_data.json";
+        String resourcePath = "utility-resources/air_quality_test_data.json";
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(resourcePath).getFile());
         reader = new JSONReader(file);
@@ -51,7 +51,7 @@ public class JSONReaderTest {
     @Test
     public void testAllUniqueKeys() {
 
-        assertEquals("@Latitude", reader.allUniquekeys().get(3));
+        assertEquals(16, reader.allUniquekeys().size());
 
     }
 

@@ -73,7 +73,7 @@ public class JSONReader {
 
     private ArrayList<String> tags = new ArrayList<>();
 
-    private static String EMPTY_KEY = null;
+    private final static String EMPTY_KEY = null;
 
     private static String PRIMARY_NODE = null;
 
