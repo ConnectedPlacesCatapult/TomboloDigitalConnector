@@ -1,21 +1,25 @@
 package uk.org.tombolo.importer.dfe;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
+import uk.org.tombolo.importer.utils.CoordinateUtils;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -26,10 +30,14 @@ import java.util.stream.IntStream;
  */
 public class SchoolsImporter extends AbstractDfEImporter {
 
+    private static final Logger log = LoggerFactory.getLogger(SchoolsImporter.class);
+
     // Column index for the subject label builder
     private static final int LABEL_COLUMN_INDEX = 0;
     // Column index for the subject name
     private static final int NAME_COLUMN_INDEX = 4;
+    //Column index for postcode
+    private static final int POSTCODE_COLUMN_INDEX = 10;
 
     // Method used to get the dataset if it is actually updated monthly
     public static String getFormattedMonthYear() {
@@ -89,6 +97,10 @@ public class SchoolsImporter extends AbstractDfEImporter {
         List<Subject> subjects = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();
 
+        //Import the postcode conversion file
+        Map<String, Map.Entry<String, String>> postcodeToCoord =
+                CoordinateUtils.postcodeToLatLong(getProvider().getLabel(), downloadUtils);
+
         Iterator<Row> rowIterator = workbook.getSheetAt(schoolsDataSourceID.schools.sheetIdx).rowIterator();
         DataFormatter dataFormatter = new DataFormatter();
         Row header = rowIterator.next();
@@ -96,17 +108,36 @@ public class SchoolsImporter extends AbstractDfEImporter {
             Row row = rowIterator.next();
             String label;
             String name;
+            String postcode;
 
             try {
                 label = datasource.getProvider().getLabel() + "_schools_" + row.getCell(LABEL_COLUMN_INDEX).toString();
                 name = row.getCell(NAME_COLUMN_INDEX).toString();
+                postcode = row.getCell(POSTCODE_COLUMN_INDEX).toString();
 
             } catch (Exception e) {
                 // Continue with the other data, if any.
                 continue;
             }
 
-            Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name,null);
+            // create the geography from the coordinates matching the postcode
+            GeometryFactory gf = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+            Map.Entry<String, String> latlong = postcodeToCoord.get(postcode.split(" ")[0]);
+            Geometry geometry = null;
+            try {
+                Coordinate  coordinate = new Coordinate(Double.parseDouble(latlong.getKey()),
+                        Double.parseDouble(latlong.getValue()));
+                 geometry = gf.createPoint(coordinate);
+            } catch (Exception e) {
+                log.warn("Could not get the coordinate for subject {}: {}", label, e.getMessage());
+                // Nothing to do, we won't have a geometry for this subject
+            }
+            Subject subject = new Subject(
+                    datasource.getUniqueSubjectType(),
+                    label,
+                    name,
+                    geometry
+            );
             subjects.add(subject);
 
             int attributeIndex = 0;
