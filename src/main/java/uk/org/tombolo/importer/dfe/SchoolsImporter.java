@@ -7,8 +7,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
@@ -29,9 +27,6 @@ import java.util.stream.IntStream;
  * NOTE the file containing the schools is updated monthly (in theory).
  */
 public class SchoolsImporter extends AbstractDfEImporter {
-
-    private static final Logger log = LoggerFactory.getLogger(SchoolsImporter.class);
-
     // Column index for the subject label builder
     private static final int LABEL_COLUMN_INDEX = 0;
     // Column index for the subject name
@@ -129,7 +124,6 @@ public class SchoolsImporter extends AbstractDfEImporter {
                         Double.parseDouble(latlong.getValue()));
                  geometry = gf.createPoint(coordinate);
             } catch (Exception e) {
-                log.warn("Could not get the coordinate for subject {}: {}", label, e.getMessage());
                 // Nothing to do, we won't have a geometry for this subject
             }
             Subject subject = new Subject(
