@@ -8,41 +8,41 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Returns 1 if subject has attribute with value
+ * Returns true if a subject has any fixed value for the listed attributes.
  */
 public class HasFixedAttributeField extends AbstractField implements SingleValueField {
 
-    private AttributeMatcher attribute;
-    private final List<String> values;
+    private List<AttributeMatcher> attributes;
 
-    private Attribute cachedAttribute;
+    private List<Attribute> cachedAttributes;
 
-    public HasFixedAttributeField(String label, AttributeMatcher attribute, List<String> values){
+    public HasFixedAttributeField(String label, List<AttributeMatcher> attributes){
         super(label);
-        this.attribute = attribute;
-        this.values = values;
+        this.attributes = attributes;
     }
 
-    public void initialize() {
-        cachedAttribute = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
+    public void initialise(){
+        cachedAttributes = new ArrayList<>();
+        for (AttributeMatcher attribute : attributes){
+            cachedAttributes.add(AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel));
+        }
     }
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        if (cachedAttribute == null)
-            initialize();
-        FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
-        if (fixedValue != null) {
-            for (String value : values) {
-                if (fixedValue.getValue().equals(value))
-                    return "1";
+        if (cachedAttributes == null)
+            initialise();
+        for (Attribute cachedAttribute : cachedAttributes) {
+            FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
+            if (fixedValue != null) {
+                return "1";
             }
         }
         return "0";
