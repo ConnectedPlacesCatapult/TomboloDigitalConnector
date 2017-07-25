@@ -10,8 +10,8 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Importer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,14 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Using the following test data files:
+ *
+ * Remote: http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx
+ * Local: aHR0cDovL3d3dy5ub28ub3JnLnVrL3NlY3VyZWZpbGVzLzE2MTAyNF8xMzUyLzIwMTUwNTExX01TT0FfV2FyZF9PYmVzaXR5Lnhsc3g=.xlsx
+ */
 public class ChildhoodObesityImporterTest extends AbstractTest {
-    private Importer importer;
+    private ChildhoodObesityImporter importer;
 
     private Subject cityOfLondon001;
     private Subject islington011;
@@ -29,7 +35,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new ChildhoodObesityImporter();
+        importer = new ChildhoodObesityImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
 
         cityOfLondon001 = TestFactory.makeNamedSubject("E02000001");  // City of London 001
@@ -38,14 +44,14 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(3, datasources.size());
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("childhoodObesity"), datasources);
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("msoaChildhoodObesity2014");
+        Datasource datasource = importer.getDatasource("childhoodObesity");
 
         assertEquals(18, datasource.getTimedValueAttributes().size());
     }
@@ -57,7 +63,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOA() throws Exception {
-        importer.importDatasource("msoaChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -89,7 +95,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOAWithEmpty() throws Exception {
-        importer.importDatasource("msoaChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -125,7 +131,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceLA() throws Exception {
-        importer.importDatasource("laChildhoodObesity2014");
+        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 

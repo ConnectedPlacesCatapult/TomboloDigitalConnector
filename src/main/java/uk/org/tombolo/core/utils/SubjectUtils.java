@@ -19,20 +19,21 @@ import java.util.Objects;
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
 
-	public static Subject getSubjectByLabel(String label){
-		return HibernateUtil.withSession(session -> {
-			return session.createQuery("from Subject where label = :label", Subject.class)
-					.setParameter("label", label)
-					.uniqueResult();
-		});
-	}
-	
 	public static List<Subject> getSubjectByTypeAndLabelPattern(SubjectType subjectType, String labelPattern){
 		return HibernateUtil.withSession(session -> {
 			return session.createQuery("from Subject where subjectType = :subjectType and lower(label) like :labelPattern", Subject.class)
 					.setParameter("subjectType", subjectType)
 					.setParameter("labelPattern", labelPattern.toLowerCase())
 					.list();
+		});
+	}
+
+	public static Subject getSubjectByTypeAndLabel(SubjectType subjectType, String label){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and label = :label", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("label", label)
+					.uniqueResult();
 		});
 	}
 
@@ -66,7 +67,7 @@ public class SubjectUtils {
 			session.beginTransaction();
 			int saved = 0;
 			for (Subject subject : subjects) {
-				Subject savedSubject = getSubjectByLabel(subject.getLabel());
+				Subject savedSubject = getSubjectByTypeAndLabel(subject.getSubjectType(), subject.getLabel());
 
 				if (savedSubject == null) {
 					session.saveOrUpdate(subject);
@@ -88,7 +89,7 @@ public class SubjectUtils {
 	}
 
 	private static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(subjectSpecification.getSubjectType());
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subjectSpecification.getProvider(), subjectSpecification.getSubjectType());
 
 		String hqlQuery = "from Subject s where s.subjectType = :subjectType";
 
@@ -142,28 +143,28 @@ public class SubjectUtils {
 		return query;
 	}
 
-	public static List<Subject> subjectsContainingSubject(String subjectTypeLabel, Subject subject) {
+	public static List<Subject> subjectsContainingSubject(SubjectType subjectType, Subject subject) {
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and contains(shape, :geom) = true", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			return (List<Subject>) query.getResultList();
 		});
 	}
 
-	public static List<Subject> subjectsWithinSubject(String subjectTypeLabel, Subject subject) {
+	public static List<Subject> subjectsWithinSubject(SubjectType subjectType, Subject subject) {
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and within(shape, :geom) = true", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			return (List<Subject>) query.getResultList();
 		});
 	}
 
-	public static Subject subjectNearestSubject(String subjectTypeLabel, Subject subject, Double radius){
+	public static Subject subjectNearestSubject(SubjectType subjectType, Subject subject, Double radius){
 		return HibernateUtil.withSession(session -> {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and st_dwithin(shape, :geom, :radius) = true order by st_distance(shape, :geom)", Subject.class);
-			query.setParameter("subjectType", SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel));
+			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			query.setParameter("radius", radius);
 			query.setMaxResults(1);

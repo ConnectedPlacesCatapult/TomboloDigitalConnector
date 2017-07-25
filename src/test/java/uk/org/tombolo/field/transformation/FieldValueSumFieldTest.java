@@ -28,8 +28,8 @@ public class FieldValueSumFieldTest extends AbstractTest {
         subject = TestFactory.makeNamedSubject("E01002766");
         Attribute f1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f1a_label");
         Attribute f2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f2a_label");
-        TestFactory.makeTimedValue("E01002766", f1, "2011-01-01T00:00:00", 10d);
-        TestFactory.makeTimedValue("E01002766", f2, "2011-01-01T00:00:00", 40d);
+        TestFactory.makeTimedValue(subject.getSubjectType(), "E01002766", f1, "2011-01-01T00:00:00", 10d);
+        TestFactory.makeTimedValue(subject.getSubjectType(), "E01002766", f2, "2011-01-01T00:00:00", 40d);
 
         field = new FieldValueSumField("FVSF-label", "FVSF-name", Arrays.asList(fs1, fs2));
     }

@@ -1,7 +1,8 @@
 # Tombolo Digital Connector
 
-The Tombolo Digital Connector is a piece of software to combine urban datasets
-and urban models.
+The Tombolo Digital Connector is a software library for integrating urban models and datasets.
+
+For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
 
 ## Table of Contents:
 
@@ -9,7 +10,7 @@ and urban models.
 * [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
-* [Documentation](#documentation)
+* [Wiki to PDF](#wiki-to-pdf)
 
 ## Quick start
 
@@ -171,38 +172,11 @@ docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
 ```
 
-## Documentation
+## Wiki to PDF
 
-For further information see the [documentation section](documentation/README.md)
+To create a PDF version of the Wiki documentation clone the wiki respository 
+and run the gradel build in the wiki repository root folder.
 
-
-## Useful database queries
-
-This sections contain a number of useful database queries that should at some point be integrated into the connector main code
-
-```bash
-psql tombolo -c 'select subject_type_label, count(*) from subject group by subject_type_label'
 ```
-
-Attributes
-```bash
-psql tombolo -c 'select provider_label, label, name from attribute'
-```
-
-Attribute and value count per subject type
-```bash
-psql tombolo -c 'select subject_type_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label'
-```
-
-Attribute and value count per subject type and provider
-```bash
-psql tombolo -c 'select subject_type_label, provider_label, count(distinct a.id), count(distinct value) as values from timed_value as tv left join subject as go on (tv.subject_id = go.id) left join attribute as a on (tv.attribute_id = a.id) group by subject_type_label, provider_label'
-```
-
-### Database geo unit transformation
-
-This command might come handy when we start writing the data exporters
-
-```bash
-psql -d tombolo -c 'SELECT name, ST_AsGeoJSON(shape) from subject where limit 1'
+gradle build
 ```

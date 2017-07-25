@@ -9,17 +9,16 @@ import java.util.List;
 
 public class Datasource {
 	
-	Class<? extends Importer> importerClass;
-	String id;
-	Provider provider;
-	String name;
-	String description;
-	String url;					// Url of the datasource for that series
-	String remoteDatafile;		// Remote datafile
-	String localDatafile; 		// Location of the local version of the datafile
+	private Class<? extends Importer> importerClass;
+	private String id;
+	private Provider provider;
+	private String name;
+	private String description;
+	private String url;					// Url of the datasource for that series
+	private String remoteDatafile;		// Remote datafile
 
-	List<Attribute> timedValueAttributes = new ArrayList<>();
-	List<Attribute> fixedValueAttributes = new ArrayList<>();
+	private List<Attribute> timedValueAttributes = new ArrayList<>();
+	private List<Attribute> fixedValueAttributes = new ArrayList<>();
 	List<SubjectType> subjectTypes = new ArrayList<>();
 	
 	public Datasource(Class<? extends Importer> importerClass, String id, Provider provider, String name, String description){
@@ -83,7 +82,9 @@ public class Datasource {
 	}
 
 	public SubjectType getUniqueSubjectType() {
-		if (subjectTypes.size() != 1) { throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %s", getId(), subjectTypes.size())); }
+		if (subjectTypes.size() != 1) {
+			throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %d", getId(), subjectTypes.size()));
+		}
 		return subjectTypes.get(0);
 	}
 
@@ -102,27 +103,21 @@ public class Datasource {
 		this.url = url;
 	}
 
+	/**
+	 * The use of the remote datafile is discouraged since the one-to-one relation between a datasource and datafile
+	 * is not applicable for all importers.
+	 *
+	 * When we have found out how to solve the Census Importer then this will be deleted
+	 *
+	 * @return
+	 */
+	@Deprecated
 	public String getRemoteDatafile() {
 		return remoteDatafile;
 	}
+	@Deprecated
 	public void setRemoteDatafile(String remoteDatafile) {
 		this.remoteDatafile = remoteDatafile;
-	}
-
-	@Deprecated
-	/**
-	 * This should be handled internally by DownloadUtils
-	 */
-	public String getLocalDatafile() {
-		return localDatafile;
-	}
-
-	@Deprecated
-	/**
-	 * This should be handled internally by DownloadUtils
-	 */
-	public void setLocalDatafile(String localDatafile) {
-		this.localDatafile = localDatafile;
 	}
 
 	public void writeJSON(JsonWriter writer) throws IOException {

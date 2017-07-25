@@ -5,12 +5,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.importer.ConfigurationException;
 
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using the following test data files:
+ *
+ * Local: aHR0cHM6Ly9kYXRhLnRmbC5nb3YudWsvdGZsL3N5bmRpY2F0aW9uL2ZlZWRzL3N0YXRpb25zLWZhY2lsaXRpZXMueG1sP2FwcF9pZD10ZmxBcHBJZFRlc3QmYXBwX2tleT10ZmxBcHBLZXlUZXN0.xml
+ */
 public class TfLStationsImporterTest extends AbstractTest {
 	public TfLStationsImporter importer;
 
@@ -19,15 +25,15 @@ public class TfLStationsImporterTest extends AbstractTest {
 
 	@Before
 	public void before() throws Exception {
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 		importer.configure(makeApiKeyProperties());
 	}
 	
 	@Test
 	public void testImportDatasource() throws Exception {
-		int count = importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
-		assertEquals(301, count);
+		importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
+		assertEquals(302, importer.getTimedValueCount());	// FIXME: Double check this when we get to refactor importer
 	}
 
 	@Test
@@ -38,7 +44,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 
 	@Test
 	public void testNonConfigured() throws Exception {
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 
 		thrown.expect(ConfigurationException.class);
@@ -51,7 +57,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 		Properties properties = new Properties();
 		properties.put(TfLImporter.PROP_API_APP_ID, "dummy id");
 
-		importer = new TfLStationsImporter();
+		importer = new TfLStationsImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
 
 		thrown.expect(ConfigurationException.class);

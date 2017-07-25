@@ -10,6 +10,7 @@ public class TimedValueTest extends AbstractTest {
 	@Test
 	public void testSave(){
 		TimedValue timedValue = TestFactory.makeTimedValue(
+				TestFactory.makeNamedSubjectType("lsoa"),
 				TestFactory.makeNamedSubject("E01000001").getLabel(),
 				TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label"),
 				TestFactory.TIMESTAMP,

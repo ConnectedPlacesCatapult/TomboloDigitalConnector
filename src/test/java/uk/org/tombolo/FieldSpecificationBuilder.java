@@ -23,6 +23,14 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldSpecificationBuilder fixedValueField(String providerLabel, String attributeLabel) {
+        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+        spec    .setFieldClass("uk.org.tombolo.field.value.FixedValueField")
+                .setLabel(attributeLabel)
+                .setAttribute(providerLabel, attributeLabel);
+        return spec;
+    }
+
     public static FieldSpecificationBuilder valuesByTime(String providerLabel, String attributeLabel) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.ValuesByTimeField")
@@ -40,10 +48,11 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
-    public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String containingSubjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
+    public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.MapToContainingSubjectField")
                 .setLabel(label)
+                .set("containingSubjectProvider", containingSubjectProvider)
                 .set("containingSubjectType", containingSubjectType)
                 .set("fieldSpecification", fieldSpecificationBuilder);
         return spec;
@@ -72,10 +81,11 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
-    public static FieldSpecificationBuilder geographicAggregation(String label, String aggregationSubjectType, String aggregationFunction, FieldSpecificationBuilder fieldSpecificationBuilder) {
+    public static FieldSpecificationBuilder geographicAggregation(String label, String aggregationSubjectProvider, String aggregationSubjectType, String aggregationFunction, FieldSpecificationBuilder fieldSpecificationBuilder) {
         FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.GeographicAggregationField")
                 .setLabel(label)
+                .set("aggregationSubjectProvider", aggregationSubjectProvider)
                 .set("aggregationSubjectType", aggregationSubjectType)
                 .set("aggregationFunction", aggregationFunction)
                 .set("fieldSpecification", fieldSpecificationBuilder);

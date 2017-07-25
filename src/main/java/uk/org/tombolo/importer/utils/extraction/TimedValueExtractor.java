@@ -3,10 +3,7 @@ package uk.org.tombolo.importer.utils.extraction;
 import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -17,6 +14,7 @@ public class TimedValueExtractor {
     private static final Logger log = LoggerFactory.getLogger(TimedValueExtractor.class);
 
     private Provider provider;
+    private SubjectType subjectType;
     private SingleValueExtractor subjectLabelExtractor;
     private SingleValueExtractor attributeLabelExtractor;
     private SingleValueExtractor timestampExtractor;
@@ -24,11 +22,13 @@ public class TimedValueExtractor {
 
     public TimedValueExtractor(
             Provider provider,
+            SubjectType subjectType,
             SingleValueExtractor subjectLabelExtractor,
             SingleValueExtractor attributeLabelExtractor,
             SingleValueExtractor timestampExtractor,
             SingleValueExtractor valueExtractor){
         this.provider = provider;
+        this.subjectType = subjectType;
         this.subjectLabelExtractor = subjectLabelExtractor;
         this.attributeLabelExtractor = attributeLabelExtractor;
         this.timestampExtractor = timestampExtractor;
@@ -36,9 +36,9 @@ public class TimedValueExtractor {
     }
 
     public TimedValue extract() throws ExtractorException {
-        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabelExtractor.extract());
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, subjectLabelExtractor.extract());
         if (subject == null)
-            throw new UnknownSubjectLabelException("Unknown subject: "+subjectLabelExtractor.extract());
+            throw new UnknownSubjectLabelException("Unknown subject: "+subjectLabelExtractor.extract()+"("+subjectType.getLabel()+")");
         Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeLabelExtractor.extract());
         if (attribute == null)
             throw new ExtractorException("Unknown attribute: "+attributeLabelExtractor.extract());

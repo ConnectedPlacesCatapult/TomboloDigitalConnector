@@ -10,6 +10,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.value.FixedAnnotationField;
@@ -25,21 +27,22 @@ import static org.junit.Assert.assertEquals;
 
 public class GeoJsonExporterTest extends AbstractTest {
 	GeoJsonExporter exporter = new GeoJsonExporter();
-
+	SubjectType localAuthority;
 	@Before
 	public void addSubjectFixtures() {
 		TestFactory.makeNamedSubject("E09000001");
+		localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
 	}
 
 	@Test
 	public void testWrite() throws Exception{
 		Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-		TestFactory.makeTimedValue("E09000001", attribute, TestFactory.TIMESTAMP, 100d);
+		TestFactory.makeTimedValue(localAuthority, "E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
 		
 		exporter.write(writer, Collections.singletonList(
-				SubjectUtils.getSubjectByLabel("E09000001")
+				SubjectUtils.getSubjectByTypeAndLabel(localAuthority,"E09000001")
 		), Collections.singletonList(
 				new ValuesByTimeField("attr_label",
 						new AttributeMatcher("default_provider_label", "attr_label"))
@@ -53,7 +56,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		Writer writer = new StringWriter();
 
 		exporter.write(writer,
-				Arrays.asList(SubjectUtils.getSubjectByLabel("E09000001")),
+				Arrays.asList(SubjectUtils.getSubjectByTypeAndLabel(localAuthority, "E09000001")),
 				Arrays.asList(new FixedAnnotationField("some_label", "some_value"))
 		);
 

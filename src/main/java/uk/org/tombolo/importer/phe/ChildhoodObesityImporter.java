@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +27,14 @@ import java.util.List;
 public class ChildhoodObesityImporter extends AbstractPheImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
-    private enum DatasourceId {msoaChildhoodObesity2014, laChildhoodObesity2014, wardChildhoodObesity2014};
+    private enum DatasourceId {childhoodObesity};
+    private enum GeographyLabel {msoa, ward, la};
+    private enum TemporalLabel {y2014};
     private String[] dataSourceName = {"MSOA Childhood Obesity", "Local AuthorityChildhoodObesity", "Ward ChildhoodObesity"};
     private String[] dataSourceDesc = {"MSOA Childhood Obesity", "Local AuthorityChildhoodObesity", "Ward ChildhoodObesity"};
+
+    private static final String DATASOURCE_SUFFIX = ".xlsx";
+    private static final String DATASOURCE = "http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx";
 
     private enum AttributeLabel {receptionNumberMeasured, year6NumberMeasured,
         receptionNumberObese, receptionPercentageObese,
@@ -38,26 +47,26 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         year6PercentageExcessWeightLowerLimit, year6PercentageExcessWeightUpperLimit
     };
 
-    private ExcelUtils excelUtils;
+    private ExcelUtils excelUtils = new ExcelUtils();;
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public ChildhoodObesityImporter(Config config){
+        super(config);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+        geographyLabels = stringsFromEnumeration(GeographyLabel.class);
+        temporalLabels = stringsFromEnumeration(TemporalLabel.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceId datasourceIdEnum = DatasourceId.valueOf(datasourceId);
+        DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
         Datasource datasource = new Datasource(
                 getClass(),
                 datasourceId,
                 getProvider(),
-                dataSourceName[datasourceIdEnum.ordinal()],
-                dataSourceDesc[datasourceIdEnum.ordinal()]);
+                "Childhood Obesity",
+                "");
 
         datasource.setUrl("https://www.noo.org.uk/");
-        datasource.setRemoteDatafile("http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx");
-        datasource.setLocalDatafile("PublicHealthEngland/20150511_MSOA_Ward_Obesity.xlsx");
 
         datasource.addAllTimedValueAttributes(getAttributes());
 
@@ -65,48 +74,49 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        if (excelUtils == null)
-            initalize();
-
-        // Save Provider and Attributes
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         // Choose the apppropriate workbook sheet
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX)
+        );
         Sheet sheet = null;
+        SubjectType subjectType = null;
         String year = "2014";
-        DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
-        switch (datasourceId) {
-            case laChildhoodObesity2014:
-                sheet = workbook.getSheet("LAData_2011-12_2013-14");
-                break;
-            case msoaChildhoodObesity2014:
-                sheet = workbook.getSheet("MSOAData_2011-12_2013-14");
-                break;
-            case wardChildhoodObesity2014:
-                sheet = workbook.getSheet("WardData_2011-12_2013-14");
-                break;
+        for (String geographyScopeString : geographyScope) {
+            GeographyLabel geographyLabel = GeographyLabel.valueOf(geographyScopeString);
+            switch (geographyLabel) {
+                case la:
+                    sheet = workbook.getSheet("LAData_2011-12_2013-14");
+                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+                    break;
+                case msoa:
+                    sheet = workbook.getSheet("MSOAData_2011-12_2013-14");
+                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                    break;
+                case ward:
+                    throw new Error("Wards are not yet supported");
+                    // FIXME: In case we want to suport wards at some point, here is the sheet to use
+                    //sheet = workbook.getSheet("WardData_2011-12_2013-14");
+                    //break;
+            }
+            if (sheet == null)
+                throw new Error("Sheet not found for datasource: " + datasource.getId());
+
+            // Define a list of timed value extractor, one for each attribute
+            List<TimedValueExtractor> timedValueExtractors = new ArrayList<>();
+
+            RowCellExtractor subjectExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
+            ConstantExtractor timestampExtractor = new ConstantExtractor(year);
+
+            for (AttributeLabel attributeLabel : AttributeLabel.values()) {
+                ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
+                RowCellExtractor valueExtractor = new RowCellExtractor(getAttributeColumnId(geographyLabel, attributeLabel), Cell.CELL_TYPE_NUMERIC);
+                timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectType, subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
+            }
+
+            // Extract timed values
+            excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors);
         }
-        if (sheet == null)
-            throw new Error("Sheet not found for datasource: " + datasource.getId());
-
-        // Define a list of timed value extractor, one for each attribute
-        List<TimedValueExtractor> timedValueExtractors = new ArrayList<>();
-
-        RowCellExtractor subjectExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
-        ConstantExtractor timestampExtractor = new ConstantExtractor(year);
-
-        for (AttributeLabel attributeLabel : AttributeLabel.values()) {
-            ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
-            RowCellExtractor valueExtractor = new RowCellExtractor(getAttributeColumnId(datasourceId, attributeLabel), Cell.CELL_TYPE_NUMERIC);
-            timedValueExtractors.add(new TimedValueExtractor(getProvider(), subjectExtractor, attributeExtractor, timestampExtractor, valueExtractor));
-        }
-
-        // Extract timed values
-        int valueCount = excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
-
-        return valueCount;
     }
 
     private List<Attribute> getAttributes(){
@@ -140,16 +150,16 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
         return attributes;
     }
 
-    private int getAttributeColumnId(DatasourceId datasourceId, AttributeLabel attributeLabel){
+    private int getAttributeColumnId(GeographyLabel geographyLabel, AttributeLabel attributeLabel){
         int base = 0;
-        switch (datasourceId){
-            case msoaChildhoodObesity2014:
+        switch (geographyLabel){
+            case msoa:
                 base = 3;
                 break;
-            case laChildhoodObesity2014:
+            case la:
                 base = 2;
                 break;
-            case wardChildhoodObesity2014:
+            case ward:
                 base = 4;
                 break;
         }
@@ -194,9 +204,5 @@ public class ChildhoodObesityImporter extends AbstractPheImporter implements Imp
             default:
                 throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }
-    }
-
-    private void initalize(){
-        excelUtils = new ExcelUtils(downloadUtils);
     }
 }

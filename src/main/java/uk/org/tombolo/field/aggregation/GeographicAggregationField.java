@@ -6,8 +6,11 @@ import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
@@ -23,9 +26,9 @@ import java.util.Map;
  *
  * So far, `sum` and `mean` are implemented.
  */
-public class GeographicAggregationField implements Field, SingleValueField {
+public class GeographicAggregationField extends AbstractField implements Field, SingleValueField {
     public static enum AggregationFunction {sum, mean}
-    private final String label;
+    private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
     private final FieldSpecification fieldSpecification;
     private final AggregationFunction aggregationFunction;
@@ -33,15 +36,19 @@ public class GeographicAggregationField implements Field, SingleValueField {
     private Map<AggregationFunction, MathArrays.Function> aggregators;
     private SingleValueField field;
     private MathArrays.Function aggregator;
+    private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
-        this.label = label;
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
+        super(label);
+        this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
         this.fieldSpecification = fieldSpecification;
         this.aggregationFunction = aggregationFunction;
     }
 
     public void initialize() {
+        aggregatorSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(aggregationSubjectProvider, aggregationSubjectType);
+
         // Initialise aggregators
         aggregators = new HashMap<>();
         aggregators.put(AggregationFunction.sum, new Sum());
@@ -95,11 +102,6 @@ public class GeographicAggregationField implements Field, SingleValueField {
     }
 
     private List<Subject> getAggregationSubjects(Subject subject) throws IncomputableFieldException {
-        return SubjectUtils.subjectsWithinSubject(aggregationSubjectType, subject);
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
+        return SubjectUtils.subjectsWithinSubject(aggregatorSubjectType, subject);
     }
 }

@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,34 +28,35 @@ import java.util.List;
 public class AdultObesityImporter extends AbstractPheImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
-    private enum DatasourceId {laAdultObesity2014};
+    private enum DatasourceId {adultObesity};
     private Datasource[] datasources = {
         new Datasource(
                 getClass(),
-                DatasourceId.laAdultObesity2014.name(),
+                DatasourceId.adultObesity.name(),
                 getProvider(),
                 "Local Authority Adult Obesity",
                 "Self reported adult obesity")
     };
 
-    private ExcelUtils excelUtils;
+    private static final String DATASOURCE_SUFFIX = ".xlsx";
+    private static final String DATASOURCE = "https://www.noo.org.uk/gsf.php5?f=314008&fv=21761";
+
+    private ExcelUtils excelUtils = new ExcelUtils();
 
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public AdultObesityImporter(Config config){
+        super(config);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
         DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
         switch (datasourceId){
-            case laAdultObesity2014:
+            case adultObesity:
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("http://www.noo.org.uk/visualisation");
-                datasource.setRemoteDatafile("https://www.noo.org.uk/gsf.php5?f=314008&fv=21761");
-                datasource.setLocalDatafile("/PublicHealthEngland/BMI_categories_2012-2014.xlsx");
                 datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
@@ -60,15 +65,10 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        if (excelUtils == null)
-            initalize();
-
-        // Save Provider and Attributes
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
         // Choose the apppropriate workbook sheet
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX));
         Sheet sheet = workbook.getSheetAt(1);
         String year = "2014";
 
@@ -76,18 +76,20 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
         RowCellExtractor subjectExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
         ConstantExtractor timestampExtractor = new ConstantExtractor(year);
 
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
         for (AttributeLabel attributeLabel : AttributeLabel.values()){
             ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
             RowCellExtractor valueExtractor
                     = new RowCellExtractor(getAttributeColumnId(attributeLabel), Cell.CELL_TYPE_NUMERIC);
             timedValueExtractors.add(new TimedValueExtractor(
                     getProvider(),
+                    subjectType,
                     subjectExtractor,
                     attributeExtractor,
                     timestampExtractor,
                     valueExtractor));
         }
-        return excelUtils.extractTimedValues(sheet, this, timedValueExtractors, BUFFER_THRESHOLD);
+        excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors);
     }
 
     private List<Attribute> getAttributes() {
@@ -125,9 +127,5 @@ public class AdultObesityImporter extends AbstractPheImporter implements Importe
             default:
                 throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }
-    }
-
-    private void initalize(){
-        excelUtils = new ExcelUtils(downloadUtils);
     }
 }

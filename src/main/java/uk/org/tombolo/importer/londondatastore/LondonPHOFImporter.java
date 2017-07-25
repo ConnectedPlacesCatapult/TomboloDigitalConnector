@@ -9,37 +9,44 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.*;
 
+import java.net.URL;
 import java.util.*;
 
 /**
  * Importer for the Public Health Outcomes Framework (PHOF) indicators for London.
  *
- * http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators
+ * URL: http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators
+ *
+ *
  */
 public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implements Importer {
+    private enum DatasourceId {phofIndicatorsLondonBorough};
     Logger log = LoggerFactory.getLogger(LondonPHOFImporter.class);
 
-    private enum DatasourceId {phofIndicatorsLondonBorough};
+    private static final String DATAFILE_SUFFIX = ".xlsx";
+    private static final String DATAFILE
+            = "https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53/phof-indicators-data-london-borough.xlsx";
 
-    ExcelUtils excelUtils;
+    ExcelUtils excelUtils = new ExcelUtils();;
+
+    public LondonPHOFImporter(Config config){
+        super(config);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+    }
 
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
         super.setDownloadUtils(downloadUtils);
-        excelUtils = new ExcelUtils(downloadUtils);
-    }
-
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -49,14 +56,12 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             case phofIndicatorsLondonBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        DatasourceId.phofIndicatorsLondonBorough.name(),
+                        datasourceId.name(),
                         getProvider(),
                         "PHOF Indicators London Borough",
                         "Public Health Outcomes Framework Indicators for London Boroughs"
                 );
                 datasource.setUrl("http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators");
-                datasource.setRemoteDatafile("https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53/phof-indicators-data-london-borough.xlsx");
-                datasource.setLocalDatafile("LondonDatastore/phof-indicators-data-london-borough.xlsx");
 
                 datasource.addAllTimedValueAttributes(getAttributes(datasource));
                 return datasource;
@@ -66,15 +71,15 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
-
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         RowCellExtractor subjectExtractor = new RowCellExtractor(4, Cell.CELL_TYPE_STRING);
         RowCellExtractor timestampExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
         RowCellExtractor valueExtractor = new RowCellExtractor(6, Cell.CELL_TYPE_NUMERIC);
 
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
 
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         Sheet sheet = workbook.getSheetAt(3);
@@ -90,6 +95,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             String attributeLabel = nameToLabel(attributeNameExtractor.extract());
             TimedValueExtractor timedValueExtractor = new TimedValueExtractor(
                     getProvider(),
+                    subjectType,
                     subjectExtractor,
                     new ConstantExtractor(attributeLabel),
                     timestampExtractor,
@@ -104,14 +110,14 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
             }
         }
         workbook.close();
-        TimedValueUtils.save(timedValueBuffer);
-        return timedValueBuffer.size();
+        saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     private List<Attribute> getAttributes(Datasource datasource) throws Exception {
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
 
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
 
         Map<String, Attribute> attributes = new HashMap<>();
         Sheet sheet = workbook.getSheetAt(3);

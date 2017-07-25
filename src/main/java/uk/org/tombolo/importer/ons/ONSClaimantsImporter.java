@@ -2,6 +2,8 @@ package uk.org.tombolo.importer.ons;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
@@ -9,6 +11,7 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +23,12 @@ import java.util.List;
  */
 public class ONSClaimantsImporter extends AbstractONSImporter implements Importer {
 
-    private enum DatasourceId {lsoaClaimants};
+    private enum DatasourceId {claimants};
+
     private Datasource[] datasources = {
             new Datasource(
                     getClass(),
-                    DatasourceId.lsoaClaimants.name(),
+                    DatasourceId.claimants.name(),
                     getProvider(),
                     "Claimants per LSOA",
                     "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
@@ -34,29 +38,30 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
                             "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.")
     };
 
+    private static final String DATAFILE = "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
+            "geography=1249902593...1249937345&" +
+            "date=latest&" +
+            "gender=0&" +
+            "age=0&" +
+            "measure=1&" +
+            "measures=20100&" +
+            "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
+
     private enum AttributeId {claimantCount};
 
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
+    public ONSClaimantsImporter(Config config){
+        super(config);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
         DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
         switch (datasourceId){
-            case lsoaClaimants:
+            case claimants:
                 Datasource datasource = datasources[datasourceId.ordinal()];
                 datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
-                datasource.setRemoteDatafile("http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
-                        "geography=1249902593...1249937345&" +
-                        "date=latest&" +
-                        "gender=0&" +
-                        "age=0&" +
-                        "measure=1&" +
-                        "measures=20100&" +
-                        "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name");
-                datasource.setLocalDatafile("csv/claimantsCount.csv");
+
                 datasource.addAllTimedValueAttributes(getAttributes());
                 return datasource;
             default:
@@ -64,8 +69,8 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         }
     }
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(2);
         CSVExtractor timestampExtractor = new CSVExtractor(0);
@@ -73,6 +78,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         List<TimedValueExtractor> extractors = new ArrayList<>();
         extractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 new ConstantExtractor(AttributeId.claimantCount.name()),
                 timestampExtractor,
@@ -80,9 +86,8 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
                 )
         );
 
-        File localFile = downloadUtils.getDatasourceFile(datasource);
-
-        return CSVUtils.extractTimedValues(extractors,localFile);
+        File localFile = downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), ".csv");
+        CSVUtils.extractAndSaveTimedValues(extractors, this, localFile);
     }
 
     private List<Attribute> getAttributes(){

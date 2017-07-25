@@ -1,15 +1,11 @@
 package uk.org.tombolo.core.utils;
 
+import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
 
 import java.util.List;
 
 public class SubjectTypeUtils {
-	public static SubjectType getSubjectTypeByLabel(String label){
-		return HibernateUtil.withSession(session -> {
-			return (SubjectType) session.get(SubjectType.class, label);
-		});
-	}
 
 	public static void save(List<SubjectType> subjectTypes) {
 		for (SubjectType subjectType : subjectTypes) {
@@ -18,10 +14,12 @@ public class SubjectTypeUtils {
 	}
 	
 	public static void save(SubjectType subjectType) {
+		ProviderUtils.save(subjectType.getProvider());
 		HibernateUtil.withSession(session -> {
 			session.beginTransaction();
-			SubjectType existingSubjectType = (SubjectType) session.get(SubjectType.class, subjectType.getLabel());
+			SubjectType existingSubjectType = getSubjectTypeByProviderAndLabel(subjectType.getProvider().getLabel(), subjectType.getLabel());
 			if (existingSubjectType != null) {
+				subjectType.setId(existingSubjectType.getId());
 				session.update(session.merge(subjectType));
 			} else {
 				session.save(subjectType);
@@ -30,13 +28,22 @@ public class SubjectTypeUtils {
 		});
 	}
 
-	public static SubjectType getOrCreate(String label, String description) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByLabel(label);
+	public static SubjectType getOrCreate(Provider provider, String label, String name) {
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(provider.getLabel(), label);
 		if (null == subjectType) {
-			subjectType = new SubjectType(label, description);
+			subjectType = new SubjectType(provider, label, name);
 			SubjectTypeUtils.save(subjectType);
 		}
 
 		return subjectType;
+	}
+
+	public static SubjectType getSubjectTypeByProviderAndLabel(String providerLabel, String subjectTypeLabel) {
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from SubjectType where label = :subjectTypeLabel and provider.label = :providerLabel", SubjectType.class)
+				.setParameter("providerLabel", providerLabel)
+				.setParameter("subjectTypeLabel", subjectTypeLabel)
+				.uniqueResult();
+		});
 	}
 }

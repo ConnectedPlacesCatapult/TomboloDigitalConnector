@@ -3,6 +3,7 @@
 		"subjectSpecification" : [
 			{
 				"subjectType" : "lsoa",
+				"provider":"uk.gov.ons",
 				"matchRule" : {
 					"attribute": "name",
 					"pattern": "Leeds%"

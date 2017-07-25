@@ -5,6 +5,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 
 import java.time.LocalDateTime;
@@ -41,13 +42,14 @@ public class TimedValueUtilsTest extends AbstractTest {
 		Attribute attribute1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr1_label");
 		Attribute attribute2 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr2_label");
 
-		TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 100d);
-		TimedValue latest1 = TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-05T00:00", 200d);
-		TestFactory.makeTimedValue("E01000001", attribute1, "2011-01-03T00:00", 300d);
+		SubjectType lsoa = TestFactory.makeNamedSubjectType("lsoa");
+		TestFactory.makeTimedValue(lsoa,"E01000001", attribute1, "2011-01-03T00:00", 100d);
+		TimedValue latest1 = TestFactory.makeTimedValue(lsoa, "E01000001", attribute1, "2011-01-05T00:00", 200d);
+		TestFactory.makeTimedValue(lsoa, "E01000001", attribute1, "2011-01-03T00:00", 300d);
 
-		TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-02T00:00", 400d);
-		TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-01T00:00", 400d);
-		TimedValue latest2 = TestFactory.makeTimedValue("E01000001", attribute2, "2011-01-03T00:00", 400d);
+		TestFactory.makeTimedValue(lsoa,"E01000001", attribute2, "2011-01-02T00:00", 400d);
+		TestFactory.makeTimedValue(lsoa,"E01000001", attribute2, "2011-01-01T00:00", 400d);
+		TimedValue latest2 = TestFactory.makeTimedValue(lsoa,"E01000001", attribute2, "2011-01-03T00:00", 400d);
 
 
 		List<TimedValue> results = TimedValueUtils.getLatestBySubjectAndAttributes(subject, Arrays.asList(attribute1, attribute2));

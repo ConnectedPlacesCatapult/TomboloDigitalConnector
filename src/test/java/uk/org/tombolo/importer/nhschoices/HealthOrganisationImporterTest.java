@@ -3,21 +3,37 @@ package uk.org.tombolo.importer.nhschoices;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Using the following test data files:
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBncF9zdXJnZXJpZXMlM0I=.json
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBjbGluaWNzJTNC.json
+ *
+ * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B
+ * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBob3NwaXRhbHMlM0I=
+ */
 public class HealthOrganisationImporterTest extends AbstractTest {
     HealthOrganisationImporter importer;
 
     @Before
     public void setUp() throws Exception {
-        importer = new HealthOrganisationImporter();
+        importer = new HealthOrganisationImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
     }
 
@@ -30,9 +46,10 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportHospitals() throws Exception {
-        int recordsImported = importer.importDatasource("hospital");
-        Subject subject = SubjectUtils.getSubjectByLabel("40918");
-        assertEquals(1106, recordsImported);
+        importer.importDatasource("hospital");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "hospital");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"40918");
+        assertEquals(1106, importer.getSubjectCount());
         assertEquals("Guy's Hospital", subject.getName());
         assertEquals(51.5046, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         // This is in the form 0.0Ex in the JSON so we test on this
@@ -41,9 +58,10 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportClinics() throws Exception {
-        int recordsImported = importer.importDatasource("clinic");
-        Subject subject = SubjectUtils.getSubjectByLabel("12366");
-        assertEquals(8416, recordsImported);
+        importer.importDatasource("clinic");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "clinic");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "12366");
+        assertEquals(8416, importer.getSubjectCount());
         assertEquals("Frinton Road Medical Centre", subject.getName());
         assertEquals(51.8042, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         assertEquals(1.1863, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
@@ -51,9 +69,10 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportGpSurgeries() throws Exception {
-        int recordsImported = importer.importDatasource("gpSurgeries");
-        Subject subject = SubjectUtils.getSubjectByLabel("2915");
-        assertEquals(9767, recordsImported);
+        importer.importDatasource("gpSurgeries");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "gpSurgeries");
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "2915");
+        assertEquals(9767, importer.getSubjectCount());
         assertEquals("Blackfriars", subject.getName());
         assertEquals(53.4839, subject.getShape().getCoordinate().getOrdinate(1), 0.0001);
         assertEquals(-2.2547, subject.getShape().getCoordinate().getOrdinate(0), 0.0001);
@@ -70,9 +89,8 @@ public class HealthOrganisationImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
-        assertEquals(3, datasources.size());
-        assertEquals("hospital", datasources.get(0).getId());
+    public void testGetDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        assertEquals(Arrays.asList("hospital", "clinic", "gpSurgeries"), datasources);
     }
 }

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 
 import java.sql.Timestamp;
@@ -20,11 +21,15 @@ import java.util.*;
 public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter {
     private static Logger log = LoggerFactory.getLogger(OpenSpaceNetworkImporter.class);
 
-    private static final SubjectType subjectType = new SubjectType("SSxNode", "Street segment (node) from an SSx graph");
     private static final Provider PROVIDER = new Provider("com.spacesyntax","Space Syntax");
+    private static final SubjectType subjectType = new SubjectType(PROVIDER, "SSxNode", "Street segment (node) from an SSx graph");
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
     static final List<String> NON_ATTRIBUTE_COLUMNS = Arrays.asList("geom", "id", "time_modified");
+
+    public OpenSpaceNetworkImporter(Config config) {
+        super(config);
+    }
 
     @Override
     public Provider getProvider() {
@@ -37,12 +42,6 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
             throw new ConfigurationException("Property "+PROP_USERNAME+" not defined");
         if (properties.getProperty(PROP_PASSWORD) == null)
             throw new ConfigurationException("Property "+PROP_PASSWORD+" not defined");
-    }
-
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        // This function returns an empty list of datasources since it is a local file import
-        return new ArrayList<Datasource>();
     }
 
     @Override

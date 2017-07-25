@@ -4,12 +4,13 @@
       {
         // The subject output is a traffic counter from DfT
         // Restricted to only traffic counters from Greenwich and Islington
-        "subjectType" : "sensor",
+        "subjectType" : "trafficCounter",
         "geoMatchRule" : {
           "geoRelation" : "within",
           "subjectSpecifications" : [
             {
               "subjectType" : "localAuthority",
+              "provider": "uk.gov.ons",
               "matchRule" : {
                 "attribute" : "name",
                 "pattern" : "Greenwich"
@@ -17,6 +18,7 @@
             },
             {
               "subjectType" : "localAuthority",
+              "provider": "uk.gov.ons",
               "matchRule" : {
                 "attribute" : "name",
                 "pattern" : "Islington"
@@ -30,7 +32,8 @@
       {
         // Importer for DfT traffic counts for London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "London"
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
       },
       {
         // Importer for Local Authorities in the UK

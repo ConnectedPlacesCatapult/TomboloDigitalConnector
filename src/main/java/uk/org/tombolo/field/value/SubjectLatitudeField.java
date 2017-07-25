@@ -3,17 +3,17 @@ package uk.org.tombolo.field.value;
 import com.vividsolutions.jts.geom.Point;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.SingleValueField;
 
 /**
  * SubjectLatitudeField.java
  * Returns the latitude of the centroid of the subject.
  */
-public class SubjectLatitudeField implements SingleValueField {
-    private final String label;
+public class SubjectLatitudeField extends AbstractField implements SingleValueField {
 
     public SubjectLatitudeField(String label) {
-        this.label = label;
+        super(label);
     }
 
     @Override
@@ -30,8 +30,4 @@ public class SubjectLatitudeField implements SingleValueField {
         return obj;
     }
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
 }

@@ -17,13 +17,7 @@ public class TimedValueExtractorTest extends AbstractExtractorTest {
     RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
     RowCellExtractor valueExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_NUMERIC);
 
-    TimedValueExtractor extractor = new TimedValueExtractor(
-            provider,
-            subjectLabelExtractor,
-            new ConstantExtractor("Attribute"),
-            new ConstantExtractor("2016"),
-            valueExtractor
-    );
+    TimedValueExtractor extractor;
 
 
     @Before
@@ -31,6 +25,15 @@ public class TimedValueExtractorTest extends AbstractExtractorTest {
         TestFactory.makeNamedSubject("E01000001");
         TestFactory.makeNamedSubject("E01000002");
         TestFactory.makeAttribute(provider, "Attribute");
+
+        extractor = new TimedValueExtractor(
+                provider,
+                TestFactory.makeNamedSubjectType("lsoa"),
+                subjectLabelExtractor,
+                new ConstantExtractor("Attribute"),
+                new ConstantExtractor("2016"),
+                valueExtractor
+        );
     }
 
     @Test

@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +23,16 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     TestGeotoolsDataStoreImporter importer;
     Consumer<Datasource> datasourceSetup = (o) -> {};
 
+    private SubjectType testSubjectType;
+
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
+
+        public TestGeotoolsDataStoreImporter(Config config) {
+            super(config);
+            datasourceIds = Arrays.asList("osm_polyline_processed");
+        }
+
         @Override
         public String getTypeNameForDatasource(Datasource datasource) {
             return datasource.getId();
@@ -48,7 +58,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         protected Subject applyFeatureAttributesToSubject(Subject subject, SimpleFeature feature) {
-            subject.setSubjectType(SubjectTypeUtils.getOrCreate("example", "Test Example"));
+            subject.setSubjectType(testSubjectType);
             subject.setLabel("example-feature:" + feature.getID());
             subject.setName("Example feature: " + feature.getID());
             return subject;
@@ -56,12 +66,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         public Provider getProvider() {
-            return new Provider("org.example", "Example");
-        }
-
-        @Override
-        public List<Datasource> getAllDatasources() throws Exception {
-            return null;
+            return TestFactory.DEFAULT_PROVIDER;
         }
 
         @Override
@@ -74,16 +79,18 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new TestGeotoolsDataStoreImporter();
+        importer = new TestGeotoolsDataStoreImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
+        testSubjectType = SubjectTypeUtils.getOrCreate(TestFactory.DEFAULT_PROVIDER, "example", "Test Example");
     }
 
     @Test
     public void testImportDatasourceImportsSubjects() throws Exception {
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(0, importedCount);
 
-        Subject subject = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(0, importer.getTimedValueCount());
+
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         assertEquals("Example feature: feature-0", subject.getName());
         assertEquals("example", subject.getSubjectType().getLabel());
@@ -96,10 +103,10 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addTimedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(25, importedCount);
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(25, importer.getTimedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
         Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
@@ -113,10 +120,10 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addFixedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        int importedCount = importer.importDatasource("osm_polyline_processed");
-        assertEquals(25, importedCount);
+        importer.importDatasource("osm_polyline_processed", null, null);
+        assertEquals(25, importer.getFixedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("example-feature:feature-0");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
         Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");

@@ -8,8 +8,10 @@ import uk.org.tombolo.SubjectSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.field.Field;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -43,7 +45,7 @@ public class PercentilesFieldTest extends AbstractTest {
                 4,
                 false)
                 .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
-                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 
         quintilesInverseField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
@@ -51,36 +53,36 @@ public class PercentilesFieldTest extends AbstractTest {
                 5,
                 true)
                 .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
-                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder("lsoa")))
+                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 
-        TestFactory.makeSubjectType("lsoa", "Lower Super Output Area");
+        SubjectType lsoa = TestFactory.makeNamedSubjectType("lsoa");
 
-        leeds1 = TestFactory.makeSubject("lsoa", "leeds1", "Leeds 1", null);
-        leeds2 = TestFactory.makeSubject("lsoa", "leeds2", "Leeds 2", null);
-        leeds3 = TestFactory.makeSubject("lsoa", "leeds3", "Leeds 3", null);
-        leeds4 = TestFactory.makeSubject("lsoa", "leeds4", "Leeds 4", null);
-        leeds5 = TestFactory.makeSubject("lsoa", "leeds5", "Leeds 5", null);
+        leeds1 = TestFactory.makeSubject(lsoa, "leeds1", "Leeds 1", null);
+        leeds2 = TestFactory.makeSubject(lsoa, "leeds2", "Leeds 2", null);
+        leeds3 = TestFactory.makeSubject(lsoa, "leeds3", "Leeds 3", null);
+        leeds4 = TestFactory.makeSubject(lsoa, "leeds4", "Leeds 4", null);
+        leeds5 = TestFactory.makeSubject(lsoa, "leeds5", "Leeds 5", null);
 
-        brighton1 = TestFactory.makeSubject("lsoa", "brighton1", "Brighton 1", null);
-        brighton2 = TestFactory.makeSubject("lsoa", "brighton2", "Brighton 2", null);
-        brighton3 = TestFactory.makeSubject("lsoa", "brighton3", "Brighton 3", null);
-        brighton4 = TestFactory.makeSubject("lsoa", "brighton4", "Brighton 4", null);
-        brighton5 = TestFactory.makeSubject("lsoa", "brighton5", "Brighton 5", null);
+        brighton1 = TestFactory.makeSubject(lsoa, "brighton1", "Brighton 1", null);
+        brighton2 = TestFactory.makeSubject(lsoa, "brighton2", "Brighton 2", null);
+        brighton3 = TestFactory.makeSubject(lsoa, "brighton3", "Brighton 3", null);
+        brighton4 = TestFactory.makeSubject(lsoa, "brighton4", "Brighton 4", null);
+        brighton5 = TestFactory.makeSubject(lsoa, "brighton5", "Brighton 5", null);
 
         Attribute populationDensity = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "populationDensity");
         String timestamp = LocalDateTime.now().format(TimedValueId.DATE_TIME_FORMATTER);
 
-        TestFactory.makeTimedValue("leeds1", populationDensity, timestamp, 1.0d);
-        TestFactory.makeTimedValue("leeds2", populationDensity, timestamp, 2.0d);
-        TestFactory.makeTimedValue("leeds3", populationDensity, timestamp, 3.0d);
-        TestFactory.makeTimedValue("leeds4", populationDensity, timestamp, 4.0d);
-        TestFactory.makeTimedValue("leeds5", populationDensity, timestamp, 5.0d);
-        TestFactory.makeTimedValue("brighton1", populationDensity, timestamp, 6.0d);
-        TestFactory.makeTimedValue("brighton2", populationDensity, timestamp, 7.0d);
-        TestFactory.makeTimedValue("brighton3", populationDensity, timestamp, 8.0d);
-        TestFactory.makeTimedValue("brighton4", populationDensity, timestamp, 9.0d);
-        TestFactory.makeTimedValue("brighton5", populationDensity, timestamp, 100.0d);
+        TestFactory.makeTimedValue(leeds1.getSubjectType(), "leeds1", populationDensity, timestamp, 1.0d);
+        TestFactory.makeTimedValue(leeds2.getSubjectType(), "leeds2", populationDensity, timestamp, 2.0d);
+        TestFactory.makeTimedValue(leeds3.getSubjectType(), "leeds3", populationDensity, timestamp, 3.0d);
+        TestFactory.makeTimedValue(leeds4.getSubjectType(), "leeds4", populationDensity, timestamp, 4.0d);
+        TestFactory.makeTimedValue(leeds5.getSubjectType(), "leeds5", populationDensity, timestamp, 5.0d);
+        TestFactory.makeTimedValue(brighton1.getSubjectType(), "brighton1", populationDensity, timestamp, 6.0d);
+        TestFactory.makeTimedValue(brighton2.getSubjectType(), "brighton2", populationDensity, timestamp, 7.0d);
+        TestFactory.makeTimedValue(brighton3.getSubjectType(), "brighton3", populationDensity, timestamp, 8.0d);
+        TestFactory.makeTimedValue(brighton4.getSubjectType(), "brighton4", populationDensity, timestamp, 9.0d);
+        TestFactory.makeTimedValue(brighton5.getSubjectType(), "brighton5", populationDensity, timestamp, 100.0d);
     }
 
     @Test

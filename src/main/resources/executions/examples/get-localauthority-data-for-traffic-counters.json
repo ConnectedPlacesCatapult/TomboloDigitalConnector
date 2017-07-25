@@ -3,7 +3,8 @@
     "subjectSpecification" : [
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
-        "subjectType" : "trafficCounter"
+        "subjectType" : "trafficCounter",
+        "provider": "uk.gov.dft"
       }
     ],
     "datasourceSpecification" : [
@@ -20,7 +21,8 @@
       {
         // Importer for DfT traffic counts in London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "London"
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
       }
     ],
     "fieldSpecification" : [

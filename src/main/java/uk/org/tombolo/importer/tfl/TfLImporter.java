@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.tfl;
 
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 
@@ -14,6 +15,10 @@ public abstract class TfLImporter extends AbstractImporter implements Importer {
 			"uk.gov.tfl",
 			"Transport for London"
 			);
+
+	public TfLImporter(Config config) {
+		super(config);
+	}
 
 	@Override
 	public Provider getProvider() {

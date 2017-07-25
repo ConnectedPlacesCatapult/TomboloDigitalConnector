@@ -4,9 +4,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
+import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
 import java.util.List;
@@ -15,12 +17,17 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Using the following test data files:
+ *
+ * Local: t.b.a.
+ */
 public class OpenSpaceNetworkImporterTest extends AbstractTest {
     OpenSpaceNetworkImporter importer;
 
     @Before
     public void setUp() throws Exception {
-        importer = new OpenSpaceNetworkImporter();
+        importer = new OpenSpaceNetworkImporter(TestFactory.DEFAULT_CONFIG);
         importer.setDownloadUtils(makeTestDownloadUtils());
         Properties props = new Properties();
         props.put("openSpaceNetworkUsername", "");
@@ -37,8 +44,9 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAllDatasources() throws Exception {
-        List<Datasource> datasources = importer.getAllDatasources();
+    public void getDatasourceIds() throws Exception {
+        List<String> datasources = importer.getDatasourceIds();
+        // FIXME: We should change this when we re-implement the ssx importers
         assertEquals(0,datasources.size());
     }
 
@@ -54,8 +62,6 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
         assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
         assertEquals("",datasource.getDescription());
-        assertNull(datasource.getLocalDatafile());
-        assertNull(datasource.getRemoteDatafile());
 
         assertEquals(0, datasource.getTimedValueAttributes().size());
         assertEquals(6, datasource.getFixedValueAttributes().size());
@@ -66,10 +72,11 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
 
     @Test @Ignore
     public void importDatasource() throws Exception {
-        int importedCount = importer.importDatasource("milton_keynes.osm_polyline_processed");
-        assertEquals(69489, importedCount);
+        importer.importDatasource("milton_keynes.osm_polyline_processed");
+        assertEquals(69489, importer.getTimedValueCount());
 
-        Subject streetSegment = SubjectUtils.getSubjectByLabel("osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "SSxNode");
+        Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm_polyline_processed:osm_polyline_processed.12"); // or osm_polyline_processed:osm_polyline_processed.12
 
         assertEquals("osm_polyline_processed:osm_polyline_processed.12", streetSegment.getName());
         assertEquals("SSxNode", streetSegment.getSubjectType().getLabel());

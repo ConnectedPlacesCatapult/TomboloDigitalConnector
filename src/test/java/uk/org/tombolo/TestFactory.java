@@ -5,6 +5,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -17,9 +19,11 @@ public final class TestFactory {
     public static final Provider DEFAULT_PROVIDER = new Provider("default_provider_label", "default_provider_name");
     public static final String TIMESTAMP = "2011-01-01T00:00:00";
     public static final Geometry FAKE_POINT_GEOMETRY = makePointGeometry(0d, 0d);
+    public static final Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
+            new SubjectType(new Provider("", ""), "", "")).build();
 
     /**
-     * makeFakeGeomtry
+     * makeFakeGeometry
      * Returns a point at the offset provided
      * @param xOffset
      * @param yOffset
@@ -33,7 +37,24 @@ public final class TestFactory {
     }
 
     /**
-     * Returns a square gometry
+     * makeFakeGeometry
+     * Returns a lineString at the offset provided
+     * @param xOffset
+     * @param yOffset
+     * @param length length of the line
+     * @return A LineString geometry from xOffset, yOffset to xOffset + length, yOffset + length
+     */
+    public static Geometry makeLineStringGeometry(Double xOffset, Double yOffset, Double length) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate[] coordinates = {new Coordinate(xOffset, yOffset),
+                new Coordinate(xOffset + length, yOffset)};
+        Geometry lineString =  geometryFactory.createLineString(coordinates);
+        lineString.setSRID(Subject.SRID);
+        return lineString;
+    }
+
+    /**
+     * Returns a square geometry
      * @param lowerLeftXOffset x-coordinate of lower left corner
      * @param lowerLeftYOffset y-coordinate of lower left corner
      * @param edgeSize the edge size of the square
@@ -80,8 +101,8 @@ public final class TestFactory {
      * @param value
      * @return The persisted TimedValue
      */
-    public static TimedValue makeTimedValue(String subjectLabel, Attribute attribute, String timestamp, Double value) {
-        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+    public static TimedValue makeTimedValue(SubjectType subjectType, String subjectLabel, Attribute attribute, String timestamp, Double value) {
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, subjectLabel);
         TimedValue timedValue = new TimedValue(subject, attribute, LocalDateTime.parse(timestamp), value);
         TimedValueUtils.save(timedValue);
         return timedValue;
@@ -95,8 +116,8 @@ public final class TestFactory {
      * @param value
      * @return The persisted FixedValue
      */
-    public static FixedValue makeFixedValue(String subjectLabel, Attribute attribute, String value) {
-        Subject subject = SubjectUtils.getSubjectByLabel(subjectLabel);
+    public static FixedValue makeFixedValue(SubjectType subjectType, String subjectLabel, Attribute attribute, String value) {
+        Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, subjectLabel);
         FixedValue fixedValue = new FixedValue(subject, attribute, value);
         FixedValueUtils.save(fixedValue);
         return fixedValue;
@@ -111,49 +132,56 @@ public final class TestFactory {
      * @return The persisted subject
      */
     public static Subject makeNamedSubject(String label) {
+        SubjectType subjectType;
         switch (label) {
             case "E01000001":
-                makeNamedSubjectType("lsoa");
-                return makeSubject("lsoa", label, "City of London 001A", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "City of London 001A", FAKE_POINT_GEOMETRY);
             case "E01000002":
-                makeNamedSubjectType("lsoa");
-                return makeSubject("lsoa", label, "City of London 001B", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "City of London 001B", FAKE_POINT_GEOMETRY);
             case "E09000001":
-                makeNamedSubjectType("localAuthority");
-                return makeSubject("localAuthority", label, "City of London", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "City of London", FAKE_POINT_GEOMETRY);
             case "E09000019":
-                makeSubjectType("localAuthority", "Local Authority");
-                return makeSubject("localAuthority", label, "Islington", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "Islington", FAKE_POINT_GEOMETRY);
             case "E08000035":
-                makeNamedSubjectType("localAuthority");
-                return makeSubject("localAuthority", label, "Leeds", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "Leeds", FAKE_POINT_GEOMETRY);
             case "E01002766":
-                makeNamedSubjectType("lsoa");
-                return makeSubject("lsoa", label, "Islington 015E", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "Islington 015E", FAKE_POINT_GEOMETRY);
             case "E01002767":
-                makeNamedSubjectType("lsoa");
-                return makeSubject("lsoa", label, "Islington 011D", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("lsoa");
+                return makeSubject(subjectType, label, "Islington 011D", FAKE_POINT_GEOMETRY);
             case "E02000001":
-                makeNamedSubjectType("msoa");
-                return makeSubject("msoa", label, "City of London 001", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("msoa");
+                return makeSubject(subjectType, label, "City of London 001", FAKE_POINT_GEOMETRY);
             case "E02000564":
-                makeNamedSubjectType("msoa");
-                return makeSubject("msoa", label, "Islington 011", FAKE_POINT_GEOMETRY);
+                subjectType = makeNamedSubjectType("msoa");
+                return makeSubject(subjectType, label, "Islington 011", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
     }
 
-    private static SubjectType makeNamedSubjectType(String label) {
+    public static SubjectType makeNamedSubjectType(String label) {
+        SubjectType subjectType;
         switch (label) {
             case "localAuthority":
-                return makeSubjectType("localAuthority", "Local Authority");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+                break;
             case "lsoa":
-                return makeSubjectType("lsoa", "Lower Super Output Area");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+                break;
             case "msoa":
-                return makeSubjectType("msoa", "Middle Super Output Area");
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                break;
+            default:
+                return null;
         }
-        return null;
+        return makeSubjectType(subjectType.getProvider(), subjectType.getLabel(), subjectType.getName());
     }
 
     /**
@@ -163,12 +191,12 @@ public final class TestFactory {
      * @param name
      * @return The persisted subject
      */
-    public static SubjectType makeSubjectType(String label, String name) {
-        return SubjectTypeUtils.getOrCreate(label, name);
+    public static SubjectType makeSubjectType(Provider provider, String label, String name) {
+        return SubjectTypeUtils.getOrCreate(provider, label, name);
     }
     
-    public static Subject makeSubject(String subjectTypeLabel, String label, String name, Geometry geometry) {
-        Subject subject = new Subject(SubjectTypeUtils.getSubjectTypeByLabel(subjectTypeLabel), label, name, geometry);
+    public static Subject makeSubject(SubjectType subjectType, String label, String name, Geometry geometry) {
+        Subject subject = new Subject(subjectType, label, name, geometry);
         SubjectUtils.save(Collections.singletonList(subject));
         return subject;
     }

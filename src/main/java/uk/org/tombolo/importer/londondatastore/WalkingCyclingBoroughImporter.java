@@ -7,14 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,20 +27,24 @@ import java.util.List;
  */
 public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImporter implements Importer{
     Logger log = LoggerFactory.getLogger(WalkingCyclingBoroughImporter.class);
-    public enum DatasourceId {walkingCyclingBorough};
+
+    private enum DatasourceId {walkingCyclingBorough};
     public enum AttributeId {walk5xWeek,cycle1xWeek};
 
-    ExcelUtils excelUtils;
+    ExcelUtils excelUtils = new ExcelUtils();
+
+    private static final String DATAFILE_SUFFIX = ".xls";
+    private static final String DATAFILE
+            = "https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls";
+
+    public WalkingCyclingBoroughImporter(Config config) {
+        super(config);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+    }
 
     @Override
     public void setDownloadUtils(DownloadUtils downloadUtils) {
         super.setDownloadUtils(downloadUtils);
-        excelUtils = new ExcelUtils(downloadUtils);
-    }
-
-    @Override
-    public List<Datasource> getAllDatasources() throws Exception {
-        return datasourcesFromEnumeration(DatasourceId.class);
     }
 
     @Override
@@ -46,15 +54,13 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
             case walkingCyclingBorough:
                 Datasource datasource = new Datasource(
                         getClass(),
-                        DatasourceId.walkingCyclingBorough.name(),
+                        datasourceId.name(),
                         getProvider(),
                         "Walking and Cycling in London Boroughs",
                         "Walking and Cycling in London Boroughs"
                 );
 
                 datasource.setUrl("http://data.london.gov.uk/dataset/walking-and-cycling-borough");
-                datasource.setRemoteDatafile("https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls");
-                datasource.setLocalDatafile("/LondonDatastore/walking-and-cycling-borough.xls");
 
                 for (AttributeId attributeId : AttributeId.values()) {
                     datasource.addTimedValueAttribute(getAttribute(attributeId));
@@ -67,19 +73,20 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     }
 
     @Override
-    protected int importDatasource(Datasource datasource) throws Exception {
-        saveDatasourceMetadata(datasource);
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
 
-        Workbook workbook = excelUtils.getWorkbook(datasource);
+        Workbook workbook = excelUtils.getWorkbook(
+                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
         RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
         List<TimedValue> timedValueBuffer = new ArrayList<>();
-        int valueCount = 0;
 
         // Extract walking
         ConstantExtractor walk5xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.walk5xWeek.name());
         List<TimedValueExtractor> walk5xWeekExtractors = new ArrayList<>();
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2011-12-31T23:59:59"),
@@ -87,6 +94,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2012-12-31T23:59:59"),
@@ -94,6 +102,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2013-12-31T23:59:59"),
@@ -101,19 +110,21 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         walk5xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 walk5xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2014-12-31T23:59:59"),
                 new RowCellExtractor(40, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet walkSheet = workbook.getSheetAt(1);
-        valueCount += excelUtils.extractTimedValues(walkSheet, this, walk5xWeekExtractors, BUFFER_THRESHOLD);
+        excelUtils.extractAndSaveTimedValues(walkSheet, this, walk5xWeekExtractors);
 
         // Extract cycling
         ConstantExtractor cycle1xWeekAttributeLabelExtractor = new ConstantExtractor(AttributeId.cycle1xWeek.name());
         List<TimedValueExtractor> cycle1xWeekExtractors = new ArrayList<>();
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2011-12-31T23:59:59"),
@@ -121,6 +132,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2012-12-31T23:59:59"),
@@ -128,6 +140,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2013-12-31T23:59:59"),
@@ -135,15 +148,14 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         ));
         cycle1xWeekExtractors.add(new TimedValueExtractor(
                 getProvider(),
+                subjectType,
                 subjectLabelExtractor,
                 cycle1xWeekAttributeLabelExtractor,
                 new ConstantExtractor("2014-12-31T23:59:59"),
                 new RowCellExtractor(38, Cell.CELL_TYPE_NUMERIC)
         ));
         Sheet cycleSheet = workbook.getSheetAt(2);
-        valueCount += excelUtils.extractTimedValues(cycleSheet, this, cycle1xWeekExtractors, BUFFER_THRESHOLD);
-
-        return valueCount;
+        excelUtils.extractAndSaveTimedValues(cycleSheet, this, cycle1xWeekExtractors);
     }
 
     private Attribute getAttribute(AttributeId attributeId){

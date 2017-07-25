@@ -12,9 +12,11 @@ import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.ParentField;
 import uk.org.tombolo.field.modelling.ModellingField;
+import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
+import uk.org.tombolo.importer.utils.ConfigUtils;
 
 import java.io.Writer;
 import java.util.ArrayList;
@@ -77,11 +79,20 @@ public class DataExportEngine implements ExecutionEngine{
 	}
 
 	private void importDatasource(ImporterMatcher forceImports, DatasourceSpecification datasourceSpec) throws Exception {
-		Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).newInstance();
+		Config importerConfiguration = null;
+		String configFile = datasourceSpec.getConfigFile();
+		if (configFile != null && !"".equals(configFile)) {
+			importerConfiguration = ConfigUtils.loadConfig(
+					AbstractRunner.loadProperties("Configuration file", configFile));
+
+		}
+		Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
 		importer.configure(apiKeys);
 		importer.setDownloadUtils(downloadUtils);
 		importer.importDatasource(
 				datasourceSpec.getDatasourceId(),
+				datasourceSpec.getGeographyScope(),
+				datasourceSpec.getTemporalScope(),
 				forceImports.doesMatch(datasourceSpec.getImporterClass())
 		);
 	}

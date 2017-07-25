@@ -7,8 +7,9 @@ public class DatabaseUtils {
         HibernateUtil.restart(); // We need to do this to clear the data from the session
         HibernateUtil.withSession(session -> {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE timed_value, fixed_value, attribute, provider, subject, database_journal").executeUpdate();
+            session.createSQLQuery("TRUNCATE timed_value, fixed_value, attribute, subject, database_journal").executeUpdate();
             session.createSQLQuery("DELETE FROM subject_type WHERE label NOT IN ('unknown', 'poi')").executeUpdate();
+            session.createSQLQuery("DELETE FROM provider WHERE label NOT IN ('default_provider_label')").executeUpdate();
             transaction.commit();
         });
     }

@@ -38,7 +38,7 @@ public class Subject {
 	}
 
 	@ManyToOne()
-	@JoinColumn(name="subject_type_label")
+	@JoinColumn(name="subject_type_id")
 	public SubjectType getSubjectType() {
 		return subjectType;
 	}

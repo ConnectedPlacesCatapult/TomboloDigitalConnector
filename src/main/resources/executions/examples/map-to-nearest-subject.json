@@ -6,14 +6,16 @@
     "subjectSpecification" : [
       {
         // The subject output is a traffic counter from DfT
-        "subjectType" : "trafficCounter"
+        "subjectType" : "trafficCounter",
+        "provider": "uk.gov.dft"
       }
     ],
     "datasourceSpecification" : [
       {
         // Importer for DfT traffic counts for Milton Keynes
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "Milton Keynes"
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["Milton Keynes"]
       },
       {
         // Importer for the Space Syntax Open Space Map

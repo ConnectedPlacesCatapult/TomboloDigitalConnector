@@ -2,12 +2,11 @@ package uk.org.tombolo.field.aggregation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.ParentField;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,19 +19,23 @@ import java.util.stream.Collectors;
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField implements Field, SingleValueField, ParentField {
-    private final String label;
+public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
+    private final String containingSubjectProvider;
     private final String containingSubjectType;
     private final FieldSpecification fieldSpecification;
     private SingleValueField field;
+    private SubjectType containerSubjectType;
 
-    MapToContainingSubjectField(String label, String containingSubjectType, FieldSpecification fieldSpecification) {
-        this.label = label;
+    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldSpecification fieldSpecification) {
+        super(label);
+        this.containingSubjectProvider = containingSubjectProvider;
         this.containingSubjectType = containingSubjectType;
         this.fieldSpecification = fieldSpecification;
     }
 
     public void initialize() {
+        containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(containingSubjectProvider, containingSubjectType);
+
         try {
             this.field = (SingleValueField) fieldSpecification.toField();
         } catch (ClassNotFoundException e) {
@@ -51,11 +54,6 @@ public class MapToContainingSubjectField implements Field, SingleValueField, Par
     }
 
     @Override
-    public String getLabel() {
-        return this.label;
-    }
-
-    @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
         if (null == field) { initialize(); }
         return field.valueForSubject(
@@ -63,13 +61,13 @@ public class MapToContainingSubjectField implements Field, SingleValueField, Par
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
-        List<Subject> subjectsContainingSubject = SubjectUtils.subjectsContainingSubject(containingSubjectType, subject);
+        List<Subject> subjectsContainingSubject = SubjectUtils.subjectsContainingSubject(containerSubjectType, subject);
         if (subjectsContainingSubject.size() != 1) {
             throw new IncomputableFieldException(String.format(
                     "Subject %s is contained by %d subjects of type %s (%s), but should be contained by 1 only",
                     subject.getName(),
                     subjectsContainingSubject.size(),
-                    containingSubjectType,
+                    containerSubjectType.getLabel(),
                     subjectsContainingSubject.stream().map(Subject::getName).collect(Collectors.joining(", "))));
         }
 

@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.TeeInputStream;
 import org.json.simple.JSONObject;
@@ -7,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -30,23 +30,31 @@ public class DownloadUtils {
 	public DownloadUtils(String dataCacheRootDirectory){
 		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
 	}
-	
-	public File getDatasourceFile(Datasource datasource) throws MalformedURLException, IOException{
-		createCacheDir();
-		File localDatasourceFile = new File(
-				tomboloDataCacheRootDirectory 
-				+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY 
-				+ "/" + datasource.getProvider().getLabel()
-				+ "/" + datasource.getLocalDatafile());
+
+	public File fetchFile(URL url, String prefix, String suffix) throws MalformedURLException, IOException{
+		createCacheDir(prefix);
+		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
+		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
-			log.info("Downloading external resource: {}",datasource.getRemoteDatafile());
-			FileUtils.copyURLToFile(new URL(datasource.getRemoteDatafile()), localDatasourceFile);
+			log.info("Downloading external resource: {}",url.toString());
+			FileUtils.copyURLToFile(url, localDatasourceFile);
 		}
-		
 		return localDatasourceFile;
 	}
-	
+
+	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
+		createCacheDir(prefix);
+		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
+		log.info("Feching local file: {}", localDatasourceFile.getName());
+		if (!localDatasourceFile.exists()){
+			URLConnection connection = url.openConnection();
+			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+		} else {
+			return new FileInputStream(localDatasourceFile);
+		}
+	}
+
 	public static String paramsToString(Map<String,String> params){
 		List<String> paramList = new ArrayList<String>();
 		for (String key : params.keySet()){
@@ -55,18 +63,14 @@ public class DownloadUtils {
 		return paramList.stream().collect(Collectors.joining("&"));
 	}
 
-	public JSONObject fetchJSON(URL url) throws IOException, ParseException {
+	public JSONObject fetchJSON(URL url, String prefix) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();
-		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url)));
+		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url, prefix)));
 	}
 
-	public InputStream fetchJSONStream(URL url) throws IOException {
-		createCacheDir();
-		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
-		File localDatasourceFile = new File(
-				tomboloDataCacheRootDirectory
-						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
-						+ "/" + urlKey + ".json");
+	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
+		createCacheDir(prefix);
+		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
@@ -77,7 +81,20 @@ public class DownloadUtils {
 		}
 	}
 
-	private void createCacheDir() throws IOException {
-		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY));
+	private File urlToLocalFile (URL url, String prefix, String suffix){
+		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
+		if (urlKey.length() > 250)
+			// The urlKey is too long for creating a file
+			urlKey = DigestUtils.md5Hex(urlKey);
+		return new File(
+				tomboloDataCacheRootDirectory
+						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
+						+ "/" + prefix
+						+ "/" + urlKey
+						+ suffix);
+	}
+
+	private void createCacheDir(String prefix) throws IOException {
+		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY + "/" + prefix));
 	}
 }

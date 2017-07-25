@@ -1,0 +1,31 @@
+{
+  "datasetSpecification" : {
+    "subjectSpecification" : [
+      {
+        // This specifies that all subjects of type "trafficCounter" should be returned.
+        "subjectType" : "trafficCounter",
+        "provider":"uk.gov.dft"
+      }
+    ],
+    "datasourceSpecification" : [
+      {
+        // Importer for DfT traffic counts in London
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
+      }
+    ],
+    "fieldSpecification" : [
+      {
+        // The latest count of pedal cycles for that traffic counter
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "label": "CountPedalCycles",
+        "attribute": {
+          "providerLabel" : "uk.gov.dft",
+          "attributeLabel" : "CountPedalCycles"
+        }
+      }
+    ]
+  },
+  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
