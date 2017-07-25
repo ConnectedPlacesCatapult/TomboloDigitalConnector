@@ -102,7 +102,9 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
                 try {
                     values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
                 } catch (IncomputableFieldException e) {
-                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %s for Subject %s.", field.getLabel(), subjects.get(i).getLabel()), e);
+                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
+                            "Check that Field %1$s exists for Subject %2$s \n" +
+                            "If not, you may have to calculate percentiles over a different range of subjects", field.getLabel(), subjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);
