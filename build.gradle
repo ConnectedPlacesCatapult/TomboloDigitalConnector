@@ -65,6 +65,7 @@ dependencies {
 	compile 'de.topobyte:osm4j-pbf:0.0.10'
 	compile 'de.topobyte:osm4j-tbo:0.0.10'
 	compile 'de.topobyte:osm4j-geometry:0.0.15'
+	compile 'org.glassfish:javax.json:1.0.4'
 	
 }
 
