@@ -18,7 +18,6 @@ import uk.org.tombolo.importer.DownloadUtils;
 
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,8 +53,8 @@ public class CoordinateUtils {
 
     private static final String POSTCODE_TO_COORDINATE_URL = "https://www.freemaptools.com/download/outcode-postcodes/postcode-outcodes.csv";
 
-    public static Map<String, Map.Entry<String, String>> postcodeToLatLong(String datasetProvider, DownloadUtils downloadUtils) throws Exception {
-        Map<String, Map.Entry<String, String>> postcodeToCoordMap = new HashMap<>();
+    public static Map<String, LatLong> postcodeToLatLong(String datasetProvider, DownloadUtils downloadUtils) throws Exception {
+        Map<String, LatLong> postcodeToCoordMap = new HashMap<>();
         InputStreamReader postcodeIsr = new InputStreamReader(downloadUtils.fetchInputStream(new URL(POSTCODE_TO_COORDINATE_URL), datasetProvider, ".csv"));
 
         CSVParser csvFileParser = new CSVParser(postcodeIsr, CSVFormat.DEFAULT);
@@ -65,7 +64,7 @@ public class CoordinateUtils {
         while (iter.hasNext()) {
             CSVRecord record = iter.next();
             postcodeToCoordMap.put(record.get(1),
-                    new AbstractMap.SimpleEntry<>(record.get(2), record.get(3)));
+                    new LatLong(record.get(2), record.get(3)));
         }
 
         return postcodeToCoordMap;

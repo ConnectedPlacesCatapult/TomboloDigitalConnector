@@ -13,6 +13,7 @@ import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 import uk.org.tombolo.importer.utils.ExcelUtils;
+import uk.org.tombolo.importer.utils.LatLong;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
     private static final int POSTCODE_COLUMN_INDEX = 10;
 
     // Method used to get the dataset if it is actually updated monthly
-    public static String getFormattedMonthYear() {
+    private static String getFormattedMonthYear() {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("MMMM_yyyy");
         LocalDate localDate = LocalDate.now();
         return dft.format(localDate).toString();
@@ -93,8 +94,9 @@ public class SchoolsImporter extends AbstractDfEImporter {
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();
 
         //Import the postcode conversion file
-        Map<String, Map.Entry<String, String>> postcodeToCoord =
-                CoordinateUtils.postcodeToLatLong(getProvider().getLabel(), downloadUtils);
+        Map<String, LatLong> postcodeToCoord = CoordinateUtils.postcodeToLatLong(getProvider().getLabel(), downloadUtils);
+        // Keep track of the seen outcudes so we don't calculate the coordinate every time
+        Map<String, Coordinate> seenCoordinates = new HashMap<>();
 
         Iterator<Row> rowIterator = workbook.getSheetAt(schoolsDataSourceID.schools.sheetIdx).rowIterator();
         DataFormatter dataFormatter = new DataFormatter();
@@ -117,15 +119,21 @@ public class SchoolsImporter extends AbstractDfEImporter {
 
             // create the geography from the coordinates matching the postcode
             GeometryFactory gf = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-            Map.Entry<String, String> latlong = postcodeToCoord.get(postcode.split(" ")[0]);
-            Geometry geometry = null;
-            try {
-                Coordinate  coordinate = new Coordinate(Double.parseDouble(latlong.getKey()),
-                        Double.parseDouble(latlong.getValue()));
-                 geometry = gf.createPoint(coordinate);
-            } catch (Exception e) {
-                // Nothing to do, we won't have a geometry for this subject
+            String outcode = postcode.split(" ")[0];
+            LatLong latlong = postcodeToCoord.get(outcode);
+            Geometry geometry;
+            Coordinate coordinate = seenCoordinates.get(outcode);
+            if (coordinate == null){
+                try {
+                    coordinate = new Coordinate(Double.parseDouble(latlong.getLongitude()),
+                            Double.parseDouble(latlong.getLatitude()));
+                    seenCoordinates.put(outcode, coordinate);
+                } catch (Exception e) {
+                    // Nothing to do, we won't have a geometry for this subject
+                }
             }
+            geometry = gf.createPoint(coordinate);
+
             Subject subject = new Subject(
                     datasource.getUniqueSubjectType(),
                     label,
