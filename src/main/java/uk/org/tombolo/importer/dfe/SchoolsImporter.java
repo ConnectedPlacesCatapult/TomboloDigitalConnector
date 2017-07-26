@@ -129,7 +129,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
                             Double.parseDouble(latlong.getLatitude()));
                     seenCoordinates.put(outcode, coordinate);
                 } catch (Exception e) {
-                    // Nothing to do, we won't have a geometry for this subject
+                    // Nothing to do, we will have an empty geometry for this subject
                 }
             }
             geometry = gf.createPoint(coordinate);

@@ -15,9 +15,9 @@ public class CoordinateUtilsTest extends AbstractTest {
     public void testPostcodeToLatLong() throws Exception {
         // Setting the provider to dfe so we don't need to download the file and use
         // the short version present in resources
-        Map<String, Map.Entry<String, String>> testMap =
+        Map<String, LatLong> testMap =
                 CoordinateUtils.postcodeToLatLong("uk.gov.education", makeTestDownloadUtils());
-        assertEquals("54.972045", testMap.get("NE98").getKey());
-        assertEquals("-1.598706", testMap.get("NE98").getValue());
+        assertEquals("54.972045", testMap.get("NE98").getLatitude());
+        assertEquals("-1.598706", testMap.get("NE98").getLongitude());
     }
 }
