@@ -27,7 +27,9 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
         this.fields = new ArrayList<>();
         for (FieldSpecification fieldSpec : fieldSpecifications) {
             try {
-                fields.add(fieldSpec.toField());
+                Field field = fieldSpec.toField();
+                field.setFieldCache(fieldCache);
+                fields.add(field);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }
@@ -55,6 +57,9 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
         if (fields == null)
             initialize();
         Double sum = 0d;
@@ -63,6 +68,7 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
                 throw new IncomputableFieldException("Field sum only valid for single value fields");
             sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
         }
+        setCachedValue(subject, sum.toString());
         return sum;
     }
 

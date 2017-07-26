@@ -21,7 +21,12 @@ public class SingleValueModellingField extends BasicModellingField implements Fi
         if (field == null)
             initialize();
         if (field instanceof SingleValueField){
-            return ((SingleValueField) field).valueForSubject(subject);
+            String cachedValue = getCachedValue(subject);
+            if (cachedValue == null) {
+                cachedValue = ((SingleValueField) field).valueForSubject(subject);
+                setCachedValue(subject, cachedValue);
+            }
+            return cachedValue;
         }
         throw new IncomputableFieldException("Modelling field must be Single Value Field");
     }

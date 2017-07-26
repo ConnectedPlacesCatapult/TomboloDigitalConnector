@@ -37,14 +37,19 @@ public class HasFixedAttributeField extends AbstractField implements SingleValue
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return cachedValue;
         if (cachedAttributes == null)
             initialise();
         for (Attribute cachedAttribute : cachedAttributes) {
             FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
             if (fixedValue != null) {
+                setCachedValue(subject, "1");
                 return "1";
             }
         }
+        setCachedValue(subject, "0");
         return "0";
     }
 
