@@ -77,8 +77,6 @@ public class JSONReader {
 
     private String primaryNode = null;
 
-    private static boolean IS_FIRST = true;
-
     private static ArrayList<LinkedHashMap<String, List<String>>> flatJsonTree
             = new ArrayList<>();
 
