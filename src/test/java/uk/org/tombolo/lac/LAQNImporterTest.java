@@ -5,8 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.lac.LAQNConfig;
 import uk.org.tombolo.importer.lac.LAQNImporter;
@@ -33,11 +32,14 @@ public class LAQNImporterTest extends AbstractTest {
             .build();
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws Exception {
 
         laqnImporter = new LAQNImporter(defaultConfig);
         mockDownloadUtils(laqnImporter);
+        laqnImporter.importDatasource("airQualityControl");
+
     }
+
 
     private Object allowAccessToPrivateMethods(String methodName,
                                                String... args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
@@ -62,33 +64,46 @@ public class LAQNImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetProvider() {
+    public void testGetProvider() throws Exception {
 
-        assertEquals("erg.kcl.ac.uk", laqnImporter.getProvider().getLabel());
+        Provider provider = ProviderUtils.getByLabel("erg.kcl.ac.uk");
+
+        assertEquals("erg.kcl.ac.uk", provider.getLabel());
         assertEquals("Environmental Research Group Kings College London",
-                                                                            laqnImporter.getProvider().getName());
+                                                                            provider.getName());
+
+    }
+
+    @Test
+    public void testGetFixedAttributes() throws Exception {
+
+        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
+
+        assertEquals("SiteCode", attribute.getLabel());
+        assertEquals("SiteCode", attribute.getName());
+        assertEquals("Unique key", attribute.getDescription());
 
     }
 
     @Test
     public void testGetDatasource() throws Exception {
+        List<String> datasources = laqnImporter.getDatasourceIds();
 
-        assertEquals("airQualityControl", laqnImporter.getDatasource("").getId());
-        assertEquals("airQualityControl", laqnImporter.getDatasource("").getName());
-        assertEquals("Quantity of gases in air by Kings College London",
-                                                        laqnImporter.getDatasource("").getDescription());
+        assertEquals(1, datasources.size());
+        assertEquals("airQualityControl", datasources.get(0));
 
     }
 
     @Test
-    public void testGetFixedAttributes() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void testGetSubjectType() throws Exception {
 
-        ArrayList<Attribute> attributes =
-                (ArrayList<Attribute>) allowAccessToPrivateMethods("getFixedAttributes");
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("erg.kcl.ac.uk",
+                "airQualityControl");
 
-        assertEquals("SiteCode", attributes.get(0).getLabel());
-
+        assertEquals("airQualityControl", subjectType.getLabel());
+        assertEquals("Quantity of gases in air by Kings College London", subjectType.getName());
     }
+
 
     @Test
     public void testReadData() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -104,21 +119,14 @@ public class LAQNImporterTest extends AbstractTest {
 
     }
 
-    @Test
-    public void testGetSubjectType() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
-        SubjectType subjectType =
-                (SubjectType) allowAccessToPrivateMethods("getSubjectType");
-
-        assertEquals("airQualityControl", subjectType.getLabel());
-        assertEquals("Quantity of gases in air by Kings College London", subjectType.getName());
-    }
 
     @Test
-    public void testGetSubjects() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void testGetSubjects() throws Exception {
 
-        ArrayList<Subject> subjects =
-                (ArrayList<Subject>) allowAccessToPrivateMethods("getSubjects");
+        List<Subject> subjects =
+                SubjectUtils.getSubjectByTypeAndLabelPattern(
+                        SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                                "erg.kcl.ac.uk","airQualityControl"),"%%");
 
         assertEquals("BG1", subjects.get(0).getLabel());
         assertEquals("Barking and Dagenham - Rush Green", subjects.get(0).getName());
@@ -126,14 +134,18 @@ public class LAQNImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetFixedValue() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void testGetFixedValue() throws Exception {
 
-        ArrayList<FixedValue> fixedValues =
-                (ArrayList<FixedValue>) allowAccessToPrivateMethods("getFixedValue");
+        List<Subject> subjects =
+                SubjectUtils.getSubjectByTypeAndLabelPattern(
+                        SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                                "erg.kcl.ac.uk","airQualityControl"),"%%");
 
-        assertEquals("Barking and Dagenham - Rush Green", fixedValues.get(1).getValue());
-        assertEquals("BG1", fixedValues.get(1).getId().getSubject().getLabel());
-        assertEquals("SiteName", fixedValues.get(1).getId().getAttribute().getLabel());
+        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
+
+        FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subjects.get(0), attribute);
+
+        assertEquals("BG1", fixedValue.getValue());
 
     }
 
@@ -171,15 +183,29 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testImportDatasource() throws Exception {
 
-        laqnImporter.importDatasource("airQualityControl");
-
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
                                 "erg.kcl.ac.uk","airQualityControl"),"BG1");
 
-        assertEquals(9, subjects.size());
-        assertEquals("", subjects.get(0).getName());
+        assertEquals(1, subjects.size());
+        assertEquals("Barking and Dagenham - Rush Green", subjects.get(0).getName());
+
+    }
+
+    @Test
+    public void testTimedValue() throws Exception {
+
+        List<Subject> subjects =
+                SubjectUtils.getSubjectByTypeAndLabelPattern(
+                        SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                                "erg.kcl.ac.uk","airQualityControl"),"%%");
+
+        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk",
+                                                    "BG1 NO2 40 ug/m3 as an annual me");
+
+        List<TimedValue> value = TimedValueUtils.getBySubjectAndAttribute(subjects.get(0), attribute);
+        assertEquals(Double.toString(26.0), Double.toString(value.get(0).getValue()));
 
     }
 }
