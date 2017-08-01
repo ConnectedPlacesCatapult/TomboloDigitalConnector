@@ -2,6 +2,7 @@ package uk.org.tombolo.field;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.execution.FieldCache;
 
 /**
  * Field.java
@@ -26,4 +27,5 @@ import uk.org.tombolo.core.Subject;
 public interface Field {
     JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException;
     String getLabel();
+    void setFieldCache(FieldCache fieldCache);
 }

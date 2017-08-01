@@ -62,16 +62,23 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
+
         if (field == null)
             initialize();
         double fieldValue = Double.valueOf(field.valueForSubject(subject));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
+                Double value;
                 if (inverse){
-                    return new Double(percentileCount-i);
+                    value = new Double(percentileCount-i);
                 }else{
-                    return new Double(i+1);
+                    value =  new Double(i+1);
                 }
+                setCachedValue(subject, value.toString());
+                return value;
             }
         }
         // This should never happen
@@ -82,6 +89,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
         if (field == null) {
             try {
                 field = (SingleValueField) valueField.toField();
+                field.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){
@@ -102,7 +110,9 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
                 try {
                     values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
                 } catch (IncomputableFieldException e) {
-                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %s for Subject %s.", field.getLabel(), subjects.get(i).getLabel()), e);
+                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
+                            "Check that Field %1$s exists for Subject %2$s \n" +
+                            "If not, you may have to calculate percentiles over a different range of subjects", field.getLabel(), subjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);

@@ -44,6 +44,7 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
