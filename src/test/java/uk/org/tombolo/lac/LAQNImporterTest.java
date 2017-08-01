@@ -7,13 +7,13 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.lac.LAQNConfig;
 import uk.org.tombolo.importer.lac.LAQNImporter;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -31,12 +31,12 @@ public class LAQNImporterTest extends AbstractTest {
                                     "airQualityControl", "Quantity of gases in air by Kings College London"))
             .build();
 
+
     @Before
     public void setUp() throws Exception {
 
         laqnImporter = new LAQNImporter(defaultConfig);
         mockDownloadUtils(laqnImporter);
-        laqnImporter.importDatasource("airQualityControl");
 
     }
 
@@ -50,7 +50,8 @@ public class LAQNImporterTest extends AbstractTest {
 
         Method method;
         if (args.length > 0) {
-            Class[] argTypes = methodName.equals("shape") ? new Class[] { String.class, String.class } :
+            Class[] argTypes = methodName.equals("shape") || methodName.equals("importerURL") ?
+                                new Class[] { String.class, String.class } :
                                 new Class[] { String.class };
             method = object.getClass().getDeclaredMethod(methodName, argTypes);
         } else method = object.getClass().getDeclaredMethod(methodName);
@@ -58,13 +59,15 @@ public class LAQNImporterTest extends AbstractTest {
         method.setAccessible(true);
 
         return args.length > 0 ?
-                        methodName.equals("shape") ? method.invoke(object, args[0], args[1]) :
+                        methodName.equals("shape") || methodName.equals("importerURL") ?
+                                method.invoke(object, args[0], args[1]) :
                                 method.invoke(object, args[0]) : method.invoke(object);
 
     }
 
     @Test
     public void testGetProvider() throws Exception {
+        laqnImporter.importDatasource("airQualityControl");
 
         Provider provider = ProviderUtils.getByLabel("erg.kcl.ac.uk");
 
@@ -75,10 +78,12 @@ public class LAQNImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testGetFixedAttributes() throws Exception {
+    public void testGetAttributes() throws Exception {
+        laqnImporter.importDatasource("airQualityControl");
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
+        assertEquals(33, laqnImporter.getAttributeSize());
         assertEquals("SiteCode", attribute.getLabel());
         assertEquals("SiteCode", attribute.getName());
         assertEquals("Unique key", attribute.getDescription());
@@ -96,6 +101,7 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetSubjectType() throws Exception {
+        laqnImporter.importDatasource("airQualityControl");
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("erg.kcl.ac.uk",
                 "airQualityControl");
@@ -109,7 +115,8 @@ public class LAQNImporterTest extends AbstractTest {
     public void testReadData() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         ArrayList<LinkedHashMap<String, List<String>>> data =
-                (ArrayList<LinkedHashMap<String, List<String>>>) allowAccessToPrivateMethods("readData");
+                (ArrayList<LinkedHashMap<String, List<String>>>) allowAccessToPrivateMethods("readData",
+                        "http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/GroupName=London/Year=2010/json");
 
         assertEquals(new HashSet<>(Arrays.asList("@SiteCode", "@SiteName", "@SiteType", "@Latitude",
                                     "@Longitude", "@LatitudeWGS84", "@LongitudeWGS84", "@SiteLink",
@@ -123,6 +130,7 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetSubjects() throws Exception {
 
+        laqnImporter.importDatasource("airQualityControl");
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
@@ -135,6 +143,7 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetFixedValue() throws Exception {
+        laqnImporter.importDatasource("airQualityControl");
 
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
@@ -162,18 +171,18 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testConfig() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
 
-        LAQNConfig config =
-                (LAQNConfig) allowAccessToPrivateMethods("config", "/datacache/TomboloData/uk.lac/config.properties");
+        Properties config =
+                (Properties) allowAccessToPrivateMethods("config", "/datacache/TomboloData/uk.lac/config.properties");
 
-        assertEquals("2010", config.getYear());
-        assertEquals("London", config.getArea());
+        assertEquals("2010", config.getProperty("year"));
+        assertEquals("London", config.getProperty("area"));
 
     }
 
     @Test
     public void testImportURL() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        String url = (String) allowAccessToPrivateMethods("importerURL");
+        String url = (String) allowAccessToPrivateMethods("importerURL", "London", "2010");
 
         assertEquals("http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/GroupName=London/Year=2010/json",
                       url);
@@ -182,7 +191,7 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasource() throws Exception {
-
+        laqnImporter.importDatasource("airQualityControl");
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
@@ -196,16 +205,24 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testTimedValue() throws Exception {
 
+        laqnImporter.importDatasource("airQualityControl");
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+
                                 "erg.kcl.ac.uk","airQualityControl"),"%%");
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk",
-                                                    "BG1 NO2 40 ug/m3 as an annual me");
+                                                    "NO2 40 ug/m3 as an annual me");
 
         List<TimedValue> value = TimedValueUtils.getBySubjectAndAttribute(subjects.get(0), attribute);
         assertEquals(Double.toString(26.0), Double.toString(value.get(0).getValue()));
 
+    }
+
+    @Test
+    public void testTime() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        LocalDateTime time = (LocalDateTime) allowAccessToPrivateMethods("time");
+        assertEquals(LocalDateTime.now(), time);
     }
 }
