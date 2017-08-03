@@ -40,7 +40,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
 
     @Test
     public void getAttribute() throws Exception {
-        importer.importDatasource("OSMGreenSpace");
+        importer.importDatasource("OSMGreenSpace", null, null, null);
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
         assertEquals("de.overpass-api", attribute.getProvider().getLabel());
         assertEquals("landuse", attribute.getLabel());
@@ -50,7 +50,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("OSMGreenSpace");
+        importer.importDatasource("OSMGreenSpace", null, null, null);
 
         List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("de.overpass-api","OSMEntity"),"osm34597927");
         assertEquals(1, subjects.size());

@@ -68,15 +68,6 @@ public abstract class AbstractImporter implements Importer {
 	public void setConfig(Config config) { this.config = config; }
 
 	/**
-	 * Syntactic sugar for global scope import
-	 * @param datasourceId
-	 * @throws Exception
-	 */
-	public void importDatasource(String datasourceId) throws Exception{
-		importDatasource(datasourceId, null, null);
-	}
-
-	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
 	 * @param datasourceId

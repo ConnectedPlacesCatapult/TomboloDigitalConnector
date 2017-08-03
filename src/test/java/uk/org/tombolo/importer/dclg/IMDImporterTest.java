@@ -54,7 +54,7 @@ public class IMDImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        imdImporter.importDatasource("imd");
+        imdImporter.importDatasource("imd", null, null, null);
         assertEquals(2*53, imdImporter.getTimedValueCount());
 
         Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.score");

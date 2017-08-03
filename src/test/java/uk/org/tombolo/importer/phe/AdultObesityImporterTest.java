@@ -49,7 +49,7 @@ public class AdultObesityImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID, null, null, null);
 		
 		//FIXME: Find a way to match Gateshead etc.
 		assertEquals(5, importer.getTimedValueCount());

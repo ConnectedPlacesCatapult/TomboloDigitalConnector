@@ -64,7 +64,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID, null, null, null);
 		assertEquals(233, importer.getTimedValueCount());
 
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(

@@ -56,7 +56,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		
 	@Test
 	public void testLoadDataset() throws Exception{
-		importer.importDatasource(datasourceId);
+		importer.importDatasource(datasourceId, null, null, null);
 		
 		assertEquals(3 + 3, importer.getTimedValueCount());
 		

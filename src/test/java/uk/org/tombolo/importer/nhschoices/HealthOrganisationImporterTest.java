@@ -46,7 +46,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportHospitals() throws Exception {
-        importer.importDatasource("hospital");
+        importer.importDatasource("hospital", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "hospital");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"40918");
         assertEquals(1106, importer.getSubjectCount());
@@ -58,7 +58,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportClinics() throws Exception {
-        importer.importDatasource("clinic");
+        importer.importDatasource("clinic", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "clinic");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "12366");
         assertEquals(8416, importer.getSubjectCount());
@@ -69,7 +69,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportGpSurgeries() throws Exception {
-        importer.importDatasource("gpSurgeries");
+        importer.importDatasource("gpSurgeries", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "gpSurgeries");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "2915");
         assertEquals(9767, importer.getSubjectCount());

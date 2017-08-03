@@ -79,14 +79,14 @@ public class TrafficCountImporterTest extends AbstractTest {
 	public void testImportDatasourceUnknown() throws Exception{
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Unknown DatasourceId:"));
-		importer.importDatasource("xyz");
+		importer.importDatasource("xyz", null, null, null);
 	}
 
 	@Test
 	public void testImportDatasourceNowhere() throws Exception {
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Missing geography scope"));
-		importer.importDatasource("trafficCounts");
+		importer.importDatasource("trafficCounts", null, null, null);
 	}
 
 	@Test
