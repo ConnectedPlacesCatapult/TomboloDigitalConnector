@@ -75,14 +75,6 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
 
-        if (config.getFileLocation() != null && !config.getFileLocation().trim().isEmpty()) {
-            properties = config(config.getFileLocation());
-            if (properties != null && !properties.isEmpty()) {
-                geographyScope = Collections.singletonList(properties.getProperty("area"));
-                temporalScope = Collections.singletonList(properties.getProperty("year"));
-            }
-        }
-
 
         flatJson = readData(importerURL(
                 !geographyScope.isEmpty() ? geographyScope.get(0) : "",
@@ -171,7 +163,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private ArrayList<FixedValue> getFixedValue(List<Subject> subjects, ArrayList<Attribute> attributes) throws IOException {
         ArrayList<FixedValue> fixedValues = new ArrayList<>();
 
-        for (int i = 0; i < flatJson.size(); i++) {
+        IntStream.range(0, flatJson.size()).forEachOrdered(i -> {
             Subject subject = subjects.get(i);
             int j = 0;
             for (Attribute attribute : attributes) {
@@ -186,7 +178,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
                     fixedValues.add(new FixedValue(subject, attribute, flatJson.get(i).get("@"+attribute.getLabel()).get(0)));
                 }
             }
-        }
+        });
 
         return fixedValues;
     }
@@ -221,20 +213,6 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private Geometry shape(String latitude, String longitude) {
         return new GeometryFactory()
                 .createPoint(new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude)));
-    }
-
-    private Properties config(String fileName) throws Exception {
-
-        Properties properties = new Properties();
-        InputStream stream = getClass().getResourceAsStream(fileName);
-
-
-        if (stream != null) properties.load(stream);
-        else throw new FileNotFoundException(fileName);
-
-        configure(properties);
-
-        return getConfiguration();
     }
 
     private String importerURL(String area, String year) {

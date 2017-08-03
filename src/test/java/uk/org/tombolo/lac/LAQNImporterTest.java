@@ -67,7 +67,8 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetProvider() throws Exception {
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
 
         Provider provider = ProviderUtils.getByLabel("erg.kcl.ac.uk");
 
@@ -79,7 +80,8 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetAttributes() throws Exception {
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
@@ -101,7 +103,8 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetSubjectType() throws Exception {
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("erg.kcl.ac.uk",
                 "airQualityControl");
@@ -130,7 +133,8 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetSubjects() throws Exception {
 
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
@@ -143,7 +147,8 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetFixedValue() throws Exception {
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
 
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
@@ -169,17 +174,6 @@ public class LAQNImporterTest extends AbstractTest {
     }
 
     @Test
-    public void testConfig() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
-
-        Properties config =
-                (Properties) allowAccessToPrivateMethods("config", "/datacache/TomboloData/uk.lac/config.properties");
-
-        assertEquals("2010", config.getProperty("year"));
-        assertEquals("London", config.getProperty("area"));
-
-    }
-
-    @Test
     public void testImportURL() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         String url = (String) allowAccessToPrivateMethods("importerURL", "London", "2010");
@@ -191,7 +185,8 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasource() throws Exception {
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
@@ -205,7 +200,8 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testTimedValue() throws Exception {
 
-        laqnImporter.importDatasource("airQualityControl");
+        laqnImporter.importDatasource("airQualityControl",
+                Collections.singletonList("London"), Collections.singletonList("2010"));
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
