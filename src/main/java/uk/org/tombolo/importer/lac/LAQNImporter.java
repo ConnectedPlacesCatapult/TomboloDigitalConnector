@@ -3,17 +3,17 @@ package uk.org.tombolo.importer.lac;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
-import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.*;
 import uk.org.tombolo.importer.utils.JSONReader;
 
 import java.io.*;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,12 +36,9 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private JSONReader reader;
     private int attributeSize;
     private ArrayList<LinkedHashMap<String, List<String>>> flatJson;
-    private Config config;
 
     public LAQNImporter(Config config) throws Exception {
         super(config);
-
-        this.config = config;
 
         dataSourceID = new DataSourceID(LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC,
                 dataSourceURL, "");
@@ -113,22 +110,17 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         ArrayList<Attribute> attributes = new ArrayList<>();
 
         ArrayList<String> keepTrack = new ArrayList<>();
-        flatJson.forEach(data -> {
-            List<String> speciesCode = data.get("@SpeciesCode");
-            List<String> objectiveName = data.get("@ObjectiveName");
-            List<String> speciesDescription = data.get("@SpeciesDescription");
-            IntStream.range(0, speciesCode.size()).forEachOrdered(i -> {
-                String attrlabel = speciesCode.get(i) + " " +
-                        objectiveName.get(i).substring(0, objectiveName.get(i).length() < 25 ?
-                                objectiveName.get(i).length() : 24);
-                if (!keepTrack.contains(attrlabel)) {
+        flatJson.forEach(data -> IntStream.range(0, data.get("@SpeciesCode").size()).forEachOrdered(i -> {
+            String attrlabel = data.get("@SpeciesCode").get(i) + " " +
+                    data.get("@ObjectiveName").get(i).substring(0, data.get("@ObjectiveName").get(i).length() < 25 ?
+                            data.get("@ObjectiveName").get(i).length() : 24);
+            if (!keepTrack.contains(attrlabel)) {
 
-                    attributes.add(new Attribute(getProvider(), attrlabel, speciesDescription.get(i),
-                            objectiveName.get(i), Attribute.DataType.string));
-                    keepTrack.add(attrlabel);
-                }
-            });
-        });
+                attributes.add(new Attribute(getProvider(), attrlabel, data.get("@SpeciesDescription").get(i),
+                        data.get("@ObjectiveName").get(i), Attribute.DataType.string));
+                keepTrack.add(attrlabel);
+            }
+        }));
 
         reader.allUniquekeys().stream().map(attr -> new Attribute(
                     getProvider(),
@@ -142,7 +134,8 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     }
 
     private ArrayList<LinkedHashMap<String, List<String>>> readData(String url) throws IOException {
-        reader = new JSONReader(url);
+
+        reader = new JSONReader(downloadUtils.fetchJSONStream(new URL(url), "uk.lac"));
         return reader.getData();
     }
 
@@ -165,14 +158,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
 
         IntStream.range(0, flatJson.size()).forEachOrdered(i -> {
             Subject subject = subjects.get(i);
-            int j = 0;
             for (Attribute attribute : attributes) {
-
-                if (attribute.getLabel().startsWith(subject.getLabel())) {
-                    List<String> values = flatJson.get(i).get("@Year");
-                    fixedValues.add(new FixedValue(subject, attribute, values.get(j)));
-                    j++;
-                }
 
                 if (UNIQUE_TAGS.contains("@"+attribute.getLabel())) {
                     fixedValues.add(new FixedValue(subject, attribute, flatJson.get(i).get("@"+attribute.getLabel()).get(0)));
@@ -193,7 +179,8 @@ public class LAQNImporter extends AbstractImporter implements Importer{
                     if (attribute.getLabel().startsWith(flatJson.get(i).get("@SpeciesCode").get(j)) &&
                             attribute.getDescription().equalsIgnoreCase(flatJson.get(i).get("@ObjectiveName").get(j))) {
 
-                        timedValues.add(new TimedValue(subject, attribute, time(),
+                        timedValues.add(new TimedValue(subject, attribute,
+                                time(flatJson.get(i).get("@Year").get(j)),
                                 Double.parseDouble(flatJson.get(i).get("@Value").get(j))));
                         break;
                     }
@@ -205,13 +192,14 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         return timedValues;
     }
 
-    private LocalDateTime time() {
-        return LocalDateTime.now();
+    private LocalDateTime time(String time) {
+        return TimedValueUtils.parseTimestampString(time);
     }
 
 
     private Geometry shape(String latitude, String longitude) {
-        return new GeometryFactory()
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+        return geometryFactory
                 .createPoint(new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude)));
     }
 
