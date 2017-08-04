@@ -9,6 +9,8 @@ import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.pbf.seq.PbfIterator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -23,7 +25,8 @@ import java.util.*;
  * Open street map importer
  */
 public abstract class OSMImporter extends AbstractImporter implements Importer{
-
+    private static final Logger log = LoggerFactory.getLogger(OSMImporter.class);
+    private static final int SUBJECT_BUFFER_THRESHOLD = 100000;
     protected static final String URL = "http://download.geofabrik.de";
     private static final String DEFAULT_AREA = "europe/great-britain";
 
@@ -126,7 +129,7 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
                     String value = tags.get(attribute.getLabel());
                     if (value != null
                             && (categories.get(attribute.getLabel()).contains(value)
-                            || categories.get(attribute.getLabel()).isEmpty())) {
+                            || categories.get(attribute.getLabel()).contains("*"))) {
                         attributeMatch = true;
                         break;
                     }
@@ -155,8 +158,17 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
                     }
                 }
             }
-            saveAndClearSubjectBuffer(subjects);
-            saveAndClearFixedValueBuffer(fixedValues);
+            if (subjects.size() % getSubjectBufferSize() == 0) {
+                saveAndClearSubjectBuffer(subjects);
+                saveAndClearFixedValueBuffer(fixedValues);
+            }
         }
+        saveAndClearSubjectBuffer(subjects);
+        saveAndClearFixedValueBuffer(fixedValues);
+    }
+
+    @Override
+    public int getSubjectBufferSize() {
+        return SUBJECT_BUFFER_THRESHOLD;
     }
 }

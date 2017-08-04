@@ -1,0 +1,7 @@
+[
+  {
+    "importerClass": "uk.org.tombolo.importer.osm.LandUseImporter",
+    "datasourceId": "OSMLandUse",
+    "geographyScope": ["europe/great-britain"]
+  }
+]

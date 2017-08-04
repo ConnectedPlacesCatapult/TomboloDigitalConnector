@@ -1,0 +1,26 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "label": "Residential landuse fraction",
+  "operation": "div",
+  "fieldSpecification1": {
+    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+    "label": "Cycle Lane Count",
+    "aggregationSubjectProvider": "org.openstreetmap",
+    "aggregationSubjectType": "OSMEntity",
+    "aggregationFunction": "sum",
+    "fieldSpecification": {
+      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeValueField",
+      "label": "Assert residential land use",
+      "attribute": {
+          "providerLabel": "org.openstreetmap",
+          "attributeLabel": "landuse"
+        },
+        "values":["residential"]
+    }
+  },
+  "fieldSpecification2": {
+    "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+    "label": "Landuse Count",
+    "recipe": "city-indices/landuse-diversity/LanduseCount"
+  }
+}

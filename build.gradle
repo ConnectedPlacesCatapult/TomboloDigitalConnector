@@ -81,6 +81,7 @@ task copyDeps(type: Copy) {
 task runExport(dependsOn: ['classes'], type: JavaExec) {
 	main = 'uk.org.tombolo.DataExportRunner'
 	classpath = sourceSets.main.runtimeClasspath
+	maxHeapSize = "6g"
 	jvmArgs '-disableassertions'
 
 	doFirst {
@@ -152,7 +153,7 @@ task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
 }
 
 test {
-	maxHeapSize = "1024m"
+	maxHeapSize = "2048m"
 	jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
 
 	doFirst {
