@@ -57,6 +57,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid");
         }
@@ -64,11 +65,8 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
         JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                aggregateSubjects(aggregator,
-                    getAggregationSubjects(subject)));
+        obj.put(this.label, getDoubleValueForSubject(subject));
         return obj;
     }
 
@@ -96,9 +94,18 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
+        return getDoubleValueForSubject(subject).toString();
+    }
+
+    private Double getDoubleValueForSubject(Subject subject) throws IncomputableFieldException {
         if (null == field) { initialize(); }
-        return aggregateSubjects(aggregator,
-                getAggregationSubjects(subject)).toString();
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
+        Double value = aggregateSubjects(aggregator, getAggregationSubjects(subject));
+        if (value != null)
+            setCachedValue(subject, value.toString());
+        return value;
     }
 
     private List<Subject> getAggregationSubjects(Subject subject) throws IncomputableFieldException {

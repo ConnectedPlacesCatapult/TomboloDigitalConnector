@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.execution.FieldCache;
 import uk.org.tombolo.execution.spec.DataExportSpecification;
 import uk.org.tombolo.execution.spec.DatasourceSpecification;
 import uk.org.tombolo.execution.spec.FieldSpecification;
@@ -27,16 +28,18 @@ public class DataExportEngine implements ExecutionEngine{
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	private static DownloadUtils downloadUtils;
 	private static Properties apiKeys;
+	private FieldCache fieldCache;
 
 	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
+		fieldCache = new FieldCache();
 	}
 
 	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
 		execute(dataExportSpec, writer, new ImporterMatcher(""));
 	}
-	
+
 	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
 		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
@@ -48,6 +51,7 @@ public class DataExportEngine implements ExecutionEngine{
 		List<Field> fields = new ArrayList<>();
 		for (FieldSpecification fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
+			field.setFieldCache(fieldCache);
 			fields.add(field);
 		}
 

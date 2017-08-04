@@ -28,22 +28,27 @@ public class AreaField extends AbstractField implements SingleValueField {
     }
 
     private String getTransformedArea(Subject subject) {
-        Geometry geometry = subject.getShape();
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue == null) {
+            Geometry geometry = subject.getShape();
 
-        if (Subject.SRID != targetCRSCode) {
-            try {
-                CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:" + Subject.SRID);
-                CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:" + targetCRSCode);
-                MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
-                geometry = JTS.transform(geometry, transform);
-            } catch (FactoryException e) {
-                e.printStackTrace();
-            } catch (TransformException e) {
-                e.printStackTrace();
+            if (Subject.SRID != targetCRSCode) {
+                try {
+                    CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:" + Subject.SRID);
+                    CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:" + targetCRSCode);
+                    MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
+                    geometry = JTS.transform(geometry, transform);
+                } catch (FactoryException e) {
+                    e.printStackTrace();
+                } catch (TransformException e) {
+                    e.printStackTrace();
+                }
             }
+            cachedValue = String.format("%.02f", geometry.getArea());
+            setCachedValue(subject, cachedValue);
         }
 
-        return String.format("%.02f", geometry.getArea());
+        return cachedValue;
     }
 
     @Override

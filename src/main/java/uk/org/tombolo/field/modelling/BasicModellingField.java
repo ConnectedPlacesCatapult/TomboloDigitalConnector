@@ -65,6 +65,7 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
             field = SpecificationDeserializer
                     .fromJsonFile(fieldSpecificationFile, FieldSpecification.class)
                     .toField();
+            field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field class not found", e);
         } catch (IOException e) {
