@@ -2,7 +2,7 @@ package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
@@ -17,8 +17,8 @@ import java.util.function.BiFunction;
  */
 public class ArithmeticField extends AbstractField implements SingleValueField {
     public static enum Operation {div, mul, add, sub}
-    private final FieldSpecification fieldSpecification1;
-    private final FieldSpecification fieldSpecification2;
+    private final FieldRecipe fieldSpecification1;
+    private final FieldRecipe fieldSpecification2;
     private final Operation operation;
 
     private Map<Operation, BiFunction<Double, Double, Double>> operators;
@@ -26,7 +26,7 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
     private SingleValueField field2;
     private BiFunction<Double, Double, Double> operator;
 
-    ArithmeticField(String label, Operation operation, FieldSpecification fieldSpecification1, FieldSpecification fieldSpecification2) {
+    ArithmeticField(String label, Operation operation, FieldRecipe fieldSpecification1, FieldRecipe fieldSpecification2) {
         super(label);
         this.fieldSpecification1 = fieldSpecification1;
         this.operation = operation;

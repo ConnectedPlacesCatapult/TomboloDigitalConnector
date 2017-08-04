@@ -10,8 +10,8 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
 import java.util.Collections;
@@ -53,9 +53,9 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
                 "}", jsonString,false);
     }
 
-    private FieldSpecification makeFieldSpec() {
-        return SpecificationDeserializer.fromJson(
+    private FieldRecipe makeFieldSpec() {
+        return RecipeDeserializer.fromJson(
                 FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label").toJSONString(),
-                FieldSpecification.class);
+                FieldRecipe.class);
     }
 }

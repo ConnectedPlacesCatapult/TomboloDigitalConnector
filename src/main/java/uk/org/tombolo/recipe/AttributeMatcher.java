@@ -1,4 +1,4 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 public class AttributeMatcher {
     public final String providerLabel;

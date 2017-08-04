@@ -1,4 +1,4 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -11,12 +11,12 @@ import java.io.Writer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-public class SpecificationDeserializerTest extends AbstractTest {
+public class RecipeDeserializerTest extends AbstractTest {
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
 
     @Test
     public void testFromJsonWithBlankSpec() throws Exception {
-        assertSame(DataExportSpecification.class, SpecificationDeserializer.fromJson(builder.toJSONString(), DataExportSpecification.class).getClass());
+        assertSame(DataExportRecipe.class, RecipeDeserializer.fromJson(builder.toJSONString(), DataExportRecipe.class).getClass());
     }
 
     @Test
@@ -25,12 +25,12 @@ public class SpecificationDeserializerTest extends AbstractTest {
         Writer writer = new FileWriter(file);
         writer.write(builder.toJSONString());
         writer.close();
-        assertSame(DataExportSpecification.class, SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class).getClass());
+        assertSame(DataExportRecipe.class, RecipeDeserializer.fromJsonFile(file, DataExportRecipe.class).getClass());
     }
 
     @Test
     public void testFromJsonFileWithExporter() throws Exception {
         builder.setExporterClass("a_cool_string");
-        assertEquals("a_cool_string", SpecificationDeserializer.fromJson(builder.toJSONString(), DataExportSpecification.class).exporterClass);
+        assertEquals("a_cool_string", RecipeDeserializer.fromJson(builder.toJSONString(), DataExportRecipe.class).exporter);
     }
 }

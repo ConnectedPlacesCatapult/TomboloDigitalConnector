@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    private final FieldSpecification valueField;
+    private final FieldRecipe valueField;
     // The subjects over which the percentiles are calculated
-    private final List<SubjectSpecification> normalizationSubjects;
+    private final List<SubjectRecipe> normalizationSubjects;
     // The number of percentiles
     private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
@@ -37,8 +37,8 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     public PercentilesField(
             String label,
             String name,
-            FieldSpecification valueField,
-            List<SubjectSpecification> normalizationSubjects,
+            FieldRecipe valueField,
+            List<SubjectRecipe> normalizationSubjects,
             Integer percentileCount, Boolean inverse) {
         super(label);
         this.valueField = valueField;

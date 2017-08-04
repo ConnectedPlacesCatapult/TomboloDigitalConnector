@@ -2,15 +2,15 @@
 // passing by a road traffic counter, and the angular betweenness centrality
 // of the road segment that traffic counter is on
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The subject output is a traffic counter from DfT
         "subjectType" : "trafficCounter",
         "provider": "uk.gov.dft"
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for DfT traffic counts for Milton Keynes
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
@@ -23,7 +23,7 @@
         "datasourceId" : "milton_keynes.osm_polyline_processed"
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // Filed for returning the latest count of cars and taxis for the traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
@@ -51,5 +51,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+  "exporter" : "uk.org.tombolo.exporter.CSVExporter"
 }

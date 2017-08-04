@@ -1,6 +1,6 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The output subjects are all LSOAs whose name starts with 'Leeds'
         "subjectType" : "lsoa",
@@ -11,14 +11,14 @@
         }
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for LSOA geographies
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // Modelling field for Disability Resilience (built-in model)
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
@@ -45,5 +45,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

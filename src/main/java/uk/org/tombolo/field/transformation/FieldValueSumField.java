@@ -3,7 +3,7 @@ package uk.org.tombolo.field.transformation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class FieldValueSumField extends AbstractField implements SingleValueField, ParentField {
     String name;
-    List<FieldSpecification> fieldSpecifications;
+    List<FieldRecipe> fieldSpecifications;
     List<Field> fields;
 
-    public FieldValueSumField(String label, String name, List<FieldSpecification> fieldSpecifications) {
+    public FieldValueSumField(String label, String name, List<FieldRecipe> fieldSpecifications) {
         super(label);
         this.name = name;
         this.fieldSpecifications = fieldSpecifications;
@@ -25,7 +25,7 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
 
     public void initialize() {
         this.fields = new ArrayList<>();
-        for (FieldSpecification fieldSpec : fieldSpecifications) {
+        for (FieldRecipe fieldSpec : fieldSpecifications) {
             try {
                 Field field = fieldSpec.toField();
                 field.setFieldCache(fieldCache);
