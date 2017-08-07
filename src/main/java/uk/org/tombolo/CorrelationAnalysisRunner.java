@@ -4,8 +4,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.execution.CorrelationAnalysisEngine;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
@@ -43,7 +43,7 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
 
 
         // Loading the data export specification for future use
-        DataExportSpecification dataExportSpecification =
+        DataExportRecipe dataExportRecipe =
                 DataExportRunner.getSpecification(dataExportSpecificationPath);
 
         // If datafile does not exist create it
@@ -52,14 +52,14 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
                     forceImports, clearDatabaseCache);
         }
 
-        List<FieldSpecification> fieldSpecifications
-                = dataExportSpecification.getDatasetSpecification().getFieldSpecification();
+        List<FieldRecipe> fieldSpecifications
+                = dataExportRecipe.getDataset().getFields();
 
         // Read in data file
         RealMatrix matrix;
-        if (dataExportSpecification.getExporterClass().equals(GeoJsonExporter.class.getCanonicalName())){
+        if (dataExportRecipe.getExporter().equals(GeoJsonExporter.class.getCanonicalName())){
             matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(dataExportOutputPath, fieldSpecifications);
-        }else if(dataExportSpecification.getExporterClass().equals(CSVExporter.class.getCanonicalName())){
+        }else if(dataExportRecipe.getExporter().equals(CSVExporter.class.getCanonicalName())){
             matrix = CorrelationAnalysisEngine.readCSVDataExport(dataExportOutputPath, fieldSpecifications);
         }else {
             throw new Error("Unknown exporter class for intermdiate data");

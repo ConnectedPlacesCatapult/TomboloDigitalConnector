@@ -5,7 +5,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.Collections;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
     private final String containingSubjectProvider;
     private final String containingSubjectType;
-    private final FieldSpecification fieldSpecification;
+    private final FieldRecipe fieldSpecification;
     private SingleValueField field;
     private SubjectType containerSubjectType;
 
-    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldSpecification fieldSpecification) {
+    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldSpecification) {
         super(label);
         this.containingSubjectProvider = containingSubjectProvider;
         this.containingSubjectType = containingSubjectType;

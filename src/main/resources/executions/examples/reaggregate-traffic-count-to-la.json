@@ -1,13 +1,13 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The output geographies are traffic counters
         "subjectType" : "trafficCounter",
         "provider" : "uk.gov.dft"
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for Local Authorities in the UK
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
@@ -20,7 +20,7 @@
         "geographyScope" : ["London"]
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // An arthmetic field that divides one field value with another
         // In this case we calcluate for each traffic counter
@@ -67,5 +67,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

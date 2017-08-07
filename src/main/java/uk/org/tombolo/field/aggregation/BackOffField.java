@@ -2,7 +2,7 @@ package uk.org.tombolo.field.aggregation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -17,18 +17,18 @@ import java.util.List;
  */
 public class BackOffField extends AbstractField implements SingleValueField {
 
-    private List<FieldSpecification> fields;
+    private List<FieldRecipe> fields;
 
     private List<Field> materialisedFields;
 
-    public BackOffField(String label, List<FieldSpecification> fields){
+    public BackOffField(String label, List<FieldRecipe> fields){
         super(label);
         this.fields = fields;
     }
 
     public void initialize() {
         this.materialisedFields = new ArrayList<>();
-        for (FieldSpecification field : fields) {
+        for (FieldRecipe field : fields) {
             try {
                 materialisedFields.add(field.toField());
             } catch (ClassNotFoundException e) {

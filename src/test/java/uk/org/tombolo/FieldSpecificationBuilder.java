@@ -3,8 +3,8 @@ package uk.org.tombolo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.util.List;
 
@@ -145,7 +145,7 @@ public class FieldSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public FieldSpecification build() {
-        return SpecificationDeserializer.fromJson(toJSONString(), FieldSpecification.class);
+    public FieldRecipe build() {
+        return RecipeDeserializer.fromJson(toJSONString(), FieldRecipe.class);
     }
 }

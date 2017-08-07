@@ -1,4 +1,4 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.junit.Test;
@@ -11,13 +11,13 @@ import java.util.Arrays;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class DataExportSpecificationValidatorTest extends AbstractTest {
+public class DataExportRecipeValidatorTest extends AbstractTest {
 
     @Test
     public void testValidateWithValidFixture() throws Exception {
         String resourcePath = "executions/valid_specification_file.json";
         ClassLoader classLoader = getClass().getClassLoader();
-        ProcessingReport report = DataExportSpecificationValidator.validate(new FileReader(classLoader.getResource(resourcePath).getFile()));
+        ProcessingReport report = DataExportRecipeValidator.validate(new FileReader(classLoader.getResource(resourcePath).getFile()));
         assertTrue("Spec is valid", report.isSuccess());
     }
 
@@ -35,13 +35,13 @@ public class DataExportSpecificationValidatorTest extends AbstractTest {
                                         .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                         ))
                 );
-        ProcessingReport report = DataExportSpecificationValidator.validate(new StringReader(spec.toJSONString()));
+        ProcessingReport report = DataExportRecipeValidator.validate(new StringReader(spec.toJSONString()));
         assertTrue("Spec is valid", report.isSuccess());
     }
 
     @Test
     public void testValidateWithInvalidFixture() throws Exception {
-        ProcessingReport report = DataExportSpecificationValidator.validate(new StringReader("{}"));
+        ProcessingReport report = DataExportRecipeValidator.validate(new StringReader("{}"));
         assertFalse("Spec is invalid", report.isSuccess());
     }
 }

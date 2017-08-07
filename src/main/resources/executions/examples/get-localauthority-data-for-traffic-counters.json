@@ -1,13 +1,13 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
         "subjectType" : "trafficCounter",
         "provider": "uk.gov.dft"
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for geographies of all Local Authorities in the UK
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
@@ -25,7 +25,7 @@
         "geographyScope" : ["London"]
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // A field that assigns to each output geography (traffic counter) the population density value from the
         // Borough Profile of the borough (local authority) containing the traffic counter.
@@ -52,5 +52,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.CSVExporter"
+  "exporter" : "uk.org.tombolo.exporter.CSVExporter"
 }

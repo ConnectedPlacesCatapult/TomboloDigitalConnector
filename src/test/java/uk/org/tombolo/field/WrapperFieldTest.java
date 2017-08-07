@@ -5,8 +5,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +28,8 @@ public class WrapperFieldTest extends AbstractTest {
         assertEquals("aLabel", field.getLabel());
     }
 
-    private List<FieldSpecification> makeFieldSpec() {
+    private List<FieldRecipe> makeFieldSpec() {
         return Collections.singletonList(
-                SpecificationDeserializer.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldSpecification.class));
+                RecipeDeserializer.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
     }
 }

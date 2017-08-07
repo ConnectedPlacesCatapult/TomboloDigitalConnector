@@ -12,7 +12,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.IncomputableFieldException;
 
 import java.util.Arrays;
@@ -46,13 +46,13 @@ public class BackOffFieldTest extends AbstractTest {
         FixedValueUtils.save(new FixedValue(squareB, testAttribute, "squareBvalue"));
 
         // Field for returning the point's attribute
-        FieldSpecification attributeValueField
+        FieldRecipe attributeValueField
                 = FieldSpecificationBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)
                 .setLabel("fixed")
                 .build();
 
         // Field for returning the point's square parent's value
-        FieldSpecification containingSubjectField = FieldSpecificationBuilder.mapToContainingSubjectField(
+        FieldRecipe containingSubjectField = FieldSpecificationBuilder.mapToContainingSubjectField(
                 "mapped",
                 TestFactory.DEFAULT_PROVIDER.getLabel(),
                 "square",
