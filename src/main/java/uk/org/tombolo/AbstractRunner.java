@@ -2,8 +2,8 @@ package uk.org.tombolo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 
@@ -42,13 +42,13 @@ public abstract class AbstractRunner {
         return properties;
     }
 
-    protected static DataExportSpecification getSpecification(String specificationPath) throws IOException {
+    protected static DataExportRecipe getSpecification(String specificationPath) throws IOException {
         File file = new File(specificationPath);
         if (!file.exists()){
             log.error("File not found: {}", specificationPath);
             System.exit(1);
         }
-        return SpecificationDeserializer.fromJsonFile(file, DataExportSpecification.class);
+        return RecipeDeserializer.fromJsonFile(file, DataExportRecipe.class);
     }
 
     protected static DownloadUtils initialiseDowloadUtils() throws ConfigurationException {

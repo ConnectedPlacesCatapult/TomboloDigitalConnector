@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 

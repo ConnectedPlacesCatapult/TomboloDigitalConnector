@@ -9,7 +9,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 

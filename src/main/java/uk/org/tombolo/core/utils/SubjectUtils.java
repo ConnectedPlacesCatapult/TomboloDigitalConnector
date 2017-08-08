@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification.SubjectAttributeMatchRule;
+import uk.org.tombolo.recipe.DatasetRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe.SubjectAttributeMatchRule;
 
 import javax.persistence.Parameter;
 import java.util.ArrayList;
@@ -37,26 +37,26 @@ public class SubjectUtils {
 		});
 	}
 
-	public static List<Subject> getSubjectBySpecification(DatasetSpecification datasetSpecification) {
+	public static List<Subject> getSubjectBySpecification(DatasetRecipe datasetRecipe) {
 		List<Subject> subjects = new ArrayList<>();
 
-		for(SubjectSpecification subjectSpecification : datasetSpecification.getSubjectSpecification()){
-			subjects.addAll(getSubjectBySpecification(subjectSpecification));
+		for(SubjectRecipe subjectRecipe : datasetRecipe.getSubjects()){
+			subjects.addAll(getSubjectBySpecification(subjectRecipe));
 		}
 
 		return subjects;
 	}
 
 
-	public static List<Subject> getSubjectBySpecification(SubjectSpecification subjectSpecification) {
+	public static List<Subject> getSubjectBySpecification(SubjectRecipe subjectRecipe) {
 		return HibernateUtil.withSession(session -> {
-			return (List<Subject>) queryFromSubjectSpecification(session, subjectSpecification).list();
+			return (List<Subject>) queryFromSubjectSpecification(session, subjectRecipe).list();
 		});
 	}
 
-	public static List<Subject> getSubjectBySpecifications(List<SubjectSpecification> subjectSpecifications) {
+	public static List<Subject> getSubjectBySpecifications(List<SubjectRecipe> subjectRecipes) {
 		List<Subject> subjects = new ArrayList<>();
-		for (SubjectSpecification subjectSpec : subjectSpecifications) {
+		for (SubjectRecipe subjectSpec : subjectRecipes) {
 			subjects.addAll(getSubjectBySpecification(subjectSpec));
 		}
 		return subjects;
@@ -88,32 +88,32 @@ public class SubjectUtils {
 		});
 	}
 
-	private static Query queryFromSubjectSpecification(Session session, SubjectSpecification subjectSpecification) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subjectSpecification.getProvider(), subjectSpecification.getSubjectType());
+	private static Query queryFromSubjectSpecification(Session session, SubjectRecipe subjectRecipe) {
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subjectRecipe.getProvider(), subjectRecipe.getSubjectType());
 
 		String hqlQuery = "from Subject s where s.subjectType = :subjectType";
 
 		// Add Attribute Match Rule if exists
-		if (null != subjectSpecification.getMatchRule()){
-			if (subjectSpecification.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.label) {
+		if (null != subjectRecipe.getMatchRule()){
+			if (subjectRecipe.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.label) {
 				hqlQuery += " and lower(label) like :pattern";
-			} else if (subjectSpecification.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.name) {
+			} else if (subjectRecipe.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.name) {
 				hqlQuery += " and lower(name) like :pattern";
 			} else {
 				throw new IllegalArgumentException(String.format(
 						"SubjectAttributeMatchRule attribute is not a valid type (is %s, can be either name or label)",
-						subjectSpecification.getMatchRule().attribute.name()));
+						subjectRecipe.getMatchRule().attribute.name()));
 			}
 		}
 
 		// Add Geo Match Rule if exists
-		if (null != subjectSpecification.getGeoMatchRule()){
-			if (subjectSpecification.getGeoMatchRule().geoRelation == SubjectSpecification.SubjectGeoMatchRule.GeoRelation.within){
+		if (null != subjectRecipe.getGeoMatchRule()){
+			if (subjectRecipe.getGeoMatchRule().geoRelation == SubjectRecipe.SubjectGeoMatchRule.GeoRelation.within){
 				hqlQuery += " and within(shape, :geom) = true";
 			}else{
 				throw new IllegalArgumentException(String.format(
 						"SubjectGeoMatchRule attribute is not a valid type (is %s, can only be within)",
-						subjectSpecification.getGeoMatchRule().geoRelation.name()));
+						subjectRecipe.getGeoMatchRule().geoRelation.name()));
 			}
 		}
 
@@ -124,9 +124,9 @@ public class SubjectUtils {
 			if (Objects.equals(parameter.getName(), "subjectType")) {
 				query.setParameter("subjectType", subjectType);
 			} else if (Objects.equals(parameter.getName(), "pattern")) {
-				query.setParameter("pattern", subjectSpecification.getMatchRule().pattern.toLowerCase());
+				query.setParameter("pattern", subjectRecipe.getMatchRule().pattern.toLowerCase());
 			} else if (Objects.equals(parameter.getName(), "geom")) {
-				List<Subject> parents = getSubjectBySpecifications(subjectSpecification.getGeoMatchRule().subjectSpecifications);
+				List<Subject> parents = getSubjectBySpecifications(subjectRecipe.getGeoMatchRule().subjects);
 
 				Geometry union = null;
 				for (Subject parent : parents){

@@ -1,4 +1,4 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Reader;
 
-public class DataExportSpecificationValidator {
-    static Logger log = LoggerFactory.getLogger(DataExportSpecificationValidator.class);
+public class DataExportRecipeValidator {
+    static Logger log = LoggerFactory.getLogger(DataExportRecipeValidator.class);
 
     public static ProcessingReport validate(Reader jsonFile) {
         try {

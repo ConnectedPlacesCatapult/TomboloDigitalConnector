@@ -11,8 +11,8 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
@@ -98,9 +98,9 @@ public class GeographicAggregationFieldTest extends AbstractTest {
                 "}", jsonString, false);
     }
 
-    private FieldSpecification makeFieldSpec() {
-        return SpecificationDeserializer.fromJson(
+    private FieldRecipe makeFieldSpec() {
+        return RecipeDeserializer.fromJson(
                 FieldSpecificationBuilder.latestValue("default_provider_label", "attr").toJSONString(),
-                FieldSpecification.class);
+                FieldRecipe.class);
     }
 }

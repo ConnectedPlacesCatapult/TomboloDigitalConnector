@@ -1,8 +1,8 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 import java.util.List;
 
-public class DatasourceSpecification {
+public class DatasourceRecipe {
 
 	private String importerClass;
 	private String datasourceId;
@@ -10,14 +10,14 @@ public class DatasourceSpecification {
 	private List<String> temporalScope;
 	private String configFile = "";
 	
-	public DatasourceSpecification(String importerClass, String datasourceId, List<String> geographyScope, List<String> temporalScope){
+	public DatasourceRecipe(String importerClass, String datasourceId, List<String> geographyScope, List<String> temporalScope){
 		this.importerClass = importerClass;
 		this.datasourceId = datasourceId;
 		this.geographyScope = geographyScope;
 		this.temporalScope = temporalScope;
 	}
 
-	public DatasourceSpecification addConfigFile(String configFile) {
+	public DatasourceRecipe addConfigFile(String configFile) {
 		this.configFile = configFile;
 
 		return this;
