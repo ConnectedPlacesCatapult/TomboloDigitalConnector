@@ -84,6 +84,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "localData": {
+                "type": "string"
               }
             },
             "required": [
