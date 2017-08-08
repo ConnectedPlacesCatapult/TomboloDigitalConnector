@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -31,10 +30,10 @@ public class DownloadUtils {
 		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
 	}
 
-	public File fetchFile(URL url, String prefix, String suffix) throws MalformedURLException, IOException{
+	public File fetchFile(URL url, String prefix, String suffix) throws IOException{
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
-		log.info("Feching local file: {}", localDatasourceFile.getName());
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
 			log.info("Downloading external resource: {}",url.toString());
@@ -46,7 +45,7 @@ public class DownloadUtils {
 	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
-		log.info("Feching local file: {}", localDatasourceFile.getName());
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));

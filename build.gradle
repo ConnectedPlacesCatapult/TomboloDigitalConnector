@@ -62,8 +62,13 @@ dependencies {
 	compile 'de.topobyte:osm4j-pbf:0.0.10'
 	compile 'de.topobyte:osm4j-tbo:0.0.10'
 	compile 'de.topobyte:osm4j-geometry:0.0.15'
+
+	// glassfish
 	compile 'org.glassfish:javax.json:1.0.4'
-	
+
+	// twitter4j
+	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
+
 }
 
 configurations.all {

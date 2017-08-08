@@ -60,7 +60,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope,  String datasourceLocation) throws Exception {
         OaType datasourceId = OaType.valueOf(datasource.getId());
         InputStream inputStream = downloadUtils.fetchJSONStream(new URL(datafiles.get(datasourceId.ordinal())), getProvider().getLabel());
         FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);

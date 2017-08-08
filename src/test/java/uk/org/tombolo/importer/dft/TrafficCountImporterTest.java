@@ -93,12 +93,12 @@ public class TrafficCountImporterTest extends AbstractTest {
 	public void testImportDatasourceNorthPole() throws Exception {
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Unknown Geography Scope:"));
-		importer.importDatasource("trafficCounts", Arrays.asList("North Pole"), null);
+		importer.importDatasource("trafficCounts", Arrays.asList("North Pole"), null, null);
 	}
 
 	@Test
 	public void testImportDatasourceCountLondon() throws Exception {
-		importer.importDatasource("trafficCounts", Arrays.asList("London"), null);
+		importer.importDatasource("trafficCounts", Arrays.asList("London"), null, null);
 		assertEquals(4, importer.getSubjectCount());
 		assertEquals(4*4, importer.getFixedValueCount());
 		assertEquals(
@@ -127,7 +127,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 
 	@Test
 	public void testImportDatasourceVolumeAberdeenCity() throws Exception {
-		importer.importDatasource("trafficVolume", Arrays.asList("Aberdeen City"), null);
+		importer.importDatasource("trafficVolume", Arrays.asList("Aberdeen City"), null, null);
 		assertEquals(2, importer.getSubjectCount());
 		assertEquals(2*4, importer.getFixedValueCount());
 

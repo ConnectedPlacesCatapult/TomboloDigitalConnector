@@ -87,7 +87,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     @Test
     public void testImportDatasourceImportsSubjects() throws Exception {
 
-        importer.importDatasource("osm_polyline_processed", null, null);
+        importer.importDatasource("osm_polyline_processed", null, null, null);
         assertEquals(0, importer.getTimedValueCount());
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
@@ -103,7 +103,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addTimedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        importer.importDatasource("osm_polyline_processed", null, null);
+        importer.importDatasource("osm_polyline_processed", null, null, null);
         assertEquals(25, importer.getTimedValueCount());
 
         Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
@@ -120,7 +120,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         datasourceSetup = datasource -> {
             datasource.addFixedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         };
-        importer.importDatasource("osm_polyline_processed", null, null);
+        importer.importDatasource("osm_polyline_processed", null, null, null);
         assertEquals(25, importer.getFixedValueCount());
 
         Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");

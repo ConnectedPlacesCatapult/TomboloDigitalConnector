@@ -2,6 +2,8 @@ package uk.org.tombolo.importer;
 
 import uk.org.tombolo.core.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Properties;
 
@@ -47,10 +49,11 @@ public interface Importer {
 	 * @param datasourceId The identifier of the datasource to be imported.
 	 * @param geographyScope A list of geography scopes to be imported.
 	 * @param temporalScope A list of temporal scopes to be imported.
+	 * @param datasourceLocation file location in case the data comes from a local source
 	 * @throws Exception
 	 */
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception;
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception;
+	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable String datasourceLocation) throws Exception;
+	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable String datasourceLocation, Boolean force) throws Exception;
 
 	/**
 	 * Function that takes in a buffer of subjects and saves it to the database and clears the buffer.

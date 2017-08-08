@@ -11,11 +11,9 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -120,7 +118,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
         SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
 
         DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());

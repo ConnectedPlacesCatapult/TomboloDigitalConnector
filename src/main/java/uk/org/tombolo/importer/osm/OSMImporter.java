@@ -114,7 +114,7 @@ public class OSMImporter extends GeneralImporter {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
         List<FixedValue> fixedValues = new ArrayList<>();
         List<Subject> subjects = new ArrayList<>();
 

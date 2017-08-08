@@ -62,7 +62,7 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
 
 		// Save timed values
 		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
