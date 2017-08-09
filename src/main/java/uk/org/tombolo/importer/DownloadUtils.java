@@ -70,6 +70,7 @@ public class DownloadUtils {
 	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.

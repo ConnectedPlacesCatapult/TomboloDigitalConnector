@@ -74,8 +74,8 @@ public class TwitterImporterTest extends AbstractTest {
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.twitter","Tweet"),"250075927172759552");
         assertEquals("Sean_Cummings250075927172759552", subject.getName());
 
-        String header = "user;description;location;followers;following;text;id;coordinates;retweet;source\n";
-        String value = "Sean Cummings;Born 330 Live 310;LA, CA;70;110;Aggressive Ponytail #freebandnames;250075927172759552;;0;Twitter for Mac\n";
+        String header = "user;description;location;account_creation;utc_offset;followers;following;text;id;coordinates;timestamp;retweet;source\n";
+        String value = "Sean Cummings;Born 330 Live 310;LA, CA;Mon Apr 26 06:01:55 UTC 2010;-28800;70;110;Aggressive Ponytail #freebandnames;250075927172759552;;Mon Sep 24 03:35:21 UTC 2012;0;Twitter for Mac\n";
         String[] headers = header.split("[;\n]");
         String[] values = value.split("[;\n]");
 
@@ -89,8 +89,8 @@ public class TwitterImporterTest extends AbstractTest {
         assertEquals("Natural_Kitchen808282128278372352", subject.getName());
 
         value = "Natural Kitchen;We love good food. Whether it is our fresh fruit & vegetables, fish or meat from our handful of suppliers everything is selected on taste and quality first." +
-                ";London, UK;2153;210;It's beginning to look a lot like Christmas in Marylebone!!! \uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84\uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84 @ Marylebone High Street https://t.co/FmjBA6w30l;" +
-                "808282128278372352;(-0.151667, 51.5197, NaN);0;<a href=\"http://instagram.com\" rel=\"nofollow\">Instagram</a>\n\n";
+                ";London, UK;Tue May 05 22:09:56 UTC 2009;0;2153;210;It's beginning to look a lot like Christmas in Marylebone!!! \uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84\uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84 @ Marylebone High Street https://t.co/FmjBA6w30l;" +
+                "808282128278372352;(-0.151667, 51.5197, NaN);Mon Dec 12 12:07:31 UTC 2016;0;<a href=\"http://instagram.com\" rel=\"nofollow\">Instagram</a>\n\n";
         values = value.split("[;\n]");
 
         for (int i = 0; i < headers.length; i++) {

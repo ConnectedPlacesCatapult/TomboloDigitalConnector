@@ -16,7 +16,9 @@ import uk.org.tombolo.importer.*;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
@@ -25,15 +27,19 @@ import java.util.zip.GZIPInputStream;
  *
  * One of the most common ways to get the tweets from Twitter is using the Stream API that will get the tweets real time
  * through a query. The query may contain constraints about the user, location, keywords etc.
+ * Here the user can store in may ways, but we support the newline separated ones as it seems to be the common case.
+ *
  * When wanting historical tweets Twitter provides the Search API that will get the tweets up to 1 week old.
+ * Here the format is a proper JsonArray of statuses.
+ *
  * Both approaches require some sort of tuning to avoid different problems like missing tweets, rate limits,
  * bot recognition as well as dealing with the fact that different problems need a large amount of tweets that require
- * continues crawling for different months.
- *
- * This importer considers that the user has already gotten the data.
+ * continues crawling for different months. These are not included in this solution.
+ * This importer considers that the user has already downloaded the data.
  *
  */
 public class TwitterImporter extends GeneralImporter {
+
     private static final int SUBJECT_BUFFER_SIZE = 100000;
 
     private static org.slf4j.Logger log = LoggerFactory.getLogger(TwitterImporter.class);
@@ -73,6 +79,12 @@ public class TwitterImporter extends GeneralImporter {
                 return status.getUser().getCreatedAt().toString();
             }
         },
+        UTC_OFFSET("utc_offset", "offset from GMT/UTC in seconds") {
+            @Override
+            public String getValue() {
+                return status.getUser().getUtcOffset() + "";
+            }
+        },
         FOLLOWERS("followers", "followers count") {
             @Override
             public String getValue() {
@@ -92,7 +104,7 @@ public class TwitterImporter extends GeneralImporter {
                 return status.getText();
             }
         },
-        ID("id", "tweet is") {
+        ID("id", "tweet ID") {
             @Override
             public String getValue() {
                 return status.getId() + "";
@@ -159,9 +171,14 @@ public class TwitterImporter extends GeneralImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
-        //File file = downloadUtils.fetchFile(new URL(datasourceLocation), getProvider().getLabel(), "json");
+        // Setting the timezone to UTC which is the timezone twitter bases the timestamps
+        // Twitter4j will get the system settings so need to change them to get UTC
+        System.setProperty("user.timezone", "UTC");
+        TimeZone.setDefault(null);
+
         File file = new File(datasourceLocation);
         InputStream is = new FileInputStream(file);
+        //Check if the file is gzipped
         boolean gzipped = ZipUtils.isGZipped(file);
         if (gzipped) { is = new GZIPInputStream(is); }
 
