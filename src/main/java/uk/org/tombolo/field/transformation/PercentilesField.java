@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    private final FieldSpecification valueField;
+    private final FieldRecipe valueField;
     // The subjects over which the percentiles are calculated
-    private final List<SubjectSpecification> normalizationSubjects;
+    private final List<SubjectRecipe> normalizationSubjects;
     // The number of percentiles
     private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
@@ -37,8 +37,8 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     public PercentilesField(
             String label,
             String name,
-            FieldSpecification valueField,
-            List<SubjectSpecification> normalizationSubjects,
+            FieldRecipe valueField,
+            List<SubjectRecipe> normalizationSubjects,
             Integer percentileCount, Boolean inverse) {
         super(label);
         this.valueField = valueField;
@@ -62,16 +62,23 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
+
         if (field == null)
             initialize();
         double fieldValue = Double.valueOf(field.valueForSubject(subject));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
+                Double value;
                 if (inverse){
-                    return new Double(percentileCount-i);
+                    value = new Double(percentileCount-i);
                 }else{
-                    return new Double(i+1);
+                    value =  new Double(i+1);
                 }
+                setCachedValue(subject, value.toString());
+                return value;
             }
         }
         // This should never happen
@@ -82,6 +89,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
         if (field == null) {
             try {
                 field = (SingleValueField) valueField.toField();
+                field.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){

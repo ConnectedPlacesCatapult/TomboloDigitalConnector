@@ -7,8 +7,8 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.field.IncomputableFieldException;
 
 import static org.junit.Assert.assertEquals;
@@ -57,9 +57,9 @@ public class ArithmeticFieldTest extends AbstractTest {
         assertEquals(field.valueForSubject(subject), "6.0");
     }
 
-    private FieldSpecification makeFieldSpec(String label, String value) {
-        return SpecificationDeserializer.fromJson(
+    private FieldRecipe makeFieldSpec(String label, String value) {
+        return RecipeDeserializer.fromJson(
                 FieldSpecificationBuilder.fixedAnnotationField(label, value).toJSONString(),
-                FieldSpecification.class);
+                FieldRecipe.class);
     }
 }

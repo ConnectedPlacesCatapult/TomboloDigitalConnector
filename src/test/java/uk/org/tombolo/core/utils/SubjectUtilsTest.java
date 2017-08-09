@@ -9,8 +9,8 @@ import uk.org.tombolo.SubjectSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.DatasetSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.recipe.DatasetRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 
@@ -93,9 +93,9 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetSubjectBySpecificationWithoutRule() throws Exception {
-		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+		DatasetRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority")
-		).build().getDatasetSpecification();
+		).build().getDataset();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertEquals(2, subjects.size());
 
@@ -107,27 +107,27 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetSubjectBySpecificationLabelSearch() throws Exception {
-		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+		DatasetRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09%")
-		).build().getDatasetSpecification();
+		).build().getDataset();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
 	}
 
 	@Test
 	public void testGetSubjectBySpecificationNameSearch() throws Exception {
-		DatasetSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+		DatasetRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
-		).build().getDatasetSpecification();
+		).build().getDataset();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
 	}
 
 	@Test
 	public void testGetSubjectBySpecificationWithSubject() throws Exception {
-		SubjectSpecification spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+		SubjectRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
-		).build().getDatasetSpecification().getSubjectSpecification().get(0);
+		).build().getDataset().getSubjects().get(0);
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
 	}
@@ -156,9 +156,9 @@ public class SubjectUtilsTest extends AbstractTest {
 				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("name",squareOne.getName());
 		List<SubjectSpecificationBuilder> parentSpecs = new ArrayList<>();
 		parentSpecs.add(squareOneSpec);
-		SubjectSpecification childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
+		SubjectRecipe childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
-		).build().getDatasetSpecification().getSubjectSpecification().get(0);
+		).build().getDataset().getSubjects().get(0);
 
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(childSpec);
 
@@ -170,7 +170,7 @@ public class SubjectUtilsTest extends AbstractTest {
 		parentSpecs.add(squareTwoSpec);
 		childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)
-		).build().getDatasetSpecification().getSubjectSpecification().get(0);
+		).build().getDataset().getSubjects().get(0);
 
 		subjects = SubjectUtils.getSubjectBySpecification(childSpec);
 

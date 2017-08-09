@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +18,17 @@ import java.util.List;
  */
 public class WrapperField extends AbstractField implements Field, ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
-    private final List<FieldSpecification> fieldSpecification;
+    private final List<FieldRecipe> fieldSpecification;
     private ArrayList<Field> fields;
 
-    WrapperField(String label, List<FieldSpecification> fieldSpecification) {
+    WrapperField(String label, List<FieldRecipe> fieldSpecification) {
         super(label);
         this.fieldSpecification = fieldSpecification;
     }
 
     public void initialize() {
         this.fields = new ArrayList<>();
-        for (FieldSpecification fieldSpec : fieldSpecification) {
+        for (FieldRecipe fieldSpec : fieldSpecification) {
             try {
                 fields.add(fieldSpec.toField());
             } catch (ClassNotFoundException e) {

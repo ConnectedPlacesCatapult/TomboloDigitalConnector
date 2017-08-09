@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
@@ -19,7 +20,6 @@ import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -313,7 +313,12 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		datasource.addAllTimedValueAttributes(getTimedValueAttributes(datasourceId));
 		datasource.setUrl(datasourceId.dataSourceID.getUrl());
 
-		datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(getProvider().getLabel(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL);
+		if (subjectType == null) {
+			datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
+		} else {
+			datasource.addSubjectType(subjectType);
+		}
 		
 		return datasource;
 	}
@@ -332,19 +337,17 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			// Read timed values
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 			Set<Long> trafficCounters = new HashSet<Long>();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")));
-			String line = reader.readLine(); // Skipping first line
 			List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
-			while ((line = reader.readLine()) != null) {
-				CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
-				List<CSVRecord> records = parser.getRecords();
-				CSVRecord record = records.get(0);
-
-				if (record.size() == 1)
+			CSVParser csvParser = new CSVParser(new InputStreamReader(
+					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")), CSVFormat.RFC4180);
+			for (CSVRecord record : csvParser) {
+				long id;
+				try {
+					id = Long.valueOf(record.get(ID_INDEX));
+				} catch (NumberFormatException e) {
+					// We do not have a proper id ... could be header
 					continue;
-
-				long id = Long.valueOf(record.get(ID_INDEX));
+				}
 				String label = "DfT-TrafficCounter-" + id;
 				String year = record.get(YEAR_INDEX);
 
@@ -411,7 +414,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 			}
 			saveAndClearTimedValueBuffer(timedValueBuffer);
-			reader.close();
+			csvParser.close();
 		}
 	}
 

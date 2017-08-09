@@ -1,8 +1,8 @@
-package uk.org.tombolo.execution.spec;
+package uk.org.tombolo.recipe;
 
 import java.util.List;
 
-public class SubjectSpecification {
+public class SubjectRecipe {
 
 	public static class SubjectAttributeMatchRule {
 		public enum MatchableAttribute {label, name};
@@ -18,11 +18,11 @@ public class SubjectSpecification {
 	public static class SubjectGeoMatchRule {
 		public enum GeoRelation {within};
 		public final GeoRelation geoRelation;
-		public final List<SubjectSpecification> subjectSpecifications;
+		public final List<SubjectRecipe> subjects;
 
-		public SubjectGeoMatchRule(GeoRelation geoRelation, List<SubjectSpecification> subjectSpecifications){
+		public SubjectGeoMatchRule(GeoRelation geoRelation, List<SubjectRecipe> subjectRecipes){
 			this.geoRelation = geoRelation;
-			this.subjectSpecifications = subjectSpecifications;
+			this.subjects = subjectRecipes;
 		}
 	}
 
@@ -38,7 +38,7 @@ public class SubjectSpecification {
 	// Optional Geo Match Rule
 	SubjectGeoMatchRule geoMatchRule;
 
-	public SubjectSpecification(String provider, String subjectType, SubjectAttributeMatchRule matchRule, SubjectGeoMatchRule geoMatchRule){
+	public SubjectRecipe(String provider, String subjectType, SubjectAttributeMatchRule matchRule, SubjectGeoMatchRule geoMatchRule){
 		this.provider = provider;
 		this.subjectType = subjectType;
 		this.matchRule = matchRule;

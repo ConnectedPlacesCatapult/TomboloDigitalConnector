@@ -2,7 +2,7 @@ package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
@@ -17,8 +17,8 @@ import java.util.function.BiFunction;
  */
 public class ArithmeticField extends AbstractField implements SingleValueField {
     public static enum Operation {div, mul, add, sub}
-    private final FieldSpecification fieldSpecification1;
-    private final FieldSpecification fieldSpecification2;
+    private final FieldRecipe fieldSpecification1;
+    private final FieldRecipe fieldSpecification2;
     private final Operation operation;
 
     private Map<Operation, BiFunction<Double, Double, Double>> operators;
@@ -26,7 +26,7 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
     private SingleValueField field2;
     private BiFunction<Double, Double, Double> operator;
 
-    ArithmeticField(String label, Operation operation, FieldSpecification fieldSpecification1, FieldSpecification fieldSpecification2) {
+    ArithmeticField(String label, Operation operation, FieldRecipe fieldSpecification1, FieldRecipe fieldSpecification2) {
         super(label);
         this.fieldSpecification1 = fieldSpecification1;
         this.operation = operation;
@@ -44,7 +44,9 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
         try {
             this.operator = operators.get(this.operation);
             this.field1 = (SingleValueField) fieldSpecification1.toField();
+            field1.setFieldCache(fieldCache);
             this.field2 = (SingleValueField) fieldSpecification2.toField();
+            field2.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid: " + e.getClass());
         }
@@ -52,7 +54,6 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field1) { initialize(); }
         JSONObject obj = new JSONObject();
         obj.put(this.label,
                 calculateValueForSubject(subject));
@@ -61,11 +62,15 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field1) { initialize(); }
         return calculateValueForSubject(subject).toString();
     }
 
     private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
+
+        if (null == field1) { initialize(); }
         Double retVal = operator.apply(
                 Double.parseDouble(field1.valueForSubject(subject)),
                 Double.parseDouble(field2.valueForSubject(subject)));
@@ -76,6 +81,7 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
             throw new IncomputableFieldException(String.format("Arithmetic operation %s returned Infinity (possible division by zero?)", operation));
         }
 
+        setCachedValue(subject, retVal.toString());
         return retVal;
     }
 

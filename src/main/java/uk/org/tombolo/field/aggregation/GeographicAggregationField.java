@@ -9,7 +9,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -30,7 +30,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     public static enum AggregationFunction {sum, mean}
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
-    private final FieldSpecification fieldSpecification;
+    private final FieldRecipe fieldSpecification;
     private final AggregationFunction aggregationFunction;
 
     private Map<AggregationFunction, MathArrays.Function> aggregators;
@@ -38,7 +38,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe fieldSpecification) {
         super(label);
         this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
@@ -57,6 +57,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid");
         }
@@ -64,11 +65,8 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
         JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                aggregateSubjects(aggregator,
-                    getAggregationSubjects(subject)));
+        obj.put(this.label, getDoubleValueForSubject(subject));
         return obj;
     }
 
@@ -96,9 +94,18 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
+        return getDoubleValueForSubject(subject).toString();
+    }
+
+    private Double getDoubleValueForSubject(Subject subject) throws IncomputableFieldException {
         if (null == field) { initialize(); }
-        return aggregateSubjects(aggregator,
-                getAggregationSubjects(subject)).toString();
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return Double.parseDouble(cachedValue);
+        Double value = aggregateSubjects(aggregator, getAggregationSubjects(subject));
+        if (value != null)
+            setCachedValue(subject, value.toString());
+        return value;
     }
 
     private List<Subject> getAggregationSubjects(Subject subject) throws IncomputableFieldException {

@@ -1,6 +1,6 @@
 package uk.org.tombolo.field.modelling;
 
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.field.Field;
 
 import java.util.List;
@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ModellingField extends Field {
 
-    public List<DatasourceSpecification> getDatasourceSpecifications();
+    public List<DatasourceRecipe> getDatasourceRecipes();
 }

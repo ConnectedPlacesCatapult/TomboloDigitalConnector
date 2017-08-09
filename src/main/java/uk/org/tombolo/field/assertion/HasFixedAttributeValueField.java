@@ -6,9 +6,8 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
@@ -36,15 +35,21 @@ public class HasFixedAttributeValueField extends AbstractField implements Single
 
     @Override
     public String valueForSubject(Subject subject) throws IncomputableFieldException {
+        String cachedValue = getCachedValue(subject);
+        if (cachedValue != null)
+            return cachedValue;
         if (cachedAttribute == null)
             initialize();
         FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
         if (fixedValue != null) {
             for (String value : values) {
-                if (fixedValue.getValue().equals(value))
+                if (fixedValue.getValue().equals(value)) {
+                    setCachedValue(subject, "1");
                     return "1";
+                }
             }
         }
+        setCachedValue(subject, "0");
         return "0";
     }
 

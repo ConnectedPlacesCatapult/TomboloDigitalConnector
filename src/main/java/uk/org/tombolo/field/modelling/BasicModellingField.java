@@ -6,9 +6,9 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -26,7 +26,7 @@ import java.util.List;
 public class BasicModellingField extends AbstractField implements Field, ModellingField {
     String recipe;
     Field field;
-    List<DatasourceSpecification> datasourceSpecifications;
+    List<DatasourceRecipe> datasourceRecipes;
 
     // Path and postfixes for predefined field specifications
     // Could be made configurable at some point
@@ -40,10 +40,10 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
     }
 
     @Override
-    public List<DatasourceSpecification> getDatasourceSpecifications() {
+    public List<DatasourceRecipe> getDatasourceRecipes() {
         if (field == null)
             initialize();
-        return datasourceSpecifications;
+        return datasourceRecipes;
     }
 
     @Override
@@ -62,9 +62,10 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
         URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
         File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
         try {
-            field = SpecificationDeserializer
-                    .fromJsonFile(fieldSpecificationFile, FieldSpecification.class)
+            field = RecipeDeserializer
+                    .fromJsonFile(fieldSpecificationFile, FieldRecipe.class)
                     .toField();
+            field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field class not found", e);
         } catch (IOException e) {
@@ -77,8 +78,8 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-            Type type = new TypeToken<List<DatasourceSpecification>>(){}.getType();
-            datasourceSpecifications =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
+            Type type = new TypeToken<List<DatasourceRecipe>>(){}.getType();
+            datasourceRecipes =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
         } catch (IOException e) {
             throw new Error("Could not read specification file", e);
         }

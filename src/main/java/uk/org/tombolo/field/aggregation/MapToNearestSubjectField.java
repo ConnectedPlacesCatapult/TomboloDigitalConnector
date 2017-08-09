@@ -5,7 +5,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.Collections;
@@ -24,12 +24,12 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
 
     private final String nearestSubjectProvider;
     private final String nearestSubjectType;
-    private final FieldSpecification fieldSpecification;
+    private final FieldRecipe fieldSpecification;
     private Double maxRadius;
     private SingleValueField field;
     private SubjectType nearestSubjectTypeObject;
 
-    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
+    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe fieldSpecification) {
         super(label);
         this.maxRadius = maxRadius;
         this.nearestSubjectProvider = nearestSubjectProvider;
@@ -44,6 +44,7 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
             this.field = (SingleValueField) fieldSpecification.toField();
+            field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }

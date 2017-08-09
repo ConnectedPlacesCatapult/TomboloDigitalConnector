@@ -8,7 +8,7 @@ import uk.org.tombolo.FieldSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.value.LatestValueField;
 
 import java.util.Arrays;
@@ -22,8 +22,8 @@ public class FieldValueSumFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        FieldSpecification fs1 = FieldSpecificationBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
-        FieldSpecification fs2 = FieldSpecificationBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
+        FieldRecipe fs1 = FieldSpecificationBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
+        FieldRecipe fs2 = FieldSpecificationBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
 
         subject = TestFactory.makeNamedSubject("E01002766");
         Attribute f1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f1a_label");
