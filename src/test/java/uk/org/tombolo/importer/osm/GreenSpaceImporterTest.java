@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNull;
  * File: aHR0cDovL2Rvd25sb2FkLmdlb2ZhYnJpay5kZS9ldXJvcGUvZ3JlYXQtYnJpdGFpbi9lbmdsYW5kL2RvcnNldC1sYXRlc3Qub3NtLnBiZg==.osm.pbf
  */
 public class GreenSpaceImporterTest extends AbstractTest {
-    private static final String TEST_AREA = "europe/great-britain/england/dorset";
+    private static final String TEST_AREA = "europe/great-britain/england/herefordshire";
     private static GreenSpaceImporter importer;
 
     @Before
@@ -46,7 +46,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
     @Test
     public void getFixedValueAttributes() throws Exception {
         List<Attribute> attributes = importer.getFixedValuesAttributes();
-        assertEquals(2, attributes.size());
+        assertEquals(3, attributes.size());
     }
 
     @Test
@@ -65,19 +65,19 @@ public class GreenSpaceImporterTest extends AbstractTest {
 
         // Test subjects import
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("org.openstreetmap","OSMEntity");
-        Subject osm1 = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"osm355831382");
+        Subject osm1 = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"osm35833175");
         assertNull(osm1.getName());
         testFixedValue(osm1, "natural", "wood");
 
-        Subject osm2 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm233595507");
+        Subject osm2 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm363465081");
         assertNull(osm2.getName());
         testFixedValue(osm2, "landuse", "forest");
-        testFixedValue(osm2, "source", "OS_OpenData_VectorMapDistrict");
+        testFixedValue(osm2, "description", "Plantation");
 
-        Subject osm3 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm254331534");
-        assertEquals("The Warren Wood", osm3.getName());
+        Subject osm3 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm126115156");
+        assertEquals("Putson Coppice", osm3.getName());
         testFixedValue(osm3, "natural", "wood");
-        testFixedValue(osm3, "name", "The Warren Wood");
+        testFixedValue(osm3, "source", "Bing/OSOpenData");
     }
 
     private void testFixedValue(Subject subject, String attributeLabel, String value) {

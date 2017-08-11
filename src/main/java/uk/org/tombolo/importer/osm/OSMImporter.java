@@ -1,21 +1,15 @@
 package uk.org.tombolo.importer.osm;
 
-import com.vividsolutions.jts.geom.*;
-import de.topobyte.osm4j.core.access.OsmIterator;
-import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
-import de.topobyte.osm4j.core.dataset.MapDataSetLoader;
-import de.topobyte.osm4j.core.model.iface.OsmWay;
-import de.topobyte.osm4j.core.model.util.OsmModelUtil;
-import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
-import de.topobyte.osm4j.geometry.GeometryBuilder;
-import de.topobyte.osm4j.pbf.seq.PbfIterator;
-import uk.org.tombolo.core.*;
+import de.topobyte.osm4j.pbf.seq.PbfReader;
+import uk.org.tombolo.core.Attribute;
+import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.Provider;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -27,13 +21,18 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
     protected static final String URL = "http://download.geofabrik.de";
     private static final String DEFAULT_AREA = "europe/great-britain";
 
-    GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
     protected DataSourceID dataSourceID;
     protected Map<String, List<String>> categories = Collections.emptyMap();
 
     public OSMImporter(Config config) {
         super(config);
+    }
+
+    private SubjectType subjectType;
+
+    SubjectType getSubjectType() {
+        return this.subjectType;
     }
 
     private String compileURL(String area) {
@@ -65,7 +64,7 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
         return attributes;
     }
 
-    private Attribute attributeFromTag(String tag){
+    Attribute attributeFromTag(String tag){
         return new Attribute(getProvider(), tag, tag, "OSM entity having category "+tag, Attribute.DataType.string);
     }
 
@@ -75,10 +74,8 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-        List<FixedValue> fixedValues = new ArrayList<>();
-        List<Subject> subjects = new ArrayList<>();
 
-        SubjectType subjectType = SubjectTypeUtils.getOrCreate(
+        subjectType = SubjectTypeUtils.getOrCreate(
                 datasource.getUniqueSubjectType().getProvider(),
                 datasource.getUniqueSubjectType().getLabel(),
                 datasource.getUniqueSubjectType().getName()
@@ -95,68 +92,10 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
             AttributeUtils.save(attributes);
 
             // Create a reader for PBF data and cache it
-            OsmIterator osmIterator = new PbfIterator(new FileInputStream(localFile), true);
-            InMemoryMapDataSet data = MapDataSetLoader.read(osmIterator, false, true,
-                    false);
-            // Iterate contained entities
-            Iterator wayIterator = data.getWays().valueCollection().iterator();
-            data.getNodes();
-            while (wayIterator.hasNext()) {
-                // Get the way from the container
-                OsmWay way = (OsmWay) wayIterator.next();
-
-                // Convert the way's tags to a map
-                Map<String, String> tags = OsmModelUtil.getTagsAsMap(way);
-
-                Geometry geometry;
-                try {
-                    Geometry osmGeometry = new GeometryBuilder(geometryFactory).build(way, data);
-                    if (osmGeometry instanceof LinearRing) {
-                        geometry = new Polygon((LinearRing) osmGeometry, null, geometryFactory);
-                    } else {
-                        geometry = osmGeometry;
-                    }
-                } catch (EntityNotFoundException e) {
-                    continue;
-                }
-
-                // Check if the subject has one of the predefined tags
-                boolean attributeMatch = false;
-                for (Attribute attribute : attributes) {
-                    String value = tags.get(attribute.getLabel());
-                    if (value != null
-                            && (categories.get(attribute.getLabel()).contains(value)
-                            || categories.get(attribute.getLabel()).isEmpty())) {
-                        attributeMatch = true;
-                        break;
-                    }
-                }
-
-                // We only add the subject if if has a match with one of the predefined tags
-                if (attributeMatch){
-                    // Save subject
-                    Subject subject = new Subject(
-                            subjectType,
-                            "osm" + way.getId(),
-                            tags.get("name"),
-                            geometry
-                    );
-                    subjects.add(subject);
-
-                    // Save fixed attributes
-                    for (String tag : tags.keySet()){
-                        Attribute attribute = AttributeUtils.getByProviderAndLabel(getProvider(), tag);
-                        if(attribute == null) {
-                            attribute = attributeFromTag(tag);
-                            AttributeUtils.save(attribute);
-                        }
-                        FixedValue fixedValue = new FixedValue(subject, attribute, tags.get(tag));
-                        fixedValues.add(fixedValue);
-                    }
-                }
-            }
-            saveAndClearSubjectBuffer(subjects);
-            saveAndClearFixedValueBuffer(fixedValues);
+            PbfReader reader = new PbfReader(localFile, true);
+            OSMEntityHandler handler = new OSMEntityHandler(this);
+            reader.setHandler(handler);
+            reader.read();
         }
     }
 }

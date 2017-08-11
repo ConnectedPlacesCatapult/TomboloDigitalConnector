@@ -8,8 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Open street map importer for green spaces. Green spaces include:
- * Parks, gardens, god parks, woods, meadows, forests, orchards, grass
+ * Open street map importer for green spaces.
  *
  * File: 8f97288ba27a34e5c76ddfa3dfc2383b.osm
  */
