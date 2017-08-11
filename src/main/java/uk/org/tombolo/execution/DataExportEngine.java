@@ -1,14 +1,14 @@
-package uk.org.tombolo;
+package uk.org.tombolo.execution;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.tombolo.AbstractRunner;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.FieldCache;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.ParentField;
@@ -24,32 +24,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class DataExportEngine implements ExecutionEngine{
+public class DataExportEngine implements ExecutionEngine {
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
 	private static DownloadUtils downloadUtils;
 	private static Properties apiKeys;
 	private FieldCache fieldCache;
 
-	DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
+	public DataExportEngine(Properties apiKeys, DownloadUtils downloadUtils) {
 		this.apiKeys = apiKeys;
 		this.downloadUtils = downloadUtils;
 		fieldCache = new FieldCache();
 	}
 
-	public void execute(DataExportSpecification dataExportSpec, Writer writer) throws Exception {
+	public void execute(DataExportRecipe dataExportSpec, Writer writer) throws Exception {
 		execute(dataExportSpec, writer, new ImporterMatcher(""));
 	}
 
-	public void execute(DataExportSpecification dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
+	public void execute(DataExportRecipe dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
-		for (DatasourceSpecification datasourceSpec : dataExportSpec.getDatasetSpecification().getDatasourceSpecification()) {
+		for (DatasourceRecipe datasourceSpec : dataExportSpec.getDataset().getDatasources()) {
 			importDatasource(forceImports, datasourceSpec);
 		}
 
 		// Generate fields
-		List<FieldSpecification> fieldSpecs = dataExportSpec.getDatasetSpecification().getFieldSpecification();
+		List<FieldRecipe> fieldSpecs = dataExportSpec.getDataset().getFields();
 		List<Field> fields = new ArrayList<>();
-		for (FieldSpecification fieldSpec : fieldSpecs) {
+		for (FieldRecipe fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
 			field.setFieldCache(fieldCache);
 			fields.add(field);
@@ -59,8 +59,8 @@ public class DataExportEngine implements ExecutionEngine{
 
 		// Use the new fields method
 		log.info("Exporting ...");
-		List<SubjectSpecification> subjectSpecList = dataExportSpec.getDatasetSpecification().getSubjectSpecification();
-		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporterClass()).newInstance();
+		List<SubjectRecipe> subjectSpecList = dataExportSpec.getDataset().getSubjects();
+		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
 		exporter.write(writer, subjects, fields);
 	}
@@ -70,8 +70,8 @@ public class DataExportEngine implements ExecutionEngine{
 		for (Field field : fields) {
 			if (field instanceof ModellingField) {
 				// This is a predefined field and hence we need to import the appropriate datasources
-				for (DatasourceSpecification datasourceSpecification : ((ModellingField) field).getDatasourceSpecifications()) {
-					importDatasource(forceImports, datasourceSpecification);
+				for (DatasourceRecipe datasourceRecipe : ((ModellingField) field).getDatasourceRecipes()) {
+					importDatasource(forceImports, datasourceRecipe);
 				}
 			}
 
@@ -82,7 +82,7 @@ public class DataExportEngine implements ExecutionEngine{
 		}
 	}
 
-	private void importDatasource(ImporterMatcher forceImports, DatasourceSpecification datasourceSpec) throws Exception {
+	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec) throws Exception {
 		Config importerConfiguration = null;
 		String configFile = datasourceSpec.getConfigFile();
 		if (configFile != null && !"".equals(configFile)) {

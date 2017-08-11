@@ -12,6 +12,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.DatabaseJournal;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.execution.DataExportEngine;
 import uk.org.tombolo.importer.ImporterMatcher;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 

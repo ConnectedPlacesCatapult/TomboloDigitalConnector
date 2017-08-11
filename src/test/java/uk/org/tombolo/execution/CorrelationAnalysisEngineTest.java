@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.FieldSpecificationBuilder;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CorrelationAnalysisEngineTest {
 
-    List<FieldSpecification> fieldSpecifications;
+    List<FieldRecipe> fieldSpecifications;
 
     @Before
     public void createFields(){

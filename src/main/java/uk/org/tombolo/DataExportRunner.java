@@ -5,7 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
-import uk.org.tombolo.execution.spec.DataExportSpecificationValidator;
+import uk.org.tombolo.execution.DataExportEngine;
+import uk.org.tombolo.recipe.DataExportRecipeValidator;
 import uk.org.tombolo.importer.ImporterMatcher;
 
 import java.io.*;
@@ -54,9 +55,9 @@ public class DataExportRunner extends AbstractRunner {
     }
 
     private static void validateSpecification(String executionSpecPath) throws FileNotFoundException {
-        ProcessingReport report = DataExportSpecificationValidator.validate(new FileReader(executionSpecPath));
+        ProcessingReport report = DataExportRecipeValidator.validate(new FileReader(executionSpecPath));
         if (!report.isSuccess()) {
-            DataExportSpecificationValidator.display(report);
+            DataExportRecipeValidator.display(report);
             System.exit(1);
         }
     }

@@ -7,8 +7,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import static org.junit.Assert.assertEquals;
 

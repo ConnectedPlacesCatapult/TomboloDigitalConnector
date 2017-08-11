@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.londondatastore;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -26,16 +27,19 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	private LondonPHOFImporter importer;
 
 	Subject cityOfLondon;
+	Subject islington;
 
 	@Before
 	public void before(){
 		importer = new LondonPHOFImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
+
 	}
 
 	@Before
 	public void addSubjectFixtures() {
 		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
+		islington = TestFactory.makeNamedSubject("E09000019");
 	}
 
 	@Test
@@ -43,7 +47,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 		Datasource datasource = importer.getDatasource(DATASOURCE_ID);
 		
 		List<Attribute> attributes = datasource.getTimedValueAttributes();
-		assertEquals(150, attributes.size());
+		assertEquals(36, attributes.size());
 		
 		String a5Name = "1.02ii - School Readiness: The percentage of Year 1 pupils achieving the expected level in the phonics screening check";
 		String a5Label = DigestUtils.md5Hex(a5Name);
@@ -53,7 +57,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 		assertEquals(a5Name, a5.getName());
 		assertEquals(a5Name, a5.getDescription());
 
-		String a135Name = "Supporting Information - Deprivation score (IMD 2010)";
+		String a135Name = "2.03 - Smoking status at time of delivery";
 		String a135Label = DigestUtils.md5Hex(a135Name);
 		Attribute a135 = attributes.stream().filter(a -> a.getLabel().equals(a135Label)).findFirst().get();
 		assertEquals(importer.getProvider(), a135.getProvider());
@@ -65,14 +69,16 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	@Test
 	public void testImportDatasource() throws Exception{
 		importer.importDatasource(DATASOURCE_ID);
-		assertEquals(233, importer.getTimedValueCount());
+		assertEquals(221, importer.getTimedValueCount());
 
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(
 				importer.getProvider(),
 				DigestUtils.md5Hex("1.01ii - Children in poverty (under 16s)"));
 
 		TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, attribute);
+		TimedValue timedValueIslington = TimedValueUtils.getLatestBySubjectAndAttribute(islington, attribute);
 		assertEquals(11.43d, timedValue.getValue(), 0.01d);
+		assertEquals(34.42d, timedValueIslington.getValue(), 0.01d);
 	}
 	
 }

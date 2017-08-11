@@ -11,7 +11,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.value.LatestValueField;
 

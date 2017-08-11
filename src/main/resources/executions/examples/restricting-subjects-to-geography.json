@@ -1,6 +1,6 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The subject output is a traffic counter from DfT
         // Restricted to only traffic counters from Greenwich and Islington
@@ -28,7 +28,7 @@
         }
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for DfT traffic counts for London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
@@ -41,7 +41,7 @@
         "datasourceId": "localAuthority"
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // Filed for returning the latest count of cars and taxis for the sensor (traffic counter)
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
@@ -53,6 +53,6 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }
 

@@ -1,6 +1,6 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The output of the export includes one record for each local authority whose label starts with 'E090'.
         // Effectively this will export one record for each of the London Boroughs.
@@ -12,7 +12,7 @@
         }
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for importing the geographic areas of local authorities
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
@@ -25,7 +25,7 @@
         "geographyScope" : ["London"]
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // Geographic aggregation field that adds toghether all cycle counts geographically within the output subject.
         // In this case the output subjects are London Boroughs (see above).
@@ -45,5 +45,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

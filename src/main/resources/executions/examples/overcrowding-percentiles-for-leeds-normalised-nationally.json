@@ -1,6 +1,6 @@
 {
-  "datasetSpecification": {
-    "subjectSpecification": [
+  "dataset": {
+    "subjects": [
       {
         // We output each LSOA whose name starts with 'Leeds'
         "subjectType": "lsoa",
@@ -11,7 +11,7 @@
         }
       }
     ],
-    "datasourceSpecification": [
+    "datasources": [
       {
         // Importer for the geographic objects for all LSOAs in the UK
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
@@ -23,7 +23,7 @@
         "datasourceId": "QS408EW"
       }
     ],
-    "fieldSpecification": [
+    "fields": [
       {
         // Overcrowding Resilience Percentiles normalized nationally
         // I.e. we caluclate percentile boundaries using values for all lsoas in the country
@@ -64,5 +64,5 @@
       }
     ]
   },
-  "exporterClass": "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

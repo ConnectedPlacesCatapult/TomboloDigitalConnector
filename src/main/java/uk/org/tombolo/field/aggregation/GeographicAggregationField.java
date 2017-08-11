@@ -9,7 +9,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -30,7 +30,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     public static enum AggregationFunction {sum, mean}
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
-    private final FieldSpecification fieldSpecification;
+    private final FieldRecipe fieldSpecification;
     private final AggregationFunction aggregationFunction;
 
     private Map<AggregationFunction, MathArrays.Function> aggregators;
@@ -38,7 +38,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldSpecification fieldSpecification) {
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe fieldSpecification) {
         super(label);
         this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
