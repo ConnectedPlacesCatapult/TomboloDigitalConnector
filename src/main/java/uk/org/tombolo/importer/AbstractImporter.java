@@ -228,7 +228,7 @@ public abstract class AbstractImporter implements Importer {
 		return BUFFER_THRESHOLD;
 	}
 
-	public Datasource datasourceFromDatasourceId(DataSourceID datasourceID){
+	public Datasource datasourceFromDatasourceId(DataSourceID datasourceID) {
 		return new Datasource(
 				getClass(),
 				datasourceID.getLabel(),
