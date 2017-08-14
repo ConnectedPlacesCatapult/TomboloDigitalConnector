@@ -58,9 +58,7 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
 
     protected List<Attribute> getFixedValuesAttributes() throws Exception {
         List<Attribute> attributes = new ArrayList<>();
-        for (String category : categories.keySet()) {
-            attributes.add(attributeFromTag(category));
-        }
+        categories.keySet().stream().map(category -> attributeFromTag(category)).forEach(attributes::add);
         return attributes;
     }
 
