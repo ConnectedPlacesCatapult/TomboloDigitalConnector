@@ -62,15 +62,15 @@ public class BackOffFieldTest extends AbstractTest {
         BackOffField backOffField  = new BackOffField("backoff", Arrays.asList(attributeValueField, containingSubjectField));
 
         // Point A has value so that value is returned
-        String pointAvalue = backOffField.valueForSubject(pointA);
+        String pointAvalue = backOffField.valueForSubject(pointA, true);
         assertEquals("pointAvalue", pointAvalue);
 
         // Point B has no value so we back-off to the surrounding square
-        String pointBvalue = backOffField.valueForSubject(pointB);
-        assertEquals("squareBvalue", pointBvalue);
+        String pointBvalue = backOffField.valueForSubject(pointB, true);
+        assertEquals("{\"testAttribute\":[{\"value\":\"squareBvalue\"}]}", pointBvalue);
 
         // Point C has no value nor surrounding square so we throw an exception
         thrown.expect(IncomputableFieldException.class);
-        backOffField.valueForSubject(pointC);
+        backOffField.valueForSubject(pointC, true);
     }
 }

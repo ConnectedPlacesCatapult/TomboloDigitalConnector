@@ -26,17 +26,17 @@ public class LatestValueFieldTest extends AbstractTest {
     @Test
     public void testValueForSubject() throws Exception {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
-        assertEquals("100.0", field.valueForSubject(subject));
+        assertEquals("100.0", field.valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +
-                "      value: 100," +
+                "      value: '100.0'," +
                 "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
                 "  ]" +

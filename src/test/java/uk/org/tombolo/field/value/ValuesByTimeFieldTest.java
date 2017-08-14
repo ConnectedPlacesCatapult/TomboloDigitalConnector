@@ -26,7 +26,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     @Test
     public void testJsonValueForSubject() throws Exception {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00", 100d);
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +
@@ -41,7 +41,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     public void testJsonValueForSubjectWithMultipleValues() throws Exception {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00", 100d);
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-02T00:00", 200d);
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +

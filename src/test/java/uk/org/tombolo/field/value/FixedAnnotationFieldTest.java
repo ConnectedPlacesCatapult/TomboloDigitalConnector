@@ -13,12 +13,12 @@ public class FixedAnnotationFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubject() throws Exception {
-        assertEquals("aValue", field.valueForSubject(subject));
+        assertEquals("aValue", field.valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        JSONObject obj = field.jsonValueForSubject(subject);
+        JSONObject obj = field.jsonValueForSubject(subject, true);
         assertEquals(obj.size(), 1);
         assertEquals("aValue", obj.get("aLabel"));
     }

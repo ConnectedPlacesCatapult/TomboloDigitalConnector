@@ -47,10 +47,10 @@ public class HasFixedAttributeFieldTest extends AbstractTest {
         HasFixedAttributeField field = new HasFixedAttributeField("blafield", Arrays.asList(attributeMatcher1, attributeMatcher2));
 
         // Test
-        assertEquals("1",field.valueForSubject(subjectWithOneAttributeMatch));
-        assertEquals("1",field.valueForSubject(subjectWithTwoAttribtueMatches));
-        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches));
-        assertEquals("0",field.valueForSubject(subjectWithoutAttribute));
+        assertEquals("1",field.valueForSubject(subjectWithOneAttributeMatch, true));
+        assertEquals("1",field.valueForSubject(subjectWithTwoAttribtueMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithoutAttribute, true));
     }
 
 }

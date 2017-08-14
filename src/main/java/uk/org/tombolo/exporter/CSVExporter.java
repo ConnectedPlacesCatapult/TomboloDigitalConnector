@@ -12,12 +12,15 @@ import uk.org.tombolo.field.SingleValueField;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CSVExporter implements Exporter {
 	private Logger log = LoggerFactory.getLogger(CSVExporter.class);
+	private Boolean timeStamp;
 
 	@Override
-	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
+	public void write(Writer writer, List<Subject> subjects, List<Field> fields, Boolean timeStamp) throws IOException {
+		this.timeStamp = null == timeStamp ? true : timeStamp;
 		List<String> columnNames = getColumnNames(fields);
 
 		CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT);
@@ -33,9 +36,7 @@ public class CSVExporter implements Exporter {
 	public List<String> getColumnNames(List<Field> fields) {
 		List<String> columnNames = new ArrayList<>(Arrays.asList("label", "name", "geometry"));
 
-		for (Field field : fields) {
-			columnNames.add(field.getLabel());
-		}
+		fields.stream().map(Field::getLabel).forEach(columnNames::add);
 
 		return columnNames;
 	}
@@ -48,19 +49,15 @@ public class CSVExporter implements Exporter {
 		row.put("name", subject.getName());
 		row.put("geometry", subject.getShape().toString());
 
-		for (Field field : fields) {
-			row.putAll(getAttributeProperty(subject, field));
-		}
+		fields.stream().map(field -> getAttributeProperty(subject, field)).forEach(row::putAll);
 
 		return row;
 	}
 	
 	private List<String> tabulateSubjectMap(List<String> attributes, Map<String, Object> map) {
-		List<String> listRow = new ArrayList<String>();
-
-		for (String attribute : attributes) {
-			listRow.add((String) map.getOrDefault(attribute, ""));
-		}
+		List<String> listRow =
+						 attributes.stream().map(attribute -> (String) map.getOrDefault(attribute, ""))
+						.collect(Collectors.toList());
 
 		return listRow;
 	}
@@ -70,7 +67,7 @@ public class CSVExporter implements Exporter {
 
 		if (field instanceof SingleValueField) {
 			try {
-				property.put(field.getLabel(), ((SingleValueField) field).valueForSubject(subject));
+				property.put(field.getLabel(), ((SingleValueField) field).valueForSubject(subject, timeStamp));
 			} catch (IncomputableFieldException e) {
 				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
 				property.put(field.getLabel(), null);

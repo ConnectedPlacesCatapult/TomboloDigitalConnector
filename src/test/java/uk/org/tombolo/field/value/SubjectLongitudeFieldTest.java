@@ -20,12 +20,12 @@ public class SubjectLongitudeFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubject() throws Exception {
-        assertEquals("0.0", field.valueForSubject(subject));
+        assertEquals("0.0", field.valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        JSONObject obj = field.jsonValueForSubject(subject);
+        JSONObject obj = field.jsonValueForSubject(subject, true);
         assertEquals(0.0, obj.get("aLabel"));
     }
 

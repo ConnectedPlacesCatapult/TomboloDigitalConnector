@@ -1,8 +1,7 @@
 package uk.org.tombolo.field.transformation;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.value.FixedValueField;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField extends AbstractField implements SingleValueField, ParentField {
+public class FieldValueSumField extends FixedValueField implements SingleValueField, ParentField {
     String name;
     List<FieldRecipe> fieldSpecifications;
     List<Field> fields;
@@ -37,23 +36,9 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+
         return sumFields(subject).toString();
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put("value", sumFields(subject));
-        JSONArray array = new JSONArray();
-        array.add(obj);
-        return withinMetadata(array);
-    }
-
-    protected JSONObject withinMetadata(JSONArray contents) {
-        JSONObject obj = new JSONObject();
-        obj.put(label, contents);
-        return obj;
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {
@@ -66,7 +51,7 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
         for (Field field : fields) {
             if (!(field instanceof SingleValueField))
                 throw new IncomputableFieldException("Field sum only valid for single value fields");
-            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
+            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject, true));
         }
         setCachedValue(subject, sum.toString());
         return sum;

@@ -13,12 +13,12 @@ public class SubjectNameFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubject() throws Exception {
-        assertEquals("theName", field.valueForSubject(subject));
+        assertEquals("theName", field.valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        JSONObject obj = field.jsonValueForSubject(subject);
+        JSONObject obj = field.jsonValueForSubject(subject, true);
         assertEquals(obj.size(), 1);
         assertEquals("theName", obj.get("aLabel"));
     }

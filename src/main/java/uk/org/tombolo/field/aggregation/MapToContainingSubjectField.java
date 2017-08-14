@@ -1,6 +1,6 @@
 package uk.org.tombolo.field.aggregation;
 
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -45,20 +45,11 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         if (null == field) { initialize(); }
-        JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                field.jsonValueForSubject(
-                        getSubjectContainingSubject(subject)));
-        return obj;
-    }
-
-    @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        return field.valueForSubject(
-                getSubjectContainingSubject(subject));
+        Gson gson = new Gson();
+        return gson.toJson(field.jsonValueForSubject(
+                getSubjectContainingSubject(subject), timeStamp));
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
