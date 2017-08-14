@@ -48,6 +48,7 @@ public class DownloadUtils {
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
 		log.info("Feching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
+			log.info("Fetching remote url: {}", url.toString());
 			URLConnection connection = url.openConnection();
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
