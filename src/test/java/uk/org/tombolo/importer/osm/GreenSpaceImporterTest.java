@@ -7,21 +7,26 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test for green space importer from open street map
  *
- * File: 8f97288ba27a34e5c76ddfa3dfc2383b.osm
+ * File: aHR0cDovL2Rvd25sb2FkLmdlb2ZhYnJpay5kZS9ldXJvcGUvZ3JlYXQtYnJpdGFpbi9lbmdsYW5kL2RvcnNldC1sYXRlc3Qub3NtLnBiZg==.osm.pbf
  */
 public class GreenSpaceImporterTest extends AbstractTest {
+    private static final String TEST_AREA = "europe/great-britain/england/herefordshire";
     private static GreenSpaceImporter importer;
 
     @Before
@@ -39,32 +44,40 @@ public class GreenSpaceImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getAttribute() throws Exception {
-        importer.importDatasource("OSMGreenSpace");
-        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
-        assertEquals("de.overpass-api", attribute.getProvider().getLabel());
-        assertEquals("landuse", attribute.getLabel());
-        assertEquals("landuse", attribute.getName());
-
+    public void getFixedValueAttributes() throws Exception {
+        List<Attribute> attributes = importer.getFixedValuesAttributes();
+        assertEquals(3, attributes.size());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("OSMGreenSpace");
+        importer.importDatasource("OSMGreenSpace", Arrays.asList(TEST_AREA), Collections.emptyList());
 
-        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("de.overpass-api","OSMEntity"),"osm34597927");
-        assertEquals(1, subjects.size());
-        Subject subject = subjects.get(0);
-        assertEquals("Whitegates-South", subject.getName());
+        // Test attribute import
+        Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
+        assertEquals("org.openstreetmap", landuse.getProvider().getLabel());
+        assertEquals("landuse", landuse.getLabel());
+        assertEquals("landuse", landuse.getName());
+        Attribute natural = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "natural");
+        assertEquals("org.openstreetmap", natural.getProvider().getLabel());
+        assertEquals("natural", natural.getLabel());
+        assertEquals("natural", natural.getName());
 
-        String header = "barrier,landuse,leisure,name,opening_hours\n";
-        String value = "fence,grass,dog_park,Whitegates-South,24/7\n";
-        String[] headers = header.split("[,\n]");
-        String[] values = value.split("[,\n]");
+        // Test subjects import
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("org.openstreetmap","OSMEntity");
+        Subject osm1 = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"osm35833175");
+        assertNull(osm1.getName());
+        testFixedValue(osm1, "natural", "wood");
 
-        for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, headers[i], values[i]);
-        }
+        Subject osm2 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm363465081");
+        assertNull(osm2.getName());
+        testFixedValue(osm2, "landuse", "forest");
+        testFixedValue(osm2, "description", "Plantation");
+
+        Subject osm3 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm126115156");
+        assertEquals("Putson Coppice", osm3.getName());
+        testFixedValue(osm3, "natural", "wood");
+        testFixedValue(osm3, "source", "Bing/OSOpenData");
     }
 
     private void testFixedValue(Subject subject, String attributeLabel, String value) {
