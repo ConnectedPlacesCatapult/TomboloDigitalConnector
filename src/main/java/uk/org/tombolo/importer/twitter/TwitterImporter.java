@@ -48,7 +48,6 @@ public class TwitterImporter extends GeneralImporter {
 
     private Map<AttributeEnum, Attribute> map;
     private static Status status;
-    private static Coordinate coordinate = null;
 
     private interface PropertyValue {
         String getValue();
@@ -113,12 +112,7 @@ public class TwitterImporter extends GeneralImporter {
         COORDINATES("coordinates", "tweet geolocation coordinates") {
             @Override
             public String getValue() {
-                GeoLocation geoLocation = status.getGeoLocation();
-                if (geoLocation != null) {
-                    coordinate = new Coordinate(geoLocation.getLongitude(), geoLocation.getLatitude());
-                    return coordinate.toString();
-                }
-                return "";
+                return status.getGeoLocation() + "";
             }
         },
         TIMESTAMP("timestamp", "tweet creation time") {
@@ -198,6 +192,9 @@ public class TwitterImporter extends GeneralImporter {
         List<Subject> subjects = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<>();
 
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+        Coordinate coordinate = null;
+
         for (Object jsonValue: statuses) {
             String tweet = jsonValue.toString();
             try {
@@ -206,7 +203,12 @@ public class TwitterImporter extends GeneralImporter {
                 log.error("Not a valid json string: {}, {}", tweet, e.getErrorMessage());
             }
 
-            GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+            // Create status geometry
+            GeoLocation geoLocation = status.getGeoLocation();
+            // A null geoLocation will create an empty geometry
+            if (geoLocation != null) {
+                coordinate = new Coordinate(geoLocation.getLongitude(), geoLocation.getLatitude());
+            }
             Geometry geometry = geometryFactory.createPoint(coordinate);
 
             Subject subject = new Subject(datasource.getUniqueSubjectType(),

@@ -14,9 +14,11 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.ZipUtils;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests the import for twitter data, for both cases when the streaming api or search api.
@@ -67,37 +69,38 @@ public class TwitterImporterTest extends AbstractTest {
 
     @Test
     public void importDatasorce() throws Exception {
-        System.out.print(System.getProperty("user.dir"));
-
         importer.importDatasource("Twitter", null, null, LOCAL_DATA_SEARCH_API);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.twitter","Tweet"),"250075927172759552");
         assertEquals("Sean_Cummings250075927172759552", subject.getName());
+        assertNull(subject.getShape().getCoordinate());
 
-        String header = "user;description;location;account_creation;utc_offset;followers;following;text;id;coordinates;timestamp;retweet;source\n";
-        String value = "Sean Cummings;Born 330 Live 310;LA, CA;Mon Apr 26 06:01:55 UTC 2010;-28800;70;110;Aggressive Ponytail #freebandnames;250075927172759552;;Mon Sep 24 03:35:21 UTC 2012;0;Twitter for Mac\n";
-        String[] headers = header.split("[;\n]");
-        String[] values = value.split("[;\n]");
+        List<String> attributes = Arrays.asList("user", "description", "location", "account_creation","utc_offset",
+                "followers", "following", "text", "id", "coordinates", "timestamp", "retweet", "source");
+        List<String> values = Arrays.asList("Sean Cummings", "Born 330 Live 310", "LA, CA", "Mon Apr 26 06:01:55 UTC 2010",
+                "-28800","70", "110", "Aggressive Ponytail #freebandnames", "250075927172759552", "null",
+                "Mon Sep 24 03:35:21 UTC 2012", "0", "Twitter for Mac");
 
-        for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, headers[i], values[i]);
+        for (int i = 0; i < attributes.size(); i++) {
+            testFixedValue(subject, attributes.get(i), values.get(i));
         }
 
         importer.importDatasource("Twitter", null, null, LOCAL_DATA_STREAMING_API);
 
         subject = SubjectUtils.getSubjectByTypeAndLabel(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.twitter","Tweet"),"808282128278372352");
         assertEquals("Natural_Kitchen808282128278372352", subject.getName());
+        assertEquals("-0.151667", subject.getShape().getCoordinate().x + "");
+        assertEquals("51.5197", subject.getShape().getCoordinate().y + "");
 
-        value = "Natural Kitchen;We love good food. Whether it is our fresh fruit & vegetables, fish or meat from our handful of suppliers everything is selected on taste and quality first." +
-                ";London, UK;Tue May 05 22:09:56 UTC 2009;0;2153;210;It's beginning to look a lot like Christmas in Marylebone!!! \uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84\uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84 @ Marylebone High Street https://t.co/FmjBA6w30l;" +
-                "808282128278372352;(-0.151667, 51.5197, NaN);Mon Dec 12 12:07:31 UTC 2016;0;<a href=\"http://instagram.com\" rel=\"nofollow\">Instagram</a>\n\n";
-        values = value.split("[;\n]");
+        values = Arrays.asList("Natural Kitchen",
+                "We love good food. Whether it is our fresh fruit & vegetables, fish or meat from our handful of suppliers everything is selected on taste and quality first." ,
+                "London, UK", "Tue May 05 22:09:56 UTC 2009", "0", "2153", "210",
+                "It's beginning to look a lot like Christmas in Marylebone!!! \uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84\uD83C\uDF85\uD83C\uDFFD\uD83C\uDF81\uD83C\uDF84 @ Marylebone High Street https://t.co/FmjBA6w30l",
+                "808282128278372352", "GeoLocation{latitude=51.5197, longitude=-0.151667}", "Mon Dec 12 12:07:31 UTC 2016", "0", "<a href=\"http://instagram.com\" rel=\"nofollow\">Instagram</a>");
 
-        for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, headers[i], values[i]);
+        for (int i = 0; i < attributes.size(); i++) {
+            testFixedValue(subject, attributes.get(i), values.get(i));
         }
-
-
     }
 
     private void testFixedValue(Subject subject, String attributeLabel, String value) {
