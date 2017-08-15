@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.aggregation;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -50,15 +49,6 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         }
     }
 
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                Double.valueOf(field.valueForSubject(getSubjectProximalToSubject(subject))));
-        return obj;
-    }
-
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
         Subject nearestSubject = SubjectUtils.subjectNearestSubject(nearestSubjectTypeObject, subject, maxRadius);
         if (nearestSubject == null) {
@@ -78,8 +68,9 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == field) { initialize(); }
         return field.valueForSubject(
-                getSubjectProximalToSubject(subject));
+                getSubjectProximalToSubject(subject), timeStamp);
     }
 }

@@ -43,7 +43,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", AbstractONSImporter.PROVIDER.getLabel(), "lsoa", GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
 
-        String value = field.valueForSubject(subject);
+        String value = field.valueForSubject(subject, true);
         assertEquals("313.37", value);
     }
 
@@ -52,7 +52,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject with no contents
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", AbstractONSImporter.PROVIDER.getLabel(),"lsoa", GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
-        String value = field.valueForSubject(subject);
+        String value = field.valueForSubject(subject, true);
         assertEquals("0.0", value);
     }
 
@@ -66,7 +66,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", AbstractONSImporter.PROVIDER.getLabel(),"lsoa", GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
 
-        String value = field.valueForSubject(subject);
+        String value = field.valueForSubject(subject, true);
         assertEquals("156.685", value);
     }
 
@@ -79,7 +79,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("Aggregation function mean returned NaN (possible division by zero?)");
 
-        field.valueForSubject(subject);
+        field.valueForSubject(subject, true);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
         GeographicAggregationField field = new GeographicAggregationField("aLabel", AbstractONSImporter.PROVIDER.getLabel(),"lsoa", GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
 
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: 313.37"+
                 "}", jsonString, false);

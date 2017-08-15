@@ -35,7 +35,7 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
         SubjectUtils.save(Collections.singletonList(nearbySubject));
 
         MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", AbstractONSImporter.PROVIDER.getLabel(),"localAuthority", 0.1d, makeFieldSpec());
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: 100.0" +
                 "}", jsonString,false);
@@ -47,7 +47,7 @@ public class MapToNearestSubjectFieldTest extends AbstractTest {
         SubjectUtils.save(Collections.singletonList(nearbySubject));
 
         MapToNearestSubjectField field = new MapToNearestSubjectField("aLabel", AbstractONSImporter.PROVIDER.getLabel(),"localAuthority", null, makeFieldSpec());
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: 100.0" +
                 "}", jsonString,false);

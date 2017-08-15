@@ -3,7 +3,6 @@ package uk.org.tombolo.field.transformation;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
-import org.json.simple.JSONObject;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -52,15 +51,8 @@ public class AreaField extends AbstractField implements SingleValueField {
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return getTransformedArea(subject);
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put(this.label, Double.valueOf(getTransformedArea(subject)));
-        return obj;
     }
 
 }

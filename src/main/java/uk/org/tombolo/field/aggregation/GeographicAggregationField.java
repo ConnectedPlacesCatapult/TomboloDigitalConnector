@@ -4,7 +4,6 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -63,19 +62,12 @@ public class GeographicAggregationField extends AbstractField implements Field, 
         }
     }
 
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put(this.label, getDoubleValueForSubject(subject));
-        return obj;
-    }
-
     private Double aggregateSubjects(MathArrays.Function aggregator, List<Subject> aggregationSubjects) throws IncomputableFieldException {
         ResizableDoubleArray doubles = new ResizableDoubleArray();
 
         for (Subject subject : aggregationSubjects) {
             try {
-                doubles.addElement(Double.parseDouble(field.valueForSubject(subject)));
+                doubles.addElement(Double.parseDouble(field.valueForSubject(subject, true)));
             } catch (IncomputableFieldException e) {
                 throw new IncomputableFieldException("Aggregator item failed to compute: " + e.getMessage(), e);
             }
@@ -93,7 +85,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return getDoubleValueForSubject(subject).toString();
     }
 

@@ -38,17 +38,17 @@ public class WrapperField extends AbstractField implements Field, ParentField {
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) {
         if (null == fields) { initialize(); }
         JSONObject obj = new JSONObject();
         JSONObject inner = new JSONObject();
-        for (Field field : fields) {
+        fields.forEach(field -> {
             try {
-                inner.putAll(field.jsonValueForSubject(subject));
+                inner.putAll(field.jsonValueForSubject(subject, timeStamp));
             } catch (IncomputableFieldException e) {
                 log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
             }
-        }
+        });
         obj.put(label, inner);
         return obj;
     }
