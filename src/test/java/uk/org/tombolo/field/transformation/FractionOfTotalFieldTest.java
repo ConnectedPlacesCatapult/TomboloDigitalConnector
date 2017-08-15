@@ -57,14 +57,14 @@ public class FractionOfTotalFieldTest extends AbstractTest {
     public void testJsonValueForSubjectWithFullyAbsentDividendValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr1_label, attr2_label");
-        makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject, true);
+        makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject, false);
     }
 
     @Test
     public void testJsonValueForSubjectWithAbsentDivisorValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr3_label");
-        makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject, true);
+        makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject, null);
     }
 
     @Test

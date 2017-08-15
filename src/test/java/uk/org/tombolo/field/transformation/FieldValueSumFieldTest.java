@@ -54,7 +54,7 @@ public class FieldValueSumFieldTest extends AbstractTest {
 
     @Test
     public void jsonValueForSubject() throws Exception {
-        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, null).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  FVSF-label: [" +
                 "    {" +

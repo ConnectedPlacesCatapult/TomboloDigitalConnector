@@ -25,7 +25,7 @@ public class SubjectLongitudeFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        JSONObject obj = field.jsonValueForSubject(subject, true);
+        JSONObject obj = field.jsonValueForSubject(subject, false);
         assertEquals(0.0, obj.get("aLabel"));
     }
 

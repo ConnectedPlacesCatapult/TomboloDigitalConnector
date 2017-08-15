@@ -47,14 +47,14 @@ public class ArithmeticFieldTest extends AbstractTest {
     public void testValueForSubjectSubtraction() throws Exception {
         Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.sub, makeFieldSpec("fixed1", "0"), makeFieldSpec("fixed2", "2"));
-        assertEquals(field.valueForSubject(subject, true), "-2.0");
+        assertEquals(field.valueForSubject(subject, false), "-2.0");
     }
 
     @Test
     public void testValueForSubjectMultiplication() throws Exception {
         Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.mul, makeFieldSpec("fixed1", "3"), makeFieldSpec("fixed2", "2"));
-        assertEquals(field.valueForSubject(subject, true), "6.0");
+        assertEquals(field.valueForSubject(subject, null), "6.0");
     }
 
     private FieldRecipe makeFieldSpec(String label, String value) {
