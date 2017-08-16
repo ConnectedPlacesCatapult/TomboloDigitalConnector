@@ -143,7 +143,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
 
         ExcelUtils excelUtils = new ExcelUtils();

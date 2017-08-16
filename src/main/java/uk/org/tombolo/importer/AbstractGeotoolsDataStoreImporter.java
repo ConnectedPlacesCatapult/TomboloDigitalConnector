@@ -122,7 +122,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
     }
 
     @Override
-    final public void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+    final public void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         DataStore dataStore = getDataStoreForDatasource(datasource);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = GeotoolsDataStoreUtils.getFeatureReader(dataStore, getTypeNameForDatasource(datasource));
 

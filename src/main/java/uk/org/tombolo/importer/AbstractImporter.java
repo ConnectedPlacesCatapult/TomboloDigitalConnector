@@ -76,7 +76,7 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, false);
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, String datasourceLocation, Boolean force) throws Exception {
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
@@ -121,7 +121,7 @@ public abstract class AbstractImporter implements Importer {
 	 * @param datasourceLocation
 	 * @throws Exception
 	 */
-	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception;
+	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception;
 
 	/**
 	 * Loads the given properties resource into the main properties object

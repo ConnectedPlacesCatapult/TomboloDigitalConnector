@@ -109,7 +109,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	}
 
 	@Override
-	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws IOException, ParseException{
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws IOException, ParseException{
 
 		// Store data in database
 		File localFile = downloadUtils.fetchFile(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".zip");

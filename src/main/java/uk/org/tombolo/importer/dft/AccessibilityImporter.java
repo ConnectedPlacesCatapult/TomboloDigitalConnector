@@ -118,7 +118,7 @@ public class AccessibilityImporter extends AbstractDFTImporter implements Import
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
 
         DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());

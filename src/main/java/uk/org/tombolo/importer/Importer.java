@@ -49,11 +49,11 @@ public interface Importer {
 	 * @param datasourceId The identifier of the datasource to be imported.
 	 * @param geographyScope A list of geography scopes to be imported.
 	 * @param temporalScope A list of temporal scopes to be imported.
-	 * @param datasourceLocation file location in case the data comes from a local source
+	 * @param datasourceLocation A list of file locations in case the data comes from a local source
 	 * @throws Exception
 	 */
-	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable String datasourceLocation) throws Exception;
-	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable String datasourceLocation, Boolean force) throws Exception;
+	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation) throws Exception;
+	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, Boolean force) throws Exception;
 
 	/**
 	 * Function that takes in a buffer of subjects and saves it to the database and clears the buffer.

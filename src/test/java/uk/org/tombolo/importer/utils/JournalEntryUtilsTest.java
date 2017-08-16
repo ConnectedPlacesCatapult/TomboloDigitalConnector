@@ -91,6 +91,19 @@ public class JournalEntryUtilsTest {
     }
 
     @Test
+    public void getJournalEntryForDatasourceIdGeoTimeData() throws Exception {
+
+        DatabaseJournalEntry entry = JournalEntryUtils.getJournalEntryForDatasourceId(
+                "class.name",
+                "datasource-id",
+                Arrays.asList("geo"),
+                Arrays.asList("time"),
+                Arrays.asList("data"));
+        assertEquals("class.name", entry.getClassName());
+        assertEquals("datasource-id:"+ DigestUtils.md5Hex("geo|time|data"), entry.getKey());
+    }
+
+    @Test
     public void getJournalEntryForDatasourceIdOneTwoThree() throws Exception {
 
         DatabaseJournalEntry entry1 = JournalEntryUtils.getJournalEntryForDatasourceId(
@@ -98,7 +111,7 @@ public class JournalEntryUtilsTest {
                 "datasource-id",
                 Arrays.asList("one", "two"),
                 Arrays.asList("three"),
-                "four");
+                Arrays.asList("four"));
         assertEquals("class.name", entry1.getClassName());
         assertEquals("datasource-id:" + DigestUtils.md5Hex("one\ttwo|three|four"), entry1.getKey());
 
@@ -108,7 +121,7 @@ public class JournalEntryUtilsTest {
                 "datasource-id",
                 Arrays.asList("one"),
                 Arrays.asList("two", "three"),
-                "four");
+                Arrays.asList("four"));
         assertEquals("class.name", entry2.getClassName());
         assertEquals("datasource-id:" + DigestUtils.md5Hex("one|three\ttwo|four"), entry2.getKey());
 
@@ -117,7 +130,7 @@ public class JournalEntryUtilsTest {
                 "datasource-id",
                 Arrays.asList("one"),
                 Arrays.asList("three", "two"),
-                "four");
+                Arrays.asList("four"));
         assertEquals("class.name", entry3.getClassName());
         assertEquals("datasource-id:" + DigestUtils.md5Hex("one|three\ttwo|four"), entry3.getKey());
 

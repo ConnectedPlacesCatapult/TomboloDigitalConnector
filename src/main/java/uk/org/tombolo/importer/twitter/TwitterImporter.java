@@ -4,7 +4,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 import twitter4j.GeoLocation;
 import twitter4j.Status;
@@ -13,12 +12,8 @@ import twitter4j.TwitterObjectFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.*;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import javax.json.*;
+import java.io.*;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
@@ -27,9 +22,9 @@ import java.util.zip.GZIPInputStream;
  *
  * One of the most common ways to get the tweets from Twitter is using the Stream API that will get the tweets real time
  * through a query. The query may contain constraints about the user, location, keywords etc.
- * Here the user can store in may ways, but we support the newline separated ones as it seems to be the common case.
+ * Here the user can store in many ways, but we support the newline separated ones as it seems to be the common case.
  *
- * When wanting historical tweets Twitter provides the Search API that will get the tweets up to 1 week old.
+ * When wanting historical tweets, Twitter provides the Search API that will get the tweets up to 1 week old.
  * Here the format is a proper JsonArray of statuses.
  *
  * Both approaches require some sort of tuning to avoid different problems like missing tweets, rate limits,
@@ -44,10 +39,16 @@ public class TwitterImporter extends GeneralImporter {
 
     private static org.slf4j.Logger log = LoggerFactory.getLogger(TwitterImporter.class);
 
+    private static GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+
     private DataSourceID dataSourceID;
 
     private Map<AttributeEnum, Attribute> map;
     private static Status status;
+
+
+    private List<Subject> subjects = new ArrayList<>();
+    private List<FixedValue> fixedValues = new ArrayList<>();
 
     private interface PropertyValue {
         String getValue();
@@ -164,72 +165,81 @@ public class TwitterImporter extends GeneralImporter {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         // Setting the timezone to UTC which is the timezone twitter bases the timestamps
         // Twitter4j will get the system settings so need to change them to get UTC
         System.setProperty("user.timezone", "UTC");
         TimeZone.setDefault(null);
 
-        File file = new File(datasourceLocation);
-        InputStream is = new FileInputStream(file);
-        //Check if the file is gzipped
-        boolean gzipped = ZipUtils.isGZipped(file);
-        if (gzipped) { is = new GZIPInputStream(is); }
-
-        // Search API output
-        JsonReader reader = Json.createReader(is);
-        JsonObject value = (JsonObject) reader.read();
-        List statuses = value.getJsonArray("statuses");
-
-        if (statuses == null) {
-            is = new FileInputStream(file);
-            if (gzipped) { is = new GZIPInputStream(is); }
-            // Streaming API output, newline separated tweets
-            String json = IOUtils.toString(is);
-            statuses = Arrays.asList(json.split("[\r\n]"));
-        }
-
-        List<Subject> subjects = new ArrayList<>();
-        List<FixedValue> fixedValues = new ArrayList<>();
-
-        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        Coordinate coordinate = null;
-
-        for (Object jsonValue: statuses) {
-            String tweet = jsonValue.toString();
-            try {
-                status = TwitterObjectFactory.createStatus(tweet);
-            } catch (TwitterException e) {
-                log.error("Not a valid json string: {}, {}", tweet, e.getErrorMessage());
+        for (String localdata : datasourceLocation) {
+            File file = new File(localdata);
+            InputStream is = new FileInputStream(file);
+            //Check if the file is gzipped
+            boolean gzipped = ZipUtils.isGZipped(file);
+            if (gzipped) {
+                is = new GZIPInputStream(is);
             }
 
-            // Create status geometry
-            GeoLocation geoLocation = status.getGeoLocation();
-            // A null geoLocation will create an empty geometry
-            if (geoLocation != null) {
-                coordinate = new Coordinate(geoLocation.getLongitude(), geoLocation.getLatitude());
-            }
-            Geometry geometry = geometryFactory.createPoint(coordinate);
+            // First we try to check if it is a Search API out
+            JsonReader reader = Json.createReader(is);
+            JsonObject value = (JsonObject) reader.read();
+            JsonArray statuses = value.getJsonArray("statuses");
 
-            Subject subject = new Subject(datasource.getUniqueSubjectType(),
-                    AttributeEnum.ID.getValue(),
-                    AttributeEnum.USER.getValue().replace(" ", "_") + AttributeEnum.ID.getValue(),
-                    geometry
-            );
-            subjects.add(subject);
+            // The statuses list will be null if the file is not a Search API file
+            if (statuses == null) {
+                is = new FileInputStream(file);
+                if (gzipped) {
+                    is = new GZIPInputStream(is);
+                }
 
-            for (AttributeEnum val : AttributeEnum.values()) {
-                fixedValues.add(new FixedValue(subject, map.get(val), val.getValue()));
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String tweet;
+                while (!"".equals((tweet = br.readLine()))) {
+                    subjectFromStatus(tweet, datasource);
+                }
+            } else {
+                statuses.stream().forEach(jsonValue -> subjectFromStatus(jsonValue.toString(), datasource));
             }
 
-            if (subjects.size() % getSubjectBufferSize() == 0) {
-                saveAndClearSubjectBuffer(subjects);
-                saveAndClearFixedValueBuffer(fixedValues);
-            }
+            is.close();
         }
 
         saveAndClearSubjectBuffer(subjects);
         saveAndClearFixedValueBuffer(fixedValues);
+    }
+
+    private void subjectFromStatus(String tweet, Datasource datasource) {
+        try {
+            status = TwitterObjectFactory.createStatus(tweet);
+        } catch (TwitterException e) {
+            log.error("Not a valid json string: {}, {}", tweet, e.getErrorMessage());
+        }
+
+        // Create status geometry
+        GeoLocation geoLocation = status.getGeoLocation();
+        Coordinate coordinate = null;
+        // A null geoLocation will create an empty geometry
+        if (geoLocation != null) {
+            coordinate = new Coordinate(geoLocation.getLongitude(), geoLocation.getLatitude());
+        }
+        Geometry geometry = geometryFactory.createPoint(coordinate);
+
+        Subject subject = new Subject(datasource.getUniqueSubjectType(),
+                AttributeEnum.ID.getValue(),
+                AttributeEnum.USER.getValue().replace(" ", "_") + AttributeEnum.ID.getValue(),
+                geometry
+        );
+
+        subjects.add(subject);
+
+        for (AttributeEnum val : AttributeEnum.values()) {
+            fixedValues.add(new FixedValue(subject, map.get(val), val.getValue()));
+        }
+
+        if (subjects.size() % getSubjectBufferSize() == 0) {
+            saveAndClearSubjectBuffer(subjects);
+            saveAndClearFixedValueBuffer(fixedValues);
+        }
     }
 
     @Override

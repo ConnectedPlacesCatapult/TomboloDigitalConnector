@@ -70,7 +70,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, String datasourceLocation) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
 
         flatJson = readData(importerURL(
