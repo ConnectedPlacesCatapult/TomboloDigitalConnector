@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.ons;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
@@ -11,15 +10,19 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DataSourceID;
+import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.utils.JSONReader;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
@@ -27,34 +30,19 @@ import java.util.List;
 public class CensusImporter extends AbstractONSImporter implements Importer {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
     private static final LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
+    private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
+    private String RECORD_ID = "";
+    private ArrayList<CensusDescription> descriptions = new ArrayList<>();
 
-    // FIXME: Generalise this to any dataset from the census
-    protected enum DatasourceId {
-        qs701ew(new DataSourceID(
-                "qs701ew",
-                "Method of Travel to Work",
-                "Method of travel to work. All usual residents aged 16 to 74.",
-                "https://www.nomisweb.co.uk/census/2011/qs701ew",
-                null)
-        );
-
-        private DataSourceID dataSourceID;
-
-        DatasourceId(DataSourceID dataSourceID) {
-            this.dataSourceID = dataSourceID;
-        }
-    };
-
-    public CensusImporter(Config config) {
+    public CensusImporter(Config config) throws IOException {
         super(config);
-        datasourceIds = stringsFromEnumeration(DatasourceId.class);
+        datasourceIds = getDataSourceIDs();
     }
-
 
     @Override
     public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        Datasource datasource = datasourceFromDatasourceId(datasourceId.dataSourceID);
+
+        Datasource datasource = datasourceFromDatasourceId(getDataSourceObject(datasourceIdString));
 
         datasource.addAllTimedValueAttributes(getTimedValueAttributes(datasourceIdString));
 
@@ -62,19 +50,18 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
     }
 
     protected List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
         String headerRowUrl = getDataUrl(datasourceIdString)+"&recordlimit=0";
         File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
 
         List<Attribute> attributes = new ArrayList<>();
         CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
-        for (String header : csvParser.getHeaderMap().keySet()){
-            if (header.startsWith(datasourceId.dataSourceID.getName() + ":")) {
-                // The header starts with the same name as the label of the dataset
-                String attributeLabel = attributeLabelFromHeader(header);
-                attributes.add(new Attribute(getProvider(), attributeLabel, header, header, Attribute.DataType.numeric));
-            }
-        }
+        // The header starts with the same name as the label of the dataset
+        csvParser.getHeaderMap().keySet().stream().filter(header -> header.contains(":"))
+                .filter(header -> getDataSourceObject(datasourceIdString).getName()
+                .startsWith(header.toLowerCase().substring(0, header.indexOf(":")))).forEach(header -> {
+                 String attributeLabel = attributeLabelFromHeader(header);
+            attributes.add(new Attribute(getProvider(), attributeLabel, header, header, Attribute.DataType.numeric));
+        });
         return attributes;
     }
 
@@ -85,21 +72,17 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
         return header.substring(0, Math.min(63, end));
     }
 
-    protected String getDataUrl(String datasourceIdString){
-        // FIXME: Generalise this to any dataset from the census
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case qs701ew:
-                return "https://www.nomisweb.co.uk/api/v01/dataset/"
-                        +"nm_568_1"     // <- This should change according to dataset
-                        +".bulk.csv?"
-                        +"time=latest"
-                        +"&"+"measures=20100"
-                        +"&"+"rural_urban=total"
-                        +"&"+"geography=TYPE298";
-            default:
-                return null;
-        }
+    protected String getDataUrl(String datasourceIdString) {
+
+        if ("".equals(RECORD_ID)) getDataSourceObject(datasourceIdString);
+
+        return "https://www.nomisweb.co.uk/api/v01/dataset/"
+                + RECORD_ID
+                +".bulk.csv?"
+                +"time=latest"
+                +"&"+"measures=20100"
+                +"&"+"rural_urban=total"
+                +"&"+"geography=TYPE298";
     }
 
     @Override
@@ -120,19 +103,102 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
         File dataStream = downloadUtils.fetchFile(new URL(dataUrl), getProvider().getLabel(), ".csv");
 
         CSVParser csvParser = new CSVParser(new FileReader(dataStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
-        int recordCount = 0;
-        for (CSVRecord record : csvParser) {
+
+        csvParser.forEach(record -> {
             Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
             if (subject != null) {
-                for (Attribute attribute : attributes) {
+                attributes.forEach(attribute -> {
                     String value = record.get(attribute.getName());
                     TimedValue timedValue = new TimedValue(subject, attribute, TIMESTAMP, Double.valueOf(value));
                     timedValueBuffer.add(timedValue);
-                }
+                });
             }
-            recordCount++;
-        }
+        });
 
         saveAndClearTimedValueBuffer(timedValueBuffer);
     }
+
+    private ArrayList<CensusDescription> getSeedData() throws IOException {
+
+        ArrayList<LinkedHashMap<String, List<String>>> jsonData =
+                new JSONReader(new DownloadUtils("/tmp")
+                        .fetchJSONStream(new URL(SEED_URL), "uk.gov.ons"),
+                        new ArrayList<>(Arrays.asList("id", "value"))).getData();
+
+        String regEx = "(qs)(\\d+)(ew)";
+        Pattern pattern = Pattern.compile(regEx);
+
+        jsonData.forEach(value -> {
+            String prev = "";
+            for (List<String> v : value.values()) {
+                for (String s : v) {
+                    if (s.toLowerCase().startsWith("nm_")) prev = s.toLowerCase();
+
+                    Matcher matcher = pattern.matcher(s.toLowerCase());
+                    if (matcher.find()) {
+                        CensusDescription description = new CensusDescription();
+                        description.setDataSetID(prev);
+                        description.setDataSetTable(matcher.group());
+                        description.setDataSetDescription(s.toLowerCase().substring(matcher.end() + 3).trim());
+                        descriptions.add(description);
+                    }
+                }
+
+            }
+        });
+
+        return descriptions;
+    }
+
+    private ArrayList<String> getDataSourceIDs () throws IOException {
+        return getSeedData().stream().map(CensusDescription::getDataSetTable)
+                                             .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private DataSourceID getDataSourceObject (String dataSourceId) {
+
+        for (CensusDescription description : descriptions) {
+            if (description.getDataSetTable().equalsIgnoreCase(dataSourceId)) {
+                RECORD_ID = description.getDataSetID();
+                return new DataSourceID(dataSourceId, description.getDataSetDescription(), description.getDataSetDescription(),
+                    "https://www.nomisweb.co.uk/census/2011/" + dataSourceId, null);
+            }
+        }
+
+        return null;
+    }
 }
+
+
+
+class CensusDescription {
+    private String dataSetID;
+    private String dataSetTable;
+    private String dataSetDescription;
+
+    String getDataSetID() {
+        return dataSetID;
+    }
+
+    String getDataSetTable() {
+        return dataSetTable;
+    }
+
+    String getDataSetDescription() {
+        return dataSetDescription;
+    }
+
+    void setDataSetID(String dataSetID) {
+        this.dataSetID = dataSetID;
+    }
+
+    void setDataSetTable(String dataSetTable) {
+        this.dataSetTable = dataSetTable;
+    }
+
+    void setDataSetDescription(String dataSetDescription) {
+        this.dataSetDescription = dataSetDescription;
+    }
+}
+
+
