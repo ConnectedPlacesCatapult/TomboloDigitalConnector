@@ -45,7 +45,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		), Collections.singletonList(
 				new ValuesByTimeField("attr_label",
 						new AttributeMatcher("default_provider_label", "attr_label"))
-		));
+		), false);
 
 		assertEquals("E09000001", getFirstFeatureLabel(writer.toString()));
 	}
@@ -56,7 +56,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 
 		exporter.write(writer,
 				Arrays.asList(SubjectUtils.getSubjectByTypeAndLabel(localAuthority, "E09000001")),
-				Arrays.asList(new FixedAnnotationField("some_label", "some_value"))
+				Arrays.asList(new FixedAnnotationField("some_label", "some_value")), false
 		);
 
 		JSONAssert.assertEquals("{" +

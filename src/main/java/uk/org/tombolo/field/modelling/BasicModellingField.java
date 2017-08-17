@@ -47,14 +47,9 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (field == null)
-            initialize();
-        JSONObject obj = new JSONObject();
-        JSONObject fieldValue = field.jsonValueForSubject(subject);
-        // Unwrap the fieldValue by getting based on the label, then rewrap with the label the user specified
-        obj.put(label, fieldValue.get(field.getLabel()));
-        return obj;
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (field == null) initialize();
+        return field.jsonValueForSubject(subject, timeStamp).toJSONString();
     }
 
     protected void initialize() {

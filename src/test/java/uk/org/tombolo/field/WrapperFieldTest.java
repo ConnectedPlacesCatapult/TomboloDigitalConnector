@@ -19,7 +19,7 @@ public class WrapperFieldTest extends AbstractTest {
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{aLabel: {anotherLabel: 'aValue'}}", jsonString, false);
     }
 

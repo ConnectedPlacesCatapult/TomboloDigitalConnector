@@ -62,7 +62,7 @@ public class DataExportEngine implements ExecutionEngine {
 		List<SubjectRecipe> subjectSpecList = dataExportSpec.getDataset().getSubjects();
 		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
-		exporter.write(writer, subjects, fields);
+		exporter.write(writer, subjects, fields, dataExportSpec.getTimeStamp());
 	}
 
 	private void prepareFields(List<Field> fields, ImporterMatcher forceImports) throws Exception {

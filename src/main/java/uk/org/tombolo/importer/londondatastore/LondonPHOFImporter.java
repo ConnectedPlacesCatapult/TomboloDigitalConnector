@@ -37,11 +37,21 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
     private static final String DATAFILE
             = "https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53/phof-indicators-data-london-borough.xlsx";
 
-    ExcelUtils excelUtils = new ExcelUtils();;
+    ExcelUtils excelUtils = new ExcelUtils();
+
+    Workbook workbook = null;
 
     public LondonPHOFImporter(Config config){
         super(config);
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
+    }
+
+    public Workbook getWorkbook() {
+        return workbook;
+    }
+
+    public void setWorkbook(Workbook workbook) {
+        this.workbook = workbook;
     }
 
     @Override
@@ -78,8 +88,10 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
         RowCellExtractor timestampExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
         RowCellExtractor valueExtractor = new RowCellExtractor(6, Cell.CELL_TYPE_NUMERIC);
 
-        Workbook workbook = excelUtils.getWorkbook(
-                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
+        if (null == getWorkbook()) {
+            setWorkbook(excelUtils.getWorkbook(
+                    downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX)));
+        }
 
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         Sheet sheet = workbook.getSheetAt(3);
@@ -116,8 +128,10 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter implemen
     private List<Attribute> getAttributes(Datasource datasource) throws Exception {
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
 
-        Workbook workbook = excelUtils.getWorkbook(
-                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX));
+        if (null == getWorkbook()) {
+            setWorkbook(excelUtils.getWorkbook(
+                    downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX)));
+        }
 
         Map<String, Attribute> attributes = new HashMap<>();
         Sheet sheet = workbook.getSheetAt(3);

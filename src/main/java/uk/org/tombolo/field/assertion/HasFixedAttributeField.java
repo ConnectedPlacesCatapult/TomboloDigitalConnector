@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.assertion;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
@@ -30,13 +29,12 @@ public class HasFixedAttributeField extends AbstractField implements SingleValue
 
     public void initialise(){
         cachedAttributes = new ArrayList<>();
-        for (AttributeMatcher attribute : attributes){
-            cachedAttributes.add(AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel));
-        }
+        attributes.forEach(attribute -> cachedAttributes
+                .add(AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel)));
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return cachedValue;
@@ -51,13 +49,6 @@ public class HasFixedAttributeField extends AbstractField implements SingleValue
         }
         setCachedValue(subject, "0");
         return "0";
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put("value", valueForSubject(subject));
-        return obj;
     }
 
 }

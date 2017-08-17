@@ -87,30 +87,30 @@ public class PercentilesFieldTest extends AbstractTest {
 
     @Test
     public void valueForSubjectQuartiles() throws Exception {
-        assertEquals("1.0", quartilesField.valueForSubject(leeds1));
-        assertEquals("1.0", quartilesField.valueForSubject(leeds2));
-        assertEquals("2.0", quartilesField.valueForSubject(leeds3));
-        assertEquals("2.0", quartilesField.valueForSubject(leeds4));
-        assertEquals("2.0", quartilesField.valueForSubject(leeds5));
-        assertEquals("3.0", quartilesField.valueForSubject(brighton1));
-        assertEquals("3.0", quartilesField.valueForSubject(brighton2));
-        assertEquals("3.0", quartilesField.valueForSubject(brighton3));
-        assertEquals("4.0", quartilesField.valueForSubject(brighton4));
-        assertEquals("4.0", quartilesField.valueForSubject(brighton5));
+        assertEquals("1.0", quartilesField.valueForSubject(leeds1, true));
+        assertEquals("1.0", quartilesField.valueForSubject(leeds2, true));
+        assertEquals("2.0", quartilesField.valueForSubject(leeds3, true));
+        assertEquals("2.0", quartilesField.valueForSubject(leeds4, true));
+        assertEquals("2.0", quartilesField.valueForSubject(leeds5, true));
+        assertEquals("3.0", quartilesField.valueForSubject(brighton1, true));
+        assertEquals("3.0", quartilesField.valueForSubject(brighton2, true));
+        assertEquals("3.0", quartilesField.valueForSubject(brighton3, true));
+        assertEquals("4.0", quartilesField.valueForSubject(brighton4, true));
+        assertEquals("4.0", quartilesField.valueForSubject(brighton5, true));
     }
 
     @Test
     public void valueForSubjectInverseQuintiles() throws Exception {
-        assertEquals("5.0", quintilesInverseField.valueForSubject(leeds1));
-        assertEquals("5.0", quintilesInverseField.valueForSubject(leeds2));
-        assertEquals("4.0", quintilesInverseField.valueForSubject(leeds3));
-        assertEquals("4.0", quintilesInverseField.valueForSubject(leeds4));
-        assertEquals("3.0", quintilesInverseField.valueForSubject(leeds5));
-        assertEquals("3.0", quintilesInverseField.valueForSubject(brighton1));
-        assertEquals("2.0", quintilesInverseField.valueForSubject(brighton2));
-        assertEquals("2.0", quintilesInverseField.valueForSubject(brighton3));
-        assertEquals("1.0", quintilesInverseField.valueForSubject(brighton4));
-        assertEquals("1.0", quintilesInverseField.valueForSubject(brighton5));
+        assertEquals("5.0", quintilesInverseField.valueForSubject(leeds1, false));
+        assertEquals("5.0", quintilesInverseField.valueForSubject(leeds2, false));
+        assertEquals("4.0", quintilesInverseField.valueForSubject(leeds3, false));
+        assertEquals("4.0", quintilesInverseField.valueForSubject(leeds4, false));
+        assertEquals("3.0", quintilesInverseField.valueForSubject(leeds5, false));
+        assertEquals("3.0", quintilesInverseField.valueForSubject(brighton1, null));
+        assertEquals("2.0", quintilesInverseField.valueForSubject(brighton2, null));
+        assertEquals("2.0", quintilesInverseField.valueForSubject(brighton3, null));
+        assertEquals("1.0", quintilesInverseField.valueForSubject(brighton4, null));
+        assertEquals("1.0", quintilesInverseField.valueForSubject(brighton5, null));
     }
 
     @Test

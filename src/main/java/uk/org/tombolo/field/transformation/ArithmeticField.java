@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.transformation;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
@@ -53,15 +52,7 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                calculateValueForSubject(subject));
-        return obj;
-    }
-
-    @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return calculateValueForSubject(subject).toString();
     }
 
@@ -72,8 +63,8 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
 
         if (null == field1) { initialize(); }
         Double retVal = operator.apply(
-                Double.parseDouble(field1.valueForSubject(subject)),
-                Double.parseDouble(field2.valueForSubject(subject)));
+                Double.parseDouble(field1.valueForSubject(subject, true)),
+                Double.parseDouble(field2.valueForSubject(subject, true)));
 
         if (retVal.isNaN()) {
             throw new IncomputableFieldException(String.format("Arithmetic operation %s returned NaN (possible division by zero?)", operation));

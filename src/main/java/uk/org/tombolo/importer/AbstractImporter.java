@@ -219,4 +219,14 @@ public abstract class AbstractImporter implements Importer {
 	public int getTimedValueBufferSize() {
 		return BUFFER_THRESHOLD;
 	}
+
+	public Datasource datasourceFromDatasourceId(DataSourceID datasourceID) {
+		return new Datasource(
+				getClass(),
+				datasourceID.getLabel(),
+				getProvider(),
+				datasourceID.getName(),
+				datasourceID.getDescription()
+		);
+	}
 }

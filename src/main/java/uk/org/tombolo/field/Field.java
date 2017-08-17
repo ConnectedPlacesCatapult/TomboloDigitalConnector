@@ -25,7 +25,7 @@ import uk.org.tombolo.execution.FieldCache;
  * generic structured data type.
  */
 public interface Field {
-    JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException;
+    JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException;
     String getLabel();
     void setFieldCache(FieldCache fieldCache);
 }

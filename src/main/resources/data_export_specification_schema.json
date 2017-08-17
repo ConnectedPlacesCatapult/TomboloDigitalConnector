@@ -127,6 +127,9 @@
     },
     "exporter": {
       "type": "string"
+    },
+    "timeStamp": {
+      "type": "boolean"
     }
   },
   "required": [

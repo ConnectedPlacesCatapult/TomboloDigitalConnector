@@ -122,7 +122,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "        attributes: {" +
                 "          attr_label: [" +
                 "            {" +
-                "              value: 100," +
+                "              value: '100.0'," +
                 "              timestamp: '2011-01-01T00:00:00'" +
                 "            }" +
                 "          ]" +
@@ -148,7 +148,6 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -157,7 +156,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "        attributes: {" +
                 "          attr_label: [" +
                 "            {" +
-                "              value: 100," +
+                "              value: 100.0," +
                 "              timestamp: '2011-01-01T00:00:00'" +
                 "            }" +
                 "          ]" +
@@ -181,7 +180,6 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -251,7 +249,6 @@ public class DataExportEngineTest extends AbstractTest {
             );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  type: 'FeatureCollection'," +
                 "  features: [{" +
@@ -298,7 +295,7 @@ public class DataExportEngineTest extends AbstractTest {
                         "        local_authority: {" +
                         "          attr_label: [" +
                         "            {" +
-                        "              value: 100d" +
+                        "              value: '100.0'" +
                         "            }" +
                         "          ]" +
                         "        }" +
@@ -428,18 +425,17 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [{" +
                 "    properties: {" +
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
-                "      aLabel: [" +
+                "      aLabel: { Fraction_of_80: [" +
                 "        {" +
                 "          value: 0.005016722408026756," +
                 "          timestamp: '2011-12-31T23:59:59'" +
                 "        }" +
-                "      ]" +
+                "      ]}" +
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
@@ -462,12 +458,12 @@ public class DataExportEngineTest extends AbstractTest {
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
                 "      aWrapper: {" +
-                "        aLabel: [" +
+                "        aLabel: { Fraction_of_80: [" +
                 "          {" +
                 "            value: 0.005016722408026756," +
                 "            timestamp: '2011-12-31T23:59:59'" +
                 "          }" +
-                "        ]" +
+                "        ]}" +
                 "      }" +
                 "    }" +
                 "  }]" +

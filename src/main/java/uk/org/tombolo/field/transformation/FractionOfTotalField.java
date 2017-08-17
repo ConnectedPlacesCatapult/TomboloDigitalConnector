@@ -42,12 +42,12 @@ public class FractionOfTotalField extends AbstractField implements SingleValueFi
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return getValue(subject).value.toString();
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
         obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));

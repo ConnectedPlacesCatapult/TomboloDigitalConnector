@@ -17,13 +17,13 @@ public class SingleValueModellingField extends BasicModellingField implements Fi
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         if (field == null)
             initialize();
         if (field instanceof SingleValueField){
             String cachedValue = getCachedValue(subject);
             if (cachedValue == null) {
-                cachedValue = ((SingleValueField) field).valueForSubject(subject);
+                cachedValue = ((SingleValueField) field).valueForSubject(subject, timeStamp);
                 setCachedValue(subject, cachedValue);
             }
             return cachedValue;

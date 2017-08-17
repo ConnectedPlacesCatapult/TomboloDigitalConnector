@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.aggregation;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
@@ -38,13 +37,14 @@ public class BackOffField extends AbstractField implements SingleValueField {
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+
         if (materialisedFields == null)
             initialize();
         for (Field field : materialisedFields) {
             String value = null;
             try {
-                value = ((SingleValueField) field).valueForSubject(subject);
+                value = ((SingleValueField) field).valueForSubject(subject, timeStamp);
             } catch (IncomputableFieldException e){
                 // Keep calm and continue processing ... we will back-off
                 continue;
@@ -53,12 +53,5 @@ public class BackOffField extends AbstractField implements SingleValueField {
                 return value;
         }
         throw new IncomputableFieldException("No Backed-off value found");
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put("value", valueForSubject(subject));
-        return obj;
     }
 }

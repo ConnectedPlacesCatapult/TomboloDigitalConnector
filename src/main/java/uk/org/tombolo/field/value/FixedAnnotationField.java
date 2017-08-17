@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.value;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.SingleValueField;
@@ -18,15 +17,8 @@ public class FixedAnnotationField extends AbstractField implements SingleValueFi
     }
 
     @Override
-    public String valueForSubject(Subject subject) {
+    public String valueForSubject(Subject subject, Boolean timeStamp) {
         return value;
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
-        JSONObject obj = new JSONObject();
-        obj.put(label, value);
-        return obj;
     }
 
 }

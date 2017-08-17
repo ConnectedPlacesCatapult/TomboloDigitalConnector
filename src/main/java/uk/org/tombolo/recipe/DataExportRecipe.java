@@ -7,6 +7,7 @@ public class DataExportRecipe {
 	// Class name to use when exporting
 	// FIXME: We could include a syntactic-sugar such as "cvs", and "geojson" and then map that to class-name
 	String exporter;
+	Boolean timeStamp;
 
 	public DatasetRecipe getDataset() {
 		return dataset;
@@ -22,5 +23,9 @@ public class DataExportRecipe {
 
 	public void setExporter(String exporter) {
 		this.exporter = exporter;
+	}
+
+	public Boolean getTimeStamp() {
+		return timeStamp;
 	}
 }
