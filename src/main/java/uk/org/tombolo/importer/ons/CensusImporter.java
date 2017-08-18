@@ -14,10 +14,9 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.JSONReader;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -100,9 +99,11 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
         String dataUrl = getDataUrl(datasource.getId());
 
         // FIXME: Use stream instead of file
-        File dataStream = downloadUtils.fetchFile(new URL(dataUrl), getProvider().getLabel(), ".csv");
+        InputStream dataStream = downloadUtils.fetchInputStream(
+                                                new URL(dataUrl), getProvider().getLabel(), ".csv");
 
-        CSVParser csvParser = new CSVParser(new FileReader(dataStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
+        CSVParser csvParser = new CSVParser(new InputStreamReader(dataStream),
+                                                                CSVFormat.RFC4180.withFirstRecordAsHeader());
 
         csvParser.forEach(record -> {
             Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
