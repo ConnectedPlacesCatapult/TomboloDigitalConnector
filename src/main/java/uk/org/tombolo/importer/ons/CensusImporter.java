@@ -124,7 +124,7 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
         ArrayList<LinkedHashMap<String, List<String>>> jsonData =
                 new JSONReader(new DownloadUtils("/tmp")
                         .fetchJSONStream(new URL(SEED_URL), "uk.gov.ons"),
-                        new ArrayList<>(Arrays.asList("id", "value"))).getData();
+                        Arrays.asList("id", "value")).getData();
 
         String regEx = "(qs)(\\d+)(ew)";
         Pattern pattern = Pattern.compile(regEx);
