@@ -324,7 +324,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	}
 
 	@Override
-	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 		DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
 
 		if (geographyScope == null || geographyScope.isEmpty())

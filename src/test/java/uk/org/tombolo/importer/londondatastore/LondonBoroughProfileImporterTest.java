@@ -52,7 +52,7 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
     @Test
     public void importDatasource() throws Exception {
         TestFactory.makeNamedSubjectType("localAuthority");
-        importer.importDatasource("londonBoroughProfiles");
+        importer.importDatasource("londonBoroughProfiles", null, null, null);
         assertEquals(12, importer.getTimedValueCount());
 
         TimedValue populationDensity = TimedValueUtils.getLatestBySubjectAndAttribute(

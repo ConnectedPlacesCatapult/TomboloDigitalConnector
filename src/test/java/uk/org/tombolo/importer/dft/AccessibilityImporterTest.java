@@ -9,9 +9,7 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -129,7 +127,7 @@ public class AccessibilityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("acs0501");
+        importer.importDatasource("acs0501", null, null, null);
 
         Attribute emplo032 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO032");
         Attribute emplo070 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO070");

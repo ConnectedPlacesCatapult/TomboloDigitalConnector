@@ -57,7 +57,7 @@ public class OaImporterTest extends AbstractTest {
 
     @Test
     public void testImportLsoas() throws Exception {
-        importer.importDatasource("lsoa");
+        importer.importDatasource("lsoa", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "lsoa");
         Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "E01000002");
 
@@ -70,7 +70,7 @@ public class OaImporterTest extends AbstractTest {
 
     @Test
     public void testImportMsoas() throws Exception {
-        importer.importDatasource("msoa");
+        importer.importDatasource("msoa", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "msoa");
         Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E02000093");
 
@@ -83,7 +83,7 @@ public class OaImporterTest extends AbstractTest {
 
     @Test
     public void testImportLocalAuthorities() throws Exception {
-        importer.importDatasource("localAuthority");
+        importer.importDatasource("localAuthority", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "localAuthority");
         Subject localAuthority = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E06000001");
 

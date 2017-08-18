@@ -50,7 +50,7 @@ public class SchoolsImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasource() throws Exception {
-        importer.importDatasource("schools");
+        importer.importDatasource("schools", null, null, null);
 
         List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","schools"),"uk.gov.education_schools_100000.0");
         assertEquals(1, subjects.size());

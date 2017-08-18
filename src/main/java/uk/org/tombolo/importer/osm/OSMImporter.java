@@ -1,10 +1,7 @@
 package uk.org.tombolo.importer.osm;
 
 import de.topobyte.osm4j.pbf.seq.PbfReader;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.*;
@@ -71,7 +68,9 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+        List<FixedValue> fixedValues = new ArrayList<>();
+        List<Subject> subjects = new ArrayList<>();
 
         subjectType = SubjectTypeUtils.getOrCreate(
                 datasource.getUniqueSubjectType().getProvider(),

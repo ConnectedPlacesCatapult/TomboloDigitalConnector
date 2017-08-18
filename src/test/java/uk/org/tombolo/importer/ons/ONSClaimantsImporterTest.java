@@ -59,7 +59,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         Subject wyre010A = TestFactory.makeSubject(lsoa, "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
         Subject blaby010A = TestFactory.makeSubject(lsoa, "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
-        importer.importDatasource("claimants");
+        importer.importDatasource("claimants", null, null, null);
 
         Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "claimantCount");
 

@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -103,7 +102,7 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();

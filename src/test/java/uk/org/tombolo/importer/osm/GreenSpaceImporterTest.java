@@ -51,7 +51,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("OSMGreenSpace", Arrays.asList(TEST_AREA), Collections.emptyList());
+        importer.importDatasource("OSMGreenSpace", Arrays.asList(TEST_AREA), Collections.emptyList(), null);
 
         // Test attribute import
         Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");

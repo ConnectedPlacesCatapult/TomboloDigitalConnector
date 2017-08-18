@@ -64,7 +64,7 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()), getProvider().getLabel());
