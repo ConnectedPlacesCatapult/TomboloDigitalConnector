@@ -10,6 +10,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class CensusImporterTest extends AbstractTest {
 
 
     @Before
-    public void setup(){
+    public void setup() throws IOException {
         importer = new CensusImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
 

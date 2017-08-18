@@ -4,6 +4,7 @@ import javax.json.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,7 +72,7 @@ public class JSONReader {
 
     private InputStream is;
 
-    private ArrayList<String> tags = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
 
     private final static String EMPTY_KEY = null;
 
@@ -141,16 +142,15 @@ public class JSONReader {
      * Constructor accepts @params url and tags of @type String and ArrayList<String>
      */
 
-    public JSONReader(String url, ArrayList<String> tags) throws IOException {
+    public JSONReader(String url, List<String> tags) throws IOException {
         this(new URL(url), tags);
     }
-
 
     /*
      * Constructor accepts @params url and tags of @type URL and ArrayList<String>
      */
 
-    public JSONReader(URL url, ArrayList<String> tags) throws IOException {
+    public JSONReader(URL url, List<String> tags) throws IOException {
         this(url.openStream(), tags);
     }
 
@@ -159,7 +159,7 @@ public class JSONReader {
      * Constructor accepts @params is and tags of @type InputStream and ArrayList<String>
      */
 
-    public JSONReader(InputStream is, ArrayList<String> tags){
+    public JSONReader(InputStream is, List<String> tags){
         this.is = is;
         this.tags = tags;
     }
