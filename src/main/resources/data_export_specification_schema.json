@@ -84,6 +84,12 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "localData": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [

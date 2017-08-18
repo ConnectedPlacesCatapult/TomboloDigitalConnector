@@ -109,7 +109,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testImportDatasourceNoGeo() throws Exception {
         // Testing import with new subject but no geography
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
@@ -126,7 +126,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
 
         // Testing import with existing subject
         importer.setConfig(EXISTING_SUBJECT_CONFIG.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         testImport(subject);
     }
@@ -135,7 +135,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     public void testImportDatasourceWithGeo() throws Exception {
         // Testing import with new subject with geography
         importer.setConfig(NEW_SUBJECT_WITH_GEO.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
@@ -148,7 +148,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testImportDatasorceEastNorth()  throws Exception {
         importer.setConfig(NEW_SUBJECT_GEO_EAST_NORTH.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),

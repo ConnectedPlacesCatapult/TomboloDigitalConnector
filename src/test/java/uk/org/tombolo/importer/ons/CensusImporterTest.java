@@ -50,7 +50,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource(MTW_ID);
+        importer.importDatasource(MTW_ID, null, null, null);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(52, importer.getTimedValueCount());

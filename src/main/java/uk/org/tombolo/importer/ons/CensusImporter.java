@@ -22,6 +22,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
@@ -85,7 +87,7 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();

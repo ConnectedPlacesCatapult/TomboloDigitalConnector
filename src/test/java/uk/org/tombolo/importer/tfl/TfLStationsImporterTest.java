@@ -32,7 +32,7 @@ public class TfLStationsImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception {
-		importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name());
+		importer.importDatasource(TfLStationsImporter.DatasourceId.StationList.name(), null, null, null);
 		assertEquals(302, importer.getTimedValueCount());	// FIXME: Double check this when we get to refactor importer
 	}
 

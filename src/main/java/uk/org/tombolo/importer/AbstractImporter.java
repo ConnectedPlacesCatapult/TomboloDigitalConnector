@@ -68,15 +68,6 @@ public abstract class AbstractImporter implements Importer {
 	public void setConfig(Config config) { this.config = config; }
 
 	/**
-	 * Syntactic sugar for global scope import
-	 * @param datasourceId
-	 * @throws Exception
-	 */
-	public void importDatasource(String datasourceId) throws Exception{
-		importDatasource(datasourceId, null, null);
-	}
-
-	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
 	 * @param datasourceId
@@ -85,8 +76,8 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception {
-		importDatasource(datasourceId, geographyScope, temporalScope, false);
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, false);
 	}
 
 	/**
@@ -99,12 +90,12 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception {
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
 		if (!force && DatabaseJournal.journalHasEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
-						getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope))) {
+						getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope, datasourceLocation))) {
 			log.info("Skipped importing {}:{} as this import has been completed previously",
 					this.getClass().getCanonicalName(), datasourceId);
 		} else {
@@ -113,9 +104,9 @@ public abstract class AbstractImporter implements Importer {
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
 			saveDatasourceMetadata(datasource);
-			importDatasource(datasource, geographyScope, temporalScope);
+			importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
 			DatabaseJournal.addJournalEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
-					getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope));
+					getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope, datasourceLocation));
 			log.info("Imported {} subjects, {} fixed values and {} timedValues",
 					subjectCount, fixedValueCount, timedValueCount);
 		}
@@ -127,9 +118,10 @@ public abstract class AbstractImporter implements Importer {
 	 * @param datasource
 	 * @param geographyScope
 	 * @param temporalScope
+	 * @param datasourceLocation
 	 * @throws Exception
 	 */
-	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception;
+	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception;
 
 	/**
 	 * Loads the given properties resource into the main properties object

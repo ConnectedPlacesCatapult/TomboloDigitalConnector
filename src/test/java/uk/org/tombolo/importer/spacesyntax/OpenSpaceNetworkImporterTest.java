@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Using the following test data files:
@@ -72,7 +71,7 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
 
     @Test @Ignore
     public void importDatasource() throws Exception {
-        importer.importDatasource("milton_keynes.osm_polyline_processed");
+        importer.importDatasource("milton_keynes.osm_polyline_processed", null, null, null);
         assertEquals(69489, importer.getTimedValueCount());
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "SSxNode");

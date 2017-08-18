@@ -88,7 +88,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         List<Subject> subjects = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<FixedValue>();

@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.londondatastore;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -68,7 +67,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID, null, null, null);
 		assertEquals(221, importer.getTimedValueCount());
 
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(

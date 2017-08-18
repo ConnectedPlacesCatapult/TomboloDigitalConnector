@@ -55,7 +55,7 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID, null, null, null);
 		
 		assertEquals(8, importer.getTimedValueCount());
 

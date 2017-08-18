@@ -63,7 +63,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -95,7 +95,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOAWithEmpty() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -131,7 +131,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceLA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 

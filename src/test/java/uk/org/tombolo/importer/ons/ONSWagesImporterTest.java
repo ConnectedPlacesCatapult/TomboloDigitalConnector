@@ -57,7 +57,7 @@ public class ONSWagesImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("wages", null, null);
+        importer.importDatasource("wages", null, null, null);
 
         Attribute weeklyPayGrossAllMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),

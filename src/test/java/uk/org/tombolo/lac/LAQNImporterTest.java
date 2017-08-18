@@ -9,12 +9,12 @@ import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.lac.LAQNImporter;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -68,7 +68,7 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetProvider() throws Exception {
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         Provider provider = ProviderUtils.getByLabel("erg.kcl.ac.uk");
 
@@ -81,7 +81,7 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetAttributes() throws Exception {
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
@@ -104,7 +104,7 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetSubjectType() throws Exception {
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("erg.kcl.ac.uk",
                 "airQualityControl");
@@ -118,7 +118,7 @@ public class LAQNImporterTest extends AbstractTest {
     public void testGetSubjects() throws Exception {
 
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
@@ -132,7 +132,7 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetFixedValue() throws Exception {
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
@@ -172,7 +172,7 @@ public class LAQNImporterTest extends AbstractTest {
     public void testTimedValue() throws Exception {
 
         laqnImporter.importDatasource("airQualityControl",
-                Collections.singletonList("London"), Collections.singletonList("2010"));
+                Collections.singletonList("London"), Collections.singletonList("2010"), null);
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
