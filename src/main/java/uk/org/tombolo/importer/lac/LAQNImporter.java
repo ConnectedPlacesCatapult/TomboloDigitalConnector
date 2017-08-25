@@ -74,8 +74,8 @@ public class LAQNImporter extends AbstractImporter implements Importer{
 
 
         flatJson = readData(importerURL(
-                !geographyScope.isEmpty() ? geographyScope.get(0) : "",
-                !temporalScope.isEmpty() ? temporalScope.get(0) : ""
+                null != geographyScope && !geographyScope.isEmpty() ? geographyScope.get(0) : "",
+                null != temporalScope && !temporalScope.isEmpty() ? temporalScope.get(0) : ""
         ));
 
         ArrayList<Attribute> attr = getAttributes();
