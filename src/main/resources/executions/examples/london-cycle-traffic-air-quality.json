@@ -25,6 +25,7 @@
         "geographyScope" : ["London"]
       },
       {
+        // Importer for air quality
         "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
         "datasourceId": "airQualityControl"
       }
@@ -35,13 +36,12 @@
         "label": "Nitrogen Dioxide",
         "aggregationSubjectProvider": "erg.kcl.ac.uk",
         "aggregationSubjectType": "airQualityControl",
-        "aggregationFunction": "avg",
+        "aggregationFunction": "mean",
         "fieldSpecification": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
-          "label": "CountPedalCycles",
           "attribute": {
             "providerLabel" : "erg.kcl.ac.uk",
-            "attributeLabel" : "NO2 40 ug/m3 as an annual mean"
+            "attributeLabel" : "NO2 40 ug/m3 as an annual me"
           }
         }
       },

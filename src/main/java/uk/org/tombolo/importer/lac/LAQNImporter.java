@@ -200,7 +200,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private Geometry shape(String latitude, String longitude) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         return geometryFactory
-                .createPoint(new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                .createPoint(new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude)));
     }
 
     private String importerURL(String area, String year) {

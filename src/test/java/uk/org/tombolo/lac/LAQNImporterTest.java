@@ -126,7 +126,10 @@ public class LAQNImporterTest extends AbstractTest {
 
         assertEquals("BG1", subjects.get(0).getLabel());
         assertEquals("Barking and Dagenham - Rush Green", subjects.get(0).getName());
-
+        // Testing x coordinate (longitude)
+        assertEquals(0.177891, subjects.get(0).getShape().getCoordinate().getOrdinate(0), 0.0001);
+        // Testing y coordinate (latitude)
+        assertEquals(51.563752, subjects.get(0).getShape().getCoordinate().getOrdinate(1), 0.0001);
     }
 
     @Test
