@@ -2,10 +2,7 @@ package uk.org.tombolo.importer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.FixedValue;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.utils.JournalEntryUtils;
 
@@ -112,6 +109,30 @@ public abstract class AbstractImporter implements Importer {
 		}
 	}
 
+	@Override
+	public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Datasource getDatasource(String datasourceId) throws Exception {
+		Datasource datasource = new Datasource(getDatasourceSpec(datasourceId));
+		datasource.addSubjectTypes(getDatasourceSubjectTypes(datasourceId));
+		datasource.addFixedValueAttributes(getDatasourceFixedValueAttributes(datasourceId));
+		datasource.addTimedValueAttributes(getDatasourceTimedValueAttributes(datasourceId));
+		return datasource;
+	}
+
 	/**
 	 * The import function to be implemented in all none abstract sub-classes.
 	 *
@@ -144,9 +165,9 @@ public abstract class AbstractImporter implements Importer {
 		return properties;
 	}
 
-	protected static void saveDatasourceMetadata(Datasource datasource){
+	protected void saveDatasourceMetadata(Datasource datasource) throws Exception {
 		// Save provider
-		ProviderUtils.save(datasource.getProvider());
+		ProviderUtils.save(getProvider());
 
 		// Save SubjectType
 		SubjectTypeUtils.save(datasource.getSubjectTypes());
@@ -218,15 +239,5 @@ public abstract class AbstractImporter implements Importer {
 	@Override
 	public int getTimedValueBufferSize() {
 		return BUFFER_THRESHOLD;
-	}
-
-	public Datasource datasourceFromDatasourceId(DataSourceID datasourceID) {
-		return new Datasource(
-				getClass(),
-				datasourceID.getLabel(),
-				getProvider(),
-				datasourceID.getName(),
-				datasourceID.getDescription()
-		);
 	}
 }

@@ -9,6 +9,7 @@ import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,6 +27,8 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     protected static final String PROP_USERNAME = "openSpaceNetworkUsername";
     protected static final String PROP_PASSWORD = "openSpaceNetworkPassword";
     static final List<String> NON_ATTRIBUTE_COLUMNS = Arrays.asList("geom", "id", "time_modified");
+
+    private DatasourceSpec datasourceSpec;
 
     public OpenSpaceNetworkImporter(Config config) {
         super(config);
@@ -45,15 +48,28 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         // We'll use this ^ for both ID and name as we have nothing else to go by, and an empty description
-        Datasource datasource = new Datasource(getClass(), datasourceId, getProvider(), datasourceId, "");
+        datasourceSpec = new DatasourceSpec(getClass(), datasourceId, datasourceId, "", null);
 
-        // Add the attributes
-        Iterator<AttributeType> typeIterator = getAttributesForDatasource(datasource).iterator();
-        List<Attribute> timedValueAttributes = new ArrayList<>();
+        return datasourceSpec;
+    }
+
+    @Override
+    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+        return Collections.singletonList(subjectType);
+    }
+
+    @Override
+    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) {
+        Iterator<AttributeType> typeIterator;
+        try {
+            typeIterator = getAttributesForDatasource(new Datasource(datasourceSpec)).iterator();
+        } catch (IOException ioe) {
+            log.error("Could not get the list of fixed value attributes for {}, {}", datasourceId, ioe.getMessage());
+            return Collections.emptyList();
+        }
         List<Attribute> fixedValueAttributes = new ArrayList<>();
-
 
         while (typeIterator.hasNext()) {
             AttributeType type = typeIterator.next();
@@ -72,11 +88,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
             fixedValueAttributes.add(attribute);
         }
 
-        datasource.addAllTimedValueAttributes(timedValueAttributes);
-        datasource.addAllFixedValueAttributes(fixedValueAttributes);
-        datasource.addSubjectType(subjectType);
-
-        return datasource;
+        return fixedValueAttributes;
     }
 
     protected Map<String, Object> getParamsForDatasource(Datasource datasource) {
@@ -102,13 +114,13 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
     private String getSchemaNameForDatasource(Datasource datasource) {
         // E.g. for milton_keynes.osm_polyline_processed this returns milton_keynes
-        return datasource.getId().split("\\.")[0];
+        return datasource.getDatasourceSpec().getId().split("\\.")[0];
     }
 
     protected String getTypeNameForDatasource(Datasource datasource) {
         // E.g. for milton_keynes.osm_polyline_processed this returns osm_polyline_processed
         // Analogous to the table name in the PostGIS database
-        return datasource.getId().split("\\.")[1];
+        return datasource.getDatasourceSpec().getId().split("\\.")[1];
     }
 
     @Override

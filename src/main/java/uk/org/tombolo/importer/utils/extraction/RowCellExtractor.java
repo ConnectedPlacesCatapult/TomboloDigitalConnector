@@ -1,15 +1,14 @@
 package uk.org.tombolo.importer.utils.extraction;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-
-import static org.apache.poi.ss.usermodel.Cell.*;
 
 public class RowCellExtractor implements SingleValueExtractor {
     private int columnId;
-    private Integer cellType;
+    private CellType cellType;
     private Row row;
 
-    public RowCellExtractor(int columnId, int cellType){
+    public RowCellExtractor(int columnId, CellType cellType){
         this.columnId = columnId;
         this.cellType = cellType;
     }
@@ -24,15 +23,15 @@ public class RowCellExtractor implements SingleValueExtractor {
             throw new BlankCellException("Empty row");
         if (row.getCell(columnId) == null)
             throw new ExtractorException("Column with index "+columnId+" does not exit");
-        if (row.getCell(columnId).getCellType() == CELL_TYPE_BLANK)
+        if (row.getCell(columnId).getCellTypeEnum() == CellType.BLANK)
             throw new BlankCellException("Empty cell value");
         try{
             switch (cellType) {
-                case CELL_TYPE_BOOLEAN:
+                case BOOLEAN:
                     return String.valueOf(row.getCell(columnId).getBooleanCellValue());
-                case CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     return String.valueOf(row.getCell(columnId).getNumericCellValue());
-                case CELL_TYPE_STRING:
+                case STRING:
                     return String.valueOf(row.getCell(columnId).getStringCellValue());
                 default:
                     throw new ExtractorException("Unhandled cell type: "+cellType);

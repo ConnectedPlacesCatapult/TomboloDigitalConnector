@@ -2,9 +2,9 @@ package uk.org.tombolo.importer.ons;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -13,6 +13,7 @@ import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,22 +22,26 @@ import java.util.List;
  * https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72
  *
  */
-public class ONSClaimantsImporter extends AbstractONSImporter implements Importer {
+public class ONSClaimantsImporter extends AbstractONSImporter {
 
-    private enum DatasourceId {claimants};
+    private enum DatasourceId {
+        claimants(new DatasourceSpec(
+                ONSWagesImporter.class,
+                "claimants",
+                "Claimants per LSOA",
+                "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
+                        "who claim Universal Credit and are required to seek work and be available for work and " +
+                        "replaces the number of people claiming Jobseeker's Allowance as the headline indicator " +
+                        "of the number of people claiming benefits principally for the reason of being unemployed. " +
+                        "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.",
+                "https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72")
+        );
 
-    private Datasource[] datasources = {
-            new Datasource(
-                    getClass(),
-                    DatasourceId.claimants.name(),
-                    getProvider(),
-                    "Claimants per LSOA",
-                    "This experimental series counts the number of people claiming Jobseeker's Allowance plus those " +
-                            "who claim Universal Credit and are required to seek work and be available for work and " +
-                            "replaces the number of people claiming Jobseeker's Allowance as the headline indicator " +
-                            "of the number of people claiming benefits principally for the reason of being unemployed. " +
-                            "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.")
-    };
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasource) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
 
     private static final String DATAFILE = "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
             "geography=1249902593...1249937345&" +
@@ -55,18 +60,8 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case claimants:
-                Datasource datasource = datasources[datasourceId.ordinal()];
-                datasource.setUrl("https://www.nomisweb.co.uk/query/select/getdatasetbytheme.asp?theme=72");
-
-                datasource.addAllTimedValueAttributes(getAttributes());
-                return datasource;
-            default:
-                throw new Error("Unknown datasource");
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
     }
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
@@ -90,11 +85,9 @@ public class ONSClaimantsImporter extends AbstractONSImporter implements Importe
         CSVUtils.extractAndSaveTimedValues(extractors, this, localFile);
     }
 
-    private List<Attribute> getAttributes(){
-        List<Attribute> attributes = new ArrayList<>();
-
-        attributes.add(new Attribute(getProvider(), AttributeId.claimantCount.name(), "Claimant Count", "Number of claimants", Attribute.DataType.numeric));
-
-        return attributes;
+    @Override
+    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+        return Collections.singletonList(
+                new Attribute(getProvider(), AttributeId.claimantCount.name(), "Claimant Count", "Number of claimants", Attribute.DataType.numeric));
     }
 }

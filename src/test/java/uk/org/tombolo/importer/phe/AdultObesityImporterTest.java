@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class AdultObesityImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "adultObesity";
-	AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
+	private AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
 
 	private Subject cityOfLondon;
 

@@ -44,15 +44,14 @@ public class SchoolsImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("schools");
-        // Month hardcoded to "March" because the dataset is not regularly updated every month as it should be
-        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx",datasource.getRemoteDatafile());
+        assertEquals("https://www.gov.uk/government/publications/schools-in-england/", datasource.getDatasourceSpec().getUrl());
     }
 
     @Test
     public void testImportDatasource() throws Exception {
         importer.importDatasource("schools", null, null, null);
 
-        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","schools"),"uk.gov.education_schools_100000.0");
+        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","dfeSchools"),"uk.gov.education_schools_100000.0");
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("Sir John Cass's Foundation Primary School", subject.getName());

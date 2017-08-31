@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.LatLong;
@@ -42,49 +41,48 @@ public class SchoolsImporter extends AbstractDfEImporter {
         return dft.format(localDate).toString();
     }
 
-    public enum schoolsDataSourceID {
-        schools(new DataSourceID(
+    public enum SchoolsDatasourceID {
+        schools(new DatasourceSpec(
+                SchoolsImporter.class,
                 "schools",
                 "Schools in England",
                 "Schools in England",
-                "https://www.gov.uk/government/publications/schools-in-england/",
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx"
+                "https://www.gov.uk/government/publications/schools-in-england/"
                 ),
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx",
                 0
         );
 
-        private DataSourceID dataSourceID;
+        private DatasourceSpec datasourceSpec;
+        private String filePath;
         private int sheetIdx;
 
-        schoolsDataSourceID(DataSourceID dataSourceID, int sheetIdx) {
-            this.dataSourceID = dataSourceID;
+        SchoolsDatasourceID(DatasourceSpec datasourceSpec, String filePath, int sheetIdx) {
+            this.datasourceSpec = datasourceSpec;
+            this.filePath = filePath;
             this.sheetIdx = sheetIdx;
         }
     }
 
     public SchoolsImporter(Config config) {
         super(config);
-        datasourceIds = stringsFromEnumeration(schoolsDataSourceID.class);
+        datasourceIds = stringsFromEnumeration(SchoolsDatasourceID.class);
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-        DataSourceID id;
-        try {
-            id = schoolsDataSourceID.valueOf(datasourceId).dataSourceID;
-        } catch (IllegalArgumentException e) {
-            throw new Error("Unknown DataSourceID " + datasourceId);
-        }
-        return getDatasource(getClass(), id);
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        SchoolsDatasourceID dsValue = SchoolsDatasourceID.valueOf(datasourceId);
+        setupUtils(dsValue);
+        return dsValue.datasourceSpec;
+
     }
 
     // Schools' workbook
     Workbook workbook;
 
-    @Override
-    protected void setupUtils(Datasource datasource) throws Exception {
+    protected void setupUtils(SchoolsDatasourceID id) throws Exception {
         ExcelUtils excelUtils = new ExcelUtils();
-        workbook = excelUtils.getWorkbook(downloadUtils.fetchInputStream(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".xlsx"));
+        workbook = excelUtils.getWorkbook(downloadUtils.fetchInputStream(new URL(id.filePath), getProvider().getLabel(), ".xlsx"));
     }
 
     @Override
@@ -98,7 +96,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         // Keep track of the seen outcudes so we don't calculate the coordinate every time
         Map<String, Coordinate> seenCoordinates = new HashMap<>();
 
-        Iterator<Row> rowIterator = workbook.getSheetAt(schoolsDataSourceID.schools.sheetIdx).rowIterator();
+        Iterator<Row> rowIterator = workbook.getSheetAt(SchoolsDatasourceID.schools.sheetIdx).rowIterator();
         DataFormatter dataFormatter = new DataFormatter();
         Row header = rowIterator.next();
         while (rowIterator.hasNext()) {
@@ -108,7 +106,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
             String postcode;
 
             try {
-                label = datasource.getProvider().getLabel() + "_schools_" + row.getCell(LABEL_COLUMN_INDEX).toString();
+                label = getProvider().getLabel() + "_schools_" + row.getCell(LABEL_COLUMN_INDEX).toString();
                 name = row.getCell(NAME_COLUMN_INDEX).toString();
                 postcode = row.getCell(POSTCODE_COLUMN_INDEX).toString();
 
@@ -154,10 +152,11 @@ public class SchoolsImporter extends AbstractDfEImporter {
         saveAndClearFixedValueBuffer(fixedValues);
     }
 
-    protected List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID) {
+    @Override
+    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceID) {
         List<Attribute> attributes = new ArrayList<>();
 
-        Row attributeHeader = workbook.getSheetAt(schoolsDataSourceID.schools.sheetIdx).rowIterator().next();
+        Row attributeHeader = workbook.getSheetAt(SchoolsDatasourceID.schools.sheetIdx).rowIterator().next();
         IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
                             String name = attributeHeader.getCell(idx).getStringCellValue();
@@ -168,7 +167,8 @@ public class SchoolsImporter extends AbstractDfEImporter {
         return attributes;
     }
 
-    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID){
-        return Arrays.asList(new SubjectType(getProvider(), dataSourceID.getLabel(), dataSourceID.getName()));
+    @Override
+    public List<SubjectType> getDatasourceSubjectTypes(String datasourceID) {
+        return Arrays.asList(new SubjectType(getProvider(), "dfeSchools", "DfE schools UK"));
     }
 }

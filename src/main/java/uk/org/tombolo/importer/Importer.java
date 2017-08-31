@@ -9,10 +9,10 @@ import java.util.Properties;
 
 public interface Importer {
 
-	public Provider getProvider();
+	Provider getProvider();
 
 	/**
-	 * Returns all the identifiers of datasouces importable by this importer
+	 * Returns all the identifiers of datasources importable by this importer
 	 *
 	 * @return
 	 * @throws Exception
@@ -20,7 +20,7 @@ public interface Importer {
 	public List<String> getDatasourceIds();
 
 	/**
-	 * Returns true iff a datasource with said id exists
+	 * Returns true if a datasource with said id exists
 	 *
 	 * @param datasourceId
 	 * @return
@@ -38,9 +38,12 @@ public interface Importer {
 	 * Returna all labels that can be used to restrict the temporal scope of the import.
 	 * @return
 	 */
-	public List<String> getTemporalLabels();
+	List<String> getTemporalLabels();
 
-	public Datasource getDatasource(String datasourceId) throws Exception;
+	Datasource getDatasource(String datasourceId) throws Exception;
+
+	DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception;
+
 
 	/**
 	 * Function for importing a datasource for a given geography and temporal scope.
@@ -70,20 +73,20 @@ public interface Importer {
 	 *
 	 * @param timedValueBuffer is the buffer of timed values to save
 	 */
-	public void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer);
+	void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer);
 
 	/**
 	 * Function that takes in a buffer of fixed values and saves it to the database and clears the buffer.
 	 *
 	 * @param fixedValues
 	 */
-	public void saveAndClearFixedValueBuffer(List<FixedValue> fixedValues);
+	void saveAndClearFixedValueBuffer(List<FixedValue> fixedValues);
 
-	public void setDownloadUtils(DownloadUtils downloadUtils);
+	void setDownloadUtils(DownloadUtils downloadUtils);
 
-	public void configure(Properties properties) throws ConfigurationException;
-	public void verifyConfiguration() throws ConfigurationException;
-	public Properties getConfiguration();
+	void configure(Properties properties) throws ConfigurationException;
+	void verifyConfiguration() throws ConfigurationException;
+	Properties getConfiguration();
 
 	int getSubjectCount();
 	int getFixedValueCount();
@@ -93,4 +96,8 @@ public interface Importer {
 	int getTimedValueBufferSize();
 	int getFixedValueBufferSize();
 	int getSubjectBufferSize();
+
+	List<SubjectType> getDatasourceSubjectTypes(String datasourceId);
+	List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception;
+	List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) throws Exception;
 }

@@ -4,8 +4,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,7 +12,6 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.Importer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,18 +24,29 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class TfLStationsImporter extends TfLImporter implements Importer {
-	protected static enum DatasourceId {StationList};
-	private static enum AttributeName {ServingLineCount};
-	private static enum SubjectTypeName {TfLStation};
+public class TfLStationsImporter extends TfLImporter {
+
+	protected enum DatasourceId {
+		StationList(new DatasourceSpec(
+				TfLStationsImporter.class,
+				"StationList",
+				"TfL Stations",
+				"A list of TfL Stations",
+				"https://data.tfl.gov.uk/")
+		);
+
+		private DatasourceSpec datasourceSpec;
+		DatasourceId(DatasourceSpec datasourceSpec) { this.datasourceSpec = datasourceSpec; }
+	}
+	private enum AttributeName {ServingLineCount}
+	private enum SubjectTypeName {TfLStation}
 
 	private static final String STATIONS_API_SUFFIX = ".xml";
 	private static final String STATIONS_API = "https://data.tfl.gov.uk/tfl/syndication/feeds/stations-facilities.xml";
 
-	Logger log = LoggerFactory.getLogger(TfLStationsImporter.class);
-	
 	XPathFactory xPathFactory = XPathFactory.newInstance();
 	XPath xpath = xPathFactory.newXPath();
 
@@ -48,24 +56,16 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 	}
 
 	@Override
-	public Datasource getDatasource(String datasourceId) throws Exception {
+	public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
 		verifyConfiguration();
-		DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
-		switch (datasourceLabel){
-			case StationList:
-				Datasource datasource = new Datasource(getClass(), DatasourceId.StationList.name(), getProvider(), "TfL Stations", "A list of TfL Stations");
-				datasource.addAllTimedValueAttributes(getStationAttributes());
-				datasource.addSubjectType(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
-				return datasource;
-		}
-		return null;
+		return DatasourceId.valueOf(datasourceId).datasourceSpec;
 	}
 
 	@Override
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
 		// Save timed values
-		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getId());
+		DatasourceId datasourceIdObject = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
 		switch (datasourceIdObject){
 		case StationList:
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
@@ -132,8 +132,14 @@ public class TfLStationsImporter extends TfLImporter implements Importer {
 		
 		return "tfl:station:"+stationType+":"+stationId;
 	}
-	
-	private List<Attribute> getStationAttributes(){
+
+	@Override
+	public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+		return Collections.singletonList(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
+	}
+
+	@Override
+	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
 		List<Attribute> attributes = new ArrayList<Attribute>();
 		attributes.add(new Attribute(getProvider(), AttributeName.ServingLineCount.name(), "Serving Lines", "The number of lines serving a station", Attribute.DataType.numeric));
 		return attributes;

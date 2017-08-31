@@ -10,19 +10,13 @@ import uk.org.tombolo.core.utils.*;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
 public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     TestGeotoolsDataStoreImporter importer;
-    Consumer<Datasource> datasourceSetup = (o) -> {};
-
     private SubjectType testSubjectType;
 
     // A controlled implementation of the abstract class so we can test it
@@ -35,7 +29,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         @Override
         public String getTypeNameForDatasource(Datasource datasource) {
-            return datasource.getId();
+            return datasource.getDatasourceSpec().getId();
         }
 
         @Override
@@ -51,7 +45,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
         public Map<String, Object> getParamsForDatasource(Datasource datasource) {
             Map<String, Object> params = new HashMap<>();
-            URL storeUrl = ClassLoader.getSystemResource("datacache/TomboloData/com.spacesyntax/osn/" + datasource.getId() + ".json");
+            URL storeUrl = ClassLoader.getSystemResource("datacache/TomboloData/com.spacesyntax/osn/" + datasource.getDatasourceSpec().getId() + ".json");
             params.put("url", storeUrl);
             return params;
         }
@@ -70,10 +64,21 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         }
 
         @Override
-        public Datasource getDatasource(String datasourceId) throws Exception {
-            Datasource datasource = new Datasource(TestGeotoolsDataStoreImporter.class, datasourceId, getProvider(), datasourceId, datasourceId);
-            datasourceSetup.accept(datasource);
-            return datasource;
+        public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+            DatasourceSpec datasourceSpec = new DatasourceSpec(TestGeotoolsDataStoreImporter.class, datasourceId, datasourceId, datasourceId, "");
+            return datasourceSpec;
+        }
+
+        @Override
+        public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+            return Collections.singletonList(
+                        new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+        }
+
+        @Override
+        public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) throws Exception {
+            return Collections.singletonList(
+                    new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
         }
     }
 
@@ -88,7 +93,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     public void testImportDatasourceImportsSubjects() throws Exception {
 
         importer.importDatasource("osm_polyline_processed", null, null, null);
-        assertEquals(0, importer.getTimedValueCount());
+        assertEquals(25, importer.getSubjectCount());
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
@@ -100,9 +105,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasourceImportsTimedAttributes() throws Exception {
-        datasourceSetup = datasource -> {
-            datasource.addTimedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
-        };
+
         importer.importDatasource("osm_polyline_processed", null, null, null);
         assertEquals(25, importer.getTimedValueCount());
 
@@ -117,9 +120,6 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Test
     public void testImportDatasourceImportsFixedAttributes() throws Exception {
-        datasourceSetup = datasource -> {
-            datasource.addFixedValueAttribute(new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
-        };
         importer.importDatasource("osm_polyline_processed", null, null, null);
         assertEquals(25, importer.getFixedValueCount());
 

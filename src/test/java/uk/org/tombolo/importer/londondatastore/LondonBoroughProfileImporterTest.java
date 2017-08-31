@@ -44,8 +44,8 @@ public class LondonBoroughProfileImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("londonBoroughProfiles");
 
-        assertEquals("londonBoroughProfiles", datasource.getId());
-        assertEquals("London Borough Profiles", datasource.getName());
+        assertEquals("londonBoroughProfiles", datasource.getDatasourceSpec().getId());
+        assertEquals("London Borough Profiles", datasource.getDatasourceSpec().getName());
         assertEquals(6, datasource.getTimedValueAttributes().size());
     }
 

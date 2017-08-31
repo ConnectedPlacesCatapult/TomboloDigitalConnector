@@ -27,18 +27,18 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 	}
 		
 	@Test
-	public void testGetDatasetDetails() throws Exception{
+	public void testGetDatasetDetails() throws Exception {
 				
 		Datasource datasourceDetails = importer.getDatasource(datasourceId);
 		
-		assertEquals(datasourceId, datasourceDetails.getName());
-		assertEquals("Age by single year",datasourceDetails.getDescription());
+		assertEquals(datasourceId, datasourceDetails.getDatasourceSpec().getName());
+		assertEquals("Age by single year",datasourceDetails.getDatasourceSpec().getDescription());
 		assertEquals(102, datasourceDetails.getTimedValueAttributes().size());
 		assertEquals("CL_0000053_1", datasourceDetails.getTimedValueAttributes().get(0).getLabel());
 		assertEquals("T.b.a.", datasourceDetails.getTimedValueAttributes().get(0).getDescription());
 		assertEquals("CL_0000053_3", datasourceDetails.getTimedValueAttributes().get(2).getLabel());
 		assertEquals("T.b.a.", datasourceDetails.getTimedValueAttributes().get(2).getDescription());
-		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", datasourceDetails.getRemoteDatafile());
+		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_QS103EW_2011STATH_NAT_OA_REL_1.A.A_EN.zip", importer.getDataFile());
 	}
 
 	@Test

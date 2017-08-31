@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
@@ -29,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBob3NwaXRhbHMlM0I=
  */
 public class HealthOrganisationImporterTest extends AbstractTest {
-    HealthOrganisationImporter importer;
+    private HealthOrganisationImporter importer;
 
     @Before
     public void setUp() throws Exception {
@@ -80,12 +77,12 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testGetDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("hospital");
-        assertEquals("hospital", datasource.getId());
-        assertEquals("uk.nhs", datasource.getProvider().getLabel());
-        assertEquals("Hospital", datasource.getName());
-        assertEquals("List of Hospitals in England", datasource.getDescription());
-        assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasource.getUrl());
+        DatasourceSpec datasourceSpec = importer.getDatasource("hospital").getDatasourceSpec();
+        assertEquals("hospital", datasourceSpec.getId());
+        assertEquals("uk.nhs", importer.getProvider().getLabel());
+        assertEquals("Hospital", datasourceSpec.getName());
+        assertEquals("List of Hospitals in England", datasourceSpec.getDescription());
+        assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasourceSpec.getUrl());
     }
 
     @Test

@@ -58,9 +58,9 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("milton_keynes.osm_polyline_processed");
 
-        assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
-        assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
-        assertEquals("",datasource.getDescription());
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getDatasourceSpec().getId());
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getDatasourceSpec().getName());
+        assertEquals("",datasource.getDatasourceSpec().getDescription());
 
         assertEquals(0, datasource.getTimedValueAttributes().size());
         assertEquals(6, datasource.getFixedValueAttributes().size());

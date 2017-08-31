@@ -38,7 +38,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void getTimedValueAttributes() throws Exception {
-        List<Attribute> attributes = importer.getTimedValueAttributes(MTW_ID);
+        List<Attribute> attributes = importer.getDatasourceTimedValueAttributes(MTW_ID);
 
         assertEquals(13, attributes.size());
     }
