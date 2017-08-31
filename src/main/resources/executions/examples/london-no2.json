@@ -1,0 +1,28 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "airQualityControl",
+        "provider": "erg.kcl.ac.uk"
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
+        "datasourceId": "airQualityControl"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "label": "Anual NO2",
+        "attribute": {
+          "providerLabel": "erg.kcl.ac.uk",
+          "attributeLabel": "NO2 40 ug/m3 as an annual me"
+        }
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
+

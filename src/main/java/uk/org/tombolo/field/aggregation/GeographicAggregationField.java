@@ -4,6 +4,8 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -26,6 +28,8 @@ import java.util.Map;
  * So far, `sum` and `mean` are implemented.
  */
 public class GeographicAggregationField extends AbstractField implements Field, SingleValueField {
+    private static Logger log = LoggerFactory.getLogger(GeographicAggregationField.class);
+
     public static enum AggregationFunction {sum, mean}
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
@@ -69,7 +73,9 @@ public class GeographicAggregationField extends AbstractField implements Field, 
             try {
                 doubles.addElement(Double.parseDouble(field.valueForSubject(subject, true)));
             } catch (IncomputableFieldException e) {
-                throw new IncomputableFieldException("Aggregator item failed to compute: " + e.getMessage(), e);
+                log.warn("Incomputable field not included in aggregation for subject {} ({})",
+                        subject.getName(),
+                        subject.getId());
             }
         }
 

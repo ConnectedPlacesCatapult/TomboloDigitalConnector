@@ -67,8 +67,8 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         flatJson = readData(importerURL(
-                !geographyScope.isEmpty() ? geographyScope.get(0) : "",
-                !temporalScope.isEmpty() ? temporalScope.get(0) : ""
+                null != geographyScope && !geographyScope.isEmpty() ? geographyScope.get(0) : "",
+                null != temporalScope && !temporalScope.isEmpty() ? temporalScope.get(0) : ""
         ));
 
         ArrayList<Attribute> attr = getAttributes();
@@ -194,7 +194,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private Geometry shape(String latitude, String longitude) {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         return geometryFactory
-                .createPoint(new Coordinate(Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                .createPoint(new Coordinate(Double.parseDouble(longitude), Double.parseDouble(latitude)));
     }
 
     private String importerURL(String area, String year) {
