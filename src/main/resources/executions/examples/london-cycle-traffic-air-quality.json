@@ -1,0 +1,84 @@
+{
+  "dataset" : {
+    "subjects" : [
+      {
+        // The output of the export includes one record for each local authority whose label starts with 'E090'.
+        // Effectively this will export one record for each of the London Boroughs.
+        "subjectType" : "localAuthority",
+        "provider":"uk.gov.ons",
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090%"
+        }
+      }
+    ],
+    "datasources" : [
+      {
+        // Importer for importing the geographic areas of local authorities
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        // Importer for DfT traffic counts in London
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
+      },
+      {
+        // Importer for air quality
+        "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
+        "datasourceId": "airQualityControl"
+      }
+    ],
+    "fields" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "Nitrogen Dioxide",
+        "aggregationSubjectProvider": "erg.kcl.ac.uk",
+        "aggregationSubjectType": "airQualityControl",
+        "aggregationFunction": "mean",
+        "fieldSpecification": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "attribute": {
+            "providerLabel" : "erg.kcl.ac.uk",
+            "attributeLabel" : "NO2 40 ug/m3 as an annual me"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+        "label": "Bicycle Fraction",
+        "operation": "div",
+        "fieldSpecification1": {
+          "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+          "label": "Bicycle Count",
+          "aggregationSubjectProvider": "uk.gov.dft",
+          "aggregationSubjectType": "trafficCounter",
+          "aggregationFunction": "sum",
+          "fieldSpecification": {
+            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+            "attribute": {
+              "providerLabel" : "uk.gov.dft",
+              "attributeLabel" : "CountPedalCycles"
+            }
+          }
+        },
+        "fieldSpecification2": {
+          "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+          "label": "Car Count",
+          "aggregationSubjectProvider": "uk.gov.dft",
+          "aggregationSubjectType": "trafficCounter",
+          "aggregationFunction": "sum",
+          "fieldSpecification": {
+            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+            "attribute": {
+              "providerLabel": "uk.gov.dft",
+              "attributeLabel": "CountCarsTaxis"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
