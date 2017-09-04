@@ -110,26 +110,26 @@ public abstract class AbstractImporter implements Importer {
 	}
 
 	@Override
-	public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+	public List<SubjectType> getSubjectTypes(String datasourceId) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+	public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) throws Exception {
+	public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
 		return Collections.emptyList();
 	}
 
 	@Override
 	public Datasource getDatasource(String datasourceId) throws Exception {
 		Datasource datasource = new Datasource(getDatasourceSpec(datasourceId));
-		datasource.addSubjectTypes(getDatasourceSubjectTypes(datasourceId));
-		datasource.addFixedValueAttributes(getDatasourceFixedValueAttributes(datasourceId));
-		datasource.addTimedValueAttributes(getDatasourceTimedValueAttributes(datasourceId));
+		datasource.addSubjectTypes(getSubjectTypes(datasourceId));
+		datasource.addFixedValueAttributes(getFixedValueAttributes(datasourceId));
+		datasource.addTimedValueAttributes(getTimedValueAttributes(datasourceId));
 		return datasource;
 	}
 

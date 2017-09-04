@@ -47,14 +47,14 @@ public abstract class OSMImporter extends AbstractImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
         subjectType = new SubjectType(getProvider(), "OSMEntity", "Open Street Map Entity");
 
         return Collections.singletonList(subjectType);
     }
 
     @Override
-    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) {
+    public List<Attribute> getFixedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         categories.keySet().stream().map(category -> attributeFromTag(category)).forEach(attributes::add);
         return attributes;

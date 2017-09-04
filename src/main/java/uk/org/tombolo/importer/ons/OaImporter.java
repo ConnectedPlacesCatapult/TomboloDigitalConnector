@@ -45,11 +45,11 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     }
 
     public static SubjectType getSubjectType(OaType oaType){
-        return SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, oaType.name(), oaType.datafile);
+        return SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, oaType.name(), oaType.datasourceSpec.getDescription());
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
         return Collections.singletonList(getSubjectType(OaType.valueOf(datasourceId)));
     }
 

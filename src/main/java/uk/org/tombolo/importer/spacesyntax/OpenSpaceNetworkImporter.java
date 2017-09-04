@@ -56,12 +56,12 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
         return Collections.singletonList(subjectType);
     }
 
     @Override
-    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) {
+    public List<Attribute> getFixedValueAttributes(String datasourceId) {
         Iterator<AttributeType> typeIterator;
         try {
             typeIterator = getAttributesForDatasource(new Datasource(datasourceSpec)).iterator();

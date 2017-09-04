@@ -41,7 +41,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         return dft.format(localDate).toString();
     }
 
-    public enum SchoolsDatasourceID {
+    public enum DatasourceId {
         schools(new DatasourceSpec(
                 SchoolsImporter.class,
                 "schools",
@@ -57,7 +57,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         private String filePath;
         private int sheetIdx;
 
-        SchoolsDatasourceID(DatasourceSpec datasourceSpec, String filePath, int sheetIdx) {
+        DatasourceId(DatasourceSpec datasourceSpec, String filePath, int sheetIdx) {
             this.datasourceSpec = datasourceSpec;
             this.filePath = filePath;
             this.sheetIdx = sheetIdx;
@@ -66,12 +66,12 @@ public class SchoolsImporter extends AbstractDfEImporter {
 
     public SchoolsImporter(Config config) {
         super(config);
-        datasourceIds = stringsFromEnumeration(SchoolsDatasourceID.class);
+        datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
-        SchoolsDatasourceID dsValue = SchoolsDatasourceID.valueOf(datasourceId);
+        DatasourceId dsValue = DatasourceId.valueOf(datasourceId);
         setupUtils(dsValue);
         return dsValue.datasourceSpec;
 
@@ -80,7 +80,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
     // Schools' workbook
     Workbook workbook;
 
-    protected void setupUtils(SchoolsDatasourceID id) throws Exception {
+    protected void setupUtils(DatasourceId id) throws Exception {
         ExcelUtils excelUtils = new ExcelUtils();
         workbook = excelUtils.getWorkbook(downloadUtils.fetchInputStream(new URL(id.filePath), getProvider().getLabel(), ".xlsx"));
     }
@@ -96,7 +96,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         // Keep track of the seen outcudes so we don't calculate the coordinate every time
         Map<String, Coordinate> seenCoordinates = new HashMap<>();
 
-        Iterator<Row> rowIterator = workbook.getSheetAt(SchoolsDatasourceID.schools.sheetIdx).rowIterator();
+        Iterator<Row> rowIterator = workbook.getSheetAt(DatasourceId.schools.sheetIdx).rowIterator();
         DataFormatter dataFormatter = new DataFormatter();
         Row header = rowIterator.next();
         while (rowIterator.hasNext()) {
@@ -153,10 +153,10 @@ public class SchoolsImporter extends AbstractDfEImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceID) {
+    public List<Attribute> getFixedValueAttributes(String datasourceID) {
         List<Attribute> attributes = new ArrayList<>();
 
-        Row attributeHeader = workbook.getSheetAt(SchoolsDatasourceID.schools.sheetIdx).rowIterator().next();
+        Row attributeHeader = workbook.getSheetAt(DatasourceId.schools.sheetIdx).rowIterator().next();
         IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
                             String name = attributeHeader.getCell(idx).getStringCellValue();
@@ -168,7 +168,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceID) {
+    public List<SubjectType> getSubjectTypes(String datasourceID) {
         return Arrays.asList(new SubjectType(getProvider(), "dfeSchools", "DfE schools UK"));
     }
 }

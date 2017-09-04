@@ -56,7 +56,7 @@ public class GeneralCSVImporter extends AbstractImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String dataSourceID) {
+    public List<SubjectType> getSubjectTypes(String dataSourceID) {
         if ("yes".equalsIgnoreCase(config.getExistingSubject())) {
             return Collections.emptyList();
         }
@@ -64,7 +64,7 @@ public class GeneralCSVImporter extends AbstractImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceFixedValueAttributes(String datasourceID) {
+    public List<Attribute> getFixedValueAttributes(String datasourceID) {
         List<Attribute> attributes = new ArrayList<>();
 
         CSVRecord attributeHeader = (CSVRecord) csvRecords.get(0);

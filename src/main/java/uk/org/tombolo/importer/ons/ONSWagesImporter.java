@@ -179,7 +179,7 @@ public class ONSWagesImporter extends AbstractONSImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
 
         for (AttributePrefix attributePrefix : AttributePrefix.values()){

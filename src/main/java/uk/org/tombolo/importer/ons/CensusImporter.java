@@ -43,7 +43,7 @@ public class CensusImporter extends AbstractONSImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceIdString) throws Exception {
+    public List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
         String headerRowUrl = getDataUrl(datasourceIdString)+"&recordlimit=0";
         File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
         CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());

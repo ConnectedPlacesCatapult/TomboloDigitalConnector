@@ -134,12 +134,12 @@ public class TfLStationsImporter extends TfLImporter {
 	}
 
 	@Override
-	public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+	public List<SubjectType> getSubjectTypes(String datasourceId) {
 		return Collections.singletonList(new SubjectType(getProvider(), SubjectTypeName.TfLStation.name(), "Transport for London Station"));
 	}
 
 	@Override
-	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+	public List<Attribute> getTimedValueAttributes(String datasourceId) {
 		List<Attribute> attributes = new ArrayList<Attribute>();
 		attributes.add(new Attribute(getProvider(), AttributeName.ServingLineCount.name(), "Serving Lines", "The number of lines serving a station", Attribute.DataType.numeric));
 		return attributes;

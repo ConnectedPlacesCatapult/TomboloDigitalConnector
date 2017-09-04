@@ -86,7 +86,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         return Collections.singletonList(
                 new Attribute(getProvider(), AttributeId.claimantCount.name(), "Claimant Count", "Number of claimants", Attribute.DataType.numeric));
     }

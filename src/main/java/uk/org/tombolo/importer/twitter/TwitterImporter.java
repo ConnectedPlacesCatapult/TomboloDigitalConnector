@@ -247,13 +247,13 @@ public class TwitterImporter extends AbstractImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String dataSourceID) {
+    public List<SubjectType> getSubjectTypes(String dataSourceID) {
         return Arrays.asList(new SubjectType(getProvider(), "Tweet", "Tweet from Twitter"));
 
     }
 
     @Override
-    public List<Attribute> getDatasourceFixedValueAttributes(String dataSourceID) {
+    public List<Attribute> getFixedValueAttributes(String dataSourceID) {
         List<Attribute> attributes = new ArrayList<>();
         map = new HashMap<>();
 

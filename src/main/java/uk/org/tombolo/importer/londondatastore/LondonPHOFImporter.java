@@ -119,7 +119,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceID) throws Exception {
+    public List<Attribute> getTimedValueAttributes(String datasourceID) throws Exception {
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, CellType.STRING);
 
         if (null == getWorkbook()) {

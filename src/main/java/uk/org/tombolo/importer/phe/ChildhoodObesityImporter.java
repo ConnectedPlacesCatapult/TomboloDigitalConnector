@@ -120,7 +120,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         // Obesity at reception
         attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberMeasured.name(), "Number Measured at Reception",null, Attribute.DataType.numeric));

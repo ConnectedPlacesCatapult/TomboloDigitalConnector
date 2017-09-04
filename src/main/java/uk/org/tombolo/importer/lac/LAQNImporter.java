@@ -133,7 +133,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceID) {
+    public List<SubjectType> getSubjectTypes(String datasourceID) {
         return Collections.singletonList(new SubjectType(getProvider(), LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC));
     }
 

@@ -60,7 +60,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
         List<Attribute> attributes = new ArrayList<>();
         Arrays.stream(AttributeId.values()).map(attributeId -> getAttribute(attributeId)).forEach(attributes::add);
 

@@ -73,13 +73,22 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
         private DatasourceSpec datasourceSpec;
         private String dataFile;
+        private Workbook workbook;
+
         DatasourceId(DatasourceSpec datasourceSpec, String dataFile) {
             this.datasourceSpec = datasourceSpec;
             this.dataFile = dataFile;
+            this.workbook = null;
+        }
+
+        private Workbook getWorkbook() {
+            return workbook;
+        }
+
+        private void setWorkbook(Workbook workbook) {
+            this.workbook = workbook;
         }
     }
-
-    private Workbook workbook;
 
     ExcelUtils excelUtils = new ExcelUtils();
 
@@ -95,11 +104,13 @@ public class AccessibilityImporter extends AbstractDFTImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
-        workbook = excelUtils.getWorkbook(
-                downloadUtils.fetchInputStream(new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX));
-        Sheet metadataSheet = workbook.getSheet("Metadata");
+        if (datasourceIdValue.getWorkbook() == null) {
+            datasourceIdValue.setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchInputStream(
+                    new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
+        }
+        Sheet metadataSheet = datasourceIdValue.getWorkbook().getSheet("Metadata");
 
         List<Attribute> attributes = new ArrayList<>();
         int rowId = 12;
@@ -125,10 +136,10 @@ public class AccessibilityImporter extends AbstractDFTImporter {
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
-
+        DatasourceId datasourceIdValue = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
         // Loop over years
-        for (int sheetId = 0; sheetId < workbook.getNumberOfSheets(); sheetId++){
-            Sheet sheet = workbook.getSheetAt(sheetId);
+        for (int sheetId = 0; sheetId < datasourceIdValue.getWorkbook().getNumberOfSheets(); sheetId++){
+            Sheet sheet = datasourceIdValue.getWorkbook().getSheetAt(sheetId);
 
             int year = -1;
             try {

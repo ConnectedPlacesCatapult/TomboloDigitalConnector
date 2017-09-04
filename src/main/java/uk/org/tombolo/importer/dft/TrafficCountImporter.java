@@ -301,7 +301,7 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 	}
 
 	@Override
-	public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+	public List<SubjectType> getSubjectTypes(String datasourceId) {
 		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(getProvider().getLabel(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL);
 		if (subjectType == null) {
 			return Collections.singletonList(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
@@ -418,16 +418,9 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 		throw new ConfigurationException("Unknown Geography Scope: " + geographyLabel);
 	}
 
-	//TODO check with borkur if these should be splitted in fixed and timed or renamed
 	@Override
-	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId){
+	public List<Attribute> getTimedValueAttributes(String datasourceId){
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		// Add fixed attributes
-		for(FixedAttribute fixedAttribute : FixedAttribute.values()){
-			fixedAttribute.attribute.setProvider(getProvider());
-			attributes.add(fixedAttribute.attribute);
-		}
-		// Add timed value attributes
 		DatasourceId id = DatasourceId.valueOf(datasourceId);
 		switch (id){
 			case trafficCounts:
@@ -442,6 +435,17 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 					attributes.add(volumeAttribute.attribute);
 				}
 				break;
+		}
+
+		return attributes;
+	}
+
+	@Override
+	public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
+		List<Attribute> attributes = new ArrayList<Attribute>();
+		for (FixedAttribute fixedAttribute : FixedAttribute.values()) {
+			fixedAttribute.attribute.setProvider(getProvider());
+			attributes.add(fixedAttribute.attribute);
 		}
 
 		return attributes;

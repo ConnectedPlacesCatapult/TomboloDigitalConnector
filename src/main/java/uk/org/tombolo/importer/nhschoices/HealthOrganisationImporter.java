@@ -48,7 +48,7 @@ public final class HealthOrganisationImporter extends AbstractImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
         DatasourceSpec datasourceSpec = DatasourceId.valueOf(datasourceId).datasourceSpec;
         return Collections.singletonList(
                 new SubjectType(getProvider(), datasourceSpec.getId(), datasourceSpec.getDescription()));
@@ -57,12 +57,11 @@ public final class HealthOrganisationImporter extends AbstractImporter {
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
-        switch (datasourceIdObject) {
-            case gpSurgeries:
-                log.warn("GP Surgeries dataset known to have erroneous data, for an example see 'Dr Rushton & Partne.478378295898438' or watch import logs");
-            default:
-                return datasourceIdObject.datasourceSpec;
+        if (datasourceIdObject.equals(DatasourceId.gpSurgeries)) {
+            log.warn("GP Surgeries dataset known to have erroneous data, for an example see 'Dr Rushton & Partne.478378295898438' or watch import logs");
         }
+
+        return datasourceIdObject.datasourceSpec;
     }
 
     @Override

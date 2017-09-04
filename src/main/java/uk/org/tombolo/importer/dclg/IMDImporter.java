@@ -59,7 +59,7 @@ public class IMDImporter extends AbstractDCLGImporter {
     }
 
     @Override
-    public List<SubjectType> getDatasourceSubjectTypes(String datasourceId) {
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
         return Collections.singletonList(OaImporter.getSubjectType(OaImporter.OaType.lsoa));
     }
 
@@ -97,7 +97,7 @@ public class IMDImporter extends AbstractDCLGImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId){
+    public List<Attribute> getTimedValueAttributes(String datasourceId){
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute(getProvider(),"imd.score", "IMD Score", "Index of Multiple Deprivation (IMD) Score", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.rank", "IMD Rank", "Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)", Attribute.DataType.numeric));

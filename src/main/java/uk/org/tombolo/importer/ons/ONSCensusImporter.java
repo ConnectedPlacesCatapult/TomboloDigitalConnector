@@ -236,7 +236,7 @@ public class ONSCensusImporter extends AbstractONSImporter {
 	}
 
 	@Override
-	public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception {
+	public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
 		List<Attribute> attributes = new ArrayList<>();
 		// Get dataset dimensions
 		JSONArray dimensions = (JSONArray)((JSONObject)datasetDetail.get("dimensions")).get("dimension");

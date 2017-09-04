@@ -65,7 +65,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         Arrays.stream(AttributeId.values()).map(attributeId -> getAttribute(attributeId)).forEach(attributes::add);
         return attributes;

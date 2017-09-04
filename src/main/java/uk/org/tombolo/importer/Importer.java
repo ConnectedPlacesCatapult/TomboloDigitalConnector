@@ -97,7 +97,7 @@ public interface Importer {
 	int getFixedValueBufferSize();
 	int getSubjectBufferSize();
 
-	List<SubjectType> getDatasourceSubjectTypes(String datasourceId);
-	List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) throws Exception;
-	List<Attribute> getDatasourceFixedValueAttributes(String datasourceId) throws Exception;
+	List<SubjectType> getSubjectTypes(String datasourceId);
+	List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception;
+	List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception;
 }

@@ -90,7 +90,7 @@ public class AdultObesityImporter extends AbstractPheImporter {
     }
 
     @Override
-    public List<Attribute> getDatasourceTimedValueAttributes(String datasourceId) {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionUnderweight.name(),
                 "Fraction Underweight", "BMI less than 18.5kg/m2",
