@@ -3,8 +3,8 @@ package uk.org.tombolo.importer.osm;
 import de.topobyte.osm4j.pbf.seq.PbfReader;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.*;
+import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
 
 import java.io.File;
 import java.net.URL;
@@ -13,13 +13,13 @@ import java.util.*;
 /**
  * Open street map importer
  */
-public abstract class OSMImporter extends AbstractImporter implements Importer{
+public abstract class OSMImporter extends AbstractImporter {
 
     protected static final String URL = "http://download.geofabrik.de";
     private static final String DEFAULT_AREA = "europe/great-britain";
 
 
-    protected DataSourceID dataSourceID;
+    protected DatasourceSpec datasourceSpec;
     protected Map<String, List<String>> categories = Collections.emptyMap();
 
     public OSMImporter(Config config) {
@@ -42,18 +42,19 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-        if (datasourceExists(datasourceIdString)) {
-            Datasource datasource = datasourceFromDatasourceId(dataSourceID);
-            datasource.setUrl(dataSourceID.getUrl());
-            datasource.addSubjectType(new SubjectType(getProvider(), "OSMEntity", "Open Street Map Entity"));
-            return datasource;
-        } else {
-            throw new ConfigurationException("Unknown datasourceId: " + datasourceIdString);
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return datasourceSpec;
     }
 
-    protected List<Attribute> getFixedValuesAttributes() throws Exception {
+    @Override
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
+        subjectType = new SubjectType(getProvider(), "OSMEntity", "Open Street Map Entity");
+
+        return Collections.singletonList(subjectType);
+    }
+
+    @Override
+    public List<Attribute> getFixedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         categories.keySet().stream().map(category -> attributeFromTag(category)).forEach(attributes::add);
         return attributes;
@@ -69,15 +70,6 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        List<FixedValue> fixedValues = new ArrayList<>();
-        List<Subject> subjects = new ArrayList<>();
-
-        subjectType = SubjectTypeUtils.getOrCreate(
-                datasource.getUniqueSubjectType().getProvider(),
-                datasource.getUniqueSubjectType().getLabel(),
-                datasource.getUniqueSubjectType().getName()
-        );
-
         if (geographyScope == null || geographyScope.isEmpty())
             geographyScope = Arrays.asList(DEFAULT_AREA);
 
@@ -85,7 +77,7 @@ public abstract class OSMImporter extends AbstractImporter implements Importer{
             File localFile = getDatafile(area);
 
             // Since we cannot know the attributes until import time, we store them now
-            List<Attribute> attributes = getFixedValuesAttributes();
+            List<Attribute> attributes = datasource.getFixedValueAttributes();
             AttributeUtils.save(attributes);
 
             // Create a reader for PBF data and cache it

@@ -1,6 +1,6 @@
 package uk.org.tombolo.importer.utils.extraction;
 
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 public class TimedValueExtractorTest extends AbstractExtractorTest {
 
     Provider provider = TestFactory.DEFAULT_PROVIDER;
-    RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, Cell.CELL_TYPE_STRING);
-    RowCellExtractor valueExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_NUMERIC);
+    RowCellExtractor subjectLabelExtractor = new RowCellExtractor(0, CellType.STRING);
+    RowCellExtractor valueExtractor = new RowCellExtractor(1, CellType.NUMERIC);
 
     TimedValueExtractor extractor;
 

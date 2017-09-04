@@ -9,14 +9,11 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
 import uk.org.tombolo.importer.DownloadUtils;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.JSONReader;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -28,7 +25,7 @@ import java.util.List;
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
  */
-public class CensusImporter extends AbstractONSImporter implements Importer {
+public class CensusImporter extends AbstractONSImporter {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
     private static final LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
     private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
@@ -41,24 +38,20 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-
-        Datasource datasource = datasourceFromDatasourceId(getDataSourceObject(datasourceIdString));
-
-        datasource.addAllTimedValueAttributes(getTimedValueAttributes(datasourceIdString));
-
-        return datasource;
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return getDataSourceSpecObject(datasourceIdString);
     }
 
-    protected List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
         String headerRowUrl = getDataUrl(datasourceIdString)+"&recordlimit=0";
         File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
+        CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
 
         List<Attribute> attributes = new ArrayList<>();
-        CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
         // The header starts with the same name as the label of the dataset
         csvParser.getHeaderMap().keySet().stream().filter(header -> header.contains(":"))
-                .filter(header -> getDataSourceObject(datasourceIdString).getName()
+                .filter(header -> getDataSourceSpecObject(datasourceIdString).getName()
                 .startsWith(header.toLowerCase().substring(0, header.indexOf(":")))).forEach(header -> {
                  String attributeLabel = attributeLabelFromHeader(header);
             attributes.add(new Attribute(getProvider(), attributeLabel, header, header, Attribute.DataType.numeric));
@@ -75,7 +68,7 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
 
     protected String getDataUrl(String datasourceIdString) {
 
-        if ("".equals(RECORD_ID)) getDataSourceObject(datasourceIdString);
+        if ("".equals(RECORD_ID)) getDataSourceSpecObject(datasourceIdString);
 
         return "https://www.nomisweb.co.uk/api/v01/dataset/"
                 + RECORD_ID
@@ -91,14 +84,14 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();
-        for(Attribute attribute : getTimedValueAttributes(datasource.getId())){
+        for(Attribute attribute : datasource.getTimedValueAttributes()){
             attributes.add(AttributeUtils.getByProviderAndLabel(attribute.getProvider(),attribute.getLabel()));
         }
 
         // FIXME: Generalise this beyond LSOA
         SubjectType lsoa = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
         List<TimedValue> timedValueBuffer = new ArrayList<>();
-        String dataUrl = getDataUrl(datasource.getId());
+        String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId());
 
         // FIXME: Use stream instead of file
         InputStream dataStream = downloadUtils.fetchInputStream(
@@ -155,16 +148,16 @@ public class CensusImporter extends AbstractONSImporter implements Importer {
 
     private ArrayList<String> getDataSourceIDs () throws IOException {
         return getSeedData().stream().map(CensusDescription::getDataSetTable)
-                                             .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private DataSourceID getDataSourceObject (String dataSourceId) {
+    private DatasourceSpec getDataSourceSpecObject (String dataSourceId) {
 
         for (CensusDescription description : descriptions) {
             if (description.getDataSetTable().equalsIgnoreCase(dataSourceId)) {
                 RECORD_ID = description.getDataSetID();
-                return new DataSourceID(dataSourceId, description.getDataSetDescription(), description.getDataSetDescription(),
-                    "https://www.nomisweb.co.uk/census/2011/" + dataSourceId, null);
+                return new DatasourceSpec(getClass(), dataSourceId, description.getDataSetDescription(), description.getDataSetDescription(),
+                    "https://www.nomisweb.co.uk/census/2011/" + dataSourceId);
             }
         }
 
@@ -203,5 +196,3 @@ class CensusDescription {
         this.dataSetDescription = dataSetDescription;
     }
 }
-
-

@@ -49,18 +49,18 @@ public class TwitterImporterTest extends AbstractTest {
         List<String> datasources = importer.getDatasourceIds();
 
         assertEquals(1, datasources.size());
-        assertEquals("Twitter", datasources.get(0));
+        assertEquals("twitter", datasources.get(0));
     }
 
     @Test
     public void getAttribute() throws Exception {
-        importer.importDatasource("Twitter", null, null, Arrays.asList(LOCAL_DATA_SEARCH_API));
+        importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_SEARCH_API));
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute.getProvider().getLabel());
         assertEquals("user", attribute.getLabel());
         assertEquals("user", attribute.getName());
 
-        importer.importDatasource("Twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
+        importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
         Attribute attribute1 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute1.getProvider().getLabel());
         assertEquals("user", attribute1.getLabel());
@@ -69,7 +69,7 @@ public class TwitterImporterTest extends AbstractTest {
 
     @Test
     public void importDatasorce() throws Exception {
-        importer.importDatasource("Twitter", null, null, Arrays.asList(LOCAL_DATA_SEARCH_API));
+        importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_SEARCH_API));
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.twitter","Tweet"),"250075927172759552");
         assertEquals("Sean_Cummings250075927172759552", subject.getName());
@@ -85,7 +85,7 @@ public class TwitterImporterTest extends AbstractTest {
             testFixedValue(subject, attributes.get(i), values.get(i));
         }
 
-        importer.importDatasource("Twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
+        importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
 
         subject = SubjectUtils.getSubjectByTypeAndLabel(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.twitter","Tweet"),"808282128278372352");
         assertEquals("Natural_Kitchen808282128278372352", subject.getName());

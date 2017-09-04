@@ -6,7 +6,6 @@ import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.BufferedReader;
@@ -14,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,11 +21,25 @@ import java.util.List;
  * https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015
  * https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv
  */
-public class IMDImporter extends AbstractDCLGImporter implements Importer {
+public class IMDImporter extends AbstractDCLGImporter {
 
-    private enum DatasourceId {imd};
-    private enum GeographyLabel {england};
-    private enum TemporalLabel {y2015};
+    private enum DatasourceId {
+        imd(new DatasourceSpec(
+                IMDImporter.class,
+                "imd",
+                "English indices of deprivation 2015",
+                "Statistics on relative deprivation in small areas in England.",
+                "https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015")
+        );
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
+
+    private enum GeographyLabel {england}
+    private enum TemporalLabel {y2015}
 
     private static final String IMD_DATA_CSV
             = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
@@ -39,31 +53,21 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceId datasourceLabel = DatasourceId.valueOf(datasourceId);
-        switch(datasourceLabel){
-            case imd:
-                Datasource datasource = new Datasource(
-                        getClass(),
-                        datasourceLabel.name(),
-                        getProvider(),
-                        "English indices of deprivation 2015",
-                        "Statistics on relative deprivation in small areas in England.");
-                datasource.setUrl("https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015");
-                datasource.addAllTimedValueAttributes(getAttributes());
-                return datasource;
-            default:
-                return null;
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        return DatasourceId.valueOf(datasourceId).datasourceSpec;
+
+    }
+
+    @Override
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
+        return Collections.singletonList(OaImporter.getSubjectType(OaImporter.OaType.lsoa));
     }
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        SubjectType subjectTypeLsoa = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
-
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
-        String line = null;
+        String line;
         BufferedReader br = new BufferedReader(new InputStreamReader(
                 downloadUtils.fetchInputStream(new URL(IMD_DATA_CSV), getProvider().getLabel(), ".csv")));
         while ((line = br.readLine())!=null){
@@ -74,13 +78,13 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
 
             if (lsoaLabel.startsWith("LSOA"))
                 continue;
-            Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(subjectTypeLsoa, lsoaLabel);
+            Subject lsoa = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), lsoaLabel);
 
             if (lsoa == null)
                 continue;
 
             List<TimedValue> timedValueBuffer = new ArrayList<>();
-            for (int i = 0; i<datasource.getTimedValueAttributes().size(); i++){
+            for (int i = 0; i < datasource.getTimedValueAttributes().size(); i++){
                 TimedValue timedValue = new TimedValue(
                         lsoa,
                         datasource.getTimedValueAttributes().get(i),
@@ -92,7 +96,8 @@ public class IMDImporter extends AbstractDCLGImporter implements Importer {
         }
     }
 
-    private List<Attribute> getAttributes(){
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId){
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute(getProvider(),"imd.score", "IMD Score", "Index of Multiple Deprivation (IMD) Score", Attribute.DataType.numeric));
         attributes.add(new Attribute(getProvider(),"imd.rank", "IMD Rank", "Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)", Attribute.DataType.numeric));

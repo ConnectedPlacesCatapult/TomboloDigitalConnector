@@ -103,7 +103,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("datasourceGeneral.csv.provider");
-        assertEquals(LOCATION_FILE, datasource.getRemoteDatafile());
+        assertEquals("datasourceGeneral.csv.provider", datasource.getDatasourceSpec().getId());
     }
 
     @Test

@@ -33,7 +33,7 @@ import java.util.zip.GZIPInputStream;
  * This importer considers that the user has already downloaded the data.
  *
  */
-public class TwitterImporter extends GeneralImporter {
+public class TwitterImporter extends AbstractImporter {
 
     private static final int SUBJECT_BUFFER_SIZE = 100000;
 
@@ -41,7 +41,20 @@ public class TwitterImporter extends GeneralImporter {
 
     private static GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
-    private DataSourceID dataSourceID;
+    private enum DatasourceId {
+        twitter(new DatasourceSpec(
+                TwitterImporter.class,
+                "twitter",
+                "",
+                "Tweets from Twitter.com",
+                "")
+        );
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
 
     private Map<AttributeEnum, Attribute> map;
     private static Status status;
@@ -147,16 +160,7 @@ public class TwitterImporter extends GeneralImporter {
 
     public TwitterImporter(Config config) {
         super(config);
-
-        dataSourceID = new DataSourceID(
-                "Twitter",
-                "",
-                "Tweets from Twitter.com",
-                "",
-                ""
-        );
-
-        datasourceIds = Arrays.asList(dataSourceID.getLabel());
+        datasourceIds = Arrays.asList(DatasourceId.twitter.name());
     }
 
     @Override
@@ -243,18 +247,13 @@ public class TwitterImporter extends GeneralImporter {
     }
 
     @Override
-    public Datasource getDatasource(Class<? extends Importer> importerClass, DataSourceID dataSourceID) throws Exception {
-        return super.getDatasource(importerClass, dataSourceID);
-    }
-
-    @Override
-    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID) {
+    public List<SubjectType> getSubjectTypes(String dataSourceID) {
         return Arrays.asList(new SubjectType(getProvider(), "Tweet", "Tweet from Twitter"));
 
     }
 
     @Override
-    protected List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID) {
+    public List<Attribute> getFixedValueAttributes(String dataSourceID) {
         List<Attribute> attributes = new ArrayList<>();
         map = new HashMap<>();
 
@@ -269,20 +268,12 @@ public class TwitterImporter extends GeneralImporter {
     }
 
     @Override
-    protected void setupUtils(Datasource datasource) throws Exception {
-    }
-
-    @Override
     public Provider getProvider() {
         return new Provider("com.twitter", "Twitter");
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-        if (dataSourceID.getLabel().equals(datasourceId)) {
-            return getDatasource(getClass(), dataSourceID);
-        } else {
-            throw new ConfigurationException("Unknown datasourceID: " + datasourceId);
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        return DatasourceId.valueOf(datasourceId).datasourceSpec;
     }
 }

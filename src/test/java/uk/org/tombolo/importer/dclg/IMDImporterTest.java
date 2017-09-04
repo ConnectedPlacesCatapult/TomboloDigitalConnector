@@ -47,8 +47,8 @@ public class IMDImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = imdImporter.getDatasource("imd");
 
-        assertEquals("imd", datasource.getId());
-        assertEquals("uk.gov.dclg", datasource.getProvider().getLabel());
+        assertEquals("imd", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.dclg", imdImporter.getProvider().getLabel());
         assertEquals(53, datasource.getTimedValueAttributes().size());
     }
 

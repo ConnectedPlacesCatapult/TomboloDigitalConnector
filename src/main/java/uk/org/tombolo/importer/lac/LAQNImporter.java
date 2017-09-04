@@ -32,7 +32,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
             "@SiteName", "@SiteType", "@Latitude", "@Longitude", "@LatitudeWGS84", "@LongitudeWGS84",
             "@SiteLink", "@DataOwner", "@DataManager"));
     private String dataSourceURL = "http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/";
-    private static DataSourceID dataSourceID;
+    private static DatasourceSpec datasourceSpec;
     private JSONReader reader;
     private int attributeSize;
     private ArrayList<LinkedHashMap<String, List<String>>> flatJson;
@@ -40,10 +40,9 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     public LAQNImporter(Config config) throws Exception {
         super(config);
 
-        dataSourceID = new DataSourceID(LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC,
-                dataSourceURL, "");
-        datasourceIds = Arrays.asList(dataSourceID.getLabel());
-
+        datasourceSpec = new DatasourceSpec(getClass(), LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_LABEL,
+                LAQN_SUBJECT_TYPE_DESC, dataSourceURL);
+        datasourceIds = Arrays.asList(datasourceSpec.getId());
     }
 
     public int getAttributeSize() {
@@ -60,18 +59,12 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-
-        Datasource datasource = new Datasource(getClass(), LAQN_SUBJECT_TYPE_LABEL, getProvider(),
-                LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC);
-        datasource.addAllSubjectTypes(Arrays.asList(getSubjectType()));
-        return datasource;
-
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        return datasourceSpec;
     }
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-
 
         flatJson = readData(importerURL(
                 null != geographyScope && !geographyScope.isEmpty() ? geographyScope.get(0) : "",
@@ -84,7 +77,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
 
 
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(
-                datasource.getUniqueSubjectType().getProvider(),
+                getProvider(),
                 datasource.getUniqueSubjectType().getLabel(),
                 datasource.getUniqueSubjectType().getName()
         );
@@ -139,8 +132,9 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         return reader.getData();
     }
 
-    private SubjectType getSubjectType() {
-        return new SubjectType(getProvider(), LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC);
+    @Override
+    public List<SubjectType> getSubjectTypes(String datasourceID) {
+        return Collections.singletonList(new SubjectType(getProvider(), LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_DESC));
     }
 
     private ArrayList<Subject> getSubjects(SubjectType subjectType) {

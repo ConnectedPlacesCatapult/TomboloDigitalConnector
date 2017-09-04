@@ -22,8 +22,8 @@ dependencies {
 	compile group:'org.geotools',			name: 'gt-geojsondatastore',	version: '15.0'
 
     // POI Excel file manipulation
-	compile group: 'org.apache.poi',		name: 'poi',		version: '3.15'
-	compile group: 'org.apache.poi',		name: 'poi-ooxml',	version: '3.15'
+	compile group: 'org.apache.poi',		name: 'poi',		version: '3.16'
+	compile group: 'org.apache.poi',		name: 'poi-ooxml',	version: '3.16'
 	
 	// JSON handling
 	compile group: 'javax.json', 			name: 'javax.json-api',			version: '1.1'

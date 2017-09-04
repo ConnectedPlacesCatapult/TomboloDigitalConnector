@@ -4,9 +4,8 @@ import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.Importer;
 
-public abstract class TfLImporter extends AbstractImporter implements Importer {
+public abstract class TfLImporter extends AbstractImporter {
 
 	protected static final String PROP_API_APP_ID = "apiIdTfl";
 	protected static final String PROP_API_APP_KEY = "apiKeyTfl";

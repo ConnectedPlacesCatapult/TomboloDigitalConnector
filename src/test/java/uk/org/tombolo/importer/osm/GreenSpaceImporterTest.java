@@ -45,7 +45,7 @@ public class GreenSpaceImporterTest extends AbstractTest {
 
     @Test
     public void getFixedValueAttributes() throws Exception {
-        List<Attribute> attributes = importer.getFixedValuesAttributes();
+        List<Attribute> attributes = importer.getFixedValueAttributes("OSMGreenSpace");
         assertEquals(3, attributes.size());
     }
 

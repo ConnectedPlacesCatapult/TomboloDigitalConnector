@@ -3,13 +3,8 @@ package uk.org.tombolo.importer.londondatastore;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
@@ -17,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,10 +27,23 @@ import java.util.List;
  *
  * Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
  */
-public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter implements Importer{
-    private enum DatasourceId {londonBoroughProfiles};
+public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter {
+    private enum DatasourceId {
+        londonBoroughProfiles(new DatasourceSpec(
+                LondonBoroughProfileImporter.class,
+                "londonBoroughProfiles",
+                "London Borough Profiles",
+                "Various London borough statistics",
+                "http://data.london.gov.uk/dataset/london-borough-profiles")
+        );
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
     private enum AttributeId {populationDensity, householdIncome, medianHousePrice, fractionGreenspace, carbonEmission,
-        carsPerHousehold};
+        carsPerHousehold}
 
     private static final String DATAFILE_SUFFIX = ".csv";
     private static final String DATAFILE
@@ -46,25 +55,16 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case londonBoroughProfiles:
-                Datasource datasource = new Datasource(
-                        getClass(),
-                        datasourceId.name(),
-                        getProvider(),
-                        "London Borough Profiles",
-                        "Various London borough statistics");
-                datasource.setUrl("http://data.london.gov.uk/dataset/london-borough-profiles");
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
+    }
 
-                for (AttributeId attributeId : AttributeId.values()) {
-                    datasource.addTimedValueAttribute(getAttribute(attributeId));
-                }
-                return datasource;
-            default:
-                throw new ConfigurationException("Unknown datasource " + datasourceIdString);
-        }
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+        List<Attribute> attributes = new ArrayList<>();
+        Arrays.stream(AttributeId.values()).map(attributeId -> getAttribute(attributeId)).forEach(attributes::add);
+
+        return attributes;
     }
 
     @Override

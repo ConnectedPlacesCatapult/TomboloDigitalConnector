@@ -16,7 +16,6 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
-import uk.org.tombolo.importer.Importer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,9 +41,9 @@ import java.util.*;
  * http://data.ons.gov.uk/ons/api/data/dataset/OT102EW/set.json?context=Census&apikey=onsApiKey&geog=2011STATH&startobs=1&noobs=10
  * 
  */
-public class ONSCensusImporter extends AbstractONSImporter implements Importer{
+public class ONSCensusImporter extends AbstractONSImporter {
 	private static final String ONS_API_URL = "http://data.ons.gov.uk/ons/api/data/";
-	
+	private static final String DATASET_URL = "http://www.ons.gov.uk/ons/datasets-and-tables/index.html"; // Dataset location (description)
 	private static final String ONS_LANGUAGE_ATTRIBUTE_KEY = "@xml.lang";
 	private static final String ONS_LANGUAGE_ATTRIBUTE_VALUE_EN = "en";
 	private static final String ONS_ATTRIBUTE_VALUE_KEY = "$";
@@ -56,6 +55,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	private static final int TIMED_VALUE_BUFFER_SIZE = 100000;
 
 	private Logger log = LoggerFactory.getLogger(ONSCensusImporter.class);
+
+	// Object from json file got from the URL
+	JSONObject datasetDetail;
 
 	public ONSCensusImporter(Config config) throws IOException, ParseException, ConfigurationException {
 		super(config);
@@ -112,7 +114,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws IOException, ParseException{
 
 		// Store data in database
-		File localFile = downloadUtils.fetchFile(new URL(datasource.getRemoteDatafile()), getProvider().getLabel(), ".zip");
+		File localFile = downloadUtils.fetchFile(new URL(getDataFile()), getProvider().getLabel(), ".zip");
 		ZipFile zipFile = new ZipFile(localFile);
 		ZipArchiveEntry zipEntry = null;
 		Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
@@ -144,6 +146,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						fields.add(iterator.next());
 					}
 
+					int size = datasource.getTimedValueAttributes().size();
+
 					if (lineCounter < 8) {
 						// Nothing interesting happens in these files before line 8
 						continue;
@@ -154,7 +158,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 						}
 					}else if (lineCounter == 9){
 						// Name of the sub theme of the attribute
-						for (int i = 2; i<datasource.getTimedValueAttributes().size()+2; i++){
+						for (int i = 2; i < size + 2; i++){
 							String name = attributeBaseNames.get(i);
 							if (!attributeBaseNames.get(i).equals(fields.get(i)))
 								name += " - " + fields.get(i);
@@ -164,15 +168,15 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 
 						// Store attributes in database
 						AttributeUtils.save(datasource.getTimedValueAttributes());
-						log.info("Saved {} attributes", datasource.getTimedValueAttributes().size());
+						log.info("Saved {} attributes", size);
 					}
 					
-					if (fields.size() == 2 + datasource.getTimedValueAttributes().size()){
+					if (fields.size() == 2 + size){
 						// We have an actual data line
 						try{
 							String areaId = fields.get(0);
 							List<Double> values = new ArrayList<Double>();
-							for (int i = 2; i<2+datasource.getTimedValueAttributes().size(); i++){
+							for (int i = 2; i < 2+ size; i++){
 								values.add(Double.parseDouble(fields.get(i)));
 							}
 							Subject subject = null;
@@ -183,7 +187,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 							}
 
 							if (subject != null
-									&& values.size() == datasource.getTimedValueAttributes().size()){
+									&& values.size() == size){
 								for (int i=0; i<values.size(); i++){
 									TimedValue tv 
 										= new TimedValue(subject, datasource.getTimedValueAttributes().get(i), CENSUS_2011_DATE_TIME, values.get(i));
@@ -207,8 +211,9 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		}
 		zipFile.close();		
 	}
-	
-	public Datasource getDatasource(String datasourceId) throws IOException, ParseException, ConfigurationException {
+
+	@Override
+	public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
 		verifyConfiguration();
 		// Set-up the basic url and the parameters
 		String baseUrl = ONS_API_URL + "datasetdetails/" + datasourceId + ".json?";
@@ -221,14 +226,18 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 		JSONObject rootObject = downloadUtils.fetchJSON(url, getProvider().getLabel());
 		
 		JSONObject ons = (JSONObject)rootObject.get("ons");
-		JSONObject datasetDetail = (JSONObject)ons.get("datasetDetail");
+		datasetDetail = (JSONObject)ons.get("datasetDetail");
 		
 		// Get dataset English name
 		JSONArray names = (JSONArray)((JSONObject)datasetDetail.get("names")).get("name");
 		String datasourceDescription = getEnglishValue(names);
-		
-		Datasource datasource = new Datasource(getClass(),datasourceId,getProvider(),datasourceId,datasourceDescription);
-		
+
+		return new DatasourceSpec(getClass(), datasourceId, datasourceId, datasourceDescription, DATASET_URL);
+	}
+
+	@Override
+	public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+		List<Attribute> attributes = new ArrayList<>();
 		// Get dataset dimensions
 		JSONArray dimensions = (JSONArray)((JSONObject)datasetDetail.get("dimensions")).get("dimension");
 		for (int dimIndex = 0; dimIndex<dimensions.size(); dimIndex++){
@@ -247,7 +256,7 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				if (numberOfDimensionItems == 1){
 					// The attribute is one-dimensional
 					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription, attributeDescription, dataType);
-					datasource.addTimedValueAttribute(attribute);
+					attributes.add(attribute);
 				}else{
 					// The attribute is multi-dimensional
 					// We add an attribute for each dimension
@@ -255,15 +264,18 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 					for (int i=0; i<numberOfDimensionItems; i++){
 						String multiAttributeLabel = attributeLabel+"_"+(i+1);
 						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.", "T.b.a.", dataType);
-						datasource.addTimedValueAttribute(attribute);
+						attributes.add(attribute);
 					}
 				}
 			}
 		}
-		
-		// Get datafile
+
+		return attributes;
+	}
+
+	public   String getDataFile() {
 		JSONArray documents = (JSONArray)((JSONObject)datasetDetail.get("documents")).get("document");
-		String remoteDatafile = null;
+		String remoteDatafile = "";
 		for (int docIndex = 0; docIndex<documents.size(); docIndex++){
 			JSONObject document = (JSONObject)documents.get(docIndex);
 			if (document.get("@type").equals("CSV")){
@@ -274,12 +286,8 @@ public class ONSCensusImporter extends AbstractONSImporter implements Importer{
 				}
 			}
 		}
-		String localDatafile = remoteDatafile.substring(ONS_DATASET_BASE_URL.length());
-		
-		datasource.setUrl("http://www.ons.gov.uk/ons/datasets-and-tables/index.html"); // Dataset location (description)
-		datasource.setRemoteDatafile(remoteDatafile);	// Remote file
 
-		return datasource;
+		return remoteDatafile;
 	}
 	
 	private static String getEnglishValue(JSONArray array){

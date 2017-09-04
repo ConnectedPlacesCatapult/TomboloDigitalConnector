@@ -32,7 +32,7 @@ public class CatalogueExportRunner extends AbstractRunner {
             try {
                 dataSource.writeJSON(writer);
             } catch (IOException e) {
-                log.warn(String.format("Could not generate JSON for datasource %s", String.valueOf(dataSource.getId())), e);
+                log.warn(String.format("Could not generate JSON for datasource %s", dataSource.getDatasourceSpec().getId()), e);
             }
         });
 
