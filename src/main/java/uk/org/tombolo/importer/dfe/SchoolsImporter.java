@@ -160,8 +160,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
                             String name = AttributeUtils.substringToDBLength(attributeHeader.getCell(idx).getStringCellValue());
-                            attributes.add(new Attribute(getProvider(), name,
-                                    name));
+                            attributes.add(new Attribute(getProvider(), name, name));
                         }
                 );
         return attributes;
