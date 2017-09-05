@@ -63,7 +63,7 @@ public class CensusImporter extends AbstractONSImporter {
         // FIXME: Make sure that this generalises over all datasets
         int start = header.indexOf(":");
         int end = header.indexOf(";");
-        return header.substring(0, Math.min(63, end));
+        return AttributeUtils.substringToDBLength(header.substring(0, end));
     }
 
     protected String getDataUrl(String datasourceIdString) {

@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -158,7 +159,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         Row attributeHeader = workbook.getSheetAt(DatasourceId.schools.sheetIdx).rowIterator().next();
         IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
-                            String name = attributeHeader.getCell(idx).getStringCellValue();
+                            String name = AttributeUtils.substringToDBLength(attributeHeader.getCell(idx).getStringCellValue());
                             attributes.add(new Attribute(getProvider(), name,
                                     name));
                         }

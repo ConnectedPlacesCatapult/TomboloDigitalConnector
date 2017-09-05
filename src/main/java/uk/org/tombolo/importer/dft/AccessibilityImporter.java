@@ -119,7 +119,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
             Row row = metadataSheet.getRow(rowId);
             if (row == null || row.getCell(0) == null)
                 break;
-            String name = row.getCell(1).getStringCellValue();
+            String name = AttributeUtils.substringToDBLength(row.getCell(1).getStringCellValue());
             String description = row.getCell(2).getStringCellValue();
             String parameterValue = row.getCell(3).getStringCellValue();
 

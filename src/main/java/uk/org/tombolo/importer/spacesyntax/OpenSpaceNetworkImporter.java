@@ -5,6 +5,7 @@ import org.opengis.feature.type.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
@@ -73,7 +74,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
         while (typeIterator.hasNext()) {
             AttributeType type = typeIterator.next();
-            String columnName = type.getName().toString();
+            String columnName = AttributeUtils.substringToDBLength(type.getName().toString());
             if (NON_ATTRIBUTE_COLUMNS.contains(columnName)) { continue; }
             fixedValueAttributes.add(new Attribute(
                     getProvider(),
