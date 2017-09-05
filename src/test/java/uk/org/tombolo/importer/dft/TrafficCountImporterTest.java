@@ -29,10 +29,10 @@ import static org.junit.Assert.assertEquals;
  *
  *
  * Remote: http://api.dft.gov.uk/v3/trafficcounts/export/region/London.csv
- * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YzL3RyYWZmaWNjb3VudHMvZXhwb3J0L3JlZ2lvbi9Mb25kb24uY3N2.csv
+ * Local: d16f455b-e573-3733-8613-dcab739c7a96.csv
  *
  * Remote: http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
- * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YzL3RyYWZmaWNjb3VudHMvZXhwb3J0L2RhdGEvdHJhZmZpYy9sYS9BYmVyZGVlbitDaXR5LmNzdg==.csv
+ * Local: 6d8eed14-92dc-3fe5-b7f5-305d2e2d1229.csv
  */
 public class TrafficCountImporterTest extends AbstractTest {
 

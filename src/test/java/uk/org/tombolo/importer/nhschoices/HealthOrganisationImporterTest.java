@@ -17,13 +17,13 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBncF9zdXJnZXJpZXMlM0I=.json
+ * Local: e16e36c1-2891-34f4-988f-bee1c0d8da14.json
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBjbGluaWNzJTNC.json
+ * Local: 8ecfea3c-ef7a-3346-9e1c-5f76dd1ef705.json
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBob3NwaXRhbHMlM0I=
+ * Local: 686ad07b-4a68-3447-ab8f-c269243ec28a
  */
 public class HealthOrganisationImporterTest extends AbstractTest {
     private HealthOrganisationImporter importer;

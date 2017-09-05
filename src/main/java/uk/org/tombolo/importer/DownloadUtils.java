@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DownloadUtils {
@@ -83,10 +80,7 @@ public class DownloadUtils {
 	}
 
 	private File urlToLocalFile (URL url, String prefix, String suffix){
-		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
-		if (urlKey.length() > 250)
-			// The urlKey is too long for creating a file
-			urlKey = DigestUtils.md5Hex(urlKey);
+		String urlKey = UUID.nameUUIDFromBytes(url.toString().getBytes()).toString();
 		return new File(
 				tomboloDataCacheRootDirectory
 						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY
