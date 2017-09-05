@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer.londondatastore;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -8,6 +7,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -97,7 +97,7 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
             timestampExtractor.setRow(row);
             valueExtractor.setRow(row);
 
-            String attributeLabel = nameToLabel(attributeNameExtractor.extract());
+            String attributeLabel = AttributeUtils.nameToLabel(attributeNameExtractor.extract());
             TimedValueExtractor timedValueExtractor = new TimedValueExtractor(
                     getProvider(),
                     subjectType,
@@ -135,20 +135,16 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
             Row row = rowIterator.next();
 
             attributeNameExtractor.setRow(row);
-            String attributeName = attributeNameExtractor.extract();
-            String attributeLabel = nameToLabel(attributeName);
+            String attributeDescription = attributeNameExtractor.extract();
+            String attributeLabel = AttributeUtils.nameToLabel(attributeDescription);
 
             if (!attributes.containsKey(attributeLabel))
                 attributes.put(
                         attributeLabel,
-                        new Attribute(getProvider(),attributeLabel, attributeName, attributeName, Attribute.DataType.numeric)
+                        new Attribute(getProvider(),attributeLabel, attributeDescription)
                 );
         }
         workbook.close();
         return new ArrayList<>(attributes.values());
-    }
-
-    private String nameToLabel(String name){
-        return DigestUtils.md5Hex(name);
     }
 }

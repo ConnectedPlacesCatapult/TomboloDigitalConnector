@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -96,62 +98,72 @@ public class IMDImporter extends AbstractDCLGImporter {
         }
     }
 
+    private enum AttributeId {
+        score("Index of Multiple Deprivation (IMD) Score"),
+        rank("Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)"),
+        decile("Index of Multiple Deprivation (IMD) Decile (where 1 is most deprived 10% of LSOAs)"),
+        income_score("Income Score (rate)"),
+        income_rank("Income Rank (where 1 is most deprived)"),
+        income_decile("Income Decile (where 1 is most deprived 10% of LSOAs)"),
+        employment_score("Employment Score (rate)"),
+        employment_rank("Employment Rank (where 1 is most deprived)"),
+        employment_decile("Employment Decile (where 1 is most deprived 10% of LSOAs)"),
+        education_score("Education, Skills and Training Score"),
+        education_rank("Education, Skills and Training Rank (where 1 is most deprived)"),
+        education_decile("Education, Skills and Training Decile (where 1 is most deprived 10% of LSOAs)"),
+        disability_score("Health Deprivation and Disability Score"),
+        disability_rank("Health Deprivation and Disability Rank (where 1 is most deprived)"),
+        disability_decile("Health Deprivation and Disability Decile (where 1 is most deprived 10% of LSOAs)"),
+        crime_score("Crime Score"),
+        crime_rank("Crime Rank (where 1 is most deprived)"),
+        crime_decile("Crime Decile (where 1 is most deprived 10% of LSOAs)"),
+        housing_score("Barriers to Housing and Services Score"),
+        housing_rank("Barriers to Housing and Services Rank (where 1 is most deprived)"),
+        housing_decile("Barriers to Housing and Services Decile (where 1 is most deprived 10% of LSOAs)"),
+        environment_score("Living Environment Score"),
+        environment_rank("Living Environment Rank (where 1 is most deprived)"),
+        environment_decile("Living Environment Decile (where 1 is most deprived 10% of LSOAs)"),
+        idaci_score("Income Deprivation Affecting Children Index (IDACI) Score (rate)"),
+        idaci_rank("Income Deprivation Affecting Children Index (IDACI) Rank (where 1 is most deprived)"),
+        idaci_decile("Income Deprivation Affecting Children Index (IDACI) Decile (where 1 is most deprived 10% of LSOAs)"),
+        idaopi_score("Income Deprivation Affecting Older People (IDAOPI) Score (rate)"),
+        idaopi_rank("Income Deprivation Affecting Older People (IDAOPI) Rank (where 1 is most deprived)"),
+        idaopi_decile("Income Deprivation Affecting Older People (IDAOPI) Decile (where 1 is most deprived 10% of LSOAs)"),
+        cypsd_score("Children and Young People Sub-domain Score"),
+        cypsd_rank("Children and Young People Sub-domain Rank (where 1 is most deprived)"),
+        cypsd_decile("Children and Young People Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        assd_score("Adult Skills Sub-domain Score"),
+        assd_rank("Adult Skills Sub-domain Rank (where 1 is most deprived)"),
+        assd_decile("Adult Skills Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        gbsd_score("Geographical Barriers Sub-domain Score"),
+        gbsd_rank("Geographical Barriers Sub-domain Rank (where 1 is most deprived)"),
+        gbsd_decile("Geographical Barriers Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        wbsd_score("Wider Barriers Sub-domain Score"),
+        wbsd_rank("Wider Barriers Sub-domain Rank (where 1 is most deprived)"),
+        wbsd_decile("Wider Barriers Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        isd_score("Indoors Sub-domain Score"),
+        isd_rank("Indoors Sub-domain Rank (where 1 is most deprived)"),
+        isd_decile("Indoors Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        osd_score("Outdoors Sub-domain Score"),
+        osd_rank("Outdoors Sub-domain Rank (where 1 is most deprived)"),
+        osd_decile("Outdoors Sub-domain Decile (where 1 is most deprived 10% of LSOAs)"),
+        totalPopulation("Total population: mid 2012 (excluding prisoners)"),
+        childrenPopulation("Dependent Children aged 0-15: mid 2012 (excluding prisoners)"),
+        adultPopulation("Population aged 16-59: mid 2012 (excluding prisoners)"),
+        elderlyPopulation("Older population aged 60 and over: mid 2012 (excluding prisoners)"),
+        workingAgePopulation("Working age population 18-59/64: for use with Employment Deprivation Domain (excluding prisoners)")
+        ;
+
+        String description;
+        AttributeId(String description) { this.description = description; }
+
+    }
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceId){
         List<Attribute> attributes = new ArrayList<>();
-        attributes.add(new Attribute(getProvider(),"imd.score", "IMD Score", "Index of Multiple Deprivation (IMD) Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.rank", "IMD Rank", "Index of Multiple Deprivation (IMD) Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.decile", "IMD Decile", "Index of Multiple Deprivation (IMD) Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.income.score", "IMD Income Score", "Income Score (rate)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.income.rank", "IMD Income Rank", "Income Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.income.decile", "IMD Income Decile", "Income Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.employment.score", "IMD Employment Score", "Employment Score (rate)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.employment.rank", "IMD Employment Rank", "Employment Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.employment.decile", "IMD Employment Decile", "Employment Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.education.score", "IMD Education Score", "Education, Skills and Training Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.education.rank", "IMD Education Rank", "Education, Skills and Training Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.education.decile", "IMD Education Decile", "Education, Skills and Training Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.disability.score", "IMD Disability Score", "Health Deprivation and Disability Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.disability.rank", "IMD Disability Rank", "Health Deprivation and Disability Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.disability.decile", "IMD Disability Decile", "Health Deprivation and Disability Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.crime.score", "IMD Crime Score", "Crime Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.crime.rank", "IMD Crime Rank", "Crime Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.crime.decile", "IMD Crime Decile", "Crime Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.housing.score", "IMD Housing Score", "Barriers to Housing and Services Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.housing.rank", "IMD Housing Rank", "Barriers to Housing and Services Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.housing.decile", "IMD Housing Decile", "Barriers to Housing and Services Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.environment.score", "IMD Environment Score", "Living Environment Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.environment.rank", "IMD Environment Rank", "Living Environment Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.environment.decile", "IMD Environment Decile", "Living Environment Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaci.score", "IMD IDACI Score", "Income Deprivation Affecting Children Index (IDACI) Score (rate)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaci.rank", "IMD IDACI Rank", "Income Deprivation Affecting Children Index (IDACI) Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaci.decile", "IMD IDACI Decile", "Income Deprivation Affecting Children Index (IDACI) Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaopi.score", "IMD IDAOPI Score", "Income Deprivation Affecting Older People (IDAOPI) Score (rate)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaopi.rank", "IMD IDAOPI Rank", "Income Deprivation Affecting Older People (IDAOPI) Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.idaopi.decile", "IMD IDAOPI Decile", "Income Deprivation Affecting Older People (IDAOPI) Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.cypsd.score", "IMD CYPSD Score", "Children and Young People Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.cypsd.rank", "IMD CYPSD Rank", "Children and Young People Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.cypsd.decile", "IMD CYPSD Decile", "Children and Young People Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.assd.score", "IMD ASSD Score", "Adult Skills Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.assd.rank", "IMD ASSD Rank", "Adult Skills Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.assd.decile", "IMD ASSD Decile", "Adult Skills Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.gbsd.score", "IMD GBSD Score", "Geographical Barriers Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.gbsd.rank", "IMD GBSD Rank", "Geographical Barriers Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.gbsd.decile", "IMD GBSD Decile", "Geographical Barriers Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.wbsd.score", "IMD WBSD Score", "Wider Barriers Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.wbsd.rank", "IMD WBSD Rank", "Wider Barriers Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.wbsd.decile", "IMD WBSD Decile", "Wider Barriers Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.isd.score", "IMD ISD Score", "Indoors Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.isd.rank", "IMD ISD Rank", "Indoors Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.isd.decile", "IMD ISD Decile", "Indoors Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.osd.score", "IMD OSD Score", "Outdoors Sub-domain Score", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.osd.rank", "IMD OSD Rank", "Outdoors Sub-domain Rank (where 1 is most deprived)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"imd.osd.decile", "IMD OSD Decile", "Outdoors Sub-domain Decile (where 1 is most deprived 10% of LSOAs)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"totalPopulation", "Total Population", "Total population: mid 2012 (excluding prisoners)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"childrenPopulation", "Children Population", "Dependent Children aged 0-15: mid 2012 (excluding prisoners)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"adultPopulation", "Adult Population", "Population aged 16-59: mid 2012 (excluding prisoners)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"elderlyPopulation", "Elderly Population", "Older population aged 60 and over: mid 2012 (excluding prisoners)", Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(),"workingAgePopulation", "Working Age Population", "Working age population 18-59/64: for use with Employment Deprivation Domain (excluding prisoners)", Attribute.DataType.numeric));
+        Arrays.stream(AttributeId.values()).map(attributeId ->
+                new Attribute(getProvider(), AttributeUtils.nameToLabel(attributeId.name()), attributeId.description)).forEach(attributes::add);
+
         return attributes;
     }
 }

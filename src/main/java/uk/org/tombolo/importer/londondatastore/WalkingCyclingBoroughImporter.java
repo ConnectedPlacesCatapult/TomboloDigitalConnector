@@ -9,6 +9,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -161,18 +162,14 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
             case walk5xWeek:
                return new Attribute(
                        getProvider(),
-                       AttributeId.walk5xWeek.name(),
-                       "Walk 5x Week",
-                        "% of population who walk for at least 30 minutes, at least 5 x week",
-                        Attribute.DataType.numeric
+                       AttributeUtils.nameToLabel(AttributeId.walk5xWeek.name()),
+                        "% of population who walk for at least 30 minutes, at least 5 x week"
                );
             case cycle1xWeek:
                 return new Attribute(
                         getProvider(),
-                        AttributeId.cycle1xWeek.name(),
-                        "Cycle 1x Week",
-                        "% of population who cycle at least 1 x week",
-                        Attribute.DataType.numeric
+                        AttributeUtils.nameToLabel(AttributeId.cycle1xWeek.name()),
+                        "% of population who cycle at least 1 x week"
                 );
             default:
                 return null;

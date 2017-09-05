@@ -8,27 +8,17 @@ import java.io.IOException;
 @Entity
 @Table(name="attribute")
 public class Attribute {
-	public static enum DataType {string,numeric};
+	private Integer id;
+	private Provider provider;
+	private String label;
+	private String description;
 
-	Integer id;
-	Provider provider;
-	String label;
-	String name;
-	String description;
-	
-	// FIXME: Maybe deprecate ... or implement properly
-//	DataType dataType;
-		
-	public Attribute(){
-		
-	}
-	
-	public Attribute(Provider provider, String label, String name, String description, DataType dataType){
+	public Attribute() {}
+
+	public Attribute(Provider provider, String label, String description){
 		this.provider = provider;
 		this.label = label;
-		this.name = name;
 		this.description = description;
-//		this.dataType = dataType;
 	}
 	
 	// FIXME: Using allocationSize=1 may be inefficient and be problematic if we want multiple deployments to access the same db
@@ -62,15 +52,6 @@ public class Attribute {
 	public String getLabel(){
 		return label;
 	}
-	
-	@Column(name="name")
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public void setDescription(String description) {
 		this.description = description;
@@ -90,22 +71,13 @@ public class Attribute {
 		return this.getId().equals(attObj.getId());
 	}
 
-	public boolean compareByLabel(String label) {
-		return this.getLabel().equals(label);
-	}
-
 	public String uniqueLabel() {
 		return String.join("_", this.getProvider().getLabel(), this.getLabel());
 	}
-	
-//	public DataType getDataType(){
-//		return dataType;
-//	}
 
 	public void writeJSON(JsonWriter writer) throws IOException {
 		writer.beginObject();
 		writer.name("label").value(label);
-		writer.name("name").value(name);
 		writer.name("description").value(description);
 		writer.name("provider");
 		provider.writeJSON(writer);

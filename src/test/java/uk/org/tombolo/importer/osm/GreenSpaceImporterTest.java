@@ -57,11 +57,10 @@ public class GreenSpaceImporterTest extends AbstractTest {
         Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
         assertEquals("org.openstreetmap", landuse.getProvider().getLabel());
         assertEquals("landuse", landuse.getLabel());
-        assertEquals("landuse", landuse.getName());
+
         Attribute natural = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "natural");
         assertEquals("org.openstreetmap", natural.getProvider().getLabel());
         assertEquals("natural", natural.getLabel());
-        assertEquals("natural", natural.getName());
 
         // Test subjects import
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("org.openstreetmap","OSMEntity");

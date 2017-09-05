@@ -9,6 +9,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -123,30 +124,30 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
     public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         // Obesity at reception
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberMeasured.name(), "Number Measured at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberObese.name(), "Number Obese at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObese.name(), "Percentage Obese at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObeseLowerLimit.name(), "Lower Limit of Percentage Obese at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageObeseUpperLimit.name(), "Upper Limit of Percentage Obese at Reception",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionNumberMeasured.name()), "Number Measured at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionNumberObese.name()), "Number Obese at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageObese.name()), "Percentage Obese at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageObeseLowerLimit.name()), "Lower Limit of Percentage Obese at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageObeseUpperLimit.name()), "Upper Limit of Percentage Obese at Reception"));
 
         // Obesity at year 6
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberMeasured.name(), "Number Measured at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberObese.name(), "Number Obese at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObese.name(), "Percentage Obese at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObeseLowerLimit.name(), "Lower Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageObeseUpperLimit.name(), "Upper Limit of Percentage Obese at Year 6",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6NumberMeasured.name()), "Number Measured at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6NumberObese.name()), "Number Obese at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageObese.name()), "Percentage Obese at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageObeseLowerLimit.name()), "Lower Limit of Percentage Obese at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageObeseUpperLimit.name()), "Upper Limit of Percentage Obese at Year 6"));
 
         // Excess weight at reception
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionNumberExcessWeight.name(), "Number Excess Weight at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageExcessWeight.name(), "Percentage Excess Weight at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageExcessWeightLowerLimit.name(), "Lower Limit of Percentage Excess Weight at Reception",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.receptionPercentageExcessWeightUpperLimit.name(), "Upper Limit of Percentage  Excess Weight at Reception",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionNumberExcessWeight.name()), "Number Excess Weight at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageExcessWeight.name()), "Percentage Excess Weight at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageExcessWeightLowerLimit.name()), "Lower Limit of Percentage Excess Weight at Reception"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.receptionPercentageExcessWeightUpperLimit.name()), "Upper Limit of Percentage  Excess Weight at Reception"));
 
         // Excess weight at year 6
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6NumberExcessWeight.name(), "Number Excess Weight at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeight.name(), "Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeightLowerLimit.name(), "Lower Limit of Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
-        attributes.add(new Attribute(getProvider(), AttributeLabel.year6PercentageExcessWeightUpperLimit.name(), "Upper Limit of Percentage Excess Weight at Year 6",null, Attribute.DataType.numeric));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6NumberExcessWeight.name()), "Number Excess Weight at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageExcessWeight.name()), "Percentage Excess Weight at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageExcessWeightLowerLimit.name()), "Lower Limit of Percentage Excess Weight at Year 6"));
+        attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeLabel.year6PercentageExcessWeightUpperLimit.name()), "Upper Limit of Percentage Excess Weight at Year 6"));
 
         return attributes;
     }

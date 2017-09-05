@@ -9,6 +9,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -190,10 +191,8 @@ public class ONSWagesImporter extends AbstractONSImporter {
                     // metricName is a name of a metric
                     attributes.add(new Attribute(
                             getProvider(),
-                            getAttributeLabel(attributePrefix, sheetName, metricName), // Id
-                            attributeNames[attributePrefix.ordinal()], // Name
-                            attributeNames[attributePrefix.ordinal()], // Description (we use the same as name since it is fairly descriptive
-                            Attribute.DataType.numeric
+                            AttributeUtils.nameToLabel(getAttributeLabel(attributePrefix, sheetName, metricName)), // Id
+                            attributeNames[attributePrefix.ordinal()]
                     ));
                 }
             }

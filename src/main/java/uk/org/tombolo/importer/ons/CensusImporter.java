@@ -54,7 +54,7 @@ public class CensusImporter extends AbstractONSImporter {
                 .filter(header -> getDataSourceSpecObject(datasourceIdString).getName()
                 .startsWith(header.toLowerCase().substring(0, header.indexOf(":")))).forEach(header -> {
                  String attributeLabel = attributeLabelFromHeader(header);
-            attributes.add(new Attribute(getProvider(), attributeLabel, header, header, Attribute.DataType.numeric));
+            attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(attributeLabel), header));
         });
         return attributes;
     }
@@ -104,7 +104,7 @@ public class CensusImporter extends AbstractONSImporter {
             Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
             if (subject != null) {
                 attributes.forEach(attribute -> {
-                    String value = record.get(attribute.getName());
+                    String value = record.get(attribute.getDescription());
                     TimedValue timedValue = new TimedValue(subject, attribute, TIMESTAMP, Double.valueOf(value));
                     timedValueBuffer.add(timedValue);
                 });

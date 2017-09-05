@@ -61,7 +61,7 @@ public abstract class OSMImporter extends AbstractImporter {
     }
 
     Attribute attributeFromTag(String tag){
-        return new Attribute(getProvider(), tag, tag, "OSM entity having category "+tag, Attribute.DataType.string);
+        return new Attribute(getProvider(), AttributeUtils.nameToLabel(tag), "OSM entity having category "+tag);
     }
 
     private File getDatafile(String area) throws Exception {

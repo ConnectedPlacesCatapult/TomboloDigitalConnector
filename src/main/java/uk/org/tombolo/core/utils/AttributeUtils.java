@@ -6,6 +6,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 public class AttributeUtils {
@@ -22,7 +23,6 @@ public class AttributeUtils {
 					attribute.setId(savedAttribute.getId());
 					savedAttribute.setProvider(attribute.getProvider());
 					savedAttribute.setLabel(attribute.getLabel());
-					savedAttribute.setName(attribute.getName());
 					savedAttribute.setDescription(attribute.getDescription());
 					session.save(savedAttribute);
 				}
@@ -49,7 +49,7 @@ public class AttributeUtils {
 	}
 
 	public static String nameToLabel(String name){
-		return DigestUtils.md5Hex(name);
+		return DigestUtils.md5Hex(Base64.getEncoder().encodeToString(name.getBytes()));
 	}
 
 

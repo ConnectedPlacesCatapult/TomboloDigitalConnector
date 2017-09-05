@@ -65,8 +65,7 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(0, datasource.getTimedValueAttributes().size());
         assertEquals(6, datasource.getFixedValueAttributes().size());
 
-        assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), "os_road_ids");
-        assertEquals(datasource.getFixedValueAttributes().get(0).getName(), "os road ids");
+        assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), AttributeUtils.nameToLabel("os_road_ids"));
     }
 
     @Test @Ignore
@@ -83,19 +82,19 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(52.043647, streetSegment.getShape().getCentroid().getY(), 1.0E-6);
 
         // Test fixed values
-        Attribute roadClassesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "road_classes");
+        Attribute roadClassesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("road_classes"));
         FixedValue roadClassesValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, roadClassesAttribute);
         assertEquals("{Unclassified}", roadClassesValue.getValue());
 
-        Attribute roadNamesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "road_names");
+        Attribute roadNamesAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("road_names"));
         FixedValue roadNamesValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, roadNamesAttribute);
         assertEquals("{\"Walbrook Avenue\"}", roadNamesValue.getValue());
 
-        Attribute osRoadIdsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "os_road_ids");
+        Attribute osRoadIdsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("os_road_ids"));
         FixedValue osRoadIdsValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, osRoadIdsAttribute);
         assertEquals("{114eecf0-4d7a-4c61-9ce0-63cfdeaca735}", osRoadIdsValue.getValue());
 
-        Attribute angularCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        Attribute angularCost = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("abwc_n"));
         FixedValue angularCosts = FixedValueUtils.getBySubjectAndAttribute(streetSegment, angularCost);
         assertEquals("4.12235391281414", angularCosts.getValue());
     }

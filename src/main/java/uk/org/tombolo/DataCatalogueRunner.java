@@ -47,7 +47,6 @@ public class DataCatalogueRunner extends AbstractRunner {
             for(Attribute attribute : datasource.getTimedValueAttributes()) {
                 System.out.println(
                         attribute.getLabel()
-                        + "\t" + attribute.getName()
                         + "\t" + attribute.getDescription()
                 );
             }

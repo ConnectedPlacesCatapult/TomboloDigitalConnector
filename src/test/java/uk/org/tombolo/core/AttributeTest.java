@@ -18,7 +18,7 @@ public class AttributeTest extends AbstractTest {
     @Before
     public void setUp() throws Exception {
         this.provider = new Provider("providerLabel", "providerName");
-        this.subject = new Attribute(this.provider, "attributeLabel", "attributeName", "attributeDescription", null);
+        this.subject = new Attribute(this.provider, "attributeLabel", "attributeDescription");
     }
 
     @Test
@@ -34,7 +34,6 @@ public class AttributeTest extends AbstractTest {
 
         JSONAssert.assertEquals("{" +
                 "  label: 'timed_label'," +
-                "  name: 'timed_label_name'," +
                 "  description: 'timed_label_description'," +
                 "  provider: {" +
                 "    label: 'default_provider_label'," +

@@ -161,7 +161,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
                 .forEach(idx -> {
                             String name = attributeHeader.getCell(idx).getStringCellValue();
                             attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(name),
-                                    name, name, Attribute.DataType.string));
+                                    name));
                         }
                 );
         return attributes;

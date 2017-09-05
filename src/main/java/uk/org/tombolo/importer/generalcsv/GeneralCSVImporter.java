@@ -82,9 +82,7 @@ public class GeneralCSVImporter extends AbstractImporter {
             attributes.add(new Attribute(
                     getProvider(),
                     AttributeUtils.nameToLabel(attrString),
-                    attrString.replace("\\s+",""),
-                    "",
-                    Attribute.DataType.string
+                    attrString
             ));
         }
 

@@ -72,13 +72,13 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         @Override
         public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
             return Collections.singletonList(
-                        new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+                        new Attribute(importer.getProvider(), AttributeUtils.nameToLabel("abwc_n"), "Angular Cost"));
         }
 
         @Override
         public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
             return Collections.singletonList(
-                    new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+                    new Attribute(importer.getProvider(), AttributeUtils.nameToLabel("abwc_n"), "Angular Cost"));
         }
     }
 
@@ -112,7 +112,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
-        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("abwc_n"));
         List<TimedValue> angularCostValues = TimedValueUtils.getBySubjectAndAttribute(streetSegment, angularCostAttribute);
         assertEquals(angularCostValues.size(), 1);
         assertEquals(4.880167, angularCostValues.get(0).getValue(), 1.0E-6);
@@ -126,7 +126,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         Subject streetSegment = SubjectUtils.getSubjectByTypeAndLabel(testSubjectType, "example-feature:feature-0");
 
         // Test fixed values
-        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "abwc_n");
+        Attribute angularCostAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("abwc_n"));
         FixedValue angularCostValue = FixedValueUtils.getBySubjectAndAttribute(streetSegment, angularCostAttribute);
         assertEquals("4.88016738443536", angularCostValue.getValue());
     }

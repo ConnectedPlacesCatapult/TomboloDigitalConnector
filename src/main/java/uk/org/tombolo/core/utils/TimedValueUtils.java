@@ -104,7 +104,7 @@ public class TimedValueUtils {
 					// This is happening because the TFL stations contain a duplicate ID
 					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
 							timedValue.getId().getSubject().getLabel(),
-							timedValue.getId().getAttribute().getName(),
+							timedValue.getId().getAttribute().getDescription(),
 							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
 							e.getMessage());
 				}

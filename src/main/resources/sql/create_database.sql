@@ -51,8 +51,7 @@ create sequence attribute_id_sequence;
 create table attribute (
 	id 				integer NOT NULL DEFAULT nextval('attribute_id_sequence'),
 	provider_label	VARCHAR(63) NOT NULL REFERENCES provider(label),
-	label			VARCHAR(63) NOT NULL,
-	name			VARCHAR(255) NOT NULL,
+	label			VARCHAR(255) NOT NULL,
 	description		VARCHAR(511),
 	UNIQUE (provider_label, label),
 	PRIMARY KEY(id)

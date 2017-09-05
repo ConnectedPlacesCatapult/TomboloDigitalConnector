@@ -61,16 +61,16 @@ public class ONSWagesImporterTest extends AbstractTest {
 
         Attribute weeklyPayGrossAllMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),
-                "asheTable81aWeeklyPayGrossAllMean");
+                AttributeUtils.nameToLabel("asheTable81aWeeklyPayGrossAllMean"));
         Attribute weeklyPayGrossAllMedian = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),
-                "asheTable81aWeeklyPayGrossAllMedian");
+                AttributeUtils.nameToLabel("asheTable81aWeeklyPayGrossAllMedian"));
         Attribute weeklyPayGrossFemalePartTimeMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),
-                "asheTable81aWeeklyPayGrossFemale-Part-TimeMean");
+                AttributeUtils.nameToLabel("asheTable81aWeeklyPayGrossFemale-Part-TimeMean"));
         Attribute annualPayIncentiveFullTimeMean = AttributeUtils.getByProviderAndLabel(
                 importer.getProvider(),
-                "asheTable88aAnnualPayIncentiveFull-TimeMean");
+                AttributeUtils.nameToLabel("asheTable88aAnnualPayIncentiveFull-TimeMean"));
 
         TimedValue timedValue;
 

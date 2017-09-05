@@ -39,7 +39,7 @@ public class BackOffFieldTest extends AbstractTest {
         Subject squareB = TestFactory.makeSubject(square, "squareB", "Square B", TestFactory.makeSquareGeometry(1.0d, 1.0d, 1.0d));
         Subject pointC = TestFactory.makeSubject(point, "pointC", "Point C", TestFactory.makePointGeometry(2.5d, 2.5d));
 
-        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "", "", Attribute.DataType.string);
+        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "");
         AttributeUtils.save(testAttribute);
 
         FixedValueUtils.save(new FixedValue(pointA,testAttribute, "pointAvalue"));

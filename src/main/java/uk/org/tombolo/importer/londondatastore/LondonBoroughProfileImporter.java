@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
@@ -99,35 +100,24 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     private Attribute getAttribute(AttributeId attributeId){
         switch (attributeId){
             case populationDensity:
-                return new Attribute(getProvider(),
-                        AttributeId.populationDensity.name(), "Population Density", "Population density (per hectare) 2015",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.populationDensity.name()),
+                        "Population density (per hectare) 2015");
             case householdIncome:
-                return new Attribute(getProvider(),
-                        AttributeId.householdIncome.name(),"Household Income","Modelled Household median income estimates 2012/13",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.householdIncome.name()),
+                        "Modelled Household median income estimates 2012/13");
             case medianHousePrice:
                 return new Attribute(getProvider(),
-                        AttributeId.medianHousePrice.name(),"Median House Price","Median House Price, 2014",
-                        Attribute.DataType.numeric
-                );
+                        AttributeUtils.nameToLabel(AttributeId.medianHousePrice.name()),
+                        "Median House Price, 2014");
             case fractionGreenspace:
-                return new Attribute(getProvider(),
-                        AttributeId.fractionGreenspace.name(),"Fraction Greenspace","% of area that is Greenspace, 2005",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.fractionGreenspace.name()),
+                        "% of area that is Greenspace, 2005");
             case carbonEmission:
-                return new Attribute(getProvider(),
-                        AttributeId.carbonEmission.name(),"Carbon Emission","Total carbon emissions (2013)",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.carbonEmission.name()),
+                        "Total carbon emissions (2013)");
             case carsPerHousehold:
-                return new Attribute(getProvider(),
-                        AttributeId.carsPerHousehold.name(),"Cars Per Household","Number of cars per household, (2011 Census)",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.carsPerHousehold.name()),
+                        "Number of cars per household, (2011 Census)");
             default:
                 return null;
         }

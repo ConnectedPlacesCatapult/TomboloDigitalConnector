@@ -110,7 +110,7 @@ public class FractionOfTotalField extends AbstractField implements SingleValueFi
         if (null == cachedAttributes) { cachedAttributes = new HashMap<>(); } // Gson will null this field whatever we do
         if (cachedAttributes.containsKey(attributeMatcher)) return cachedAttributes.get(attributeMatcher);
 
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.providerLabel, attributeMatcher.attributeLabel);
+        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.providerLabel, AttributeUtils.nameToLabel(attributeMatcher.attributeLabel));
         if (null == attr) {
             throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.providerLabel, attributeMatcher.attributeLabel));
         } else {
