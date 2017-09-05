@@ -141,7 +141,7 @@ public class TfLStationsImporter extends TfLImporter {
 	@Override
 	public List<Attribute> getTimedValueAttributes(String datasourceId) {
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeName.ServingLineCount.name()),
+		attributes.add(new Attribute(getProvider(), AttributeName.ServingLineCount.name(),
 				"The number of lines serving a station"));
 		return attributes;
 	}

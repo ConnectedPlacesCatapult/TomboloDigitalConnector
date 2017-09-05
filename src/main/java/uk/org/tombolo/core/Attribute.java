@@ -21,7 +21,6 @@ public class Attribute {
 		this.description = description;
 	}
 	
-	// FIXME: Using allocationSize=1 may be inefficient and be problematic if we want multiple deployments to access the same db
 	@Id
 	@SequenceGenerator(name="attribute_id_sequence",sequenceName="attribute_id_sequence", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="attribute_id_sequence")

@@ -126,7 +126,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
             if (parameterValue.startsWith("Reference"))
                 continue;
 
-            attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(name), description));
+            attributes.add(new Attribute(getProvider(), name, description));
         }
 
         return attributes;

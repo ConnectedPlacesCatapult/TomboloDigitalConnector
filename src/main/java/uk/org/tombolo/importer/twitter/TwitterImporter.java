@@ -10,10 +10,14 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.importer.*;
+import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ZipUtils;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.*;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
@@ -259,7 +263,7 @@ public class TwitterImporter extends AbstractImporter {
         map = new HashMap<>();
 
         for (AttributeEnum val: AttributeEnum.values()) {
-            Attribute attr = new Attribute(getProvider(), AttributeUtils.nameToLabel(val.name), val.desc);
+            Attribute attr = new Attribute(getProvider(), val.name, val.desc);
             attributes.add(attr);
             map.put(val, attr);
         }

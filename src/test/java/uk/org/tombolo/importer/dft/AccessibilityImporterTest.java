@@ -121,7 +121,7 @@ public class AccessibilityImporterTest extends AbstractTest {
         // Testing attribute nr 27
         // 500emplcar40	EMPLO032	Number of employment centres with at least 500 jobs available by car within 40 minutes	Number between 0 and 10
         Attribute attribute = datasource.getTimedValueAttributes().get(26);
-        assertEquals(AttributeUtils.nameToLabel("EMPLO032"), attribute.getLabel());
+        assertEquals("EMPLO032", attribute.getLabel());
         assertEquals("Number of employment centres with at least 500 jobs available by car within 40 minutes", attribute.getDescription());
     }
 

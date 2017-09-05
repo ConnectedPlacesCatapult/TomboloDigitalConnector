@@ -160,15 +160,11 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     private Attribute getAttribute(AttributeId attributeId){
         switch (attributeId){
             case walk5xWeek:
-               return new Attribute(
-                       getProvider(),
-                       AttributeUtils.nameToLabel(AttributeId.walk5xWeek.name()),
+               return new Attribute(getProvider(), AttributeId.walk5xWeek.name(),
                         "% of population who walk for at least 30 minutes, at least 5 x week"
                );
             case cycle1xWeek:
-                return new Attribute(
-                        getProvider(),
-                        AttributeUtils.nameToLabel(AttributeId.cycle1xWeek.name()),
+                return new Attribute(getProvider(), AttributeId.cycle1xWeek.name(),
                         "% of population who cycle at least 1 x week"
                 );
             default:

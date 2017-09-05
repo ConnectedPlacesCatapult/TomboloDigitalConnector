@@ -252,7 +252,7 @@ public class ONSCensusImporter extends AbstractONSImporter {
 
 				if (numberOfDimensionItems == 1){
 					// The attribute is one-dimensional
-					Attribute attribute = new Attribute(getProvider(), AttributeUtils.nameToLabel(attributeLabel), attributeDescription);
+					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription);
 					attributes.add(attribute);
 				}else{
 					// The attribute is multi-dimensional
@@ -260,7 +260,7 @@ public class ONSCensusImporter extends AbstractONSImporter {
 					// The name and the description will be added later when we get this information from the datafile itself
 					for (int i=0; i<numberOfDimensionItems; i++){
 						String multiAttributeLabel = attributeLabel+"_"+(i+1);
-						Attribute attribute = new Attribute(getProvider(), AttributeUtils.nameToLabel(multiAttributeLabel), "T.b.a.");
+						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.");
 						attributes.add(attribute);
 					}
 				}

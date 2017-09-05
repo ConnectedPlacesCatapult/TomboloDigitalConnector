@@ -10,7 +10,6 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.AbstractImporter;
@@ -81,7 +80,7 @@ public class GeneralCSVImporter extends AbstractImporter {
             String attrString = attributeHeader.get(index);
             attributes.add(new Attribute(
                     getProvider(),
-                    AttributeUtils.nameToLabel(attrString),
+                    attrString,
                     attrString
             ));
         }

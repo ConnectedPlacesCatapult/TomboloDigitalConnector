@@ -83,10 +83,10 @@ public class LAQNImporterTest extends AbstractTest {
         laqnImporter.importDatasource("airQualityControl",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
-        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", AttributeUtils.nameToLabel("SiteCode"));
+        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
         assertEquals(33, laqnImporter.getAttributeSize());
-        assertEquals(AttributeUtils.nameToLabel("SiteCode"), attribute.getLabel());
+        assertEquals("SiteCode", attribute.getLabel());
         assertEquals("Unique key", attribute.getDescription());
 
     }
@@ -141,7 +141,7 @@ public class LAQNImporterTest extends AbstractTest {
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
                                 "erg.kcl.ac.uk","airQualityControl"),"%%");
 
-        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", AttributeUtils.nameToLabel("SiteCode"));
+        Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
         FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subjects.get(0), attribute);
 

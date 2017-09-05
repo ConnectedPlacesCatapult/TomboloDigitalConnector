@@ -54,7 +54,7 @@ public class CensusImporter extends AbstractONSImporter {
                 .filter(header -> getDataSourceSpecObject(datasourceIdString).getName()
                 .startsWith(header.toLowerCase().substring(0, header.indexOf(":")))).forEach(header -> {
                  String attributeLabel = attributeLabelFromHeader(header);
-            attributes.add(new Attribute(getProvider(), AttributeUtils.nameToLabel(attributeLabel), header));
+            attributes.add(new Attribute(getProvider(), attributeLabel, header));
         });
         return attributes;
     }

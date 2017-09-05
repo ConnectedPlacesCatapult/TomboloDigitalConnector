@@ -4,7 +4,6 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
@@ -89,7 +88,6 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceId) {
         return Collections.singletonList(
-                new Attribute(getProvider(), AttributeUtils.nameToLabel(AttributeId.claimantCount.name()),
-                        "Number of claimants"));
+                new Attribute(getProvider(), AttributeId.claimantCount.name(), "Number of claimants"));
     }
 }

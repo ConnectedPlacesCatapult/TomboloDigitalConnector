@@ -55,13 +55,13 @@ public class TwitterImporterTest extends AbstractTest {
     @Test
     public void getAttribute() throws Exception {
         importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_SEARCH_API));
-        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("user"));
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute.getProvider().getLabel());
         assertEquals("user", attribute.getLabel());
         assertEquals("user screen name", attribute.getDescription());
 
         importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
-        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel("user"));
+        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute1.getProvider().getLabel());
         assertEquals("user", attribute1.getLabel());
         assertEquals("user screen name", attribute1.getDescription());
@@ -104,7 +104,7 @@ public class TwitterImporterTest extends AbstractTest {
     }
 
     private void testFixedValue(Subject subject, String attributeLabel, String value) {
-        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), AttributeUtils.nameToLabel(attributeLabel));
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeLabel);
         FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, attribute);
         assertEquals("Value for key (" + subject.getLabel() + "," + attributeLabel + ")", value, fixedValue.getValue());
     }

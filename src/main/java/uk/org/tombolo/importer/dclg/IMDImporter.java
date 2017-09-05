@@ -4,7 +4,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -162,7 +161,7 @@ public class IMDImporter extends AbstractDCLGImporter {
     public List<Attribute> getTimedValueAttributes(String datasourceId){
         List<Attribute> attributes = new ArrayList<>();
         Arrays.stream(AttributeId.values()).map(attributeId ->
-                new Attribute(getProvider(), AttributeUtils.nameToLabel(attributeId.name()), attributeId.description)).forEach(attributes::add);
+                new Attribute(getProvider(), attributeId.name(), attributeId.description)).forEach(attributes::add);
 
         return attributes;
     }

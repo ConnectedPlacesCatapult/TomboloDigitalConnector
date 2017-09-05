@@ -48,14 +48,14 @@ public class LondonPHOFImporterTest extends AbstractTest {
 		assertEquals(36, attributes.size());
 		
 		String a5Name = "1.02ii - School Readiness: The percentage of Year 1 pupils achieving the expected level in the phonics screening check";
-		String a5Label = AttributeUtils.nameToLabel(a5Name);
+		String a5Label = a5Name;
 		Attribute a5 = attributes.stream().filter(a -> a.getLabel().equals(a5Label)).findFirst().get();
 		assertEquals(importer.getProvider(), a5.getProvider());
 		assertEquals(a5Label, a5.getLabel());
 		assertEquals(a5Name, a5.getDescription());
 
 		String a135Name = "2.03 - Smoking status at time of delivery";
-		String a135Label = AttributeUtils.nameToLabel(a135Name);
+		String a135Label = a135Name;
 		Attribute a135 = attributes.stream().filter(a -> a.getLabel().equals(a135Label)).findFirst().get();
 		assertEquals(importer.getProvider(), a135.getProvider());
 		assertEquals(a135Label, a135.getLabel());
@@ -69,7 +69,7 @@ public class LondonPHOFImporterTest extends AbstractTest {
 
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(
 				importer.getProvider(),
-				AttributeUtils.nameToLabel("1.01ii - Children in poverty (under 16s)"));
+				"1.01ii - Children in poverty (under 16s)");
 
 		TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, attribute);
 		TimedValue timedValueIslington = TimedValueUtils.getLatestBySubjectAndAttribute(islington, attribute);

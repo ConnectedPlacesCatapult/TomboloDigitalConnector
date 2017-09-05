@@ -88,22 +88,22 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 	protected enum FixedAttribute {
 		RoadName(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("RoadName"),
+				"RoadName",
 				"Road Name"),
 				6),
 		RoadCategory(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("RoadCategory"),
+				"RoadCategory",
 				"Road Category"),
 				7),
 		StartJunction(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("StartJunction"),
+				"StartJunction",
 				"Start Junction"),
 				10),
 		EndJunction(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("EndJunction"),
+				"EndJunction",
 				"End Junction"),
 				11);
 
@@ -120,32 +120,32 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 	protected enum CountAttribute {
 		CountPedalCycles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountPedalCycles"),
+				"CountPedalCycles",
 				"Pedal Cycle Count"),
 				14),
 		CountMotorcycles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountMotorcycles"),
+				"CountMotorcycles",
 				"Motorycle Count"),
 				15),
 		CountCarsTaxis(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountCarsTaxis"),
+				"CountCarsTaxis",
 				"Count of cars and taxis"),
 				16),
 		CountBusesCoaches(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountBusesCoaches"),
+				"CountBusesCoaches",
 				"Count of buses and coaches"),
 				17),
 		CountLightGoodsVehicles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountLightGoodsVehicles"),
+				"CountLightGoodsVehicles",
 				"Count of light goods vehicles"),
 				18),
 		CountHeavyGoodsVehicles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("CountHeavyGoodsVehicles"),
+				"CountHeavyGoodsVehicles",
 				"Count of heavy goods vehicles"),
 				25);
 
@@ -163,32 +163,32 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 	{
 		VolumePedalCycles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumePedalCycles"),
+				"VolumePedalCycles",
 				"Pedal Cycle Volume"),
 				13),
 		VolumeMotorcycles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumeMotorcycles"),
+				"VolumeMotorcycles",
 				"Motorycle Volume"),
 				14),
 		VolumeCarsTaxis(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumeCarsTaxis"),
+				"VolumeCarsTaxis",
 				"Volume of cars and taxis"),
 				15),
 		VolumeBusesCoaches(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumeBusesCoaches"),
+				"VolumeBusesCoaches",
 				"Volume of buses and coaches"),
 				16),
 		VolumeLightGoodsVehicles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumeLightGoodsVehicles"),
+				"VolumeLightGoodsVehicles",
 				"Volume of light goods vehicles"),
 				17),
 		VolumeHeavyGoodsVehicles(new Attribute(
 				null,
-				AttributeUtils.nameToLabel("VolumeHeavyGoodsVehicles"),
+				"VolumeHeavyGoodsVehicles",
 				"Volume of heavy goods vehicles"),
 				24);
 
