@@ -166,7 +166,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
         String[] values = value.split(",");
 
         for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, AttributeUtils.nameToLabel(headers[i]), values[i]);
+            testFixedValue(subject, headers[i], values[i]);
         }
     }
 

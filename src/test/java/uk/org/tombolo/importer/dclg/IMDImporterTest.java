@@ -57,8 +57,8 @@ public class IMDImporterTest extends AbstractTest {
         imdImporter.importDatasource("imd", null, null, null);
         assertEquals(2*53, imdImporter.getTimedValueCount());
 
-        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.score");
-        Attribute attribute2 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.disability.rank");
+        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "score");
+        Attribute attribute2 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "disability_rank");
         Attribute attribute3 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "workingAgePopulation");
 
         assertEquals(12.389d, TimedValueUtils.getLatestBySubjectAndAttribute(subject1, attribute1).getValue(), 0.001d);

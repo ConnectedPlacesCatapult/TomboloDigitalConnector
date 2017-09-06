@@ -66,7 +66,6 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
         assertEquals(6, datasource.getFixedValueAttributes().size());
 
         assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), "os_road_ids");
-        assertEquals(datasource.getFixedValueAttributes().get(0).getName(), "os road ids");
     }
 
     @Test @Ignore

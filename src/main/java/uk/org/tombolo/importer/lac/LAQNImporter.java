@@ -109,8 +109,8 @@ public class LAQNImporter extends AbstractImporter implements Importer{
                             data.get("@ObjectiveName").get(i).length() : 24);
             if (!keepTrack.contains(attrlabel)) {
 
-                attributes.add(new Attribute(getProvider(), attrlabel, data.get("@SpeciesDescription").get(i),
-                        data.get("@ObjectiveName").get(i), Attribute.DataType.string));
+                attributes.add(new Attribute(getProvider(), attrlabel,
+                        data.get("@ObjectiveName").get(i)));
                 keepTrack.add(attrlabel);
             }
         }));
@@ -118,9 +118,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         reader.allUniquekeys().stream().map(attr -> new Attribute(
                     getProvider(),
                     attr.substring(1),
-                    attr.substring(1),
-                    "Unique key",
-                    Attribute.DataType.string
+                    "Unique key"
         )).forEach(attributes::add);
 
         return attributes;

@@ -61,7 +61,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		assertEquals(3 + 3, importer.getTimedValueCount());
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
-		assertEquals("Area (Hectares)", attribute.getName());
+		assertEquals("Area (Hectares)", attribute.getDescription());
 		
 	}
 

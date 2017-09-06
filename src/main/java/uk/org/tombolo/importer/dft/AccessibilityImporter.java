@@ -113,21 +113,19 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         Sheet metadataSheet = datasourceIdValue.getWorkbook().getSheet("Metadata");
 
         List<Attribute> attributes = new ArrayList<>();
+        Row row;
         int rowId = 12;
-        while(true){
+        while((row = metadataSheet.getRow(rowId)) != null && row.getCell(0) != null){
             rowId++;
-            Row row = metadataSheet.getRow(rowId);
-            if (row == null || row.getCell(0) == null)
-                break;
-            String name = row.getCell(0).getStringCellValue();
-            String label = row.getCell(1).getStringCellValue();
+
+            String label = AttributeUtils.substringToDBLength(row.getCell(1).getStringCellValue());
             String description = row.getCell(2).getStringCellValue();
             String parameterValue = row.getCell(3).getStringCellValue();
 
             if (parameterValue.startsWith("Reference"))
                 continue;
 
-            attributes.add(new Attribute(getProvider(), label, name, description, Attribute.DataType.numeric));
+            attributes.add(new Attribute(getProvider(), label, description));
         }
 
         return attributes;

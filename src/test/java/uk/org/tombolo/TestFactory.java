@@ -87,7 +87,7 @@ public final class TestFactory {
      */
     public static Attribute makeAttribute(Provider provider, String label) {
         ProviderUtils.save(provider);
-        Attribute attribute = new Attribute(provider, label, label + "_name", label + "_description", null);
+        Attribute attribute = new Attribute(provider, label,label + "_description");
         AttributeUtils.save(attribute);
         return attribute;
     }

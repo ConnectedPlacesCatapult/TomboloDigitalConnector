@@ -72,13 +72,13 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         @Override
         public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
             return Collections.singletonList(
-                        new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+                        new Attribute(importer.getProvider(), "abwc_n", "Angular Cost"));
         }
 
         @Override
         public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
             return Collections.singletonList(
-                    new Attribute(importer.getProvider(), "abwc_n", "Angular Cost", "", Attribute.DataType.numeric));
+                    new Attribute(importer.getProvider(), "abwc_n", "Angular Cost"));
         }
     }
 

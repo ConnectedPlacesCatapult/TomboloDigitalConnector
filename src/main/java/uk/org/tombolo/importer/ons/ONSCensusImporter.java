@@ -162,7 +162,6 @@ public class ONSCensusImporter extends AbstractONSImporter {
 							String name = attributeBaseNames.get(i);
 							if (!attributeBaseNames.get(i).equals(fields.get(i)))
 								name += " - " + fields.get(i);
-							datasource.getTimedValueAttributes().get(i-2).setName(name);
 							datasource.getTimedValueAttributes().get(i-2).setDescription(name);
 						}
 
@@ -247,23 +246,21 @@ public class ONSCensusImporter extends AbstractONSImporter {
 				// The dimension is of type "Topic", i.e. an attribute in our terminology
 				long numberOfDimensionItems = (long)dimension.get("numberOfDimensionItems");
 
-				String attributeLabel = (String)dimension.get("dimensionId");
+				String attributeLabel = AttributeUtils.substringToDBLength((String)dimension.get("dimensionId"));
 				JSONArray dimensionTitles = (JSONArray)((JSONObject)dimension.get("dimensionTitles")).get("dimensionTitle");
 				String attributeDescription = getEnglishValue(dimensionTitles);
-				// FIXME: The Attribute.DataType value should be gotten from somewhere rather than defaulting to numeric
-				Attribute.DataType dataType = Attribute.DataType.numeric;
 
 				if (numberOfDimensionItems == 1){
 					// The attribute is one-dimensional
-					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription, attributeDescription, dataType);
+					Attribute attribute = new Attribute(getProvider(), attributeLabel, attributeDescription);
 					attributes.add(attribute);
 				}else{
 					// The attribute is multi-dimensional
 					// We add an attribute for each dimension
 					// The name and the description will be added later when we get this information from the datafile itself
 					for (int i=0; i<numberOfDimensionItems; i++){
-						String multiAttributeLabel = attributeLabel+"_"+(i+1);
-						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.", "T.b.a.", dataType);
+						String multiAttributeLabel = AttributeUtils.substringToDBLength(attributeLabel+"_"+(i+1));
+						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.");
 						attributes.add(attribute);
 					}
 				}
