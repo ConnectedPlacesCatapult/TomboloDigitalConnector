@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  *  Using the following test data files:
  *
- *  Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
+ *  Local: 096bf0e4-703d-3243-be0b-c2bc8110bc44.csv
  */
 public class LondonBoroughProfileImporterTest extends AbstractTest {
     LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter(TestFactory.DEFAULT_CONFIG);

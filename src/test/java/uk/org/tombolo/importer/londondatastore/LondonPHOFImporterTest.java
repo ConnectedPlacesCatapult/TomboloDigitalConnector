@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Using the following test data files:
  *
- * Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L3B1YmxpYy1oZWFsdGgtb3V0Y29tZXMtZnJhbWV3b3JrLWluZGljYXRvcnMvMjAxNS0xMS0xMFQxMjowNTo1My9waG9mLWluZGljYXRvcnMtZGF0YS1sb25kb24tYm9yb3VnaC54bHN4.xlsx
+ * Local: cd309e6a-a89a-3906-9e7a-26f750dce624.xlsx
  */
 public class LondonPHOFImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "phofIndicatorsLondonBorough";

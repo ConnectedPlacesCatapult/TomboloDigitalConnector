@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  *      "measure=1&" +
  *      "measures=20100&" +
  *      "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
- * Local: ab9d3499b5faf5a8b6c3c49271ff2c19.csv
+ * Local: 41340fec-3141-3932-ae52-49477ff6c05d.csv
  */
 public class ONSClaimantsImporterTest extends AbstractTest {
     public ONSClaimantsImporter importer;
