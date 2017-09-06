@@ -9,7 +9,6 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -157,7 +156,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         excelUtils.extractAndSaveTimedValues(cycleSheet, this, cycle1xWeekExtractors);
     }
 
-    private Attribute getAttribute(AttributeId attributeId){
+    private Attribute getAttribute(AttributeId attributeId) {
         switch (attributeId){
             case walk5xWeek:
                return new Attribute(getProvider(), AttributeId.walk5xWeek.name(),
@@ -168,7 +167,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
                         "% of population who cycle at least 1 x week"
                 );
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 }

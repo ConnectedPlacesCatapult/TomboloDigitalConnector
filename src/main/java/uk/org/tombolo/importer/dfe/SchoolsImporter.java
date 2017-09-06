@@ -159,8 +159,8 @@ public class SchoolsImporter extends AbstractDfEImporter {
         Row attributeHeader = workbook.getSheetAt(DatasourceId.schools.sheetIdx).rowIterator().next();
         IntStream.rangeClosed(attributeHeader.getFirstCellNum(), attributeHeader.getLastCellNum() - 1)
                 .forEach(idx -> {
-                            String name = AttributeUtils.substringToDBLength(attributeHeader.getCell(idx).getStringCellValue());
-                            attributes.add(new Attribute(getProvider(), name, name));
+                            String label = attributeHeader.getCell(idx).getStringCellValue();
+                            attributes.add(new Attribute(getProvider(), AttributeUtils.substringToDBLength(label), label));
                         }
                 );
         return attributes;

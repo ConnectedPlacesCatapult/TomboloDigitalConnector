@@ -74,11 +74,11 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
         while (typeIterator.hasNext()) {
             AttributeType type = typeIterator.next();
-            String columnName = AttributeUtils.substringToDBLength(type.getName().toString());
+            String columnName = type.getName().toString();
             if (NON_ATTRIBUTE_COLUMNS.contains(columnName)) { continue; }
             fixedValueAttributes.add(new Attribute(
                     getProvider(),
-                    columnName,
+                    AttributeUtils.substringToDBLength(columnName),
                     null != type.getDescription() ? type.getDescription().toString() : columnName)
             );
         }
