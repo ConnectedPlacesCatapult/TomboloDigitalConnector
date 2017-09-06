@@ -23,17 +23,17 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
 
     private final String nearestSubjectProvider;
     private final String nearestSubjectType;
-    private final FieldRecipe fieldSpecification;
+    private final FieldRecipe fieldRecipe;
     private Double maxRadius;
     private SingleValueField field;
     private SubjectType nearestSubjectTypeObject;
 
-    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe fieldSpecification) {
+    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe fieldRecipe) {
         super(label);
         this.maxRadius = maxRadius;
         this.nearestSubjectProvider = nearestSubjectProvider;
         this.nearestSubjectType = nearestSubjectType;
-        this.fieldSpecification = fieldSpecification;
+        this.fieldRecipe = fieldRecipe;
     }
 
     public void initialize() {
@@ -42,7 +42,7 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         // Initialize maxRadius with a default value
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
-            this.field = (SingleValueField) fieldSpecification.toField();
+            this.field = (SingleValueField) fieldRecipe.toField();
             field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");

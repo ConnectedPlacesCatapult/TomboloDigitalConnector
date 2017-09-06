@@ -22,22 +22,22 @@ import java.util.stream.Collectors;
 public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
     private final String containingSubjectProvider;
     private final String containingSubjectType;
-    private final FieldRecipe fieldSpecification;
+    private final FieldRecipe fieldRecipe;
     private SingleValueField field;
     private SubjectType containerSubjectType;
 
-    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldSpecification) {
+    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldRecipe) {
         super(label);
         this.containingSubjectProvider = containingSubjectProvider;
         this.containingSubjectType = containingSubjectType;
-        this.fieldSpecification = fieldSpecification;
+        this.fieldRecipe = fieldRecipe;
     }
 
     public void initialize() {
         containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(containingSubjectProvider, containingSubjectType);
 
         try {
-            this.field = (SingleValueField) fieldSpecification.toField();
+            this.field = (SingleValueField) fieldRecipe.toField();
             field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");

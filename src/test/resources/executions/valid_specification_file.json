@@ -17,7 +17,7 @@
     }],
     "fields": [{
       "label": "attributes",
-      "fieldSpecification": [{
+      "field": [{
         "dividendAttributes": [{
           "providerLabel": "uk.gov.ons",
           "attributeLabel": "CL_0000053_2"

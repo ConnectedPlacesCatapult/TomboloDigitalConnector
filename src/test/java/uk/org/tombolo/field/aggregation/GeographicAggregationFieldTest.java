@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
@@ -100,7 +100,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
 
     private FieldRecipe makeFieldSpec() {
         return RecipeDeserializer.fromJson(
-                FieldSpecificationBuilder.latestValue("default_provider_label", "attr").toJSONString(),
+                FieldBuilder.latestValue("default_provider_label", "attr").toJSONString(),
                 FieldRecipe.class);
     }
 }

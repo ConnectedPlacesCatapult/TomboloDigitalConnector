@@ -2,7 +2,7 @@
   "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
   "label": "SocialIsolationAmongElderly",
   "name": "Social Isolation among Elderly",
-  "fieldSpecifications": [
+  "fields": [
     {
       "//": "Fraction of the population 65 or older",
       "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",

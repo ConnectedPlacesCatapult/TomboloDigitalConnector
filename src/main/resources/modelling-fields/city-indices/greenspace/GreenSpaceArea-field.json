@@ -5,7 +5,7 @@
     "aggregationSubjectProvider": "de.overpass-api",
     "aggregationSubjectType": "OSMEntity",
     "aggregationFunction": "sum",
-    "fieldSpecification": {
+    "field": {
       "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
       "label": "Green Space geography area",
       "targetCRSCode": 27700

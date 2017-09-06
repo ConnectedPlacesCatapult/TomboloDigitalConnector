@@ -40,7 +40,7 @@
 				"datasourceId" : "QS119EW"
 			}
 		],
-		"fieldSpecification" : [
+		"field" : [
 			{
 				"fieldClass": "uk.org.tombolo.field.LatestValueField",
 				"label": "CL_0000053_1",

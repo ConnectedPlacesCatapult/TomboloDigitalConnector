@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
@@ -22,8 +22,8 @@ public class FieldValueSumFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        FieldRecipe fs1 = FieldSpecificationBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
-        FieldRecipe fs2 = FieldSpecificationBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
+        FieldRecipe fs1 = FieldBuilder.latestValue("default_provider_label", "f1a_label").setLabel("f1").build();
+        FieldRecipe fs2 = FieldBuilder.latestValue("default_provider_label", "f2a_label").setLabel("f2").build();
 
         subject = TestFactory.makeNamedSubject("E01002766");
         Attribute f1 = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "f1a_label");

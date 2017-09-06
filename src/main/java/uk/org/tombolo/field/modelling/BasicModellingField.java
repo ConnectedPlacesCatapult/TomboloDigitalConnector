@@ -53,12 +53,12 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
     }
 
     protected void initialize() {
-        String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
-        URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
-        File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
+        String fieldFilename = fieldSpecPath+recipe+fieldSpecPostfix;
+        URL fieldFileURL = ClassLoader.getSystemResource(fieldFilename);
+        File fieldFile = new File(fieldFileURL.getFile());
         try {
             field = RecipeDeserializer
-                    .fromJsonFile(fieldSpecificationFile, FieldRecipe.class)
+                    .fromJsonFile(fieldFile, FieldRecipe.class)
                     .toField();
             field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {

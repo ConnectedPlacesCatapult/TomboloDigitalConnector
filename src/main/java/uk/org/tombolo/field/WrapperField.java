@@ -13,22 +13,22 @@ import java.util.List;
  * WrapperField.java
  * A field that wraps subfields in a JSON object.
  *
- * Takes a fieldSpecification exactly like the root fieldSpecification does.
+ * Takes a field exactly like the root field does.
  * Can be nested.
  */
 public class WrapperField extends AbstractField implements Field, ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
-    private final List<FieldRecipe> fieldSpecification;
+    private final List<FieldRecipe> field;
     private ArrayList<Field> fields;
 
-    WrapperField(String label, List<FieldRecipe> fieldSpecification) {
+    WrapperField(String label, List<FieldRecipe> field) {
         super(label);
-        this.fieldSpecification = fieldSpecification;
+        this.field = field;
     }
 
     public void initialize() {
         this.fields = new ArrayList<>();
-        for (FieldRecipe fieldSpec : fieldSpecification) {
+        for (FieldRecipe fieldSpec : field) {
             try {
                 fields.add(fieldSpec.toField());
             } catch (ClassNotFoundException e) {

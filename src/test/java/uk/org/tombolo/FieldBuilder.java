@@ -8,31 +8,31 @@ import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.util.List;
 
-public class FieldSpecificationBuilder implements JSONAware {
+public class FieldBuilder implements JSONAware {
     JSONObject jsonSpec;
 
-    FieldSpecificationBuilder() {
+    FieldBuilder() {
         jsonSpec = new JSONObject();
     }
 
-    public static FieldSpecificationBuilder latestValue(String providerLabel, String attributeLabel) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder latestValue(String providerLabel, String attributeLabel) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.LatestValueField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
         return spec;
     }
 
-    public static FieldSpecificationBuilder fixedValueField(String providerLabel, String attributeLabel) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder fixedValueField(String providerLabel, String attributeLabel) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.FixedValueField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
         return spec;
     }
 
-    public static FieldSpecificationBuilder valuesByTime(String providerLabel, String attributeLabel) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder valuesByTime(String providerLabel, String attributeLabel) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.ValuesByTimeField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
@@ -40,60 +40,60 @@ public class FieldSpecificationBuilder implements JSONAware {
     }
 
 
-    public static FieldSpecificationBuilder wrapperField(String label, List<FieldSpecificationBuilder> fieldSpecificationBuilders) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder wrapperField(String label, List<FieldBuilder> fieldBuilders) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.WrapperField")
                 .setLabel(label)
-                .set("fieldSpecification", fieldSpecificationBuilders);
+                .set("field", fieldBuilders);
         return spec;
     }
 
-    public static FieldSpecificationBuilder mapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldSpecificationBuilder fieldSpecificationBuilder) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder mapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldBuilder fieldBuilder) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.MapToContainingSubjectField")
                 .setLabel(label)
                 .set("containingSubjectProvider", containingSubjectProvider)
                 .set("containingSubjectType", containingSubjectType)
-                .set("fieldSpecification", fieldSpecificationBuilder);
+                .set("field", fieldBuilder);
         return spec;
     }
 
-    public static FieldSpecificationBuilder fixedAnnotationField(String label, String value) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder fixedAnnotationField(String label, String value) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.value.FixedAnnotationField")
                 .setLabel(label)
                 .set("value", value);
         return spec;
     }
 
-    public static FieldSpecificationBuilder fractionOfTotal(String label) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder fractionOfTotal(String label) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.transformation.FractionOfTotalField")
                 .setLabel(label);
         return spec;
     }
 
-    public static FieldSpecificationBuilder modellingField(String label, String recipe) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder modellingField(String label, String recipe) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.modelling.BasicModellingField")
                 .setLabel(label)
                 .set("recipe", recipe);
         return spec;
     }
 
-    public static FieldSpecificationBuilder geographicAggregation(String label, String aggregationSubjectProvider, String aggregationSubjectType, String aggregationFunction, FieldSpecificationBuilder fieldSpecificationBuilder) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder geographicAggregation(String label, String aggregationSubjectProvider, String aggregationSubjectType, String aggregationFunction, FieldBuilder fieldBuilder) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.GeographicAggregationField")
                 .setLabel(label)
                 .set("aggregationSubjectProvider", aggregationSubjectProvider)
                 .set("aggregationSubjectType", aggregationSubjectType)
                 .set("aggregationFunction", aggregationFunction)
-                .set("fieldSpecification", fieldSpecificationBuilder);
+                .set("field", fieldBuilder);
         return spec;
     }
 
-    public static FieldSpecificationBuilder percentilesField(String label, Integer percentileCount, Boolean inverse) {
-        FieldSpecificationBuilder spec = new FieldSpecificationBuilder();
+    public static FieldBuilder percentilesField(String label, Integer percentileCount, Boolean inverse) {
+        FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.transformation.PercentilesField")
                 .setLabel(label)
                 .set("percentileCount", percentileCount)
@@ -101,7 +101,7 @@ public class FieldSpecificationBuilder implements JSONAware {
         return spec;
     }
 
-    private FieldSpecificationBuilder setAttribute(String providerLabel, String attributeLabel) {
+    private FieldBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
         attribute.put("providerLabel", providerLabel);
         attribute.put("attributeLabel", attributeLabel);
@@ -114,20 +114,20 @@ public class FieldSpecificationBuilder implements JSONAware {
         return jsonSpec.toJSONString();
     }
 
-    public FieldSpecificationBuilder set(String key, Object value) {
+    public FieldBuilder set(String key, Object value) {
         jsonSpec.put(key, value);
         return this;
     }
 
-    public FieldSpecificationBuilder setFieldClass(String fieldClass) {
+    public FieldBuilder setFieldClass(String fieldClass) {
         return set("fieldClass", fieldClass);
     }
 
-    public FieldSpecificationBuilder setLabel(String label) {
+    public FieldBuilder setLabel(String label) {
         return set("label", label);
     }
 
-    public FieldSpecificationBuilder addDividendAttribute(String providerLabel, String attributeLabel) {
+    public FieldBuilder addDividendAttribute(String providerLabel, String attributeLabel) {
         JSONArray dividendAttributeListObj = (JSONArray) jsonSpec.getOrDefault("dividendAttributes", new JSONArray());
         jsonSpec.put("dividendAttributes", dividendAttributeListObj);
         JSONObject dividendAttributeObj = new JSONObject();
@@ -137,7 +137,7 @@ public class FieldSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public FieldSpecificationBuilder setDivisorAttribute(String providerLabel, String attributeLabel) {
+    public FieldBuilder setDivisorAttribute(String providerLabel, String attributeLabel) {
         JSONObject divisorAttributeObj = new JSONObject();
         divisorAttributeObj.put("providerLabel", providerLabel);
         divisorAttributeObj.put("attributeLabel", attributeLabel);

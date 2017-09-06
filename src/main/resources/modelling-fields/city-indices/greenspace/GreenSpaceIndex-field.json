@@ -3,14 +3,14 @@
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "Green Space Fraction",
   "operation": "div",
-  "fieldSpecification1": {
+  "field1": {
   // Modelling field for Cycle to car proportion (built-in model)
   "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
   "label": "GreenSpaceArea Proportion",
   "recipe": "city-indices/greenspace/GreenSpaceArea"
 
   },
-  "fieldSpecification2": {
+  "field2": {
     "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
     "label": "LSOA area",
     "recipe": "city-indices/greenspace/lsoaArea"

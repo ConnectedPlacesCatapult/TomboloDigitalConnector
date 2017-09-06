@@ -16,8 +16,8 @@ import java.util.function.BiFunction;
  */
 public class ArithmeticField extends AbstractField implements SingleValueField {
     public static enum Operation {div, mul, add, sub}
-    private final FieldRecipe fieldSpecification1;
-    private final FieldRecipe fieldSpecification2;
+    private final FieldRecipe fieldRecipe1;
+    private final FieldRecipe fieldRecipe2;
     private final Operation operation;
 
     private Map<Operation, BiFunction<Double, Double, Double>> operators;
@@ -25,11 +25,11 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
     private SingleValueField field2;
     private BiFunction<Double, Double, Double> operator;
 
-    ArithmeticField(String label, Operation operation, FieldRecipe fieldSpecification1, FieldRecipe fieldSpecification2) {
+    ArithmeticField(String label, Operation operation, FieldRecipe fieldRecipe1, FieldRecipe fieldRecipe2) {
         super(label);
-        this.fieldSpecification1 = fieldSpecification1;
+        this.fieldRecipe1 = fieldRecipe1;
         this.operation = operation;
-        this.fieldSpecification2 = fieldSpecification2;
+        this.fieldRecipe2 = fieldRecipe2;
     }
 
     public void initialize() {
@@ -42,9 +42,9 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
 
         try {
             this.operator = operators.get(this.operation);
-            this.field1 = (SingleValueField) fieldSpecification1.toField();
+            this.field1 = (SingleValueField) fieldRecipe1.toField();
             field1.setFieldCache(fieldCache);
-            this.field2 = (SingleValueField) fieldSpecification2.toField();
+            this.field2 = (SingleValueField) fieldRecipe2.toField();
             field2.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid: " + e.getClass());

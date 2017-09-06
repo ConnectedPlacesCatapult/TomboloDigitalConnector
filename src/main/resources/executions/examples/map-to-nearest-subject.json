@@ -40,7 +40,7 @@
         "label": "centrality",
         "nearestSubjectType": "SSxNode",
         "maxRadius": 0.001,
-        "fieldSpecification": {
+        "field": {
           "fieldClass": "uk.org.tombolo.field.value.FixedValueField",
           "label": "centrality",
           "attribute": {

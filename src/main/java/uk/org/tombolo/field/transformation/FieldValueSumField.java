@@ -13,20 +13,20 @@ import java.util.List;
  */
 public class FieldValueSumField extends FixedValueField implements SingleValueField, ParentField {
     String name;
-    List<FieldRecipe> fieldSpecifications;
+    List<FieldRecipe> fieldRecipes;
     List<Field> fields;
 
-    public FieldValueSumField(String label, String name, List<FieldRecipe> fieldSpecifications) {
+    public FieldValueSumField(String label, String name, List<FieldRecipe> fieldRecipes) {
         super(label);
         this.name = name;
-        this.fieldSpecifications = fieldSpecifications;
+        this.fieldRecipes = fieldRecipes;
     }
 
     public void initialize() {
         this.fields = new ArrayList<>();
-        for (FieldRecipe fieldSpec : fieldSpecifications) {
+        for (FieldRecipe recipe : fieldRecipes) {
             try {
-                Field field = fieldSpec.toField();
+                Field field = (SingleValueField) recipe.toField();
                 field.setFieldCache(fieldCache);
                 fields.add(field);
             } catch (ClassNotFoundException e) {

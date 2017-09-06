@@ -33,7 +33,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     public static enum AggregationFunction {sum, mean}
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
-    private final FieldRecipe fieldSpecification;
+    private final FieldRecipe fieldRecipe;
     private final AggregationFunction aggregationFunction;
 
     private Map<AggregationFunction, MathArrays.Function> aggregators;
@@ -41,11 +41,11 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe fieldSpecification) {
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe fieldRecipe) {
         super(label);
         this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
-        this.fieldSpecification = fieldSpecification;
+        this.fieldRecipe = fieldRecipe;
         this.aggregationFunction = aggregationFunction;
     }
 
@@ -59,7 +59,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
-            this.field = (SingleValueField) fieldSpecification.toField();
+            this.field = (SingleValueField) fieldRecipe.toField();
             field.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid");
