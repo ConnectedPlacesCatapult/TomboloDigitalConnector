@@ -135,12 +135,12 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
             Row row = rowIterator.next();
 
             attributeNameExtractor.setRow(row);
-            String attributeName = AttributeUtils.substringToDBLength(attributeNameExtractor.extract());
+            String attributeLabel = AttributeUtils.substringToDBLength(attributeNameExtractor.extract());
 
-            if (!attributes.containsKey(attributeName))
+            if (!attributes.containsKey(attributeLabel))
                 attributes.put(
-                        attributeName,
-                        new Attribute(getProvider(), attributeName, attributeName)
+                        attributeLabel,
+                        new Attribute(getProvider(), attributeLabel, attributeLabel)
                 );
         }
         workbook.close();

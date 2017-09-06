@@ -53,7 +53,7 @@ public class AttributeUtils {
 	 */
 	public static String substringToDBLength(String label) {
 		if (label.length() > 255) {
-			return label.substring(0, 218) + " " + UUID.fromString(label);
+			return label.substring(0, 218) + " " + UUID.nameUUIDFromBytes(label.toString().getBytes()).toString();
 		}
 
 		return label;

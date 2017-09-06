@@ -4,7 +4,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
@@ -97,7 +96,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
-    private Attribute getAttribute(AttributeId attributeId){
+    private Attribute getAttribute(AttributeId attributeId) {
         switch (attributeId){
             case populationDensity:
                 return new Attribute(getProvider(), AttributeId.populationDensity.name(),
@@ -118,7 +117,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                 return new Attribute(getProvider(), AttributeId.carsPerHousehold.name(),
                         "Number of cars per household, (2011 Census)");
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 
@@ -188,7 +187,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         new CSVExtractor(62)
                 );
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 }
