@@ -81,13 +81,13 @@ public class FieldBuilder implements JSONAware {
         return spec;
     }
 
-    public static FieldBuilder geographicAggregation(String label, String aggregationSubjectProvider, String aggregationSubjectType, String aggregationFunction, FieldBuilder fieldBuilder) {
+    public static FieldBuilder geographicAggregation(String label, String aggregationSubjectProvider, String aggregationSubjectType, String function, FieldBuilder fieldBuilder) {
         FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.GeographicAggregationField")
                 .setLabel(label)
                 .set("aggregationSubjectProvider", aggregationSubjectProvider)
                 .set("aggregationSubjectType", aggregationSubjectType)
-                .set("aggregationFunction", aggregationFunction)
+                .set("function", function)
                 .set("field", fieldBuilder);
         return spec;
     }

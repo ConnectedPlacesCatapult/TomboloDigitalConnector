@@ -4,7 +4,7 @@
     "label": "Green space sum",
     "aggregationSubjectProvider": "de.overpass-api",
     "aggregationSubjectType": "OSMEntity",
-    "aggregationFunction": "sum",
+    "function": "sum",
     "field": {
       "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
       "label": "Green Space geography area",

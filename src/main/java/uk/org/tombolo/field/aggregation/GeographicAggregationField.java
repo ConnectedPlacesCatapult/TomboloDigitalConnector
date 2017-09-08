@@ -33,19 +33,19 @@ public class GeographicAggregationField extends AbstractField {
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
     private final FieldRecipe field;
-    private final AggregationFunction aggregationFunction;
+    private final AggregationFunction function;
 
     private Map<AggregationFunction, MathArrays.Function> aggregators;
     private SingleValueField singleValueField;
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe field) {
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction function, FieldRecipe field) {
         super(label);
         this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
         this.field = field;
-        this.aggregationFunction = aggregationFunction;
+        this.function = function;
     }
 
     public void initialize() {
@@ -57,7 +57,7 @@ public class GeographicAggregationField extends AbstractField {
         aggregators.put(AggregationFunction.mean, new Mean());
 
         try {
-            this.aggregator = aggregators.get(this.aggregationFunction);
+            this.aggregator = aggregators.get(this.function);
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
         } catch (Exception e) {
@@ -81,9 +81,9 @@ public class GeographicAggregationField extends AbstractField {
         Double retVal = doubles.compute(aggregator);
 
         if (retVal.isNaN()) {
-            throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (possible division by zero?)", aggregationFunction));
+            throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (possible division by zero?)", function));
         } else if (retVal.isInfinite()) {
-            throw new IncomputableFieldException(String.format("Aggregation function %s returned Infinity (possible division by zero?)", aggregationFunction));
+            throw new IncomputableFieldException(String.format("Aggregation function %s returned Infinity (possible division by zero?)", function));
         }
 
         return retVal;

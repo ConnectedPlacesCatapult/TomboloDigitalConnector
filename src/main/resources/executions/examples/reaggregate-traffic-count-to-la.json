@@ -52,7 +52,7 @@
             "label": "SumCountPedalCycles",
             "aggregationSubjectProvider": "uk.gov.dft",
             "aggregationSubjectType": "trafficCounter",
-            "aggregationFunction": "sum",
+            "function": "sum",
 
             "field": {
               "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
