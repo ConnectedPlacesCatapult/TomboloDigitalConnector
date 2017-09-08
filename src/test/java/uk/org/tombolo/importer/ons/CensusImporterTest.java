@@ -55,7 +55,7 @@ public class CensusImporterTest extends AbstractTest {
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(52, importer.getTimedValueCount());
 
-        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Method of Travel to Work: All categories: Method of travel to w");
+        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Method of Travel to Work: All categories: Method of travel to work");
 
         TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute01);
         assertEquals(1221d, timedValue.getValue(), 0.0d);

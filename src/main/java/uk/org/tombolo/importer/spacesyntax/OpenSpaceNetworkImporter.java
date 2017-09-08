@@ -5,6 +5,7 @@ import org.opengis.feature.type.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
@@ -75,17 +76,11 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
             AttributeType type = typeIterator.next();
             String columnName = type.getName().toString();
             if (NON_ATTRIBUTE_COLUMNS.contains(columnName)) { continue; }
-            Attribute attribute = new Attribute();
-            attribute.setProvider(getProvider());
-            attribute.setLabel(columnName);
-            attribute.setName(columnName.replace("_", " "));
-            if (null != type.getDescription()) {
-                attribute.setDescription(type.getDescription().toString());
-            } else {
-                // If no description, we'll just duplicate the name
-                attribute.setDescription(attribute.getName());
-            }
-            fixedValueAttributes.add(attribute);
+            fixedValueAttributes.add(new Attribute(
+                    getProvider(),
+                    AttributeUtils.substringToDBLength(columnName),
+                    null != type.getDescription() ? type.getDescription().toString() : columnName)
+            );
         }
 
         return fixedValueAttributes;

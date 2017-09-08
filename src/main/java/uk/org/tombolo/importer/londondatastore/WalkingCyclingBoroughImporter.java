@@ -156,26 +156,18 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
         excelUtils.extractAndSaveTimedValues(cycleSheet, this, cycle1xWeekExtractors);
     }
 
-    private Attribute getAttribute(AttributeId attributeId){
+    private Attribute getAttribute(AttributeId attributeId) {
         switch (attributeId){
             case walk5xWeek:
-               return new Attribute(
-                       getProvider(),
-                       AttributeId.walk5xWeek.name(),
-                       "Walk 5x Week",
-                        "% of population who walk for at least 30 minutes, at least 5 x week",
-                        Attribute.DataType.numeric
+               return new Attribute(getProvider(), AttributeId.walk5xWeek.name(),
+                        "% of population who walk for at least 30 minutes, at least 5 x week"
                );
             case cycle1xWeek:
-                return new Attribute(
-                        getProvider(),
-                        AttributeId.cycle1xWeek.name(),
-                        "Cycle 1x Week",
-                        "% of population who cycle at least 1 x week",
-                        Attribute.DataType.numeric
+                return new Attribute(getProvider(), AttributeId.cycle1xWeek.name(),
+                        "% of population who cycle at least 1 x week"
                 );
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 }

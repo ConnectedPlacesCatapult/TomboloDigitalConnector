@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Test for green space importer from open street map
  *
- * File: aHR0cDovL2Rvd25sb2FkLmdlb2ZhYnJpay5kZS9ldXJvcGUvZ3JlYXQtYnJpdGFpbi9lbmdsYW5kL2RvcnNldC1sYXRlc3Qub3NtLnBiZg==.osm.pbf
+ * File: 87e9e913-8849-3dc9-8f67-9dac9fdeccb4.osm.pbf
  */
 public class GreenSpaceImporterTest extends AbstractTest {
     private static final String TEST_AREA = "europe/great-britain/england/herefordshire";
@@ -57,11 +57,10 @@ public class GreenSpaceImporterTest extends AbstractTest {
         Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
         assertEquals("org.openstreetmap", landuse.getProvider().getLabel());
         assertEquals("landuse", landuse.getLabel());
-        assertEquals("landuse", landuse.getName());
+
         Attribute natural = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "natural");
         assertEquals("org.openstreetmap", natural.getProvider().getLabel());
         assertEquals("natural", natural.getLabel());
-        assertEquals("natural", natural.getName());
 
         // Test subjects import
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("org.openstreetmap","OSMEntity");

@@ -89,30 +89,22 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 		RoadName(new Attribute(
 				null,
 				"RoadName",
-				"Road Name",
-				"Road Name",
-				Attribute.DataType.string),
+				"Road Name"),
 				6),
 		RoadCategory(new Attribute(
 				null,
 				"RoadCategory",
-				"Road Category",
-				"Road Category",
-				Attribute.DataType.string),
+				"Road Category"),
 				7),
 		StartJunction(new Attribute(
 				null,
 				"StartJunction",
-				"Start Junction",
-				"Start Junction",
-				Attribute.DataType.string),
+				"Start Junction"),
 				10),
 		EndJunction(new Attribute(
 				null,
 				"EndJunction",
-				"End Junction",
-				"End Junction",
-				Attribute.DataType.string),
+				"End Junction"),
 				11);
 
 		private Attribute attribute;
@@ -129,44 +121,32 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 		CountPedalCycles(new Attribute(
 				null,
 				"CountPedalCycles",
-				"Pedal Cycle Count",
-				"Pedal Cycle Count",
-				Attribute.DataType.numeric),
+				"Pedal Cycle Count"),
 				14),
 		CountMotorcycles(new Attribute(
 				null,
 				"CountMotorcycles",
-				"Motorycle Count",
-				"Motorcycle Count",
-				Attribute.DataType.numeric),
+				"Motorycle Count"),
 				15),
 		CountCarsTaxis(new Attribute(
 				null,
 				"CountCarsTaxis",
-				"Count of cars and taxis",
-				"Count of cars and taxis",
-				Attribute.DataType.numeric),
+				"Count of cars and taxis"),
 				16),
 		CountBusesCoaches(new Attribute(
 				null,
 				"CountBusesCoaches",
-				"Count of buses and coaches",
-				"Count of buses and coaches",
-				Attribute.DataType.numeric),
+				"Count of buses and coaches"),
 				17),
 		CountLightGoodsVehicles(new Attribute(
 				null,
 				"CountLightGoodsVehicles",
-				"Count of light goods vehicles",
-				"Count of light goods vehicles",
-				Attribute.DataType.numeric),
+				"Count of light goods vehicles"),
 				18),
 		CountHeavyGoodsVehicles(new Attribute(
 				null,
 				"CountHeavyGoodsVehicles",
-				"Count of heavy goods vehicles",
-				"Count of heavy goods vehicles",
-				Attribute.DataType.numeric),
+				"Count of heavy goods vehicles"),
 				25);
 
 			private Attribute attribute;
@@ -184,44 +164,32 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 		VolumePedalCycles(new Attribute(
 				null,
 				"VolumePedalCycles",
-				"Pedal Cycle Volume",
-				"Pedal Cycle Volume",
-				Attribute.DataType.numeric),
+				"Pedal Cycle Volume"),
 				13),
 		VolumeMotorcycles(new Attribute(
 				null,
 				"VolumeMotorcycles",
-				"Motorycle Volume",
-				"Motorcycle Volume",
-				Attribute.DataType.numeric),
+				"Motorycle Volume"),
 				14),
 		VolumeCarsTaxis(new Attribute(
 				null,
 				"VolumeCarsTaxis",
-				"Volume of cars and taxis",
-				"Volume of cars and taxis",
-				Attribute.DataType.numeric),
+				"Volume of cars and taxis"),
 				15),
 		VolumeBusesCoaches(new Attribute(
 				null,
 				"VolumeBusesCoaches",
-				"Volume of buses and coaches",
-				"Volume of buses and coaches",
-				Attribute.DataType.numeric),
+				"Volume of buses and coaches"),
 				16),
 		VolumeLightGoodsVehicles(new Attribute(
 				null,
 				"VolumeLightGoodsVehicles",
-				"Volume of light goods vehicles",
-				"Volume of light goods vehicles",
-				Attribute.DataType.numeric),
+				"Volume of light goods vehicles"),
 				17),
 		VolumeHeavyGoodsVehicles(new Attribute(
 				null,
 				"VolumeHeavyGoodsVehicles",
-				"Volume of heavy goods vehicles",
-				"Volume of heavy goods vehicles",
-				Attribute.DataType.numeric),
+				"Volume of heavy goods vehicles"),
 				24);
 
 		private Attribute attribute;

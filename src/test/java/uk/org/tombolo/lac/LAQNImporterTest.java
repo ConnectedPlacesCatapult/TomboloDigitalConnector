@@ -87,7 +87,6 @@ public class LAQNImporterTest extends AbstractTest {
 
         assertEquals(33, laqnImporter.getAttributeSize());
         assertEquals("SiteCode", attribute.getLabel());
-        assertEquals("SiteCode", attribute.getName());
         assertEquals("Unique key", attribute.getDescription());
 
     }

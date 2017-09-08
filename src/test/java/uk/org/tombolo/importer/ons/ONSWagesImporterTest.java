@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNull;
  * Remote: "http://www.ons.gov.uk/file?" +
  *          "uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/" +
  *          "placeofresidencebylocalauthorityashetable8/2016/table82016provisional.zip"
- * Local: aHR0cDovL3d3dy5vbnMuZ292LnVrL2ZpbGU_dXJpPS9lbXBsb3ltZW50YW5kbGFib3VybWFya2V0L3Blb3BsZWlud29yay9lYXJuaW5nc2FuZHdvcmtpbmdob3Vycy9kYXRhc2V0cy9wbGFjZW9mcmVzaWRlbmNlYnlsb2NhbGF1dGhvcml0eWFzaGV0YWJsZTgvMjAxNi90YWJsZTgyMDE2cHJvdmlzaW9uYWwuemlw.zip
+ * Local: 0c5b6b65-f1cb-3cab-a7d5-5ac338148437.zip
  */
 public class ONSWagesImporterTest extends AbstractTest {
     Subject cityOfLondon;

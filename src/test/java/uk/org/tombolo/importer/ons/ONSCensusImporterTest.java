@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote; http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip
- * Local: aHR0cDovL2RhdGEuc3RhdGlzdGljcy5nb3YudWsvb25zL2RhdGFzZXRzL2Nzdi9DU1ZfT1QxMDJFV18yMDExU1RBVEhfMV9FTi56aXA=.zip
+ * Local: 1877d607-95df-3ee3-ba35-d69637198668.zip
  */
 public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
@@ -61,7 +61,7 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		assertEquals(3 + 3, importer.getTimedValueCount());
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
-		assertEquals("Area (Hectares)", attribute.getName());
+		assertEquals("Area (Hectares)", attribute.getDescription());
 		
 	}
 

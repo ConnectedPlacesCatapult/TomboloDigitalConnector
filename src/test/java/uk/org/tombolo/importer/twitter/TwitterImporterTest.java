@@ -58,13 +58,13 @@ public class TwitterImporterTest extends AbstractTest {
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute.getProvider().getLabel());
         assertEquals("user", attribute.getLabel());
-        assertEquals("user", attribute.getName());
+        assertEquals("user screen name", attribute.getDescription());
 
         importer.importDatasource("twitter", null, null, Arrays.asList(LOCAL_DATA_STREAMING_API));
         Attribute attribute1 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "user");
         assertEquals("com.twitter", attribute1.getProvider().getLabel());
         assertEquals("user", attribute1.getLabel());
-        assertEquals("user", attribute1.getName());
+        assertEquals("user screen name", attribute1.getDescription());
     }
 
     @Test

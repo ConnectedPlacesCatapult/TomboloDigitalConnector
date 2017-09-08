@@ -27,7 +27,7 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         Subject subjectWithoutAttribute = TestFactory.makeNamedSubject("E01000002");
 
         // Crate dummy attribute
-        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "", "", Attribute.DataType.string);
+        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "");
         AttributeUtils.save(testAttribute);
 
         // Assign attribute values

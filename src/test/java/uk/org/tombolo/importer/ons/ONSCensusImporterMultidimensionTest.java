@@ -52,23 +52,23 @@ public class ONSCensusImporterMultidimensionTest extends AbstractONSCensusImport
 		assertNull(attribute0);
 		
 		Attribute attribute1 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_1");
-		assertEquals("Age (T102A) - Total: All categories: Age", attribute1.getName());
+		assertEquals("Age (T102A) - Total: All categories: Age", attribute1.getDescription());
 
 		Attribute attribute2 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_2");
-		assertEquals("Age (T102A) - Age under 1", attribute2.getName());
+		assertEquals("Age (T102A) - Age under 1", attribute2.getDescription());
 
 		Attribute attribute3 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_3");
-		assertEquals("Age (T102A) - Age 1", attribute3.getName());
+		assertEquals("Age (T102A) - Age 1", attribute3.getDescription());
 
 		Attribute attribute25 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_25");
-		assertEquals("Age (T102A) - Age 23", attribute25.getName());
+		assertEquals("Age (T102A) - Age 23", attribute25.getDescription());
 
 		Attribute attribute101 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_101");
-		assertEquals("Age (T102A) - Age 99", attribute101.getName());
+		assertEquals("Age (T102A) - Age 99", attribute101.getDescription());
 
 		Attribute attribute102 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_102");
-		assertEquals("Age (T102A) - Age 100 and over", attribute102.getName());
-		
+		assertEquals("Age (T102A) - Age 100 and over", attribute102.getDescription());
+
 		Attribute attribute103 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000053_103");
 		assertNull(attribute103);
 	}

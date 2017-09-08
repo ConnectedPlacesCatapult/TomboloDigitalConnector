@@ -93,20 +93,15 @@ public class AdultObesityImporter extends AbstractPheImporter {
     public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionUnderweight.name(),
-                "Fraction Underweight", "BMI less than 18.5kg/m2",
-                Attribute.DataType.numeric));
+                "BMI less than 18.5kg/m2"));
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionHealthyWeight.name(),
-                "Fraction Healty Weight", "BMI greater than or equal to 18.5 but less than 25kg/m2",
-                Attribute.DataType.numeric));
+                "BMI greater than or equal to 18.5 but less than 25kg/m2"));
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionOverweight.name(),
-                "Fraction Overweight", "BMI greater than or equal to 25 but less than 30kg/m2",
-                Attribute.DataType.numeric));
+                "BMI greater than or equal to 25 but less than 30kg/m2"));
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionObese.name(),
-                "Fraction Obese", "BMI greater than or equal to 30kg/m2",
-                Attribute.DataType.numeric));
+                "BMI greater than or equal to 30kg/m2"));
         attributes.add(new Attribute(getProvider(), AttributeLabel.fractionExcessWeight.name(),
-                "Fraction Excess Weight", "BMI greater than or equal to 25kg/m2 (overweight including obese)",
-                Attribute.DataType.numeric));
+                "BMI greater than or equal to 25kg/m2 (overweight including obese)"));
         return attributes;
     }
 
