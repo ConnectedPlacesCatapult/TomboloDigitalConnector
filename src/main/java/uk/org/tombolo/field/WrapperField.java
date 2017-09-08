@@ -16,21 +16,21 @@ import java.util.List;
  * Takes a field exactly like the root field does.
  * Can be nested.
  */
-public class WrapperField extends AbstractField implements Field, ParentField {
+public class WrapperField extends AbstractField implements ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
-    private final List<FieldRecipe> field;
-    private ArrayList<Field> fields;
+    private final List<FieldRecipe> fields;
+    private ArrayList<Field> wrapperFields;
 
-    WrapperField(String label, List<FieldRecipe> field) {
+    WrapperField(String label, List<FieldRecipe> fields) {
         super(label);
-        this.field = field;
+        this.fields = fields;
     }
 
     public void initialize() {
-        this.fields = new ArrayList<>();
-        for (FieldRecipe fieldSpec : field) {
+        this.wrapperFields = new ArrayList<>();
+        for (FieldRecipe fieldSpec : fields) {
             try {
-                fields.add(fieldSpec.toField());
+                wrapperFields.add(fieldSpec.toField());
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }
@@ -39,10 +39,10 @@ public class WrapperField extends AbstractField implements Field, ParentField {
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) {
-        if (null == fields) { initialize(); }
+        if (null == wrapperFields) { initialize(); }
         JSONObject obj = new JSONObject();
         JSONObject inner = new JSONObject();
-        fields.forEach(field -> {
+        wrapperFields.forEach(field -> {
             try {
                 inner.putAll(field.jsonValueForSubject(subject, timeStamp));
             } catch (IncomputableFieldException e) {
@@ -55,7 +55,7 @@ public class WrapperField extends AbstractField implements Field, ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (null == fields) { initialize(); }
-        return fields;
+        if (null == wrapperFields) { initialize(); }
+        return wrapperFields;
     }
 }

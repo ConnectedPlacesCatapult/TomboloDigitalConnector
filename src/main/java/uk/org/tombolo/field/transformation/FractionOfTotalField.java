@@ -11,10 +11,9 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
  * For a subject, returns the sum of its TimedValues for a list of dividend
  * attributes divided by a divisor attribute.
  */
-public class FractionOfTotalField extends AbstractField implements SingleValueField {
+public class FractionOfTotalField extends AbstractField {
     private final List<AttributeMatcher> dividendAttributes;
     private final AttributeMatcher divisorAttribute;
     private Map<AttributeMatcher, Attribute> cachedAttributes;

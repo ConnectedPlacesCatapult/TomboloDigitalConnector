@@ -1,7 +1,6 @@
 package uk.org.tombolo.field.modelling;
 
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 
@@ -10,7 +9,7 @@ import uk.org.tombolo.field.SingleValueField;
  * further calculations. E.g. in a field where we would like to algorithmically combine the values of two or more
  * modelling fields.
  */
-public class SingleValueModellingField extends BasicModellingField implements Field, SingleValueField, ModellingField {
+public class SingleValueModellingField extends BasicModellingField {
 
     public SingleValueModellingField(String label, String recipe) {
         super(label, recipe);

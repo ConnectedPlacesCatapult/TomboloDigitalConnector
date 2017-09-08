@@ -37,13 +37,13 @@ public class FieldValueSumFieldTest extends AbstractTest {
     @Test
     public void initialize() throws Exception {
         field.initialize();
-        assertEquals(2, field.fields.size());
+        assertEquals(2, field.sumFields.size());
 
-        assertEquals(LatestValueField.class.getName(), field.fields.get(0).getClass().getName());
-        assertEquals("f1", field.fields.get(0).getLabel());
+        assertEquals(LatestValueField.class.getName(), field.sumFields.get(0).getClass().getName());
+        assertEquals("f1", field.sumFields.get(0).getLabel());
 
-        assertEquals(LatestValueField.class.getName(), field.fields.get(1).getClass().getName());
-        assertEquals("f2", field.fields.get(1).getLabel());
+        assertEquals(LatestValueField.class.getName(), field.sumFields.get(1).getClass().getName());
+        assertEquals("f2", field.sumFields.get(1).getLabel());
     }
 
     @Test

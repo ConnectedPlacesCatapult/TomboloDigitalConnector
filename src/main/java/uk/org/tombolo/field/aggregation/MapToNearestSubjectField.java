@@ -18,22 +18,22 @@ import java.util.List;
  * building, it will evaluate the fieldSpec with a subject representing the
  * Street that building is on (notwithstanding oddities in the data)
  */
-public class MapToNearestSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
+public class MapToNearestSubjectField extends AbstractField implements ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final String nearestSubjectProvider;
     private final String nearestSubjectType;
-    private final FieldRecipe fieldRecipe;
+    private final FieldRecipe field;
     private Double maxRadius;
-    private SingleValueField field;
+    private SingleValueField singleValueField;
     private SubjectType nearestSubjectTypeObject;
 
-    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe fieldRecipe) {
+    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe field) {
         super(label);
         this.maxRadius = maxRadius;
         this.nearestSubjectProvider = nearestSubjectProvider;
         this.nearestSubjectType = nearestSubjectType;
-        this.fieldRecipe = fieldRecipe;
+        this.field = field;
     }
 
     public void initialize() {
@@ -42,8 +42,8 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         // Initialize maxRadius with a default value
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
-            this.field = (SingleValueField) fieldRecipe.toField();
-            field.setFieldCache(fieldCache);
+            this.singleValueField = (SingleValueField) field.toField();
+            singleValueField.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
@@ -63,14 +63,14 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
 
     @Override
     public List<Field> getChildFields() {
-        if (null == field) { initialize(); }
-        return Collections.singletonList(field);
+        if (null == singleValueField) { initialize(); }
+        return Collections.singletonList(singleValueField);
     }
 
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        return field.valueForSubject(
+        if (null == singleValueField) { initialize(); }
+        return singleValueField.valueForSubject(
                 getSubjectProximalToSubject(subject), timeStamp);
     }
 }

@@ -10,11 +10,10 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,25 +26,25 @@ import java.util.Map;
  *
  * So far, `sum` and `mean` are implemented.
  */
-public class GeographicAggregationField extends AbstractField implements Field, SingleValueField {
+public class GeographicAggregationField extends AbstractField {
     private static Logger log = LoggerFactory.getLogger(GeographicAggregationField.class);
 
     public static enum AggregationFunction {sum, mean}
     private final String aggregationSubjectProvider;
     private final String aggregationSubjectType;
-    private final FieldRecipe fieldRecipe;
+    private final FieldRecipe field;
     private final AggregationFunction aggregationFunction;
 
     private Map<AggregationFunction, MathArrays.Function> aggregators;
-    private SingleValueField field;
+    private SingleValueField singleValueField;
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe fieldRecipe) {
+    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction aggregationFunction, FieldRecipe field) {
         super(label);
         this.aggregationSubjectProvider = aggregationSubjectProvider;
         this.aggregationSubjectType = aggregationSubjectType;
-        this.fieldRecipe = fieldRecipe;
+        this.field = field;
         this.aggregationFunction = aggregationFunction;
     }
 
@@ -59,8 +58,8 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
         try {
             this.aggregator = aggregators.get(this.aggregationFunction);
-            this.field = (SingleValueField) fieldRecipe.toField();
-            field.setFieldCache(fieldCache);
+            this.singleValueField = (SingleValueField) field.toField();
+            singleValueField.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid");
         }
@@ -71,7 +70,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
 
         for (Subject subject : aggregationSubjects) {
             try {
-                doubles.addElement(Double.parseDouble(field.valueForSubject(subject, true)));
+                doubles.addElement(Double.parseDouble(singleValueField.valueForSubject(subject, true)));
             } catch (IncomputableFieldException e) {
                 log.warn("Incomputable field not included in aggregation for subject {} ({})",
                         subject.getName(),
@@ -96,7 +95,7 @@ public class GeographicAggregationField extends AbstractField implements Field, 
     }
 
     private Double getDoubleValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
+        if (null == singleValueField) { initialize(); }
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);

@@ -19,26 +19,26 @@ import java.util.stream.Collectors;
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
+public class MapToContainingSubjectField extends AbstractField implements ParentField {
     private final String containingSubjectProvider;
     private final String containingSubjectType;
-    private final FieldRecipe fieldRecipe;
-    private SingleValueField field;
+    private final FieldRecipe field;
+    private SingleValueField singleValueField;
     private SubjectType containerSubjectType;
 
     MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldRecipe) {
         super(label);
         this.containingSubjectProvider = containingSubjectProvider;
         this.containingSubjectType = containingSubjectType;
-        this.fieldRecipe = fieldRecipe;
+        this.field = fieldRecipe;
     }
 
     public void initialize() {
         containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(containingSubjectProvider, containingSubjectType);
 
         try {
-            this.field = (SingleValueField) fieldRecipe.toField();
-            field.setFieldCache(fieldCache);
+            this.singleValueField = (SingleValueField) field.toField();
+            singleValueField.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
@@ -46,9 +46,9 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
 
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
+        if (null == singleValueField) { initialize(); }
         Gson gson = new Gson();
-        return gson.toJson(field.jsonValueForSubject(
+        return gson.toJson(singleValueField.jsonValueForSubject(
                 getSubjectContainingSubject(subject), timeStamp));
     }
 
@@ -68,7 +68,7 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
 
     @Override
     public List<Field> getChildFields() {
-        if (null == field) { initialize(); }
-        return Collections.singletonList(field);
+        if (null == singleValueField) { initialize(); }
+        return Collections.singletonList(singleValueField);
     }
 }

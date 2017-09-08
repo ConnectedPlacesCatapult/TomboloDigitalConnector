@@ -11,24 +11,24 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField extends FixedValueField implements SingleValueField, ParentField {
+public class FieldValueSumField extends FixedValueField implements ParentField {
     String name;
-    List<FieldRecipe> fieldRecipes;
-    List<Field> fields;
+    List<FieldRecipe> fields;
+    List<Field> sumFields;
 
-    public FieldValueSumField(String label, String name, List<FieldRecipe> fieldRecipes) {
+    public FieldValueSumField(String label, String name, List<FieldRecipe> fields) {
         super(label);
         this.name = name;
-        this.fieldRecipes = fieldRecipes;
+        this.fields = fields;
     }
 
     public void initialize() {
-        this.fields = new ArrayList<>();
-        for (FieldRecipe recipe : fieldRecipes) {
+        this.sumFields = new ArrayList<>();
+        for (FieldRecipe recipe : fields) {
             try {
                 Field field = (SingleValueField) recipe.toField();
                 field.setFieldCache(fieldCache);
-                fields.add(field);
+                sumFields.add(field);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }
@@ -45,10 +45,10 @@ public class FieldValueSumField extends FixedValueField implements SingleValueFi
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
-        if (fields == null)
+        if (sumFields == null)
             initialize();
         Double sum = 0d;
-        for (Field field : fields) {
+        for (Field field : sumFields) {
             if (!(field instanceof SingleValueField))
                 throw new IncomputableFieldException("Field sum only valid for single value fields");
             sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject, true));
@@ -59,7 +59,7 @@ public class FieldValueSumField extends FixedValueField implements SingleValueFi
 
     @Override
     public List<Field> getChildFields() {
-        if (null == fields) { initialize(); }
-        return fields;
+        if (null == sumFields) { initialize(); }
+        return sumFields;
     }
 }

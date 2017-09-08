@@ -44,7 +44,7 @@ public class FieldBuilder implements JSONAware {
         FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.WrapperField")
                 .setLabel(label)
-                .set("field", fieldBuilders);
+                .set("fields", fieldBuilders);
         return spec;
     }
 
