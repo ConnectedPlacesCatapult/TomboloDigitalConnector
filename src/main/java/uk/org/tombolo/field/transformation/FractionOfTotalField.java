@@ -109,9 +109,9 @@ public class FractionOfTotalField extends AbstractField {
         if (null == cachedAttributes) { cachedAttributes = new HashMap<>(); } // Gson will null this field whatever we do
         if (cachedAttributes.containsKey(attributeMatcher)) return cachedAttributes.get(attributeMatcher);
 
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.providerLabel, attributeMatcher.attributeLabel);
+        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.provider, attributeMatcher.label);
         if (null == attr) {
-            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.providerLabel, attributeMatcher.attributeLabel));
+            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.provider, attributeMatcher.label));
         } else {
             cachedAttributes.put(attributeMatcher, attr);
             return attr;

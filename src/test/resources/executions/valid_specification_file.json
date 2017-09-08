@@ -19,12 +19,12 @@
       "label": "attributes",
       "field": [{
         "dividendAttributes": [{
-          "providerLabel": "uk.gov.ons",
-          "attributeLabel": "CL_0000053_2"
+          "provider": "uk.gov.ons",
+          "label": "CL_0000053_2"
         }],
         "divisorAttribute": {
-          "providerLabel": "uk.gov.ons",
-          "attributeLabel": "CL_0000053_1"
+          "provider": "uk.gov.ons",
+          "label": "CL_0000053_1"
         },
         "label": "percentage_under_1_years_old_label",
         "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField"

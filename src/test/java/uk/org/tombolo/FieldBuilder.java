@@ -103,8 +103,8 @@ public class FieldBuilder implements JSONAware {
 
     private FieldBuilder setAttribute(String providerLabel, String attributeLabel) {
         JSONObject attribute = new JSONObject();
-        attribute.put("providerLabel", providerLabel);
-        attribute.put("attributeLabel", attributeLabel);
+        attribute.put("provider", providerLabel);
+        attribute.put("label", attributeLabel);
         jsonSpec.put("attribute", attribute);
         return this;
     }
@@ -131,16 +131,16 @@ public class FieldBuilder implements JSONAware {
         JSONArray dividendAttributeListObj = (JSONArray) jsonSpec.getOrDefault("dividendAttributes", new JSONArray());
         jsonSpec.put("dividendAttributes", dividendAttributeListObj);
         JSONObject dividendAttributeObj = new JSONObject();
-        dividendAttributeObj.put("providerLabel", providerLabel);
-        dividendAttributeObj.put("attributeLabel", attributeLabel);
+        dividendAttributeObj.put("provider", providerLabel);
+        dividendAttributeObj.put("label", attributeLabel);
         dividendAttributeListObj.add(dividendAttributeObj);
         return this;
     }
 
     public FieldBuilder setDivisorAttribute(String providerLabel, String attributeLabel) {
         JSONObject divisorAttributeObj = new JSONObject();
-        divisorAttributeObj.put("providerLabel", providerLabel);
-        divisorAttributeObj.put("attributeLabel", attributeLabel);
+        divisorAttributeObj.put("provider", providerLabel);
+        divisorAttributeObj.put("label", attributeLabel);
         jsonSpec.put("divisorAttribute", divisorAttributeObj);
         return this;
     }

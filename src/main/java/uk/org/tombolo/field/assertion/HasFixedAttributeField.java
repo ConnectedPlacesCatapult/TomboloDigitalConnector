@@ -29,7 +29,7 @@ public class HasFixedAttributeField extends AbstractField {
     public void initialise(){
         cachedAttributes = new ArrayList<>();
         attributes.forEach(attribute -> cachedAttributes
-                .add(AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel)));
+                .add(AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label)));
     }
 
     @Override

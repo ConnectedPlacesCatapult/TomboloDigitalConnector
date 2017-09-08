@@ -28,7 +28,7 @@ public class HasFixedAttributeValueField extends AbstractField {
     }
 
     public void initialize() {
-        cachedAttribute = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
+        cachedAttribute = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
     }
 
     @Override

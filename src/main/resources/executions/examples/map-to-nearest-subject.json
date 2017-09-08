@@ -29,8 +29,8 @@
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
-          "providerLabel" : "uk.gov.dft",
-          "attributeLabel" : "CountCarsTaxis"
+          "provider" : "uk.gov.dft",
+          "label" : "CountCarsTaxis"
         }
       },
       {
@@ -44,8 +44,8 @@
           "fieldClass": "uk.org.tombolo.field.value.FixedValueField",
           "label": "centrality",
           "attribute": {
-            "providerLabel": "com.spacesyntax",
-            "attributeLabel": "abwc_n"
+            "provider": "com.spacesyntax",
+            "label": "abwc_n"
           }
         }
       }

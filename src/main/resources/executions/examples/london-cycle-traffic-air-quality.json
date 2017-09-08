@@ -40,8 +40,8 @@
         "field": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "attribute": {
-            "providerLabel" : "erg.kcl.ac.uk",
-            "attributeLabel" : "NO2 40 ug/m3 as an annual me"
+            "provider" : "erg.kcl.ac.uk",
+            "label" : "NO2 40 ug/m3 as an annual me"
           }
         }
       },
@@ -58,8 +58,8 @@
           "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
             "attribute": {
-              "providerLabel" : "uk.gov.dft",
-              "attributeLabel" : "CountPedalCycles"
+              "provider" : "uk.gov.dft",
+              "label" : "CountPedalCycles"
             }
           }
         },
@@ -72,8 +72,8 @@
           "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
             "attribute": {
-              "providerLabel": "uk.gov.dft",
-              "attributeLabel": "CountCarsTaxis"
+              "provider": "uk.gov.dft",
+              "label": "CountCarsTaxis"
             }
           }
         }

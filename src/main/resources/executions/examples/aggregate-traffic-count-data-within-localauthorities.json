@@ -38,8 +38,8 @@
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
-            "providerLabel" : "uk.gov.dft",
-            "attributeLabel" : "CountPedalCycles"
+            "provider" : "uk.gov.dft",
+            "label" : "CountPedalCycles"
           }
         }
       }

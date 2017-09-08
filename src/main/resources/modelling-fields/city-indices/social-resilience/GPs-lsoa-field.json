@@ -13,8 +13,8 @@
       "fieldClass": "uk.org.tombolo.field.LatestValueField",
       "label": "List of GP Surgeries in England",
       "attribute": {
-        "providerLabel": "uk.nhs",
-        "attributeLabel": "gpSurgeries"
+        "provider": "uk.nhs",
+        "label": "gpSurgeries"
       }
     },
     "normalizationSubjects": [
