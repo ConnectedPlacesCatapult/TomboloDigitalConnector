@@ -1,18 +1,18 @@
 {
   //Proportion of green space
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-  "label": "Green Space Fraction",
+  "label": "GreenSpaceFraction",
   "operation": "div",
   "field1": {
   // Modelling field for Cycle to car proportion (built-in model)
   "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-  "label": "GreenSpaceArea Proportion",
+  "label": "GreenSpaceAreaProportion",
   "recipe": "city-indices/greenspace/GreenSpaceArea"
 
   },
   "field2": {
     "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-    "label": "LSOA area",
+    "label": "LSOAArea",
     "recipe": "city-indices/greenspace/lsoaArea"
   }
 }
