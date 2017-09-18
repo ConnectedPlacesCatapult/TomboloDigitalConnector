@@ -34,8 +34,10 @@
       {
         "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
         "label": "Nitrogen Dioxide",
-        "aggregationSubjectProvider": "erg.kcl.ac.uk",
-        "aggregationSubjectType": "airQualityControl",
+        "subject": {
+          "provider": "erg.kcl.ac.uk",
+          "subjectType": "airQualityControl"
+        },
         "function": "mean",
         "field": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
@@ -52,8 +54,10 @@
         "field1": {
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
           "label": "Bicycle Count",
-          "aggregationSubjectProvider": "uk.gov.dft",
-          "aggregationSubjectType": "trafficCounter",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
           "function": "sum",
           "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
@@ -66,8 +70,10 @@
         "field2": {
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
           "label": "Car Count",
-          "aggregationSubjectProvider": "uk.gov.dft",
-          "aggregationSubjectType": "trafficCounter",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
           "function": "sum",
           "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",

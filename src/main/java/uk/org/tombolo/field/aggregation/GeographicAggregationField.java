@@ -14,6 +14,7 @@ import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
 import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +31,7 @@ public class GeographicAggregationField extends AbstractField {
     private static Logger log = LoggerFactory.getLogger(GeographicAggregationField.class);
 
     public static enum AggregationFunction {sum, mean}
-    private final String aggregationSubjectProvider;
-    private final String aggregationSubjectType;
+    private final SubjectRecipe subject;
     private final FieldRecipe field;
     private final AggregationFunction function;
 
@@ -40,16 +40,15 @@ public class GeographicAggregationField extends AbstractField {
     private MathArrays.Function aggregator;
     private SubjectType aggregatorSubjectType;
 
-    GeographicAggregationField(String label, String aggregationSubjectProvider, String aggregationSubjectType, AggregationFunction function, FieldRecipe field) {
+    GeographicAggregationField(String label, SubjectRecipe subject, AggregationFunction function, FieldRecipe field) {
         super(label);
-        this.aggregationSubjectProvider = aggregationSubjectProvider;
-        this.aggregationSubjectType = aggregationSubjectType;
+        this.subject = subject;
         this.field = field;
         this.function = function;
     }
 
     public void initialize() {
-        aggregatorSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(aggregationSubjectProvider, aggregationSubjectType);
+        aggregatorSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subject.getProvider(), subject.getSubjectType());
 
         // Initialise aggregators
         aggregators = new HashMap<>();

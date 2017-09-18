@@ -52,8 +52,7 @@ public class FieldBuilder implements JSONAware {
         FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.MapToContainingSubjectField")
                 .setLabel(label)
-                .set("containingSubjectProvider", containingSubjectProvider)
-                .set("containingSubjectType", containingSubjectType)
+                .setSubject(containingSubjectProvider, containingSubjectType)
                 .set("field", fieldBuilder);
         return spec;
     }
@@ -85,8 +84,7 @@ public class FieldBuilder implements JSONAware {
         FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.aggregation.GeographicAggregationField")
                 .setLabel(label)
-                .set("aggregationSubjectProvider", aggregationSubjectProvider)
-                .set("aggregationSubjectType", aggregationSubjectType)
+                .setSubject(aggregationSubjectProvider, aggregationSubjectType)
                 .set("function", function)
                 .set("field", fieldBuilder);
         return spec;
@@ -106,6 +104,14 @@ public class FieldBuilder implements JSONAware {
         attribute.put("provider", providerLabel);
         attribute.put("label", attributeLabel);
         jsonSpec.put("attribute", attribute);
+        return this;
+    }
+
+    private FieldBuilder setSubject(String providerLabel, String subjectType) {
+        JSONObject subject = new JSONObject();
+        subject.put("provider", providerLabel);
+        subject.put("subjectType", subjectType);
+        jsonSpec.put("subject", subject);
         return this;
     }
 

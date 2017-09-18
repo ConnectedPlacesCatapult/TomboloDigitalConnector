@@ -7,6 +7,7 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,27 +15,25 @@ import java.util.stream.Collectors;
 
 /**
  * MapToContainingSubjectField.java
- * This field will find a subject of the given type (containingSubjectType) that contains the provided subject,
- * and then evaluate the fieldSpec with that new subject. For example, if the containingSubjectType is 'City' and
+ * This field will find a subject of the given type (subjectType) that contains the provided subject,
+ * and then evaluate the fieldSpec with that new subject. For example, if the subjectType is 'City' and
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
 public class MapToContainingSubjectField extends AbstractField implements ParentField {
-    private final String containingSubjectProvider;
-    private final String containingSubjectType;
+    private final SubjectRecipe subject;
     private final FieldRecipe field;
     private SingleValueField singleValueField;
     private SubjectType containerSubjectType;
 
-    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldRecipe) {
+    MapToContainingSubjectField(String label, SubjectRecipe subject, FieldRecipe fieldRecipe) {
         super(label);
-        this.containingSubjectProvider = containingSubjectProvider;
-        this.containingSubjectType = containingSubjectType;
+        this.subject = subject;
         this.field = fieldRecipe;
     }
 
     public void initialize() {
-        containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(containingSubjectProvider, containingSubjectType);
+        containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subject.getProvider(), subject.getSubjectType());
 
         try {
             this.singleValueField = (SingleValueField) field.toField();
