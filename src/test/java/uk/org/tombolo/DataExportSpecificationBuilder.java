@@ -46,8 +46,8 @@ public class DataExportSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public DataExportSpecificationBuilder addFieldSpecification(FieldSpecificationBuilder fieldSpecificationBuilder) {
-        fieldSpec.add(fieldSpecificationBuilder);
+    public DataExportSpecificationBuilder addFieldSpecification(FieldBuilder fieldBuilder) {
+        fieldSpec.add(fieldBuilder);
         return this;
     }
 

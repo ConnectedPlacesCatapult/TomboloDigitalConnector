@@ -52,21 +52,21 @@ public class CorrelationAnalysisRunner extends AbstractRunner {
                     forceImports, clearDatabaseCache);
         }
 
-        List<FieldRecipe> fieldSpecifications
+        List<FieldRecipe> fields
                 = dataExportRecipe.getDataset().getFields();
 
         // Read in data file
         RealMatrix matrix;
         if (dataExportRecipe.getExporter().equals(GeoJsonExporter.class.getCanonicalName())){
-            matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(dataExportOutputPath, fieldSpecifications);
+            matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(dataExportOutputPath, fields);
         }else if(dataExportRecipe.getExporter().equals(CSVExporter.class.getCanonicalName())){
-            matrix = CorrelationAnalysisEngine.readCSVDataExport(dataExportOutputPath, fieldSpecifications);
+            matrix = CorrelationAnalysisEngine.readCSVDataExport(dataExportOutputPath, fields);
         }else {
             throw new Error("Unknown exporter class for intermdiate data");
         }
 
         // Calculate and output correlations
-        CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fieldSpecifications, correlationAnalysisOutputPath);
+        CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fields, correlationAnalysisOutputPath);
     }
 
     private static void validateArguments(String[] args){

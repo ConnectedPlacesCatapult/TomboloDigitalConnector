@@ -47,8 +47,8 @@
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
-          "providerLabel" : "uk.gov.dft",
-          "attributeLabel" : "CountCarsTaxis"
+          "provider" : "uk.gov.dft",
+          "label" : "CountCarsTaxis"
         }
       }
     ]

@@ -14,22 +14,22 @@ import java.util.function.BiFunction;
  * Takes as input an operation, and two fields. It returns for a given Subject the value resulting from applying
  * the operation on the two field values.
  */
-public class ArithmeticField extends AbstractField implements SingleValueField {
+public class ArithmeticField extends AbstractField {
     public static enum Operation {div, mul, add, sub}
-    private final FieldRecipe fieldSpecification1;
-    private final FieldRecipe fieldSpecification2;
+    private final FieldRecipe field1;
+    private final FieldRecipe field2;
     private final Operation operation;
 
     private Map<Operation, BiFunction<Double, Double, Double>> operators;
-    private SingleValueField field1;
-    private SingleValueField field2;
+    private SingleValueField singleValueField1;
+    private SingleValueField singleValueField2;
     private BiFunction<Double, Double, Double> operator;
 
-    ArithmeticField(String label, Operation operation, FieldRecipe fieldSpecification1, FieldRecipe fieldSpecification2) {
+    ArithmeticField(String label, Operation operation, FieldRecipe field1, FieldRecipe field2) {
         super(label);
-        this.fieldSpecification1 = fieldSpecification1;
         this.operation = operation;
-        this.fieldSpecification2 = fieldSpecification2;
+        this.field1 = field1;
+        this.field2 = field2;
     }
 
     public void initialize() {
@@ -42,10 +42,10 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
 
         try {
             this.operator = operators.get(this.operation);
-            this.field1 = (SingleValueField) fieldSpecification1.toField();
-            field1.setFieldCache(fieldCache);
-            this.field2 = (SingleValueField) fieldSpecification2.toField();
-            field2.setFieldCache(fieldCache);
+            this.singleValueField1 = (SingleValueField) field1.toField();
+            singleValueField1.setFieldCache(fieldCache);
+            this.singleValueField2 = (SingleValueField) field2.toField();
+            singleValueField2.setFieldCache(fieldCache);
         } catch (Exception e) {
             throw new Error("Field not valid: " + e.getClass());
         }
@@ -61,10 +61,10 @@ public class ArithmeticField extends AbstractField implements SingleValueField {
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
 
-        if (null == field1) { initialize(); }
+        if (null == singleValueField1) { initialize(); }
         Double retVal = operator.apply(
-                Double.parseDouble(field1.valueForSubject(subject, true)),
-                Double.parseDouble(field2.valueForSubject(subject, true)));
+                Double.parseDouble(singleValueField1.valueForSubject(subject, true)),
+                Double.parseDouble(singleValueField2.valueForSubject(subject, true)));
 
         if (retVal.isNaN()) {
             throw new IncomputableFieldException(String.format("Arithmetic operation %s returned NaN (possible division by zero?)", operation));

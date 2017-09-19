@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.recipe.FieldRecipe;
@@ -59,7 +59,7 @@ public class ArithmeticFieldTest extends AbstractTest {
 
     private FieldRecipe makeFieldSpec(String label, String value) {
         return RecipeDeserializer.fromJson(
-                FieldSpecificationBuilder.fixedAnnotationField(label, value).toJSONString(),
+                FieldBuilder.fixedAnnotationField(label, value).toJSONString(),
                 FieldRecipe.class);
     }
 }

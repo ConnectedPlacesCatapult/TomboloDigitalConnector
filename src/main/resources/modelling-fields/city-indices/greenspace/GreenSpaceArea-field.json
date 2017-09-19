@@ -1,13 +1,13 @@
 {
     // Sum of green space areas
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-    "label": "Green space sum",
+    "label": "GreenSpaceSum",
     "aggregationSubjectProvider": "de.overpass-api",
     "aggregationSubjectType": "OSMEntity",
-    "aggregationFunction": "sum",
-    "fieldSpecification": {
+    "function": "sum",
+    "field": {
       "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
-      "label": "Green Space geography area",
+      "label": "GreenSpaceGeographyArea",
       "targetCRSCode": 27700
     }
 }

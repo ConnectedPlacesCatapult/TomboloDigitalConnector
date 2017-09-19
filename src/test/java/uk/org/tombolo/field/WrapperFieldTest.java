@@ -3,7 +3,7 @@ package uk.org.tombolo.field;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.RecipeDeserializer;
@@ -30,6 +30,6 @@ public class WrapperFieldTest extends AbstractTest {
 
     private List<FieldRecipe> makeFieldSpec() {
         return Collections.singletonList(
-                RecipeDeserializer.fromJson(FieldSpecificationBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
+                RecipeDeserializer.fromJson(FieldBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
     }
 }

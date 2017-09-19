@@ -6,7 +6,7 @@
   "valueField":{
     "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
     "label": "SumSocialResilience",
-    "fieldSpecifications":[
+    "fields":[
       {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "DisabilityResilence",

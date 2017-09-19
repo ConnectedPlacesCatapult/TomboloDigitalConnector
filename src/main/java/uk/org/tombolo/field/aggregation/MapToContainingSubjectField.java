@@ -7,6 +7,7 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,31 +15,29 @@ import java.util.stream.Collectors;
 
 /**
  * MapToContainingSubjectField.java
- * This field will find a subject of the given type (containingSubjectType) that contains the provided subject,
- * and then evaluate the fieldSpec with that new subject. For example, if the containingSubjectType is 'City' and
+ * This field will find a subject of the given type (subjectType) that contains the provided subject,
+ * and then evaluate the fieldSpec with that new subject. For example, if the subjectType is 'City' and
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
-    private final String containingSubjectProvider;
-    private final String containingSubjectType;
-    private final FieldRecipe fieldSpecification;
-    private SingleValueField field;
+public class MapToContainingSubjectField extends AbstractField implements ParentField {
+    private final SubjectRecipe subject;
+    private final FieldRecipe field;
+    private SingleValueField singleValueField;
     private SubjectType containerSubjectType;
 
-    MapToContainingSubjectField(String label, String containingSubjectProvider, String containingSubjectType, FieldRecipe fieldSpecification) {
+    MapToContainingSubjectField(String label, SubjectRecipe subject, FieldRecipe fieldRecipe) {
         super(label);
-        this.containingSubjectProvider = containingSubjectProvider;
-        this.containingSubjectType = containingSubjectType;
-        this.fieldSpecification = fieldSpecification;
+        this.subject = subject;
+        this.field = fieldRecipe;
     }
 
     public void initialize() {
-        containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(containingSubjectProvider, containingSubjectType);
+        containerSubjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(subject.getProvider(), subject.getSubjectType());
 
         try {
-            this.field = (SingleValueField) fieldSpecification.toField();
-            field.setFieldCache(fieldCache);
+            this.singleValueField = (SingleValueField) field.toField();
+            singleValueField.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
@@ -46,9 +45,9 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
 
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
+        if (null == singleValueField) { initialize(); }
         Gson gson = new Gson();
-        return gson.toJson(field.jsonValueForSubject(
+        return gson.toJson(singleValueField.jsonValueForSubject(
                 getSubjectContainingSubject(subject), timeStamp));
     }
 
@@ -68,7 +67,7 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
 
     @Override
     public List<Field> getChildFields() {
-        if (null == field) { initialize(); }
-        return Collections.singletonList(field);
+        if (null == singleValueField) { initialize(); }
+        return Collections.singletonList(singleValueField);
     }
 }
