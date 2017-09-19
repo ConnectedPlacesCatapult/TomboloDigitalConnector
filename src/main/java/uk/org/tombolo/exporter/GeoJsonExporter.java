@@ -26,8 +26,13 @@ public class GeoJsonExporter implements Exporter {
 		jsonWriter.name("type").value("FeatureCollection");
 		jsonWriter.name("features").beginArray();
 
+		log.info("Exporting {} subjects", subjects.size());
+		int subjectCounter = 0;
 		for (Subject subject : subjects) {
+			subjectCounter++;
 			writeFeatureForSubject(fields, subject, jsonWriter);
+			if (subjectCounter % 100 == 0)
+				log.info("Exported {} subjects", subjectCounter);
 		}
 
 		jsonWriter.endArray();
