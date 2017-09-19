@@ -15,6 +15,7 @@ import uk.org.tombolo.field.Field;
  */
 public class FieldCache {
     private Logger log = LoggerFactory.getLogger(FieldCache.class);
+    private static final int LOGGING_FREQUENCY = 1000;
     private static final int DEFAULT_CACHE_SIZE_ENTRIES = 100000;
     private Cache<String,String> fieldCache;
 
@@ -37,7 +38,7 @@ public class FieldCache {
             hits++;
         else
             misses++;
-        if ((hits+misses) % 1000 == 0)
+        if ((hits+misses) % LOGGING_FREQUENCY == 0)
             log.info("Caching milestone {} ({} hits) ({} misses)", hits+misses, hits, misses);
         return cachedValue;
     }
