@@ -26,7 +26,7 @@ public class FieldValueSumField extends FixedValueField implements ParentField {
         this.sumFields = new ArrayList<>();
         for (FieldRecipe recipe : fields) {
             try {
-                Field field = (SingleValueField) recipe.toField();
+                Field field = recipe.toField();
                 field.setFieldCache(fieldCache);
                 sumFields.add(field);
             } catch (ClassNotFoundException e) {
