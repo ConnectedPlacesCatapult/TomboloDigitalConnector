@@ -110,7 +110,7 @@ in a given borough and outputs the results to the file `reaggregate-traffic-coun
 ```bash
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
-    -PoutputFile='reaggregate-traffic-count-to-la.json'
+    -PoutputFile='reaggregate-traffic-count-to-la_output.json'
 ```
 
 ### Run data catalogue
