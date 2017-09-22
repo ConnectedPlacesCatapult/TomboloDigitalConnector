@@ -292,13 +292,7 @@ public class DataExportEngineTest extends AbstractTest {
                         "  features: [" +
                         "    {" +
                         "      properties: {" +
-                        "        local_authority: {" +
-                        "          attr_label: [" +
-                        "            {" +
-                        "              value: '100.0'" +
-                        "            }" +
-                        "          ]" +
-                        "        }" +
+                        "        local_authority: 100.0" +
                         "      }" +
                         "    }" +
                         "  ]"+

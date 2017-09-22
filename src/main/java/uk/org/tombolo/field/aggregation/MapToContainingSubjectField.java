@@ -47,9 +47,7 @@ public class MapToContainingSubjectField extends AbstractField implements Field,
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         if (null == field) { initialize(); }
-        Gson gson = new Gson();
-        return gson.toJson(field.jsonValueForSubject(
-                getSubjectContainingSubject(subject), timeStamp));
+        return field.valueForSubject(getSubjectContainingSubject(subject), timeStamp);
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
