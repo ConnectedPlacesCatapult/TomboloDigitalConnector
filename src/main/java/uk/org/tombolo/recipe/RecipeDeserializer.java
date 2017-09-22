@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 public class RecipeDeserializer {
     public static <T> T fromJson(String jsonString, Class<T> returningClass) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(FieldRecipe.class, new FieldSpecificationDeserializer());
+        gsonBuilder.registerTypeAdapter(FieldRecipe.class, new FieldDeserializer());
         Gson gson = gsonBuilder.create();
         return gson.fromJson(jsonString, returningClass);
     }
@@ -19,7 +19,7 @@ public class RecipeDeserializer {
         return fromJson(FileUtils.readFileToString(jsonFile), returningClass);
     }
 
-    private static class FieldSpecificationDeserializer implements JsonDeserializer<FieldRecipe> {
+    private static class FieldDeserializer implements JsonDeserializer<FieldRecipe> {
         @Override
         public FieldRecipe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = (JsonObject) json;

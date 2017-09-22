@@ -3,7 +3,7 @@ package uk.org.tombolo.field.transformation;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.SubjectSpecificationBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
@@ -40,19 +40,19 @@ public class PercentilesFieldTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        quartilesField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
+        quartilesField = (PercentilesField) FieldBuilder.percentilesField(
                 "populationDensity",
                 4,
                 false)
-                .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
+                .set("valueField", FieldBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
                 .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 
-        quintilesInverseField = (PercentilesField) FieldSpecificationBuilder.percentilesField(
+        quintilesInverseField = (PercentilesField) FieldBuilder.percentilesField(
                 "populationDensity",
                 5,
                 true)
-                .set("valueField", FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
+                .set("valueField", FieldBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "populationDensity"))
                 .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa")))
                 .build().toField();
 

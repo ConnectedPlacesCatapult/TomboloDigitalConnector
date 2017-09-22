@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.recipe.DatasourceRecipe;
-import uk.org.tombolo.recipe.FieldRecipe;
-import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +22,7 @@ import java.util.List;
  * A field that takes as input a specification (recipe) of a potentially complex field or model
  * and returns a value that is calculated according to the specification.
  */
-public class BasicModellingField extends AbstractField implements Field, ModellingField {
+public class BasicModellingField extends AbstractField implements ModellingField {
     String recipe;
     Field field;
     List<DatasourceRecipe> datasourceRecipes;
@@ -53,12 +52,12 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
     }
 
     protected void initialize() {
-        String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
-        URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
-        File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
+        String fieldFilename = fieldSpecPath+recipe+fieldSpecPostfix;
+        URL fieldFileURL = ClassLoader.getSystemResource(fieldFilename);
+        File fieldFile = new File(fieldFileURL.getFile());
         try {
             field = RecipeDeserializer
-                    .fromJsonFile(fieldSpecificationFile, FieldRecipe.class)
+                    .fromJsonFile(fieldFile, FieldRecipe.class)
                     .toField();
             field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {

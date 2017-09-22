@@ -3,14 +3,13 @@ package uk.org.tombolo.field.value;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 /**
  * For a given subject, returns the {@link FixedValue} of a specified attribute.
  */
-public class FixedValueField extends ValuesByTimeField implements SingleValueField {
+public class FixedValueField extends ValuesByTimeField {
 
     public FixedValueField(String label) {
         super(label);

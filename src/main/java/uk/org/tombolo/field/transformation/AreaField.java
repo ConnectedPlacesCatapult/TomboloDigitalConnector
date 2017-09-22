@@ -10,14 +10,13 @@ import org.opengis.referencing.operation.TransformException;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
 
 /**
  * Field that represents the area of the subject's geography.
  * It will give the area only for polygons and multi-polygons,
  * the other shapes(e.g. Points) will return 0.0.
  */
-public class AreaField extends AbstractField implements SingleValueField {
+public class AreaField extends AbstractField {
 
     private final int targetCRSCode;
 

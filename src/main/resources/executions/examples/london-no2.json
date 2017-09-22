@@ -17,8 +17,8 @@
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "Anual NO2",
         "attribute": {
-          "providerLabel": "erg.kcl.ac.uk",
-          "attributeLabel": "NO2 40 ug/m3 as an annual me"
+          "provider": "erg.kcl.ac.uk",
+          "label": "NO2 40 ug/m3 as an annual me"
         }
       }
     ]
