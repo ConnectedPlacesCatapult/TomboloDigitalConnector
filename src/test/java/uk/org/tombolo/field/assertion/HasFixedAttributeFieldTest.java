@@ -8,7 +8,7 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +26,11 @@ public class HasFixedAttributeFieldTest extends AbstractTest {
         Subject subjectWithoutAttribute = TestFactory.makeNamedSubject("E01000002");
 
         // Crate dummy attribute
-        Attribute testAttribute1 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute1", "", "", Attribute.DataType.string);
+        Attribute testAttribute1 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute1", "");
         AttributeUtils.save(testAttribute1);
-        Attribute testAttribute2 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute2", "", "", Attribute.DataType.string);
+        Attribute testAttribute2 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute2", "");
         AttributeUtils.save(testAttribute2);
-        Attribute testAttribute3 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute3", "", "", Attribute.DataType.string);
+        Attribute testAttribute3 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute3", "");
         AttributeUtils.save(testAttribute3);
 
 
@@ -47,10 +47,10 @@ public class HasFixedAttributeFieldTest extends AbstractTest {
         HasFixedAttributeField field = new HasFixedAttributeField("blafield", Arrays.asList(attributeMatcher1, attributeMatcher2));
 
         // Test
-        assertEquals("1",field.valueForSubject(subjectWithOneAttributeMatch));
-        assertEquals("1",field.valueForSubject(subjectWithTwoAttribtueMatches));
-        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches));
-        assertEquals("0",field.valueForSubject(subjectWithoutAttribute));
+        assertEquals("1",field.valueForSubject(subjectWithOneAttributeMatch, true));
+        assertEquals("1",field.valueForSubject(subjectWithTwoAttribtueMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithoutAttribute, true));
     }
 
 }

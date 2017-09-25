@@ -1,13 +1,13 @@
 {
-  "datasetSpecification" : {
-    "subjectSpecification" : [
+  "dataset" : {
+    "subjects" : [
       {
         // The output geographies are traffic counters
         "subjectType" : "trafficCounter",
         "provider" : "uk.gov.dft"
       }
     ],
-    "datasourceSpecification" : [
+    "datasources" : [
       {
         // Importer for Local Authorities in the UK
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
@@ -20,7 +20,7 @@
         "geographyScope" : ["London"]
       }
     ],
-    "fieldSpecification" : [
+    "fields" : [
       {
         // An arthmetic field that divides one field value with another
         // In this case we calcluate for each traffic counter
@@ -30,36 +30,40 @@
         "label": "theOutput",
         "operation": "div",
 
-        "fieldSpecification1": {
+        "field1": {
           // This field returns the bicicle count for the particular output traffic counter
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
-            "providerLabel" : "uk.gov.dft",
-            "attributeLabel" : "CountPedalCycles"
+            "provider" : "uk.gov.dft",
+            "label" : "CountPedalCycles"
           }
         },
-        "fieldSpecification2": {
+        "field2": {
           // This field retuns the sum of all bicicles counted for all traffic counters
           // aggregated to local authority level and then the local authority level value is mapped to the output traffic counter
           // and used as denominator
         "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
           "label": "localAuthoritySumCountPedalCycles",
-          "containingSubjectProvider": "uk.gov.ons",
-          "containingSubjectType": "localAuthority",
-          "fieldSpecification": {
+          "subject" :{
+            "provider": "uk.gov.ons",
+            "subjectType": "localAuthority"
+          },
+          "field": {
             "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
             "label": "SumCountPedalCycles",
-            "aggregationSubjectProvider": "uk.gov.dft",
-            "aggregationSubjectType": "trafficCounter",
-            "aggregationFunction": "sum",
+            "subject": {
+              "provider": "uk.gov.dft",
+              "subjectType": "trafficCounter"
+            },
+            "function": "sum",
 
-            "fieldSpecification": {
+            "field": {
               "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
               "label": "CountPedalCycles",
               "attribute": {
-                "providerLabel" : "uk.gov.dft",
-                "attributeLabel" : "CountPedalCycles"
+                "provider" : "uk.gov.dft",
+                "label" : "CountPedalCycles"
               }
             }
           }
@@ -67,5 +71,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

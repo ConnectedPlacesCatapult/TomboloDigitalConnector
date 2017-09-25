@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
@@ -20,16 +17,16 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBncF9zdXJnZXJpZXMlM0I=.json
+ * Local: e16e36c1-2891-34f4-988f-bee1c0d8da14.json
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBjbGluaWNzJTNC.json
+ * Local: 8ecfea3c-ef7a-3346-9e1c-5f76dd1ef705.json
  *
  * Remote: https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B
- * Local: aHR0cHM6Ly9kYXRhLmdvdi51ay9kYXRhL2FwaS9zZXJ2aWNlL2hlYWx0aC9zcWw_cXVlcnk9U0VMRUNUJTIwKiUyMEZST00lMjBob3NwaXRhbHMlM0I=
+ * Local: 686ad07b-4a68-3447-ab8f-c269243ec28a
  */
 public class HealthOrganisationImporterTest extends AbstractTest {
-    HealthOrganisationImporter importer;
+    private HealthOrganisationImporter importer;
 
     @Before
     public void setUp() throws Exception {
@@ -46,7 +43,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportHospitals() throws Exception {
-        importer.importDatasource("hospital");
+        importer.importDatasource("hospital", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "hospital");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"40918");
         assertEquals(1106, importer.getSubjectCount());
@@ -58,7 +55,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportClinics() throws Exception {
-        importer.importDatasource("clinic");
+        importer.importDatasource("clinic", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "clinic");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "12366");
         assertEquals(8416, importer.getSubjectCount());
@@ -69,7 +66,7 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testImportGpSurgeries() throws Exception {
-        importer.importDatasource("gpSurgeries");
+        importer.importDatasource("gpSurgeries", null, null, null);
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "gpSurgeries");
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "2915");
         assertEquals(9767, importer.getSubjectCount());
@@ -80,12 +77,12 @@ public class HealthOrganisationImporterTest extends AbstractTest {
 
     @Test
     public void testGetDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("hospital");
-        assertEquals("hospital", datasource.getId());
-        assertEquals("uk.nhs", datasource.getProvider().getLabel());
-        assertEquals("Hospital", datasource.getName());
-        assertEquals("List of Hospitals in England", datasource.getDescription());
-        assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasource.getUrl());
+        DatasourceSpec datasourceSpec = importer.getDatasource("hospital").getDatasourceSpec();
+        assertEquals("hospital", datasourceSpec.getId());
+        assertEquals("uk.nhs", importer.getProvider().getLabel());
+        assertEquals("Hospital", datasourceSpec.getName());
+        assertEquals("List of Hospitals in England", datasourceSpec.getDescription());
+        assertEquals("https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B", datasourceSpec.getUrl());
     }
 
     @Test

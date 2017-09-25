@@ -21,11 +21,11 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote: https://www.noo.org.uk/gsf.php5?f=314008&fv=21761
- * Local: aHR0cHM6Ly93d3cubm9vLm9yZy51ay9nc2YucGhwNT9mPTMxNDAwOCZmdj0yMTc2MQ==.xlsx
+ * Local: 1a02e39e-59ac-3c05-a11e-51d0bbb58a0f.xlsx
  */
 public class AdultObesityImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "adultObesity";
-	AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
+	private AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
 
 	private Subject cityOfLondon;
 
@@ -49,7 +49,7 @@ public class AdultObesityImporterTest extends AbstractTest {
 	
 	@Test
 	public void testImportDatasource() throws Exception{
-		importer.importDatasource(DATASOURCE_ID);
+		importer.importDatasource(DATASOURCE_ID, null, null, null);
 		
 		//FIXME: Find a way to match Gateshead etc.
 		assertEquals(5, importer.getTimedValueCount());

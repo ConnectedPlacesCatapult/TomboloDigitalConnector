@@ -29,10 +29,10 @@ import static org.junit.Assert.assertEquals;
  *
  *
  * Remote: http://api.dft.gov.uk/v3/trafficcounts/export/region/London.csv
- * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YzL3RyYWZmaWNjb3VudHMvZXhwb3J0L3JlZ2lvbi9Mb25kb24uY3N2.csv
+ * Local: d16f455b-e573-3733-8613-dcab739c7a96.csv
  *
  * Remote: http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/la/Aberdeen+City.csv
- * Local: aHR0cDovL2FwaS5kZnQuZ292LnVrL3YzL3RyYWZmaWNjb3VudHMvZXhwb3J0L2RhdGEvdHJhZmZpYy9sYS9BYmVyZGVlbitDaXR5LmNzdg==.csv
+ * Local: 6d8eed14-92dc-3fe5-b7f5-305d2e2d1229.csv
  */
 public class TrafficCountImporterTest extends AbstractTest {
 
@@ -79,26 +79,26 @@ public class TrafficCountImporterTest extends AbstractTest {
 	public void testImportDatasourceUnknown() throws Exception{
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Unknown DatasourceId:"));
-		importer.importDatasource("xyz");
+		importer.importDatasource("xyz", null, null, null);
 	}
 
 	@Test
 	public void testImportDatasourceNowhere() throws Exception {
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Missing geography scope"));
-		importer.importDatasource("trafficCounts");
+		importer.importDatasource("trafficCounts", null, null, null);
 	}
 
 	@Test
 	public void testImportDatasourceNorthPole() throws Exception {
 		thrown.expect(ConfigurationException.class);
 		thrown.expectMessage(new StringStartsWith("Unknown Geography Scope:"));
-		importer.importDatasource("trafficCounts", Arrays.asList("North Pole"), null);
+		importer.importDatasource("trafficCounts", Arrays.asList("North Pole"), null, null);
 	}
 
 	@Test
 	public void testImportDatasourceCountLondon() throws Exception {
-		importer.importDatasource("trafficCounts", Arrays.asList("London"), null);
+		importer.importDatasource("trafficCounts", Arrays.asList("London"), null, null);
 		assertEquals(4, importer.getSubjectCount());
 		assertEquals(4*4, importer.getFixedValueCount());
 		assertEquals(
@@ -127,7 +127,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 
 	@Test
 	public void testImportDatasourceVolumeAberdeenCity() throws Exception {
-		importer.importDatasource("trafficVolume", Arrays.asList("Aberdeen City"), null);
+		importer.importDatasource("trafficVolume", Arrays.asList("Aberdeen City"), null, null);
 		assertEquals(2, importer.getSubjectCount());
 		assertEquals(2*4, importer.getFixedValueCount());
 

@@ -1,7 +1,7 @@
 package uk.org.tombolo.importer.osm;
 
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,15 +20,15 @@ public class LandUseImporter extends OSMImporter {
     public LandUseImporter(Config config) {
         super(config);
 
-        dataSourceID = new DataSourceID(
+        datasourceSpec = new DatasourceSpec(
+                LandUseImporter.class,
                 "OSMLandUse",
                 "",
                 "Open Street Map land use data",
-                URL,
-                null
+                URL
         );
         categories = CATEGORIES;
-        datasourceIds = Arrays.asList(dataSourceID.getLabel());
+        datasourceIds = Arrays.asList(datasourceSpec.getId());
     }
 
 }

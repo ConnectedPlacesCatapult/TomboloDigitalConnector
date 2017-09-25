@@ -8,7 +8,7 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +27,7 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         Subject subjectWithoutAttribute = TestFactory.makeNamedSubject("E01000002");
 
         // Crate dummy attribute
-        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "", "", Attribute.DataType.string);
+        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "");
         AttributeUtils.save(testAttribute);
 
         // Assign attribute values
@@ -42,10 +42,10 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield", attributeMatcher, testValues);
 
         // Test
-        assertEquals("1",field.valueForSubject(subjectWithAttributeAndOneValueMatch));
-        assertEquals("1", field.valueForSubject(subjectWithAttribtueAndTwoValueMatches));
-        assertEquals("0", field.valueForSubject(subjectWithAttributeButOtherValue));
-        assertEquals("0", field.valueForSubject(subjectWithoutAttribute));
+        assertEquals("1",field.valueForSubject(subjectWithAttributeAndOneValueMatch, true));
+        assertEquals("1", field.valueForSubject(subjectWithAttribtueAndTwoValueMatches, true));
+        assertEquals("0", field.valueForSubject(subjectWithAttributeButOtherValue, true));
+        assertEquals("0", field.valueForSubject(subjectWithoutAttribute, true));
     }
 
 }

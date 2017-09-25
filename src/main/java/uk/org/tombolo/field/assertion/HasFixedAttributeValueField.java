@@ -1,23 +1,20 @@
 package uk.org.tombolo.field.assertion;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.util.List;
 
 /**
  * Returns 1 if subject has attribute with value
  */
-public class HasFixedAttributeValueField extends AbstractField implements SingleValueField {
+public class HasFixedAttributeValueField extends AbstractField {
 
     private AttributeMatcher attribute;
     private final List<String> values;
@@ -31,11 +28,11 @@ public class HasFixedAttributeValueField extends AbstractField implements Single
     }
 
     public void initialize() {
-        cachedAttribute = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
+        cachedAttribute = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return cachedValue;
@@ -52,12 +49,5 @@ public class HasFixedAttributeValueField extends AbstractField implements Single
         }
         setCachedValue(subject, "0");
         return "0";
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put("value", valueForSubject(subject));
-        return obj;
     }
 }

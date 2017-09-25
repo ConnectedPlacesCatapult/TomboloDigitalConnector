@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +22,10 @@ import java.util.List;
  * A field that takes as input a specification (recipe) of a potentially complex field or model
  * and returns a value that is calculated according to the specification.
  */
-public class BasicModellingField extends AbstractField implements Field, ModellingField {
+public class BasicModellingField extends AbstractField implements ModellingField {
     String recipe;
     Field field;
-    List<DatasourceSpecification> datasourceSpecifications;
+    List<DatasourceRecipe> datasourceRecipes;
 
     // Path and postfixes for predefined field specifications
     // Could be made configurable at some point
@@ -40,30 +39,25 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
     }
 
     @Override
-    public List<DatasourceSpecification> getDatasourceSpecifications() {
+    public List<DatasourceRecipe> getDatasourceRecipes() {
         if (field == null)
             initialize();
-        return datasourceSpecifications;
+        return datasourceRecipes;
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (field == null)
-            initialize();
-        JSONObject obj = new JSONObject();
-        JSONObject fieldValue = field.jsonValueForSubject(subject);
-        // Unwrap the fieldValue by getting based on the label, then rewrap with the label the user specified
-        obj.put(label, fieldValue.get(field.getLabel()));
-        return obj;
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (field == null) initialize();
+        return field.jsonValueForSubject(subject, timeStamp).toJSONString();
     }
 
     protected void initialize() {
-        String fieldSpecificationFilename = fieldSpecPath+recipe+fieldSpecPostfix;
-        URL fieldSpecificationFileURL = ClassLoader.getSystemResource(fieldSpecificationFilename);
-        File fieldSpecificationFile = new File(fieldSpecificationFileURL.getFile());
+        String fieldFilename = fieldSpecPath+recipe+fieldSpecPostfix;
+        URL fieldFileURL = ClassLoader.getSystemResource(fieldFilename);
+        File fieldFile = new File(fieldFileURL.getFile());
         try {
-            field = SpecificationDeserializer
-                    .fromJsonFile(fieldSpecificationFile, FieldSpecification.class)
+            field = RecipeDeserializer
+                    .fromJsonFile(fieldFile, FieldRecipe.class)
                     .toField();
             field.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
@@ -78,8 +72,8 @@ public class BasicModellingField extends AbstractField implements Field, Modelli
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
-            Type type = new TypeToken<List<DatasourceSpecification>>(){}.getType();
-            datasourceSpecifications =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
+            Type type = new TypeToken<List<DatasourceRecipe>>(){}.getType();
+            datasourceRecipes =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
         } catch (IOException e) {
             throw new Error("Could not read specification file", e);
         }

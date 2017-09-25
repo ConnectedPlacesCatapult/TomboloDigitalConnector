@@ -8,7 +8,7 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.DatasourceSpecification;
+import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
 import java.util.List;
@@ -34,29 +34,28 @@ public class BasicModellingFieldTest extends AbstractTest {
     @Test
     public void getDatasourceSpecifications() throws Exception {
 
-        List<DatasourceSpecification> datasources = field.getDatasourceSpecifications();
+        List<DatasourceRecipe> datasources = field.getDatasourceRecipes();
 
         assertEquals(2, datasources.size());
 
-        DatasourceSpecification ds1 = datasources
+        DatasourceRecipe ds1 = datasources
                 .stream().filter(e -> e.getDatasourceId().equals("lsoa")).findAny().orElse(null);
         assertEquals("uk.org.tombolo.importer.ons.OaImporter", ds1.getImporterClass());
 
-        DatasourceSpecification ds2 = datasources
+        DatasourceRecipe ds2 = datasources
                 .stream().filter(e -> e.getDatasourceId().equals("QS103EW")).findAny().orElse(null);
         assertEquals("uk.org.tombolo.importer.ons.ONSCensusImporter", ds2.getImporterClass());
     }
 
     @Test
     public void jsonValueForSubject() throws Exception {
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
-
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  test_label: [" +
+                "  test_label: { Fraction_of_80: [" +
                 "    {" +
                 "      value: 0.4" +
                 "    }" +
-                "  ]" +
+                "  ]}" +
                 "}", jsonString, false);
 
     }

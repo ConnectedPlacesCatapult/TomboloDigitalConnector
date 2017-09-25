@@ -1,12 +1,12 @@
 {
-	"datasetSpecification": {
-		"subjectSpecification": [
+	"dataset": {
+		"subjects": [
 			{
 				"subjectType": "localAuthority",
 				"provider":"uk.gov.ons"
 			}
 		],
-		"datasourceSpecification": [
+		"datasources": [
 			{
 				"importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
 				"datasourceId": "OT102EW"
@@ -20,13 +20,13 @@
 				"datasourceId": "BMI_categories_2012-2014"
 			}
 		],
-		"fieldSpecification": [
+		"fields": [
 			{
 				"fieldClass": "uk.org.tombolo.field.value.LatestValueField",
 				"label": "fractionObese",
 				"attribute": {
-					"providerLabel" : "uk.gov.phe",
-					"attributeLabel" : "fractionObese"
+					"provider" : "uk.gov.phe",
+					"label" : "fractionObese"
 				}
 			}
 		]

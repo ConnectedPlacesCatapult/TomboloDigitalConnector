@@ -2,14 +2,15 @@ package uk.org.tombolo.importer.ons;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -25,18 +26,25 @@ import java.util.List;
  *
  * http://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8
  */
-public class ONSWagesImporter extends AbstractONSImporter implements Importer{
+public class ONSWagesImporter extends AbstractONSImporter {
 
-    private enum DatasourceId {wages};
-    private Datasource[] datasources = {
-            new Datasource(
-                    getClass(),
-                    DatasourceId.wages.name(),
-                    getProvider(),
-                    "Wages per Local Authority",
-                    "Estimates of paid hours worked, weekly, hourly and annual earnings for UK employees by gender " +
-                            "and full/part-time working by home based Region to Local Authority level.")
-    };
+    private enum DatasourceId {
+        wages(new DatasourceSpec(
+                ONSWagesImporter.class,
+                "wages",
+                "Wages per Local Authority",
+                "Estimates of paid hours worked, weekly, hourly and annual earnings for UK employees by gender " +
+                        "and full/part-time working by home based Region to Local Authority level.",
+                "http://www.ons.gov.uk/employmentandlabourmarket/" +
+                        "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8")
+        );
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
+
     private enum AttributePrefix {
         asheTable81aWeeklyPayGross,
         //asheTable81bWeeklyPayGrossCV,
@@ -128,22 +136,12 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case wages:
-                Datasource datasource = datasources[datasourceId.ordinal()];
-                datasource.setUrl("http://www.ons.gov.uk/employmentandlabourmarket/" +
-                        "peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8");
-                datasource.addAllTimedValueAttributes(getTimedValueAttributes());
-                return datasource;
-            default:
-                throw new Error("Unknown datasource");
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
 
         ExcelUtils excelUtils = new ExcelUtils();
@@ -154,7 +152,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
             ZipArchiveEntry zipEntry = zipFile.getEntry(bookNames[attributePrefix.ordinal()]);
             Workbook workbook = excelUtils.getWorkbook(zipFile.getInputStream(zipEntry));
             for (String sheetName : sheetNames) {
-                RowCellExtractor subjectLabelExtractor = new RowCellExtractor(1, Cell.CELL_TYPE_STRING);
+                RowCellExtractor subjectLabelExtractor = new RowCellExtractor(1, CellType.STRING);
                 ConstantExtractor timestampExtractor = new ConstantExtractor("2016");   // FIXME: Need to generalise when we update Datasource to be time aware
 
                 List<TimedValueExtractor> extractors = new ArrayList<>();
@@ -164,10 +162,10 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                     RowCellExtractor valueExtractor;
                     switch (metricName){
                         case "Mean":
-                            valueExtractor = new RowCellExtractor(5, Cell.CELL_TYPE_NUMERIC);
+                            valueExtractor = new RowCellExtractor(5, CellType.NUMERIC);
                             break;
                         case "Median":
-                            valueExtractor = new RowCellExtractor(3, Cell.CELL_TYPE_NUMERIC);
+                            valueExtractor = new RowCellExtractor(3, CellType.NUMERIC);
                             break;
                         default:
                             throw new Error("Unknown metric name: " + metricName);
@@ -181,7 +179,8 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
         }
     }
 
-    private List<Attribute> getTimedValueAttributes(){
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
 
         for (AttributePrefix attributePrefix : AttributePrefix.values()){
@@ -193,9 +192,7 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
                     attributes.add(new Attribute(
                             getProvider(),
                             getAttributeLabel(attributePrefix, sheetName, metricName), // Id
-                            attributeNames[attributePrefix.ordinal()], // Name
-                            attributeNames[attributePrefix.ordinal()], // Description (we use the same as name since it is fairly descriptive
-                            Attribute.DataType.numeric
+                            attributeNames[attributePrefix.ordinal()]
                     ));
                 }
             }
@@ -204,6 +201,6 @@ public class ONSWagesImporter extends AbstractONSImporter implements Importer{
     }
 
     private String getAttributeLabel(AttributePrefix attributePrefix, String sheetName, String metricName){
-        return attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName;
+        return AttributeUtils.substringToDBLength(attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName);
     }
 }

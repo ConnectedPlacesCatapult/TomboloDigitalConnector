@@ -11,7 +11,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.value.LatestValueField;
 
@@ -41,7 +41,7 @@ public class CSVExporterTest extends AbstractTest {
 		TestFactory.makeTimedValue(localAuthority,"E09000001", attribute, TestFactory.TIMESTAMP, 100d);
 
 		Writer writer = new StringWriter();
-		exporter.write(writer, makeSubjects(), makeFields("default_provider_label", "attr_label"));
+		exporter.write(writer, makeSubjects(), makeFields("default_provider_label", "attr_label"), false);
 		CSVRecord record = getRecords(writer.toString()).get(0);
 
 		assertEquals("E09000001", record.get("label"));

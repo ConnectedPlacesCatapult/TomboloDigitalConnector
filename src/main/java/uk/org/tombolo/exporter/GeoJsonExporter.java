@@ -15,8 +15,11 @@ import java.util.List;
 
 public class GeoJsonExporter implements Exporter {
 	private Logger log = LoggerFactory.getLogger(GeoJsonExporter.class);
+	private Boolean timeStamp;
 
-	public void write(Writer writer, List<Subject> subjects, List<Field> fields) throws IOException {
+	public void write(Writer writer, List<Subject> subjects, List<Field> fields, Boolean timeStamp) throws IOException {
+		this.timeStamp = null == timeStamp ? true : timeStamp;
+
 		JsonWriter jsonWriter = new JsonWriter(writer);
 
 		jsonWriter.beginObject();
@@ -43,20 +46,20 @@ public class GeoJsonExporter implements Exporter {
 		jsonWriter.endObject();
 	}
 
-	private JSONObject getPropertiesForSubject(List<Field> fields, Subject subject) {
+	private JSONObject getPropertiesForSubject(List<Field> fields, Subject subject) throws IOException {
 		JSONObject properties = new JSONObject();
 
 		properties.put("label", subject.getLabel());
 		properties.put("name", subject.getName());
 
-		for (Field field : fields){
+		fields.forEach(field -> {
 			try {
-				properties.putAll(field.jsonValueForSubject(subject));
+				properties.putAll(field.jsonValueForSubject(subject, timeStamp));
 			} catch (IncomputableFieldException e) {
 				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
 				properties.put(field.getLabel(), null);
 			}
-		}
+		});
 		return properties;
 	}
 

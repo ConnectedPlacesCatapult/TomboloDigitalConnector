@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote; http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip
- * Local: aHR0cDovL2RhdGEuc3RhdGlzdGljcy5nb3YudWsvb25zL2RhdGFzZXRzL2Nzdi9DU1ZfT1QxMDJFV18yMDExU1RBVEhfMV9FTi56aXA=.zip
+ * Local: 1877d607-95df-3ee3-ba35-d69637198668.zip
  */
 public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 
@@ -42,8 +42,8 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		// FIXME: This call requires network connection ... perhaps we should mock the json output of the ONS
 		Datasource datasourceDetails = importer.getDatasource(datasourceId);
 		
-		assertEquals(datasourceId, datasourceDetails.getName());
-		assertEquals("Population density (Out of term-time population)",datasourceDetails.getDescription());
+		assertEquals(datasourceId, datasourceDetails.getDatasourceSpec().getName());
+		assertEquals("Population density (Out of term-time population)",datasourceDetails.getDatasourceSpec().getDescription());
 		assertEquals(3, datasourceDetails.getTimedValueAttributes().size());
 		assertEquals("CL_0000855", datasourceDetails.getTimedValueAttributes().get(0).getLabel());
 		assertEquals("All usual residents", datasourceDetails.getTimedValueAttributes().get(0).getDescription());
@@ -51,17 +51,17 @@ public class ONSCensusImporterTest extends AbstractONSCensusImporterTest {
 		assertEquals("Area (Hectares)", datasourceDetails.getTimedValueAttributes().get(1).getDescription());
 		assertEquals("CL_0000858", datasourceDetails.getTimedValueAttributes().get(2).getLabel());
 		assertEquals("Density (Persons per hectare)", datasourceDetails.getTimedValueAttributes().get(2).getDescription());
-		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip", datasourceDetails.getRemoteDatafile());
+		assertEquals("http://data.statistics.gov.uk/ons/datasets/csv/CSV_OT102EW_2011STATH_1_EN.zip", importer.getDataFile());
 	}
 		
 	@Test
 	public void testLoadDataset() throws Exception{
-		importer.importDatasource(datasourceId);
+		importer.importDatasource(datasourceId, null, null, null);
 		
 		assertEquals(3 + 3, importer.getTimedValueCount());
 		
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "CL_0000857");
-		assertEquals("Area (Hectares)", attribute.getName());
+		assertEquals("Area (Hectares)", attribute.getDescription());
 		
 	}
 

@@ -1,6 +1,6 @@
 package uk.org.tombolo.importer.utils.extraction;
 
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.Rule;
@@ -18,7 +18,7 @@ public class RowCellExtractorTest extends AbstractExtractorTest {
 
     @Test
     public void extract() throws Exception {
-        RowCellExtractor extractor = new RowCellExtractor(1, Cell.CELL_TYPE_NUMERIC);
+        RowCellExtractor extractor = new RowCellExtractor(1, CellType.NUMERIC);
 
         extractor.setRow(workbook.getSheet("sheet").getRow(0));
         assertEquals("5.0", extractor.extract());
@@ -29,7 +29,7 @@ public class RowCellExtractorTest extends AbstractExtractorTest {
 
     @Test
     public void extractBlankValue() throws Exception {
-        RowCellExtractor extractor = new RowCellExtractor(2, Cell.CELL_TYPE_BOOLEAN);
+        RowCellExtractor extractor = new RowCellExtractor(2, CellType.BOOLEAN);
 
         extractor.setRow(workbook.getSheet("sheet").getRow(0));
         assertEquals("true", extractor.extract());
@@ -43,7 +43,7 @@ public class RowCellExtractorTest extends AbstractExtractorTest {
     @Test
     public void extractSillyValue() throws Exception {
 
-        RowCellExtractor extractor = new RowCellExtractor(3, Cell.CELL_TYPE_NUMERIC);
+        RowCellExtractor extractor = new RowCellExtractor(3, CellType.NUMERIC);
 
         extractor.setRow(workbook.getSheet("sheet").getRow(0));
         thrown.expect(BlankCellException.class);
@@ -58,7 +58,7 @@ public class RowCellExtractorTest extends AbstractExtractorTest {
     @Test
     public void extractUnhandledCellType() throws Exception {
 
-        RowCellExtractor extractor = new RowCellExtractor(4, Cell.CELL_TYPE_FORMULA);
+        RowCellExtractor extractor = new RowCellExtractor(4, CellType.FORMULA);
 
         extractor.setRow(workbook.getSheet("sheet").getRow(0));
         thrown.expect(ExtractorException.class);
@@ -69,7 +69,7 @@ public class RowCellExtractorTest extends AbstractExtractorTest {
     @Test
     public void extractNonExistingColumn() throws Exception {
 
-        RowCellExtractor extractor = new RowCellExtractor(4, Cell.CELL_TYPE_FORMULA);
+        RowCellExtractor extractor = new RowCellExtractor(4, CellType.FORMULA);
 
         extractor.setRow(workbook.getSheet("sheet").getRow(1));
         thrown.expect(ExtractorException.class);

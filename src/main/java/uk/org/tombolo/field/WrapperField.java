@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +13,24 @@ import java.util.List;
  * WrapperField.java
  * A field that wraps subfields in a JSON object.
  *
- * Takes a fieldSpecification exactly like the root fieldSpecification does.
+ * Takes a field exactly like the root field does.
  * Can be nested.
  */
-public class WrapperField extends AbstractField implements Field, ParentField {
+public class WrapperField extends AbstractField implements ParentField {
     private static Logger log = LoggerFactory.getLogger(WrapperField.class);
-    private final List<FieldSpecification> fieldSpecification;
-    private ArrayList<Field> fields;
+    private final List<FieldRecipe> fields;
+    private ArrayList<Field> wrapperFields;
 
-    WrapperField(String label, List<FieldSpecification> fieldSpecification) {
+    WrapperField(String label, List<FieldRecipe> fields) {
         super(label);
-        this.fieldSpecification = fieldSpecification;
+        this.fields = fields;
     }
 
     public void initialize() {
-        this.fields = new ArrayList<>();
-        for (FieldSpecification fieldSpec : fieldSpecification) {
+        this.wrapperFields = new ArrayList<>();
+        for (FieldRecipe fieldSpec : fields) {
             try {
-                fields.add(fieldSpec.toField());
+                wrapperFields.add(fieldSpec.toField());
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }
@@ -38,24 +38,24 @@ public class WrapperField extends AbstractField implements Field, ParentField {
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) {
-        if (null == fields) { initialize(); }
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) {
+        if (null == wrapperFields) { initialize(); }
         JSONObject obj = new JSONObject();
         JSONObject inner = new JSONObject();
-        for (Field field : fields) {
+        wrapperFields.forEach(field -> {
             try {
-                inner.putAll(field.jsonValueForSubject(subject));
+                inner.putAll(field.jsonValueForSubject(subject, timeStamp));
             } catch (IncomputableFieldException e) {
                 log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
             }
-        }
+        });
         obj.put(label, inner);
         return obj;
     }
 
     @Override
     public List<Field> getChildFields() {
-        if (null == fields) { initialize(); }
-        return fields;
+        if (null == wrapperFields) { initialize(); }
+        return wrapperFields;
     }
 }

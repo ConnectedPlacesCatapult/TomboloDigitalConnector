@@ -1,11 +1,10 @@
 package uk.org.tombolo.field.aggregation;
 
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.Collections;
@@ -19,22 +18,22 @@ import java.util.List;
  * building, it will evaluate the fieldSpec with a subject representing the
  * Street that building is on (notwithstanding oddities in the data)
  */
-public class MapToNearestSubjectField extends AbstractField implements Field, SingleValueField, ParentField {
+public class MapToNearestSubjectField extends AbstractField implements ParentField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final String nearestSubjectProvider;
     private final String nearestSubjectType;
-    private final FieldSpecification fieldSpecification;
+    private final FieldRecipe field;
     private Double maxRadius;
-    private SingleValueField field;
+    private SingleValueField singleValueField;
     private SubjectType nearestSubjectTypeObject;
 
-    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldSpecification fieldSpecification) {
+    MapToNearestSubjectField(String label, String nearestSubjectProvider, String nearestSubjectType, Double maxRadius, FieldRecipe field) {
         super(label);
         this.maxRadius = maxRadius;
         this.nearestSubjectProvider = nearestSubjectProvider;
         this.nearestSubjectType = nearestSubjectType;
-        this.fieldSpecification = fieldSpecification;
+        this.field = field;
     }
 
     public void initialize() {
@@ -43,20 +42,11 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
         // Initialize maxRadius with a default value
         if (null == maxRadius) maxRadius = DEFAULT_MAX_RADIUS;
         try {
-            this.field = (SingleValueField) fieldSpecification.toField();
-            field.setFieldCache(fieldCache);
+            this.singleValueField = (SingleValueField) field.toField();
+            singleValueField.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                Double.valueOf(field.valueForSubject(getSubjectProximalToSubject(subject))));
-        return obj;
     }
 
     private Subject getSubjectProximalToSubject(Subject subject) throws IncomputableFieldException {
@@ -73,13 +63,14 @@ public class MapToNearestSubjectField extends AbstractField implements Field, Si
 
     @Override
     public List<Field> getChildFields() {
-        if (null == field) { initialize(); }
-        return Collections.singletonList(field);
+        if (null == singleValueField) { initialize(); }
+        return Collections.singletonList(singleValueField);
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
-        return field.valueForSubject(
-                getSubjectProximalToSubject(subject));
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == singleValueField) { initialize(); }
+        return singleValueField.valueForSubject(
+                getSubjectProximalToSubject(subject), timeStamp);
     }
 }

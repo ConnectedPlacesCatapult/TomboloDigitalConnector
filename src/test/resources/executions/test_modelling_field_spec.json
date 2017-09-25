@@ -1,6 +1,6 @@
 {
-	"datasetSpecification" : {
-		"subjectSpecification" : [
+	"dataset" : {
+		"subjects" : [
 			{
 				"subjectType" : "lsoa",
 				"provider":"uk.gov.ons",
@@ -10,13 +10,13 @@
 				}
 			}
 		],
-		"datasourceSpecification" : [
+		"datasources" : [
 			{
 				"importerClass": "uk.org.tombolo.importer.ons.OaImporter",
 				"datasourceId": "lsoa"
 			}
 		],
-		"fieldSpecification" : [
+		"fields" : [
 			{
 				"fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
 				"label": "SocialIsolationAmongElderly",
@@ -25,5 +25,5 @@
 			}
 		]
 	},
-	"exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+	"exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

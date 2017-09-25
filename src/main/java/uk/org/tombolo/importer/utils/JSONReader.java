@@ -4,6 +4,7 @@ import javax.json.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,15 +72,13 @@ public class JSONReader {
 
     private InputStream is;
 
-    private ArrayList<String> tags = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
 
     private final static String EMPTY_KEY = null;
 
     private String primaryNode = null;
 
-    private static boolean IS_FIRST = true;
-
-    private static ArrayList<LinkedHashMap<String, List<String>>> flatJsonTree
+    private ArrayList<LinkedHashMap<String, List<String>>> flatJsonTree
             = new ArrayList<>();
 
     private LinkedHashMap<String, List<String>> individualSectionOfTree
@@ -143,16 +142,15 @@ public class JSONReader {
      * Constructor accepts @params url and tags of @type String and ArrayList<String>
      */
 
-    public JSONReader(String url, ArrayList<String> tags) throws IOException {
+    public JSONReader(String url, List<String> tags) throws IOException {
         this(new URL(url), tags);
     }
-
 
     /*
      * Constructor accepts @params url and tags of @type URL and ArrayList<String>
      */
 
-    public JSONReader(URL url, ArrayList<String> tags) throws IOException {
+    public JSONReader(URL url, List<String> tags) throws IOException {
         this(url.openStream(), tags);
     }
 
@@ -161,9 +159,17 @@ public class JSONReader {
      * Constructor accepts @params is and tags of @type InputStream and ArrayList<String>
      */
 
-    public JSONReader(InputStream is, ArrayList<String> tags){
+    public JSONReader(InputStream is, List<String> tags){
         this.is = is;
         this.tags = tags;
+    }
+
+    public ArrayList<LinkedHashMap<String, List<String>>> getFlatJsonTree() {
+        return flatJsonTree;
+    }
+
+    public void setFlatJsonTree(ArrayList<LinkedHashMap<String, List<String>>> flatJsonTree) {
+        this.flatJsonTree = flatJsonTree;
     }
 
     public String getPrimaryNode() {
@@ -186,8 +192,9 @@ public class JSONReader {
         JsonReader reader = Json.createReader(is);
         JsonValue value = reader.read();
         convertTreeToHashMap(value, EMPTY_KEY);
+        setFlatJsonTree(flatJsonTree);
 
-        return flatJsonTree;
+        return getFlatJsonTree();
     }
 
 
@@ -236,7 +243,7 @@ public class JSONReader {
     private void createFlatStructure (String key, String value) {
 
         if (key.equalsIgnoreCase(getPrimaryNode())) {
-            flatJsonTree.add(individualSectionOfTree);
+            getFlatJsonTree().add(individualSectionOfTree);
             individualSectionOfTree = new LinkedHashMap<>();
         }
 
@@ -257,7 +264,7 @@ public class JSONReader {
      */
 
     public boolean containsMoreThanOneValues(String tagName) {
-        return flatJsonTree.stream().anyMatch(sections -> sections.get(tagName).size() > 1);
+        return getFlatJsonTree().stream().anyMatch(sections -> sections.get(tagName).size() > 1);
     }
 
 
@@ -269,7 +276,7 @@ public class JSONReader {
     public ArrayList<String> getTagValueFromAllSections (String tagName) {
         ArrayList<String> values = new ArrayList<>();
 
-        flatJsonTree.forEach(sections -> sections.keySet().stream()
+        getFlatJsonTree().forEach(sections -> sections.keySet().stream()
                 .filter(key -> key.equalsIgnoreCase(tagName))
                 .map(sections::get).forEachOrdered(values::addAll));
 
@@ -285,7 +292,7 @@ public class JSONReader {
 
     public ArrayList<String> getTagValueOfSpecificSection (String tagName, int index) {
         ArrayList<String> values = new ArrayList<>();
-        LinkedHashMap<String, List<String>> sections = flatJsonTree.get(index);
+        LinkedHashMap<String, List<String>> sections = getFlatJsonTree().get(index);
 
         sections.keySet().stream()
                 .filter(key -> key.equalsIgnoreCase(tagName))
@@ -300,7 +307,7 @@ public class JSONReader {
      */
 
     public ArrayList<String> allUniquekeys() {
-        return flatJsonTree.stream()
+        return getFlatJsonTree().stream()
                 .flatMap(sections -> sections.keySet().stream())
                 .distinct().collect(Collectors.toCollection(ArrayList::new));
 
@@ -321,7 +328,7 @@ public class JSONReader {
     public List<List<String>> conditionalResults(String get, String where, String equals) {
         List<List<String>> results = new ArrayList<>();
 
-        flatJsonTree.forEach(sections -> sections.keySet().stream()
+        getFlatJsonTree().forEach(sections -> sections.keySet().stream()
                 .filter(key -> key.equalsIgnoreCase(where) &&
                         sections.get(key).get(0).equalsIgnoreCase(equals))
                 .filter(key -> sections.containsKey(get)).map(key -> sections.get(get))

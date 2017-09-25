@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
@@ -12,7 +12,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.IncomputableFieldException;
 
 import java.util.Arrays;
@@ -39,38 +39,38 @@ public class BackOffFieldTest extends AbstractTest {
         Subject squareB = TestFactory.makeSubject(square, "squareB", "Square B", TestFactory.makeSquareGeometry(1.0d, 1.0d, 1.0d));
         Subject pointC = TestFactory.makeSubject(point, "pointC", "Point C", TestFactory.makePointGeometry(2.5d, 2.5d));
 
-        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "", "", Attribute.DataType.string);
+        Attribute testAttribute = new Attribute(TestFactory.DEFAULT_PROVIDER,ATTRIBUTE_LABEL, "");
         AttributeUtils.save(testAttribute);
 
         FixedValueUtils.save(new FixedValue(pointA,testAttribute, "pointAvalue"));
         FixedValueUtils.save(new FixedValue(squareB, testAttribute, "squareBvalue"));
 
         // Field for returning the point's attribute
-        FieldSpecification attributeValueField
-                = FieldSpecificationBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)
+        FieldRecipe attributeValueField
+                = FieldBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)
                 .setLabel("fixed")
                 .build();
 
         // Field for returning the point's square parent's value
-        FieldSpecification containingSubjectField = FieldSpecificationBuilder.mapToContainingSubjectField(
+        FieldRecipe containingSubjectField = FieldBuilder.mapToContainingSubjectField(
                 "mapped",
                 TestFactory.DEFAULT_PROVIDER.getLabel(),
                 "square",
-                FieldSpecificationBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)).build();
+                FieldBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)).build();
 
         // Field for first trying to return the point's value but if that is not available then return the point's square parent's value
         BackOffField backOffField  = new BackOffField("backoff", Arrays.asList(attributeValueField, containingSubjectField));
 
         // Point A has value so that value is returned
-        String pointAvalue = backOffField.valueForSubject(pointA);
+        String pointAvalue = backOffField.valueForSubject(pointA, true);
         assertEquals("pointAvalue", pointAvalue);
 
         // Point B has no value so we back-off to the surrounding square
-        String pointBvalue = backOffField.valueForSubject(pointB);
+        String pointBvalue = backOffField.valueForSubject(pointB, true);
         assertEquals("squareBvalue", pointBvalue);
 
         // Point C has no value nor surrounding square so we throw an exception
         thrown.expect(IncomputableFieldException.class);
-        backOffField.valueForSubject(pointC);
+        backOffField.valueForSubject(pointC, true);
     }
 }

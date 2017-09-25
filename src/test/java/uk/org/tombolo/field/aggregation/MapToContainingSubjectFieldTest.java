@@ -4,14 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +22,7 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
     @Before
     public void setUp() {
         TestFactory.makeNamedSubjectType("localAuthority");
-        field = new MapToContainingSubjectField("aLabel", AbstractONSImporter.PROVIDER.getLabel(), "localAuthority", makeFieldSpec());
+        field = new MapToContainingSubjectField("aLabel", new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority", null, null), makeFieldSpec());
         Subject containingSubject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subject below
         subject = TestFactory.makeNamedSubject("E01000001");
         Attribute attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
@@ -31,27 +31,20 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubject() throws Exception {
-        String value = field.valueForSubject(subject);
+        String value = field.valueForSubject(subject, true);
         assertEquals("100.0", value);
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
-        JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    attr_label: [" +
-                "      {" +
-                "        value: 100.0" +
-                "      }" +
-                "    ]" +
-                "  }"+
-                "}",jsonString,false);
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
+        JSONAssert.assertEquals(
+                "{ aLabel: 100.0}" ,jsonString,false);
     }
 
-    private FieldSpecification makeFieldSpec() {
-        return SpecificationDeserializer.fromJson(
-                FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label").toJSONString(),
-                FieldSpecification.class);
+    private FieldRecipe makeFieldSpec() {
+        return RecipeDeserializer.fromJson(
+                FieldBuilder.latestValue("default_provider_label", "attr_label").toJSONString(),
+                FieldRecipe.class);
     }
 }

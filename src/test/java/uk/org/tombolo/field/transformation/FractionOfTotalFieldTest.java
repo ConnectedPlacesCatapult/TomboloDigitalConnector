@@ -9,7 +9,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 
@@ -30,12 +30,12 @@ public class FractionOfTotalFieldTest extends AbstractTest {
 
     @Test
     public void testValueForSubject() throws Exception {
-        assertEquals("0.5", makeField().valueForSubject(subject));
+        assertEquals("0.5", makeField().valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
-        String jsonString = makeField().jsonValueForSubject(subject).toJSONString();
+        String jsonString = makeField().jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +
@@ -50,28 +50,28 @@ public class FractionOfTotalFieldTest extends AbstractTest {
     public void testJsonValueForSubjectWithPartiallyAbsentDividendValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr2_label");
-        makeFieldWithPartiallyAbsentDividendValue().jsonValueForSubject(subject).toJSONString();
+        makeFieldWithPartiallyAbsentDividendValue().jsonValueForSubject(subject, true).toJSONString();
     }
 
     @Test
     public void testJsonValueForSubjectWithFullyAbsentDividendValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr1_label, attr2_label");
-        makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject);
+        makeFieldWithFullyAbsentDividendValue().jsonValueForSubject(subject, false);
     }
 
     @Test
     public void testJsonValueForSubjectWithAbsentDivisorValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("No TimedValue found for attributes attr3_label");
-        makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject);
+        makeFieldWithAbsentDivisorValue().jsonValueForSubject(subject, null);
     }
 
     @Test
     public void testJsonValueForSubjectWithZeroDivisorValue() throws Exception {
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("Cannot divide by zero");
-        makeFieldWithZeroDivisorValue().jsonValueForSubject(subject);
+        makeFieldWithZeroDivisorValue().jsonValueForSubject(subject, true);
     }
 
     @Test

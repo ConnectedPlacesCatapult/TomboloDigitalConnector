@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Using the following test data files:
@@ -59,20 +58,19 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("milton_keynes.osm_polyline_processed");
 
-        assertEquals("milton_keynes.osm_polyline_processed",datasource.getId());
-        assertEquals("milton_keynes.osm_polyline_processed",datasource.getName());
-        assertEquals("",datasource.getDescription());
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getDatasourceSpec().getId());
+        assertEquals("milton_keynes.osm_polyline_processed",datasource.getDatasourceSpec().getName());
+        assertEquals("",datasource.getDatasourceSpec().getDescription());
 
         assertEquals(0, datasource.getTimedValueAttributes().size());
         assertEquals(6, datasource.getFixedValueAttributes().size());
 
         assertEquals(datasource.getFixedValueAttributes().get(0).getLabel(), "os_road_ids");
-        assertEquals(datasource.getFixedValueAttributes().get(0).getName(), "os road ids");
     }
 
     @Test @Ignore
     public void importDatasource() throws Exception {
-        importer.importDatasource("milton_keynes.osm_polyline_processed");
+        importer.importDatasource("milton_keynes.osm_polyline_processed", null, null, null);
         assertEquals(69489, importer.getTimedValueCount());
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "SSxNode");

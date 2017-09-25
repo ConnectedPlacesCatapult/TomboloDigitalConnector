@@ -1,135 +1,67 @@
 package uk.org.tombolo.core;
 
 import com.google.gson.stream.JsonWriter;
-import uk.org.tombolo.importer.Importer;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Datasource {
 	
-	private Class<? extends Importer> importerClass;
-	private String id;
-	private Provider provider;
-	private String name;
-	private String description;
-	private String url;					// Url of the datasource for that series
-	private String remoteDatafile;		// Remote datafile
+	private DatasourceSpec datasourceSpec;
+	private List<SubjectType> subjectTypes;
+	private List<Attribute> timedValueAttributes;
+	private List<Attribute> fixedValueAttributes;
 
-	private List<Attribute> timedValueAttributes = new ArrayList<>();
-	private List<Attribute> fixedValueAttributes = new ArrayList<>();
-	List<SubjectType> subjectTypes = new ArrayList<>();
-	
-	public Datasource(Class<? extends Importer> importerClass, String id, Provider provider, String name, String description){
-		this.importerClass = importerClass;
-		this.id = id;
-		this.provider = provider;
-		this.name = name;
-		this.description = description;
-	}
-
-	public void addSubjectType(SubjectType subjectType){
-		subjectTypes.add(subjectType);
-	}
-
-	public void addAllSubjectTypes(List<SubjectType> subjectTypes){
-		this.subjectTypes.addAll(subjectTypes);
-	}
-
-	public void addTimedValueAttribute(Attribute attribute){
-		timedValueAttributes.add(attribute);
-	}
-
-	public void addAllTimedValueAttributes(List<Attribute> attributes){
-		this.timedValueAttributes.addAll(attributes);
-	}
-
-	public void addFixedValueAttribute(Attribute attribute){
-		fixedValueAttributes.add(attribute);
-	}
-
-	public void addAllFixedValueAttributes(List<Attribute> attributes){
-		this.fixedValueAttributes.addAll(attributes);
-	}
-
-	public Class<? extends Importer> getImporterClass() {
-		return importerClass;
-	}
-
-	public void setImporterClass(Class<? extends Importer> importerClass) {
-		this.importerClass = importerClass;
-	}
-
-	public String getId(){
-		return id;
-	}
-	
-	public Provider getProvider() {
-		return provider;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
+	public Datasource(DatasourceSpec datasourceSpec){
+		this.datasourceSpec = datasourceSpec;
+		this.subjectTypes = Collections.emptyList();
+		this.timedValueAttributes = Collections.emptyList();
+		this.fixedValueAttributes = Collections.emptyList();
 	}
 
 	public List<SubjectType> getSubjectTypes() {
 		return subjectTypes;
 	}
 
-	public SubjectType getUniqueSubjectType() {
-		if (subjectTypes.size() != 1) {
-			throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %d", getId(), subjectTypes.size()));
-		}
-		return subjectTypes.get(0);
+	public void addSubjectTypes(List<SubjectType> subjectTypes) {
+		this.subjectTypes = subjectTypes;
 	}
 
 	public List<Attribute> getTimedValueAttributes() {
 		return timedValueAttributes;
 	}
 
-	public List<Attribute> getFixedValueAttributes() {
-		return fixedValueAttributes;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void addTimedValueAttributes(List<Attribute> timedValueAttributes) {
+		this.timedValueAttributes = timedValueAttributes;
 	}
 
-	/**
-	 * The use of the remote datafile is discouraged since the one-to-one relation between a datasource and datafile
-	 * is not applicable for all importers.
-	 *
-	 * When we have found out how to solve the Census Importer then this will be deleted
-	 *
-	 * @return
-	 */
-	@Deprecated
-	public String getRemoteDatafile() {
-		return remoteDatafile;
+	public List<Attribute> getFixedValueAttributes() {
+			return fixedValueAttributes;
 	}
-	@Deprecated
-	public void setRemoteDatafile(String remoteDatafile) {
-		this.remoteDatafile = remoteDatafile;
+
+	public void addFixedValueAttributes(List<Attribute> fixedValueAttributes) {
+		this.fixedValueAttributes = fixedValueAttributes;
+	}
+
+	public SubjectType getUniqueSubjectType() {
+		if (subjectTypes.size() != 1) {
+			throw new Error(String.format("Datasource %s expected to have 1 SubjectType, has %d", datasourceSpec.getId(), subjectTypes.size()));
+		}
+		return subjectTypes.get(0);
+	}
+
+	public DatasourceSpec getDatasourceSpec() {
+		return datasourceSpec;
 	}
 
 	public void writeJSON(JsonWriter writer) throws IOException {
 		writer.beginObject();
-		writer.name("id").value(id);
-		writer.name("importerClass").value(importerClass.getCanonicalName());
-		writer.name("name").value(name);
-		writer.name("description").value(description);
-		writer.name("url").value(url);
-		writer.name("remoteDatafile").value(remoteDatafile);
-		writer.name("provider");
-		provider.writeJSON(writer);
+		writer.name("id").value(datasourceSpec.getId());
+		writer.name("importerClass").value(datasourceSpec.getImporterClass().getCanonicalName());
+		writer.name("name").value(datasourceSpec.getName());
+		writer.name("description").value(datasourceSpec.getDescription());
+		writer.name("url").value(datasourceSpec.getUrl());
 		writer.name("subjectTypes");
 		writer.beginArray();
 		for (SubjectType subjectType : getSubjectTypes()) {

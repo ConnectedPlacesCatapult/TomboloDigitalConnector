@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * File ZmlsZTovVXNlcnMvbHFlbmRyby9Ub21ib2xvRGlnaXRhbENvbm5lY3Rvci9zcmMvdGVzdC9yZXNvdXJjZXMvZGF0YWNhY2hlL1RvbWJvbG9EYXRhL2dlbmVyYWwuY3N2LnByb3ZpZGVyL3Rlc3RHZW5lcmFsQ1NWRmlsZUdlby5jc3Y=.csv
+ * File a751e9b7-f178-3a53-8a62-d5c93917504b.csv
  */
 public class GeneralCSVImporterTest extends AbstractTest {
     private GeneralCSVImporter importer;
@@ -103,13 +103,13 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("datasourceGeneral.csv.provider");
-        assertEquals(LOCATION_FILE, datasource.getRemoteDatafile());
+        assertEquals("datasourceGeneral.csv.provider", datasource.getDatasourceSpec().getId());
     }
 
     @Test
     public void testImportDatasourceNoGeo() throws Exception {
         // Testing import with new subject but no geography
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
@@ -126,7 +126,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
 
         // Testing import with existing subject
         importer.setConfig(EXISTING_SUBJECT_CONFIG.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         testImport(subject);
     }
@@ -135,7 +135,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     public void testImportDatasourceWithGeo() throws Exception {
         // Testing import with new subject with geography
         importer.setConfig(NEW_SUBJECT_WITH_GEO.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
@@ -148,7 +148,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
     @Test
     public void testImportDatasorceEastNorth()  throws Exception {
         importer.setConfig(NEW_SUBJECT_GEO_EAST_NORTH.build());
-        importer.importDatasource("datasourceGeneral.csv.provider");
+        importer.importDatasource("datasourceGeneral.csv.provider", null, null, null);
 
         Subject subject = SubjectUtils.getSubjectByTypeAndLabel(
                 SubjectTypeUtils.getSubjectTypeByProviderAndLabel("subject.type.provider","lsoa"),
@@ -166,7 +166,7 @@ public class GeneralCSVImporterTest extends AbstractTest {
         String[] values = value.split(",");
 
         for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, AttributeUtils.nameToLabel(headers[i]), values[i]);
+            testFixedValue(subject, headers[i], values[i]);
         }
     }
 

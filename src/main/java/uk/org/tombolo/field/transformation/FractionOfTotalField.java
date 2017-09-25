@@ -11,10 +11,9 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
  * For a subject, returns the sum of its TimedValues for a list of dividend
  * attributes divided by a divisor attribute.
  */
-public class FractionOfTotalField extends AbstractField implements SingleValueField {
+public class FractionOfTotalField extends AbstractField {
     private final List<AttributeMatcher> dividendAttributes;
     private final AttributeMatcher divisorAttribute;
     private Map<AttributeMatcher, Attribute> cachedAttributes;
@@ -42,12 +41,12 @@ public class FractionOfTotalField extends AbstractField implements SingleValueFi
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return getValue(subject).value.toString();
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
         obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));
@@ -110,9 +109,9 @@ public class FractionOfTotalField extends AbstractField implements SingleValueFi
         if (null == cachedAttributes) { cachedAttributes = new HashMap<>(); } // Gson will null this field whatever we do
         if (cachedAttributes.containsKey(attributeMatcher)) return cachedAttributes.get(attributeMatcher);
 
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.providerLabel, attributeMatcher.attributeLabel);
+        Attribute attr = AttributeUtils.getByProviderAndLabel(attributeMatcher.provider, attributeMatcher.label);
         if (null == attr) {
-            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.providerLabel, attributeMatcher.attributeLabel));
+            throw new IllegalArgumentException(String.format("No attribute found for provider %s and label %s", attributeMatcher.provider, attributeMatcher.label));
         } else {
             cachedAttributes.put(attributeMatcher, attr);
             return attr;

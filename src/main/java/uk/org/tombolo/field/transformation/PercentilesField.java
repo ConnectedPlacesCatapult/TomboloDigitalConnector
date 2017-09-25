@@ -2,30 +2,30 @@ package uk.org.tombolo.field.transformation;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.FieldSpecification;
-import uk.org.tombolo.execution.spec.SubjectSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Field that returns for a subject the percentile in which its value falls.
  * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
-public class PercentilesField extends AbstractField implements Field, SingleValueField, ParentField {
+public class PercentilesField extends AbstractField implements ParentField {
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    private final FieldSpecification valueField;
+    private final FieldRecipe valueField;
     // The subjects over which the percentiles are calculated
-    private final List<SubjectSpecification> normalizationSubjects;
+    private final List<SubjectRecipe> normalizationSubjects;
     // The number of percentiles
     private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
@@ -37,8 +37,8 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     public PercentilesField(
             String label,
             String name,
-            FieldSpecification valueField,
-            List<SubjectSpecification> normalizationSubjects,
+            FieldRecipe valueField,
+            List<SubjectRecipe> normalizationSubjects,
             Integer percentileCount, Boolean inverse) {
         super(label);
         this.valueField = valueField;
@@ -48,16 +48,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
     }
 
     @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
-        JSONObject obj = new JSONObject();
-        obj.put(this.label,
-                calculateValueForSubject(subject));
-        return obj;
-    }
-
-    @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return String.valueOf(calculateValueForSubject(subject));
     }
 
@@ -68,7 +59,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
 
         if (field == null)
             initialize();
-        double fieldValue = Double.valueOf(field.valueForSubject(subject));
+        double fieldValue = Double.valueOf(field.valueForSubject(subject, true));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
                 Double value;
@@ -108,7 +99,7 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
 
             for (int i = 0; i< subjects.size(); i++){
                 try {
-                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i)));
+                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i), true));
                 } catch (IncomputableFieldException e) {
                     throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
                             "Check that Field %1$s exists for Subject %2$s \n" +
@@ -124,11 +115,11 @@ public class PercentilesField extends AbstractField implements Field, SingleValu
             log.info("Variance: {}", StatUtils.variance(values));
 
             percentiles = new ArrayList<>();
-            for (int i=0; i< percentileCount; i++){
-                double percentage = Math.floor(100d/percentileCount)*(i+1);
+            IntStream.range(0, percentileCount).forEach(i -> {
+                double percentage = Math.floor(100d / percentileCount) * (i + 1);
                 percentiles.add(percentile.evaluate(percentage));
-                log.info("Percentile {} with percentage {} at value {}",i+1, percentage, percentiles.get(i));
-            }
+                log.info("Percentile {} with percentage {} at value {}", i + 1, percentage, percentiles.get(i));
+            });
         }
     }
 

@@ -10,10 +10,9 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.value.FixedAnnotationField;
 import uk.org.tombolo.field.value.ValuesByTimeField;
 
@@ -46,7 +45,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		), Collections.singletonList(
 				new ValuesByTimeField("attr_label",
 						new AttributeMatcher("default_provider_label", "attr_label"))
-		));
+		), false);
 
 		assertEquals("E09000001", getFirstFeatureLabel(writer.toString()));
 	}
@@ -57,7 +56,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 
 		exporter.write(writer,
 				Arrays.asList(SubjectUtils.getSubjectByTypeAndLabel(localAuthority, "E09000001")),
-				Arrays.asList(new FixedAnnotationField("some_label", "some_value"))
+				Arrays.asList(new FixedAnnotationField("some_label", "some_value")), false
 		);
 
 		JSONAssert.assertEquals("{" +

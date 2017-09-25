@@ -3,8 +3,8 @@ package uk.org.tombolo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
-import uk.org.tombolo.execution.spec.DataExportSpecification;
-import uk.org.tombolo.execution.spec.SpecificationDeserializer;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 
@@ -21,19 +21,19 @@ public class DataExportSpecificationBuilder implements JSONAware {
         datasourceSpec = new JSONArray();
         fieldSpec = new JSONArray();
 
-        jsonSpec.put("datasetSpecification", datasetSpec);
-        datasetSpec.put("subjectSpecification", subjectSpec);
-        datasetSpec.put("datasourceSpecification", datasourceSpec);
-        datasetSpec.put("fieldSpecification", fieldSpec);
+        jsonSpec.put("dataset", datasetSpec);
+        datasetSpec.put("subjects", subjectSpec);
+        datasetSpec.put("datasources", datasourceSpec);
+        datasetSpec.put("fields", fieldSpec);
     }
 
     public DataExportSpecificationBuilder setExporterClass(String exporterClass) {
-        jsonSpec.put("exporterClass", exporterClass);
+        jsonSpec.put("exporter", exporterClass);
         return this;
     }
 
-    public DataExportSpecification build() {
-        return SpecificationDeserializer.fromJson(toJSONString(), DataExportSpecification.class);
+    public DataExportRecipe build() {
+        return RecipeDeserializer.fromJson(toJSONString(), DataExportRecipe.class);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class DataExportSpecificationBuilder implements JSONAware {
         return this;
     }
 
-    public DataExportSpecificationBuilder addFieldSpecification(FieldSpecificationBuilder fieldSpecificationBuilder) {
-        fieldSpec.add(fieldSpecificationBuilder);
+    public DataExportSpecificationBuilder addFieldSpecification(FieldBuilder fieldBuilder) {
+        fieldSpec.add(fieldBuilder);
         return this;
     }
 

@@ -13,9 +13,8 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
-import uk.org.tombolo.importer.GeneralImporter;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.File;
@@ -29,50 +28,43 @@ import java.util.stream.IntStream;
 /**
  * General importer for CSV files.
  */
-public class GeneralCSVImporter extends GeneralImporter {
+public class GeneralCSVImporter extends AbstractImporter {
     static Logger log = LoggerFactory.getLogger(GeneralCSVImporter.class);
 
     private List csvRecords;
-
-    private DataSourceID dataSourceID;
+    private DatasourceSpec datasourceSpec;
 
     public GeneralCSVImporter(Config config) {
         super(config);
 
-        dataSourceID = new DataSourceID(
+        datasourceSpec = new DatasourceSpec(GeneralCSVImporter.class,
                 "datasource" + config.getProvider().substring(0, 1).toUpperCase() + config.getProvider().substring(1),
-                "",
-                "",
-                "",
-                config.getFileLocation()
-        );
+                "", "", "");
 
-        datasourceIds = Arrays.asList(dataSourceID.getLabel());
+        datasourceIds = Arrays.asList(datasourceSpec.getId());
     }
+
     @Override
     public Provider getProvider() {
         return new Provider(config.getProvider(), "");
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-        if (dataSourceID.getLabel().equals(datasourceId)) {
-            return getDatasource(getClass(), dataSourceID);
-        }
-
-        return null;
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        setupUtils();
+        return datasourceSpec;
     }
 
     @Override
-    protected List<SubjectType> getSubjectTypes(DataSourceID dataSourceID) {
+    public List<SubjectType> getSubjectTypes(String dataSourceID) {
         if ("yes".equalsIgnoreCase(config.getExistingSubject())) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         return Arrays.asList(config.getSubjectType());
     }
 
     @Override
-    protected List<Attribute> getFixedValuesAttributes(DataSourceID dataSourceID) {
+    public List<Attribute> getFixedValueAttributes(String datasourceID) {
         List<Attribute> attributes = new ArrayList<>();
 
         CSVRecord attributeHeader = (CSVRecord) csvRecords.get(0);
@@ -89,20 +81,17 @@ public class GeneralCSVImporter extends GeneralImporter {
             String attrString = attributeHeader.get(index);
             attributes.add(new Attribute(
                     getProvider(),
-                    AttributeUtils.nameToLabel(attrString),
-                    attrString.replace("\\s+",""),
-                    "",
-                    Attribute.DataType.string
+                    AttributeUtils.substringToDBLength(attrString),
+                    attrString
             ));
         }
 
         return attributes;
     }
 
-    @Override
-    protected void setupUtils(Datasource datasource) throws Exception {
+    protected void setupUtils() throws Exception {
         CSVFormat format = CSVFormat.DEFAULT;
-        String fileLocation = datasource.getRemoteDatafile();
+        String fileLocation = config.getFileLocation();
         URL url;
         try {
             url = new URL(fileLocation);
@@ -121,7 +110,7 @@ public class GeneralCSVImporter extends GeneralImporter {
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         int subjectIDIdx = config.getSubjectIDIndex();
         List<FixedValue> fixedValues = new ArrayList<>();
         List<Subject> subjects = new ArrayList<>();

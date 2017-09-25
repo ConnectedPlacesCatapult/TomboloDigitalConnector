@@ -2,10 +2,10 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "datasetSpecification": {
+    "dataset": {
       "type": "object",
       "properties": {
-        "subjectSpecification": {
+        "subjects": {
           "type": "array",
           "items": {
             "type": "object",
@@ -40,13 +40,13 @@
                     "type": "string",
                     "enum": ["within"]
                   },
-                  "subjectSpecifications": {
+                  "subjects": {
                     "type": "array"
                   }
                 },
                 "required": [
                   "geoRelation",
-                  "subjectSpecifications"
+                  "subjects"
                 ],
                 "additionalProperties": false
               }
@@ -59,7 +59,7 @@
             "additionalProperties": false
           }
         },
-        "datasourceSpecification": {
+        "datasources": {
           "type": "array",
           "items": {
             "type": "object",
@@ -84,6 +84,12 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "localData": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [
@@ -93,7 +99,7 @@
             "additionalProperties": false
           }
         },
-        "fieldSpecification": {
+        "fields": {
           "type": "array",
           "items": {
             "type": "object",
@@ -113,19 +119,22 @@
         }
       },
       "required": [
-        "subjectSpecification",
-        "datasourceSpecification",
-        "fieldSpecification"
+        "subjects",
+        "datasources",
+        "fields"
       ],
       "additionalProperties": false
     },
-    "exporterClass": {
+    "exporter": {
       "type": "string"
+    },
+    "timeStamp": {
+      "type": "boolean"
     }
   },
   "required": [
-    "datasetSpecification",
-    "exporterClass"
+    "dataset",
+    "exporter"
   ],
   "additionalProperties": false
 }

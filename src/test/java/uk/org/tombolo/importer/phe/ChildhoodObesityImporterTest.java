@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNull;
  * Using the following test data files:
  *
  * Remote: http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx
- * Local: aHR0cDovL3d3dy5ub28ub3JnLnVrL3NlY3VyZWZpbGVzLzE2MTAyNF8xMzUyLzIwMTUwNTExX01TT0FfV2FyZF9PYmVzaXR5Lnhsc3g=.xlsx
+ * Local: c686dc46-0b81-3ede-b85d-29cd912f86be.xlsx
  */
 public class ChildhoodObesityImporterTest extends AbstractTest {
     private ChildhoodObesityImporter importer;
@@ -63,7 +63,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -95,7 +95,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceMSOAWithEmpty() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
@@ -131,7 +131,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourceLA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null);
+        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 

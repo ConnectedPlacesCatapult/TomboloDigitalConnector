@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Using files for test:
  *
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS81OTc5NjUvRWR1QmFzZV9TY2hvb2xzX0FwcmlsXzIwMTcueGxzeA==.xlsx
+ * Local: 3d89d3e5-85ed-3976-8d5c-6744bc044e8a.xlsx
  */
 public class SchoolsImporterTest extends AbstractTest {
     private static SchoolsImporter importer;
@@ -44,15 +44,14 @@ public class SchoolsImporterTest extends AbstractTest {
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("schools");
-        // Month hardcoded to "March" because the dataset is not regularly updated every month as it should be
-        assertEquals("https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx",datasource.getRemoteDatafile());
+        assertEquals("https://www.gov.uk/government/publications/schools-in-england/", datasource.getDatasourceSpec().getUrl());
     }
 
     @Test
     public void testImportDatasource() throws Exception {
-        importer.importDatasource("schools");
+        importer.importDatasource("schools", null, null, null);
 
-        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","schools"),"uk.gov.education_schools_100000.0");
+        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("uk.gov.education","dfeSchools"),"uk.gov.education_schools_100000.0");
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("Sir John Cass's Foundation Primary School", subject.getName());
@@ -63,7 +62,7 @@ public class SchoolsImporterTest extends AbstractTest {
         String[] values = value.split("[\t\n]");
 
         for (int i = 0; i < headers.length; i++) {
-            testFixedValue(subject, AttributeUtils.nameToLabel(headers[i]), values[i]);
+            testFixedValue(subject, headers[i], values[i]);
         }
     }
 

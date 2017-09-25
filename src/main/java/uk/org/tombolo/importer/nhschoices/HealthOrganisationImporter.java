@@ -7,22 +7,32 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.Importer;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class HealthOrganisationImporter extends AbstractImporter implements Importer {
+public final class HealthOrganisationImporter extends AbstractImporter {
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
-    private enum DatasourceId {hospital, clinic, gpSurgeries};
+    private enum DatasourceId {
+        hospital(new DatasourceSpec(HealthOrganisationImporter.class, "hospital","Hospital",
+                "List of Hospitals in England",
+                "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B")),
+        clinic(new DatasourceSpec(HealthOrganisationImporter.class,"clinic", "Clinic",
+                "List of Clinics in England",
+                "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B")),
+        gpSurgeries(new DatasourceSpec(HealthOrganisationImporter.class, "gpSurgeries", "GP Surgeries",
+                "List of GP Surgeries in England",
+                "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B"));
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) { this.datasourceSpec = datasourceSpec; }
+    }
 
     public HealthOrganisationImporter(Config config) {
         super(config);
@@ -38,36 +48,27 @@ public final class HealthOrganisationImporter extends AbstractImporter implement
     }
 
     @Override
-    public Datasource getDatasource(String datasourceId) throws Exception {
-        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
-        switch (datasourceIdObject) {
-            case hospital:
-                return makeDatasource(
-                        datasourceIdObject.name(), "Hospital", "List of Hospitals in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20hospitals%3B");
-            case clinic:
-                return makeDatasource(
-                        datasourceIdObject.name(), "Clinic", "List of Clinics in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20clinics%3B");
-            case gpSurgeries:
-                log.warn("GP Surgeries dataset known to have erroneous data, for an example see 'Dr Rushton & Partne.478378295898438' or watch import logs");
-                return makeDatasource(
-                        datasourceIdObject.name(), "GP Surgeries", "List of GP Surgeries in England", "https://data.gov.uk/data/api/service/health/sql?query=SELECT%20*%20FROM%20gp_surgeries%3B");
-            default:
-                return null;
-        }
-    }
-
-    private Datasource makeDatasource(String id, String name, String description, String url) {
-        Datasource datasource = new Datasource(getClass(), id, getProvider(), name, description);
-        datasource.addSubjectType(new SubjectType(getProvider(), datasource.getId(), datasource.getName()));
-        datasource.setUrl(url);
-        return datasource;
+    public List<SubjectType> getSubjectTypes(String datasourceId) {
+        DatasourceSpec datasourceSpec = DatasourceId.valueOf(datasourceId).datasourceSpec;
+        return Collections.singletonList(
+                new SubjectType(getProvider(), datasourceSpec.getId(), datasourceSpec.getDescription()));
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        DatasourceId datasourceIdObject = DatasourceId.valueOf(datasourceId);
+        if (datasourceIdObject.equals(DatasourceId.gpSurgeries)) {
+            log.warn("GP Surgeries dataset known to have erroneous data, for an example see 'Dr Rushton & Partne.478378295898438' or watch import logs");
+        }
+
+        return datasourceIdObject.datasourceSpec;
+    }
+
+    @Override
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
-        JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getUrl()), getProvider().getLabel());
+        JSONObject documentObj = downloadUtils.fetchJSON(new URL(datasource.getDatasourceSpec().getUrl()), getProvider().getLabel());
 
         List<Map<String, String>> results = (List<Map<String, String>>) documentObj.get("result");
 

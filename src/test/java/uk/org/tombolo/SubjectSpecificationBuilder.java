@@ -24,7 +24,7 @@ public class SubjectSpecificationBuilder implements JSONAware {
     public SubjectSpecificationBuilder setGeoMatcher(String geoRelation, List<SubjectSpecificationBuilder> subjectSpecifications){
         JSONObject geoMatchRule = new JSONObject();
         geoMatchRule.put("geoRelation", geoRelation);
-        geoMatchRule.put("subjectSpecifications", subjectSpecifications);
+        geoMatchRule.put("subjects", subjectSpecifications);
         jsonSpec.put("geoMatchRule", geoMatchRule);
         return this;
     }

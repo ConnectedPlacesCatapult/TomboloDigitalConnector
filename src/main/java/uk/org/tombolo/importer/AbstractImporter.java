@@ -2,10 +2,7 @@ package uk.org.tombolo.importer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.FixedValue;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.utils.JournalEntryUtils;
 
@@ -68,15 +65,6 @@ public abstract class AbstractImporter implements Importer {
 	public void setConfig(Config config) { this.config = config; }
 
 	/**
-	 * Syntactic sugar for global scope import
-	 * @param datasourceId
-	 * @throws Exception
-	 */
-	public void importDatasource(String datasourceId) throws Exception{
-		importDatasource(datasourceId, null, null);
-	}
-
-	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
 	 * @param datasourceId
@@ -85,8 +73,8 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception {
-		importDatasource(datasourceId, geographyScope, temporalScope, false);
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, false);
 	}
 
 	/**
@@ -99,12 +87,12 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception {
+	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
 		if (!force && DatabaseJournal.journalHasEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
-						getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope))) {
+						getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope, datasourceLocation))) {
 			log.info("Skipped importing {}:{} as this import has been completed previously",
 					this.getClass().getCanonicalName(), datasourceId);
 		} else {
@@ -113,12 +101,36 @@ public abstract class AbstractImporter implements Importer {
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
 			saveDatasourceMetadata(datasource);
-			importDatasource(datasource, geographyScope, temporalScope);
+			importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
 			DatabaseJournal.addJournalEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
-					getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope));
+					getClass().getCanonicalName(), datasourceId, geographyScope, temporalScope, datasourceLocation));
 			log.info("Imported {} subjects, {} fixed values and {} timedValues",
 					subjectCount, fixedValueCount, timedValueCount);
 		}
+	}
+
+	@Override
+	public List<SubjectType> getSubjectTypes(String datasourceId) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public Datasource getDatasource(String datasourceId) throws Exception {
+		Datasource datasource = new Datasource(getDatasourceSpec(datasourceId));
+		datasource.addSubjectTypes(getSubjectTypes(datasourceId));
+		datasource.addFixedValueAttributes(getFixedValueAttributes(datasourceId));
+		datasource.addTimedValueAttributes(getTimedValueAttributes(datasourceId));
+		return datasource;
 	}
 
 	/**
@@ -127,9 +139,10 @@ public abstract class AbstractImporter implements Importer {
 	 * @param datasource
 	 * @param geographyScope
 	 * @param temporalScope
+	 * @param datasourceLocation
 	 * @throws Exception
 	 */
-	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception;
+	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception;
 
 	/**
 	 * Loads the given properties resource into the main properties object
@@ -152,9 +165,9 @@ public abstract class AbstractImporter implements Importer {
 		return properties;
 	}
 
-	protected static void saveDatasourceMetadata(Datasource datasource){
+	protected void saveDatasourceMetadata(Datasource datasource) throws Exception {
 		// Save provider
-		ProviderUtils.save(datasource.getProvider());
+		ProviderUtils.save(getProvider());
 
 		// Save SubjectType
 		SubjectTypeUtils.save(datasource.getSubjectTypes());
@@ -226,15 +239,5 @@ public abstract class AbstractImporter implements Importer {
 	@Override
 	public int getTimedValueBufferSize() {
 		return BUFFER_THRESHOLD;
-	}
-
-	public Datasource datasourceFromDatasourceId(DataSourceID datasourceID){
-		return new Datasource(
-				getClass(),
-				datasourceID.getLabel(),
-				getProvider(),
-				datasourceID.getName(),
-				datasourceID.getDescription()
-		);
 	}
 }

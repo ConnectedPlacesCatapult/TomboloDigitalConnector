@@ -1,15 +1,14 @@
 package uk.org.tombolo.importer.osm;
 
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DataSourceID;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Open street map importer for green spaces. Green spaces include:
- * Parks, gardens, god parks, woods, meadows, forests, orchards, grass
+ * Open street map importer for green spaces.
  *
  * File: 8f97288ba27a34e5c76ddfa3dfc2383b.osm
  */
@@ -27,15 +26,15 @@ public class GreenSpaceImporter extends OSMImporter {
     public GreenSpaceImporter(Config config) {
         super(config);
 
-        dataSourceID = new DataSourceID(
+        datasourceSpec = new DatasourceSpec(
+                GreenSpaceImporter.class,
                 "OSMGreenSpace",
                 "",
                 "Open Street Map green space data",
-                URL,
-                null
+                URL
         );
         categories = CATEGORIES;
-        datasourceIds = Arrays.asList(dataSourceID.getLabel());
+        datasourceIds = Arrays.asList(datasourceSpec.getId());
     }
 
 }

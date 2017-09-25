@@ -14,7 +14,7 @@ import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.TimedValueId;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -34,12 +34,12 @@ public class CorrelationAnalysisEngine {
      * each of the fields.
      *
      * @param dataExportOutputPath is the location of the otput data.
-     * @param fieldSpecifications is a list of field specifications to use in the correlation calculation.
+     * @param fields is a list of field specifications to use in the correlation calculation.
      * @return a matrix of the subject values for the different fields
-     * @throws ClassNotFoundException is thrown if the FieldSpecification cannot be cast to a Field
+     * @throws ClassNotFoundException is thrown if the FieldRecipe cannot be cast to a Field
      * @throws IOException if there is a problem reading the data export output file
      */
-    public static RealMatrix readCSVDataExport(String dataExportOutputPath, List<FieldSpecification> fieldSpecifications)
+    public static RealMatrix readCSVDataExport(String dataExportOutputPath, List<FieldRecipe> fields)
             throws ClassNotFoundException, IOException {
 
         CSVParser csvParser = CSVParser.parse(new File(dataExportOutputPath), StandardCharsets.UTF_8, CSVFormat.DEFAULT.withHeader());
@@ -49,8 +49,8 @@ public class CorrelationAnalysisEngine {
         while (csvRecords.hasNext()){
             CSVRecord csvRecord = csvRecords.next();
             List<Double> valueList = new ArrayList<>();
-            for (FieldSpecification fieldSpecification : fieldSpecifications) {
-                String fieldLabel = fieldSpecification.toField().getLabel();
+            for (FieldRecipe field : fields) {
+                String fieldLabel = field.toField().getLabel();
                 try {
                     Double value = Double.parseDouble(csvRecord.get(fieldLabel));
                     if (!value.isNaN()) {
@@ -65,17 +65,17 @@ public class CorrelationAnalysisEngine {
                     break;
                 }catch (IllegalArgumentException e){
                     // This happens when there are too few arguments/columns in the line of the csv file
-                    // I.e. fewer than the list of fieldSpecifications
+                    // I.e. fewer than the list of fields
                     valueList = null;
                     break;
                 }
             }
-            if (valueList!= null && valueList.size() == fieldSpecifications.size()){
+            if (valueList!= null && valueList.size() == fields.size()){
                 // The value list is the same size as the number of fields
                 valueMatrix.add(valueList);
             }
         }
-        return valueMatrixToRealMatrix(valueMatrix, fieldSpecifications);
+        return valueMatrixToRealMatrix(valueMatrix, fields);
     }
 
     /**
@@ -84,12 +84,12 @@ public class CorrelationAnalysisEngine {
      * each of the fields.
      *
      * @param dataExportOutputPath is the location of the otput data.
-     * @param fieldSpecifications is a list of field specifications to use in the correlation calculation.
+     * @param fields is a list of field specifications to use in the correlation calculation.
      * @return a matrix of the subject values for the different fields
-     * @throws ClassNotFoundException is thrown if the FieldSpecification cannot be cast to a Field
+     * @throws ClassNotFoundException is thrown if the FieldRecipe cannot be cast to a Field
      * @throws IOException if there is a problem reading the data export output file
      */
-    public static RealMatrix readGeoJsonDataExport(String dataExportOutputPath, List<FieldSpecification> fieldSpecifications)
+    public static RealMatrix readGeoJsonDataExport(String dataExportOutputPath, List<FieldRecipe> fields)
             throws ClassNotFoundException, IOException {
         /*
             I tried both using GeoTools DataStore and GeometryJSON parsing but both had problems with our
@@ -110,8 +110,8 @@ public class CorrelationAnalysisEngine {
             JsonObject properties = feature.getAsJsonObject("properties");
 
             List<Double> valueList = new ArrayList<>();
-            for (FieldSpecification fieldSpecification : fieldSpecifications) {
-                String fieldLabel = fieldSpecification.toField().getLabel();
+            for (FieldRecipe field : fields) {
+                String fieldLabel = field.toField().getLabel();
                 try {
                     // In case there are multiple values with different timestamp we take the latest.
                     // This is just a heuristics that we choose for generalisation purposes.
@@ -152,7 +152,7 @@ public class CorrelationAnalysisEngine {
                 }
             }
 
-            if (valueList!= null && valueList.size() == fieldSpecifications.size()){
+            if (valueList!= null && valueList.size() == fields.size()){
                 // The value list is the same size as the number of fields
                 valueMatrix.add(valueList);
             }
@@ -160,14 +160,14 @@ public class CorrelationAnalysisEngine {
         jsonReader.close();
 
         // Turn the valueMatrix List into a RealMatrix
-        return valueMatrixToRealMatrix(valueMatrix, fieldSpecifications);
+        return valueMatrixToRealMatrix(valueMatrix, fields);
     }
 
-    private static RealMatrix valueMatrixToRealMatrix(List<List<Double>> valueMatrix, List<FieldSpecification> fieldSpecifications){
-        RealMatrix matrix = new BlockRealMatrix(valueMatrix.size(), fieldSpecifications.size());
+    private static RealMatrix valueMatrixToRealMatrix(List<List<Double>> valueMatrix, List<FieldRecipe> fields){
+        RealMatrix matrix = new BlockRealMatrix(valueMatrix.size(), fields.size());
         for(int i=0; i<valueMatrix.size(); i++){
             // The i-th subject with non NaN values for all fields
-            for (int j=0; j<fieldSpecifications.size(); j++){
+            for (int j=0; j<fields.size(); j++){
                 // j-th field
                 matrix.setEntry(i,j,valueMatrix.get(i).get(j));
             }
@@ -182,11 +182,11 @@ public class CorrelationAnalysisEngine {
      * Writes the correlation, pValue and standard error to a file using JSON format.
      *
      * @param matrix the input matrix where fields are represented by as columns and subjects by rows
-     * @param fieldSpecifications a list of field specifications for which the correlations are to be calculated
+     * @param fields a list of field specifications for which the correlations are to be calculated
      * @param correlationAnalysisOutputPath is the file to which the results are written
      * @throws Exception
      */
-    public static void calculateAndOutputCorrelations(RealMatrix matrix, List<FieldSpecification> fieldSpecifications,
+    public static void calculateAndOutputCorrelations(RealMatrix matrix, List<FieldRecipe> fields,
                                                        String correlationAnalysisOutputPath) throws Exception {
         PearsonsCorrelation correlation = new PearsonsCorrelation(matrix);
         RealMatrix correlationMatrix = correlation.getCorrelationMatrix();
@@ -198,8 +198,8 @@ public class CorrelationAnalysisEngine {
         for (int i=0; i<correlationMatrix.getRowDimension(); i++){
             for (int j=0; j<correlationMatrix.getColumnDimension(); j++){
                 JSONObject correlationObject = new JSONObject();
-                correlationObject.put("xFieldLabel", fieldSpecifications.get(i).toField().getLabel());
-                correlationObject.put("yFieldLabel", fieldSpecifications.get(j).toField().getLabel());
+                correlationObject.put("xFieldLabel", fields.get(i).toField().getLabel());
+                correlationObject.put("yFieldLabel", fields.get(j).toField().getLabel());
                 correlationObject.put("correlationCoefficient", correlationMatrix.getEntry(i,j));
                 correlationObject.put("pValue", pValueMatrix.getEntry(i,j));
                 correlationObject.put("standardError", standardErrorMatrix.getEntry(i,j));

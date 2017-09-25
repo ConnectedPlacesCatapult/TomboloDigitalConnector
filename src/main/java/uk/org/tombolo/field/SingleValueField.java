@@ -1,6 +1,7 @@
 package uk.org.tombolo.field;
 
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
 
 /**
  * SingleValueField.java
@@ -12,5 +13,6 @@ import uk.org.tombolo.core.Subject;
  * of your generic field, or another field entirely.
  */
 public interface SingleValueField extends Field {
-    String valueForSubject(Subject subject) throws IncomputableFieldException;
+    String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException;
+    TimedValue getTimedValue(Subject subject) throws IncomputableFieldException;
 }

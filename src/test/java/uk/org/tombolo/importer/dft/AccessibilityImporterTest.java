@@ -9,9 +9,7 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -78,35 +76,36 @@ public class AccessibilityImporterTest extends AbstractTest {
     @Test
     public void getDataSourceAttributeCount() throws Exception {
         Datasource asc0501 = importer.getDatasource("acs0501");
-        assertEquals("acs0501", asc0501.getId());
+        assertEquals("acs0501", asc0501.getDatasourceSpec().getId());
         assertEquals(103, asc0501.getTimedValueAttributes().size());
 
         Datasource asc0502 = importer.getDatasource("acs0502");
-        assertEquals("acs0502", asc0502.getId());
+        assertEquals("acs0502", asc0502.getDatasourceSpec().getId());
         assertEquals(67, asc0502.getTimedValueAttributes().size());
 
         Datasource asc0503 = importer.getDatasource("acs0503");
-        assertEquals("acs0503", asc0503.getId());
+        assertEquals("acs0503", asc0503.getDatasourceSpec().getId());
         assertEquals(79, asc0503.getTimedValueAttributes().size());
 
         Datasource asc0504 = importer.getDatasource("acs0504");
-        assertEquals("acs0504", asc0504.getId());
+        assertEquals("acs0504", asc0504.getDatasourceSpec().getId());
         assertEquals(48, asc0504.getTimedValueAttributes().size());
 
         Datasource asc0505 = importer.getDatasource("acs0505");
-        assertEquals("acs0505", asc0505.getId());
+        Datasource asc05061 = importer.getDatasource("acs0506");
+        assertEquals("acs0505", asc0505.getDatasourceSpec().getId());
         assertEquals(67, asc0505.getTimedValueAttributes().size());
 
         Datasource asc0506 = importer.getDatasource("acs0506");
-        assertEquals("acs0506", asc0506.getId());
+        assertEquals("acs0506", asc0506.getDatasourceSpec().getId());
         assertEquals(67, asc0506.getTimedValueAttributes().size());
 
         Datasource asc0507 = importer.getDatasource("acs0507");
-        assertEquals("acs0507", asc0507.getId());
+        assertEquals("acs0507", asc0507.getDatasourceSpec().getId());
         assertEquals(79, asc0507.getTimedValueAttributes().size());
 
         Datasource asc0508 = importer.getDatasource("acs0508");
-        assertEquals("acs0508", asc0508.getId());
+        assertEquals("acs0508", asc0508.getDatasourceSpec().getId());
         assertEquals(79, asc0508.getTimedValueAttributes().size());
     }
 
@@ -114,22 +113,21 @@ public class AccessibilityImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("acs0501");
 
-        assertEquals("acs0501", datasource.getId());
-        assertEquals("acs0501", datasource.getName());
-        assertEquals("Travel time, destination and origin indicators to Employment centres by mode of travel", datasource.getDescription());
+        assertEquals("acs0501", datasource.getDatasourceSpec().getId());
+        assertEquals("Employment centres", datasource.getDatasourceSpec().getName());
+        assertEquals("Travel time, destination and origin indicators to Employment centres by mode of travel", datasource.getDatasourceSpec().getDescription());
         assertEquals(103, datasource.getTimedValueAttributes().size());
 
         // Testing attribute nr 27
         // 500emplcar40	EMPLO032	Number of employment centres with at least 500 jobs available by car within 40 minutes	Number between 0 and 10
         Attribute attribute = datasource.getTimedValueAttributes().get(26);
-        assertEquals("500emplcar40", attribute.getName());
         assertEquals("EMPLO032", attribute.getLabel());
         assertEquals("Number of employment centres with at least 500 jobs available by car within 40 minutes", attribute.getDescription());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("acs0501");
+        importer.importDatasource("acs0501", null, null, null);
 
         Attribute emplo032 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO032");
         Attribute emplo070 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "EMPLO070");

@@ -2,15 +2,17 @@ package uk.org.tombolo.importer;
 
 import uk.org.tombolo.core.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Properties;
 
 public interface Importer {
 
-	public Provider getProvider();
+	Provider getProvider();
 
 	/**
-	 * Returns all the identifiers of datasouces importable by this importer
+	 * Returns all the identifiers of datasources importable by this importer
 	 *
 	 * @return
 	 * @throws Exception
@@ -18,7 +20,7 @@ public interface Importer {
 	public List<String> getDatasourceIds();
 
 	/**
-	 * Returns true iff a datasource with said id exists
+	 * Returns true if a datasource with said id exists
 	 *
 	 * @param datasourceId
 	 * @return
@@ -36,9 +38,12 @@ public interface Importer {
 	 * Returna all labels that can be used to restrict the temporal scope of the import.
 	 * @return
 	 */
-	public List<String> getTemporalLabels();
+	List<String> getTemporalLabels();
 
-	public Datasource getDatasource(String datasourceId) throws Exception;
+	Datasource getDatasource(String datasourceId) throws Exception;
+
+	DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception;
+
 
 	/**
 	 * Function for importing a datasource for a given geography and temporal scope.
@@ -47,10 +52,11 @@ public interface Importer {
 	 * @param datasourceId The identifier of the datasource to be imported.
 	 * @param geographyScope A list of geography scopes to be imported.
 	 * @param temporalScope A list of temporal scopes to be imported.
+	 * @param datasourceLocation A list of file locations in case the data comes from a local source
 	 * @throws Exception
 	 */
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope) throws Exception;
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, Boolean force) throws Exception;
+	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation) throws Exception;
+	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, Boolean force) throws Exception;
 
 	/**
 	 * Function that takes in a buffer of subjects and saves it to the database and clears the buffer.
@@ -67,20 +73,20 @@ public interface Importer {
 	 *
 	 * @param timedValueBuffer is the buffer of timed values to save
 	 */
-	public void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer);
+	void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer);
 
 	/**
 	 * Function that takes in a buffer of fixed values and saves it to the database and clears the buffer.
 	 *
 	 * @param fixedValues
 	 */
-	public void saveAndClearFixedValueBuffer(List<FixedValue> fixedValues);
+	void saveAndClearFixedValueBuffer(List<FixedValue> fixedValues);
 
-	public void setDownloadUtils(DownloadUtils downloadUtils);
+	void setDownloadUtils(DownloadUtils downloadUtils);
 
-	public void configure(Properties properties) throws ConfigurationException;
-	public void verifyConfiguration() throws ConfigurationException;
-	public Properties getConfiguration();
+	void configure(Properties properties) throws ConfigurationException;
+	void verifyConfiguration() throws ConfigurationException;
+	Properties getConfiguration();
 
 	int getSubjectCount();
 	int getFixedValueCount();
@@ -90,4 +96,8 @@ public interface Importer {
 	int getTimedValueBufferSize();
 	int getFixedValueBufferSize();
 	int getSubjectBufferSize();
+
+	List<SubjectType> getSubjectTypes(String datasourceId);
+	List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception;
+	List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception;
 }

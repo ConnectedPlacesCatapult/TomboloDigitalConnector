@@ -7,7 +7,7 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.AttributeMatcher;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,13 +26,13 @@ public class FixedValueFieldTest extends AbstractTest {
     @Test
     public void testValueForSubject() throws Exception {
         TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
-        assertEquals("one-hundred", field.valueForSubject(subject));
+        assertEquals("one-hundred", field.valueForSubject(subject, true));
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
         TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
-        String jsonString = field.jsonValueForSubject(subject).toJSONString();
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +

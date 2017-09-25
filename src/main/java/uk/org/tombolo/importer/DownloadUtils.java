@@ -10,13 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DownloadUtils {
@@ -31,10 +27,10 @@ public class DownloadUtils {
 		tomboloDataCacheRootDirectory = dataCacheRootDirectory;
 	}
 
-	public File fetchFile(URL url, String prefix, String suffix) throws MalformedURLException, IOException{
+	public File fetchFile(URL url, String prefix, String suffix) throws IOException{
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
-		log.info("Feching local file: {}", localDatasourceFile.getName());
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
 			log.info("Downloading external resource: {}",url.toString());
@@ -46,8 +42,9 @@ public class DownloadUtils {
 	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
-		log.info("Feching local file: {}", localDatasourceFile.getName());
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
+			log.info("Fetching remote url: {}", url.toString());
 			URLConnection connection = url.openConnection();
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
@@ -71,6 +68,7 @@ public class DownloadUtils {
 	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
+		log.info("Fetching local file: {}", localDatasourceFile.getName());
 		if (!localDatasourceFile.exists()){
 			URLConnection connection = url.openConnection();
 			// ONS requires this be set, or else you get 406 errors.
@@ -82,10 +80,7 @@ public class DownloadUtils {
 	}
 
 	private File urlToLocalFile (URL url, String prefix, String suffix){
-		String urlKey = Base64.getUrlEncoder().encodeToString(url.toString().getBytes());
-		if (urlKey.length() > 250)
-			// The urlKey is too long for creating a file
-			urlKey = DigestUtils.md5Hex(urlKey);
+		String urlKey = UUID.nameUUIDFromBytes(url.toString().getBytes()).toString();
 		return new File(
 				tomboloDataCacheRootDirectory
 						+ "/" + TOMBOLO_DATA_CACHE_DIRECTORY

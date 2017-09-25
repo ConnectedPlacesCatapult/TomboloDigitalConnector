@@ -11,15 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.DataSourceID;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -40,7 +38,7 @@ import java.util.*;
  * - http://api.dft.gov.uk/v3/trafficcounts/export/la/Aberdeen+City.csv
  *
  */
-public class TrafficCountImporter extends AbstractDFTImporter implements Importer {
+public class TrafficCountImporter extends AbstractDFTImporter {
 	private static final String REGION = "region/";
 	private static final String LA = "la/";
 	private static final String CSV_POSTFIX = ".csv";
@@ -55,30 +53,30 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	private static final int TIMED_VALUE_BUFFER_SIZE = 100000;
 
 	protected enum DatasourceId {
-		trafficVolume(new DataSourceID(
+		trafficVolume(new DatasourceSpec(
+				TrafficCountImporter.class,
 				"trafficVolume",
 				"Annual volume of traffic",
 				"Total volume of traffic on the stretch of road for the whole year. " +
 						"Units = thousand vehicle miles.",
-				"http://www.dft.gov.uk/traffic-counts/",
-				null),
+				"http://www.dft.gov.uk/traffic-counts/"),
 				"http://api.dft.gov.uk/v3/trafficcounts/export/data/traffic/"
 				),
-		trafficCounts(new DataSourceID(
+		trafficCounts(new DatasourceSpec(
+				TrafficCountImporter.class,
 				"trafficCounts",
 				"Annual average daily flow",
 				"The number of vehicles that will drive on that stretch of road on an average day of the year. " +
 						"Units = vehicles per day.",
-				"http://www.dft.gov.uk/traffic-counts/",
-				null),
+				"http://www.dft.gov.uk/traffic-counts/"),
 				"http://api.dft.gov.uk/v3/trafficcounts/export/"
 		);
 
-		private DataSourceID dataSourceID;
+		private DatasourceSpec datasourceSpec;
 		private String urlPrefix;
 
-		DatasourceId(DataSourceID dataSourceID, String urlPrefix) {
-			this.dataSourceID = dataSourceID;
+		DatasourceId(DatasourceSpec datasourceSpec, String urlPrefix) {
+			this.datasourceSpec = datasourceSpec;
 			this.urlPrefix = urlPrefix;
 		}
 	};
@@ -91,30 +89,22 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		RoadName(new Attribute(
 				null,
 				"RoadName",
-				"Road Name",
-				"Road Name",
-				Attribute.DataType.string),
+				"Road Name"),
 				6),
 		RoadCategory(new Attribute(
 				null,
 				"RoadCategory",
-				"Road Category",
-				"Road Category",
-				Attribute.DataType.string),
+				"Road Category"),
 				7),
 		StartJunction(new Attribute(
 				null,
 				"StartJunction",
-				"Start Junction",
-				"Start Junction",
-				Attribute.DataType.string),
+				"Start Junction"),
 				10),
 		EndJunction(new Attribute(
 				null,
 				"EndJunction",
-				"End Junction",
-				"End Junction",
-				Attribute.DataType.string),
+				"End Junction"),
 				11);
 
 		private Attribute attribute;
@@ -131,44 +121,32 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		CountPedalCycles(new Attribute(
 				null,
 				"CountPedalCycles",
-				"Pedal Cycle Count",
-				"Pedal Cycle Count",
-				Attribute.DataType.numeric),
+				"Pedal Cycle Count"),
 				14),
 		CountMotorcycles(new Attribute(
 				null,
 				"CountMotorcycles",
-				"Motorycle Count",
-				"Motorcycle Count",
-				Attribute.DataType.numeric),
+				"Motorycle Count"),
 				15),
 		CountCarsTaxis(new Attribute(
 				null,
 				"CountCarsTaxis",
-				"Count of cars and taxis",
-				"Count of cars and taxis",
-				Attribute.DataType.numeric),
+				"Count of cars and taxis"),
 				16),
 		CountBusesCoaches(new Attribute(
 				null,
 				"CountBusesCoaches",
-				"Count of buses and coaches",
-				"Count of buses and coaches",
-				Attribute.DataType.numeric),
+				"Count of buses and coaches"),
 				17),
 		CountLightGoodsVehicles(new Attribute(
 				null,
 				"CountLightGoodsVehicles",
-				"Count of light goods vehicles",
-				"Count of light goods vehicles",
-				Attribute.DataType.numeric),
+				"Count of light goods vehicles"),
 				18),
 		CountHeavyGoodsVehicles(new Attribute(
 				null,
 				"CountHeavyGoodsVehicles",
-				"Count of heavy goods vehicles",
-				"Count of heavy goods vehicles",
-				Attribute.DataType.numeric),
+				"Count of heavy goods vehicles"),
 				25);
 
 			private Attribute attribute;
@@ -181,49 +159,37 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		};
 
 	// Timed Value Attributes in the traffic volume file
-	protected static enum VolumeAttribute
+	protected enum VolumeAttribute
 	{
 		VolumePedalCycles(new Attribute(
 				null,
 				"VolumePedalCycles",
-				"Pedal Cycle Volume",
-				"Pedal Cycle Volume",
-				Attribute.DataType.numeric),
+				"Pedal Cycle Volume"),
 				13),
 		VolumeMotorcycles(new Attribute(
 				null,
 				"VolumeMotorcycles",
-				"Motorycle Volume",
-				"Motorcycle Volume",
-				Attribute.DataType.numeric),
+				"Motorycle Volume"),
 				14),
 		VolumeCarsTaxis(new Attribute(
 				null,
 				"VolumeCarsTaxis",
-				"Volume of cars and taxis",
-				"Volume of cars and taxis",
-				Attribute.DataType.numeric),
+				"Volume of cars and taxis"),
 				15),
 		VolumeBusesCoaches(new Attribute(
 				null,
 				"VolumeBusesCoaches",
-				"Volume of buses and coaches",
-				"Volume of buses and coaches",
-				Attribute.DataType.numeric),
+				"Volume of buses and coaches"),
 				16),
 		VolumeLightGoodsVehicles(new Attribute(
 				null,
 				"VolumeLightGoodsVehicles",
-				"Volume of light goods vehicles",
-				"Volume of light goods vehicles",
-				Attribute.DataType.numeric),
+				"Volume of light goods vehicles"),
 				17),
 		VolumeHeavyGoodsVehicles(new Attribute(
 				null,
 				"VolumeHeavyGoodsVehicles",
-				"Volume of heavy goods vehicles",
-				"Volume of heavy goods vehicles",
-				Attribute.DataType.numeric),
+				"Volume of heavy goods vehicles"),
 				24);
 
 		private Attribute attribute;
@@ -298,32 +264,28 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 	}
 
 	@Override
-	public Datasource getDatasource(String datasourceIdString) throws Exception {
-		DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-
-		Datasource datasource = new Datasource(
-				getClass(),
-				datasourceId.dataSourceID.getLabel(),
-				getProvider(),
-				datasourceId.dataSourceID.getName(),
-				datasourceId.dataSourceID.getDescription()
-		);
-
-		// Update attribute list
-		datasource.addAllTimedValueAttributes(getTimedValueAttributes(datasourceId));
-		datasource.setUrl(datasourceId.dataSourceID.getUrl());
-
-		datasource.addSubjectType(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
-		
-		return datasource;
+	public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+		return DatasourceId.valueOf(datasourceId).datasourceSpec;
 	}
 
 	@Override
-	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
-		DatasourceId datasourceId = DatasourceId.valueOf(datasource.getId());
+	public List<SubjectType> getSubjectTypes(String datasourceId) {
+		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(getProvider().getLabel(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL);
+		if (subjectType == null) {
+			return Collections.singletonList(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
+		}
+
+		return Collections.singletonList(subjectType);
+	}
+
+	@Override
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+		DatasourceId datasourceId = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
 
 		if (geographyScope == null || geographyScope.isEmpty())
 			throw new ConfigurationException("Missing geography scope");
+
+		SubjectType subjectType = datasource.getUniqueSubjectType();
 
 		for (String geogrpahyLabel : geographyScope) {
 
@@ -332,19 +294,17 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 			// Read timed values
 			GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 			Set<Long> trafficCounters = new HashSet<Long>();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")));
-			String line = reader.readLine(); // Skipping first line
 			List<TimedValue> timedValueBuffer = new ArrayList<TimedValue>();
-			while ((line = reader.readLine()) != null) {
-				CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
-				List<CSVRecord> records = parser.getRecords();
-				CSVRecord record = records.get(0);
-
-				if (record.size() == 1)
+			CSVParser csvParser = new CSVParser(new InputStreamReader(
+					downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv")), CSVFormat.RFC4180);
+			for (CSVRecord record : csvParser) {
+				long id;
+				try {
+					id = Long.valueOf(record.get(ID_INDEX));
+				} catch (NumberFormatException e) {
+					// We do not have a proper id ... could be header
 					continue;
-
-				long id = Long.valueOf(record.get(ID_INDEX));
+				}
 				String label = "DfT-TrafficCounter-" + id;
 				String year = record.get(YEAR_INDEX);
 
@@ -363,11 +323,11 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 					String name = road + " (" + startJunction + " to " + endJunction + ")";
 
 					// Save subject
-					Subject subject = new Subject(datasource.getUniqueSubjectType(), label, name, point);
+					Subject subject = new Subject(subjectType, label, name, point);
 					List<Subject> subjectList = new ArrayList<Subject>();
 					subjectList.add(subject);
 					saveAndClearSubjectBuffer(subjectList);
-					subject = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), label);
+					subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, label);
 
 					// Add fixed values
 					List<FixedValue> fixedValueBuffer = new ArrayList<>();
@@ -383,7 +343,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 					trafficCounters.add(id);
 				}
 
-				Subject subject = SubjectUtils.getSubjectByTypeAndLabel(datasource.getUniqueSubjectType(), label);
+				Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, label);
 				LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
 				// Import timed values
@@ -411,7 +371,7 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 
 			}
 			saveAndClearTimedValueBuffer(timedValueBuffer);
-			reader.close();
+			csvParser.close();
 		}
 	}
 
@@ -426,15 +386,11 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 		throw new ConfigurationException("Unknown Geography Scope: " + geographyLabel);
 	}
 
-	private List<Attribute> getTimedValueAttributes(DatasourceId datasourceId){
+	@Override
+	public List<Attribute> getTimedValueAttributes(String datasourceId){
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		// Add fixed attributes
-		for(FixedAttribute fixedAttribute : FixedAttribute.values()){
-			fixedAttribute.attribute.setProvider(getProvider());
-			attributes.add(fixedAttribute.attribute);
-		}
-		// Add timed value attributes
-		switch (datasourceId){
+		DatasourceId id = DatasourceId.valueOf(datasourceId);
+		switch (id){
 			case trafficCounts:
 				for(CountAttribute countAttribute : CountAttribute.values()){
 					countAttribute.attribute.setProvider(getProvider());
@@ -447,6 +403,17 @@ public class TrafficCountImporter extends AbstractDFTImporter implements Importe
 					attributes.add(volumeAttribute.attribute);
 				}
 				break;
+		}
+
+		return attributes;
+	}
+
+	@Override
+	public List<Attribute> getFixedValueAttributes(String datasourceId) throws Exception {
+		List<Attribute> attributes = new ArrayList<Attribute>();
+		for (FixedAttribute fixedAttribute : FixedAttribute.values()) {
+			fixedAttribute.attribute.setProvider(getProvider());
+			attributes.add(fixedAttribute.attribute);
 		}
 
 		return attributes;

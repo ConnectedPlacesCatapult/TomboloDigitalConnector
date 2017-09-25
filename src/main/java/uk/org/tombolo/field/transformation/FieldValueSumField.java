@@ -1,9 +1,8 @@
 package uk.org.tombolo.field.transformation;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.field.value.FixedValueField;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
@@ -12,24 +11,24 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField extends AbstractField implements SingleValueField, ParentField {
+public class FieldValueSumField extends FixedValueField implements ParentField {
     String name;
-    List<FieldSpecification> fieldSpecifications;
-    List<Field> fields;
+    List<FieldRecipe> fields;
+    List<Field> sumFields;
 
-    public FieldValueSumField(String label, String name, List<FieldSpecification> fieldSpecifications) {
+    public FieldValueSumField(String label, String name, List<FieldRecipe> fields) {
         super(label);
         this.name = name;
-        this.fieldSpecifications = fieldSpecifications;
+        this.fields = fields;
     }
 
     public void initialize() {
-        this.fields = new ArrayList<>();
-        for (FieldSpecification fieldSpec : fieldSpecifications) {
+        this.sumFields = new ArrayList<>();
+        for (FieldRecipe recipe : fields) {
             try {
-                Field field = fieldSpec.toField();
+                Field field = recipe.toField();
                 field.setFieldCache(fieldCache);
-                fields.add(field);
+                sumFields.add(field);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field not valid");
             }
@@ -37,36 +36,22 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
     }
 
     @Override
-    public String valueForSubject(Subject subject) throws IncomputableFieldException {
+    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+
         return sumFields(subject).toString();
-    }
-
-    @Override
-    public JSONObject jsonValueForSubject(Subject subject) throws IncomputableFieldException {
-        JSONObject obj = new JSONObject();
-        obj.put("value", sumFields(subject));
-        JSONArray array = new JSONArray();
-        array.add(obj);
-        return withinMetadata(array);
-    }
-
-    protected JSONObject withinMetadata(JSONArray contents) {
-        JSONObject obj = new JSONObject();
-        obj.put(label, contents);
-        return obj;
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
-        if (fields == null)
+        if (sumFields == null)
             initialize();
         Double sum = 0d;
-        for (Field field : fields) {
+        for (Field field : sumFields) {
             if (!(field instanceof SingleValueField))
                 throw new IncomputableFieldException("Field sum only valid for single value fields");
-            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject));
+            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject, true));
         }
         setCachedValue(subject, sum.toString());
         return sum;
@@ -74,7 +59,7 @@ public class FieldValueSumField extends AbstractField implements SingleValueFiel
 
     @Override
     public List<Field> getChildFields() {
-        if (null == fields) { initialize(); }
-        return fields;
+        if (null == sumFields) { initialize(); }
+        return sumFields;
     }
 }

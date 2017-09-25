@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  *
  * Remote file: "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
                 "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
- * Local file: ec39e8bd9a41062d17c80ed6f9d81361.csv
+ * Local file: 30313bb6-b3eb-3ea4-9cea-95e04b25cc4f.csv
  */
 public class IMDImporterTest extends AbstractTest {
     IMDImporter imdImporter = new IMDImporter(TestFactory.DEFAULT_CONFIG);
@@ -47,18 +47,18 @@ public class IMDImporterTest extends AbstractTest {
     public void getDatasource() throws Exception {
         Datasource datasource = imdImporter.getDatasource("imd");
 
-        assertEquals("imd", datasource.getId());
-        assertEquals("uk.gov.dclg", datasource.getProvider().getLabel());
+        assertEquals("imd", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.dclg", imdImporter.getProvider().getLabel());
         assertEquals(53, datasource.getTimedValueAttributes().size());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        imdImporter.importDatasource("imd");
+        imdImporter.importDatasource("imd", null, null, null);
         assertEquals(2*53, imdImporter.getTimedValueCount());
 
-        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.score");
-        Attribute attribute2 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "imd.disability.rank");
+        Attribute attribute1 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "score");
+        Attribute attribute2 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "disability_rank");
         Attribute attribute3 = AttributeUtils.getByProviderAndLabel(AbstractDCLGImporter.PROVIDER, "workingAgePopulation");
 
         assertEquals(12.389d, TimedValueUtils.getLatestBySubjectAndAttribute(subject1, attribute1).getValue(), 0.001d);

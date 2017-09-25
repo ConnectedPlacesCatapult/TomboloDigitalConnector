@@ -4,8 +4,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import uk.org.tombolo.FieldSpecificationBuilder;
-import uk.org.tombolo.execution.spec.FieldSpecification;
+import uk.org.tombolo.FieldBuilder;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +14,21 @@ import static org.junit.Assert.assertEquals;
 
 public class CorrelationAnalysisEngineTest {
 
-    List<FieldSpecification> fieldSpecifications;
+    List<FieldRecipe> fields;
 
     @Before
     public void createFields(){
-        fieldSpecifications = new ArrayList<>();
-        fieldSpecifications.add(FieldSpecificationBuilder.fixedAnnotationField("field1",null).build());
-        fieldSpecifications.add(FieldSpecificationBuilder.fixedAnnotationField("field2",null).build());
-        fieldSpecifications.add(FieldSpecificationBuilder.fixedAnnotationField("field3",null).build());
+        fields = new ArrayList<>();
+        fields.add(FieldBuilder.fixedAnnotationField("field1",null).build());
+        fields.add(FieldBuilder.fixedAnnotationField("field2",null).build());
+        fields.add(FieldBuilder.fixedAnnotationField("field3",null).build());
     }
 
     @Test
     public void readCSVDataExport() throws Exception {
         String filename = ClassLoader.getSystemResource("executions/correlation/dummyDataExport.csv").getPath();
 
-        RealMatrix matrix = CorrelationAnalysisEngine.readCSVDataExport(filename,fieldSpecifications);
+        RealMatrix matrix = CorrelationAnalysisEngine.readCSVDataExport(filename,fields);
 
         assertEquals(3, matrix.getColumnDimension());
         assertEquals(2, matrix.getRowDimension());
@@ -46,7 +46,7 @@ public class CorrelationAnalysisEngineTest {
     public void readGeoJsonDataExport() throws Exception {
         String filename = ClassLoader.getSystemResource("executions/correlation/dummyDataExport.json").getPath();
 
-        RealMatrix matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(filename,fieldSpecifications);
+        RealMatrix matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(filename,fields);
 
         assertEquals(3, matrix.getColumnDimension());
         assertEquals(2, matrix.getRowDimension());

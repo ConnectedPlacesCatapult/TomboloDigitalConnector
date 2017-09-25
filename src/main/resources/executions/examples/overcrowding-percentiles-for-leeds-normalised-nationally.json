@@ -1,6 +1,6 @@
 {
-  "datasetSpecification": {
-    "subjectSpecification": [
+  "dataset": {
+    "subjects": [
       {
         // We output each LSOA whose name starts with 'Leeds'
         "subjectType": "lsoa",
@@ -11,7 +11,7 @@
         }
       }
     ],
-    "datasourceSpecification": [
+    "datasources": [
       {
         // Importer for the geographic objects for all LSOAs in the UK
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
@@ -23,7 +23,7 @@
         "datasourceId": "QS408EW"
       }
     ],
-    "fieldSpecification": [
+    "fields": [
       {
         // Overcrowding Resilience Percentiles normalized nationally
         // I.e. we caluclate percentile boundaries using values for all lsoas in the country
@@ -38,20 +38,20 @@
           "divisorAttribute": {
             // Attribute for the total number of households in the geography
             // We use this attribute as the denominaor of the fraction
-            "providerLabel": "uk.gov.ons",
-            "attributeLabel": "CL_0000127_1"
+            "provider": "uk.gov.ons",
+            "label": "CL_0000127_1"
           },
           "dividendAttributes": [
             // We sum up the following fields and use in the nominator of the fraction
             {
               // Attribute for overcrowding value of -1
-              "providerLabel": "uk.gov.ons",
-              "attributeLabel": "CL_0000127_5"
+              "provider": "uk.gov.ons",
+              "label": "CL_0000127_5"
             },
             {
               // Attribute for overcrowding value of -2
-              "providerLabel": "uk.gov.ons",
-              "attributeLabel": "CL_0000127_6"
+              "provider": "uk.gov.ons",
+              "label": "CL_0000127_6"
             }
           ]
         },
@@ -64,5 +64,5 @@
       }
     ]
   },
-  "exporterClass": "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

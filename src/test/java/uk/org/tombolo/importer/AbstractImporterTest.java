@@ -3,6 +3,7 @@ package uk.org.tombolo.importer;
 import org.junit.Test;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.Provider;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class AbstractImporterTest {
         }
 
         @Override
-        protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+        protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         }
 
@@ -31,7 +32,7 @@ public class AbstractImporterTest {
         }
 
         @Override
-        public Datasource getDatasource(String datasourceId) throws Exception {
+        public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
             return null;
         }
     }

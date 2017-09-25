@@ -3,13 +3,8 @@ package uk.org.tombolo.importer.londondatastore;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import uk.org.tombolo.core.Attribute;
-import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.ConfigurationException;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
@@ -17,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,10 +27,23 @@ import java.util.List;
  *
  * Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
  */
-public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter implements Importer{
-    private enum DatasourceId {londonBoroughProfiles};
+public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter {
+    private enum DatasourceId {
+        londonBoroughProfiles(new DatasourceSpec(
+                LondonBoroughProfileImporter.class,
+                "londonBoroughProfiles",
+                "London Borough Profiles",
+                "Various London borough statistics",
+                "http://data.london.gov.uk/dataset/london-borough-profiles")
+        );
+
+        private DatasourceSpec datasourceSpec;
+        DatasourceId(DatasourceSpec datasourceSpec) {
+            this.datasourceSpec = datasourceSpec;
+        }
+    }
     private enum AttributeId {populationDensity, householdIncome, medianHousePrice, fractionGreenspace, carbonEmission,
-        carsPerHousehold};
+        carsPerHousehold}
 
     private static final String DATAFILE_SUFFIX = ".csv";
     private static final String DATAFILE
@@ -46,29 +55,20 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     @Override
-    public Datasource getDatasource(String datasourceIdString) throws Exception {
-        DatasourceId datasourceId = DatasourceId.valueOf(datasourceIdString);
-        switch (datasourceId){
-            case londonBoroughProfiles:
-                Datasource datasource = new Datasource(
-                        getClass(),
-                        datasourceId.name(),
-                        getProvider(),
-                        "London Borough Profiles",
-                        "Various London borough statistics");
-                datasource.setUrl("http://data.london.gov.uk/dataset/london-borough-profiles");
-
-                for (AttributeId attributeId : AttributeId.values()) {
-                    datasource.addTimedValueAttribute(getAttribute(attributeId));
-                }
-                return datasource;
-            default:
-                throw new ConfigurationException("Unknown datasource " + datasourceIdString);
-        }
+    public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
+        return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
     }
 
     @Override
-    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope) throws Exception {
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+        List<Attribute> attributes = new ArrayList<>();
+        Arrays.stream(AttributeId.values()).map(attributeId -> getAttribute(attributeId)).forEach(attributes::add);
+
+        return attributes;
+    }
+
+    @Override
+    protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
         CSVExtractor subjectLabelExtractor = new CSVExtractor(0);
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);
@@ -96,40 +96,28 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
-    private Attribute getAttribute(AttributeId attributeId){
+    private Attribute getAttribute(AttributeId attributeId) {
         switch (attributeId){
             case populationDensity:
-                return new Attribute(getProvider(),
-                        AttributeId.populationDensity.name(), "Population Density", "Population density (per hectare) 2015",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeId.populationDensity.name(),
+                        "Population density (per hectare) 2015");
             case householdIncome:
-                return new Attribute(getProvider(),
-                        AttributeId.householdIncome.name(),"Household Income","Modelled Household median income estimates 2012/13",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeId.householdIncome.name(),
+                        "Modelled Household median income estimates 2012/13");
             case medianHousePrice:
-                return new Attribute(getProvider(),
-                        AttributeId.medianHousePrice.name(),"Median House Price","Median House Price, 2014",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(),AttributeId.medianHousePrice.name(),
+                        "Median House Price, 2014");
             case fractionGreenspace:
-                return new Attribute(getProvider(),
-                        AttributeId.fractionGreenspace.name(),"Fraction Greenspace","% of area that is Greenspace, 2005",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeId.fractionGreenspace.name(),
+                        "% of area that is Greenspace, 2005");
             case carbonEmission:
-                return new Attribute(getProvider(),
-                        AttributeId.carbonEmission.name(),"Carbon Emission","Total carbon emissions (2013)",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeId.carbonEmission.name(),
+                        "Total carbon emissions (2013)");
             case carsPerHousehold:
-                return new Attribute(getProvider(),
-                        AttributeId.carsPerHousehold.name(),"Cars Per Household","Number of cars per household, (2011 Census)",
-                        Attribute.DataType.numeric
-                );
+                return new Attribute(getProvider(), AttributeId.carsPerHousehold.name(),
+                        "Number of cars per household, (2011 Census)");
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 
@@ -199,7 +187,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         new CSVExtractor(62)
                 );
             default:
-                return null;
+                throw new Error("Unknown attribute label: " + String.valueOf(attributeId.name()));
         }
     }
 }

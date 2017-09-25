@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.importer.Importer;
 
 import java.util.List;
@@ -33,20 +34,19 @@ public class DataCatalogueRunner extends AbstractRunner {
             // datasetId is null and hence we print a list of datasets
             List<String> datasourceList = importer.getDatasourceIds();
             for (String datasourceId : datasourceList) {
-                Datasource datasource = importer.getDatasource(datasourceId);
+                DatasourceSpec datasourceSpec = importer.getDatasourceSpec(datasourceId);
                 System.out.println(
-                        datasource.getId()
-                        + "\t" + datasource.getName()
-                        + "\t" + datasource.getDescription()
+                        datasourceSpec.getId()
+                        + "\t" + datasourceSpec.getName()
+                        + "\t" + datasourceSpec.getDescription()
                 );
             }
         }else{
             // datasetId is specified and hence we print a list of attributes provided by the datasource
             Datasource datasource = importer.getDatasource(datasetId);
-            for(Attribute attribute : datasource.getTimedValueAttributes()){
+            for(Attribute attribute : datasource.getTimedValueAttributes()) {
                 System.out.println(
                         attribute.getLabel()
-                        + "\t" + attribute.getName()
                         + "\t" + attribute.getDescription()
                 );
             }
