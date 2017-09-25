@@ -35,8 +35,8 @@ public class GeoJsonExporter implements Exporter {
 			if (subjectCounter % LOGGING_FREQUENCY == 0)
 				log.info("Exported {} subjects", subjectCounter);
 		}
-		log.info("Exported {} subjects", subjects.size());
-		
+		log.info("Exported {} subjects", subjectCounter);
+
 		jsonWriter.endArray();
 		jsonWriter.endObject();
 
