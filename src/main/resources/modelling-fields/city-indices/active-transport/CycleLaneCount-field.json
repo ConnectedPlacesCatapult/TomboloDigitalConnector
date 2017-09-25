@@ -3,56 +3,60 @@
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "Cycle to Road count Ratio",
   "operation": "div",
-  "fieldSpecification1": {
+  "field1": {
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "Cycle Lane Count",
-    "aggregationSubjectProvider": "org.openstreetmap",
-    "aggregationSubjectType": "OSMEntity",
-    "aggregationFunction": "sum",
-    "fieldSpecification": {
+    "function": "sum",
+    "subject" : {
+      "provider": "org.openstreetmap",
+      "subjectType": "OSMEntity"
+    },
+    "field": {
       "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
       "label": "Assert Cycle Lane",
       "attributes": [
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway"
+          "provider": "org.openstreetmap",
+          "label": "cycleway"
         },
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway:left"
+          "provider": "org.openstreetmap",
+          "label": "cycleway:left"
         },
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway:right"
+          "provider": "org.openstreetmap",
+          "label": "cycleway:right"
         },
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway:oneway"
+          "provider": "org.openstreetmap",
+          "label": "cycleway:oneway"
         },
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway:oneside"
+          "provider": "org.openstreetmap",
+          "label": "cycleway:oneside"
         },
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "cycleway:otherside"
+          "provider": "org.openstreetmap",
+          "label": "cycleway:otherside"
         }
       ]
     }
   },
-  "fieldSpecification2": {
+  "field2": {
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "Highway Count",
-    "aggregationSubjectProvider": "org.openstreetmap",
-    "aggregationSubjectType": "OSMEntity",
-    "aggregationFunction": "sum",
-    "fieldSpecification": {
+    "function": "sum",
+    "subject" : {
+      "provider": "org.openstreetmap",
+      "subjectType": "OSMEntity"
+    },
+    "field": {
       "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
       "label": "Assert Highway",
       "attributes": [
         {
-          "providerLabel": "org.openstreetmap",
-          "attributeLabel": "highway"
+          "provider": "org.openstreetmap",
+          "label": "highway"
         }
       ]
     }

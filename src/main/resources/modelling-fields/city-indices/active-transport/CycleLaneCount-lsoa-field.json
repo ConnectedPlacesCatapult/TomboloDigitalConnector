@@ -10,9 +10,11 @@
     {
       "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
       "label": "Cycleway to Highway Count msoa",
-      "containingSubjectProvider": "uk.gov.ons",
-      "containingSubjectType": "msoa",
-      "fieldSpecification": {
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "msoa"
+      },
+      "field": {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "Cycleway to Highway Count",
         "recipe": "city-indices/active-transport/CycleLaneCount"
@@ -21,9 +23,11 @@
     {
       "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
       "label": "Cycleway to Highway Count localAuthority",
-      "containingSubjectProvider": "uk.gov.ons",
-      "containingSubjectType": "localAuthority",
-      "fieldSpecification": {
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "localAuthority"
+      },
+      "field": {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "Cycleway to Highway Count",
         "recipe": "city-indices/active-transport/CycleLaneCount"

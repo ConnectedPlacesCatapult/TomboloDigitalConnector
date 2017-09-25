@@ -2,7 +2,7 @@
   "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
   "label": "Active Transport Index",
   "name": "Active Transport Index",
-  "fieldSpecifications": [
+  "fields": [
     {
       // Modelling field for Cycle to car proportion (built-in model)
       "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",

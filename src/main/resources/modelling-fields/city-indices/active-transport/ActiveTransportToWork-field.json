@@ -2,17 +2,17 @@
   "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
   "label": "Active Transport to Work",
   "divisorAttribute": {
-    "providerLabel": "uk.gov.ons",
-    "attributeLabel": "Method of Travel to Work: All categories: Method of travel to w"
+    "provider": "uk.gov.ons",
+    "label": "Method of Travel to Work: All categories: Method of travel to w"
   },
   "dividendAttributes": [
     {
-      "providerLabel": "uk.gov.ons",
-      "attributeLabel": "Method of Travel to Work: On foot"
+      "provider": "uk.gov.ons",
+      "label": "Method of Travel to Work: On foot"
     },
     {
-      "providerLabel": "uk.gov.ons",
-      "attributeLabel": "Method of Travel to Work: Bicycle"
+      "provider": "uk.gov.ons",
+      "label": "Method of Travel to Work: Bicycle"
     }
   ]
 }

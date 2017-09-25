@@ -10,9 +10,11 @@
     {
       "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
       "label": "Cycle to Car Proportion for the msoa",
-      "containingSubjectProvider": "uk.gov.ons",
-      "containingSubjectType": "msoa",
-      "fieldSpecification": {
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "msoa"
+      },
+      "field": {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "Cycle to Car Proportion",
         "recipe": "city-indices/active-transport/CyclingCount"
@@ -21,9 +23,11 @@
     {
       "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
       "label": "Cycle to Car Proportion for the localAuthority",
-      "containingSubjectProvider": "uk.gov.ons",
-      "containingSubjectType": "localAuthority",
-      "fieldSpecification": {
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "localAuthority"
+      },
+      "field": {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "Cycle to Car Proportion",
         "recipe": "city-indices/active-transport/CyclingCount"
