@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.aggregation;
 
-import com.google.gson.Gson;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -46,9 +45,7 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         if (null == singleValueField) { initialize(); }
-        Gson gson = new Gson();
-        return gson.toJson(singleValueField.jsonValueForSubject(
-                getSubjectContainingSubject(subject), timeStamp));
+        return singleValueField.valueForSubject(getSubjectContainingSubject(subject), timeStamp);
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
