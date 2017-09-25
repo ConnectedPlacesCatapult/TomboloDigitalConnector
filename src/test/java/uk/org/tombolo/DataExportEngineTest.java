@@ -108,8 +108,8 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                        FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                FieldBuilder.wrapperField("attributes", Arrays.asList(
+                        FieldBuilder.latestValue("default_provider_label", "attr_label")
                 ))
         );
 
@@ -142,8 +142,8 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                        FieldSpecificationBuilder.valuesByTime("default_provider_label", "attr_label")
+                FieldBuilder.wrapperField("attributes", Arrays.asList(
+                        FieldBuilder.valuesByTime("default_provider_label", "attr_label")
                 ))
         );
 
@@ -174,8 +174,8 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09000001"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles", "")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                        FieldBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldBuilder.valuesByTime("uk.gov.london", "populationDensity")
                         ))
                 );
 
@@ -206,8 +206,8 @@ public class DataExportEngineTest extends AbstractTest {
                         new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                        FieldBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldBuilder.fractionOfTotal("percentage_under_1_years_old_label")
                                         .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                         .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                         ))
@@ -243,8 +243,8 @@ public class DataExportEngineTest extends AbstractTest {
             .addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", "")
             .addDatasourceSpecification("uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter", "londonBoroughProfiles", "")
             .addFieldSpecification(
-                    FieldSpecificationBuilder.wrapperField("attributes", Collections.singletonList(
-                            FieldSpecificationBuilder.valuesByTime("uk.gov.london", "populationDensity")
+                    FieldBuilder.wrapperField("attributes", Collections.singletonList(
+                            FieldBuilder.valuesByTime("uk.gov.london", "populationDensity")
                     ))
             );
 
@@ -278,11 +278,11 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.mapToContainingSubjectField(
+                FieldBuilder.mapToContainingSubjectField(
                         "local_authority",
                         AbstractONSImporter.PROVIDER.getLabel(),
                         "localAuthority",
-                        FieldSpecificationBuilder.latestValue("default_provider_label", "attr_label")
+                        FieldBuilder.latestValue("default_provider_label", "attr_label")
                 )
         );
 
@@ -292,13 +292,7 @@ public class DataExportEngineTest extends AbstractTest {
                         "  features: [" +
                         "    {" +
                         "      properties: {" +
-                        "        local_authority: {" +
-                        "          attr_label: [" +
-                        "            {" +
-                        "              value: '100.0'" +
-                        "            }" +
-                        "          ]" +
-                        "        }" +
+                        "        local_authority: 100.0" +
                         "      }" +
                         "    }" +
                         "  ]"+
@@ -322,12 +316,12 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09000001")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.geographicAggregation(
+                FieldBuilder.geographicAggregation(
                         "local_authority",
                         AbstractONSImporter.PROVIDER.getLabel(),
                         "lsoa",
                         "mean",
-                        FieldSpecificationBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label")
+                        FieldBuilder.latestValue(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label")
                 )
         );
 
@@ -351,7 +345,7 @@ public class DataExportEngineTest extends AbstractTest {
                         new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                        FieldBuilder.fractionOfTotal("percentage_under_1_years_old_label")
                                 .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                 .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                 );
@@ -373,8 +367,8 @@ public class DataExportEngineTest extends AbstractTest {
                         new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E08000035"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.wrapperField("attributes", Arrays.asList(
-                                FieldSpecificationBuilder.fractionOfTotal("percentage_under_1_years_old_label")
+                        FieldBuilder.wrapperField("attributes", Arrays.asList(
+                                FieldBuilder.fractionOfTotal("percentage_under_1_years_old_label")
                                         .addDividendAttribute("uk.gov.ons", "CL_0000053_2") // number under one year old
                                         .setDivisorAttribute("uk.gov.ons", "CL_0000053_1") // total population
                         ))
@@ -421,7 +415,7 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.modellingField("aLabel", "ModellingFieldTest")
+                FieldBuilder.modellingField("aLabel", "ModellingFieldTest")
         );
 
         engine.execute(builder.build(), writer);
@@ -446,8 +440,8 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E01002766")
         ).addFieldSpecification(
-                FieldSpecificationBuilder.wrapperField("aWrapper", Collections.singletonList(
-                    FieldSpecificationBuilder.modellingField("aLabel", "ModellingFieldTest")))
+                FieldBuilder.wrapperField("aWrapper", Collections.singletonList(
+                    FieldBuilder.modellingField("aLabel", "ModellingFieldTest")))
         );
 
         engine.execute(builder.build(), writer);
@@ -476,8 +470,8 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_"))
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.ONSCensusImporter", "QS103EW", "")
                 .addFieldSpecification(
-                        FieldSpecificationBuilder.percentilesField("quartile", 4, false)
-                                .set("valueField", FieldSpecificationBuilder.latestValue("uk.gov.ons", "CL_0000053_1")) // total population
+                        FieldBuilder.percentilesField("quartile", 4, false)
+                                .set("valueField", FieldBuilder.latestValue("uk.gov.ons", "CL_0000053_1")) // total population
                                 .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_")))
                 );
 

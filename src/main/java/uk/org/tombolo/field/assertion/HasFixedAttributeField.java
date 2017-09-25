@@ -5,10 +5,9 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * Returns true if a subject has any fixed value for the listed attributes.
  */
-public class HasFixedAttributeField extends AbstractField implements SingleValueField {
+public class HasFixedAttributeField extends AbstractField {
 
     private List<AttributeMatcher> attributes;
 
@@ -30,7 +29,7 @@ public class HasFixedAttributeField extends AbstractField implements SingleValue
     public void initialise(){
         cachedAttributes = new ArrayList<>();
         attributes.forEach(attribute -> cachedAttributes
-                .add(AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel)));
+                .add(AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label)));
     }
 
     @Override

@@ -8,13 +8,13 @@
     "fieldClass": "uk.org.tombolo.field.GeographicAggregationField",
     "label": "gpResilience",
     "aggregationSubjectType": "lsoa",
-    "aggregationFunction": "sum",
-    "fieldSpecification": {
+    "function": "sum",
+    "field": {
       "fieldClass": "uk.org.tombolo.field.LatestValueField",
       "label": "List of GP Surgeries in England",
       "attribute": {
-        "providerLabel": "uk.nhs",
-        "attributeLabel": "gpSurgeries"
+        "provider": "uk.nhs",
+        "label": "gpSurgeries"
       }
     },
     "normalizationSubjects": [

@@ -3,13 +3,12 @@ package uk.org.tombolo.field.value;
 import com.vividsolutions.jts.geom.Point;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.SingleValueField;
 
 /**
  * SubjectLongitudeField.java
  * Returns the longitude of the centroid of the subject.
  */
-public class SubjectLongitudeField extends AbstractField implements SingleValueField {
+public class SubjectLongitudeField extends AbstractField {
 
     public SubjectLongitudeField(String label) {
         super(label);

@@ -1,11 +1,11 @@
 package uk.org.tombolo.recipe;
 
 public class AttributeMatcher {
-    public final String providerLabel;
-    public final String attributeLabel;
+    public final String provider;
+    public final String label;
 
-    public AttributeMatcher(String providerLabel, String attributeLabel) {
-        this.providerLabel = providerLabel;
-        this.attributeLabel = attributeLabel;
+    public AttributeMatcher(String provider, String label) {
+        this.provider = provider;
+        this.label = label;
     }
 }

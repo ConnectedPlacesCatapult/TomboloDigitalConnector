@@ -1,15 +1,6 @@
 package uk.org.tombolo.field.value;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.core.TimedValue;
-import uk.org.tombolo.core.TimedValueId;
-import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.recipe.AttributeMatcher;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
 
 /**
  * LatestValueField.java
@@ -17,7 +8,7 @@ import uk.org.tombolo.field.SingleValueField;
  *
  * The metadata is regarding the attribute.
  */
-public class LatestValueField extends ValuesByTimeField implements SingleValueField {
+public class LatestValueField extends ValuesByTimeField {
     public LatestValueField(String label, AttributeMatcher attribute) {
         super(label, attribute);
     }

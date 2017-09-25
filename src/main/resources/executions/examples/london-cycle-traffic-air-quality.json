@@ -33,47 +33,53 @@
     "fields" : [
       {
         "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-        "label": "Nitrogen Dioxide",
-        "aggregationSubjectProvider": "erg.kcl.ac.uk",
-        "aggregationSubjectType": "airQualityControl",
-        "aggregationFunction": "mean",
-        "fieldSpecification": {
+        "label": "NitrogenDioxide",
+        "subject": {
+          "provider": "erg.kcl.ac.uk",
+          "subjectType": "airQualityControl"
+        },
+        "function": "mean",
+        "field": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "attribute": {
-            "providerLabel" : "erg.kcl.ac.uk",
-            "attributeLabel" : "NO2 40 ug/m3 as an annual me"
+            "provider" : "erg.kcl.ac.uk",
+            "label" : "NO2 40 ug/m3 as an annual me"
           }
         }
       },
       {
         "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-        "label": "Bicycle Fraction",
+        "label": "BicycleFraction",
         "operation": "div",
-        "fieldSpecification1": {
+        "field1": {
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-          "label": "Bicycle Count",
-          "aggregationSubjectProvider": "uk.gov.dft",
-          "aggregationSubjectType": "trafficCounter",
-          "aggregationFunction": "sum",
-          "fieldSpecification": {
+          "label": "BicycleCount",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
+          "function": "sum",
+          "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
             "attribute": {
-              "providerLabel" : "uk.gov.dft",
-              "attributeLabel" : "CountPedalCycles"
+              "provider" : "uk.gov.dft",
+              "label" : "CountPedalCycles"
             }
           }
         },
-        "fieldSpecification2": {
+        "field2": {
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-          "label": "Car Count",
-          "aggregationSubjectProvider": "uk.gov.dft",
-          "aggregationSubjectType": "trafficCounter",
-          "aggregationFunction": "sum",
-          "fieldSpecification": {
+          "label": "CarCount",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
+          "function": "sum",
+          "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
             "attribute": {
-              "providerLabel": "uk.gov.dft",
-              "attributeLabel": "CountCarsTaxis"
+              "provider": "uk.gov.dft",
+              "label": "CountCarsTaxis"
             }
           }
         }

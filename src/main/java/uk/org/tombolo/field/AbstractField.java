@@ -148,9 +148,9 @@ public abstract class AbstractField implements SingleValueField {
     protected Attribute getAttribute() throws IncomputableFieldException {
         if (null != cachedAttribute) return cachedAttribute;
 
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.providerLabel, attribute.attributeLabel);
+        Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
         if (null == attr) {
-            throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.providerLabel, attribute.attributeLabel));
+            throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.provider, attribute.label));
         } else {
             cachedAttribute = attr;
             return attr;
