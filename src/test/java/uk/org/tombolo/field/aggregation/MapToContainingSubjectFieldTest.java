@@ -32,21 +32,14 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
     @Test
     public void testValueForSubject() throws Exception {
         String value = field.valueForSubject(subject, true);
-        assertEquals("{\"attr_label\":[{\"value\":\"100.0\",\"timestamp\":\"2011-01-01T00:00:00\"}]}", value);
+        assertEquals("100.0", value);
     }
 
     @Test
     public void testJsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
-        JSONAssert.assertEquals("{" +
-                "  aLabel: {" +
-                "    attr_label: [" +
-                "      {" +
-                "        value: '100.0'" +
-                "      }" +
-                "    ]" +
-                "  }"+
-                "}",jsonString,false);
+        JSONAssert.assertEquals(
+                "{ aLabel: 100.0}" ,jsonString,false);
     }
 
     private FieldRecipe makeFieldSpec() {
