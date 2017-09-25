@@ -2,7 +2,7 @@ package uk.org.tombolo.execution;
 
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
@@ -14,7 +14,7 @@ public class FieldCacheTest extends AbstractTest {
 
     @Test
     public void getChachedValue() throws Exception {
-        Field field = FieldSpecificationBuilder.fixedAnnotationField("mylabel", "myvalue").build().toField();
+        Field field = FieldBuilder.fixedAnnotationField("mylabel", "myvalue").build().toField();
         Subject subject = TestFactory.makeNamedSubject("E01000001");
 
         // Nothing has been put into cache

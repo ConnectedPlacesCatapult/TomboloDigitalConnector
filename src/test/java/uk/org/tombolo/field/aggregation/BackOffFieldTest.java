@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.FieldSpecificationBuilder;
+import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
@@ -47,16 +47,16 @@ public class BackOffFieldTest extends AbstractTest {
 
         // Field for returning the point's attribute
         FieldRecipe attributeValueField
-                = FieldSpecificationBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)
+                = FieldBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)
                 .setLabel("fixed")
                 .build();
 
         // Field for returning the point's square parent's value
-        FieldRecipe containingSubjectField = FieldSpecificationBuilder.mapToContainingSubjectField(
+        FieldRecipe containingSubjectField = FieldBuilder.mapToContainingSubjectField(
                 "mapped",
                 TestFactory.DEFAULT_PROVIDER.getLabel(),
                 "square",
-                FieldSpecificationBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)).build();
+                FieldBuilder.fixedValueField(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL)).build();
 
         // Field for first trying to return the point's value but if that is not available then return the point's square parent's value
         BackOffField backOffField  = new BackOffField("backoff", Arrays.asList(attributeValueField, containingSubjectField));
@@ -67,7 +67,7 @@ public class BackOffFieldTest extends AbstractTest {
 
         // Point B has no value so we back-off to the surrounding square
         String pointBvalue = backOffField.valueForSubject(pointB, true);
-        assertEquals("{\"testAttribute\":[{\"value\":\"squareBvalue\"}]}", pointBvalue);
+        assertEquals("squareBvalue", pointBvalue);
 
         // Point C has no value nor surrounding square so we throw an exception
         thrown.expect(IncomputableFieldException.class);

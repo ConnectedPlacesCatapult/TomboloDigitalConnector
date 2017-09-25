@@ -14,7 +14,7 @@ import java.util.List;
  * Field for providing backed off values when none exist.
  * An example back-off would be mapping to a value for a parent geography.
  */
-public class BackOffField extends AbstractField implements SingleValueField {
+public class BackOffField extends AbstractField {
 
     private List<FieldRecipe> fields;
 
