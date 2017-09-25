@@ -71,12 +71,24 @@ public class OSMEntityHandler implements OsmHandler {
         Map<String, String> tags = OsmModelUtil.getTagsAsMap(way);
         // Check if the subject has one of the predefined tags
         categoriesloop:
-        for (Collection<String> category : importer.categories.values()) {
-            for (String value : category) {
-                if (tags.get(value) != null) {
-                    // we keep the way as it is with all the tags
+        for (String categoryKey : importer.categories.keySet()) {
+            if (tags.containsKey(categoryKey)) {
+                // The way has at least one tag that matches one of the importers category
+
+                if (importer.categories.get(categoryKey).contains("*")) {
+                    // The way has a tag that matches the category key and the value is a wildcard
+                    // Hence we persist the way
                     persistWay(way, tags);
                     break categoriesloop;
+                }
+
+                for (String categoryValue : importer.categories.get(categoryKey)) {
+                    if (tags.get(categoryKey).equals(categoryValue)) {
+                        // The way has a tag that matches a category key and value
+                        // Hence we persist the way
+                        persistWay(way, tags);
+                        break categoriesloop;
+                    }
                 }
             }
         }

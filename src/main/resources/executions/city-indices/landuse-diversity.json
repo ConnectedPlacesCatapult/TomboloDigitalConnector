@@ -1,20 +1,24 @@
 {
-  "datasetSpecification": {
-    "subjectSpecification": [
+  "dataset": {
+    "subjects": [
       {
         // The output subjects are all LSOAs
         "provider": "uk.gov.ons",
-        "subjectType": "lsoa"
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
       }
     ],
-    "datasourceSpecification": [
+    "datasources": [
       {
         // Importer for LSOA geographies
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       }
     ],
-    "fieldSpecification": [
+    "fields": [
       {
         "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
         "label": "component:residential_landuse",
@@ -22,5 +26,5 @@
       }
     ]
   },
-  "exporterClass" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
 }

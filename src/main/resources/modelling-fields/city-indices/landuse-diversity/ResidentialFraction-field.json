@@ -14,10 +14,12 @@
       "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeValueField",
       "label": "Assert residential land use",
       "attribute": {
-          "provider": "org.openstreetmap",
-          "label": "landuse"
-        },
-        "values":["residential"]
+        "provider": "org.openstreetmap",
+        "label": "landuse"
+      },
+      "values": [
+        "residential"
+      ]
     }
   },
   "field2": {

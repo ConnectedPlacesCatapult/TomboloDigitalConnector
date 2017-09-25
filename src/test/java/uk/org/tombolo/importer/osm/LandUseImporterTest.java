@@ -40,23 +40,23 @@ public class LandUseImporterTest extends AbstractTest {
 
     @Test
     public void getFixedValueAttributes() throws Exception {
-        List<Attribute> attributes = importer.getFixedValuesAttributes();
+        List<Attribute> attributes = importer.getFixedValueAttributes("OSMLandUse");
         assertEquals(1, attributes.size());
     }
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("OSMLandUse", Arrays.asList(TEST_AREA), Collections.emptyList());
+        importer.importDatasource("OSMLandUse", Arrays.asList(TEST_AREA), Collections.emptyList(), Collections.emptyList());
 
         // Test attribute import
         Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
         assertEquals("org.openstreetmap", landuse.getProvider().getLabel());
         assertEquals("landuse", landuse.getLabel());
-        assertEquals("landuse", landuse.getName());
+        assertEquals("landuse", landuse.getLabel());
         Attribute natural = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "natural");
         assertEquals("org.openstreetmap", natural.getProvider().getLabel());
         assertEquals("natural", natural.getLabel());
-        assertEquals("natural", natural.getName());
+        assertEquals("natural", natural.getLabel());
 
         // Test subjects import
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("org.openstreetmap","OSMEntity");
