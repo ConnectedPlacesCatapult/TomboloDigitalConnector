@@ -97,7 +97,7 @@ public class DataExportEngine implements ExecutionEngine {
 				datasourceSpec.getDatasourceId(),
 				datasourceSpec.getGeographyScope(),
 				datasourceSpec.getTemporalScope(),
-				datasourceSpec.getDatasourceLocation(),
+				datasourceSpec.getLocalData(),
 				forceImports.doesMatch(datasourceSpec.getImporterClass())
 		);
 	}
