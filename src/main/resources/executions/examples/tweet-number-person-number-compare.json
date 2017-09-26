@@ -23,17 +23,6 @@
         "datasourceId": "twitter",
         "localData": ["/Users/jbailey/Downloads/hack_tweets_lon.json"]
       },
-//      {
-//        // Importer for tweets in London
-//        "importerClass" : "uk.org.tombolo.importer.twitter.TwitterImporter",
-//        "datasourceId" : "twitter",
-//      },
-//      {
-//        // Importer for population in London
-//        "importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-//        "datasourceId" : "twitter"
-//        //Do we want a "geographyScope?"
-//      },
       {
         // Importer for population in London
         "importerClass" : "uk.org.tombolo.importer.dclg.IMDImporter",
