@@ -19,7 +19,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
@@ -120,9 +119,7 @@ public class TwitterImporter extends AbstractImporter {
 
         TEXT("text", "text, tweet content") {
             @Override
-            public String getValue() {
-                return status.getText();
-            }
+            public String getValue() { return status.getText(); }
         },
         ID("id", "tweet ID") {
             @Override
@@ -221,7 +218,7 @@ public class TwitterImporter extends AbstractImporter {
 
     private void subjectFromStatus(String tweet, Datasource datasource) {
         try {
-            status = TwitterObjectFactory.createStatus(tweet.trim());
+            status = TwitterObjectFactory.createStatus(tweet);
         } catch (TwitterException e) {
             log.error("Not a valid json string: {}, {}", tweet, e.getErrorMessage());
         }
@@ -237,18 +234,19 @@ public class TwitterImporter extends AbstractImporter {
 
         Subject subject = new Subject(datasource.getUniqueSubjectType(),
                 AttributeEnum.ID.getValue(),
-                AttributeEnum.USER.getValue().replace(" ", "_") + AttributeEnum.ID.getValue(),
+                AttributeEnum.USER.getValue().replace(" ", "_") + "_" + AttributeEnum.ID.getValue(),
                 geometry
         );
 
         subjects.add(subject);
 
 
-        for (AttributeEnum val : AttributeEnum.values()) {
-            if (null != val.getValue()) {
-                if (!(val.getValue().length() > 254))
-                fixedValues.add(new FixedValue(subject, map.get(val), val.getValue()));
+        for (AttributeEnum attribute : AttributeEnum.values()) {
+            if (null != attribute.getValue()) {
+                String value = new String(attribute.getValue().getBytes(Charset.forName("UTF-8")));
+                fixedValues.add(new FixedValue(subject, map.get(attribute), value));
             }
+
         }
 
         if (subjects.size() % getSubjectBufferSize() == 0) {
