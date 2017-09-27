@@ -1,0 +1,70 @@
+{
+  "dataset" : {
+    "subjects" : [
+      {
+        // The output of the export includes one record for each local authority whose label starts with 'E090'.
+        // Effectively this will export one record for each of the London Boroughs.
+        "subjectType" : "localAuthority",
+        "provider":"uk.gov.ons",
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090%"
+        }
+      }
+    ],
+    "datasources" : [
+      {
+        // Importer for importing the geographic areas of local authorities
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.twitter.TwitterImporter",
+        "datasourceId": "twitter",
+        "localData": ["/Users/jbailey/Downloads/hack_tweets_lon.json"]
+      },
+      {
+        // Importer for population in London
+        "importerClass" : "uk.org.tombolo.importer.dclg.IMDImporter",
+        "datasourceId" : "imd"
+        //Do we want a "geographyScope?"
+      }
+    ],
+    "fields" : [
+      {
+        // Geographic aggregation field that adds toghether all people geographically within the output subject.
+        // In this case the output subjects are London Boroughs (see above).
+      "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "SumtotalPopulation",
+        "subject": {
+          "provider": "uk.gov.ons",
+          "subjectType": "lsoa"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "label": "totalPopulation",
+          "attribute": {
+            "provider" :"uk.gov.dclg",
+            "label" : "totalPopulation"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "SumTweets",
+        "subject": {
+          "provider": "com.twitter",
+          "subjectType": "Tweet"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+          "label": "Tweet",
+          "value": "1"
+        }
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}
