@@ -1,0 +1,22 @@
+[
+  {
+    "//": "Traffic counts for the entire UK",
+    "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+    "datasourceId": "trafficCounts",
+    "geographyScope" : ["East Midlands","East of England","London",
+      "Merseyside","North East","North West","Scotland","South East","South West",
+      "Wales","West Midlands","Yorkshire and The Humber"]
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "msoa"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "localAuthority"
+  }
+]

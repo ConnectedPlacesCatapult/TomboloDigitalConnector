@@ -15,6 +15,7 @@ import java.util.List;
 
 public class GeoJsonExporter implements Exporter {
 	private Logger log = LoggerFactory.getLogger(GeoJsonExporter.class);
+	private static final int LOGGING_FREQUENCY = 100;
 	private Boolean timeStamp;
 
 	public void write(Writer writer, List<Subject> subjects, List<Field> fields, Boolean timeStamp) throws IOException {
@@ -26,9 +27,15 @@ public class GeoJsonExporter implements Exporter {
 		jsonWriter.name("type").value("FeatureCollection");
 		jsonWriter.name("features").beginArray();
 
+		log.info("Exporting {} subjects", subjects.size());
+		int subjectCounter = 0;
 		for (Subject subject : subjects) {
+			subjectCounter++;
 			writeFeatureForSubject(fields, subject, jsonWriter);
+			if (subjectCounter % LOGGING_FREQUENCY == 0)
+				log.info("Exported {} subjects", subjectCounter);
 		}
+		log.info("Exported {} subjects", subjectCounter);
 
 		jsonWriter.endArray();
 		jsonWriter.endObject();
