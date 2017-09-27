@@ -14,7 +14,6 @@ import java.util.*;
  * Open street map importer
  */
 public abstract class OSMImporter extends AbstractImporter {
-
     protected static final String URL = "http://download.geofabrik.de";
     private static final String DEFAULT_AREA = "europe/great-britain";
 
