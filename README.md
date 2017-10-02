@@ -15,11 +15,11 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 ## Quick start
 
 ### Requirements
-* JDK (1.8+)
-* PostgreSQL (9.4+)
-* PostGIS (2.1+)
-* Gradle (2.12+)
-* (Optional) Wercker (1.0+)
+* [JDK (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [PostgreSQL (9.4+)](https://www.postgresql.org/)
+* [PostGIS (2.1+)](http://postgis.net/)
+* [Gradle (2.12+)](https://gradle.org/)
+* (Optional) [Wercker (1.0+)](http://www.wercker.com/)
 
 ### Configure the project
 
@@ -110,7 +110,7 @@ in a given borough and outputs the results to the file `reaggregate-traffic-coun
 ```bash
 gradle runExport \
     -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
-    -PoutputFile='reaggregate-traffic-count-to-la.json'
+    -PoutputFile='reaggregate-traffic-count-to-la_output.json'
 ```
 
 ### Run data catalogue

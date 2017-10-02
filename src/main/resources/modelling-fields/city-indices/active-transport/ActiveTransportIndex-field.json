@@ -1,0 +1,24 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
+  "label": "Active Transport Index",
+  "name": "Active Transport Index",
+  "fields": [
+    {
+      // Modelling field for Cycle to car proportion (built-in model)
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "label": "Cycle to Car Proportion",
+      "recipe": "city-indices/active-transport/CyclingCount-lsoa"
+    },
+    {
+      // Modelling field for Cycle to car proportion (built-in model)
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "label": "Cycle Lane Score",
+      "recipe": "city-indices/active-transport/CycleLaneCount-lsoa"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "label": "Active Transport to Work",
+      "recipe": "city-indices/active-transport/ActiveTransportToWork"
+    }
+  ]
+}

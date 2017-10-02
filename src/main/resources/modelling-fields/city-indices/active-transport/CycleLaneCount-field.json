@@ -1,0 +1,64 @@
+{
+  // Proportion of Bicycle to cars and taxis
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "label": "Cycle to Road count Ratio",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+    "label": "Cycle Lane Count",
+    "function": "sum",
+    "subject" : {
+      "provider": "org.openstreetmap",
+      "subjectType": "OSMEntity"
+    },
+    "field": {
+      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
+      "label": "Assert Cycle Lane",
+      "attributes": [
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway"
+        },
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway:left"
+        },
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway:right"
+        },
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway:oneway"
+        },
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway:oneside"
+        },
+        {
+          "provider": "org.openstreetmap",
+          "label": "cycleway:otherside"
+        }
+      ]
+    }
+  },
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+    "label": "Highway Count",
+    "function": "sum",
+    "subject" : {
+      "provider": "org.openstreetmap",
+      "subjectType": "OSMEntity"
+    },
+    "field": {
+      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
+      "label": "Assert Highway",
+      "attributes": [
+        {
+          "provider": "org.openstreetmap",
+          "label": "highway"
+        }
+      ]
+    }
+  }
+}
