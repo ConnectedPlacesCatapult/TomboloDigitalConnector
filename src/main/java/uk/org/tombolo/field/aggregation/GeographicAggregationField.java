@@ -60,7 +60,7 @@ public class GeographicAggregationField extends AbstractField {
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
         } catch (Exception e) {
-            throw new Error("Field not valid");
+            throw new Error("Field not valid", e);
         }
     }
 

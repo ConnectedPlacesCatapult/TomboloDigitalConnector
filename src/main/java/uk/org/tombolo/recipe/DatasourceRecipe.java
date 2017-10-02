@@ -8,15 +8,15 @@ public class DatasourceRecipe {
 	private String datasourceId;
 	private List<String> geographyScope;
 	private List<String> temporalScope;
-	private List<String> datasourceLocation;
+	private List<String> localData;
 	private String configFile = "";
 	
-	public DatasourceRecipe(String importerClass, String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) {
+	public DatasourceRecipe(String importerClass, String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> localData) {
 		this.importerClass = importerClass;
 		this.datasourceId = datasourceId;
 		this.geographyScope = geographyScope;
 		this.temporalScope = temporalScope;
-		this.datasourceLocation = datasourceLocation;
+		this.localData = localData;
 	}
 
 	public DatasourceRecipe addConfigFile(String configFile) {
@@ -41,7 +41,7 @@ public class DatasourceRecipe {
 		return temporalScope;
 	}
 
-	public List<String> getDatasourceLocation() { return datasourceLocation; }
+	public List<String> getLocalData() { return localData; }
 
 	public String getConfigFile() { return configFile; }
 }
