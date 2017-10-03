@@ -6,7 +6,6 @@ import uk.org.tombolo.core.Provider;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class AttributeUtils {
 	public static void save(List<Attribute> attributes){
@@ -45,17 +44,5 @@ public class AttributeUtils {
 			query.setParameter("attributeLabel", attributeLabel);
 			return (Attribute) query.uniqueResult();
 		});
-	}
-
-	/*
-		In case the attribute label is longer than the max length in the database, a new label is created with unchanged
-		first part and a uuid of the whole string.
-	 */
-	public static String substringToDBLength(String label) {
-		if (label.length() > 255) {
-			return label.substring(0, 218) + " " + UUID.nameUUIDFromBytes(label.toString().getBytes()).toString();
-		}
-
-		return label;
 	}
 }
