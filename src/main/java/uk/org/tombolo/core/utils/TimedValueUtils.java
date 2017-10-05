@@ -27,6 +27,7 @@ public class TimedValueUtils {
 			return session.createQuery("from TimedValue where id.subject = :subject and id.attribute = :attribute", TimedValue.class)
 					.setParameter("subject", subject)
 					.setParameter("attribute", attribute)
+					.setCacheable(true)
 					.list();
 		});
 	}
@@ -37,6 +38,7 @@ public class TimedValueUtils {
 					.setParameter("subject", subject)
 					.setParameter("attribute", attribute)
 					.setMaxResults(1)
+					.setCacheable(true)
 					.uniqueResult();
 		});
 	}
@@ -63,6 +65,7 @@ public class TimedValueUtils {
 			List<TimedValue> results = session.createQuery("from TimedValue where id.subject = :subject and id.attribute in :attributes", TimedValue.class)
 					.setParameter("subject", subject)
 					.setParameter("attributes", attributes)
+					.setCacheable(true)
 					.list();
 
 			// We use stream collection to build a map of Attribute -> TimedValue while

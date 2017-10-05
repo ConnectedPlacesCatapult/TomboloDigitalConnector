@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import org.hibernate.query.Query;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
 
@@ -40,10 +41,11 @@ public class SubjectTypeUtils {
 
 	public static SubjectType getSubjectTypeByProviderAndLabel(String providerLabel, String subjectTypeLabel) {
 		return HibernateUtil.withSession(session -> {
-			return session.createQuery("from SubjectType where label = :subjectTypeLabel and provider.label = :providerLabel", SubjectType.class)
-				.setParameter("providerLabel", providerLabel)
-				.setParameter("subjectTypeLabel", subjectTypeLabel)
-				.uniqueResult();
+			Query query =  session.createQuery("from SubjectType where label = :subjectTypeLabel and provider.label = :providerLabel", SubjectType.class)
+					.setParameter("providerLabel", providerLabel)
+					.setParameter("subjectTypeLabel", subjectTypeLabel);
+			query.setCacheable(true);
+			return (SubjectType) query.uniqueResult();
 		});
 	}
 }
