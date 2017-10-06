@@ -26,7 +26,6 @@ import java.util.List;
  * but I am not willing to invest time in it until I know it is used more widely.
  * A more rigorous importing is desired but will be implemented on demand.
  *
- * Local:
  */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter {
     private enum DatasourceId {
