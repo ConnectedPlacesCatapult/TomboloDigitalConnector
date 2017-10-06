@@ -20,7 +20,6 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +41,11 @@ public class OSMEntityHandler implements OsmHandler {
     private GeometryBuilder builder;
     private OSMImporter importer;
 
-    public OSMEntityHandler(OSMImporter importer) {
+    private String datasourceId;
+
+    public OSMEntityHandler(OSMImporter importer, String datasourceId) {
         this.importer = importer;
+        this.datasourceId = datasourceId;
 
         builder = new GeometryBuilder(GEOMETRY_FACTORY);
         // Empty geography if nodes are missing
@@ -69,20 +71,22 @@ public class OSMEntityHandler implements OsmHandler {
     {
         // Convert the way's tags to a map
         Map<String, String> tags = OsmModelUtil.getTagsAsMap(way);
+        // Categories
+        Map<String, List<String>> categories =BuiltInImporters.valueOf(datasourceId).getCategories();
         // Check if the subject has one of the predefined tags
         categoriesloop:
-        for (String categoryKey : importer.categories.keySet()) {
+        for (String categoryKey : categories.keySet()) {
             if (tags.containsKey(categoryKey)) {
                 // The way has at least one tag that matches one of the importers category
 
-                if (importer.categories.get(categoryKey).contains("*")) {
+                if (categories.get(categoryKey).contains("*")) {
                     // The way has a tag that matches the category key and the value is a wildcard
                     // Hence we persist the way
                     persistWay(way, tags);
                     break categoriesloop;
                 }
 
-                for (String categoryValue : importer.categories.get(categoryKey)) {
+                for (String categoryValue : categories.get(categoryKey)) {
                     if (tags.get(categoryKey).equals(categoryValue)) {
                         // The way has a tag that matches a category key and value
                         // Hence we persist the way

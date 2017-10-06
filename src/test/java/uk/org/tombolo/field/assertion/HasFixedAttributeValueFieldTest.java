@@ -14,7 +14,7 @@ import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +22,7 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
     private static final String ATTRIBUTE_LABEL = "tobecounted";
 
     @Test
-    public void valueForSubject() throws Exception {
+    public void valueForSubjectAttributeWithValues() throws Exception {
         // Create dummy subjects
         Subject subjectWithAttributeAndOneValueMatch = TestFactory.makeSubject(
                 TestFactory.makeNamedSubjectType("lsoa"),"E01000001","",
@@ -44,9 +44,10 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         FixedValueUtils.save(new FixedValue(subjectWithAttributeButOtherValue, testAttribute, "value3"));
 
         // Create field
-        AttributeMatcher attributeMatcher = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL);
-        List<String> testValues = Arrays.asList("value1", "value2");
-        HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield", attributeMatcher, testValues, makeFieldSpec());
+        AttributeMatcher attributeMatcher = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL,
+                Arrays.asList("value1", "value2"));
+        HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield",
+                Collections.singletonList(attributeMatcher), makeAreaFieldSpec());
 
         // Test
         assertEquals("25.00",field.valueForSubject(subjectWithAttributeAndOneValueMatch, true));
@@ -55,10 +56,54 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         assertEquals("0", field.valueForSubject(subjectWithoutAttribute, true));
     }
 
-    private FieldRecipe makeFieldSpec() {
+    @Test
+    public void valueForSubjectAttributeNoValues() throws Exception {
+
+        // Create dummy subjects
+        Subject subjectWithOneAttributeMatch = TestFactory.makeNamedSubject("E01000001");
+        Subject subjectWithTwoAttributeMatches = TestFactory.makeNamedSubject("E09000019");
+        Subject subjectWithNoAttributeMatches = TestFactory.makeNamedSubject("E09000001");
+        Subject subjectWithoutAttribute = TestFactory.makeNamedSubject("E01000002");
+
+        // Crate dummy attribute
+        Attribute testAttribute1 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute1", "");
+        AttributeUtils.save(testAttribute1);
+        Attribute testAttribute2 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute2", "");
+        AttributeUtils.save(testAttribute2);
+        Attribute testAttribute3 = new Attribute(TestFactory.DEFAULT_PROVIDER,"testAttribute3", "");
+        AttributeUtils.save(testAttribute3);
+
+
+        // Assign attribute values
+        FixedValueUtils.save(new FixedValue(subjectWithOneAttributeMatch, testAttribute1, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithTwoAttributeMatches, testAttribute1, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithTwoAttributeMatches, testAttribute2, "value"));
+        FixedValueUtils.save(new FixedValue(subjectWithNoAttributeMatches, testAttribute3, "value"));
+
+        // Create field
+        AttributeMatcher attributeMatcher1 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(),
+                testAttribute1.getLabel(), Arrays.asList("value", "value"));
+        AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(),
+                testAttribute2.getLabel(), Arrays.asList("value"));
+        HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield",
+                Arrays.asList(attributeMatcher1, attributeMatcher2), makeFixedAnnotationFieldSpec());
+
+        // Test
+        assertEquals("3.0",field.valueForSubject(subjectWithOneAttributeMatch, true));
+        assertEquals("3.0",field.valueForSubject(subjectWithTwoAttributeMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches, true));
+        assertEquals("0",field.valueForSubject(subjectWithoutAttribute, true));
+    }
+
+    private FieldRecipe makeAreaFieldSpec() {
         return RecipeDeserializer.fromJson(
                 FieldBuilder.areaField("default_label", Subject.SRID + "").toJSONString(),
                 FieldRecipe.class);
     }
 
+    private FieldRecipe makeFixedAnnotationFieldSpec() {
+        return RecipeDeserializer.fromJson(
+                FieldBuilder.fixedAnnotationField("default_provider_label", "3.0").toJSONString(),
+                FieldRecipe.class);
+    }
 }

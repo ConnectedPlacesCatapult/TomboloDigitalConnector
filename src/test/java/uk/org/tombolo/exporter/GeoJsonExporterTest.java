@@ -44,7 +44,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 				SubjectUtils.getSubjectByTypeAndLabel(localAuthority,"E09000001")
 		), Collections.singletonList(
 				new ValuesByTimeField("attr_label",
-						new AttributeMatcher("default_provider_label", "attr_label"))
+						new AttributeMatcher("default_provider_label", "attr_label", null))
 		), false);
 
 		assertEquals("E09000001", getFirstFeatureLabel(writer.toString()));

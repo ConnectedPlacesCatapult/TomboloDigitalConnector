@@ -38,7 +38,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         );
 
         private DatasourceSpec datasourceSpec;
-        DatasourceId(DatasourceSpec datasource) {
+        DatasourceId(DatasourceSpec datasourceSpec) {
             this.datasourceSpec = datasourceSpec;
         }
     }
