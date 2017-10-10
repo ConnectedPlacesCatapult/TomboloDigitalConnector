@@ -1,0 +1,7 @@
+[
+  {
+    // Importer for air quality
+    "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
+    "datasourceId": "airQualityControl"
+  }
+]
