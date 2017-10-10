@@ -8,8 +8,6 @@
           "geoRelation": "within",
           "subjects": [
             {
-              // The output of the export includes one record for each local authority whose label starts with 'E090'.
-              // Effectively this will export one record for each of the London Boroughs.
               "subjectType": "localAuthority",
               "provider": "uk.gov.ons",
               "matchRule": {
@@ -27,7 +25,6 @@
         "datasourceId" : "lsoa"
       },
       {
-        // Importer for importing the geographic areas of local authorities
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       }
