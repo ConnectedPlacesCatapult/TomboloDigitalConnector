@@ -29,7 +29,6 @@
         "datasourceId" : "msoa"
       },
       {
-        // Importer for importing the geographic areas of local authorities
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       }
