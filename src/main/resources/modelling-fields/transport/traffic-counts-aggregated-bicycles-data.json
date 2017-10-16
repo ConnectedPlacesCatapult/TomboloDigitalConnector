@@ -1,0 +1,9 @@
+[
+  {
+    "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+    "datasourceId" : "trafficCounts",
+    "geographyScope" : ["East Midlands","East of England","London",
+      "Merseyside","North East","North West","Scotland","South East","South West",
+      "Wales","West Midlands","Yorkshire and The Humber"]
+  }
+]

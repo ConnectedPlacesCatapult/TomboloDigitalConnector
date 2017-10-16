@@ -54,6 +54,9 @@ public class BasicModellingField extends AbstractField implements ModellingField
     protected void initialize() {
         String fieldFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldFileURL = ClassLoader.getSystemResource(fieldFilename);
+        if (fieldFileURL == null){
+            throw new Error("Model Recipe not found: "+fieldFilename);
+        }
         File fieldFile = new File(fieldFileURL.getFile());
         try {
             field = RecipeDeserializer
