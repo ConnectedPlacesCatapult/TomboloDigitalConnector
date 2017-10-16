@@ -6,7 +6,7 @@
   },
   {
     "//": "QS408EW	Occupancy rating (rooms)",
-    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
-    "datasourceId": "QS408EW"
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs408ew"
   }
 ]

@@ -4,7 +4,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
@@ -130,7 +132,8 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     }
 
     private TimedValueExtractor getExtractor(AttributeId attributeId, SingleValueExtractor subjectLabelExtractor){
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
         switch (attributeId){
             case populationDensity:
                 return new TimedValueExtractor(

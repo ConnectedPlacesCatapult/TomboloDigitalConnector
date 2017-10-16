@@ -1,8 +1,12 @@
 package uk.org.tombolo.core;
 
 import com.google.gson.stream.JsonWriter;
+import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.Importer;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,13 +59,24 @@ public class Datasource {
 		return datasourceSpec;
 	}
 
-	public void writeJSON(JsonWriter writer) throws IOException {
+	public void writeJSON(JsonWriter writer) throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		writer.beginObject();
 		writer.name("id").value(datasourceSpec.getId());
 		writer.name("importerClass").value(datasourceSpec.getImporterClass().getCanonicalName());
 		writer.name("name").value(datasourceSpec.getName());
 		writer.name("description").value(datasourceSpec.getDescription());
 		writer.name("url").value(datasourceSpec.getUrl());
+
+		// Adding provider in order to have it in Catalogue, we may need to review this in future
+		Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
+				new SubjectType(new Provider("", ""), "", "")).build();
+		Class<?> theClass = Class.forName(datasourceSpec.getImporterClass().getCanonicalName());
+		Constructor<?> constructor = theClass.getConstructor(Config.class);
+		Importer importer = (Importer) constructor.newInstance(DEFAULT_CONFIG);
+		writer.name("provider");
+		importer.getProvider().writeJSON(writer);
+
+
 		writer.name("subjectTypes");
 		writer.beginArray();
 		for (SubjectType subjectType : getSubjectTypes()) {
