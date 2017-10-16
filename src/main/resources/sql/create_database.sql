@@ -17,8 +17,8 @@ drop sequence if exists database_journal_id_sequence;
 
 -- Provider
 create table provider (
-	label	VARCHAR(63) NOT NULL,
-	name	VARCHAR(255) NOT NULL,
+	label	TEXT NOT NULL,
+	name	TEXT NOT NULL,
 	PRIMARY KEY(label)	
 );
 
@@ -26,9 +26,9 @@ create table provider (
 create sequence subject_type_id_sequence;
 create table subject_type (
     id              integer NOT NULL DEFAULT nextval('subject_type_id_sequence'),
-	provider_label	VARCHAR(63) NOT NULL REFERENCES provider(label),
-	label	        VARCHAR(63) NOT NULL,
-	name	        VARCHAR(255),
+	provider_label	TEXT NOT NULL REFERENCES provider(label),
+	label	        TEXT NOT NULL,
+	name	        TEXT,
 	UNIQUE(label, provider_label),
 	PRIMARY KEY(id)
 );
@@ -38,8 +38,8 @@ create sequence subject_id_sequence;
 create table subject (
 	id              integer NOT NULL DEFAULT nextval('subject_id_sequence'),
 	subject_type_id integer NOT NULL REFERENCES subject_type(id),
-	label           VARCHAR(63) NOT NULL,
-	name	        VARCHAR(255),
+	label           TEXT NOT NULL,
+	name	        TEXT,
 	shape           geometry,
 	UNIQUE(subject_type_id, label),
 	PRIMARY KEY(id)
@@ -50,9 +50,9 @@ create index subject_label on subject (subject_type_id, label);
 create sequence attribute_id_sequence;
 create table attribute (
 	id 				integer NOT NULL DEFAULT nextval('attribute_id_sequence'),
-	provider_label	VARCHAR(63) NOT NULL REFERENCES provider(label),
-	label			VARCHAR(255) NOT NULL,
-	description		VARCHAR(511),
+	provider_label	TEXT NOT NULL REFERENCES provider(label),
+	label			TEXT NOT NULL,
+	description		TEXT,
 	UNIQUE (provider_label, label),
 	PRIMARY KEY(id)
 );
@@ -69,7 +69,7 @@ create table timed_value (
 create table fixed_value (
 	subject_id		integer NOT NULL REFERENCES subject(id),
 	attribute_id	integer NOT NULL REFERENCES attribute(id),
-	value			VARCHAR(255) NOT NULL,
+	value			TEXT NOT NULL,
 	PRIMARY KEY(subject_id,attribute_id)
 );
 
@@ -77,8 +77,8 @@ create table fixed_value (
 create sequence database_journal_id_sequence;
 create table database_journal (
     id          integer NOT NULL DEFAULT nextval('database_journal_id_sequence'),
-	class_name	VARCHAR(255) NOT NULL,
-	key			VARCHAR(255) NOT NULL
+	class_name	TEXT NOT NULL,
+	key			TEXT NOT NULL
 );
 
 -- Insert default provider

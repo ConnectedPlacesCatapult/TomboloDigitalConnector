@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -15,6 +16,7 @@ public class HibernateUtil {
     public static void startup() {
         sessionFactory = buildSessionFactory();
         sharedSession = sessionFactory.openSession();
+        sharedSession.setCacheMode(CacheMode.NORMAL);
     }
     
     public static void shutdown() {

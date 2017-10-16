@@ -2,15 +2,28 @@
   "dataset" : {
     "subjects" : [
       {
-        "subjectType" : "localAuthority",
-        "provider":"uk.gov.ons",
-        "matchRule": {
-          "attribute": "label",
-          "pattern": "E090%"
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090%"
+              }
+            }
+          ]
         }
       }
     ],
     "datasources" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId" : "lsoa"
+      },
       {
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
