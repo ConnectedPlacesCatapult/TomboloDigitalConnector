@@ -48,11 +48,7 @@ public class FieldCache {
     }
 
     private String getCacheKey(Field field, Subject subject){
-        // FIXME: This function will mess things up if there are in one export two fields of the same class with the same label
-        // FIXME: Each field instance should offer a signature method, capturing its parameters
-        return field.getClass().getName()
-                +"\t"
-                + field.getLabel()
+        return field.hashCode()
                 + "\t"
                 +subject.getId();
     }

@@ -4,7 +4,7 @@
     "datasourceId": "lsoa"
   },
   {
-    "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
-    "datasourceId": "QS103EW"
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs103ew"
   }
 ]

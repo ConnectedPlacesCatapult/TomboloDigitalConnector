@@ -19,8 +19,8 @@
       },
       {
         // Importer for the ONS Census dataset for overcrowding
-        "importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
-        "datasourceId": "QS408EW"
+        "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+        "datasourceId": "qs408ew"
       }
     ],
     "fields": [

@@ -1,4 +1,4 @@
-package uk.org.tombolo.importer.phe;
+package uk.org.tombolo.importer.londondatastore;
 
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -13,6 +13,8 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
+import uk.org.tombolo.importer.phe.AbstractPheImporter;
+import uk.org.tombolo.importer.phe.ChildhoodObesityImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -23,11 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Importer for importing the adult self reported obesity from the PHE NOO website.
+ * Importer for importing the adult self reported obesity from the London datastore.
  *
- * http://www.noo.org.uk/visualisation
  */
-public class AdultObesityImporter extends AbstractPheImporter {
+public class AdultObesityImporter extends AbstractLondonDatastoreImporter {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 
     private enum DatasourceId {
@@ -36,17 +37,17 @@ public class AdultObesityImporter extends AbstractPheImporter {
                 "adultObesity",
                 "Local Authority Adult Obesity",
                 "Self reported adult obesity",
-                "https://www.noo.org.uk/")
+                "https://data.london.gov.uk/dataset/obesity-adults")
         );
 
         private DatasourceSpec datasourceSpec;
-        DatasourceId(DatasourceSpec datasource) {
+        DatasourceId(DatasourceSpec datasourceSpec) {
             this.datasourceSpec = datasourceSpec;
         }
     }
 
-    private static final String DATASOURCE_SUFFIX = ".xlsx";
-    private static final String DATASOURCE = "https://www.noo.org.uk/gsf.php5?f=314008&fv=21761";
+    private static final String DATASOURCE_SUFFIX = ".xls";
+    private static final String DATASOURCE = "https://files.datapress.com/london/dataset/obesity-adults/population-bmi-classification-london.xls";
 
     private ExcelUtils excelUtils = new ExcelUtils();
 
@@ -68,11 +69,11 @@ public class AdultObesityImporter extends AbstractPheImporter {
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(
                 downloadUtils.fetchInputStream(new URL(DATASOURCE), getProvider().getLabel(), DATASOURCE_SUFFIX));
-        Sheet sheet = workbook.getSheetAt(1);
-        String year = "2014";
+        Sheet sheet = workbook.getSheet("Active People Survey");
+        String year = "2013";
 
         List<TimedValueExtractor> timedValueExtractors = new ArrayList<>();
-        RowCellExtractor subjectExtractor = new RowCellExtractor(1, CellType.STRING);
+        RowCellExtractor subjectExtractor = new RowCellExtractor(0, CellType.STRING);
         ConstantExtractor timestampExtractor = new ConstantExtractor(year);
 
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
@@ -111,15 +112,15 @@ public class AdultObesityImporter extends AbstractPheImporter {
     private int getAttributeColumnId(AttributeLabel attributeLabel){
         switch (attributeLabel){
            case fractionUnderweight:
-               return 6;
+               return 2;
             case fractionHealthyWeight:
-                return 10;
+                return 6;
             case fractionOverweight:
-                return 14;
+                return 10;
             case fractionObese:
-                return 18;
+                return 14;
             case fractionExcessWeight:
-                return 22;
+                return 18;
             default:
                 throw new Error("Unknown attribute label: " + String.valueOf(attributeLabel));
         }

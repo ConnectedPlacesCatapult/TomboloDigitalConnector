@@ -13,6 +13,7 @@ import uk.org.tombolo.importer.utils.extraction.BlankCellException;
 import uk.org.tombolo.importer.utils.extraction.ExtractorException;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class ExcelUtils {
 
 	public Workbook getWorkbook(InputStream is) throws IOException, InvalidFormatException {
 		return WorkbookFactory.create(is);
+	}
+
+	public Workbook getWorkbook(File file) throws IOException, InvalidFormatException {
+		return WorkbookFactory.create(file);
 	}
 
 	public void extractAndSaveTimedValues(Sheet sheet, Importer importer, List<TimedValueExtractor> extractors){
