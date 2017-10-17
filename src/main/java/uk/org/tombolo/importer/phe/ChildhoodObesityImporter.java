@@ -9,7 +9,9 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -105,11 +107,13 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
             switch (geographyLabel) {
                 case la:
                     sheet = workbook.getSheet("LAData_2011-12_2013-14");
-                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+                    subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                            OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
                     break;
                 case msoa:
                     sheet = workbook.getSheet("MSOAData_2011-12_2013-14");
-                    subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                    subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                            OaImporter.OaType.msoa.name(), OaImporter.OaType.msoa.datasourceSpec.getDescription());
                     break;
                 case ward:
                     throw new Error("Wards are not yet supported");

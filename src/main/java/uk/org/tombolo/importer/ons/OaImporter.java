@@ -11,7 +11,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
@@ -31,7 +30,7 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
                 "http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson");
 
-        private DatasourceSpec datasourceSpec;
+        public DatasourceSpec datasourceSpec;
         private String datafile;
         OaType(DatasourceSpec datasourceSpec, String datafile) {
             this.datasourceSpec = datasourceSpec;
@@ -45,7 +44,8 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
     }
 
     public static SubjectType getSubjectType(OaType oaType){
-        return SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, oaType.name(), oaType.datasourceSpec.getDescription());
+        return new SubjectType(AbstractONSImporter.PROVIDER,
+                                                    oaType.name(), oaType.datasourceSpec.getDescription());
     }
 
     @Override

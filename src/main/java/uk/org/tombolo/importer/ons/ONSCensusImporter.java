@@ -246,7 +246,7 @@ public class ONSCensusImporter extends AbstractONSImporter {
 				// The dimension is of type "Topic", i.e. an attribute in our terminology
 				long numberOfDimensionItems = (long)dimension.get("numberOfDimensionItems");
 
-				String attributeLabel = AttributeUtils.substringToDBLength((String)dimension.get("dimensionId"));
+				String attributeLabel = (String) dimension.get("dimensionId");
 				JSONArray dimensionTitles = (JSONArray)((JSONObject)dimension.get("dimensionTitles")).get("dimensionTitle");
 				String attributeDescription = getEnglishValue(dimensionTitles);
 
@@ -259,7 +259,7 @@ public class ONSCensusImporter extends AbstractONSImporter {
 					// We add an attribute for each dimension
 					// The name and the description will be added later when we get this information from the datafile itself
 					for (int i=0; i<numberOfDimensionItems; i++){
-						String multiAttributeLabel = AttributeUtils.substringToDBLength(attributeLabel+"_"+(i+1));
+						String multiAttributeLabel = attributeLabel + "_" + (i+1);
 						Attribute attribute = new Attribute(getProvider(), multiAttributeLabel, "T.b.a.");
 						attributes.add(attribute);
 					}

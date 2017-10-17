@@ -31,9 +31,12 @@ public class SubjectUtilsTest extends AbstractTest {
 	public void addSubjectFixtures() {
 		cityOfLondon = TestFactory.makeNamedSubject( "E09000001");
 		TestFactory.makeNamedSubject("E08000035"); // Need this to avoid false-positives on pattern matching
-		localAuthority = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
-		msoa = OaImporter.getSubjectType(OaImporter.OaType.msoa);
-		lsoa = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+		localAuthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+				OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
+		msoa = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+				OaImporter.OaType.msoa.name(), OaImporter.OaType.msoa.datasourceSpec.getDescription());
+		lsoa = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+				OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
 	}
 
 	@Test

@@ -11,13 +11,18 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,11 +69,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         acs0507(new DatasourceSpec(AccessibilityImporter.class, "acs0507", "Food stores",
                 "Travel time, destination and origin indicators to Food stores by mode of travel",
                 DATASOURCE_URL),
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls"),
-        acs0508(new DatasourceSpec(AccessibilityImporter.class, "acs0508", "Town centres",
-                "Travel time, destination and origin indicators to Town centres by mode of travel",
-                DATASOURCE_URL),
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0508.xls"
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls"
         );
 
         private DatasourceSpec datasourceSpec;
@@ -107,7 +108,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
     public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
         if (datasourceIdValue.getWorkbook() == null) {
-            datasourceIdValue.setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchInputStream(
+            datasourceIdValue.setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchFile(
                     new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
         }
         Sheet metadataSheet = datasourceIdValue.getWorkbook().getSheet("Metadata");
@@ -118,7 +119,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         while((row = metadataSheet.getRow(rowId)) != null && row.getCell(0) != null){
             rowId++;
 
-            String label = AttributeUtils.substringToDBLength(row.getCell(1).getStringCellValue());
+            String label = row.getCell(1).getStringCellValue();
             String description = row.getCell(2).getStringCellValue();
             String parameterValue = row.getCell(3).getStringCellValue();
 
@@ -133,7 +134,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
         // Loop over years
         for (int sheetId = 0; sheetId < datasourceIdValue.getWorkbook().getNumberOfSheets(); sheetId++){

@@ -5,7 +5,6 @@ import org.opengis.feature.type.AttributeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.AbstractGeotoolsDataStoreImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ConfigurationException;
@@ -78,7 +77,7 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
             if (NON_ATTRIBUTE_COLUMNS.contains(columnName)) { continue; }
             fixedValueAttributes.add(new Attribute(
                     getProvider(),
-                    AttributeUtils.substringToDBLength(columnName),
+                    columnName,
                     null != type.getDescription() ? type.getDescription().toString() : columnName)
             );
         }

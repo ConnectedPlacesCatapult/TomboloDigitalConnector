@@ -4,12 +4,12 @@
   "name": "Fraction of 80 year olds",
   "divisorAttribute": {
     "provider": "uk.gov.ons",
-    "label": "CL_0000053_1" // total population
+    "label": "Age: All categories: Age" // total population
   },
   "dividendAttributes": [
     {
       "provider": "uk.gov.ons",
-      "label": "CL_0000053_82" // no. of 80 year olds
+      "label": "Age: Age 80" // no. of 80 year olds
     }
   ]
 }
