@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer.osm;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -76,6 +77,13 @@ public class OSMImporterTest extends AbstractTest {
         assertEquals("Putson Coppice", osm3.getName());
         testFixedValue(osm3, "natural", "wood");
         testFixedValue(osm3, "source", "Bing/OSOpenData");
+
+        // Test importing relations
+        Subject osm4 = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "osm1101245");
+        assertNull(osm4.getName());
+        assertEquals(MultiPolygon.class, osm4.getShape().getClass());
+        testFixedValue(osm4, "natural", "wood");
+        testFixedValue(osm4, "type", "multipolygon");
 
         TEST_AREA = "europe/great-britain/england/dorset";
         importer.importDatasource("OSMLanduse", Arrays.asList(TEST_AREA), Collections.emptyList(), Collections.emptyList());

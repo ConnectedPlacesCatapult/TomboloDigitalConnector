@@ -37,9 +37,10 @@ public class HasFixedAttributeValueField extends AbstractField {
         cachedValueAttributes = new HashMap<>();
         for (AttributeMatcher attributeMatcher: attributes) {
             if (!checkOSMBuiltIn(attributeMatcher)) {
-                attributes.stream().forEach(attribute -> cachedValueAttributes
-                        .put(AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label),
-                                attribute.values));
+                cachedValueAttributes.put(AttributeUtils.getByProviderAndLabel(
+                        attributeMatcher.provider,
+                        attributeMatcher.label),
+                        attributeMatcher.values);
             }
         }
 
