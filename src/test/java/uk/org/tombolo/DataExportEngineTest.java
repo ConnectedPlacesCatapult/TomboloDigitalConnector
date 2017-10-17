@@ -189,8 +189,8 @@ public class DataExportEngineTest extends AbstractTest {
                 "        attributes: {" +
                 "          populationDensity: [" +
                 "            {" +
-                "              value: 28.2," +
-                "              timestamp: '2015-12-31T23:59:59'" +
+                "              value: 30.3," +
+                "              timestamp: '2016-12-31T23:59:59'" +
                 "            }" +
                 "          ]" +
                 "        }," +

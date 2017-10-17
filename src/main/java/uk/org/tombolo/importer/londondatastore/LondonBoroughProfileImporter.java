@@ -11,6 +11,7 @@ import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import java.util.List;
  * but I am not willing to invest time in it until I know it is used more widely.
  * A more rigorous importing is desired but will be implemented on demand.
  *
- * Local: aHR0cHM6Ly9maWxlcy5kYXRhcHJlc3MuY29tL2xvbmRvbi9kYXRhc2V0L2xvbmRvbi1ib3JvdWdoLXByb2ZpbGVzLzIwMTUtMDktMjRUMTU6NDk6NTIvbG9uZG9uLWJvcm91Z2gtcHJvZmlsZXMuY3N2.csv
  */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter {
     private enum DatasourceId {
@@ -49,7 +49,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
 
     private static final String DATAFILE_SUFFIX = ".csv";
     private static final String DATAFILE
-            = "https://files.datapress.com/london/dataset/london-borough-profiles/2015-09-24T15:49:52/london-borough-profiles.csv";
+            = "https://files.datapress.com/london/dataset/london-borough-profiles/2017-01-26T18:50:00/london-borough-profiles.csv";
 
     public LondonBoroughProfileImporter(Config config) {
         super(config);
@@ -76,8 +76,8 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
         List<TimedValueExtractor> extractors = getExtractors(subjectLabelExtractor);
 
         String line = null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-                downloadUtils.fetchInputStream(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX)));
+        BufferedReader br = new BufferedReader(new FileReader(
+                downloadUtils.fetchFile(new URL(DATAFILE), getProvider().getLabel(), DATAFILE_SUFFIX)));
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while ((line = br.readLine())!=null) {
             CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
@@ -141,7 +141,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.populationDensity.name()),
-                        new ConstantExtractor("2015-12-31T23:59:59"),
+                        new ConstantExtractor("2016-12-31T23:59:59"),
                         new CSVExtractor(6)
                         );
             case householdIncome:
@@ -159,7 +159,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.medianHousePrice.name()),
-                        new ConstantExtractor("2014-12-31T23:59:59"),
+                        new ConstantExtractor("2015-12-31T23:59:59"),
                         new CSVExtractor(51)
                 );
             case fractionGreenspace:
@@ -177,7 +177,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
                         subjectType,
                         subjectLabelExtractor,
                         new ConstantExtractor(AttributeId.carbonEmission.name()),
-                        new ConstantExtractor("2013-12-31T23:59:59"),
+                        new ConstantExtractor("2014-12-31T23:59:59"),
                         new CSVExtractor(59)
                 );
             case carsPerHousehold:

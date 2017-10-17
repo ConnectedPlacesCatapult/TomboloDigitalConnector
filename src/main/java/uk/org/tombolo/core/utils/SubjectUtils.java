@@ -148,6 +148,7 @@ public class SubjectUtils {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and contains(shape, :geom) = true", Subject.class);
 			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
+			query.setCacheable(true);
 			return (List<Subject>) query.getResultList();
 		});
 	}
@@ -157,6 +158,7 @@ public class SubjectUtils {
 			Query query = session.createQuery("from Subject where subjectType = :subjectType and within(shape, :geom) = true", Subject.class);
 			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
+			query.setCacheable(true);
 			return (List<Subject>) query.getResultList();
 		});
 	}
@@ -167,6 +169,7 @@ public class SubjectUtils {
 			query.setParameter("subjectType", subjectType);
 			query.setParameter("geom", subject.getShape());
 			query.setParameter("radius", radius);
+			query.setCacheable(true);
 			query.setMaxResults(1);
 			return (Subject) query.uniqueResult();
 		});

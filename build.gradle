@@ -41,10 +41,11 @@ dependencies {
 
 	// ORM
 	compile group: 'org.postgresql', 		name: 'postgresql', 			version: '9.4-1200-jdbc41'
-	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '5.2.1.Final'
-	compile group: 'org.hibernate',			name: 'hibernate-spatial',		version: '5.2.1.Final'
-	compile group: 'org.hibernate',			name: 'hibernate-java8',		version: '5.2.1.Final'
+	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '5.2.10.Final'
+	compile group: 'org.hibernate',			name: 'hibernate-spatial',		version: '5.2.10.Final'
+	compile group: 'org.hibernate',			name: 'hibernate-java8',		version: '5.2.10.Final'
 	compile group: 'org.hibernate.javax.persistence',	name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final'
+    compile group: 'org.hibernate', 		name: 'hibernate-ehcache', 		version: '5.2.10.Final'
 
 	// Ehcache
 	compile group: 'org.ehcache', name: 'ehcache', version: '3.3.1'

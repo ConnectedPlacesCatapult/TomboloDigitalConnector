@@ -1,0 +1,46 @@
+{
+  "dataset" : {
+    "subjects" : [
+      {
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090%"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId" : "lsoa"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      }
+    ],
+    "fields" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "NitrogenDioxide",
+        "recipe": "environment/laqn-aggregated-yearly-no2"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "BicycleFraction",
+        "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio"
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

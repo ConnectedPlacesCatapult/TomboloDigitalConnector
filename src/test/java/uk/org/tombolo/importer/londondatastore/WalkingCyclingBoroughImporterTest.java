@@ -2,11 +2,9 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -22,16 +20,9 @@ import static org.junit.Assert.assertEquals;
  *
  *  Local: 9a21e9c1-c776-3b25-9db5-9b4d7dc7f248.xls
  */
-public class WalkingCyclingBoroughImporterTest extends AbstractTest {
+public class WalkingCyclingBoroughImporterTest extends AbstractLondonDatastoreTestUtil {
 	private static final String DATASOURCE_ID = "walkingCyclingBorough";
 	public WalkingCyclingBoroughImporter importer;
-
-	Subject cityOfLondon;
-
-	@Before
-	public void addSubjectFixtures() {
-		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
-	}
 
 	@Before
 	public void before(){
@@ -56,8 +47,10 @@ public class WalkingCyclingBoroughImporterTest extends AbstractTest {
 	@Test
 	public void testImportDatasource() throws Exception{
 		importer.importDatasource(DATASOURCE_ID, null, null, null);
-		
-		assertEquals(8, importer.getTimedValueCount());
+
+		assertEquals(0, importer.getSubjectCount());
+		assertEquals(0, importer.getFixedValueCount());
+		assertEquals(16, importer.getTimedValueCount());
 
 		LocalDateTime year2012 = LocalDateTime.parse("2012-12-31T23:59:59");
 		LocalDateTime year2014 = LocalDateTime.parse("2014-12-31T23:59:59");
