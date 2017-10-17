@@ -4,7 +4,11 @@
       {
         // The output subjects are all LSOAs
         "provider": "uk.gov.ons",
-        "subjectType": "lsoa"
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "St Albans%"
+        }
       }
     ],
     "datasources": [
@@ -31,7 +35,7 @@
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
           "label": "GreenSpaceSum",
           "subject": {
-            "provider": "de.overpass-api",
+            "provider": "org.openstreetmap",
             "subjectType": "OSMEntity"
           },
           "function": "sum",
@@ -66,7 +70,7 @@
         "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
         "label": "component:AreaParksSum",
         "subject": {
-          "provider": "de.overpass-api",
+          "provider": "org.openstreetmap",
           "subjectType": "OSMEntity"
         },
         "function": "sum",

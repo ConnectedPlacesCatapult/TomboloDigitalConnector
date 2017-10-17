@@ -135,24 +135,25 @@ public class OSMEntityHandler implements OsmHandler {
     }
 
     private void persistEntity(OsmEntity entity, Geometry geometry, Map<String, String> tags) {
-            // Save subject
-            Subject subject = new Subject(
-                    importer.getSubjectType(),
-                    "osm" + entity.getId(),
-                    tags.get("name"),
-                    geometry
-            );
-            subjects.add(subject);
+        geometry.setSRID(Subject.SRID);
+        // Save subject
+        Subject subject = new Subject(
+                importer.getSubjectType(),
+                "osm" + entity.getId(),
+                tags.get("name"),
+                geometry
+        );
+        subjects.add(subject);
 
-            // Save fixed attributes
-            for (String tag : tags.keySet()){
-                Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), tag);
-                if(attribute == null) {
-                    attribute = importer.attributeFromTag(tag);
-                    AttributeUtils.save(attribute);
-                }
-                FixedValue fixedValue = new FixedValue(subject, attribute, tags.get(tag));
-                fixedValues.add(fixedValue);
+        // Save fixed attributes
+        for (String tag : tags.keySet()){
+            Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), tag);
+            if(attribute == null) {
+                attribute = importer.attributeFromTag(tag);
+                AttributeUtils.save(attribute);
             }
+            FixedValue fixedValue = new FixedValue(subject, attribute, tags.get(tag));
+            fixedValues.add(fixedValue);
+        }
     }
 }
