@@ -9,7 +9,6 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -203,6 +202,6 @@ public class ONSWagesImporter extends AbstractONSImporter {
     }
 
     private String getAttributeLabel(AttributePrefix attributePrefix, String sheetName, String metricName){
-        return AttributeUtils.substringToDBLength(attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName);
+        return attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName;
     }
 }
