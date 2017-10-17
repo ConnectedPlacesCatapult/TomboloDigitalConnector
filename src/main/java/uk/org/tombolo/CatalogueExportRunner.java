@@ -28,11 +28,9 @@ import java.util.stream.Stream;
  */
 public class CatalogueExportRunner extends AbstractRunner {
     static Logger log = LoggerFactory.getLogger(CatalogueExportRunner.class);
-    public static boolean callFromExporter = false;
 
     public static void main(String[] args) throws Exception {
         validateArguments(args);
-        callFromExporter = true;
         JsonWriter writer = new JsonWriter(getOutputWriter(args[0]));
         Stream<Class<? extends Importer>> importers = getImporterClasses();
 
@@ -52,7 +50,6 @@ public class CatalogueExportRunner extends AbstractRunner {
 
         writer.endArray();
         writer.close();
-        callFromExporter = false;
 
         Files.copy(new File(args[0]).toPath(), new File(args[1] + "/src/main/resources/catalogue.json").toPath(),
                                                                                     StandardCopyOption.REPLACE_EXISTING);

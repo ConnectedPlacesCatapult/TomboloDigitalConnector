@@ -116,6 +116,7 @@ task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
 		systemProperty("databaseURI", databaseURI)
 		systemProperty("databaseUsername", databaseUsername)
 		systemProperty("databasePassword", databasePassword)
+		systemProperty("environment", "export")
 
 		def argumentsSet = project.hasProperty('dataExportSpecificationPath') && project.hasProperty('dataExportOutputPath') && project.hasProperty('correlationAnalysisOutputPath');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
@@ -163,6 +164,7 @@ task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
 }
 
 test {
+	maxHeapSize = "2048m"
 	jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
 
 	doFirst {
