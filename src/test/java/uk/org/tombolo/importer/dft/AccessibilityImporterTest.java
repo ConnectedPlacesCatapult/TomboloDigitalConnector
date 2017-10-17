@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.dft;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -66,10 +67,10 @@ public class AccessibilityImporterTest extends AbstractTest {
     public void getAllDatasources() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
 
-        assertEquals(8, datasources.size());
+        assertEquals(7, datasources.size());
 
         assertEquals(Arrays.asList(
-                "acs0501", "acs0502", "acs0503", "acs0504", "acs0505", "acs0506", "acs0507", "acs0508"),
+                "acs0501", "acs0502", "acs0503", "acs0504", "acs0505", "acs0506", "acs0507"),
                 datasources);
     }
 
@@ -104,9 +105,6 @@ public class AccessibilityImporterTest extends AbstractTest {
         assertEquals("acs0507", asc0507.getDatasourceSpec().getId());
         assertEquals(79, asc0507.getTimedValueAttributes().size());
 
-        Datasource asc0508 = importer.getDatasource("acs0508");
-        assertEquals("acs0508", asc0508.getDatasourceSpec().getId());
-        assertEquals(79, asc0508.getTimedValueAttributes().size());
     }
 
     @Test
