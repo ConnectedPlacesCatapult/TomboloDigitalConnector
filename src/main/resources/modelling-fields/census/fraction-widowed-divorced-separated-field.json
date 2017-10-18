@@ -1,0 +1,21 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+  "divisorAttribute": {
+    "provider": "uk.gov.ons",
+    "label": "Living Arrangement: All categories: Living arrangements"
+  },
+  "dividendAttributes": [
+    {
+      "provider": "uk.gov.ons",
+      "label": "Living Arrangement: Not living in a couple: Separated (but still legally married or still legally in a same-sex civil partnership)"
+    },
+    {
+      "provider": "uk.gov.ons",
+      "label": "Living Arrangement: Not living in a couple: Divorced or formerly in a same-sex civil partnership which is now legally dissolved"
+    },
+    {
+      "provider": "uk.gov.ons",
+      "label": "Living Arrangement: Not living in a couple: Widowed or surviving partner from a same-sex civil partnership"
+    }
+  ]
+}

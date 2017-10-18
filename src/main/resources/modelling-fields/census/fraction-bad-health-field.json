@@ -1,0 +1,17 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+  "divisorAttribute": {
+    "provider": "uk.gov.ons",
+    "label": "General Health: All categories: General health"
+  },
+  "dividendAttributes": [
+    {
+      "provider": "uk.gov.ons",
+      "label": "General Health: Bad health"
+    },
+    {
+      "provider": "uk.gov.ons",
+      "label": "General Health: Very bad health"
+    }
+  ]
+}

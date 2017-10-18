@@ -1,0 +1,17 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+  "divisorAttribute": {
+    "provider": "uk.gov.ons",
+    "label": "Tenure: All categories: Tenure"
+  },
+  "dividendAttributes": [
+    {
+      "provider": "uk.gov.ons",
+      "label": "Tenure: Social rented: Total"
+    },
+    {
+      "provider": "uk.gov.ons",
+      "label": "Tenure: Private rented: Total"
+    }
+  ]
+}

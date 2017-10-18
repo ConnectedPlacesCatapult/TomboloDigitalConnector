@@ -1,0 +1,22 @@
+{
+  "//": "Fraction of the population with some limitation of daily activities due to disability",
+  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+  "label": "FCC.CL_0000004.fraction_limited",
+  "divisorAttribute": {
+    "//": "Total: All categories: Long-term health problem or disability",
+    "provider": "uk.gov.ons",
+    "label": "CL_0000004_1"
+  },
+  "dividendAttributes": [
+    {
+      "//": "Day-to-day activities limited a lot",
+      "provider": "uk.gov.ons",
+      "label": "CL_0000004_2"
+    },
+    {
+      "//": "Day-to-day activities limited a little",
+      "provider": "uk.gov.ons",
+      "label": "CL_0000004_3"
+    }
+  ]
+}
