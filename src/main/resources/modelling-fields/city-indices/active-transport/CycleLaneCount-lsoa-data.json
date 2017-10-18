@@ -2,14 +2,12 @@
   {
     "//": "Cycling data for the entire UK",
     "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
-    "datasourceId": "OSMCycling",
-    "geographyScope": []
+    "datasourceId": "OSMCycling"
   },
   {
     "//": "Cycling data for the entire UK",
     "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
-    "datasourceId": "OSMHighways",
-    "geographyScope": []
+    "datasourceId": "OSMHighways"
   },
   {
     "importerClass": "uk.org.tombolo.importer.ons.OaImporter",

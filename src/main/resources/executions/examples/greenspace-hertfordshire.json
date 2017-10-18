@@ -28,25 +28,25 @@
       {
         //Proportion of green space
         "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-        "label": "index:ParksAreaFraction",
+        "label": "index:GreenspaceFraction",
         "operation": "div",
         "field1": {
           // Sum of green space areas
           "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-          "label": "GreenSpaceSum",
+          "label": "GreenspaceSum",
           "subject": {
             "provider": "org.openstreetmap",
             "subjectType": "OSMEntity"
           },
           "function": "sum",
           "field": {
-            "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-            "label": "AreaParks",
+            "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+            "label": "AreaGreenspace",
+            "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
             "attributes": [
               {
                 "provider": "org.openstreetmap",
-                "label": "leisure",
-                "values": ["park"]
+                "label": "built-in-greenspace"
               }
             ],
             "field":     {
@@ -68,20 +68,20 @@
       {
         // Sum of green space areas
         "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-        "label": "component:AreaParksSum",
+        "label": "component:GreenspaceSum",
         "subject": {
           "provider": "org.openstreetmap",
           "subjectType": "OSMEntity"
         },
         "function": "sum",
         "field": {
-          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-          "label": "AreaParks",
+          "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+          "label": "AreaGreenspace",
+          "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
           "attributes": [
             {
               "provider": "org.openstreetmap",
-              "label": "leisure",
-              "values": ["park"]
+              "label": "built-in-greenspace"
             }
           ],
           "field":     {

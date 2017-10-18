@@ -6,18 +6,19 @@
     "aggregationSubjectType": "OSMEntity",
     "function": "sum",
     "field": {
-    "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeValueField",
-    "label": "Landuse",
-    "attributes": [
-      {
-        "provider": "org.openstreetmap",
-        "label": "built-in-greenspace"
-      }
-    ],
-    "field": {
-      "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
-      "label": "GreenSpaceGeographyArea",
-      "targetCRSCode": 27700
+        "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+        "label": "Landuse",
+        "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
+        "attributes": [
+        {
+            "provider": "org.openstreetmap",
+            "label": "built-in-greenspace"
+        }
+        ],
+        "field": {
+            "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+            "label": "GreenSpaceGeographyArea",
+            "targetCRSCode": 27700
+        }
     }
-  }
 }

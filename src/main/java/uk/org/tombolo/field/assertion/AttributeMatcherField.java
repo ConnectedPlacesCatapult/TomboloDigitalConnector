@@ -8,7 +8,6 @@ import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
-import uk.org.tombolo.importer.osm.BuiltInImporters;
 import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.recipe.FieldRecipe;
 
@@ -17,32 +16,36 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Returns 1 if subject has attribute with value
+ * Returns the value of the 'field' if the subject has an attribute matching one of the 'attributes'"
  */
-public class HasFixedAttributeValueField extends AbstractField {
+public class AttributeMatcherField extends AbstractField {
 
     private List<AttributeMatcher> attributes;
     private FieldRecipe field;
 
-    private Map<Attribute, List<String>> cachedValueAttributes;
+    private Map<Attribute, List<String>> attributeValueMatches;
     private SingleValueField singleValueField;
 
-    public HasFixedAttributeValueField(String label, List<AttributeMatcher> attributes, FieldRecipe field) {
+    public AttributeMatcherField(String label, List<AttributeMatcher> attributes, FieldRecipe field) {
         super(label);
         this.attributes = attributes;
         this.field = field;
     }
 
+    protected Map<Attribute, List<String>> getAttributeValueMatches(AttributeMatcher attributeMatcher) {
+        Map<Attribute, List<String>> matches = new HashMap<>();
+        matches.put(AttributeUtils.getByProviderAndLabel(
+                attributeMatcher.provider,
+                attributeMatcher.label),
+                attributeMatcher.values);
+
+        return matches;
+    }
+
     public void initialize() {
-        cachedValueAttributes = new HashMap<>();
-        for (AttributeMatcher attributeMatcher: attributes) {
-            if (!checkOSMBuiltIn(attributeMatcher)) {
-                cachedValueAttributes.put(AttributeUtils.getByProviderAndLabel(
-                        attributeMatcher.provider,
-                        attributeMatcher.label),
-                        attributeMatcher.values);
-            }
-        }
+        attributeValueMatches = new HashMap<>();
+        attributes.stream().forEach(attributeMatcher -> attributeValueMatches.putAll(
+                getAttributeValueMatches(attributeMatcher)));
 
         try {
             this.singleValueField = (SingleValueField) field.toField();
@@ -57,12 +60,12 @@ public class HasFixedAttributeValueField extends AbstractField {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return cachedValue;
-        if (cachedValueAttributes == null)
+        if (attributeValueMatches == null)
             initialize();
-        for (Attribute cachedAttribute : cachedValueAttributes.keySet()) {
+        for (Attribute cachedAttribute : attributeValueMatches.keySet()) {
             FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
             if (fixedValue != null) {
-                List<String> values = cachedValueAttributes.get(cachedAttribute);
+                List<String> values = attributeValueMatches.get(cachedAttribute);
                 if (values == null || values.isEmpty()) {
                     return getFieldValue(subject, timeStamp);
                 }
@@ -81,23 +84,5 @@ public class HasFixedAttributeValueField extends AbstractField {
         String fieldValue = singleValueField.valueForSubject(subject, timeStamp);
         setCachedValue(subject, fieldValue);
         return fieldValue;
-    }
-
-    /*
-        Check if the attibute is an open street map built-in importer that identifies different categories and eventually
-        add the attibutes and values to che cached map.
-     */
-    private boolean checkOSMBuiltIn(AttributeMatcher attributeMatcher) {
-        for(BuiltInImporters bii: (BuiltInImporters.values())) {
-            if (bii.getLabel().equals(attributeMatcher.label)) {
-                for (String category: bii.getCategories().keySet()) {
-                    cachedValueAttributes.put(
-                            AttributeUtils.getByProviderAndLabel(attributeMatcher.provider, category),
-                            bii.getCategories().get(category));
-                }
-                return true;
-            }
-        }
-        return false;
     }
 }

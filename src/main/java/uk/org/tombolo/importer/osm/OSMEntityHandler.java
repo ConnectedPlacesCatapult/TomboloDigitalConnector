@@ -104,7 +104,7 @@ public class OSMEntityHandler implements OsmHandler {
         // Convert the entity's tags to a map
         Map<String, String> tags = OsmModelUtil.getTagsAsMap(entity);
         // Categories
-        Map<String, List<String>> categories =BuiltInImporters.valueOf(datasourceId).getCategories();
+        Map<String, List<String>> categories = OSMBuiltInImporters.valueOf(datasourceId).getCategories();
         // Check if the subject has one of the predefined tags
         categoriesloop:
         for (String categoryKey : categories.keySet()) {

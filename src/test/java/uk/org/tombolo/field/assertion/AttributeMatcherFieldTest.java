@@ -18,7 +18,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
-public class HasFixedAttributeValueFieldTest extends AbstractTest {
+public class AttributeMatcherFieldTest extends AbstractTest {
     private static final String ATTRIBUTE_LABEL = "tobecounted";
 
     @Test
@@ -46,7 +46,7 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
         // Create field
         AttributeMatcher attributeMatcher = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL,
                 Arrays.asList("value1", "value2"));
-        HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield",
+        AttributeMatcherField field = new AttributeMatcherField("blafield",
                 Collections.singletonList(attributeMatcher), makeAreaFieldSpec());
 
         // Test
@@ -85,7 +85,7 @@ public class HasFixedAttributeValueFieldTest extends AbstractTest {
                 testAttribute1.getLabel(), Arrays.asList("value", "value"));
         AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(),
                 testAttribute2.getLabel(), Arrays.asList("value"));
-        HasFixedAttributeValueField field = new HasFixedAttributeValueField("blafield",
+        AttributeMatcherField field = new AttributeMatcherField("blafield",
                 Arrays.asList(attributeMatcher1, attributeMatcher2), makeFixedAnnotationFieldSpec());
 
         // Test

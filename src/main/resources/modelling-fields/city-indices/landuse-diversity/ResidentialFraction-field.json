@@ -11,7 +11,7 @@
     },
     "function": "sum",
     "field": {
-      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeValueField",
+      "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
       "label": "Assert residential land use",
       "attributes": [
         {

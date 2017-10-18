@@ -63,7 +63,7 @@ public class OSMImporter extends AbstractImporter {
     public OSMImporter(Config config) {
         super(config);
         datasourceIds = new ArrayList<>();
-        Arrays.stream(BuiltInImporters.values()).map(builtin -> builtin.name()).forEach(datasourceIds::add);
+        Arrays.stream(OSMBuiltInImporters.values()).map(builtin -> builtin.name()).forEach(datasourceIds::add);
     }
 
     private SubjectType subjectType;
@@ -83,7 +83,7 @@ public class OSMImporter extends AbstractImporter {
 
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
-        BuiltInImporters builtIn = BuiltInImporters.valueOf(datasourceIdString);
+        OSMBuiltInImporters builtIn = OSMBuiltInImporters.valueOf(datasourceIdString);
         return new DatasourceSpec(getClass(), builtIn.name(), "", builtIn.getDescription(), URL);
     }
 
@@ -97,7 +97,7 @@ public class OSMImporter extends AbstractImporter {
     @Override
     public List<Attribute> getFixedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
-        BuiltInImporters.valueOf(datasourceId).getCategories().keySet().stream().map(
+        OSMBuiltInImporters.valueOf(datasourceId).getCategories().keySet().stream().map(
                 category -> attributeFromTag(category)).forEach(attributes::add);
         return attributes;
     }
