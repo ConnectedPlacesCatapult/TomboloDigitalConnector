@@ -18,46 +18,43 @@
         "datasourceId": "lsoa"
       },
       {
-        // Importer for the ONS Census dataset for overcrowding
+        // Importer for the ONS Census dataset for renting
         "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
-        "datasourceId": "qs408ew"
+        "datasourceId": "qs405ew"
       }
     ],
     "fields": [
       {
-        // Overcrowding Resilience Percentiles normalized nationally
+        // Renting Percentiles normalized nationally
         // I.e. we caluclate percentile boundaries using values for all lsoas in the country
-      "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
-        "label": "OvercrowdingResiliencePercentiles",
+        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+        "label": "RentingResiliencePercentiles",
         "percentileCount": 4,
         "inverse": true,
         "valueField": {
-          // The value field calcualates the overcrowded households in an LSOA
+          // The value field calcualates the renting households in an LSOA
           // as a fraction of the total number of households in the LSOA
-        "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+          "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
           "divisorAttribute": {
-            // Attribute for the total number of households in the geography
-            // We use this attribute as the denominaor of the fraction
             "provider": "uk.gov.ons",
-            "label": "CL_0000127_1"
+            "label": "Tenure: All categories: Tenure"
           },
           "dividendAttributes": [
             // We sum up the following fields and use in the nominator of the fraction
             {
-              // Attribute for overcrowding value of -1
               "provider": "uk.gov.ons",
-              "label": "CL_0000127_5"
+              "label": "Tenure: Social rented: Total"
             },
             {
-              // Attribute for overcrowding value of -2
               "provider": "uk.gov.ons",
-              "label": "CL_0000127_6"
+              "label": "Tenure: Private rented: Total"
             }
           ]
         },
         "normalizationSubjects": [
           // Specification that determines that we calculate percentile boundaries nationally
           {
+            "provider": "uk.gov.ons",
             "subjectType": "lsoa"
           }
         ]

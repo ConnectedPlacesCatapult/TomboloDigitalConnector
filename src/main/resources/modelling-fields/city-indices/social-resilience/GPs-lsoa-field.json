@@ -1,21 +1,21 @@
 {
   "//": "",
-  "fieldClass": "uk.org.tombolo.field.PercentilesField",
+  "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
   "label": "GPResilience",
   "percentileCount": 4,
   "inverse": true,
   "valueField": {
-    "fieldClass": "uk.org.tombolo.field.GeographicAggregationField",
+    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "gpResilience",
-    "aggregationSubjectType": "lsoa",
+    "subject": {
+      "provider": "uk.nhs",
+      "label": "gpSurgeries"
+    }
+  ,
     "function": "sum",
     "field": {
-      "fieldClass": "uk.org.tombolo.field.LatestValueField",
-      "label": "List of GP Surgeries in England",
-      "attribute": {
-        "provider": "uk.nhs",
-        "label": "gpSurgeries"
-      }
+      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+      "value": "1.0"
     },
     "normalizationSubjects": [
       {

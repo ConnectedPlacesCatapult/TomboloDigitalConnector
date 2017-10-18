@@ -19,30 +19,34 @@
       }
     ],
     "fields" : [
-      {
-        // Modelling field for Disability Resilience (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "DisabilityResilence",
-        "recipe": "socialresilience/Disability-lsoa"
-      },
-      {
-        // Modelling field for Overcrowding Resilience (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "OvercrowdingResilence",
-        "recipe": "socialresilience/Overcrowding-lsoa"
-      },
-      {
-        // Modelling field for Combined Community Resiliece (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "CombinedSocialResilence",
-        "recipe": "socialresilience/CombinedSocialResilience-lsoa"
-      },
-      {
-        // Modelling field for GP density (built-in model)
-        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
-        "label": "GPResilence",
-        "recipe": "socialresilience/GPs-lsoa"
-      }
+      // Deprecated while we fix the bug in CensusImporter for qs303ew
+      //{
+      //  // Modelling field for Disability Resilience (built-in model)
+      //  "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+      //  "label": "DisabilityResilence",
+      //  "recipe": "city-indices/social-resilience/Disability-lsoa"
+      //},
+      // Deprecated while we fix the bug in CensusImporter for qs408ew
+      //{
+      //  // Modelling field for Overcrowding Resilience (built-in model)
+      //  "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+      //  "label": "OvercrowdingResilence",
+      //  "recipe": "city-indices/social-resilience/Overcrowding-lsoa"
+      //},
+      // Depricated while we fix the rest
+      //{
+      //  // Modelling field for Combined Community Resiliece (built-in model)
+      //  "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+      //  "label": "CombinedSocialResilence",
+      //  "recipe": "city-indices/social-resilience/CombinedSocialResilience-lsoa"
+      //}
+      // Deprecated while we wait for re-implementing the NHS importer
+      //{
+      //  // Modelling field for GP density (built-in model)
+      //  "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+      //  "label": "GPResilence",
+      //  "recipe": "city-indices/social-resilience/GPs-lsoa"
+      //}
     ]
   },
   "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
