@@ -66,7 +66,7 @@ public class AttributeMatcherField extends AbstractField {
             FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, cachedAttribute);
             if (fixedValue != null) {
                 List<String> values = attributeValueMatches.get(cachedAttribute);
-                if (values == null || values.isEmpty()) {
+                if (values == null || values.isEmpty() || values.contains("*")) {
                     return getFieldValue(subject, timeStamp);
                 }
                 for (String value : values) {

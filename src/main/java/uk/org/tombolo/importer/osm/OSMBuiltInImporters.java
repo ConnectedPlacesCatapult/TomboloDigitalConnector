@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.osm;
 
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.importer.BuiltInImporter;
 import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.util.*;
@@ -12,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Enumeration containing the built-in importers for Open Street Map
  */
-public enum OSMBuiltInImporters implements BuiltInImporter {
+public enum OSMBuiltInImporters {
     OSMCycling("built-in-cycling", "Open Street Map cycling data", Collections.unmodifiableMap(Stream.of(
             new AbstractMap.SimpleEntry<>("highway", Arrays.asList("cycleway")),
             new AbstractMap.SimpleEntry<>("cycleway", Arrays.asList(
@@ -60,11 +59,10 @@ public enum OSMBuiltInImporters implements BuiltInImporter {
         Check if the attribute is an open street map built-in importer that identifies different categories and eventually
         add the attributes and values to the map.
      */
-    @Override
-    public Map<Attribute, List<String>> checkBuiltIn(AttributeMatcher attributeMatcher) {
+    public static Map<Attribute, List<String>> checkBuiltIn(AttributeMatcher attributeMatcher) {
         Map<Attribute, List<String>> attributeValueMatches = new HashMap<>();
 
-        for(OSMBuiltInImporters bii: (OSMBuiltInImporters.values())) {
+        for(OSMBuiltInImporters bii: OSMBuiltInImporters.values()) {
             if (bii.getLabel().equals(attributeMatcher.label)) {
                 for (String category: bii.getCategories().keySet()) {
                     attributeValueMatches.put(

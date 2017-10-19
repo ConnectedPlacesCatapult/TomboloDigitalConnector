@@ -40,9 +40,8 @@
           },
           "function": "sum",
           "field": {
-            "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+            "fieldClass": "uk.org.tombolo.field.assertion.OSMBuiltInAttributeMatcherField",
             "label": "AreaGreenspace",
-            "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
             "attributes": [
               {
                 "provider": "org.openstreetmap",
@@ -75,9 +74,8 @@
         },
         "function": "sum",
         "field": {
-          "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+          "fieldClass": "uk.org.tombolo.field.assertion.OSMBuiltInAttributeMatcherField",
           "label": "AreaGreenspace",
-          "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
           "attributes": [
             {
               "provider": "org.openstreetmap",
