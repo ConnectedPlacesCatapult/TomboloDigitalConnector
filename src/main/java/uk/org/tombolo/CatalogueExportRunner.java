@@ -35,8 +35,8 @@ public class CatalogueExportRunner extends AbstractRunner {
     static Logger log = LoggerFactory.getLogger(CatalogueExportRunner.class);
 
     public static void main(String[] args) throws Exception {
+        validateArguments(args);
         CatalogueExportRunner exportRunner = new CatalogueExportRunner();
-        exportRunner.validateArguments(args);
         JsonWriter writer = new JsonWriter(exportRunner.getOutputWriter(args[0]));
         List<Class<? extends Importer>> importers = exportRunner.getImporterClasses();
 
