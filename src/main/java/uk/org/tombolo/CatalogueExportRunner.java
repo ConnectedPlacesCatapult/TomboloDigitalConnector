@@ -2,31 +2,25 @@ package uk.org.tombolo;
 
 import com.google.gson.stream.JsonWriter;
 import org.reflections.Reflections;
-import org.slf4j.IMarkerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.Importer;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Get a list of datasources for an importer
