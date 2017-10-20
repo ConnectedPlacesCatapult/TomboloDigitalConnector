@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
@@ -138,13 +137,12 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
             Row row = rowIterator.next();
 
             attributeNameExtractor.setRow(row);
-            String extract = attributeNameExtractor.extract();
-            String attributeLabel = AttributeUtils.substringToDBLength(extract);
+            String attributeLabel = attributeNameExtractor.extract();
 
             if (!attributes.containsKey(attributeLabel))
                 attributes.put(
                         attributeLabel,
-                        new Attribute(getProvider(), attributeLabel, extract)
+                        new Attribute(getProvider(), attributeLabel, attributeLabel)
                 );
         }
         workbook.close();
