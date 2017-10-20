@@ -93,7 +93,6 @@ public class AccessibilityImporterTest extends AbstractTest {
         assertEquals(48, asc0504.getTimedValueAttributes().size());
 
         Datasource asc0505 = importer.getDatasource("acs0505");
-        Datasource asc05061 = importer.getDatasource("acs0506");
         assertEquals("acs0505", asc0505.getDatasourceSpec().getId());
         assertEquals(67, asc0505.getTimedValueAttributes().size());
 
