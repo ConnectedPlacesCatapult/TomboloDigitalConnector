@@ -3,8 +3,11 @@ package uk.org.tombolo;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.core.Datasource;
+import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.dft.AccessibilityImporter;
 import uk.org.tombolo.importer.nhschoices.HealthOrganisationImporter;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -16,11 +19,14 @@ public class CatalogueExportRunnerTest {
      * into a CatalogueExportEngine. Currently the Runner needs apiKeys and downloadUtils to be configured.
      */
     @Test
-    @Ignore
     public void testGetDatasources() throws Exception {
 
-        Stream<Datasource> datasources = CatalogueExportRunner.getDatasources(HealthOrganisationImporter.class);
+        CatalogueExportRunner catalogueExportRunner = new CatalogueExportRunner();
 
-        assertEquals(3,datasources.count());
+        Importer importer = catalogueExportRunner.getImporter(AccessibilityImporter.class);
+
+        List<String> datasources = catalogueExportRunner.getDatasourceIds(importer);
+
+        assertEquals(7,datasources.size());
     }
 }
