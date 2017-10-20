@@ -7,13 +7,17 @@
   },
   "function": "sum",
   "field": {
-    "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
+    "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
     "label": "Landuse",
     "attributes": [
       {
         "provider": "org.openstreetmap",
         "label": "landuse"
       }
-    ]
+    ],
+    "field": {
+      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+      "value": "1"
+    }
   }
 }
