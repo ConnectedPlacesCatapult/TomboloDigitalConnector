@@ -44,7 +44,7 @@ public class CatalogueExportRunner extends AbstractRunner {
 
         for (Class<? extends Importer> i : importers) {
 
-            if (!i.getCanonicalName().contains("GeneralCSVImporter")) {
+            if (!i.getCanonicalName().equals("uk.org.tombolo.importer.generalcsv.GeneralCSVImporter")) {
                 Importer importer = exportRunner.getImporter(i);
 
                 List<String> datasources = exportRunner.getDatasourceIds(importer);
@@ -99,7 +99,7 @@ public class CatalogueExportRunner extends AbstractRunner {
         return importer.getDatasource(dataSourceId);
     }
 
-    private void validateArguments(String[] args) {
+    private static void validateArguments(String[] args) {
         if (args.length != 2){
             log.error("Must provide filename to export to");
             System.exit(1);

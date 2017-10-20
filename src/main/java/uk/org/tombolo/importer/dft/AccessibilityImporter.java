@@ -100,12 +100,16 @@ public class AccessibilityImporter extends AbstractDFTImporter {
     }
 
     @Override
-    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+    public Datasource getDatasource(String datasourceId) throws Exception {
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
-
-        //Setting workbook for a datasourceId
         setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchFile(
                 new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
+        return super.getDatasource(datasourceId);
+    }
+
+
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
 
         Sheet metadataSheet = getWorkbook().getSheet("Metadata");
 
