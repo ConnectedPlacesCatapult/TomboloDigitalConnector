@@ -23,9 +23,12 @@ import java.util.List;
  * and returns a value that is calculated according to the specification.
  */
 public class BasicModellingField extends AbstractField implements ModellingField {
+    // Variables that can be passed by the user in recipes
     String recipe;
+    List<DatasourceRecipe> datasources; // This is an optional field that can be used to override the datasources
+
+    // Variables that are updated by the class
     Field field;
-    List<DatasourceRecipe> datasourceRecipes;
 
     // Path and postfixes for predefined field specifications
     // Could be made configurable at some point
@@ -33,16 +36,17 @@ public class BasicModellingField extends AbstractField implements ModellingField
     protected static final String fieldSpecPostfix = "-field.json";
     protected static final String fieldDataPostfix = "-data.json";
 
-    public BasicModellingField(String label, String recipe){
+    public BasicModellingField(String label, String recipe, List<DatasourceRecipe> datasources){
         super(label);
         this.recipe = recipe;
+        this.datasources = datasources;
     }
 
     @Override
-    public List<DatasourceRecipe> getDatasourceRecipes() {
-        if (field == null)
-            initialize();
-        return datasourceRecipes;
+    public List<DatasourceRecipe> getDatasources() {
+        if (datasources == null)
+            initializeDatasources();
+        return datasources;
     }
 
     @Override
@@ -52,6 +56,7 @@ public class BasicModellingField extends AbstractField implements ModellingField
     }
 
     protected void initialize() {
+        // Initialise field
         String fieldFilename = fieldSpecPath+recipe+fieldSpecPostfix;
         URL fieldFileURL = ClassLoader.getSystemResource(fieldFilename);
         if (fieldFileURL == null){
@@ -69,16 +74,24 @@ public class BasicModellingField extends AbstractField implements ModellingField
             throw new Error("Could not read specification file", e);
         }
 
-        String dataSpecificationFilename = fieldSpecPath+recipe+fieldDataPostfix;
-        URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
-        File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
-        try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            Type type = new TypeToken<List<DatasourceRecipe>>(){}.getType();
-            datasourceRecipes =  gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
-        } catch (IOException e) {
-            throw new Error("Could not read specification file", e);
+        // Initialise data-sources
+        initializeDatasources();
+    }
+
+    private void initializeDatasources(){
+        if (datasources == null) {
+            String dataSpecificationFilename = fieldSpecPath + recipe + fieldDataPostfix;
+            URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
+            File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
+            try {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+                Type type = new TypeToken<List<DatasourceRecipe>>() {
+                }.getType();
+                datasources = gson.fromJson(FileUtils.readFileToString(dataSpecificationFile), type);
+            } catch (IOException e) {
+                throw new Error("Could not read specification file", e);
+            }
         }
     }
 }
