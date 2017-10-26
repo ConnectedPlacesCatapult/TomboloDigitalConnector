@@ -48,7 +48,7 @@ public class ListArithmeticField extends AbstractField {
                     singleValueFields.add((SingleValueField) field);
                 }
             } catch (Exception e) {
-                throw new Error("Field not valid: " + e.getClass());
+                throw new Error("Field not valid", e);
             }
         }
 
