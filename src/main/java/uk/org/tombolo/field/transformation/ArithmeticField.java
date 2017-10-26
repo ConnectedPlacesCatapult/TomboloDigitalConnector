@@ -15,7 +15,7 @@ import java.util.function.BiFunction;
  * the operation on the two field values.
  */
 public class ArithmeticField extends AbstractField {
-    public static enum Operation {div, mul, add, sub}
+    public enum Operation {div, mul, add, sub}
     private final FieldRecipe field1;
     private final FieldRecipe field2;
     private final Operation operation;

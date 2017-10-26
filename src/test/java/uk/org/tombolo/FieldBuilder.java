@@ -72,6 +72,15 @@ public class FieldBuilder implements JSONAware {
         return spec;
     }
 
+    public static FieldBuilder areaField(String label, String targetCRSCode) {
+        FieldBuilder builder = new FieldBuilder();
+        builder.setFieldClass("uk.org.tombolo.field.transformation.AreaField")
+                .setLabel(label)
+                .set("targetCRSCode", targetCRSCode);
+        return builder;
+
+    }
+
     public static FieldBuilder modellingField(String label, String recipe) {
         FieldBuilder spec = new FieldBuilder();
         spec    .setFieldClass("uk.org.tombolo.field.modelling.BasicModellingField")

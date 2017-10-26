@@ -11,13 +11,14 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class BasicModellingFieldTest extends AbstractTest {
     private static final String RECIPE = "ModellingFieldTest";
-    BasicModellingField field = new BasicModellingField("test_label", RECIPE);
+    BasicModellingField field = new BasicModellingField("test_label", RECIPE, null);
 
     Subject subject;
 
@@ -34,7 +35,7 @@ public class BasicModellingFieldTest extends AbstractTest {
     @Test
     public void getDatasourceSpecifications() throws Exception {
 
-        List<DatasourceRecipe> datasources = field.getDatasourceRecipes();
+        List<DatasourceRecipe> datasources = field.getDatasources();
 
         assertEquals(2, datasources.size());
 
@@ -45,6 +46,19 @@ public class BasicModellingFieldTest extends AbstractTest {
         DatasourceRecipe ds2 = datasources
                 .stream().filter(e -> e.getDatasourceId().equals("qs103ew")).findAny().orElse(null);
         assertEquals("uk.org.tombolo.importer.ons.CensusImporter", ds2.getImporterClass());
+    }
+
+    @Test
+    public void testGetDatasouceSpecificationOverride() throws Exception {
+        BasicModellingField field = new BasicModellingField(
+                "test_label",
+                RECIPE,
+                Collections.singletonList(new DatasourceRecipe(
+                        "uk.org.tombolo.importer.ons.OaImporter",
+                        "lsoa",
+                        null, null, null)));
+
+        assertEquals(1, field.getDatasources().size());
     }
 
     @Test

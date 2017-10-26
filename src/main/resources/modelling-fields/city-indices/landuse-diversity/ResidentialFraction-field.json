@@ -11,15 +11,21 @@
     },
     "function": "sum",
     "field": {
-      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeValueField",
+      "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
       "label": "Assert residential land use",
-      "attribute": {
-        "provider": "org.openstreetmap",
-        "label": "landuse"
-      },
-      "values": [
-        "residential"
-      ]
+      "attributes": [
+        {
+          "provider": "org.openstreetmap",
+          "label": "landuse",
+          "values": [
+            "residential"
+          ]
+        }
+      ],
+      "field":{
+        "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+        "value": "1"
+      }
     }
   },
   "field2": {

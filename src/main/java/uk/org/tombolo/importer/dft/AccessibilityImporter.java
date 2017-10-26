@@ -20,9 +20,6 @@ import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
 import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,21 +71,20 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
         private DatasourceSpec datasourceSpec;
         private String dataFile;
-        private Workbook workbook;
 
         DatasourceId(DatasourceSpec datasourceSpec, String dataFile) {
             this.datasourceSpec = datasourceSpec;
             this.dataFile = dataFile;
-            this.workbook = null;
         }
+    }
 
-        private Workbook getWorkbook() {
-            return workbook;
-        }
+    private Workbook workbook;
 
-        private void setWorkbook(Workbook workbook) {
-            this.workbook = workbook;
-        }
+    private Workbook getWorkbook() {
+        return workbook;
+    }
+    private void setWorkbook(Workbook workbook) {
+        this.workbook = workbook;
     }
 
     ExcelUtils excelUtils = new ExcelUtils();
@@ -98,20 +94,24 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
-
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         return DatasourceId.valueOf(datasourceId).datasourceSpec;
     }
 
     @Override
-    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+    public Datasource getDatasource(String datasourceId) throws Exception {
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
-        if (datasourceIdValue.getWorkbook() == null) {
-            datasourceIdValue.setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchFile(
-                    new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
-        }
-        Sheet metadataSheet = datasourceIdValue.getWorkbook().getSheet("Metadata");
+        setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchFile(
+                new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
+        return super.getDatasource(datasourceId);
+    }
+
+
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+
+        Sheet metadataSheet = getWorkbook().getSheet("Metadata");
 
         List<Attribute> attributes = new ArrayList<>();
         Row row;
@@ -135,12 +135,11 @@ public class AccessibilityImporter extends AbstractDFTImporter {
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
-        DatasourceId datasourceIdValue = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
         // Loop over years
-        for (int sheetId = 0; sheetId < datasourceIdValue.getWorkbook().getNumberOfSheets(); sheetId++){
-            Sheet sheet = datasourceIdValue.getWorkbook().getSheetAt(sheetId);
+        for (int sheetId = 0; sheetId < getWorkbook().getNumberOfSheets(); sheetId++){
+            Sheet sheet = getWorkbook().getSheetAt(sheetId);
 
-            int year = -1;
+            int year;
             try {
                 year = Integer.parseInt(sheet.getSheetName().substring(sheet.getSheetName().length()-4, sheet.getSheetName().length()));
             }catch (NumberFormatException e){
@@ -170,5 +169,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
             // Extract timed values
             excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors);
         }
+
+        getWorkbook().close();
     }
 }
