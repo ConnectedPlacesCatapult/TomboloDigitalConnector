@@ -3,6 +3,9 @@ package uk.org.tombolo.field.modelling;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+
+import java.util.List;
 
 /**
  * This is an extension of the {@link BasicModellingField} in order to support the use of modelling fields in
@@ -11,8 +14,8 @@ import uk.org.tombolo.field.SingleValueField;
  */
 public class SingleValueModellingField extends BasicModellingField {
 
-    public SingleValueModellingField(String label, String recipe) {
-        super(label, recipe);
+    public SingleValueModellingField(String label, String recipe, List<DatasourceRecipe> datasources) {
+        super(label, recipe, datasources);
     }
 
     @Override
