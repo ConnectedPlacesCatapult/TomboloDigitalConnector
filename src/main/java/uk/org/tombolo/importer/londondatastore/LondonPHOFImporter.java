@@ -7,9 +7,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.*;
@@ -75,7 +76,8 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope,  List<String> datasourceLocation) throws Exception {
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
         RowCellExtractor attributeNameExtractor = new RowCellExtractor(0, CellType.STRING);
         RowCellExtractor subjectExtractor = new RowCellExtractor(4, CellType.STRING);
         RowCellExtractor timestampExtractor = new RowCellExtractor(1, CellType.STRING);
@@ -135,13 +137,12 @@ public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
             Row row = rowIterator.next();
 
             attributeNameExtractor.setRow(row);
-            String extract = attributeNameExtractor.extract();
-            String attributeLabel = AttributeUtils.substringToDBLength(extract);
+            String attributeLabel = attributeNameExtractor.extract();
 
             if (!attributes.containsKey(attributeLabel))
                 attributes.put(
                         attributeLabel,
-                        new Attribute(getProvider(), attributeLabel, extract)
+                        new Attribute(getProvider(), attributeLabel, attributeLabel)
                 );
         }
         workbook.close();

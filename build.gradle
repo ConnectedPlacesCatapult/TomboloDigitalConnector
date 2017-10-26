@@ -143,20 +143,29 @@ task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
 }
 
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
+	maxHeapSize = "4096m"
 	main = 'uk.org.tombolo.CatalogueExportRunner'
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs '-disableassertions'
 
 	doFirst {
+		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
+		if (!configured) throw new GradleException('Environment not configured. See the README.')
+
+		systemProperty("databaseURI", databaseURI)
+		systemProperty("databaseUsername", databaseUsername)
+		systemProperty("databasePassword", databasePassword)
+		systemProperty("environment", "export")
+
 		def argumentsSet = project.hasProperty('outputFile');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-
-		args(outputFile)
+		if (project.hasProperty('webResourcePath')) args(outputFile, webResourcePath)
+		else throw new GradleException('Path to Web Directory resources folder is required')
 	}
 }
 
 test {
-	maxHeapSize = "1024m"
+	maxHeapSize = "2048m"
 	jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
 
 	doFirst {

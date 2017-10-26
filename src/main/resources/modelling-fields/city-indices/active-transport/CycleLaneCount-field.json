@@ -9,7 +9,7 @@
       "subjectType": "OSMEntity"
     },
     "field": {
-      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
+      "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
       "attributes": [
         {
           "provider": "org.openstreetmap",
@@ -35,7 +35,11 @@
           "provider": "org.openstreetmap",
           "label": "cycleway:otherside"
         }
-      ]
+      ],
+      "field": {
+        "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+        "value": "1"
+      }
     }
   },
   "field2": {
@@ -46,13 +50,17 @@
       "subjectType": "OSMEntity"
     },
     "field": {
-      "fieldClass": "uk.org.tombolo.field.assertion.HasFixedAttributeField",
+      "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
       "attributes": [
         {
           "provider": "org.openstreetmap",
           "label": "highway"
         }
-      ]
+      ],
+      "field": {
+        "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+        "value": "1"
+      }
     }
   }
 }

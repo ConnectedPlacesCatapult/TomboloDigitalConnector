@@ -11,13 +11,14 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class BasicModellingFieldTest extends AbstractTest {
     private static final String RECIPE = "ModellingFieldTest";
-    BasicModellingField field = new BasicModellingField("test_label", RECIPE);
+    BasicModellingField field = new BasicModellingField("test_label", RECIPE, null);
 
     Subject subject;
 
@@ -25,8 +26,8 @@ public class BasicModellingFieldTest extends AbstractTest {
     public void setUp() throws Exception {
         SubjectType lsoa = TestFactory.makeNamedSubjectType("lsoa");
         subject = TestFactory.makeNamedSubject("E01002766");
-        Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_1");
-        Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "CL_0000053_82");
+        Attribute population = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "Age: All categories: Age");
+        Attribute oldies = TestFactory.makeAttribute(AbstractONSImporter.PROVIDER, "Age: Age 80");
         TestFactory.makeTimedValue(lsoa, "E01002766", population, "2011-01-01T00:00:00", 100d);
         TestFactory.makeTimedValue(lsoa, "E01002766", oldies, "2011-01-01T00:00:00", 40d);
     }
@@ -34,7 +35,7 @@ public class BasicModellingFieldTest extends AbstractTest {
     @Test
     public void getDatasourceSpecifications() throws Exception {
 
-        List<DatasourceRecipe> datasources = field.getDatasourceRecipes();
+        List<DatasourceRecipe> datasources = field.getDatasources();
 
         assertEquals(2, datasources.size());
 
@@ -43,8 +44,21 @@ public class BasicModellingFieldTest extends AbstractTest {
         assertEquals("uk.org.tombolo.importer.ons.OaImporter", ds1.getImporterClass());
 
         DatasourceRecipe ds2 = datasources
-                .stream().filter(e -> e.getDatasourceId().equals("QS103EW")).findAny().orElse(null);
-        assertEquals("uk.org.tombolo.importer.ons.ONSCensusImporter", ds2.getImporterClass());
+                .stream().filter(e -> e.getDatasourceId().equals("qs103ew")).findAny().orElse(null);
+        assertEquals("uk.org.tombolo.importer.ons.CensusImporter", ds2.getImporterClass());
+    }
+
+    @Test
+    public void testGetDatasouceSpecificationOverride() throws Exception {
+        BasicModellingField field = new BasicModellingField(
+                "test_label",
+                RECIPE,
+                Collections.singletonList(new DatasourceRecipe(
+                        "uk.org.tombolo.importer.ons.OaImporter",
+                        "lsoa",
+                        null, null, null)));
+
+        assertEquals(1, field.getDatasources().size());
     }
 
     @Test

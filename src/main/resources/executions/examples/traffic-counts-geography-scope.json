@@ -4,7 +4,20 @@
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
         "subjectType" : "trafficCounter",
-        "provider":"uk.gov.dft"
+        "provider":"uk.gov.dft",
+        "geoMatchRule" : {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090%"
+              }
+            }
+          ]
+        }
       }
     ],
     "datasources" : [

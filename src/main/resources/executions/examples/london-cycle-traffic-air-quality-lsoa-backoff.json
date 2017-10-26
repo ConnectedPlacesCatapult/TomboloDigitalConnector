@@ -72,7 +72,14 @@
         "fields": [
           {
             "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-            "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio"
+            "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
+            "datasources": [
+              {
+                "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                "datasourceId" : "trafficCounts",
+                "geographyScope" : ["London"]
+              }
+            ]
           },
           {
             "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
@@ -82,7 +89,14 @@
             },
             "field": {
               "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-              "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio"
+              "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
+              "datasources": [
+                {
+                  "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                  "datasourceId" : "trafficCounts",
+                  "geographyScope" : ["London"]
+                }
+              ]
             }
           },
           {
@@ -93,7 +107,14 @@
             },
             "field": {
               "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-              "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio"
+              "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
+              "datasources": [
+                {
+                  "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                  "datasourceId" : "trafficCounts",
+                  "geographyScope" : ["London"]
+                }
+              ]
             }
           }
         ]

@@ -67,7 +67,7 @@ public class CSVExporterTest extends AbstractTest {
 	private List<Field> makeFields(String providerLabel, String attributeLabel) {
 		return Collections.singletonList(
 				new LatestValueField(attributeLabel,
-						new AttributeMatcher(providerLabel, attributeLabel))
+						new AttributeMatcher(providerLabel, attributeLabel, null))
 		);
 	}
 
