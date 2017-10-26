@@ -4,10 +4,11 @@
       {
         // The subject output is a traffic counter from DfT
         // Restricted to only traffic counters from Greenwich and Islington
+        "provider": "uk.gov.dft",
         "subjectType" : "trafficCounter",
         "geoMatchRule" : {
           "geoRelation" : "within",
-          "subjectSpecifications" : [
+          "subjects" : [
             {
               "subjectType" : "localAuthority",
               "provider": "uk.gov.ons",
