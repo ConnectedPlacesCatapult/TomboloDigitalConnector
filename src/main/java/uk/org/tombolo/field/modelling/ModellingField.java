@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ModellingField extends Field {
 
-    public List<DatasourceRecipe> getDatasourceRecipes();
+    public List<DatasourceRecipe> getDatasources();
 }

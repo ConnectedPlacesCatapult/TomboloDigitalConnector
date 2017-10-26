@@ -70,7 +70,7 @@ public class DataExportEngine implements ExecutionEngine {
 		for (Field field : fields) {
 			if (field instanceof ModellingField) {
 				// This is a predefined field and hence we need to import the appropriate datasources
-				for (DatasourceRecipe datasourceRecipe : ((ModellingField) field).getDatasourceRecipes()) {
+				for (DatasourceRecipe datasourceRecipe : ((ModellingField) field).getDatasources()) {
 					importDatasource(forceImports, datasourceRecipe);
 				}
 			}
