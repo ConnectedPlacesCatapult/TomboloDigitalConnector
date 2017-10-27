@@ -1,10 +1,10 @@
 [
   {
-    "importerClass": "uk.org.tombolo.importer.osm.CyclingImporter",
+    "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
     "datasourceId": "OSMCycling"
   },
   {
-    "importerClass": "uk.org.tombolo.importer.osm.HighwaysImporter",
+    "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
     "datasourceId": "OSMHighways"
   }
 ]

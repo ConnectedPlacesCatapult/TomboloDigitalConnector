@@ -123,6 +123,7 @@ public class PercentilesFieldTest extends AbstractTest {
         List<Field> valueField = quartilesField.getChildFields();
         assertEquals(1, valueField.size());
         assertEquals("uk.org.tombolo.field.value.LatestValueField", valueField.get(0).getClass().getName());
+        assertEquals("populationDensity", valueField.get(0).getLabel());
     }
 
 }

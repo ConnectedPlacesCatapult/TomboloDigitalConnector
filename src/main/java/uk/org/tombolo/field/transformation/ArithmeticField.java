@@ -1,12 +1,12 @@
 package uk.org.tombolo.field.transformation;
 
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
-import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -14,7 +14,8 @@ import java.util.function.BiFunction;
  * Takes as input an operation, and two fields. It returns for a given Subject the value resulting from applying
  * the operation on the two field values.
  */
-public class ArithmeticField extends AbstractField {
+public class ArithmeticField extends AbstractField implements ParentField {
+
     public enum Operation {div, mul, add, sub}
     private final FieldRecipe field1;
     private final FieldRecipe field2;
@@ -74,6 +75,13 @@ public class ArithmeticField extends AbstractField {
 
         setCachedValue(subject, retVal.toString());
         return retVal;
+    }
+
+    @Override
+    public List<Field> getChildFields() {
+        if (singleValueField1 == null)
+            initialize();
+        return Arrays.asList(singleValueField1, singleValueField2);
     }
 
 }

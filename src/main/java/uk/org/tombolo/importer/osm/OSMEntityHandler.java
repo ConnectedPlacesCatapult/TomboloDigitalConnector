@@ -9,6 +9,8 @@ import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.geometry.MissingEntitiesStrategy;
 import gnu.trove.map.TLongObjectMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
@@ -25,6 +27,7 @@ import java.util.Map;
  *
  */
 public class OSMEntityHandler implements OsmHandler {
+    public static Logger log = LoggerFactory.getLogger(OSMEntityHandler.class);
     public static final int SIZE_BUFFER = 100000;
     private static final GeometryFactory GEOMETRY_FACTORY = new GeometryFactory(new PrecisionModel(), Subject.SRID);
 
@@ -73,8 +76,11 @@ public class OSMEntityHandler implements OsmHandler {
             if (osmGeometry instanceof LinearRing) {
                 osmGeometry = new Polygon((LinearRing) osmGeometry, null, GEOMETRY_FACTORY);
             }
+        } catch (IllegalArgumentException e) {
+            log.warn("Could bot build way (illegal argument): {}", e.getMessage());
         } catch (EntityNotFoundException e) {
             // Nothing to do, continue...
+            log.warn("Could bot build way (entity not found): {}", e.getMessage());
         }
         ways.put(way.getId(), way);
         handleEntity(way, osmGeometry);
@@ -88,6 +94,7 @@ public class OSMEntityHandler implements OsmHandler {
             osmGeometry = builder.build(relation, dataSet);
         } catch (EntityNotFoundException e) {
             // Nothing to do, continue...
+            log.warn("Could bot build way (entity not found): {}", e.getMessage());
         }
         handleEntity(relation, osmGeometry);
     }
