@@ -1,5 +1,6 @@
 {
-  "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
+  "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+  "operation": "add",
   "fields": [
     {
       "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
