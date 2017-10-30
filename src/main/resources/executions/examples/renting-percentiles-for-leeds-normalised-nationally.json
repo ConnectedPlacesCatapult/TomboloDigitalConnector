@@ -1,0 +1,65 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        // We output each LSOA whose name starts with 'Leeds'
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        // Importer for the geographic objects for all LSOAs in the UK
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        // Importer for the ONS Census dataset for renting
+        "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+        "datasourceId": "qs405ew"
+      }
+    ],
+    "fields": [
+      {
+        // Renting Percentiles normalized nationally
+        // I.e. we caluclate percentile boundaries using values for all lsoas in the country
+        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+        "label": "RentingResiliencePercentiles",
+        "percentileCount": 4,
+        "inverse": true,
+        "valueField": {
+          // The value field calcualates the renting households in an LSOA
+          // as a fraction of the total number of households in the LSOA
+          "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
+          "divisorAttribute": {
+            "provider": "uk.gov.ons",
+            "label": "Tenure: All categories: Tenure"
+          },
+          "dividendAttributes": [
+            // We sum up the following fields and use in the nominator of the fraction
+            {
+              "provider": "uk.gov.ons",
+              "label": "Tenure: Social rented: Total"
+            },
+            {
+              "provider": "uk.gov.ons",
+              "label": "Tenure: Private rented: Total"
+            }
+          ]
+        },
+        "normalizationSubjects": [
+          // Specification that determines that we calculate percentile boundaries nationally
+          {
+            "provider": "uk.gov.ons",
+            "subjectType": "lsoa"
+          }
+        ]
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
+}

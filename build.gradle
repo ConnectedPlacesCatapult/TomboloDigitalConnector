@@ -143,7 +143,7 @@ task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
 }
 
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
-	maxHeapSize = "1024m"
+	maxHeapSize = "4096m"
 	main = 'uk.org.tombolo.CatalogueExportRunner'
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs '-disableassertions'

@@ -1,0 +1,102 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        // The output subjects are all LSOAs
+        "provider": "uk.gov.ons",
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "St Albans%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        // Importer for LSOA geographies
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        //": "Green space data for the entire UK",
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMGreenspace",
+        "geographyScope" : ["europe/great-britain/england/hertfordshire"]
+      }
+    ],
+    "fields": [
+      {
+        //Proportion of green space
+        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+        "label": "index:GreenspaceFraction",
+        "operation": "div",
+        "field1": {
+          // Sum of green space areas
+          "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+          "label": "GreenspaceSum",
+          "subject": {
+            "provider": "org.openstreetmap",
+            "subjectType": "OSMEntity"
+          },
+          "function": "sum",
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.assertion.OSMBuiltInAttributeMatcherField",
+            "label": "AreaGreenspace",
+            "attributes": [
+              {
+                "provider": "org.openstreetmap",
+                "label": "built-in-greenspace"
+              }
+            ],
+            "field":     {
+              // Area of LSOA
+              "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+              "label": "AreaLSOA",
+              "targetCRSCode": 27700
+            }
+          }
+
+        },
+        "field2": {
+          // Area of LSOA
+          "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+          "label": "AreaLSOA",
+          "targetCRSCode": 27700
+        }
+      },
+      {
+        // Sum of green space areas
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "component:GreenspaceSum",
+        "subject": {
+          "provider": "org.openstreetmap",
+          "subjectType": "OSMEntity"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.assertion.OSMBuiltInAttributeMatcherField",
+          "label": "AreaGreenspace",
+          "attributes": [
+            {
+              "provider": "org.openstreetmap",
+              "label": "built-in-greenspace"
+            }
+          ],
+          "field":     {
+            // Area of LSOA
+            "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+            "label": "AreaLSOA",
+            "targetCRSCode": 27700
+          }
+        }
+      },
+      {
+        // Area of LSOA
+        "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+        "label": "component:AreaLSOA",
+        "targetCRSCode": 27700
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

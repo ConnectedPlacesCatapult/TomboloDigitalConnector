@@ -13,16 +13,57 @@ import java.util.*;
 /**
  * Open street map importer
  */
-public abstract class OSMImporter extends AbstractImporter {
+public class OSMImporter extends AbstractImporter {
     protected static final String URL = "http://download.geofabrik.de";
-    private static final String DEFAULT_AREA = "europe/great-britain";
+    // Default area is the whole Great Britain, if the geography scope is empty or null the default area will be considered.
+    // The following are the geographic regions for the UK as in geofabrik download server.
+    private static final List<String> DEFAULT_AREA = Arrays.asList(
+            "europe/great-britain/england/berkshire",
+            "europe/great-britain/england/buckinghamshire",
+            "europe/great-britain/england/cambridgeshire",
+            "europe/great-britain/england/cheshire",
+            "europe/great-britain/england/cornwall",
+            "europe/great-britain/england/cumbria",
+            "europe/great-britain/england/derbyshire",
+            "europe/great-britain/england/devon",
+            "europe/great-britain/england/dorset",
+            "europe/great-britain/england/east-sussex",
+            "europe/great-britain/england/east-yorkshire-with-hull",
+            "europe/great-britain/england/essex",
+            "europe/great-britain/england/gloucestershire",
+            "europe/great-britain/england/greater-london",
+            "europe/great-britain/england/greater-manchester",
+            "europe/great-britain/england/hampshire",
+            "europe/great-britain/england/herefordshire",
+            "europe/great-britain/england/hertfordshire",
+            "europe/great-britain/england/isle-of-wight",
+            "europe/great-britain/england/kent",
+            "europe/great-britain/england/lancashire",
+            "europe/great-britain/england/leicestershire",
+            "europe/great-britain/england/norfolk",
+            "europe/great-britain/england/north-yorkshire",
+            "europe/great-britain/england/northumberland",
+            "europe/great-britain/england/nottinghamshire",
+            "europe/great-britain/england/oxfordshire",
+            "europe/great-britain/england/shropshire",
+            "europe/great-britain/england/somerset",
+            "europe/great-britain/england/south-yorkshire",
+            "europe/great-britain/england/staffordshire",
+            "europe/great-britain/england/suffolk",
+            "europe/great-britain/england/surrey",
+            "europe/great-britain/england/west-midlands",
+            "europe/great-britain/england/west-sussex",
+            "europe/great-britain/england/west-yorkshire",
+            "europe/great-britain/england/wiltshire",
+            "europe/great-britain/england/worcestershire",
+            "europe/great-britain/wales"
+    );
 
-
-    protected DatasourceSpec datasourceSpec;
-    protected Map<String, List<String>> categories = Collections.emptyMap();
 
     public OSMImporter(Config config) {
         super(config);
+        datasourceIds = new ArrayList<>();
+        Arrays.stream(OSMBuiltInImporters.values()).map(builtin -> builtin.name()).forEach(datasourceIds::add);
     }
 
     private SubjectType subjectType;
@@ -42,7 +83,8 @@ public abstract class OSMImporter extends AbstractImporter {
 
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
-        return datasourceSpec;
+        OSMBuiltInImporters builtIn = OSMBuiltInImporters.valueOf(datasourceIdString);
+        return new DatasourceSpec(getClass(), builtIn.name(), "", builtIn.getDescription(), URL);
     }
 
     @Override
@@ -55,12 +97,13 @@ public abstract class OSMImporter extends AbstractImporter {
     @Override
     public List<Attribute> getFixedValueAttributes(String datasourceId) {
         List<Attribute> attributes = new ArrayList<>();
-        categories.keySet().stream().map(category -> attributeFromTag(category)).forEach(attributes::add);
+        OSMBuiltInImporters.valueOf(datasourceId).getCategories().keySet().stream().map(
+                category -> attributeFromTag(category)).forEach(attributes::add);
         return attributes;
     }
 
     Attribute attributeFromTag(String tag){
-        return new Attribute(getProvider(), tag, "OSM entity having category "+tag);
+        return new Attribute(getProvider(), tag, "OSM entity having category " + tag);
     }
 
     private File getDatafile(String area) throws Exception {
@@ -70,7 +113,7 @@ public abstract class OSMImporter extends AbstractImporter {
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         if (geographyScope == null || geographyScope.isEmpty())
-            geographyScope = Arrays.asList(DEFAULT_AREA);
+            geographyScope = DEFAULT_AREA;
 
         for (String area : geographyScope) {
             File localFile = getDatafile(area);
@@ -81,7 +124,7 @@ public abstract class OSMImporter extends AbstractImporter {
 
             // Create a reader for PBF data and cache it
             PbfReader reader = new PbfReader(localFile, true);
-            OSMEntityHandler handler = new OSMEntityHandler(this);
+            OSMEntityHandler handler = new OSMEntityHandler(this, datasource.getDatasourceSpec().getId());
             reader.setHandler(handler);
             reader.read();
         }

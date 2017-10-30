@@ -4,7 +4,20 @@
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
         "subjectType" : "trafficCounter",
-        "provider": "uk.gov.dft"
+        "provider": "uk.gov.dft",
+        "geoMatchRule" : {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090%"
+              }
+            }
+          ]
+        }
       }
     ],
     "datasources" : [
@@ -29,9 +42,12 @@
       {
         // A field that assigns to each output geography (traffic counter) the population density value from the
         // Borough Profile of the borough (local authority) containing the traffic counter.
-      "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+        "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
         "label": "localAuthorityPopulationDensity",
-        "containingSubjectType": "localAuthority",
+        "subject": {
+          "provider": "uk.gov.ons",
+          "subjectType": "localAuthority"
+        },
         "field": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "populationDensity",

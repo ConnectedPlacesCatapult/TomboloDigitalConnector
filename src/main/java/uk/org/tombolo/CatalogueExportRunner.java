@@ -15,13 +15,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Get a list of datasources for an importer
@@ -31,22 +30,27 @@ public class CatalogueExportRunner extends AbstractRunner {
 
     public static void main(String[] args) throws Exception {
         validateArguments(args);
-        JsonWriter writer = new JsonWriter(getOutputWriter(args[0]));
-        Stream<Class<? extends Importer>> importers = getImporterClasses();
+        CatalogueExportRunner exportRunner = new CatalogueExportRunner();
+        JsonWriter writer = new JsonWriter(exportRunner.getOutputWriter(args[0]));
+        List<Class<? extends Importer>> importers = exportRunner.getImporterClasses();
 
         writer.beginArray();
 
-        importers.flatMap(CatalogueExportRunner::getDatasources).forEach(dataSource -> {
+        for (Class<? extends Importer> i : importers) {
 
-            try {
-                if (null != dataSource.getDatasourceSpec())
-                dataSource.writeJSON(writer);
-            } catch (IOException e) {
-                log.warn(String.format("Could not generate JSON for datasource %s", dataSource.getDatasourceSpec().getId()), e);
-            } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
-                e.printStackTrace();
+            if (!i.getCanonicalName().equals("uk.org.tombolo.importer.generalcsv.GeneralCSVImporter")) {
+                Importer importer = exportRunner.getImporter(i);
+
+                List<String> datasources = exportRunner.getDatasourceIds(importer);
+
+                for (String d : datasources) {
+                    if (datasources.size() > 0) importer = exportRunner.getImporter(i);
+                    Datasource datasource = exportRunner.getDatasource(d, importer);
+
+                    if (null != datasource.getDatasourceSpec()) datasource.writeJSON(writer);
+                }
             }
-        });
+        }
 
         writer.endArray();
         writer.close();
@@ -55,35 +59,38 @@ public class CatalogueExportRunner extends AbstractRunner {
                                                                                     StandardCopyOption.REPLACE_EXISTING);
     }
 
-    private static Stream<Class<? extends Importer>> getImporterClasses() {
+    private List<Class<? extends Importer>> getImporterClasses() {
         Reflections reflections = new Reflections("uk.org.tombolo");
-        return reflections.getSubTypesOf(Importer.class).stream().filter(importerClass -> {
-            return !Modifier.isAbstract(importerClass.getModifiers());
-        });
+        List<Class<? extends Importer>> toReturn;
+        Set<Class<? extends  Importer>> data = reflections.getSubTypesOf(Importer.class);
+        toReturn = data.stream().filter(d -> !Modifier.isAbstract(d.getModifiers())).collect(Collectors.toList());
+        return toReturn;
     }
 
-    protected static Stream<Datasource> getDatasources(Class<? extends Importer> importerClass) {
+    public Importer getImporter(Class<? extends Importer> importerClass) {
+        Importer importer = null;
         try {
-            log.info(String.format("Getting datasources for %s", importerClass.getCanonicalName()));
             Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
                     new SubjectType(new Provider("", ""), "", "")).build();
 
             Class<?> theClass = Class.forName(importerClass.getCanonicalName());
             Constructor<?> constructor = theClass.getConstructor(Config.class);
-            Importer importer = (Importer) constructor.newInstance(DEFAULT_CONFIG);
+            importer = (Importer) constructor.newInstance(DEFAULT_CONFIG);
             importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
-
-            List<Datasource> datasources = new ArrayList<Datasource>();
-
-            for (String datasourceId: importer.getDatasourceIds())
-                datasources.add(importer.getDatasource(datasourceId));
-
-            return datasources.stream();
         } catch (Exception e) {
-            log.warn(String.format("Could not get datasources for class %s", importerClass.toString()), e);
-            return Stream.empty();
+            e.printStackTrace();
         }
+
+        return importer;
+    }
+
+    public List<String> getDatasourceIds(Importer importer) {
+        return importer.getDatasourceIds();
+    }
+
+    private Datasource getDatasource(String dataSourceId, Importer importer) throws Exception {
+        return importer.getDatasource(dataSourceId);
     }
 
     private static void validateArguments(String[] args) {
@@ -93,7 +100,7 @@ public class CatalogueExportRunner extends AbstractRunner {
         }
     }
 
-    private static Writer getOutputWriter(String path) {
+    private Writer getOutputWriter(String path) {
         try {
             return new FileWriter(path);
         } catch (IOException e) {

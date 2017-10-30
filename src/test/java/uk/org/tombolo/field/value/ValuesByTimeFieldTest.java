@@ -11,7 +11,6 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.recipe.AttributeMatcher;
 
 import static org.junit.Assert.assertEquals;
@@ -25,7 +24,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     public void setUp() throws Exception {
         subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-        field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
+        field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label", null));
     }
 
     @Test
