@@ -3,13 +3,32 @@
     "subjects": [
       {
         "provider": "uk.gov.ons",
-        "subjectType": "lsoa"
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Islington%"
+        }
       }
     ],
     "datasources": [
       {
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMCycling",
+        "geographyScope" : ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMHighways",
+        "geographyScope" : ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
       }
     ],
     "fields": [

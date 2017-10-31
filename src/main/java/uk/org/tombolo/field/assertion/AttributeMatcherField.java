@@ -5,12 +5,11 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
-import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.recipe.FieldRecipe;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.Map;
 /**
  * Returns the value of the 'field' if the subject has an attribute matching one of the 'attributes'"
  */
-public class AttributeMatcherField extends AbstractField {
+public class AttributeMatcherField extends AbstractField implements ParentField {
 
     private List<AttributeMatcher> attributes;
     private FieldRecipe field;
@@ -84,5 +83,12 @@ public class AttributeMatcherField extends AbstractField {
         String fieldValue = singleValueField.valueForSubject(subject, timeStamp);
         setCachedValue(subject, fieldValue);
         return fieldValue;
+    }
+
+    @Override
+    public List<Field> getChildFields() {
+        if (singleValueField == null)
+            initialize();
+        return Collections.singletonList(singleValueField);
     }
 }
