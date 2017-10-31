@@ -1,0 +1,58 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "provider": "uk.gov.ons",
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Islington%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMCycling",
+        "geographyScope" : ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMHighways",
+        "geographyScope" : ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "index:active_transport",
+        "recipe": "city-indices/active-transport/ActiveTransportIndex"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:proportion_of_cycles_to_cars",
+        "recipe": "city-indices/active-transport/CyclingCount-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:cycle_lane_score",
+        "recipe": "city-indices/active-transport/CycleLaneCount-lsoa"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:travel_to_work_score",
+        "recipe": "city-indices/active-transport/ActiveTransportToWork"
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

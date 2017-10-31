@@ -10,156 +10,156 @@
       "divisorAttribute": {
         "//": "Total: All categories: Age",
         "provider": "uk.gov.ons",
-        "label": "CL_0000053_1"
+        "label": "Age: All categories: Age"
       },
       "dividendAttributes": [
         {
           "//": "Age (T102A) - Age 65",
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_67"
+          "label": "Age: Age 65"
         },
         {
           "//": "Age (T102A) - Age 66",
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_68"
+          "label": "Age: Age 66"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_69"
+          "label": "Age: Age 67"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_70"
+          "label": "Age: Age 68"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_71"
+          "label": "Age: Age 69"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_72"
+          "label": "Age: Age 70"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_73"
+          "label": "Age: Age 71"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_74"
+          "label": "Age: Age 72"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_75"
+          "label": "Age: Age 73"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_76"
+          "label": "Age: Age 74"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_77"
+          "label": "Age: Age 75"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_78"
+          "label": "Age: Age 76"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_79"
+          "label": "Age: Age 77"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_80"
+          "label": "Age: Age 78"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_81"
+          "label": "Age: Age 79"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_82"
+          "label": "Age: Age 80"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_83"
+          "label": "Age: Age 81"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_84"
+          "label": "Age: Age 82"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_85"
+          "label": "Age: Age 83"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_86"
+          "label": "Age: Age 84"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_87"
+          "label": "Age: Age 85"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_88"
+          "label": "Age: Age 86"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_89"
+          "label": "Age: Age 87"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_90"
+          "label": "Age: Age 88"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_91"
+          "label": "Age: Age 89"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_92"
+          "label": "Age: Age 90"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_93"
+          "label": "Age: Age 91"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_94"
+          "label": "Age: Age 92"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_95"
+          "label": "Age: Age 93"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_96"
+          "label": "Age: Age 94"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_97"
+          "label": "Age: Age 95"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_98"
+          "label": "Age: Age 96"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_99"
+          "label": "Age: Age 97"
         },
         {
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_100"
+          "label": "Age: Age 98"
         },
         {
           "//": "Age (T102A) - Age 99",
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_101"
+          "label": "Age: Age 99"
         },
         {
           "//": "Age (T102A) - Age 100 and over",
           "provider": "uk.gov.ons",
-          "label": "CL_0000053_102"
+          "label": "Age: Age 100 and over"
         }
       ]
     },

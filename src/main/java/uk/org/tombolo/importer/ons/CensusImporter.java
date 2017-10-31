@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
@@ -63,7 +64,7 @@ public class CensusImporter extends AbstractONSImporter {
         // FIXME: Make sure that this generalises over all datasets
         int start = header.indexOf(":");
         int end = header.indexOf(";");
-        return AttributeUtils.substringToDBLength(header.substring(0, end));
+        return header.substring(0, end);
     }
 
     protected String getDataUrl(String datasourceIdString) {
@@ -89,7 +90,8 @@ public class CensusImporter extends AbstractONSImporter {
         }
 
         // FIXME: Generalise this beyond LSOA
-        SubjectType lsoa = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
+        SubjectType lsoa = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId());
 

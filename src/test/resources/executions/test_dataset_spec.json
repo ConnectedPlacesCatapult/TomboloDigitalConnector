@@ -8,12 +8,12 @@
 		],
 		"datasources": [
 			{
-				"importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId": "OT102EW"
+				"importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId": "ot102ew"
 			},
 			{
-				"importerClass": "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId": "QS302EW"
+				"importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId": "qs302ew"
 			},
 			{
 				"importerClass": "uk.org.tombolo.importer.phe.PheNooImporter",

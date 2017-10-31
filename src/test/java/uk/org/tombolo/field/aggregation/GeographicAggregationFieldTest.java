@@ -11,18 +11,30 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.recipe.FieldRecipe;
-import uk.org.tombolo.recipe.RecipeDeserializer;
+import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.recipe.SubjectRecipe;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class GeographicAggregationFieldTest extends AbstractTest {
-    Attribute attribute;
-    SubjectType localAuthority;
-    SubjectType lsoa;
+    private Attribute attribute;
+    private SubjectType localAuthority;
+    private SubjectType lsoa;
+
+    private GeographicAggregationField sumField = new GeographicAggregationField("aLabel",
+            new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(), "lsoa", null, null),
+            GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
+
+    private GeographicAggregationField meanField = new GeographicAggregationField("aLabel",
+            new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
+            GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
+
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -42,11 +54,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(lsoa, "E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue(lsoa, "E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 
-        GeographicAggregationField field = new GeographicAggregationField("aLabel",
-                new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(), "lsoa", null, null),
-                GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
-
-        String value = field.valueForSubject(subject, true);
+        String value = sumField.valueForSubject(subject, true);
         assertEquals("313.37", value);
     }
 
@@ -54,10 +62,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
     public void testValueForSubjectSumWithNoValues() throws Exception {
         Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject with no contents
 
-        GeographicAggregationField field = new GeographicAggregationField("aLabel",
-                new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
-                GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
-        String value = field.valueForSubject(subject, true);
+        String value = sumField.valueForSubject(subject, true);
         assertEquals("0.0", value);
     }
 
@@ -69,11 +74,7 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(lsoa, "E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue(lsoa, "E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 
-        GeographicAggregationField field = new GeographicAggregationField("aLabel",
-                new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
-                GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
-
-        String value = field.valueForSubject(subject, true);
+        String value = meanField.valueForSubject(subject, true);
         assertEquals("156.685", value);
     }
 
@@ -81,14 +82,9 @@ public class GeographicAggregationFieldTest extends AbstractTest {
     public void testValueForSubjectMeanWithNoValues() throws Exception {
         Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
 
-        GeographicAggregationField field = new GeographicAggregationField("aLabel",
-                new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
-                GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
-
         thrown.expect(IncomputableFieldException.class);
         thrown.expectMessage("Aggregation function mean returned NaN (possible division by zero?)");
-
-        field.valueForSubject(subject, true);
+        meanField.valueForSubject(subject, true);
     }
 
     @Test
@@ -99,14 +95,17 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(lsoa, "E01000001", attribute, "2011-01-01T00:00:00", 300d);
         TestFactory.makeTimedValue(lsoa, "E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
 
-        GeographicAggregationField field = new GeographicAggregationField("aLabel",
-                new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
-                GeographicAggregationField.AggregationFunction.sum, makeFieldSpec());
-
-        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
+        String jsonString = sumField.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
                 "  aLabel: 313.37"+
                 "}", jsonString, false);
+    }
+
+    @Test
+    public void testGetChildFields(){
+        List<Field> childFields = sumField.getChildFields();
+        assertEquals(1, childFields.size());
+        assertEquals("attr", childFields.get(0).getLabel());
     }
 
     private FieldRecipe makeFieldSpec() {

@@ -270,12 +270,8 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 
 	@Override
 	public List<SubjectType> getSubjectTypes(String datasourceId) {
-		SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(getProvider().getLabel(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL);
-		if (subjectType == null) {
-			return Collections.singletonList(new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
-		}
-
-		return Collections.singletonList(subjectType);
+		return Collections.singletonList(
+				new SubjectType(getProvider(), TRAFFIC_COUNTER_SUBJECT_TYPE_LABEL, TRAFFIC_COUNTER_SUBJECT_TYPE_DESC));
 	}
 
 	@Override

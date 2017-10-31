@@ -16,11 +16,11 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 ## Quick start
 
 ### Requirements
-* JDK (1.8+)
-* PostgreSQL (9.4+)
-* PostGIS (2.1+)
-* Gradle (2.12+)
-* (Optional) Wercker (1.0+)
+* [JDK (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [PostgreSQL (9.4+)](https://www.postgresql.org/)
+* [PostGIS (2.1+)](http://postgis.net/)
+* [Gradle (2.12+)](https://gradle.org/)
+* (Optional) [Wercker (1.0+)](http://www.wercker.com/)
 
 ### Configure the project
 
@@ -39,8 +39,10 @@ Then run the following to set up your database:
 ```bash
 # Create a user and database
 createuser tombolo
-createdb -O tombolo tombolo
+createdb -O tombolo tombolo -E UTF8
 psql -d tombolo -c "CREATE EXTENSION postgis;"
+psql -d tombolo -c "SET NAMES 'UTF8';"
+
 
 # Create DB tables and load initial fixtures
 psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
@@ -57,8 +59,9 @@ To set up the test user and database:
 ```bash
 # Create a user and database
 createuser tombolo_test
-createdb -O tombolo_test tombolo_test
+createdb -O tombolo_test tombolo_test -E UTF8
 psql -d tombolo_test -c "CREATE EXTENSION postgis;"
+psql -d tombolo_test -c "SET NAMES 'UTF8';"
 
 # Create DB tables and load initial fixtures
 psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql

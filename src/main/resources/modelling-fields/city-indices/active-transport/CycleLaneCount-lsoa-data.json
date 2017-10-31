@@ -1,0 +1,14 @@
+[
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "lsoa"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "msoa"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "localAuthority"
+  }
+]

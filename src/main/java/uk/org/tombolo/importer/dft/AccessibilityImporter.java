@@ -11,7 +11,9 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -64,30 +66,25 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         acs0507(new DatasourceSpec(AccessibilityImporter.class, "acs0507", "Food stores",
                 "Travel time, destination and origin indicators to Food stores by mode of travel",
                 DATASOURCE_URL),
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls"),
-        acs0508(new DatasourceSpec(AccessibilityImporter.class, "acs0508", "Town centres",
-                "Travel time, destination and origin indicators to Town centres by mode of travel",
-                DATASOURCE_URL),
-                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0508.xls"
+                "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls"
         );
 
         private DatasourceSpec datasourceSpec;
         private String dataFile;
-        private Workbook workbook;
 
         DatasourceId(DatasourceSpec datasourceSpec, String dataFile) {
             this.datasourceSpec = datasourceSpec;
             this.dataFile = dataFile;
-            this.workbook = null;
         }
+    }
 
-        private Workbook getWorkbook() {
-            return workbook;
-        }
+    private Workbook workbook;
 
-        private void setWorkbook(Workbook workbook) {
-            this.workbook = workbook;
-        }
+    private Workbook getWorkbook() {
+        return workbook;
+    }
+    private void setWorkbook(Workbook workbook) {
+        this.workbook = workbook;
     }
 
     ExcelUtils excelUtils = new ExcelUtils();
@@ -97,20 +94,24 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
-
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         return DatasourceId.valueOf(datasourceId).datasourceSpec;
     }
 
     @Override
-    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+    public Datasource getDatasource(String datasourceId) throws Exception {
         DatasourceId datasourceIdValue = DatasourceId.valueOf(datasourceId);
-        if (datasourceIdValue.getWorkbook() == null) {
-            datasourceIdValue.setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchInputStream(
-                    new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
-        }
-        Sheet metadataSheet = datasourceIdValue.getWorkbook().getSheet("Metadata");
+        setWorkbook(excelUtils.getWorkbook(downloadUtils.fetchFile(
+                new URL(datasourceIdValue.dataFile), getProvider().getLabel(), DATASET_FILE_SUFFIX)));
+        return super.getDatasource(datasourceId);
+    }
+
+
+    @Override
+    public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
+
+        Sheet metadataSheet = getWorkbook().getSheet("Metadata");
 
         List<Attribute> attributes = new ArrayList<>();
         Row row;
@@ -118,7 +119,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         while((row = metadataSheet.getRow(rowId)) != null && row.getCell(0) != null){
             rowId++;
 
-            String label = AttributeUtils.substringToDBLength(row.getCell(1).getStringCellValue());
+            String label = row.getCell(1).getStringCellValue();
             String description = row.getCell(2).getStringCellValue();
             String parameterValue = row.getCell(3).getStringCellValue();
 
@@ -133,13 +134,12 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.lsoa);
-        DatasourceId datasourceIdValue = DatasourceId.valueOf(datasource.getDatasourceSpec().getId());
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER, OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
         // Loop over years
-        for (int sheetId = 0; sheetId < datasourceIdValue.getWorkbook().getNumberOfSheets(); sheetId++){
-            Sheet sheet = datasourceIdValue.getWorkbook().getSheetAt(sheetId);
+        for (int sheetId = 0; sheetId < getWorkbook().getNumberOfSheets(); sheetId++){
+            Sheet sheet = getWorkbook().getSheetAt(sheetId);
 
-            int year = -1;
+            int year;
             try {
                 year = Integer.parseInt(sheet.getSheetName().substring(sheet.getSheetName().length()-4, sheet.getSheetName().length()));
             }catch (NumberFormatException e){
@@ -169,5 +169,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
             // Extract timed values
             excelUtils.extractAndSaveTimedValues(sheet, this, timedValueExtractors);
         }
+
+        getWorkbook().close();
     }
 }

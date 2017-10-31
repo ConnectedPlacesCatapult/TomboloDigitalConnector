@@ -1,7 +1,7 @@
 [
   {
     //": "Green space data for the entire UK",
-    "importerClass": "uk.org.tombolo.importer.osm.GreenSpaceImporter",
-    "datasourceId": "OSMGreenSpace"
+    "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+    "datasourceId": "OSMGreenspace"
   }
 ]

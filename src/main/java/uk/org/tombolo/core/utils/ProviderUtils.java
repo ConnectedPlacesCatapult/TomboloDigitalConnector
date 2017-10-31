@@ -1,5 +1,6 @@
 package uk.org.tombolo.core.utils;
 
+import org.hibernate.query.Query;
 import uk.org.tombolo.core.Provider;
 
 public class ProviderUtils {
@@ -25,9 +26,10 @@ public class ProviderUtils {
 
 	public static Provider getByLabel(String label){
 		return HibernateUtil.withSession(session -> {
-			return session.createQuery("from Provider where label = :label", Provider.class)
-					.setParameter("label", label)
-					.uniqueResult();
+			Query query = session.createQuery("from Provider where label = :label", Provider.class)
+					.setParameter("label", label);
+			query.setCacheable(true);
+			return (Provider) query.uniqueResult();
 		});
 	}
 }

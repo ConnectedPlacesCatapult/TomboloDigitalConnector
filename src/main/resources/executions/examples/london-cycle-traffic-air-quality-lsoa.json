@@ -1,0 +1,98 @@
+{
+  "dataset" : {
+    "subjects" : [
+      {
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090%"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources" : [
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId" : "lsoa"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId" : "trafficCounts",
+        "geographyScope" : ["London"]
+      },
+      {
+        "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
+        "datasourceId": "airQualityControl"
+      }
+    ],
+    "fields" : [
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "NitrogenDioxide",
+        "subject": {
+          "provider": "erg.kcl.ac.uk",
+          "subjectType": "airQualityControl"
+        },
+        "function": "mean",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "attribute": {
+            "provider" : "erg.kcl.ac.uk",
+            "label" : "NO2 40 ug/m3 as an annual me"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+        "label": "BicycleFraction",
+        "operation": "div",
+        "field1": {
+          "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+          "label": "BicycleCount",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
+          "function": "sum",
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+            "attribute": {
+              "provider" : "uk.gov.dft",
+              "label" : "CountPedalCycles"
+            }
+          }
+        },
+        "field2": {
+          "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+          "label": "CarCount",
+          "subject": {
+            "provider": "uk.gov.dft",
+            "subjectType": "trafficCounter"
+          },
+          "function": "sum",
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+            "attribute": {
+              "provider": "uk.gov.dft",
+              "label": "CountCarsTaxis"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

@@ -16,28 +16,28 @@
 				"datasourceId" : "lsoa"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS103EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs103ew"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS405EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs405ew"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS108EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs108ew"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS302EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs302ew"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS303EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs303ew"
 			},
 			{
-				"importerClass" : "uk.org.tombolo.importer.ons.ONSCensusImporter",
-				"datasourceId" : "QS119EW"
+				"importerClass" : "uk.org.tombolo.importer.ons.CensusImporter",
+				"datasourceId" : "qs119ew"
 			}
 		],
 		"field" : [
