@@ -3,7 +3,11 @@
     "subjects" : [
       {
         "provider" : "uk.gov.ons",
-        "subjectType" : "lsoa"
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
       }
     ],
     "datasources" : [
@@ -32,22 +36,22 @@
         "label": "component:fraction_widowed_divorced_separated",
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "recipe": "census/fraction-widowed-divorced-separated"
-      },
-      {
-        "label": "component:fraction_bad_or_very_bad_health",
-        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-        "recipe": "census/fraction-bad-health"
-      },
-      {
-        "label": "component:fraction_limited",
-        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-        "recipe": "census/fraction-disabled"
-      },
-      {
-        "label": "component:fraction_deprived_2_or_more",
-        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-        "recipe": "census/fraction-deprived"
-      }
+      }//,
+      //{
+      //  "label": "component:fraction_bad_or_very_bad_health",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-bad-health"
+      //},
+      //{
+      //  "label": "component:fraction_limited",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-disabled"
+      //},
+      //{
+      //  "label": "component:fraction_deprived_2_or_more",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-deprived"
+      //}
     ]
   },
   "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"

@@ -1,153 +1,269 @@
 {
-  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-  "divisorAttribute": {
-    "provider": "uk.gov.ons",
-    "label": "Age: All categories: Age"
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "operation": "add",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 65"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 66"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 67"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 68"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 69"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 70"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 71"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 72"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 73"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 74"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 75"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 76"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 77"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 78"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 79"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 80"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 81"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 82"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 83"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 84"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 85"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 86"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 87"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 88"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 89"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 90"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 91"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 92"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 93"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 94"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 95"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 96"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 97"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 98"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 99"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Age: Age 100 and over"
+        }
+      }
+    ]
   },
-  "dividendAttributes": [
-    {
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "attribute": {
       "provider": "uk.gov.ons",
-      "label": "Age: Age 65"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 66"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 67"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 68"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 69"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 70"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 71"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 72"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 73"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 74"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 75"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 76"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 77"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 78"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 79"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 80"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 81"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 82"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 83"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 84"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 85"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 86"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 87"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 88"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 89"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 90"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 91"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 92"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 93"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 94"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 95"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 96"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 97"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 98"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 99"
-    },
-    {
-      "provider": "uk.gov.ons",
-      "label": "Age: Age 100 and over"
+      "label": "Age: All categories: Age"
     }
-  ]
+  }
 }

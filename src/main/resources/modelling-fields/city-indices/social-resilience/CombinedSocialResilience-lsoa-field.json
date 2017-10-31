@@ -4,7 +4,8 @@
   "percentileCount": 4,
   "inverse": false,
   "valueField":{
-    "fieldClass": "uk.org.tombolo.field.transformation.FieldValueSumField",
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "operation": "add",
     "label": "SumSocialResilience",
     "fields":[
       {

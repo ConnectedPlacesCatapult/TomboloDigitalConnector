@@ -1,27 +1,42 @@
 {
-  "//": "Fraction of households deprived in two or more dimensions",
-  "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-  "label": "FCC.CL_0000178.fraction_deprived_2_or_more",
-  "divisorAttribute": {
-    "//": "Total: All categories: Classification of household deprivation",
-    "provider": "uk.gov.ons",
-    "label": "CL_0000178_1"
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "operation": "add",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "//": "Household is deprived in 2 dimensions",
+          "provider": "uk.gov.ons",
+          "label": "CL_0000178_4"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "//": "Household is deprived in 3 dimensions",
+          "provider": "uk.gov.ons",
+          "label": "CL_0000178_5"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "//": "Household is deprived in 4 dimensions",
+          "provider": "uk.gov.ons",
+          "label": "CL_0000178_6"
+        }
+      }
+    ]
   },
-  "dividendAttributes": [
-    {
-      "//": "Household is deprived in 2 dimensions",
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "attribute": {
+      "//": "Total: All categories: Classification of household deprivation",
       "provider": "uk.gov.ons",
-      "label": "CL_0000178_4"
-    },
-    {
-      "//": "Household is deprived in 3 dimensions",
-      "provider": "uk.gov.ons",
-      "label": "CL_0000178_5"
-    },
-    {
-      "//": "Household is deprived in 4 dimensions",
-      "provider": "uk.gov.ons",
-      "label": "CL_0000178_6"
+      "label": "CL_0000178_1"
     }
-  ]
+  }
 }
