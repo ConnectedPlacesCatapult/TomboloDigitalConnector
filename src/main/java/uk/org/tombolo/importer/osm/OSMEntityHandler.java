@@ -8,6 +8,7 @@ import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.geometry.MissingEntitiesStrategy;
+import de.topobyte.osm4j.geometry.MissingWayNodeStrategy;
 import gnu.trove.map.TLongObjectMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +50,8 @@ public class OSMEntityHandler implements OsmHandler {
         this.datasourceId = datasourceId;
 
         builder = new GeometryBuilder(GEOMETRY_FACTORY);
-        // Empty geography if nodes are missing
-        builder.setMissingEntitiesStrategy(MissingEntitiesStrategy.BUILD_EMPTY);
+        // Throw exception if entities are missing
+        builder.setMissingEntitiesStrategy(MissingEntitiesStrategy.THROW_EXCEPTION);
     }
 
     @Override
