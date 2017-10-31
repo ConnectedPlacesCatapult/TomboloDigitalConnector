@@ -1,66 +1,22 @@
 {
-  // Proportion of Bicycle to cars and taxis
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-  "label": "Bicycle to Car Ratio",
   "operation": "div",
   "field1": {
-    // Count of bicycles
-    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-    "label": "Bicycle Count",
-    "subject": {
-      "provider": "uk.gov.dft",
-      "subjectType": "trafficCounter"
-    },
-    "function": "sum",
-    "field": {
-      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
-      "label": "CountPedalCycles",
-      "attribute": {
-        "provider": "uk.gov.dft",
-        "label": "CountPedalCycles"
-      }
-    }
+    "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+    "recipe": "transport/traffic-counts-aggregated-bicycles"
   },
   "field2": {
-    // Sum of bicycles and cars/taxis
-    "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-    "label": "Sum of bicycles and cars",
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
     "operation": "add",
-    "field1": {
-      // Count of bicycles
-      "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-      "label": "Bicycle Count",
-      "subject": {
-        "provider": "uk.gov.dft",
-        "subjectType": "trafficCounter"
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "transport/traffic-counts-aggregated-bicycles"
       },
-      "function": "sum",
-      "field": {
-        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
-        "label": "CountPedalCycles",
-        "attribute": {
-          "provider": "uk.gov.dft",
-          "label": "CountPedalCycles"
-        }
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "transport/traffic-counts-aggregated-cars"
       }
-    },
-    "field2": {
-      // Count of cars
-      "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-      "label": "Car and Taxi Count",
-      "subject": {
-        "provider": "uk.gov.dft",
-        "subjectType": "trafficCounter"
-      },
-      "function": "sum",
-      "field": {
-        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
-        "label": "CountCarTaxi",
-        "attribute": {
-          "provider": "uk.gov.dft",
-          "label": "CountCarsTaxis"
-        }
-      }
-    }
+    ]
   }
 }

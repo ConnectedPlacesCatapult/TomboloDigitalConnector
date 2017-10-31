@@ -4,8 +4,8 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.util.Collections;
@@ -62,7 +62,8 @@ public class MapToNearestSubjectField extends AbstractField implements ParentFie
 
     @Override
     public List<Field> getChildFields() {
-        if (null == singleValueField) { initialize(); }
+        if (singleValueField == null)
+            initialize();
         return Collections.singletonList(singleValueField);
     }
 

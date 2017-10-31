@@ -1,11 +1,8 @@
 {
-  // Proportion of Bicycle to cars and taxis
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
-  "label": "Cycle to Road count Ratio",
   "operation": "div",
   "field1": {
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-    "label": "Cycle Lane Count",
     "function": "sum",
     "subject" : {
       "provider": "org.openstreetmap",
@@ -13,7 +10,6 @@
     },
     "field": {
       "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-      "label": "Assert Cycle Lane",
       "attributes": [
         {
           "provider": "org.openstreetmap",
@@ -48,7 +44,6 @@
   },
   "field2": {
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
-    "label": "Highway Count",
     "function": "sum",
     "subject" : {
       "provider": "org.openstreetmap",
@@ -56,7 +51,6 @@
     },
     "field": {
       "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-      "label": "Assert Highway",
       "attributes": [
         {
           "provider": "org.openstreetmap",

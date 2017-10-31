@@ -55,7 +55,8 @@ public class WrapperField extends AbstractField implements ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (null == wrapperFields) { initialize(); }
+        if (wrapperFields == null)
+            initialize();
         return wrapperFields;
     }
 }

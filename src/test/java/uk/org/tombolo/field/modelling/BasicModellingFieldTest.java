@@ -8,8 +8,9 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.field.Field;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
+import uk.org.tombolo.recipe.DatasourceRecipe;
 
 import java.util.Collections;
 import java.util.List;
@@ -77,5 +78,12 @@ public class BasicModellingFieldTest extends AbstractTest {
     @Test
     public void getLabel() throws Exception {
         assertEquals("test_label", field.getLabel());
+    }
+
+    @Test
+    public void testGetChildFields(){
+        List<Field> childFields = field.getChildFields();
+        assertEquals(1, childFields.size());
+        assertEquals("Fraction_of_80", childFields.get(0).getLabel());
     }
 }
