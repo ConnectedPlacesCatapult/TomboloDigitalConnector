@@ -30,26 +30,39 @@
         "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
         "label": "RentingResiliencePercentiles",
         "percentileCount": 4,
-        "inverse": true,
+        "inverse": "true",
         "valueField": {
           // The value field calcualates the renting households in an LSOA
           // as a fraction of the total number of households in the LSOA
-          "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-          "divisorAttribute": {
-            "provider": "uk.gov.ons",
-            "label": "Tenure: All categories: Tenure"
+          "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+          "operation": "div",
+          "field1": {
+            "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+            "operation": "add",
+            "fields": [
+              {
+                "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                "attribute": {
+                  "provider": "uk.gov.ons",
+                  "label": "Tenure: Social rented: Total"
+                }
+              },
+              {
+                "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                "attribute": {
+                  "provider": "uk.gov.ons",
+                  "label": "Tenure: Private rented: Total"
+                }
+              }
+            ]
           },
-          "dividendAttributes": [
-            // We sum up the following fields and use in the nominator of the fraction
-            {
+          "field2": {
+            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+            "attribute": {
               "provider": "uk.gov.ons",
-              "label": "Tenure: Social rented: Total"
-            },
-            {
-              "provider": "uk.gov.ons",
-              "label": "Tenure: Private rented: Total"
+              "label": "Tenure: All categories: Tenure"
             }
-          ]
+          }
         },
         "normalizationSubjects": [
           // Specification that determines that we calculate percentile boundaries nationally
