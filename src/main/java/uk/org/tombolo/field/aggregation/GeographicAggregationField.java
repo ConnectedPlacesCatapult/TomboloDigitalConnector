@@ -4,6 +4,7 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
@@ -27,10 +28,10 @@ import java.util.Map;
  *
  * So far, `sum` and `mean` are implemented.
  */
-public class GeographicAggregationField extends AbstractField {
+public class GeographicAggregationField extends AbstractField implements SingleValueField {
     private static Logger log = LoggerFactory.getLogger(GeographicAggregationField.class);
 
-    public static enum AggregationFunction {sum, mean}
+    public enum AggregationFunction {sum, mean}
     private final SubjectRecipe subject;
     private final FieldRecipe field;
     private final AggregationFunction function;
@@ -62,6 +63,13 @@ public class GeographicAggregationField extends AbstractField {
         } catch (Exception e) {
             throw new Error("Field not valid", e);
         }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, getDoubleValueForSubject(subject));
+        return obj;
     }
 
     private Double aggregateSubjects(MathArrays.Function aggregator, List<Subject> aggregationSubjects) throws IncomputableFieldException {

@@ -1,11 +1,12 @@
 package uk.org.tombolo.field.aggregation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.List;
  * building, it will evaluate the fieldSpec with a subject representing the
  * Street that building is on (notwithstanding oddities in the data)
  */
-public class MapToNearestSubjectField extends AbstractField implements ParentField {
+public class MapToNearestSubjectField extends AbstractField implements ParentField, SingleValueField {
     private static final Double DEFAULT_MAX_RADIUS = 0.01;
 
     private final SubjectRecipe subject;
@@ -46,6 +47,14 @@ public class MapToNearestSubjectField extends AbstractField implements ParentFie
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == singleValueField) { initialize(); }
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, Double.valueOf(singleValueField.valueForSubject(getSubjectProximalToSubject(subject), timeStamp)));
+        return obj;
     }
 
     private Subject getSubjectProximalToSubject(Subject outputSubject) throws IncomputableFieldException {
