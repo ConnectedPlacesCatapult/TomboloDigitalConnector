@@ -50,7 +50,7 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        if (null == field) { initialize(); }
+        if (null == singleValueField) { initialize(); }
         JSONObject obj = new JSONObject();
         obj.put(this.label, calculateValueForSubject(subject));
         return obj;
