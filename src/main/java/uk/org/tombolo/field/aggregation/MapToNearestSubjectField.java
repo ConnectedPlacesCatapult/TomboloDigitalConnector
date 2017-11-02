@@ -71,7 +71,8 @@ public class MapToNearestSubjectField extends AbstractField implements ParentFie
 
     @Override
     public List<Field> getChildFields() {
-        if (null == singleValueField) { initialize(); }
+        if (singleValueField == null)
+            initialize();
         return Collections.singletonList(singleValueField);
     }
 

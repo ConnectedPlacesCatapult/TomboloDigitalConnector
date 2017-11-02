@@ -28,6 +28,12 @@ public class WrapperFieldTest extends AbstractTest {
         assertEquals("aLabel", field.getLabel());
     }
 
+    @Test
+    public void testGetChildFields(){
+        List<Field> childFields = field.getChildFields();
+        assertEquals("anotherLabel", childFields.get(0).getLabel());
+    }
+
     private List<FieldRecipe> makeFieldSpec() {
         return Collections.singletonList(
                 RecipeDeserializer.fromJson(FieldBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));

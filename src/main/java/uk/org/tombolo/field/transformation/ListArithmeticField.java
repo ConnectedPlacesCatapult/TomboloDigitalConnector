@@ -2,10 +2,7 @@ package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.field.AbstractField;
-import uk.org.tombolo.field.Field;
-import uk.org.tombolo.field.IncomputableFieldException;
-import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
@@ -18,40 +15,42 @@ import java.util.function.Function;
  * Takes as input an operation, and a list of fields. It returns for a given Subject the value resulting from applying
  * the operation on the list of fields' values.
  */
-public class ListArithmeticField extends AbstractField implements SingleValueField {
+public class ListArithmeticField extends AbstractField implements SingleValueField, ParentField {
     public enum Operation {mul, add}
     private final List<FieldRecipe> fields;
     private final Operation operation;
 
     private Map<Operation, Function<List<Double>, Double>> operators;
-    private List<SingleValueField> singleValueFields;
+    private List<Field> singleValueFields;
     private Function<List<Double>, Double> operator;
 
     ListArithmeticField(String label, Operation operation, List<FieldRecipe> fields) {
-            super(label);
-            this.operation = operation;
-            this.fields = fields;
-        }
+        super(label);
+        this.operation = operation;
+        this.fields = fields;
+    }
 
-        public void initialize() {
-            // Initialise operators
-            operators = new HashMap<>();
-            operators.put(Operation.mul, l -> l.stream().reduce(1.0, (a, b) -> a * b));
-            operators.put(Operation.add, l -> l.stream().reduce(0.0, (a, b) -> a + b));
+    public void initialize() {
+        // Initialise operators
+        operators = new HashMap<>();
+        operators.put(Operation.mul, l -> l.stream().reduce(1.0, (a, b) -> a * b));
+        operators.put(Operation.add, l -> l.stream().reduce(0.0, (a, b) -> a + b));
 
-            try {
-                this.operator = operators.get(this.operation);
-                singleValueFields = new ArrayList<>();
+        try {
+            this.operator = operators.get(this.operation);
+            singleValueFields = new ArrayList<>();
 
-                for (FieldRecipe fieldRecipe: fields) {
-                    Field field = fieldRecipe.toField();
-                    field.setFieldCache(fieldCache);
-                    singleValueFields.add((SingleValueField) field);
-                }
-            } catch (Exception e) {
-                throw new Error("Field not valid", e);
+            for (FieldRecipe fieldRecipe: fields) {
+                Field field = fieldRecipe.toField();
+                if (!(field instanceof SingleValueField))
+                    throw new IncomputableFieldException("Parameters for ListArithmetricField must be of type SingleValueField");
+                field.setFieldCache(fieldCache);
+                singleValueFields.add(field);
             }
+        } catch (Exception e) {
+            throw new Error("Field not valid", e);
         }
+    }
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
@@ -73,8 +72,8 @@ public class ListArithmeticField extends AbstractField implements SingleValueFie
         if (null == singleValueFields || singleValueFields.isEmpty()) { initialize(); }
 
         List<Double> values = new ArrayList<>();
-        for (SingleValueField singleValueField: singleValueFields) {
-            values.add(Double.parseDouble(singleValueField.valueForSubject(subject, true)));
+        for (Field singleValueField: singleValueFields) {
+            values.add(Double.parseDouble(((SingleValueField)singleValueField).valueForSubject(subject, true)));
         }
 
         Double retVal = operator.apply(values);
@@ -89,4 +88,10 @@ public class ListArithmeticField extends AbstractField implements SingleValueFie
         return retVal;
     }
 
+    @Override
+    public List<Field> getChildFields() {
+        if (singleValueFields == null)
+            initialize();
+        return singleValueFields;
+    }
 }

@@ -4,6 +4,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.IncomputableFieldException;
+import uk.org.tombolo.field.ParentField;
+import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.value.FixedValueField;
 import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
@@ -75,7 +80,8 @@ public class FieldValueSumField extends AbstractField implements ParentField, Si
 
     @Override
     public List<Field> getChildFields() {
-        if (null == sumFields) { initialize(); }
+        if (sumFields == null)
+            initialize();
         return sumFields;
     }
 }

@@ -32,7 +32,7 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
     // True if the ordering of the percentiles is supposed to be inverse to the field
     private Boolean inverse;
 
-    private SingleValueField field;
+    private SingleValueField singleValueField;
     private List<Double> percentiles;
 
     public PercentilesField(
@@ -66,9 +66,9 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
 
-        if (field == null)
+        if (singleValueField == null)
             initialize();
-        double fieldValue = Double.valueOf(field.valueForSubject(subject, true));
+        double fieldValue = Double.valueOf(singleValueField.valueForSubject(subject, true));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
                 Double value;
@@ -85,11 +85,11 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
         throw new IncomputableFieldException("Value outside percentiles");
     }
 
-    private void initialize() {
-        if (field == null) {
+    public void initialize() {
+        if (singleValueField == null) {
             try {
-                field = (SingleValueField) valueField.toField();
-                field.setFieldCache(fieldCache);
+                singleValueField = (SingleValueField) valueField.toField();
+                singleValueField.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){
@@ -108,15 +108,15 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
 
             for (int i = 0; i< subjects.size(); i++){
                 try {
-                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i), true));
+                    values[i] = Double.valueOf(singleValueField.valueForSubject(subjects.get(i), true));
                 } catch (IncomputableFieldException e) {
                     throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
                             "Check that Field %1$s exists for Subject %2$s \n" +
-                            "If not, you may have to calculate percentiles over a different range of subjects", field.getLabel(), subjects.get(i).getLabel()), e);
+                            "If not, you may have to calculate percentiles over a different range of subjects", singleValueField.getLabel(), subjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);
-            log.info("Normalising percentiles of {} over {} subjects", field.getLabel(), subjects.size());
+            log.info("Normalising percentiles of {} over {} subjects", singleValueField.getLabel(), subjects.size());
             log.info("Min value: {}", StatUtils.min(values));
             log.info("Max value: {}", StatUtils.max(values));
             log.info("Median: {}", StatUtils.mean(values));
@@ -134,9 +134,8 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
 
     @Override
     public List<Field> getChildFields() {
-        if (field == null)
-                initialize();
-
-        return Collections.singletonList(field);
+        if (singleValueField == null)
+            initialize();
+        return Collections.singletonList(singleValueField);
     }
 }

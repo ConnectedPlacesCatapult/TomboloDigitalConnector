@@ -74,7 +74,8 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
 
     @Override
     public List<Field> getChildFields() {
-        if (null == singleValueField) { initialize(); }
+        if (singleValueField == null)
+            initialize();
         return Collections.singletonList(singleValueField);
     }
 }

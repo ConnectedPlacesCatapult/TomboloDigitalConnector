@@ -9,17 +9,25 @@ import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
+import uk.org.tombolo.field.Field;
 import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.RecipeDeserializer;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class AttributeMatcherFieldTest extends AbstractTest {
     private static final String ATTRIBUTE_LABEL = "tobecounted";
+
+    // Create field
+    private AttributeMatcher attributeMatcher
+            = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL, Arrays.asList("value1", "value2"));
+    private AttributeMatcherField attributeMatcherFieldWithArea = new AttributeMatcherField("blafield",
+            Collections.singletonList(attributeMatcher), makeAreaFieldSpec());
 
     @Test
     public void valueForSubjectAttributeWithValues() throws Exception {
@@ -43,17 +51,11 @@ public class AttributeMatcherFieldTest extends AbstractTest {
         FixedValueUtils.save(new FixedValue(subjectWithAttribtueAndTwoValueMatches, testAttribute, "value2"));
         FixedValueUtils.save(new FixedValue(subjectWithAttributeButOtherValue, testAttribute, "value3"));
 
-        // Create field
-        AttributeMatcher attributeMatcher = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), ATTRIBUTE_LABEL,
-                Arrays.asList("value1", "value2"));
-        AttributeMatcherField field = new AttributeMatcherField("blafield",
-                Collections.singletonList(attributeMatcher), makeAreaFieldSpec());
-
         // Test
-        assertEquals("25.00",field.valueForSubject(subjectWithAttributeAndOneValueMatch, true));
-        assertEquals("49.00", field.valueForSubject(subjectWithAttribtueAndTwoValueMatches, true));
-        assertEquals("0", field.valueForSubject(subjectWithAttributeButOtherValue, true));
-        assertEquals("0", field.valueForSubject(subjectWithoutAttribute, true));
+        assertEquals("25.00",attributeMatcherFieldWithArea.valueForSubject(subjectWithAttributeAndOneValueMatch, true));
+        assertEquals("49.00", attributeMatcherFieldWithArea.valueForSubject(subjectWithAttribtueAndTwoValueMatches, true));
+        assertEquals("0", attributeMatcherFieldWithArea.valueForSubject(subjectWithAttributeButOtherValue, true));
+        assertEquals("0", attributeMatcherFieldWithArea.valueForSubject(subjectWithoutAttribute, true));
     }
 
     @Test
@@ -93,6 +95,13 @@ public class AttributeMatcherFieldTest extends AbstractTest {
         assertEquals("3.0",field.valueForSubject(subjectWithTwoAttributeMatches, true));
         assertEquals("0",field.valueForSubject(subjectWithNoAttributeMatches, true));
         assertEquals("0",field.valueForSubject(subjectWithoutAttribute, true));
+    }
+
+    @Test
+    public void testChildFields(){
+        List<Field> childFields = attributeMatcherFieldWithArea.getChildFields();
+        assertEquals(1, childFields.size());
+        assertEquals("default_label", childFields.get(0).getLabel());
     }
 
     private FieldRecipe makeAreaFieldSpec() {
