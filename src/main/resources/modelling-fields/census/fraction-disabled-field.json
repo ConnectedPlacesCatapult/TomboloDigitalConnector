@@ -1,0 +1,34 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "operation": "add",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "//": "Day-to-day activities limited a lot",
+          "provider": "uk.gov.ons",
+          "label": "CL_0000004_2"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "//": "Day-to-day activities limited a little",
+          "provider": "uk.gov.ons",
+          "label": "CL_0000004_3"
+        }
+      }
+    ]
+  },
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "attribute": {
+      "//": "Total: All categories: Long-term health problem or disability",
+      "provider": "uk.gov.ons",
+      "label": "CL_0000004_1"
+    }
+  }
+}

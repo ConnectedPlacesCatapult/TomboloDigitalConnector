@@ -1,0 +1,7 @@
+[
+  {
+    "//": "QS103EW	Age by single year",
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs103ew"
+  }
+]
