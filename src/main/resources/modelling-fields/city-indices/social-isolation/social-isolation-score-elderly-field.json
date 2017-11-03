@@ -3,6 +3,7 @@
     "name": "Social Isolation Score",
     "description": "The Social Isolation Score is an index to estimate the risk of social isolation among the elderly. It is based on a model developed by AgeUK. For each LSOA in England and Wales it uses ONS Census data to estimate the risk of social isolation based on the age distribution in the area, tenure, living arrangement, health, disability and deprivation.",
     "tags": ["social isolation", "loneliness", "city index", "elderly", "AgeUK", "living arrangements", "tenure", "health", "disability", "deprivation"]
+    "comment": "This metadata field is an optional experimental field while we figure out the best way to document models."
   },
   "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
   "operation": "add",
