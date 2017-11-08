@@ -6,6 +6,7 @@ The Tombolo Digital Connector is a software library for integrating urban models
 For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
 
 ## Table of Contents:
+## Table of Contents:
 
 * [Quick start](#quick-start)
 * [Continuous Integration](#continuous-integration)
