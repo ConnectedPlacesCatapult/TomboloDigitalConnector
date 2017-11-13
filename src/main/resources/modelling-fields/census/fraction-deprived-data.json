@@ -1,0 +1,7 @@
+[
+  {
+    "//": "QS119EW	Households by deprivation dimensions",
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs119ew"
+  }
+]

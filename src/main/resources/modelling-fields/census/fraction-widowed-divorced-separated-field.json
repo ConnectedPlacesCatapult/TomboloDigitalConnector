@@ -1,0 +1,39 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "operation": "add",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Living Arrangement: Not living in a couple: Separated (but still legally married or still legally in a same-sex civil partnership)"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Living Arrangement: Not living in a couple: Divorced or formerly in a same-sex civil partnership which is now legally dissolved"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Living Arrangement: Not living in a couple: Widowed or surviving partner from a same-sex civil partnership"
+        }
+      }
+
+    ]
+  },
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "attribute": {
+      "provider": "uk.gov.ons",
+      "label": "Living Arrangement: All categories: Living arrangements"
+    }
+  }
+}

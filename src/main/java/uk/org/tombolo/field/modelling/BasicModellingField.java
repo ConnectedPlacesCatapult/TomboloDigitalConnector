@@ -84,6 +84,8 @@ public class BasicModellingField extends AbstractField implements ModellingField
         if (datasources == null) {
             String dataSpecificationFilename = fieldSpecPath + recipe + fieldDataPostfix;
             URL dataSpecificationFileURL = ClassLoader.getSystemResource(dataSpecificationFilename);
+            if (dataSpecificationFileURL == null)
+                throw new Error("Model file not found: " + dataSpecificationFilename);
             File dataSpecificationFile = new File(dataSpecificationFileURL.getFile());
             try {
                 GsonBuilder gsonBuilder = new GsonBuilder();

@@ -1,0 +1,7 @@
+[
+  {
+    "//": "QS108EW	Living arrangements",
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs108ew"
+  }
+]
