@@ -34,6 +34,11 @@ public enum OSMBuiltInImporters {
             .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
     OSMLanduse("built-in-landuse", "Open Street Map land use data", Collections.unmodifiableMap(Stream.of(
             new AbstractMap.SimpleEntry<>("landuse", Arrays.asList("*")))
+            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
+    OSMGastronomy("built-in-gastronomy", "Open Street Map gastronomy data", Collections.unmodifiableMap(Stream.of(
+            new AbstractMap.SimpleEntry<>(
+                    "amenity",
+                    Arrays.asList("bar", "biergarten", "cafe", "fast_food", "pub", "restaurant")))
             .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()))))
     ;
 
