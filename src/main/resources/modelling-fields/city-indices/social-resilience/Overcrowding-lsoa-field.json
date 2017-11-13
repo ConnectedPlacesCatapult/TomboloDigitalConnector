@@ -4,30 +4,44 @@
   "name": "Overcrowding Resilience",
   "percentileCount": 4,
   "inverse": true,
-  "valueField":{
-    "fieldClass": "uk.org.tombolo.field.transformation.FractionOfTotalField",
-    "divisorAttribute": {
-      "//": "Total: All categories: Occupancy rating (rooms)",
-      "provider": "uk.gov.ons",
-      "label": "CL_0000127_1"
+  "valueField": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+    "operation": "div",
+    "field1": {
+      "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+      "operation": "add",
+      "fields": [
+        {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "attribute": {
+            "//": "Occupancy rating (rooms) of -1",
+            "provider": "uk.gov.ons",
+            "label": "CL_0000127_5"
+          }
+        },
+        {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "attribute": {
+            "//": "Occupancy rating (rooms) of -2 or less",
+            "provider": "uk.gov.ons",
+            "label": "CL_0000127_6"
+          }
+        }
+      ]
     },
-    "dividendAttributes": [
-      {
-        "//": "Occupancy rating (rooms) of -1",
+    "field2": {
+      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+      "attribute": {
+        "//": "Total: All categories: Occupancy rating (rooms)",
         "provider": "uk.gov.ons",
-        "label": "CL_0000127_5"
-      },
-      {
-        "//": "Occupancy rating (rooms) of -2 or less",
-        "provider": "uk.gov.ons",
-        "label": "CL_0000127_6"
+        "label": "CL_0000127_1"
       }
-    ]
+    }
   },
   "normalizationSubjects": [
     {
       "subjectType": "lsoa",
-      "provider":"uk.gov.ons"
+      "provider": "uk.gov.ons"
     }
   ]
 }
