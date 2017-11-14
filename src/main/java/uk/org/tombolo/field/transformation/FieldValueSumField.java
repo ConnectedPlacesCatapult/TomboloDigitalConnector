@@ -1,6 +1,9 @@
 package uk.org.tombolo.field.transformation;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.*;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.ParentField;
@@ -14,7 +17,7 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField extends FixedValueField implements ParentField {
+public class FieldValueSumField extends AbstractField implements ParentField, SingleValueField {
     String name;
     List<FieldRecipe> fields;
     List<Field> sumFields;
@@ -42,6 +45,21 @@ public class FieldValueSumField extends FixedValueField implements ParentField {
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
 
         return sumFields(subject).toString();
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put("value", sumFields(subject));
+        JSONArray array = new JSONArray();
+        array.add(obj);
+        return withinMetadata(array);
+    }
+
+    protected JSONObject withinMetadata(JSONArray contents) {
+        JSONObject obj = new JSONObject();
+        obj.put(label, contents);
+        return obj;
     }
 
     private Double sumFields(Subject subject) throws IncomputableFieldException {

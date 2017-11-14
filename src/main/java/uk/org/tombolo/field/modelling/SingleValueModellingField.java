@@ -12,7 +12,7 @@ import java.util.List;
  * further calculations. E.g. in a field where we would like to algorithmically combine the values of two or more
  * modelling fields.
  */
-public class SingleValueModellingField extends BasicModellingField {
+public class SingleValueModellingField extends BasicModellingField implements SingleValueField {
 
     public SingleValueModellingField(String label, String recipe, List<DatasourceRecipe> datasources) {
         super(label, recipe, datasources);

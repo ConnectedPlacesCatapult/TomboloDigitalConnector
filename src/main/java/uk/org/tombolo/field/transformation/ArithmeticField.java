@@ -1,6 +1,10 @@
 package uk.org.tombolo.field.transformation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.AbstractField;
+import uk.org.tombolo.field.IncomputableFieldException;
+import uk.org.tombolo.field.SingleValueField;
 import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
 
@@ -14,7 +18,8 @@ import java.util.function.BiFunction;
  * Takes as input an operation, and two fields. It returns for a given Subject the value resulting from applying
  * the operation on the two field values.
  */
-public class ArithmeticField extends AbstractField implements ParentField {
+
+public class ArithmeticField extends AbstractField implements SingleValueField, ParentField {
 
     public enum Operation {div, mul, add, sub}
     private final FieldRecipe field1;
@@ -50,6 +55,13 @@ public class ArithmeticField extends AbstractField implements ParentField {
         } catch (Exception e) {
             throw new Error("Field not valid: " + e.getClass());
         }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, calculateValueForSubject(subject));
+        return obj;
     }
 
     @Override

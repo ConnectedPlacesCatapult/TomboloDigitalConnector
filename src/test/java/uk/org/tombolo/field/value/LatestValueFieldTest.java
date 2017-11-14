@@ -36,7 +36,7 @@ public class LatestValueFieldTest extends AbstractTest {
         JSONAssert.assertEquals("{" +
                 "  aLabel: [" +
                 "    {" +
-                "      value: '100.0'," +
+                "      value: 100.0," +
                 "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
                 "  ]" +

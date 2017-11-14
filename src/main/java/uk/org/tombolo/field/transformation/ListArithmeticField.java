@@ -1,5 +1,6 @@
 package uk.org.tombolo.field.transformation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
@@ -14,8 +15,7 @@ import java.util.function.Function;
  * Takes as input an operation, and a list of fields. It returns for a given Subject the value resulting from applying
  * the operation on the list of fields' values.
  */
-public class ListArithmeticField extends AbstractField implements ParentField{
-
+public class ListArithmeticField extends AbstractField implements SingleValueField, ParentField {
     public enum Operation {mul, add}
     private final List<FieldRecipe> fields;
     private final Operation operation;
@@ -53,6 +53,13 @@ public class ListArithmeticField extends AbstractField implements ParentField{
     }
 
     @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, calculateValueForSubject(subject));
+        return obj;
+    }
+
+    @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return calculateValueForSubject(subject).toString();
     }
@@ -87,5 +94,4 @@ public class ListArithmeticField extends AbstractField implements ParentField{
             initialize();
         return singleValueFields;
     }
-
 }
