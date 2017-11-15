@@ -159,7 +159,7 @@ task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
 
 		def argumentsSet = project.hasProperty('outputFile');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-		if (project.hasProperty('webResourcePath')) args(outputWebFile, webResourcePath)
+		if (project.hasProperty('webResourcePath')) args(webOutputFile, webResourcePath)
 		else throw new GradleException('Path to Web Directory resources folder is required')
 	}
 }
