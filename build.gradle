@@ -128,20 +128,6 @@ task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
 	}
 }
 
-task runCatalogue(dependsOn: ['classes'], type: JavaExec) {
-	main = 'uk.org.tombolo.DataCatalogueRunner'
-	classpath = sourceSets.main.runtimeClasspath
-	jvmArgs '-disableassertions'
-
-	doFirst {
-		def argumentsSet = project.hasProperty('importerClassName');
-		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-		if (!project.hasProperty('datasetId')) { ext.datasetId = "" }
-
-		args(importerClassName, datasetId)
-	}
-}
-
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
 	maxHeapSize = "4096m"
 	main = 'uk.org.tombolo.CatalogueExportRunner'

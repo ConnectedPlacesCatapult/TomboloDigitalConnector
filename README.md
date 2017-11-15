@@ -117,34 +117,10 @@ gradle runExport \
     -PoutputFile='reaggregate-traffic-count-to-la_output.json'
 ```
 
-### Run data catalogue
-
-We use the Gradle task `runCatalogue` to explore the data catalogue. The parameters are as follows:
-
-```bash
-gradle runCatalogue \
-    -PimporterClassName='full.name.of.the.importer'
-    -PdatasetId='dataset-id'
-```
-
-If the datasetId parameter is not present the program writes out all the datasets available from the importer.
-If the datasetId is specificed the program writes out all attributes available from that importer dataset pair.
-
-For example, this lists all datasets available in the ONS Census importer:
-
-```bash
-gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter'
-```
-
-For example, this lists all attributes available in the dataset QS102EW from ONS (Population density):
-
-```bash
-gradle runCatalogue -PimporterClassName='uk.org.tombolo.importer.ons.ONSCensusImporter' -PdatasetId='QS102EW'
-```
-
 ### Export data catalogue
 
-We us the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector.
+We us the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector
+and explore the data catalogue.
 
 ```bash
 gradle exportCatalogue -PoutputFile=catalogue.json
