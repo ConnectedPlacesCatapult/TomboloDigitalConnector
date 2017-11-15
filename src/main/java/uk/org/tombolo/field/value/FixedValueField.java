@@ -12,7 +12,7 @@ import uk.org.tombolo.recipe.AttributeMatcher;
 /**
  * For a given subject, returns the {@link FixedValue} of a specified attribute.
  */
-public class FixedValueField extends ValuesByTimeField implements SingleValueField {
+public class FixedValueField extends BasicValueField implements SingleValueField {
 
     public FixedValueField(String label, AttributeMatcher attribute) {
         super(label, attribute);
