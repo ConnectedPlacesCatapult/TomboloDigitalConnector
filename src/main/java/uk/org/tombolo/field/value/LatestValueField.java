@@ -16,7 +16,7 @@ import uk.org.tombolo.recipe.AttributeMatcher;
  *
  * The metadata is regarding the attribute.
  */
-public class LatestValueField extends ValuesByTimeField implements SingleValueField {
+public class LatestValueField extends BasicValueField implements SingleValueField {
     public LatestValueField(String label, AttributeMatcher attribute) {
         super(label, attribute);
     }
