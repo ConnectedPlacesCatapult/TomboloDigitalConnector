@@ -11,5 +11,5 @@ testDatabasePassword=tombolo_test
 fileDownloadCache=/tmp
 
 ! Set path of catalogue file and give path of Web Project
-outputFile=path/of/output/file
+webOutputFile=path/of/output/file
 webResourcePath=path/of/web/project

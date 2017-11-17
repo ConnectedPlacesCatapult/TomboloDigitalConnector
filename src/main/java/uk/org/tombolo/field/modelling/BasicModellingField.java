@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
@@ -24,7 +25,7 @@ import java.util.List;
  * A field that takes as input a specification (recipe) of a potentially complex field or model
  * and returns a value that is calculated according to the specification.
  */
-public class BasicModellingField extends AbstractField implements ModellingField, ParentField {
+public class BasicModellingField extends AbstractField implements ModellingField, ParentField, Field {
     // Variables that can be passed by the user in recipes
     String recipe;
     List<DatasourceRecipe> datasources; // This is an optional field that can be used to override the datasources
@@ -52,9 +53,13 @@ public class BasicModellingField extends AbstractField implements ModellingField
     }
 
     @Override
-    public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         if (field == null) initialize();
-        return field.jsonValueForSubject(subject, timeStamp).toJSONString();
+        JSONObject obj = new JSONObject();
+        JSONObject fieldValue = field.jsonValueForSubject(subject, timeStamp);
+        // Unwrap the fieldValue by getting based on the label, then rewrap with the label the user specified
+        obj.put(label, fieldValue.get(field.getLabel()));
+        return obj;
     }
 
     public void initialize() {

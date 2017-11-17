@@ -2,6 +2,7 @@ package uk.org.tombolo.field.transformation;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
@@ -19,7 +20,7 @@ import java.util.stream.IntStream;
  * Field that returns for a subject the percentile in which its value falls.
  * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
-public class PercentilesField extends AbstractField implements ParentField {
+public class PercentilesField extends AbstractField implements ParentField, SingleValueField {
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
@@ -45,6 +46,14 @@ public class PercentilesField extends AbstractField implements ParentField {
         this.normalizationSubjects = normalizationSubjects;
         this.percentileCount = percentileCount;
         this.inverse = inverse;
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == singleValueField) { initialize(); }
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, calculateValueForSubject(subject));
+        return obj;
     }
 
     @Override

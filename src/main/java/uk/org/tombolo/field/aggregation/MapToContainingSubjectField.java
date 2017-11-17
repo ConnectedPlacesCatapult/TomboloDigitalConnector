@@ -1,5 +1,6 @@
 package uk.org.tombolo.field.aggregation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
  * it is given a subject representing a building, it will evaluate the fieldSpec with a subject representing the
  * city that building is in.
  */
-public class MapToContainingSubjectField extends AbstractField implements ParentField {
+public class MapToContainingSubjectField extends AbstractField implements ParentField, SingleValueField {
     private final SubjectRecipe subject;
     private final FieldRecipe field;
     private SingleValueField singleValueField;
@@ -40,6 +41,15 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
         } catch (ClassNotFoundException e) {
             throw new Error("Field not valid");
         }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == singleValueField) { initialize(); }
+        JSONObject obj = new JSONObject();
+        obj.put(this.label,
+                singleValueField.jsonValueForSubject(getSubjectContainingSubject(subject), timeStamp));
+        return obj;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package uk.org.tombolo.field.assertion;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * Returns the value of the 'field' if the subject has an attribute matching one of the 'attributes'"
  */
-public class AttributeMatcherField extends AbstractField implements ParentField {
+public class AttributeMatcherField extends AbstractField implements SingleValueField, ParentField{
 
     private List<AttributeMatcher> attributes;
     private FieldRecipe field;
@@ -52,6 +53,13 @@ public class AttributeMatcherField extends AbstractField implements ParentField 
         } catch (Exception e) {
             throw new Error("Field not valid", e);
         }
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, valueForSubject(subject, timeStamp));
+        return obj;
     }
 
     @Override

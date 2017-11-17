@@ -58,7 +58,7 @@ public class FieldValueSumFieldTest extends AbstractTest {
         JSONAssert.assertEquals("{" +
                 "  FVSF-label: [" +
                 "    {" +
-                "      value: '50.0'" +
+                "      value: 50.0" +
                 "    }" +
                 "  ]" +
                 "}", jsonString, false);

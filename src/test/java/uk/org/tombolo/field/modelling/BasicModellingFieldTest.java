@@ -66,11 +66,11 @@ public class BasicModellingFieldTest extends AbstractTest {
     public void jsonValueForSubject() throws Exception {
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  test_label: { Fraction_of_80: [" +
+                "  test_label: [" +
                 "    {" +
                 "      value: 0.4" +
                 "    }" +
-                "  ]}" +
+                "  ]" +
                 "}", jsonString, false);
 
     }

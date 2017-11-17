@@ -14,7 +14,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.recipe.AttributeMatcher;
 import uk.org.tombolo.field.value.FixedAnnotationField;
-import uk.org.tombolo.field.value.ValuesByTimeField;
+import uk.org.tombolo.field.value.TimeseriesField;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -43,7 +43,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 		exporter.write(writer, Collections.singletonList(
 				SubjectUtils.getSubjectByTypeAndLabel(localAuthority,"E09000001")
 		), Collections.singletonList(
-				new ValuesByTimeField("attr_label",
+				new TimeseriesField("attr_label",
 						new AttributeMatcher("default_provider_label", "attr_label", null))
 		), false);
 
