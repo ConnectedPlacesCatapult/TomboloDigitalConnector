@@ -30,6 +30,11 @@ public class LatestValueField extends BasicValueField implements SingleValueFiel
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         TimedValue timedValue = getTimedValue(subject);
         JSONObject obj = new JSONObject();
+        if (null != timeStamp && !timeStamp) {
+            obj.put(null != this.label ? this.label : "value",
+                                            timedValue.getValue());
+            return obj;
+        }
         obj.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
         obj.put("value", timedValue.getValue());
         JSONArray values = new JSONArray();

@@ -27,6 +27,11 @@ public class TimeseriesField extends BasicValueField {
         JSONArray arr = new JSONArray();
         arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
+            if (null != timeStamp && !timeStamp) {
+                pair.put(null != this.label ? this.label : "value",
+                                                    timedValue.getValue());
+                return pair;
+            }
             pair.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
             pair.put("value", timedValue.getValue());
             return pair;
