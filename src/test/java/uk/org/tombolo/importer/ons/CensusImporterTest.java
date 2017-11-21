@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 
 public class CensusImporterTest extends AbstractTest {
     private static final String MTW_ID = "qs701ew";
+    private static final String POP_ID = "qs102ew";
     private static CensusImporter importer;
 
     Subject cityOfLondon01;
@@ -37,10 +38,15 @@ public class CensusImporterTest extends AbstractTest {
     }
 
     @Test
-    public void getTimedValueAttributes() throws Exception {
+    public void getTimedValueAttributesMTW() throws Exception {
         List<Attribute> attributes = importer.getTimedValueAttributes(MTW_ID);
-
         assertEquals(13, attributes.size());
+    }
+
+    @Test
+    public void getTimedValueAttributesPOP() throws Exception {
+        List<Attribute> attributes = importer.getTimedValueAttributes(POP_ID);
+        assertEquals(3, attributes.size());
     }
 
     @Test
@@ -49,7 +55,7 @@ public class CensusImporterTest extends AbstractTest {
     }
 
     @Test
-    public void importDatasource() throws Exception {
+    public void importDatasourceMTW() throws Exception {
         importer.importDatasource(MTW_ID, null, null, null);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
@@ -84,4 +90,26 @@ public class CensusImporterTest extends AbstractTest {
         assertEquals(122d, timedValue.getValue(), 0.0d);
     }
 
+    @Test
+    public void importDatasourcePOP() throws Exception {
+        importer.importDatasource(POP_ID, null, null, null);
+        assertEquals(0, importer.getSubjectCount());
+        assertEquals(0, importer.getFixedValueCount());
+        assertEquals(12, importer.getTimedValueCount());
+
+        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Area/Population Density: Density (number of persons per hectare)");
+
+        TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute01);
+        assertEquals(112.9d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon02, attribute01);
+        assertEquals(62.9d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington01, attribute01);
+        assertEquals(131.2d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington02, attribute01);
+        assertEquals(171.9d, timedValue.getValue(), 0.0d);
+
+    }
 }
