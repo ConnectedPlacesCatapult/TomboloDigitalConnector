@@ -8,25 +8,22 @@
       {
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "attribute": {
-          "//": "Household is deprived in 2 dimensions",
           "provider": "uk.gov.ons",
-          "label": "CL_0000178_4"
+          "label": "Household Deprivation: Household is deprived in 2 dimensions"
         }
       },
       {
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "attribute": {
-          "//": "Household is deprived in 3 dimensions",
           "provider": "uk.gov.ons",
-          "label": "CL_0000178_5"
+          "label": "Household Deprivation: Household is deprived in 3 dimensions"
         }
       },
       {
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "attribute": {
-          "//": "Household is deprived in 4 dimensions",
           "provider": "uk.gov.ons",
-          "label": "CL_0000178_6"
+          "label": "Household Deprivation: Household is deprived in 4 dimensions"
         }
       }
     ]
@@ -34,9 +31,8 @@
   "field2": {
     "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
     "attribute": {
-      "//": "Total: All categories: Classification of household deprivation",
       "provider": "uk.gov.ons",
-      "label": "CL_0000178_1"
+      "label": "Household Deprivation: All categories: Classification of household deprivation"
     }
   }
 }
