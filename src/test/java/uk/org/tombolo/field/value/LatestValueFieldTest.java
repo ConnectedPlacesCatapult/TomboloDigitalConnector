@@ -34,12 +34,11 @@ public class LatestValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject, null).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: [" +
+                "  aLabel: " +
                 "    {" +
                 "      value: 100.0," +
                 "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
-                "  ]" +
                 "}", jsonString, false);
     }
 
@@ -57,12 +56,11 @@ public class LatestValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: [" +
+                "  aLabel: " +
                 "    {" +
                 "      value: 100.0," +
                 "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
-                "  ]" +
                 "}", jsonString, false);
     }
 }

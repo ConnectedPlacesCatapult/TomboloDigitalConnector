@@ -43,14 +43,12 @@ public class MapToContainingSubjectFieldTest extends AbstractTest {
     @Test
     public void testJsonValueForSubject() throws Exception {
         String jsonString = mapToContainingSubjectField.jsonValueForSubject(subject, true).toJSONString();
-        System.out.println(jsonString);
         JSONAssert.assertEquals("{" +
                         "  aLabel: {" +
-                        "    attr_label: [" +
+                        "    attr_label: " +
                         "      {" +
                         "        value: 100.0" +
                         "      }" +
-                        "    ]" +
                         "  }"+
                  "}",jsonString,false);
     }
