@@ -33,7 +33,7 @@ public class FieldBuilder implements JSONAware {
 
     public static FieldBuilder valuesByTime(String providerLabel, String attributeLabel) {
         FieldBuilder spec = new FieldBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.value.ValuesByTimeField")
+        spec    .setFieldClass("uk.org.tombolo.field.value.TimeseriesField")
                 .setLabel(attributeLabel)
                 .setAttribute(providerLabel, attributeLabel);
         return spec;

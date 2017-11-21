@@ -15,8 +15,8 @@ import uk.org.tombolo.recipe.AttributeMatcher;
 
 import static org.junit.Assert.assertEquals;
 
-public class ValuesByTimeFieldTest extends AbstractTest {
-    ValuesByTimeField field;
+public class TimeseriesFieldTest extends AbstractTest {
+    TimeseriesField field;
     Subject subject;
     Attribute attribute;
 
@@ -24,7 +24,7 @@ public class ValuesByTimeFieldTest extends AbstractTest {
     public void setUp() throws Exception {
         subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-        field = new ValuesByTimeField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label", null));
+        field = new TimeseriesField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label", null));
     }
 
     @Test
