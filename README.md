@@ -119,7 +119,7 @@ gradle runExport \
 
 ### Export data catalogue
 
-We us the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector
+We use the Gradle task `exportCatalogue` to export a JSON file detailing the capabilities of the connector
 and explore the data catalogue.
 
 ```bash
