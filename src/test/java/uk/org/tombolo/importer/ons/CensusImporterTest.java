@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 public class CensusImporterTest extends AbstractTest {
     private static final String MTW_ID = "qs701ew";
     private static final String POP_ID = "qs102ew";
+    private static final String POD_ID = "qs303ew";
     private static CensusImporter importer;
 
     Subject cityOfLondon01;
@@ -50,6 +51,12 @@ public class CensusImporterTest extends AbstractTest {
     }
 
     @Test
+    public void getTimedValueAttributesPOD() throws Exception {
+        List<Attribute> attributes = importer.getTimedValueAttributes(POD_ID);
+        assertEquals(4, attributes.size());
+    }
+
+    @Test
     public void getDataUrl() throws Exception {
         assertEquals("https://www.nomisweb.co.uk/api/v01/dataset/nm_568_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298", importer.getDataUrl(MTW_ID));
     }
@@ -61,7 +68,8 @@ public class CensusImporterTest extends AbstractTest {
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(52, importer.getTimedValueCount());
 
-        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Method of Travel to Work: All categories: Method of travel to work");
+        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
+                "Method of Travel to Work: All categories: Method of travel to work");
 
         TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute01);
         assertEquals(1221d, timedValue.getValue(), 0.0d);
@@ -75,7 +83,8 @@ public class CensusImporterTest extends AbstractTest {
         timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington02, attribute01);
         assertEquals(1628d, timedValue.getValue(), 0.0d);
 
-        Attribute attribute02 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Method of Travel to Work: On foot");
+        Attribute attribute02 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
+                "Method of Travel to Work: On foot");
 
         timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute02);
         assertEquals(445d, timedValue.getValue(), 0.0d);
@@ -97,7 +106,8 @@ public class CensusImporterTest extends AbstractTest {
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(12, importer.getTimedValueCount());
 
-        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "Area/Population Density: Density (number of persons per hectare)");
+        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
+                "Area/Population Density: Density (number of persons per hectare)");
 
         TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute01);
         assertEquals(112.9d, timedValue.getValue(), 0.0d);
@@ -110,6 +120,28 @@ public class CensusImporterTest extends AbstractTest {
 
         timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington02, attribute01);
         assertEquals(171.9d, timedValue.getValue(), 0.0d);
+    }
 
+    @Test
+    public void importDatasourcePOD() throws Exception {
+        importer.importDatasource(POD_ID, null, null, null);
+        assertEquals(0, importer.getSubjectCount());
+        assertEquals(0, importer.getFixedValueCount());
+        assertEquals(16, importer.getTimedValueCount());
+
+        Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
+                "Disability: Day-to-day activities limited a little");
+
+        TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon01, attribute01);
+        assertEquals(115d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon02, attribute01);
+        assertEquals(101d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington01, attribute01);
+        assertEquals(171d, timedValue.getValue(), 0.0d);
+
+        timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington02, attribute01);
+        assertEquals(171, timedValue.getValue(), 0.0d);
     }
 }
