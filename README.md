@@ -13,6 +13,10 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Run Tasks](#run-tasks)
 * [Wiki to PDF](#wiki-to-pdf)
 
+<p align="center">
+  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
+</p>
+
 ## Quick start
 
 ### Requirements
