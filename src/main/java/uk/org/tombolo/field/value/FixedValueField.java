@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.value;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
@@ -27,10 +26,9 @@ public class FixedValueField extends BasicValueField implements SingleValueField
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         FixedValue fixedValue = getFixedValue(subject);
         JSONObject obj = new JSONObject();
-        obj.put("value", fixedValue.getValue());
-        JSONArray values = new JSONArray();
-        values.add(obj);
-        return withinMetadata(values);
+        obj.put(null != this.label ? this.label : "value",
+                                            fixedValue.getValue());
+        return obj;
     }
 
     private FixedValue getFixedValue(Subject subject) throws IncomputableFieldException {

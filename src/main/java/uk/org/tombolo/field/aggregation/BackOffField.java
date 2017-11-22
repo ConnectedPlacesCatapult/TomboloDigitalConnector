@@ -60,7 +60,8 @@ public class BackOffField extends AbstractField implements SingleValueField, Par
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         JSONObject obj = new JSONObject();
-        obj.put("value", valueForSubject(subject, timeStamp));
+        obj.put(null != this.label ? this.label : "value" ,
+                                        valueForSubject(subject, timeStamp));
         return obj;
         }
   
