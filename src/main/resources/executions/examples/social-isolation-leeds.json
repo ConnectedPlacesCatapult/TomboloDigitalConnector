@@ -1,0 +1,59 @@
+{
+  "dataset" : {
+    "subjects" : [
+      {
+        "provider" : "uk.gov.ons",
+        "subjectType" : "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasources" : [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      }
+    ],
+    "fields" : [
+      {
+        "label": "index:social_isolation",
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "city-indices/social-isolation/social-isolation-score-elderly"
+      },
+      {
+        "label": "component:fraction_over_65",
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "census/fraction-65-and-older"
+      },
+      {
+        "label": "component:fraction_renting",
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "census/fraction-renting"
+      },
+      {
+        "label": "component:fraction_widowed_divorced_separated",
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "census/fraction-widowed-divorced-separated"
+      }//,
+      // Uncomment the ones below after the CensusImporter has been extended to handle miltidimensinal attributes
+      //{
+      //  "label": "component:fraction_bad_or_very_bad_health",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-bad-health"
+      //},
+      //{
+      //  "label": "component:fraction_limited",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-disabled"
+      //},
+      //{
+      //  "label": "component:fraction_deprived_2_or_more",
+      //  "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      //  "recipe": "census/fraction-deprived"
+      //}
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

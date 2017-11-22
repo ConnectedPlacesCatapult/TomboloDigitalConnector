@@ -45,7 +45,10 @@ public class TimedValueExtractor {
         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(timestampExtractor.extract());
         if (timestamp == null)
             throw new ExtractorException("Unparsable timestamp: " + timestampExtractor.extract());
-        Double value = Double.valueOf(valueExtractor.extract());
+        String valueString = valueExtractor.extract();
+        // Parsing out proper numbers
+        valueString = valueString.replaceAll("[^\\d]+(-?\\d+\\.?\\d+)[^\\d]+", "$1");
+        Double value =  Double.parseDouble(valueString);
         if (value == null)
             throw new ExtractorException("Unparsable number: " + valueExtractor.extract());
         return new TimedValue(subject, attribute, timestamp, value);

@@ -1,0 +1,6 @@
+[
+  {
+    "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+    "datasourceId": "OSMLanduse"
+  }
+]

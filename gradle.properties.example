@@ -9,3 +9,7 @@ testDatabasePassword=tombolo_test
 
 ! Where to download temporary files while importing data
 fileDownloadCache=/tmp
+
+! Set path of catalogue file and give path of Web Project
+webOutputFile=path/of/output/file
+webResourcePath=path/of/web/project

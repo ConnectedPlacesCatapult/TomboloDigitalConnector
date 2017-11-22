@@ -1,7 +1,6 @@
 package uk.org.tombolo.field.transformation;
 
 import org.apache.commons.collections4.ListUtils;
-import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.IncomputableFieldException;
+import uk.org.tombolo.field.SingleValueField;
 import uk.org.tombolo.recipe.AttributeMatcher;
 
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * For a subject, returns the sum of its TimedValues for a list of dividend
  * attributes divided by a divisor attribute.
  */
-public class FractionOfTotalField extends AbstractField {
+public class FractionOfTotalField extends AbstractField implements SingleValueField {
     private final List<AttributeMatcher> dividendAttributes;
     private final AttributeMatcher divisorAttribute;
     private Map<AttributeMatcher, Attribute> cachedAttributes;
@@ -49,14 +49,19 @@ public class FractionOfTotalField extends AbstractField {
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
+        if (null != timeStamp && !timeStamp) {
+            obj.put(null != this.label ? this.label : "value",
+                                            valueWithTimestamp.value);
+            return withinJsonStructure(obj);
+        }
         obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));
         obj.put("value", valueWithTimestamp.value);
         return withinJsonStructure(obj);
     }
 
-    private JSONObject withinJsonStructure(JSONAware values) {
+    private JSONObject withinJsonStructure(JSONObject values) {
         JSONObject obj = new JSONObject();
-        obj.put(label, Collections.singletonList(values));
+        obj.put(label, values);
         return obj;
     }
 

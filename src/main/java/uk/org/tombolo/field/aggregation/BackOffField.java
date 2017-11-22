@@ -1,11 +1,13 @@
 package uk.org.tombolo.field.aggregation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.field.SingleValueField;
+import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  * Field for providing backed off values when none exist.
  * An example back-off would be mapping to a value for a parent geography.
  */
-public class BackOffField extends AbstractField {
+public class BackOffField extends AbstractField implements SingleValueField, ParentField {
 
     private List<FieldRecipe> fields;
 
@@ -53,5 +55,19 @@ public class BackOffField extends AbstractField {
                 return value;
         }
         throw new IncomputableFieldException("No Backed-off value found");
+    }
+
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(null != this.label ? this.label : "value" ,
+                                        valueForSubject(subject, timeStamp));
+        return obj;
+        }
+  
+    public List<Field> getChildFields() {
+        if (materialisedFields == null)
+            initialize();
+        return materialisedFields;
     }
 }

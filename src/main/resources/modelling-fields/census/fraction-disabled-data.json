@@ -1,0 +1,7 @@
+[
+  {
+    "//": "QS303EW	Long-term health problem or disability",
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs303ew"
+  }
+]

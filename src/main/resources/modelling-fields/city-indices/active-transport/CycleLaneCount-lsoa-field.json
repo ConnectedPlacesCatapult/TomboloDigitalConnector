@@ -1,0 +1,35 @@
+{
+  "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+  "fields" : [
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "city-indices/active-transport/CycleLaneCount"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "msoa"
+      },
+      "field": {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "city-indices/active-transport/CycleLaneCount"
+      }
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+      "subject": {
+        "provider": "uk.gov.ons",
+        "subjectType": "localAuthority"
+      },
+      "field": {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "city-indices/active-transport/CycleLaneCount"
+      }
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+      "value" : "0.0"
+    }
+  ]
+}

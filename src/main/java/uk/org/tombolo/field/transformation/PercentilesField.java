@@ -2,13 +2,14 @@ package uk.org.tombolo.field.transformation;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.SubjectRecipe;
-import uk.org.tombolo.field.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.stream.IntStream;
  * Field that returns for a subject the percentile in which its value falls.
  * Percentiles can be calculated either over the output Subject or any other specified set of Subjects.
  */
-public class PercentilesField extends AbstractField implements ParentField {
+public class PercentilesField extends AbstractField implements ParentField, SingleValueField {
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
@@ -31,7 +32,7 @@ public class PercentilesField extends AbstractField implements ParentField {
     // True if the ordering of the percentiles is supposed to be inverse to the field
     private Boolean inverse;
 
-    private SingleValueField field;
+    private SingleValueField singleValueField;
     private List<Double> percentiles;
 
     public PercentilesField(
@@ -48,6 +49,14 @@ public class PercentilesField extends AbstractField implements ParentField {
     }
 
     @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        if (null == singleValueField) { initialize(); }
+        JSONObject obj = new JSONObject();
+        obj.put(this.label, calculateValueForSubject(subject));
+        return obj;
+    }
+
+    @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         return String.valueOf(calculateValueForSubject(subject));
     }
@@ -57,9 +66,9 @@ public class PercentilesField extends AbstractField implements ParentField {
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
 
-        if (field == null)
+        if (singleValueField == null)
             initialize();
-        double fieldValue = Double.valueOf(field.valueForSubject(subject, true));
+        double fieldValue = Double.valueOf(singleValueField.valueForSubject(subject, true));
         for (int i=0; i< percentiles.size()+1; i++){
             if (fieldValue <= percentiles.get(i)){
                 Double value;
@@ -76,11 +85,11 @@ public class PercentilesField extends AbstractField implements ParentField {
         throw new IncomputableFieldException("Value outside percentiles");
     }
 
-    private void initialize() {
-        if (field == null) {
+    public void initialize() {
+        if (singleValueField == null) {
             try {
-                field = (SingleValueField) valueField.toField();
-                field.setFieldCache(fieldCache);
+                singleValueField = (SingleValueField) valueField.toField();
+                singleValueField.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
                 throw new Error("Field class not found.", e);
             } catch (ClassCastException e){
@@ -99,15 +108,15 @@ public class PercentilesField extends AbstractField implements ParentField {
 
             for (int i = 0; i< subjects.size(); i++){
                 try {
-                    values[i] = Double.valueOf(field.valueForSubject(subjects.get(i), true));
+                    values[i] = Double.valueOf(singleValueField.valueForSubject(subjects.get(i), true));
                 } catch (IncomputableFieldException e) {
                     throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
                             "Check that Field %1$s exists for Subject %2$s \n" +
-                            "If not, you may have to calculate percentiles over a different range of subjects", field.getLabel(), subjects.get(i).getLabel()), e);
+                            "If not, you may have to calculate percentiles over a different range of subjects", singleValueField.getLabel(), subjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);
-            log.info("Normalising percentiles of {} over {} subjects", field.getLabel(), subjects.size());
+            log.info("Normalising percentiles of {} over {} subjects", singleValueField.getLabel(), subjects.size());
             log.info("Min value: {}", StatUtils.min(values));
             log.info("Max value: {}", StatUtils.max(values));
             log.info("Median: {}", StatUtils.mean(values));
@@ -125,9 +134,8 @@ public class PercentilesField extends AbstractField implements ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (field == null)
-                initialize();
-
-        return Collections.singletonList(field);
+        if (singleValueField == null)
+            initialize();
+        return Collections.singletonList(singleValueField);
     }
 }

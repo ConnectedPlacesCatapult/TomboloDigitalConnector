@@ -2,11 +2,9 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -20,24 +18,14 @@ import static org.junit.Assert.assertEquals;
  *
  * Local: cd309e6a-a89a-3906-9e7a-26f750dce624.xlsx
  */
-public class LondonPHOFImporterTest extends AbstractTest {
+public class LondonPHOFImporterTest extends AbstractLondonDatastoreTestUtil {
 	private static final String DATASOURCE_ID = "phofIndicatorsLondonBorough";
 	private LondonPHOFImporter importer;
-
-	Subject cityOfLondon;
-	Subject islington;
 
 	@Before
 	public void before(){
 		importer = new LondonPHOFImporter(TestFactory.DEFAULT_CONFIG);
 		mockDownloadUtils(importer);
-
-	}
-
-	@Before
-	public void addSubjectFixtures() {
-		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
-		islington = TestFactory.makeNamedSubject("E09000019");
 	}
 
 	@Test
@@ -65,6 +53,8 @@ public class LondonPHOFImporterTest extends AbstractTest {
 	@Test
 	public void testImportDatasource() throws Exception{
 		importer.importDatasource(DATASOURCE_ID, null, null, null);
+		assertEquals(0, importer.getSubjectCount());
+		assertEquals(0, importer.getFixedValueCount());
 		assertEquals(221, importer.getTimedValueCount());
 
 		Attribute attribute = AttributeUtils.getByProviderAndLabel(

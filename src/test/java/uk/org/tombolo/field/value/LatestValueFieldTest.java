@@ -20,7 +20,7 @@ public class LatestValueFieldTest extends AbstractTest {
     public void setUp() {
         subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-        field = new LatestValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
+        field = new LatestValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label", null));
     }
 
     @Test
@@ -34,12 +34,33 @@ public class LatestValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject, null).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: [" +
+                "  aLabel: " +
                 "    {" +
-                "      value: '100.0'," +
+                "      value: 100.0," +
                 "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
-                "  ]" +
+                "}", jsonString, false);
+    }
+
+    @Test
+    public void testJsonValueForSubjectWithTimeStampFalse() throws Exception {
+        TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
+        String jsonString = field.jsonValueForSubject(subject, false).toJSONString();
+        JSONAssert.assertEquals("{" +
+                "  aLabel: 100.0" +
+                "}", jsonString, false);
+    }
+
+    @Test
+    public void testJsonValueForSubjectWithTimeStampTrue() throws Exception {
+        TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00:00", 100d);
+        String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
+        JSONAssert.assertEquals("{" +
+                "  aLabel: " +
+                "    {" +
+                "      value: 100.0," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }" +
                 "}", jsonString, false);
     }
 }

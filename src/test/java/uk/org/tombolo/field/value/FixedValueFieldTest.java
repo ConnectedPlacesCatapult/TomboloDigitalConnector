@@ -20,7 +20,7 @@ public class FixedValueFieldTest extends AbstractTest {
     public void setUp() {
         subject = TestFactory.makeNamedSubject("E01000001");
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr_label");
-        field = new FixedValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label"));
+        field = new FixedValueField("aLabel", new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(), "attr_label", null));
     }
 
     @Test
@@ -34,11 +34,7 @@ public class FixedValueFieldTest extends AbstractTest {
         TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: [" +
-                "    {" +
-                "      value: 'one-hundred'" +
-                "    }" +
-                "  ]" +
+                "  aLabel: 'one-hundred'" +
                 "}", jsonString, false);
     }
 }

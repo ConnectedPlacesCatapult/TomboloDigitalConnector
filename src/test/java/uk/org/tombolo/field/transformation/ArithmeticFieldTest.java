@@ -7,9 +7,12 @@ import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.FieldBuilder;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.field.Field;
+import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.RecipeDeserializer;
-import uk.org.tombolo.field.IncomputableFieldException;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,6 +58,18 @@ public class ArithmeticFieldTest extends AbstractTest {
         Subject subject = TestFactory.makeNamedSubject("E01000001");
         ArithmeticField field = new ArithmeticField("aLabel", ArithmeticField.Operation.mul, makeFieldSpec("fixed1", "3"), makeFieldSpec("fixed2", "2"));
         assertEquals(field.valueForSubject(subject, null), "6.0");
+    }
+
+    @Test
+    public void testGetChildFields(){
+        ArithmeticField field = new ArithmeticField(
+                "aLabel",
+                ArithmeticField.Operation.div,
+                makeFieldSpec("fixed1", "1"), makeFieldSpec("fixed2", "2"));
+        List<Field> childFields = field.getChildFields();
+        assertEquals(2, childFields.size());
+        assertEquals("fixed1", childFields.get(0).getLabel());
+        assertEquals("fixed2", childFields.get(1).getLabel());
     }
 
     private FieldRecipe makeFieldSpec(String label, String value) {

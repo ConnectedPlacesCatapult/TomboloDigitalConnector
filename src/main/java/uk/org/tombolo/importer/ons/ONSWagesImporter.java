@@ -9,7 +9,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -142,7 +142,8 @@ public class ONSWagesImporter extends AbstractONSImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
 
         ExcelUtils excelUtils = new ExcelUtils();
 
@@ -201,6 +202,6 @@ public class ONSWagesImporter extends AbstractONSImporter {
     }
 
     private String getAttributeLabel(AttributePrefix attributePrefix, String sheetName, String metricName){
-        return AttributeUtils.substringToDBLength(attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName);
+        return attributePrefix.name() + sheetName.replaceAll(" ","-") + metricName;
     }
 }

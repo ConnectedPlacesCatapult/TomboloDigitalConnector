@@ -1,0 +1,7 @@
+[
+  {
+    "//": "QS302EW	General health",
+    "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+    "datasourceId": "qs302ew"
+  }
+]

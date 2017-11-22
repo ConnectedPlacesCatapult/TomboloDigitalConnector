@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        // The output subjects are all LSOAs
+        "provider": "uk.gov.ons",
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Leeds%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        // Importer for LSOA geographies
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.BasicModellingField",
+        "label": "component:residential_landuse",
+        "recipe": "city-indices/landuse-diversity/ResidentialFraction"
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+}

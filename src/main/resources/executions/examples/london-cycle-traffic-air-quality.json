@@ -2,8 +2,6 @@
   "dataset" : {
     "subjects" : [
       {
-        // The output of the export includes one record for each local authority whose label starts with 'E090'.
-        // Effectively this will export one record for each of the London Boroughs.
         "subjectType" : "localAuthority",
         "provider":"uk.gov.ons",
         "matchRule": {
@@ -14,18 +12,15 @@
     ],
     "datasources" : [
       {
-        // Importer for importing the geographic areas of local authorities
         "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
-        // Importer for DfT traffic counts in London
         "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
         "datasourceId" : "trafficCounts",
         "geographyScope" : ["London"]
       },
       {
-        // Importer for air quality
         "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
         "datasourceId": "airQualityControl"
       }

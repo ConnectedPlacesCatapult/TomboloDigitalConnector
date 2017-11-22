@@ -1,0 +1,18 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+  "operation": "add",
+  "fields": [
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "city-indices/active-transport/CyclingCount-lsoa"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "city-indices/active-transport/CycleLaneCount-lsoa"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "city-indices/active-transport/ActiveTransportToWork"
+    }
+  ]
+}

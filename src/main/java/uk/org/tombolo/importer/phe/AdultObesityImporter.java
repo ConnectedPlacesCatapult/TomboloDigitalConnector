@@ -9,7 +9,9 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -73,7 +75,8 @@ public class AdultObesityImporter extends AbstractPheImporter {
         RowCellExtractor subjectExtractor = new RowCellExtractor(1, CellType.STRING);
         ConstantExtractor timestampExtractor = new ConstantExtractor(year);
 
-        SubjectType subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
         for (AttributeLabel attributeLabel : AttributeLabel.values()){
             ConstantExtractor attributeExtractor = new ConstantExtractor(attributeLabel.name());
             RowCellExtractor valueExtractor

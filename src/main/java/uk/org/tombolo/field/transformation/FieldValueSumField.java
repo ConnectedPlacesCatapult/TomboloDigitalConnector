@@ -1,9 +1,9 @@
 package uk.org.tombolo.field.transformation;
 
+import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
-import uk.org.tombolo.field.value.FixedValueField;
-import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.field.*;
+import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
-public class FieldValueSumField extends FixedValueField implements ParentField {
+public class FieldValueSumField extends AbstractField implements ParentField, SingleValueField {
     String name;
     List<FieldRecipe> fields;
     List<Field> sumFields;
@@ -41,6 +41,14 @@ public class FieldValueSumField extends FixedValueField implements ParentField {
         return sumFields(subject).toString();
     }
 
+    @Override
+    public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        JSONObject obj = new JSONObject();
+        obj.put(null != this.label ? this.label : "value",
+                                                sumFields(subject));
+        return obj;
+    }
+
     private Double sumFields(Subject subject) throws IncomputableFieldException {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
@@ -59,7 +67,8 @@ public class FieldValueSumField extends FixedValueField implements ParentField {
 
     @Override
     public List<Field> getChildFields() {
-        if (null == sumFields) { initialize(); }
+        if (sumFields == null)
+            initialize();
         return sumFields;
     }
 }
