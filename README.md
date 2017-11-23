@@ -8,15 +8,12 @@ There are three particularly important parts to the Tombolo Digital:
 - Importers
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
 - Centralised data format
- - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
+  - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
 - Recipes
- - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
+  - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
 For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
 
-<p align="center">
-  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
-</p>
 
 ## Table of Contents:
 
@@ -25,6 +22,10 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
 * [Wiki to PDF](#wiki-to-pdf)
+
+<p align="center">
+  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
+</p>
 
 ## Quick start
 
