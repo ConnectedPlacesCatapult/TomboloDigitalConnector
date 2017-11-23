@@ -19,57 +19,203 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 
 ## Quick start
 
+To get started you will need to install the requirements to run the Digital Connector. 
+
+This tutorial will guide you to a quick start on Mac OS X. Tutorials to guide you through other operating systems will come soon.
+
+<span style="color:red"> **Note: you’ll need to have administrator rights on your machine to install this - 
+make sure that you do before you proceed.**
+</span>
+
 ### Requirements
-* [JDK (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+**Install the following**via the link through to their installation page: 
+
+* [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [PostgreSQL (9.4+)](https://www.postgresql.org/)
 * [PostGIS (2.1+)](http://postgis.net/)
 * [Gradle (2.12+)](https://gradle.org/)
-* (Optional) [Wercker (1.0+)](http://www.wercker.com/)
+* [Git](https://git-scm.com/download/mac)
 
-### Configure the project
+#### A note about the Terminal
 
-Copy and amend the example configuration file at
-`/gradle.properties.example` to
-`/gradle.properties`.
+The [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) application can be found in the Applications -> Utilities folder or quickly accessed through 
+Spotlight. It is pre-installed in the MacOS X so there is no need to install it. 
 
-Copy and amend the example API keys file at
-`/apikeys.properties.example` to
-`/apikeys.properties`. If you're not using the services mentioned in the file you can leave it as-is.
+You will need this application to run some of the commands of this tutorial. When you enter a command and press 
+return/enter, the terminal will execute it and complete the task.
 
-### Set up main database
+**Make sure to press return after typing a command before you enter the next one.**
 
-Then run the following to set up your database:
+#### Let's start
 
-```bash
-# Create a user and database
-createuser tombolo
-createdb -O tombolo tombolo -E UTF8
-psql -d tombolo -c "CREATE EXTENSION postgis;"
-psql -d tombolo -c "SET NAMES 'UTF8';"
+* Open the **Terminal**. All the following steps will operate in it.
 
+* Check if you have installed the right versions for the requirements by entering each of the following commands in 
+the Terminal.
 
-# Create DB tables and load initial fixtures
-psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
+ ```bash
+java -version
+psql --version
+gradle --version
+git --version
 ```
 
-### Set up test database
+The output will look something like this:
+```bash
+$ java -version
+java version "1.8.0_121"
+Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+$ psql --version
+psql (PostgreSQL) 9.6.3
+$ gradle --version
 
-The test database is used by the tests and is cleared routinely. We use this
-to gain control over what is in the database when our tests are running and
-to avoid affecting any important data in your main database.
+------------------------------------------------------------
+Gradle 3.4
+------------------------------------------------------------
 
-To set up the test user and database:
+Build time:   2017-02-20 14:49:26 UTC
+Revision:     73f32d68824582945f5ac1810600e8d87794c3d4
+
+Groovy:       2.4.7
+Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
+JVM:          1.8.0_121 (Oracle Corporation 25.121-b13)
+OS:           Mac OS X 10.11.6 x86_64
+
+$ git --version
+git version 2.10.1 (Apple Git-78)
+```
+
+* Get the Digital Connector code to your local machine by cloning its repository.
 
 ```bash
-# Create a user and database
-createuser tombolo_test
-createdb -O tombolo_test tombolo_test -E UTF8
-psql -d tombolo_test -c "CREATE EXTENSION postgis;"
-psql -d tombolo_test -c "SET NAMES 'UTF8';"
-
-# Create DB tables and load initial fixtures
-psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql
+git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector
 ```
+
+If successful, it will look like this.
+
+```bash
+$git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector  
+Cloning into 'TomboloDigitalConnector'...
+remote: Counting objects: 15761, done.
+remote: Compressing objects: 100% (184/184), done.
+remote: Total 15761 (delta 90), reused 193 (delta 49), pack-reused 15487
+Receiving objects: 100% (15761/15761), 178.89 MiB | 3.04 MiB/s, done.
+Resolving deltas: 100% (7647/7647), done.
+```
+
+* Go to the Digital Connetor root directory and rename the properties files. These can be done you running each of the
+following commands and pressing enter.
+
+```bash
+cd TomboloDigitalConnector
+mv gradle.properties.example gradle.properties
+mv apikeys.properties.example apikeys.properties
+```
+
+The previous commands will allow you to use the default project settings.  
+
+*If you prefer/need you can amend the settings altering the default ones to the ones you decide.*
+
+
+### Set up database
+
+The following step sets up a main and a test database after starting the server.
+The test database is used by the tests and is cleared routinely. We use this to gain control over what is in the 
+database when our tests are running and to avoid affecting any important data in your main database.
+
+```bash
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+chmod +x create_db.sh
+./create_db.sh
+```
+
+*For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
+
+### Run tests 
+
+A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
+everything went fine.
+
+Run the command in the Terminal.
+
+```bash
+gradle test
+```
+
+If successful the output will be as the following.
+```bash
+$ gradle test
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+> Building 85% > :test > 50 tests completed
+:test
+
+BUILD SUCCESSFUL
+
+Total time: 4 mins 50.919 secs
+```
+
+**If the tests start to fail then check the PostgreSQL server is running and the requirements are properly installed by
+ going through the previous steps.**
+ 
+The following means that the server is not running. 
+```bash
+uk.org.tombolo.core.AttributeTest > testUniqueLabel FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+
+uk.org.tombolo.core.AttributeTest > testWriteJSON FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+
+uk.org.tombolo.core.DatasourceTest > testWriteJSON FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+```
+
+and to solve it you need to run the command
+```bash
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+```
+
+
+In case you see this error, it means that you did not rename the settings files successfully.
+```bash
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/TomboloDigitalConnector/build.gradle' line: 159
+
+* What went wrong:
+Execution failed for task ':test'.
+> Test environment not configured. See the README.
+```
+
+If you see other errors, try to go back and follow the steps again.
+
+
+###Run the Digital Connector
+
+Now you are all set to run a task on the Digital Connector. 
+
+
+... to be continued
+
 
 ### Run tests
 
