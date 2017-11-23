@@ -34,11 +34,7 @@ public class FixedValueFieldTest extends AbstractTest {
         TestFactory.makeFixedValue(subject.getSubjectType(), "E01000001", attribute, "one-hundred");
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: [" +
-                "    {" +
-                "      value: 'one-hundred'" +
-                "    }" +
-                "  ]" +
+                "  aLabel: 'one-hundred'" +
                 "}", jsonString, false);
     }
 }

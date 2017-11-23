@@ -1,6 +1,5 @@
 package uk.org.tombolo.field.value;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
@@ -30,11 +29,14 @@ public class LatestValueField extends BasicValueField implements SingleValueFiel
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         TimedValue timedValue = getTimedValue(subject);
         JSONObject obj = new JSONObject();
+        if (null != timeStamp && !timeStamp) {
+            obj.put(null != this.label ? this.label : "value",
+                                            timedValue.getValue());
+            return obj;
+        }
         obj.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
         obj.put("value", timedValue.getValue());
-        JSONArray values = new JSONArray();
-        values.add(obj);
-        return withinMetadata(values);
+        return withinMetadata(obj);
     }
 
     private TimedValue getTimedValue(Subject subject) throws IncomputableFieldException {
