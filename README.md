@@ -3,7 +3,7 @@
 
 The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that allows data specialists to efficiently connect different data sets into a common format. It enables the **transparent** and **reproducible** combination of data which exists in different domains, different formats and on different spatio-temporal scales. The Tombolo Digital Connector makes it easier to generate models, indexes and insights that rely on the combination of data from different sources.
 
-There are three particularly important parts to the Tombolo Digital: 
+There are three particularly important parts to the Tombolo Digital Connector: 
 
 - Importers
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
