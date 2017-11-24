@@ -225,7 +225,7 @@ and car and bicycle traffic in every borough in London. You can read more about 
 
 When you’ve run this example, you can expect a map that looks like this: 
 
-![Final Output](/readmeresources/final_output.png)
+![Final Output](/readmeresources/output_in_png.png)
 
 ##### To get started:
 
@@ -282,107 +282,79 @@ Change the path in the command in case you want it saved elsewhere.
  
   + Click on **Layer -> Add Layer -> Add Vector Layer -> Browse (Choose the output file) -> Open**
   
-    Now your screen should look something like this
+    Now your screen should look something like this.
  
     ![Raw Output File](/readmeresources/raw_output.png)
  
-  + Change the Projection Type by clicking the button next to Render at the bottom of QGis
+  + Change the Projection to the British National Grid by clicking the button next to Render at the bottom of QGIS.
  
     ![Projection Options](/readmeresources/projection_option.png)
  
-    Now you should see Project Properties Windows
- 
-    ![Projection Window](/readmeresources/projection_window.png)
- 
-    In the Filter box type 27700 and choose British National Grid
+    In the Filter box type 27700 and choose British National Grid.
  
     ![Projection Search](/readmeresources/projection_search.png)
  
-    Click OK, and now your screen should look something like this
+    Click OK, and now your screen should look something like this.
  
     ![Raw Output with UK Projection](/readmeresources/raw_output_uk_projection.png)
  
   + On left side under Layers Panel, Right Click on your filename layer which in this tutorial is “qgis_tutorial 
-   OGRGeoJSON Polygon” and choose Properties
+   OGRGeoJSON Polygon” and choose Properties. This page will allow you to style the map.
  
       ![Layers Panel](/readmeresources/layers_panel.png)
  
-      Now you see a Layer Properties Windows, something like this
+      Change the default settings as described:
+      
+      From top where it says “Single Symbol” choose “Categorized”. In Column choose “BicycleFraction”. In Color ramp 
+      choose “Blues” and then click on “Classify” Button and on the pop up click “OK” and now your window should 
+      look something like this.
  
-      ![Layers Properties](/readmeresources/layer_properties.png)
+      ![Layers Properties with options selected](/readmeresources/layer_properties_final_options.png)
  
-      From top where it says “Single Symbol” choose “Categorized” and now your window should look like this
+      Click OK and Now your map should look something like this.
  
-      ![Layers Properties with Catagorized Option](/readmeresources/layer_properties_catagorized.png)
+      ![Output without map in the background](/readmeresources/output_without_bg_map.png)
  
-       In Column choose “BicycleFraction”. In Color ramp choose “Blues” and then click on “Classify” Button and on the 
-     pop up click “OK” and now your window should look something like this
- 
-     ![Layers Properties with options selected](/readmeresources/layer_properties_final_options.png)
- 
-     Click OK and Now your map should look something like this
- 
-     ![Output without map in the background](/readmeresources/output_without_bg_map.png)
- 
-   + Now click on Plugins -> Manage and Install Plugins
+   + To add the background map layer click on Plugins -> Manage and Install Plugins
  
      ![Plugins menu](/readmeresources/plugin_option_menu.png)
  
-     Plugin windows should appear. In case option “All” is not click and select it
- 
-     ![Plugins Window](/readmeresources/plugins_window.png)
- 
-     Search for QuickMapServices and then click on Install Plugin. Once the plugin is installed click Close
+     Plugin windows should appear. In case option “All” is not click and select it. Search for QuickMapServices and 
+     then click on Install Plugin. Once the plugin is installed click Close.
  
      ![Plugins Search Window](/readmeresources/plugins_search.png)
  
-     Now you should have “Globe” like icon on your toolbar
- 
-     ![Quick Map Service Icon](/readmeresources/quick_map_services_icon.png)
- 
-     Click the Globe with + and Choose OSM -> OSM Standard
+     Now you should have “Globe” like icon on your toolbar. Click the Globe with + and Choose OSM -> OSM Standard.
  
      ![Quick Map Service Options](/readmeresources/osm_menu_option.png)
  
-     Now your map should look like this
+     Now your map should look like this.
  
      ![Final Output](/readmeresources/final_output.png)
  
-   + Now if you want to zoom in, click the Magnifying glass with + on first toolbar
- 
-     ![Magnifying Buttons](/readmeresources/magnifying_buttons.png)
- 
-     Or change the Magnifier percentage on the bottom bar
- 
-     ![Magnifier Options](/readmeresources/magnifier_option.png)
- 
-   + Now to save as an image Go to Project -> Save as Image
- 
-    ![Save as Png](/readmeresources/save_as_image.png)
- 
+   + Now to save as an image Go to Project -> Save as Image. 
     Give it a name of your choice and save it in your preferred directory. 
-    Now your png file should look like this
+    The file you just saved should look like this.
  
-    ![Output in PNG](/readmeresources/output_in_png.png)
+     ![Output in PNG](/readmeresources/output_in_png.png)
 
 
+**We need your feedback!  
+If you have any issues with setting up the tool, or running the tutorial, or if you have some advice about how we can 
+do this better, please contact us by creating 
+an [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues). 
+Our goal is for someone to get back to you within 24 hours.**
 
 
+#### See also:
 
+* Learn more about the **example** used in this tutorial [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Tutorial) 
+  
+* If you want to use other examples to trail the Digital Connector then you can find them in [this directory](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples)
 
+* To understand the structure of the recipe then go [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/images/demo_recpie_annotations_v2.pdf)
 
-
-
-
-
-
-
-
-
-
-
-
-
+*  To learn how to build your own recipe - go [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
 
 
 ### Run tests
