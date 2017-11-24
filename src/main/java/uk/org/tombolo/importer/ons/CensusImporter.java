@@ -30,8 +30,10 @@ public class CensusImporter extends AbstractONSImporter {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
     private static final LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
     private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
-    private String RECORD_ID = "";
     private ArrayList<CensusDescription> descriptions = new ArrayList<>();
+    private static final Set<String> BLACK_LIST_HEADERS
+            = new HashSet<>(Arrays.asList("date", "geography", "geography code", "Rural Urban"));
+
 
     public CensusImporter(Config config) throws IOException {
         super(config);
@@ -45,39 +47,34 @@ public class CensusImporter extends AbstractONSImporter {
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
-        String headerRowUrl = getDataUrl(datasourceIdString)+"&recordlimit=0";
+        String headerRowUrl = getDataUrl(datasourceIdString) + "&recordlimit=0";
         File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
         CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
 
         List<Attribute> attributes = new ArrayList<>();
-        // The header starts with the same name as the label of the dataset
-        csvParser.getHeaderMap().keySet().stream().filter(header -> header.contains(":"))
-                .filter(header -> getDataSourceSpecObject(datasourceIdString).getName()
-                .startsWith(header.toLowerCase().substring(0, header.indexOf(":")))).forEach(header -> {
-                 String attributeLabel = attributeLabelFromHeader(header);
-            attributes.add(new Attribute(getProvider(), attributeLabel, header));
-        });
+        for (String header : csvParser.getHeaderMap().keySet()) {
+            if (!BLACK_LIST_HEADERS.contains(header)) {
+                String attributeLabel = attributeLabelFromHeader(header);
+                attributes.add(new Attribute(getProvider(), attributeLabel, header));
+            }
+        }
         return attributes;
     }
 
-    private String attributeLabelFromHeader(String header){
+    private String attributeLabelFromHeader(String header) {
         // FIXME: Make sure that this generalises over all datasets
-        int start = header.indexOf(":");
         int end = header.indexOf(";");
         return header.substring(0, end);
     }
 
     protected String getDataUrl(String datasourceIdString) {
-
-        if ("".equals(RECORD_ID)) getDataSourceSpecObject(datasourceIdString);
-
         return "https://www.nomisweb.co.uk/api/v01/dataset/"
-                + RECORD_ID
-                +".bulk.csv?"
-                +"time=latest"
-                +"&"+"measures=20100"
-                +"&"+"rural_urban=total"
-                +"&"+"geography=TYPE298";
+                + getRecordId(datasourceIdString)
+                + ".bulk.csv?"
+                + "time=latest"
+                + "&" + "measures=20100"
+                + "&" + "rural_urban=total"
+                + "&" + "geography=TYPE298";
     }
 
     @Override
@@ -85,8 +82,8 @@ public class CensusImporter extends AbstractONSImporter {
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();
-        for(Attribute attribute : datasource.getTimedValueAttributes()){
-            attributes.add(AttributeUtils.getByProviderAndLabel(attribute.getProvider(),attribute.getLabel()));
+        for (Attribute attribute : datasource.getTimedValueAttributes()) {
+            attributes.add(AttributeUtils.getByProviderAndLabel(attribute.getProvider(), attribute.getLabel()));
         }
 
         // FIXME: Generalise this beyond LSOA
@@ -97,10 +94,10 @@ public class CensusImporter extends AbstractONSImporter {
 
         // FIXME: Use stream instead of file
         InputStream dataStream = downloadUtils.fetchInputStream(
-                                                new URL(dataUrl), getProvider().getLabel(), ".csv");
+                new URL(dataUrl), getProvider().getLabel(), ".csv");
 
         CSVParser csvParser = new CSVParser(new InputStreamReader(dataStream),
-                                                                CSVFormat.RFC4180.withFirstRecordAsHeader());
+                CSVFormat.RFC4180.withFirstRecordAsHeader());
 
         csvParser.forEach(record -> {
             Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
@@ -148,53 +145,57 @@ public class CensusImporter extends AbstractONSImporter {
         return descriptions;
     }
 
-    private ArrayList<String> getDataSourceIDs () throws IOException {
+    private ArrayList<String> getDataSourceIDs() throws IOException {
         return getSeedData().stream().map(CensusDescription::getDataSetTable)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private DatasourceSpec getDataSourceSpecObject (String dataSourceId) {
-
+    private DatasourceSpec getDataSourceSpecObject(String dataSourceId) {
         for (CensusDescription description : descriptions) {
             if (description.getDataSetTable().equalsIgnoreCase(dataSourceId)) {
-                RECORD_ID = description.getDataSetID();
                 return new DatasourceSpec(getClass(), dataSourceId, description.getDataSetDescription(), description.getDataSetDescription(),
-                    "https://www.nomisweb.co.uk/census/2011/" + dataSourceId);
+                        "https://www.nomisweb.co.uk/census/2011/" + dataSourceId);
             }
         }
-
-        return null;
-    }
-}
-
-
-
-class CensusDescription {
-    private String dataSetID;
-    private String dataSetTable;
-    private String dataSetDescription;
-
-    String getDataSetID() {
-        return dataSetID;
+        throw new Error("Unknown data-source-id: " + dataSourceId);
     }
 
-    String getDataSetTable() {
-        return dataSetTable;
+    private String getRecordId(String dataSourceId) {
+        for (CensusDescription description : descriptions) {
+            if (description.getDataSetTable().equalsIgnoreCase(dataSourceId)) {
+                return description.getDataSetID();
+            }
+        }
+        throw new Error("Unknown data-source-id: " + dataSourceId);
     }
 
-    String getDataSetDescription() {
-        return dataSetDescription;
-    }
+    class CensusDescription {
+        private String dataSetID;
+        private String dataSetTable;
+        private String dataSetDescription;
 
-    void setDataSetID(String dataSetID) {
-        this.dataSetID = dataSetID;
-    }
+        String getDataSetID() {
+            return dataSetID;
+        }
 
-    void setDataSetTable(String dataSetTable) {
-        this.dataSetTable = dataSetTable;
-    }
+        String getDataSetTable() {
+            return dataSetTable;
+        }
 
-    void setDataSetDescription(String dataSetDescription) {
-        this.dataSetDescription = dataSetDescription;
+        String getDataSetDescription() {
+            return dataSetDescription;
+        }
+
+        void setDataSetID(String dataSetID) {
+            this.dataSetID = dataSetID;
+        }
+
+        void setDataSetTable(String dataSetTable) {
+            this.dataSetTable = dataSetTable;
+        }
+
+        void setDataSetDescription(String dataSetDescription) {
+            this.dataSetDescription = dataSetDescription;
+        }
     }
 }
