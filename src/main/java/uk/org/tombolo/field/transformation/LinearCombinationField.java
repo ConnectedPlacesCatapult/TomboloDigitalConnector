@@ -8,6 +8,13 @@ import uk.org.tombolo.recipe.FieldRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Field for calculating a linear combination of sub-fields:
+ *
+ * linear-combination := scalar[1] * field[1] + scalar[2] * field[2] + ...
+ *
+ * See further: https://en.wikipedia.org/wiki/Linear_combination
+ */
 public class LinearCombinationField extends AbstractField implements SingleValueField, ParentField {
 
     private final List<FieldRecipe> fields;
@@ -61,9 +68,16 @@ public class LinearCombinationField extends AbstractField implements SingleValue
 
         Double linearCombination = 0.0d;
         for (int i=0; i<singleValueFields.size(); i++) {
-            linearCombination +=
-                    scalars.get(i)
-                    * Double.parseDouble(((SingleValueField)singleValueFields.get(i)).valueForSubject(subject, true));
+            String value;
+            try {
+                value = ((SingleValueField) singleValueFields.get(i)).valueForSubject(subject, null);
+                linearCombination +=
+                        scalars.get(i)
+                                * ((value == null)? 0.0d : Double.parseDouble(value));
+            }catch (IncomputableFieldException e){
+                // Sub-field was not computable
+                // Nothing added to the linear combination
+            }
         }
         return linearCombination;
     }
