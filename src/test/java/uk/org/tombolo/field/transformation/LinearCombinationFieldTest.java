@@ -65,12 +65,6 @@ public class LinearCombinationFieldTest extends AbstractTest {
     }
 
     @Test
-    public void calculateValueForSubject() throws Exception {
-        assertEquals(0.6d + 0.4d + 0.3d + 0.4d,
-                linearCombinationField.calculateValueForSubject(null), 0.0001d);
-    }
-
-    @Test
     public void jsonValueForSubject() throws Exception {
         LinearCombinationField simpleLinearCombinationField = new LinearCombinationField(
                 "aLabel",

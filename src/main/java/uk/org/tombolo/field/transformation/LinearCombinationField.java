@@ -1,6 +1,8 @@
 package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
@@ -16,7 +18,7 @@ import java.util.List;
  * See further: https://en.wikipedia.org/wiki/Linear_combination
  */
 public class LinearCombinationField extends AbstractField implements SingleValueField, ParentField {
-
+    Logger log = LoggerFactory.getLogger(LinearCombinationField.class);
     private final List<FieldRecipe> fields;
     private final List<Float> scalars;
 
@@ -59,7 +61,7 @@ public class LinearCombinationField extends AbstractField implements SingleValue
         return calculateValueForSubject(subject).toString();
     }
 
-    protected Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
+    private Double calculateValueForSubject(Subject subject) throws IncomputableFieldException {
         String cachedValue = getCachedValue(subject);
         if (cachedValue != null)
             return Double.parseDouble(cachedValue);
@@ -77,6 +79,11 @@ public class LinearCombinationField extends AbstractField implements SingleValue
             }catch (IncomputableFieldException e){
                 // Sub-field was not computable
                 // Nothing added to the linear combination
+                log.warn("LinearCombinationField {} has no computable for value sub-field {} and subject {} ({}}",
+                        (label == null)?"unlabelled":label,
+                        (singleValueFields.get(i).getLabel() == null)?"unlabelled":singleValueFields.get(i).getLabel(),
+                        subject.getLabel(),
+                        subject.getSubjectType().getLabel());
             }
         }
         return linearCombination;
