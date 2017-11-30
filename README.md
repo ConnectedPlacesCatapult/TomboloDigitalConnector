@@ -1,15 +1,19 @@
-# Tombolo Digital Connector
+<a href="http://www.tombolo.org.uk/products/">
+<p align="center"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png" width="256" height="256"/>
+</p></a>
+<h1 align="center"> Tombolo Digital Connector</h1>
+
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
 The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that allows data enthusiasts to efficiently connect different data sets into a common format. It enables the **transparent** and **reproducible** combination of data which exists in different domains, different formats and on different spatio-temporal scales. The Tombolo Digital Connector makes it easier to generate models, indexes and insights that rely on the combination of data from different sources.
 
 There are three particularly important parts to the Tombolo Digital Connector: 
 
-- Importers
+- [***Importers***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Importers)
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
-- Centralised data format
+- [***Centralised data format***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Local-Datastore)
   - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
-- Recipes
+- [***Recipes***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
   - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
 For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
@@ -17,36 +21,36 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 
 ## Table of Contents:
 
+* [Requirements](#requirements)
 * [Quick start](#quick-start)
-* [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
+* [Start/Stop server](#start-stop-server)
+* [License](#license)
 * [Wiki to PDF](#wiki-to-pdf)
 
 <p align="center">
   <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
 </p>
 
-## Quick start
+## Requirements
+To get started you will need to install the requirements to run the Digital Connector.
 
-To get started you will need to install the requirements to run the Digital Connector. 
-
-This tutorial will guide you to a quick start on Mac OS X. Installation tutorials for other operating systems will come 
-soon.
-
-<span style="color:red"> **Note: you’ll need to have administrator rights on your machine to install this - 
+**Note: you’ll need to have administrator rights on your machine to install these - 
 make sure that you do before you proceed.**
-</span>
-
-### Requirements
-
+  
 **Install the following** via the link through to their installation page:
 
 * [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [PostgreSQL (9.4+)](https://www.postgresql.org/)
 * [PostGIS (2.1+)](http://postgis.net/)
 * [Gradle (2.12+)](https://gradle.org/)
-* [Git](https://git-scm.com/download/mac)
+* [Git](https://git-scm.com/download/)
+
+## Quick start
+
+This tutorial will guide you to a quick start on Mac OS X. Installation tutorials for other operating systems will come 
+soon.
 
 #### A note about the Terminal
 
@@ -235,7 +239,7 @@ and car and bicycle traffic in every borough in London. You can read more about 
 
 When you’ve run this example, you can expect a map that looks like this: 
 
-![Final Output](/readmeresources/output_in_png.png)
+![Final Output](/readmeresources/qgis_images/output_in_png.png)
 
 ##### To get started:
 
@@ -277,76 +281,7 @@ Change the path in the command in case you want it saved elsewhere.
   ```
   
 + Once you have your output, you can open with a geospatial visualisation tool. For this example, we recommend QGIS,
- which you can download [here](http://www.qgis.org/en/site/forusers/download.html).
-
-
-### Open with QGIS
-
-+ Install and open QGis
- 
-  Click [here](http://www.qgis.org/en/site/forusers/download.html) to download and choose the option relevant to your 
-  operating 
-  system.
- 
-+ Open the Digital Connector output in QGis by following these steps:
- 
-  + Click on **Layer -> Add Layer -> Add Vector Layer -> Browse (Choose the output file) -> Open**
-  
-    Now your screen should look something like this.
- 
-    ![Raw Output File](/readmeresources/raw_output.png)
- 
-  + Change the Projection to the British National Grid by clicking the button next to Render at the bottom of QGIS.
- 
-    ![Projection Options](/readmeresources/projection_option.png)
- 
-    In the Filter box type 27700 and choose British National Grid.
- 
-    ![Projection Search](/readmeresources/projection_search.png)
- 
-    Click OK, and now your screen should look something like this.
- 
-    ![Raw Output with UK Projection](/readmeresources/raw_output_uk_projection.png)
- 
-  + On left side under Layers Panel, Right Click on your filename layer which in this tutorial is “qgis_tutorial 
-   OGRGeoJSON Polygon” and choose Properties. This page will allow you to style the map.
- 
-      ![Layers Panel](/readmeresources/layers_panel.png)
- 
-      Change the default settings as described:
-      
-      From top where it says “Single Symbol” choose “Categorized”. In Column choose “BicycleFraction”. In Color ramp 
-      choose “Blues” and then click on “Classify” Button and on the pop up click “OK” and now your window should 
-      look something like this.
- 
-      ![Layers Properties with options selected](/readmeresources/layer_properties_final_options.png)
- 
-      Click OK and Now your map should look something like this.
- 
-      ![Output without map in the background](/readmeresources/output_without_bg_map.png)
- 
-   + To add the background map layer click on Plugins -> Manage and Install Plugins
- 
-     ![Plugins menu](/readmeresources/plugin_option_menu.png)
- 
-     Plugin windows should appear. In case option “All” is not click and select it. Search for QuickMapServices and 
-     then click on Install Plugin. Once the plugin is installed click Close.
- 
-     ![Plugins Search Window](/readmeresources/plugins_search.png)
- 
-     Now you should have “Globe” like icon on your toolbar. Click the Globe with + and Choose OSM -> OSM Standard.
- 
-     ![Quick Map Service Options](/readmeresources/osm_menu_option.png)
- 
-     Now your map should look like this.
- 
-     ![Final Output](/readmeresources/final_output.png)
- 
-   + Now to save as an image Go to Project -> Save as Image. 
-    Give it a name of your choice and save it in your preferred directory. 
-    The file you just saved should look like this.
- 
-     ![Output in PNG](/readmeresources/output_in_png.png)
+ and [here](/documentation/Open-with-QGIS.md) you can find a guide on how to use it.
 
 
 **We need your feedback!  
@@ -358,13 +293,13 @@ Our goal is for someone to get back to you within 24 hours.**
 
 #### See also:
 
-* Learn more about the **example** used in this tutorial [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Tutorial) 
+* [Learn more about the **example** used in this tutorial](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Tutorial)
   
-* If you want to use other examples to trail the Digital Connector then you can find them in [this directory](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples)
+* [Use other examples to trail the Digital Connector](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples)
 
-* To understand the structure of the recipe then go [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/images/demo_recpie_annotations_v2.pdf)
+* [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/images/demo_recpie_annotations_v2.pdf)
 
-*  To learn how to build your own recipe - go [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
+*  [Learn how to build your own recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
 
 
 ### Run tests
@@ -426,36 +361,28 @@ and explore the data catalogue.
 gradle exportCatalogue -PoutputFile=catalogue.json
 ```
 
-## Continuous Integration
+## Start/Stop server
 
-We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
-against the CI server automatically. If you don't have access, you can use the
-Wercker account in the 1Password Servers vault to add yourself.
+If you need to start or stop the server (on MacOS X), use the following commands.
 
-If you need to run the CI environment locally:
+```bash
+# to start
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 
-1. Install the [Wercker CLI](http://wercker.com/cli/install)
-2. Run `wercker build`
-
-The base image is generated with the very simple Dockerfile in the root of this
-project. To push a new image to DockerHub you will need access to our DockerHub
-account. If you don't have access, you can use the DockerHub account in the
-1Password Servers vault to add yourself.
-
-If you need new versions of PostgreSQL, Java, etc, you can update the image:
-
+# to stop
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 ```
-docker build -t tombolo .
-docker images
-# Look for `tombolo` and note the IMAGE ID
-docker tag <IMAGE_ID> fcclab/tombolo:latest
-docker push fcclab/tombolo
-```
+
+## License
+
+[MIT](LICENSE)
+
+When using the Tombolo or other GitHub logos and artwork, be sure to follow the [GitHub logo guidelines](https://github.com/logos).
 
 ## Wiki to PDF
 
 To create a PDF version of the Wiki documentation clone the wiki respository 
-and run the gradel build in the wiki repository root folder.
+and run the gradle build in the wiki repository root folder.
 
 ```
 gradle build
