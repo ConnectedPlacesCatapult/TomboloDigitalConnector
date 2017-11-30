@@ -1,8 +1,15 @@
+<a href="http://www.tombolo.org.uk/"> 
 <p align="center">
-  <img src="/readmeresources/Tombolo_logo_trans_01.png" />
+  <img src="/readmeresources/Tombolo_logo_trans_01.png" width="654" height="216"/>
 </p>
+</a>
 
-<h1 align="center"> Tombolo Digital Connector</h1>
+<div>
+<a href="http://www.tombolo.org.uk/products/">
+<p align="left"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png" width="84" height="84"/>
+</p></a>
+<h1> Tombolo Digital Connector</h1>
+</div>
 
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
