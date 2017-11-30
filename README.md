@@ -240,7 +240,7 @@ and car and bicycle traffic in every borough in London. You can read more about 
 
 When you’ve run this example, you can expect a map that looks like this: 
 
-![Final Output](/readmeresources/output_in_png.png)
+![Final Output](/readmeresources/qgis_images/output_in_png.png)
 
 ##### To get started:
 
