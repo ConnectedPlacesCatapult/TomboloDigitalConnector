@@ -30,7 +30,7 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Wiki to PDF](#wiki-to-pdf)
 
 <p align="center">
-  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
+  <img src="https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true" alt="DigitalConnectorGif"/>
 </p>
 
 ## Requirements
@@ -239,7 +239,7 @@ and car and bicycle traffic in every borough in London. You can read more about 
 
 When you’ve run this example, you can expect a map that looks like this: 
 
-![Final Output](/readmeresources/qgis_images/output_in_png.png)
+![Final Output](https://user-images.githubusercontent.com/14051876/33429682-b96d18f0-d5c5-11e7-8ca5-b86f0eaa7376.png)
 
 ##### To get started:
 
