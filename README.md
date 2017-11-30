@@ -1,8 +1,7 @@
 <a href="http://www.tombolo.org.uk/products/">
-<p align="left"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed
-.ic.17pEUiGbW4.png" width="256" height="256"/>
+<p align="center"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png" width="256" height="256"/>
 </p></a>
-<h1> Tombolo Digital Connector</h1>
+<h1 align="center"> Tombolo Digital Connector</h1>
 
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
