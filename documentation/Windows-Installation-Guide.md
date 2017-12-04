@@ -34,7 +34,7 @@ then we can be sure that Java is not installed on your computer.
         Once your command prompt is open type either of the following commands in order to get the architecture of the system
             - wmic os get osarchitecture  
             ![OS Arc Command 1](https://user-images.githubusercontent.com/19670372/33494860-7d37bf3c-d6bc-11e7-85e5-10f1f35addda.png)
-            - echo %PROCESSOR_ARCHITECTURE%
+            - echo %PROCESSOR_ARCHITECTURE%  
             ![OS Arc Command 2](https://user-images.githubusercontent.com/19670372/33494858-7d1f2788-d6bc-11e7-8e12-e6c06d10163a.png)
 
 #### Download and Install Java
