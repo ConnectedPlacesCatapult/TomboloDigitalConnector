@@ -1,3 +1,5 @@
+### Features
+
 The Digital Connector main features are:
 
 * Importers for various open source data sources and transforming them into a centralised data format.
