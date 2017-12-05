@@ -1,3 +1,5 @@
+# Cycling and Air Quality
+
 As a demonstrative example of how Tombolo Digital Connector works we present a story of a fictional user called Thomas, who works for a London based active transport lobby. Thomas wants to visualise the relation between bicycle friendly boroughs in London and air quality. He browses the Tombolo Digital Connector catalogue of importable data and finds traffic counts from Department for Transport and air quality measurements from the London Air Quality Network. In order to combine the two datasets, he writes a Tombolo data export recipe (also known as model recipe) that returns a GeoJson file with the following output:
 
 * the geographic shape of each London borough, 
@@ -74,6 +76,7 @@ Thomas will now specify the datasources as follows:
 ```
 
 The first datasource refers to **local authorities** from the **Output Area Importer** from **ONS**. The second datasource refers to **traffic counts** from the Department for Transport (**DfT**). Since the Department for Transport provides data-files for each region separately, Thomas can specify that he is only interested in traffic counts within **London**. The third datasource refers to **air quality** data from the London Air Quality Network (**LAQN**) from King's College London.
+
 
 For more information about specifying data-sources see the [data-source section of the recipe language](Recipe-Language.md#datasource-recipe).
 

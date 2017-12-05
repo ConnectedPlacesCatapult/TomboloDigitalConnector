@@ -21,7 +21,6 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
-* [Wiki to PDF](#wiki-to-pdf)
 
 <p align="center">
   <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>

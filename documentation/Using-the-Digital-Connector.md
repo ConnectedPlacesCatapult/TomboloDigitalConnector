@@ -1,3 +1,5 @@
+# Using the Digital Connector
+
 In a nutshell, using the Digital Connector involves four steps:
 
  1. After ensuring that you have installed the pre-requisites outlined [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector#quick-start), install the Digital Connector by cloning the GitHub repository.

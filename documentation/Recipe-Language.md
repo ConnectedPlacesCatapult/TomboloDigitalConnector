@@ -20,8 +20,8 @@ Example data export specification for GeoJson output:
 
 A dataset recipe is composed of three parts:
 
-* **Subjects**: Specifies the [Subjects](Data-Model.md#subject) for which we return data in the final dataset. I.e., 
-return all LSOAs in Milton Keynes, return all traffic counters in Greenwich, or return all local authorities in England. See further details in the [Subject recipe](#subject-recipe) section.
+* **Subjects**: Specifies the [Subjects](Local-Datastore.md#Subject) for which we return data in the final dataset. I
+.e., return all LSOAs in Milton Keynes, return all traffic counters in Greenwich, or return all local authorities in England. See further details in the [Subject recipe](#subject-recipe) section.
 * **Datasources**: A list of data-sources needed to be imported in order to export the data. As an example, data-sources can be the Space Syntax Open Space Map (SSx OSM) for the Royal Borough of Greenwich, traffic counts for London from Department for Transport (DFT), etc. See further details in the [Datasource recipe](#datasource-recipe) section.
 * **Fields**: A list of [Fields](Fields-and-Models.md) that are to be returned for each subject. As an example, for a 
 set of spatial network segments the user could specify to export the connectivity of each segment according to SSx OSM, the nearest DfT traffic counts for that segment (if available) and a deprivation value for that segment disaggregated from the LSOA level deprivation scores from Department for Communities and Local Government (DCLG). In case a field is a transformation or a modelling field, the needed computation is performed at the time of exporting. See further details in the [Field recipe](#field-recipe) section.

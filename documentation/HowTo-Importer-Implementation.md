@@ -1,6 +1,7 @@
 # HowTo: Importer implementation
 
-This questionnaire is aimed at evaluating the effort required to implement a Tombolo importer for a data source. Before answering this questionnaire, please familiarise yourself with the [Tombolo data model](Data-Model).
+This questionnaire is aimed at evaluating the effort required to implement a Tombolo importer for a data source. 
+Before answering this questionnaire, please familiarise yourself with the [Digital Connector centralized data format](Local-Datastore.md).
 
 ## Describe your importer
 
