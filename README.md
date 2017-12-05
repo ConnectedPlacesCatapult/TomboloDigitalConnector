@@ -49,13 +49,11 @@ make sure that you do before you proceed.**
 
 ## Quick start
 
-This tutorial will guide you to a quick start on Mac OS X. Installation tutorials for other operating systems will come 
-soon.
+This tutorial will guide you to a quick start on **macOS**. Installation tutorials for other operating systems will come soon.
 
 #### A note about the Terminal
 
-The [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) application can be found in the Applications -> Utilities folder or quickly accessed through 
-Spotlight. It is pre-installed in the MacOS X so there is no need to install it.
+The [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) application can be found in the Applications -> Utilities folder or quickly accessed through Spotlight. It is pre-installed in **macOS** so there is no need to install it.
 
 You will need this application to run some of the commands of this tutorial. When you enter a command and press 
 return/enter, the terminal will execute it and complete the task.
