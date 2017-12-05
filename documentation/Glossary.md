@@ -29,7 +29,7 @@
 
 ## Attribute
 A data object representing anything that could be measured or calculated, such as population density (for an LSOA), CO2 concentration (for an air quality sensor), obesity rate (for a local authority), etc. 
-[See further](Local-Datastore#attribute)
+[See further](Local-Datastore.md#attribute)
 
 # B
 

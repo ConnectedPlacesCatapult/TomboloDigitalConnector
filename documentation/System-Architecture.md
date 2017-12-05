@@ -1,3 +1,5 @@
+# System architecture
+
 Figure 1 shows a high level system architecture for the Tombolo Digital Connector. The figure shows the main system components and the interlinking between them. We also show the links to external data and systems.
 
 * At the core of the digital connector is the **Local Datastore** where all incoming data is stored in a centralised data format. 

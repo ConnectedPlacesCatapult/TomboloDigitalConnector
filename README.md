@@ -165,12 +165,3 @@ docker images
 docker tag <IMAGE_ID> fcclab/tombolo:latest
 docker push fcclab/tombolo
 ```
-
-## Wiki to PDF
-
-To create a PDF version of the Wiki documentation clone the wiki respository 
-and run the gradel build in the wiki repository root folder.
-
-```
-gradle build
-```

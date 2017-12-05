@@ -8,9 +8,10 @@ In particular, the index consists or three components:
 Below we will describe the generation of the index in detail, but see also [the model recipe for the active transport index](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/modelling-fields/city-indices/active-transport/ActiveTransportIndex-field.json) and [recipe for exporting as GeoJson the active transport index, together with its components for all LSOAs in England and Wales](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/city-indices/active-transport.json).
 
 # Export recipe
-As with other [export recipes](Recipe-Language), [the active transport index export recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/city-indices/active-transport.json) has 4 main parts.
+As with other [export recipes](Recipe-Language.md), [the active transport index export recipe](https://github
+.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/city-indices/active-transport.json) has 4 main parts.
 
-* **subjects**: Tells the digital connector to calculate values for each [LSOA](Glossary#lsoa) in the UK.
+* **subjects**: Tells the digital connector to calculate values for each [LSOA](Glossary.md#lsoa) in the UK.
 * **datasources**: Tells which datasources need to be imported. In this case only the LSOAs, since any additional datasources needed by the index are covered by the recipe for the respective index or index component.
 * **fields**: Tells the digital connector to export 4 fields: the index itself, together with its 3 components. The last 3 fields are not necessary when exporting the index, but for the [city index explorer application](https://labs.tombolo.org.uk/city-index-explorer/) we do need this information for data visualisation purposes.
 * **exporter**: Tell the digital connector to export the data as GeoGson.

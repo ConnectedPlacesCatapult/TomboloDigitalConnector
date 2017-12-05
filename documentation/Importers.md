@@ -1,3 +1,5 @@
+# Importers
+
 In this section we describe the Tombolo Digital Connector importers. The role of importers is to connect to external or local data sources and import the appropriate data by reformatting it into the centralised data format. 
 
 Importers are of three types:
@@ -10,7 +12,7 @@ Importers are of three types:
 We have built-in importers for a range of mostly public and open datasets. Users can use these importers directly to import the data they need in the processing. Additionally we have support for users to extend the Digital Connector with their own user defined custom importers for their local proprietary datasets. In the code base we have support tools such as Excel and Shapefile data extraction tools to make it easier to write custom importers.
 
 ## Built-in importers
-Below you can find a list of built-in importers that were available at the time of writing. For an up to date list look at the [codebase](../tree/master/src/main/java/uk/org/tombolo/importer).
+Below you can find a list of built-in importers that were available at the time of writing. For an up to date list look at the [codebase](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/java/uk/org/tombolo/importer).
 
 - Department for Communities and Local Government (DCLG)
   - Indices of multiple deprivation (value importer)

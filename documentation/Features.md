@@ -1,4 +1,4 @@
-### Features
+# Features
 
 The Digital Connector main features are:
 

@@ -1,3 +1,5 @@
+# Tutorial - Cycling and Air Quality
+
 In this page we will give a tutorial of how to use the Tombolo Digital Connector.
 
 # Install system
@@ -7,7 +9,7 @@ guide to get the digital connector up and running by installing requirements, co
 
 # Export data
 Having installed the system, it is time to run a data export recipe. In the 
-[Use Case on Cycling and Air Quality](Use-Case-on-Cycling-and-Air-Quality) 
+[Use Case on Cycling and Air Quality](Use-Case-on-Cycling-and-Air-Quality.md) 
 we described an example recipe where we output, for every borough in London, information about NO2 concentration and the ratio between the bicycle traffic and car traffic ([see recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json)). To run the export recipe, run the following command from the root directory of the Tombolo Digital Connector:
 
 ```bash
@@ -16,7 +18,8 @@ gradle runExport \
   -PoutputFile='london-cycle-traffic-air-quality-output.json'
 ```
 
-As mentioned in the [use case description](Use-Case-on-Cycling-and-Air-Quality), this will give you a GeoJson file with the cycling and air quality indicators for each of the 33 London boroughs. Opening the Json file in QGIS and using a quantile-based colouring of the boroughs should give you an image similar to the one below ([See QGIS tutorial for reference](http://www.qgistutorials.com/en/docs/basic_vector_styling.html)).
+As mentioned in the [use case description](Use-Case-on-Cycling-and-Air-Quality.md), this will give you a GeoJson file 
+with the cycling and air quality indicators for each of the 33 London boroughs. Opening the Json file in QGIS and using a quantile-based colouring of the boroughs should give you an image similar to the one below ([See QGIS tutorial for reference](http://www.qgistutorials.com/en/docs/basic_vector_styling.html)).
 
 ![London borough cycle to car count ratio](https://user-images.githubusercontent.com/14051876/33561213-f9071faa-d909-11e7-98df-a8edae0c3a6a.png) 
 

@@ -9,7 +9,8 @@ After exporting the data, Thomas opens the file in QGIS and even if he is not a 
 
 ## Step 1: Create model recipe
 
-A Tombolo model [recipe](Recipe-Language) is a json file describing the dataset to be exported and the output format. An executable recipe can be found [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json), but below we we describe the building blocks.
+A Tombolo model [recipe](Recipe-Language.md) is a json file describing the dataset to be exported and the output format
+. An executable recipe can be found [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json), but below we we describe the building blocks.
 
 ```json
 {
@@ -31,7 +32,7 @@ The dataset recipe has three parts
 
 The **subjects** are the entities for which you want to combine data. In Thomas' case these are London Boroughs. The **datasources** specify which datasets should be used. In Thomas' case this will be Department of Transport traffic counts and London Air Quality Network. Finally, the **fields** are descriptions of how the data should be combined together in the output file. In Thomas' case it could be one field for the cycling count as a proportion of car traffic counts and average yearly NO<sub>2</sub> levels across each borough.
 
-For more information on each of these components see [the description of the local datastore](Local-Datastore).
+For more information on each of these components see [the description of the local datastore](Local-Datastore.md).
 
 ### Subjects
 
@@ -74,7 +75,7 @@ Thomas will now specify the datasources as follows:
 
 The first datasource refers to **local authorities** from the **Output Area Importer** from **ONS**. The second datasource refers to **traffic counts** from the Department for Transport (**DfT**). Since the Department for Transport provides data-files for each region separately, Thomas can specify that he is only interested in traffic counts within **London**. The third datasource refers to **air quality** data from the London Air Quality Network (**LAQN**) from King's College London.
 
-For more information about specifying data-sources see the [data-source section of the recipe language](Recipe-Language#datasource-recipe).
+For more information about specifying data-sources see the [data-source section of the recipe language](Recipe-Language.md#datasource-recipe).
 
 At the moment we are relying on users knowing a lot about the data they want to import. This will be resolved in late 2017 with a user interface for supporting recipe generation.
 

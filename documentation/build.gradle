@@ -69,7 +69,8 @@ task build {
 
 task usecases() {
   def sources = [
-          "Cycling and Air Quality":"Use-Case-on-Cycling-and-Air-Quality.md"
+          "Cycling and Air Quality":"Use-Case-on-Cycling-and-Air-Quality.md",
+          "Active Transport Index":"Use-Case-on-Active-Transport-Index.md"
   ]
   def target = "Tombolo-Digital-Connector-Examples.pdf"
 
