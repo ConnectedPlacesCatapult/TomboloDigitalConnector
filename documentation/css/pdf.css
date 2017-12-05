@@ -1,0 +1,27 @@
+/*
+Dark-blue: #0257c5
+Blue: #006dfe
+Light-blue: #85daef
+Gray: #cccccc
+Pink: #ff15a3
+*/
+body {
+    font-family: Georgia, serif;
+}
+
+h1, h2, h3 {
+    color: #0257c5;
+    font-family: sans-serif;
+}
+
+a {
+    color: #0257c5;
+}
+
+em, i {
+    color: #006dfe;
+}
+
+b, strong {
+    color: #ff15a3;
+}

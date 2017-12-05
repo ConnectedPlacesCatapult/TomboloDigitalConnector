@@ -1,0 +1,100 @@
+import org.markdownj.MarkdownProcessor
+import org.xhtmlrenderer.pdf.ITextRenderer
+import org.ccil.cowan.tagsoup.Parser
+import org.apache.xalan.xsltc.trax.SAX2DOM
+import org.xml.sax.InputSource
+import java.text.SimpleDateFormat
+import java.util.Date
+
+buildscript{
+  repositories {
+    mavenCentral()
+    maven {
+      url 'http://scala-tools.org/repo-releases'
+      url 'http://download.java.net/maven/2/'
+    }
+  }
+
+  dependencies {
+    //compile group:'org.geotools',			name: 'gt-referencing', 	version: '14.0'
+    classpath "org.markdownj:markdownj-core:0.4"
+    classpath "org.ccil.cowan.tagsoup:tagsoup:1.2"
+    classpath "org.xhtmlrenderer:core-renderer:R8"
+    classpath "xalan:xalan:2.7.1"
+  }
+}
+
+task build {
+  def source = "Home.md"
+  def target = "Tombolo-Digital-Connector-Manual.pdf"
+  def sections = [
+    "Features" : "Features.md",
+    "Using the Digital Connector": "Using-the-Digital-Connector.md",
+    "System Architecture" : "System-Architecture.md",
+    "Local Datastore" : "Local-Datastore.md",
+    "Importers" : "Importers.md",
+    "Fields and Models" : "Fields-and-Models.md",
+    "Exporters" : "Exporters.md",
+    "Recipe Language" : "Recipe-Language.md",
+    "HowTo: Importer Implementation" : "HowTo-Importer-Implementation.md"
+  ]
+
+  //Convert from markdown to html
+  def mp = new MarkdownProcessor()
+  Date today = new Date ()
+  SimpleDateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm")
+  def html = "<html><head><link rel=\"stylesheet\" href=\"css/pdf.css\"></head><body>"
+  html += "<h1>Tombolo Digital Connector Manual</h1>"
+  html += "<em>Exported from the Tombolo GitHub Wiki on "+df.format (today)+"</em>"
+  html += "${mp.markdown((new File(source).text))}"
+  sections.each {title, file -> 
+    html += "<h1>"+title+"</h1>"
+    html += "${mp.markdown((new File(file).text))}".replaceAll("\\`\\`\\`json","<pre>").replaceAll("\\`\\`\\`","</pre>")
+  }
+  html += "</body></html>"
+  
+  //Convert from html to w3c document
+  def parser = new Parser()
+  def sax2dom = new SAX2DOM()
+  parser.setContentHandler(sax2dom);
+  parser.setFeature(Parser.namespacesFeature, false);
+  parser.parse(new InputSource(new ByteArrayInputStream(html.getBytes())));
+  
+  //Use Document to create pdf
+  ITextRenderer renderer = new ITextRenderer();
+  renderer.setDocument(sax2dom.getDOM(), null);
+  renderer.layout();
+  renderer.createPDF((new File(target).newOutputStream()))
+}
+
+task usecases() {
+  def sources = [
+          "Cycling and Air Quality":"Use-Case-on-Cycling-and-Air-Quality.md"
+  ]
+  def target = "Tombolo-Digital-Connector-Examples.pdf"
+
+  def mp = new MarkdownProcessor()
+  Date today = new Date ()
+  SimpleDateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm")
+  def html = "<html><head><link rel=\"stylesheet\" href=\"css/pdf.css\"></head><body>"
+  html += "<h1>Tombolo Digital Connector Examples</h1>"
+  html += "<em>Exported from the Tombolo GitHub Wiki on "+df.format (today)+"</em>"
+  sources.each {title, file ->
+    html += "<h1>"+title+"</h1>"
+    html += "${mp.markdown((new File(file).text))}".replaceAll("\\`\\`\\`.*","<pre>").replaceAll("\\`\\`\\`","</pre>")
+  }
+  html += "</body></html>"
+
+  //Convert from html to w3c document
+  def parser = new Parser()
+  def sax2dom = new SAX2DOM()
+  parser.setContentHandler(sax2dom);
+  parser.setFeature(Parser.namespacesFeature, false);
+  parser.parse(new InputSource(new ByteArrayInputStream(html.getBytes())));
+
+  //Use Document to create pdf
+  ITextRenderer renderer = new ITextRenderer();
+  renderer.setDocument(sax2dom.getDOM(), null);
+  renderer.layout();
+  renderer.createPDF((new File(target).newOutputStream()))
+}
