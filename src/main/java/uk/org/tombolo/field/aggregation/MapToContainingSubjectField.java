@@ -65,7 +65,7 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
                     "Subject %s is contained by %d subjects of type %s (%s), but should be contained by 1 only",
                     subject.getName(),
                     subjectsContainingSubject.size(),
-                    containerSubjectType.getLabel(),
+                    containerSubjectType == null ? "UNKNOWN" : containerSubjectType.getLabel(),
                     subjectsContainingSubject.stream().map(Subject::getName).collect(Collectors.joining(", "))));
         }
 
