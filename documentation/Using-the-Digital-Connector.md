@@ -3,8 +3,11 @@
 In a nutshell, using the Digital Connector involves four steps:
 
  1. After ensuring that you have installed the pre-requisites outlined [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector#quick-start), install the Digital Connector by cloning the GitHub repository.
- 1. Write a recipe file that describes the desired data output from the Digital Connector. This recipe includes which data-sources to use and how to mix the data together.
- 1. Run the export. In this step the Digital Connector will connect to the relevant data sources, download the necessary data, join the data as per the user recipe and export the data in the requested output format. 
+ 1. Write a recipe file that describes the desired data output from the Digital Connector. This recipe includes which
+  data-sources to use and how to mix the data together. To get started have a look at the [demo annotated recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1543564/annotatedRecipe.pdf)
+  or the other [examples](/src/main/resources/executions/examples/).
+ 1. [Run the export](README.md#run-export). In this step the Digital Connector will connect to the relevant data 
+ sources, download the necessary data, join the data as per the user recipe and export the data in the requested output format. 
  1. Work with the data in tools such as QGIS, Jupyter Notebooks, R, etc.
 
 ## Example: Correlation between deprivation and childhood obesity 

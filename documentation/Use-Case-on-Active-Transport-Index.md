@@ -18,7 +18,7 @@ As with other [export recipes](Recipe-Language.md), [the active transport index 
 * **fields**: Tells the digital connector to export 4 fields: the index itself, together with its 3 components. The last 3 fields are not necessary when exporting the index, but for the [city index explorer application](https://labs.tombolo.org.uk/city-index-explorer/) we do need this information for data visualisation purposes.
 * **exporter**: Tell the digital connector to export the data as GeoGson.
 
-```JSON
+```json
 {
   "dataset": {
     "subjects": [
@@ -65,7 +65,7 @@ Below we will explain the active transport index and its components in more deta
 # Active Transport Index
 As described above, the active transport index is composed of three components. The index is simply the sum of those three components, implemented as a list-arithmetic-field using the addition operation.
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
   "operation": "add",
@@ -95,7 +95,7 @@ The [cycle-traffic](https://github.com/FutureCitiesCatapult/TomboloDigitalConnec
 
 The implementation of the back-off field is as follows:
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
   "fields" : [
@@ -135,7 +135,7 @@ The implementation of the back-off field is as follows:
 
 where cycling-count is defined using the built-in fields for aggregating traffic counts:
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "operation": "div",
@@ -166,7 +166,7 @@ see further the built-in recipes for aggregating [bicycle](https://github.com/Fu
 
 The cycling infrastructure component of the active transport index is also a back-off field. In essence it uses Open Street Map data to calculate how large fraction of the entire road network is marked as having cycling infrastructure. The back-off field is implemented in similar way as above where we first try to calculate a value for the LSOA, but if none is available we first back off to the surrounding MSOA and eventually to the surrounding local authority. It is implemented as follows:
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
   "label": "Cycleway to Highway Count Ratio",
@@ -213,7 +213,7 @@ The cycling infrastructure component of the active transport index is also a bac
 
 where the CycleLaneCount model is an arithmetic-field where we divide the count of road segments with cycling infrastructure with the total count of road segments. In both cases the counts are calculated by using a attribute-matcher-field together inside a geographic-aggregation-field that aggregates over the corresponding geography (LSOA, MSOA or local-authority). It is implemented as follows.
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "Cycle to Road count Ratio",
@@ -291,7 +291,7 @@ where the CycleLaneCount model is an arithmetic-field where we divide the count 
 
 The active-commute component uses data from the travel-to-work dataset from the UK census ([qs701ew](https://www.nomisweb.co.uk/census/2011/qs701ew)). It adds the number of people who either walk or cycle to work and divides by the total population size. The field code is as follows:
 
-```JSON
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "Active Transport to Work",

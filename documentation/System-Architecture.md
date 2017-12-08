@@ -9,4 +9,4 @@ Figure 1 shows a high level system architecture for the Tombolo Digital Connecto
 
 ![High level system architecture](https://user-images.githubusercontent.com/14051876/33561208-f87e3b5e-d909-11e7-8309-a6a7edd0e941.png)
 
-___Figure 1:___ _Overview of the Tombolo Digital Connector components and data workflow._
+***Figure 1:*** _Overview of the Tombolo Digital Connector components and data workflow._

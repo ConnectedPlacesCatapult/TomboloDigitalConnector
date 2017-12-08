@@ -28,8 +28,8 @@ Suppose you want to get the cycling information at a finer granularity, say at [
 
 Change the subjects clause from outputting all 33 London boroughs to outputting all LSOA geographies that fall inside the 33 London boroughs. I.e., change:
 
-```JSON
-"subjects" : [
+```json
+"subjects": [
   {
     "subjectType" : "localAuthority",
     "provider":"uk.gov.ons",
@@ -38,12 +38,12 @@ Change the subjects clause from outputting all 33 London boroughs to outputting 
       "pattern": "E090%"
     }
   }
-],
+]
 ```
 to:
 
 ```json
-"subjects" : [
+"subjects": [
   {
     "subjectType": "lsoa",
     "provider": "uk.gov.ons",
@@ -61,7 +61,7 @@ to:
       ]
     }
   }
-],
+]
 ```
 
 and add the following datasource to the list of datasources:
@@ -70,7 +70,7 @@ and add the following datasource to the list of datasources:
 {
   "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
   "datasourceId" : "lsoa"
-},
+}
 ```
 
 What this does is that it tells the Digital Connector to output all LSOA geographies that fall inside the 33 London boroughs (We are here basing our work on the fact that London boroughs can be identified by a label staring with `E090`) ([see the full recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa.json)). Run the new recipe by executing the command:
@@ -96,7 +96,7 @@ In order to demonstrate this, copy your lsoa data export recipe into a new file 
 
 In this file you can replace the actual calculation with the corresponding pre-defined model recipe. I.e. replace: 
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
   "label": "NitrogenDioxide",
@@ -116,7 +116,7 @@ In this file you can replace the actual calculation with the corresponding pre-d
 ```
 with the corresponding pre-defined model of aggregating NO2:
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
   "label": "NitrogenDioxide",
@@ -126,7 +126,7 @@ with the corresponding pre-defined model of aggregating NO2:
 
 Similarly the calculation of bicycle to car ratio:
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "BicycleFraction",
@@ -142,7 +142,7 @@ Similarly the calculation of bicycle to car ratio:
 
 Can be replaced by the corresponding pre-defined model:
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
   "label": "BicycleFraction",
@@ -176,7 +176,7 @@ In order to demonstrate this, copy your modelling data export recipe into a new 
 
 Then replace the NO2 aggregation calculation:
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
   "label": "NitrogenDioxide",
@@ -186,7 +186,7 @@ Then replace the NO2 aggregation calculation:
 
 with a back-off field that first tries to aggregate the NO2 values for the output geography (LSOAs). If no air quality sensor exists within the LSOA, it tries to aggregate NO2 values for the surrounding MSOA. If no air quality sensor exists within the MSOA, it will aggregate NO2 values for the surrounding local authority (borough). The resulting back-off field looks like this:
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
   "label": "NitrogenDioxide",

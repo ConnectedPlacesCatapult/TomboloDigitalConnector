@@ -160,7 +160,7 @@ The field recipe contains a list of fields that you want to output. Fields can b
 
 In addition each field has additional fields (sic) depending on the type of the field. For example a latest-value-field you need to specify the attribute for which you want the latest value. E.g.,
 
-```
+```json
 "field": {
   "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
   "label": "Count of cars and taxis",
@@ -173,7 +173,7 @@ In addition each field has additional fields (sic) depending on the type of the 
 
 As another example the arithmetic-field takes as an input the operation you want to apply and two fields 
 
-```
+```json
 {
   "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
   "label": "An example of adding two fields",
