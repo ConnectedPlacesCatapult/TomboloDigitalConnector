@@ -99,7 +99,7 @@ task runExport(dependsOn: ['classes'], type: JavaExec) {
 		def argumentsSet = project.hasProperty('dataExportSpecFile') && project.hasProperty('outputFile');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
 		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
-		if (!project.hasProperty('forceImports')) { ext.forceImports = "" }
+		if (!project.hasProperty('forceImports')) { ext.forceImports = "None" }
 
 		args(dataExportSpecFile, outputFile, forceImports, clearDatabaseCache)
 	}

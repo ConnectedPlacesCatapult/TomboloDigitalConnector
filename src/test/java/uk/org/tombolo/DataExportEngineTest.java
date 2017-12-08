@@ -121,12 +121,11 @@ public class DataExportEngineTest extends AbstractTest {
                 "      properties: {" +
                 "        name: 'City of London 001A'," +
                 "        attributes: {" +
-                "          attr_label: [" +
+                "          attr_label: " +
                 "            {" +
                 "              value: 100.0," +
                 "              timestamp: '2011-01-01T00:00:00'" +
                 "            }" +
-                "          ]" +
                 "        }," +
                 "        label: 'E01000001'" +
                 "      }" +
@@ -215,19 +214,17 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
                 "      properties: {" +
                 "        name: 'Islington 015E'," +
                 "        attributes: {" +
-                "          percentage_under_1_years_old_label: [" +
+                "          percentage_under_1_years_old_label: " +
                 "            {" +
                 "              value: 0.012263099219620958," +
                 "              timestamp: '2011-12-31T23:59:59'" +
                 "            }" +
-                "          ]" +
                 "        }," +
                 "        label: 'E01002766'" +
                 "      }" +
@@ -294,11 +291,10 @@ public class DataExportEngineTest extends AbstractTest {
                         "    {" +
                         "      properties: {" +
                         "        local_authority: {" +
-                        "          attr_label: [" +
+                        "          attr_label: " +
                         "            {" +
                         "              value: 100d" +
                         "            }" +
-                        "           ]"+
                         "        }" +
                         "      }" +
                         "    }" +
@@ -387,8 +383,6 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-        System.out.println(writer.toString());
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -437,12 +431,11 @@ public class DataExportEngineTest extends AbstractTest {
                 "    properties: {" +
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
-                "      aLabel: [" +
+                "      aLabel: " +
                 "        {" +
                 "          value: 0.005016722408026756," +
                 "          timestamp: '2011-12-31T23:59:59'" +
                 "        }" +
-                "      ]" +
                 "    }" +
                 "  }]" +
                 "}", writer.toString(), false);
@@ -458,18 +451,17 @@ public class DataExportEngineTest extends AbstractTest {
         );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [{" +
                 "    properties: {" +
                 "      name: 'Islington 015E'," +
                 "      label: 'E01002766'," +
                 "      aWrapper: {" +
-                "        aLabel:[" +
+                "        aLabel:" +
                 "          {" +
                 "            value: 0.005016722408026756," +
                 "            timestamp: '2011-12-31T23:59:59'" +
-                "          }]" +
+                "          }" +
                 "        }" +
                 "      }" +
                 "  }]" +
@@ -488,7 +480,6 @@ public class DataExportEngineTest extends AbstractTest {
                 );
 
         engine.execute(builder.build(), writer);
-
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +

@@ -1,9 +1,19 @@
 # Tombolo Digital Connector
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
-The Tombolo Digital Connector is a software library for integrating urban models and datasets.
+The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that allows data enthusiasts to efficiently connect different data sets into a common format. It enables the **transparent** and **reproducible** combination of data which exists in different domains, different formats and on different spatio-temporal scales. The Tombolo Digital Connector makes it easier to generate models, indexes and insights that rely on the combination of data from different sources.
+
+There are three particularly important parts to the Tombolo Digital Connector: 
+
+- Importers
+  - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
+- Centralised data format
+  - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
+- Recipes
+  - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
 For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
+
 
 ## Table of Contents:
 
@@ -12,6 +22,10 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
 * [Wiki to PDF](#wiki-to-pdf)
+
+<p align="center">
+  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
+</p>
 
 ## Quick start
 

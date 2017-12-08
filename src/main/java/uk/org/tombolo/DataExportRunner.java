@@ -45,7 +45,7 @@ public class DataExportRunner extends AbstractRunner {
             engine.execute(
                     getSpecification(executionSpecPath),
                     writer,
-                    new ImporterMatcher(forceImports)
+                    new ImporterMatcher(forceImports.trim())
             );
         } catch (Exception e) {
             e.printStackTrace();

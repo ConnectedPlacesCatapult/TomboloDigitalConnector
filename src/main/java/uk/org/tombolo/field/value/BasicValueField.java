@@ -40,4 +40,10 @@ public abstract class BasicValueField extends AbstractField {
         obj.put(label, contents);
         return obj;
     }
+
+    protected JSONObject withinMetadata(JSONObject contents) {
+        JSONObject obj = new JSONObject();
+        obj.put(label, contents);
+        return obj;
+    }
 }
