@@ -1,0 +1,33 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "label": "Active Transport to Work",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+    "label": "Sum Active modes",
+    "operation": "add",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Method of Travel to Work: On foot"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Method of Travel to Work: Bicycle"
+        }
+      }
+    ]
+  },
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+    "attribute": {
+      "provider": "uk.gov.ons",
+      "label": "Method of Travel to Work: All categories: Method of travel to work"
+    }
+  }
+}
