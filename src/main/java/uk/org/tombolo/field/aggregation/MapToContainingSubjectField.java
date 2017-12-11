@@ -59,6 +59,11 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
     }
 
     private Subject getSubjectContainingSubject(Subject subject) throws IncomputableFieldException {
+        // In case there is no containing subject type for the specified subject the field cannot be computed.
+        if (containerSubjectType == null) {
+            throw new IncomputableFieldException(String.format("Cannot compute field: No containing subject type for " +
+                    "subject %s", subject.getName()));
+        }
         List<Subject> subjectsContainingSubject = SubjectUtils.subjectsContainingSubject(containerSubjectType, subject);
         if (subjectsContainingSubject.size() != 1) {
             throw new IncomputableFieldException(String.format(
