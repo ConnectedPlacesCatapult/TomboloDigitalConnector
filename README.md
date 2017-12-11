@@ -5,18 +5,19 @@
 
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
-The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that allows data enthusiasts to efficiently connect different data sets into a common format. It enables the **transparent** and **reproducible** combination of data which exists in different domains, different formats and on different spatio-temporal scales. The Tombolo Digital Connector makes it easier to generate models, indexes and insights that rely on the combination of data from different sources.
-
+The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that enables users to 
+seamlessly combine different sources of datasets in an efficient, transparent and reproducible way.  
+  
 There are three particularly important parts to the Tombolo Digital Connector: 
 
-- [***Importers***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Importers)
+- [***Importers***](documentation/Importers.md)
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
-- [***Centralised data format***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Local-Datastore)
+- [***Centralised data format***](documentation/Local-Datastore.md)
   - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
-- [***Recipes***](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
+- [***Recipes***](documentation/Recipe-Language.md)
   - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
-For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
+For further information see the [documentation](documentation/Home.md).
 
 
 ## Table of Contents:
@@ -27,7 +28,6 @@ For further information see the [wiki](https://github.com/FutureCitiesCatapult/T
 * [Run Tasks](#run-tasks)
 * [Start/Stop server](#start-stop-server)
 * [License](#license)
-* [Wiki to PDF](#wiki-to-pdf)
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true" alt="DigitalConnectorGif"/>
@@ -232,8 +232,7 @@ Now you are all set to run a task on the Digital Connector.
 
 The next step is to run an example to show how the digital connector combines different data sets.
 We’re using an example that shows the relationship between air pollution (demonstrated in this example by NO2 levels), 
-and car and bicycle traffic in every borough in London. You can read more about this example 
-[here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Tutorial).  
+and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/Tutorial.md).  
 
 When you’ve run this example, you can expect a map that looks like this: 
 
@@ -284,20 +283,19 @@ Change the path in the command in case you want it saved elsewhere.
 
 **We need your feedback!  
 If you have any issues with setting up the tool, or running the tutorial, or if you have some advice about how we can 
-do this better, please contact us by creating 
-an [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues). 
+do this better, please contact us by creating an [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues). 
 Our goal is for someone to get back to you within 24 hours.**
 
 
 #### See also:
 
-* [Learn more about the **example** used in this tutorial](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Tutorial)
+* [Learn more about the **example** used in this tutorial](documentation/Tutorial.md)
   
-* [Use other examples to trail the Digital Connector](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples)
+* [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
 
-* [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/documentation/images/demo_recpie_annotations_v2.pdf)
+* [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
 
-*  [Learn how to build your own recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki/Recipe-Language)
+*  [Learn how to build your own recipe](documentation/Recipe-Language.md)
 
 
 ### Run tests
@@ -376,12 +374,3 @@ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 [MIT](LICENSE)
 
 When using the Tombolo or other GitHub logos and artwork, be sure to follow the [GitHub logo guidelines](https://github.com/logos).
-
-## Wiki to PDF
-
-To create a PDF version of the Wiki documentation clone the wiki respository 
-and run the gradle build in the wiki repository root folder.
-
-```
-gradle build
-```
