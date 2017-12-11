@@ -1,84 +1,302 @@
-# Tombolo Digital Connector
+<a href="http://www.tombolo.org.uk/products/">
+<p align="center"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png" width="256" height="256"/>
+</p></a>
+<h1 align="center"> Tombolo Digital Connector</h1>
+
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
-The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that allows data enthusiasts to efficiently connect different data sets into a common format. It enables the **transparent** and **reproducible** combination of data which exists in different domains, different formats and on different spatio-temporal scales. The Tombolo Digital Connector makes it easier to generate models, indexes and insights that rely on the combination of data from different sources.
-
+The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that enables users to 
+seamlessly combine different sources of datasets in an efficient, transparent and reproducible way.  
+  
 There are three particularly important parts to the Tombolo Digital Connector: 
 
-- Importers
+- [***Importers***](documentation/Importers.md)
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
-- Centralised data format
+- [***Centralised data format***](documentation/Local-Datastore.md)
   - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
-- Recipes
+- [***Recipes***](documentation/Recipe-Language.md)
   - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
-For further information see the [wiki](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/wiki).
+For further information see the [documentation](documentation/Home.md).
 
 
 ## Table of Contents:
 
+* [Requirements](#requirements)
 * [Quick start](#quick-start)
-* [Continuous Integration](#continuous-integration)
 * [Local Deploy](#local-deploy)
 * [Run Tasks](#run-tasks)
+* [Start/Stop server](#start-stop-server)
+* [License](#license)
 
 <p align="center">
-  <img src="/readmeresources/dc_animation.gif?raw=true" alt="DigitalConnectorGif"/>
+  <img src="https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true" alt="DigitalConnectorGif"/>
 </p>
 
-## Quick start
+## Requirements
+To get started you will need to install the requirements to run the Digital Connector.
 
-### Requirements
-* [JDK (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+**Note: you’ll need to have administrator rights on your machine to install these - 
+make sure that you do before you proceed.**
+  
+**Install the following** via the link through to their installation page:
+
+* [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [PostgreSQL (9.4+)](https://www.postgresql.org/)
 * [PostGIS (2.1+)](http://postgis.net/)
 * [Gradle (2.12+)](https://gradle.org/)
-* (Optional) [Wercker (1.0+)](http://www.wercker.com/)
+* [Git](https://git-scm.com/download/)
 
-### Configure the project
+## Quick start
 
-Copy and amend the example configuration file at
-`/gradle.properties.example` to
-`/gradle.properties`.
+This tutorial will guide you to a quick start on **macOS**. Installation tutorials for other operating systems will come soon.
 
-Copy and amend the example API keys file at
-`/apikeys.properties.example` to
-`/apikeys.properties`. If you're not using the services mentioned in the file you can leave it as-is.
+#### A note about the Terminal
 
-### Set up main database
+The [Terminal](https://en.wikipedia.org/wiki/Terminal_(macOS)) application can be found in the Applications -> Utilities folder or quickly accessed through Spotlight. It is pre-installed in **macOS** so there is no need to install it.
 
-Then run the following to set up your database:
+You will need this application to run some of the commands of this tutorial. When you enter a command and press 
+return/enter, the terminal will execute it and complete the task.
+
+**Make sure to press return after typing a command before you enter the next one.**
+
+#### Let's start
+
+* Open the **Terminal**. All the following steps will operate in it.
+
+* Check if you have installed the right versions for the requirements by entering each of the following commands in 
+the Terminal.
+
+  ```bash
+  java -version
+  psql --version
+  gradle --version
+  git --version
+  ```
+
+  The output will look something like this:
+
+  ```bash
+  $ java -version
+  java version "1.8.0_121"
+  Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+  Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+  $ psql --version
+  psql (PostgreSQL) 9.6.3
+  $ gradle --version
+  
+  ------------------------------------------------------------
+  Gradle 3.4
+  ------------------------------------------------------------
+  
+  Build time:   2017-02-20 14:49:26 UTC
+  Revision:     73f32d68824582945f5ac1810600e8d87794c3d4
+  
+  Groovy:       2.4.7
+  Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
+  JVM:          1.8.0_121 (Oracle Corporation 25.121-b13)
+  OS:           Mac OS X 10.11.6 x86_64
+  
+  $ git --version
+  git version 2.10.1 (Apple Git-78)
+  ```
+
+* Get the Digital Connector code to your local machine by cloning its repository.
+
+  ```bash
+  git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector
+  ```
+
+  If successful, you will see a log similar to the below.
+
+  ```bash
+  $git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector  
+  Cloning into 'TomboloDigitalConnector'...
+  remote: Counting objects: 15761, done.
+  remote: Compressing objects: 100% (184/184), done.
+  remote: Total 15761 (delta 90), reused 193 (delta 49), pack-reused 15487
+  Receiving objects: 100% (15761/15761), 178.89 MiB | 3.04 MiB/s, done.
+  Resolving deltas: 100% (7647/7647), done.
+  ```
+
+* Go to the Digital Connetor root directory and rename the properties files. These can be done you running each of the
+following commands and pressing enter.
+
+  ```bash
+  cd TomboloDigitalConnector
+  mv gradle.properties.example gradle.properties
+  mv apikeys.properties.example apikeys.properties
+  ```
+
+  The previous commands will allow you to use the default project settings.  
+
+  *If you prefer/need you can amend the settings altering the default ones to the ones you decide.*
+
+
+### Set up database
+
+The following step sets up a main and a test database after starting the server.
+The test database is used by the tests and is cleared routinely. We use this to gain control over what is in the 
+database when our tests are running and to avoid affecting any important data in your main database.
 
 ```bash
-# Create a user and database
-createuser tombolo
-createdb -O tombolo tombolo -E UTF8
-psql -d tombolo -c "CREATE EXTENSION postgis;"
-psql -d tombolo -c "SET NAMES 'UTF8';"
-
-
-# Create DB tables and load initial fixtures
-psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+chmod +x create_db.sh
+./create_db.sh
 ```
 
-### Set up test database
+*For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
 
-The test database is used by the tests and is cleared routinely. We use this
-to gain control over what is in the database when our tests are running and
-to avoid affecting any important data in your main database.
+### Run tests 
 
-To set up the test user and database:
+A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
+everything went fine.
+
+Run the command in the Terminal.
 
 ```bash
-# Create a user and database
-createuser tombolo_test
-createdb -O tombolo_test tombolo_test -E UTF8
-psql -d tombolo_test -c "CREATE EXTENSION postgis;"
-psql -d tombolo_test -c "SET NAMES 'UTF8';"
-
-# Create DB tables and load initial fixtures
-psql -d tombolo_test -U tombolo_test < src/main/resources/sql/create_database.sql
+gradle test
 ```
+
+If successful the output will be as the following.
+
+```bash
+$ gradle test
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+> Building 85% > :test > 50 tests completed
+:test
+
+BUILD SUCCESSFUL
+
+Total time: 4 mins 50.919 secs
+```
+
+**If the tests start to fail then check the PostgreSQL server is running and the requirements are properly installed by
+ going through the previous steps.**
+ 
+About to be mentioned a couple of examples of what might have gone wrong in the process if the tests start failing.
+
+```bash
+uk.org.tombolo.core.AttributeTest > testUniqueLabel FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+
+uk.org.tombolo.core.AttributeTest > testWriteJSON FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+
+uk.org.tombolo.core.DatasourceTest > testWriteJSON FAILED
+    java.util.ServiceConfigurationError
+        Caused by: org.hibernate.service.spi.ServiceException
+            Caused by: org.hibernate.exception.JDBCConnectionException
+                Caused by: org.postgresql.util.PSQLException
+                    Caused by: java.net.ConnectException
+```
+
+The former error log is launched if the server is not running and to solve it you need to run the command.
+
+```bash
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+```
+
+In case you see this other error instead, it means that you did not rename the settings files successfully.
+
+```bash
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/TomboloDigitalConnector/build.gradle' line: 159
+
+* What went wrong:
+Execution failed for task ':test'.
+> Test environment not configured. See the README.
+```
+
+If you see other errors, try to go back and follow the steps again.
+
+
+### Run the Digital Connector
+
+Now you are all set to run a task on the Digital Connector.
+
+The next step is to run an example to show how the digital connector combines different data sets.
+We’re using an example that shows the relationship between air pollution (demonstrated in this example by NO2 levels), 
+and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/Tutorial.md).  
+
+When you’ve run this example, you can expect a map that looks like this: 
+
+![Final Output](https://user-images.githubusercontent.com/14051876/33429682-b96d18f0-d5c5-11e7-8ca5-b86f0eaa7376.png)
+
+##### To get started:
+
++ Run the following command into the Terminal.
+
+  ```bash
+  gradle runExport \
+    -PdataExportSpecFile='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
+    -PoutputFile='/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+  ```
+
++ You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
+Change the path in the command in case you want it saved elsewhere.
+
+  The output will look similar to the next content:
+  
+  ```json
+  {
+    "type":"FeatureCollection",
+    "features":[
+      {
+        "type":"Feature",
+        "geometry":{
+          "type":"Polygon",
+          "coordinates":[[[-0.0802,51.5069],[-0.1092,51.5099],[-0.1114,51.5098],
+                          [-0.1116,51.5153],[-0.1053,51.5185],[-0.0852,51.5203],
+                          [-0.0784,51.5215],[-0.0802,51.5069]]]
+        },
+        "properties":{
+          "label":"E09000001",
+          "name":"City of London",
+          "Nitrogen Dioxide":81.3333333333333,
+          "Bicycle Fraction":0.25473695591455 
+        }
+      }, ...
+      ...
+    ]
+  }
+  ```
+  
++ Once you have your output, you can open with a geospatial visualisation tool. For this example, we recommend QGIS,
+ and [here](/documentation/Open-with-QGIS.md) you can find a guide on how to use it.
+
+
+**We need your feedback!  
+If you have any issues with setting up the tool, or running the tutorial, or if you have some advice about how we can 
+do this better, please contact us by creating an [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues). 
+Our goal is for someone to get back to you within 24 hours.**
+
+
+#### See also:
+
+* [Learn more about the **example** used in this tutorial](documentation/Tutorial.md)
+  
+* [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
+
+* [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
+
+*  [Learn how to build your own recipe](documentation/Recipe-Language.md)
+
 
 ### Run tests
 
@@ -139,28 +357,20 @@ and explore the data catalogue.
 gradle exportCatalogue -PoutputFile=catalogue.json
 ```
 
-## Continuous Integration
+## Start/Stop server
 
-We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
-against the CI server automatically. If you don't have access, you can use the
-Wercker account in the 1Password Servers vault to add yourself.
+If you need to start or stop the server (on MacOS X), use the following commands.
 
-If you need to run the CI environment locally:
+```bash
+# to start
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 
-1. Install the [Wercker CLI](http://wercker.com/cli/install)
-2. Run `wercker build`
-
-The base image is generated with the very simple Dockerfile in the root of this
-project. To push a new image to DockerHub you will need access to our DockerHub
-account. If you don't have access, you can use the DockerHub account in the
-1Password Servers vault to add yourself.
-
-If you need new versions of PostgreSQL, Java, etc, you can update the image:
-
+# to stop
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 ```
-docker build -t tombolo .
-docker images
-# Look for `tombolo` and note the IMAGE ID
-docker tag <IMAGE_ID> fcclab/tombolo:latest
-docker push fcclab/tombolo
-```
+
+## License
+
+[MIT](LICENSE)
+
+When using the Tombolo or other GitHub logos and artwork, be sure to follow the [GitHub logo guidelines](https://github.com/logos).
