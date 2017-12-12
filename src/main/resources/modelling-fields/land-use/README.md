@@ -23,8 +23,6 @@ For land-use diversity we include 4 models:
  `fraction-X-of-urban` sub-fields.
 - `land-use-coeffient-of-variance`: returns the coefficient of variance
  (stdev/mean) for the 3 `fraction-X` sub-fields.
-- `land-use-urban- coeffient-of-variance`: returns the coefficient of
- variance (stdev/mean) for the 3 `fraction-X-of-urban` sub-fields.
 
 These measures of land-use diversity are motivated by the intuition
 that lower variance among the different land-use fractions make a

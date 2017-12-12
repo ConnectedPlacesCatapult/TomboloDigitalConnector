@@ -34,11 +34,6 @@
       },
       {
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
-        "label": "index:land_use_urban_co",
-        "recipe": "land-use/land-use-urban-coefficient-of-variation"
-      },
-      {
-        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
         "label": "component:fraction_commercial",
         "recipe": "land-use/fraction-commercial"
       },
