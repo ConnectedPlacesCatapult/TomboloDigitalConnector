@@ -33,7 +33,11 @@ public class CensusImporter extends AbstractONSImporter {
     private ArrayList<CensusDescription> descriptions = new ArrayList<>();
     private static final Set<String> BLACK_LIST_HEADERS
             = new HashSet<>(Arrays.asList("date", "geography", "geography code", "Rural Urban"));
-
+    private static final Map<String, String> GEOGRAPHIES = new HashMap<String, String>() {{
+               put("lsoa", "TYPE298");
+               put("msoa", "TYPE297");
+               put("localAuthority", "TYPE463");
+    }};
 
     public CensusImporter(Config config) throws IOException {
         super(config);
@@ -47,7 +51,7 @@ public class CensusImporter extends AbstractONSImporter {
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
-        String headerRowUrl = getDataUrl(datasourceIdString) + "&recordlimit=0";
+        String headerRowUrl = getDataUrl(datasourceIdString, subjectRecipes.get(0).getSubjectType()) + "&recordlimit=0";
         File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
         CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
 
@@ -62,19 +66,18 @@ public class CensusImporter extends AbstractONSImporter {
     }
 
     private String attributeLabelFromHeader(String header) {
-        // FIXME: Make sure that this generalises over all datasets
         int end = header.indexOf(";");
         return header.substring(0, end);
     }
 
-    protected String getDataUrl(String datasourceIdString) {
+    protected String getDataUrl(String datasourceIdString, String geography) {
         return "https://www.nomisweb.co.uk/api/v01/dataset/"
                 + getRecordId(datasourceIdString)
                 + ".bulk.csv?"
                 + "time=latest"
                 + "&" + "measures=20100"
                 + "&" + "rural_urban=total"
-                + "&" + "geography=TYPE298";
+                + "&" + "geography=" + GEOGRAPHIES.get(geography);
     }
 
     @Override
@@ -86,13 +89,14 @@ public class CensusImporter extends AbstractONSImporter {
             attributes.add(AttributeUtils.getByProviderAndLabel(attribute.getProvider(), attribute.getLabel()));
         }
 
-        // FIXME: Generalise this beyond LSOA
-        SubjectType lsoa = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
-                OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
-        List<TimedValue> timedValueBuffer = new ArrayList<>();
-        String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId());
+        String subjectTypeFromRecipe = subjectRecipes.get(0).getSubjectType();
+        OaImporter.OaType oaType = OaImporter.OaType.valueOf(subjectTypeFromRecipe);
+        SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                                                        oaType.name(), oaType.datasourceSpec.getDescription());
 
-        // FIXME: Use stream instead of file
+        List<TimedValue> timedValueBuffer = new ArrayList<>();
+        String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId(), subjectTypeFromRecipe);
+
         InputStream dataStream = downloadUtils.fetchInputStream(
                 new URL(dataUrl), getProvider().getLabel(), ".csv");
 
@@ -100,7 +104,7 @@ public class CensusImporter extends AbstractONSImporter {
                 CSVFormat.RFC4180.withFirstRecordAsHeader());
 
         csvParser.forEach(record -> {
-            Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
+            Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, record.get("geography code"));
             if (subject != null) {
                 attributes.forEach(attribute -> {
                     String value = record.get(attribute.getDescription());
