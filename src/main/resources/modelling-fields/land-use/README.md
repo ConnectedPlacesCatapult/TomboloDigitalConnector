@@ -16,12 +16,16 @@ For each land-use value X we include two models:
  commercial and retail). Thee fields make use of the field `urban-area`
  which returns the cumulative area of the 3 urban land-uses.
 
-For land-use diversity we include 2 models:
+For land-use diversity we include 4 models:
 - `land-use-variance`: returns the variance among the 3 `fraction-X`
  sub-fields.
 - `land-use-urban-variance`: returns the variance among the 3
  `fraction-X-of-urban` sub-fields.
+- `land-use-coeffient-of-variance`: returns the coefficient of variance
+ (stdev/mean) for the 3 `fraction-X` sub-fields.
+- `land-use-urban- coeffient-of-variance`: returns the coefficient of
+ variance (stdev/mean) for the 3 `fraction-X-of-urban` sub-fields.
 
-These two measures of land-use diversity are motivated by the intuition
+These measures of land-use diversity are motivated by the intuition
 that lower variance among the different land-use fractions make a
 neighbourhood more diverse. This is un-proven though and up for debate.
