@@ -24,7 +24,7 @@ public class ImporterMatcher {
     }
 
     private List<String> parseMatchString(String matchString) throws ParseException {
-        if (null == matchString || "".equals(matchString)) { return Collections.emptyList(); }
+        if (null == matchString || "None".equals(matchString) || "".equals(matchString)) { return Collections.emptyList(); }
         try {
             return Arrays.asList(matchString.split("\\s*,\\s*"));
         } catch (Exception e) {
