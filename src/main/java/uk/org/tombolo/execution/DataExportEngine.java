@@ -43,7 +43,7 @@ public class DataExportEngine implements ExecutionEngine {
 	public void execute(DataExportRecipe dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
 		for (DatasourceRecipe datasourceSpec : dataExportSpec.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceSpec);
+			importDatasource(forceImports, datasourceSpec, dataExportSpec.getDataset().getSubjects());
 		}
 
 		// Generate fields
@@ -55,7 +55,7 @@ public class DataExportEngine implements ExecutionEngine {
 			fields.add(field);
 		}
 
-		prepareFields(fields, forceImports);
+		prepareFields(fields, dataExportSpec.getDataset().getSubjects(), forceImports);
 
 		// Use the new fields method
 		log.info("Exporting ...");
@@ -65,24 +65,24 @@ public class DataExportEngine implements ExecutionEngine {
 		exporter.write(writer, subjects, fields, dataExportSpec.getTimeStamp());
 	}
 
-	private void prepareFields(List<Field> fields, ImporterMatcher forceImports) throws Exception {
+	private void prepareFields(List<Field> fields, List<SubjectRecipe> subjectRecipes, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are specified as part of a predefined field
 		for (Field field : fields) {
 			if (field instanceof ModellingField) {
 				// This is a predefined field and hence we need to import the appropriate datasources
 				for (DatasourceRecipe datasourceRecipe : ((ModellingField) field).getDatasources()) {
-					importDatasource(forceImports, datasourceRecipe);
+					importDatasource(forceImports, datasourceRecipe, subjectRecipes);
 				}
 			}
 
 			if (field instanceof ParentField) {
 				// This is a parent field and hence we need to prepare its children
-				prepareFields(((ParentField) field).getChildFields(), forceImports);
+				prepareFields(((ParentField) field).getChildFields(), subjectRecipes, forceImports);
 			}
 		}
 	}
 
-	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec) throws Exception {
+	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec, List<SubjectRecipe> subjectRecipes) throws Exception {
 		Config importerConfiguration = null;
 		String configFile = datasourceSpec.getConfigFile();
 		if (configFile != null && !"".equals(configFile)) {
@@ -98,6 +98,7 @@ public class DataExportEngine implements ExecutionEngine {
 				datasourceSpec.getGeographyScope(),
 				datasourceSpec.getTemporalScope(),
 				datasourceSpec.getLocalData(),
+				subjectRecipes,
 				forceImports.doesMatch(datasourceSpec.getImporterClass())
 		);
 	}
