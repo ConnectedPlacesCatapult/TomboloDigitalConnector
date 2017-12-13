@@ -37,6 +37,24 @@ public class SubjectUtils {
 		});
 	}
 
+	public static List<Subject> getSubjectByTypeAndNamePattern(SubjectType subjectType, String namePattern){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and lower(name) like :namePattern", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("namePattern", namePattern.toLowerCase())
+					.list();
+		});
+	}
+
+	public static Subject getSubjectByTypeAndName(SubjectType subjectType, String name){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and name = :name", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("name", name)
+					.uniqueResult();
+		});
+	}
+
 	public static List<Subject> getSubjectBySpecification(DatasetRecipe datasetRecipe) {
 		List<Subject> subjects = new ArrayList<>();
 
