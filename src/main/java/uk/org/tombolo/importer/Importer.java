@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer;
 
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,7 +57,7 @@ public interface Importer {
 	 * @throws Exception
 	 */
 	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation) throws Exception;
-	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, Boolean force) throws Exception;
+	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force) throws Exception;
 
 	/**
 	 * Function that takes in a buffer of subjects and saves it to the database and clears the buffer.
