@@ -1,0 +1,18 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.DescriptiveStatisticsField",
+  "statistic": "variance",
+  "fields": [
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "land-use/fraction-commercial-of-urban"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "land-use/fraction-retail-of-urban"
+    },
+    {
+      "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+      "recipe": "land-use/fraction-residential-of-urban"
+    }
+  ]
+}

@@ -143,6 +143,10 @@ public class OSMEntityHandler implements OsmHandler {
     }
 
     private void persistEntity(OsmEntity entity, Geometry geometry, Map<String, String> tags) {
+        if (geometry == null){
+            log.warn("Could not save Subject with null geometry");
+            return;
+        }
         geometry.setSRID(Subject.SRID);
         // Save subject
         Subject subject = new Subject(
