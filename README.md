@@ -22,6 +22,7 @@ For further information see the [documentation](documentation/Home.md).
 
 ## Table of Contents:
 
+* [Contributing](#contributing)
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
 * [Local Deploy](#local-deploy)
@@ -32,6 +33,10 @@ For further information see the [documentation](documentation/Home.md).
 <p align="center">
   <img src="https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true" alt="DigitalConnectorGif"/>
 </p>
+
+## Contributing
+
+Looking to get involved? Have a look at the [Open Source Community milestone](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) where we have selected *low hanging fruit* for you to easily get involved and contribute.
 
 ## Requirements
 To get started you will need to install the requirements to run the Digital Connector.
