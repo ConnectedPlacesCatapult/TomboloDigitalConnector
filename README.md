@@ -22,7 +22,7 @@ For further information see the [documentation](documentation/Home.md).
 
 ## Table of Contents:
 
-* [Contributing](#contibuting)
+* [Contributing](#contributing)
 * [Requirements](#requirements)
 * [Quick start](#quick-start)
 * [Local Deploy](#local-deploy)
