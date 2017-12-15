@@ -1,6 +1,5 @@
 package uk.org.tombolo.importer;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.TeeInputStream;
 import org.json.simple.JSONObject;
