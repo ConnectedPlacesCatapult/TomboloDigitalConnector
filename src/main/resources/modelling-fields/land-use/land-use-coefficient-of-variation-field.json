@@ -1,0 +1,40 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1": {
+    "fieldClass": "uk.org.tombolo.field.transformation.DescriptiveStatisticsField",
+    "statistic": "stdev",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-commercial"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-retail"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-residential"
+      }
+    ]
+  },
+  "field2": {
+    "fieldClass": "uk.org.tombolo.field.transformation.DescriptiveStatisticsField",
+    "statistic": "mean",
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-commercial"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-retail"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "recipe": "land-use/fraction-residential"
+      }
+    ]
+  }
+}
