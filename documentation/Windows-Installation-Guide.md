@@ -1,6 +1,14 @@
 
 # Windows Installation Guide
 
+## Table of Contents
+
+- [Installing Java](#installing-java)
+- [Installing Gradle](#installing-gradle)
+- [Installing Postgresql and Postgis](#installing-postgresql-and-postgis)
+- [Installing Git](#installing-git)
+- [Clone Tombolo Digital Connector Repository](#clone-tombolo-digital-connector-repository)
+
 ## Installing Java
 
 ### Check if java is already installed
