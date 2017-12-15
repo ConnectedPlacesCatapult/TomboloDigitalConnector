@@ -168,7 +168,7 @@ public class CensusImporter extends AbstractONSImporter {
             log.error("An error has occurred while downloading DatasourceID's" + e.getMessage());
         }
 
-        return null;
+        return Collections.emptyList();
     }
 
     private DatasourceSpec getDataSourceSpecObject(String dataSourceId) {
