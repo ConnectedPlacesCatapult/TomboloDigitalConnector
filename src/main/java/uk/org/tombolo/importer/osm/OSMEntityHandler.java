@@ -96,10 +96,7 @@ public class OSMEntityHandler implements OsmHandler {
             // Nothing to do, continue...
             log.warn("Could not build way (entity not found): {}", e.getMessage());
         }
-//        if (osmGeometry instanceof GeometryCollection && !(osmGeometry instanceof MultiPolygon)) {
-//            System.out.print(osmGeometry);
-//        }
-            handleEntity(relation, osmGeometry);
+        handleEntity(relation, osmGeometry);
     }
 
     @Override
