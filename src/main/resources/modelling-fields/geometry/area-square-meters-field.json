@@ -1,0 +1,4 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+  "targetCRSCode": 27700
+}
