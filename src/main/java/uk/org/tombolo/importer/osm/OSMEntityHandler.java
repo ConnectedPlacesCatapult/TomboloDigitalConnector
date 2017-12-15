@@ -8,7 +8,6 @@ import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.geometry.MissingEntitiesStrategy;
-import de.topobyte.osm4j.geometry.MissingWayNodeStrategy;
 import gnu.trove.map.TLongObjectMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,10 +77,10 @@ public class OSMEntityHandler implements OsmHandler {
                 osmGeometry = new Polygon((LinearRing) osmGeometry, null, GEOMETRY_FACTORY);
             }
         } catch (IllegalArgumentException e) {
-            log.warn("Could bot build way (illegal argument): {}", e.getMessage());
+            log.warn("Could not build way (illegal argument): {}", e.getMessage());
         } catch (EntityNotFoundException e) {
             // Nothing to do, continue...
-            log.warn("Could bot build way (entity not found): {}", e.getMessage());
+            log.warn("Could not build way (entity not found): {}", e.getMessage());
         }
         ways.put(way.getId(), way);
         handleEntity(way, osmGeometry);
@@ -95,9 +94,12 @@ public class OSMEntityHandler implements OsmHandler {
             osmGeometry = builder.build(relation, dataSet);
         } catch (EntityNotFoundException e) {
             // Nothing to do, continue...
-            log.warn("Could bot build way (entity not found): {}", e.getMessage());
+            log.warn("Could not build way (entity not found): {}", e.getMessage());
         }
-        handleEntity(relation, osmGeometry);
+//        if (osmGeometry instanceof GeometryCollection && !(osmGeometry instanceof MultiPolygon)) {
+//            System.out.print(osmGeometry);
+//        }
+            handleEntity(relation, osmGeometry);
     }
 
     @Override
@@ -142,11 +144,45 @@ public class OSMEntityHandler implements OsmHandler {
 
     }
 
+    /**
+     * When dealing with GeometryCollection-s we want to be sure that we persist on the database a valid geometry.
+     * From a valid GeometryCollection we get if possible the next element that is not empty.
+     *
+     * @param geometryCollection Geometry for the subject
+     *
+     * @return Returns the chosen geometry from the collection
+     */
+    private Geometry dumpGeometryCollection(GeometryCollection geometryCollection) {
+        Geometry element = null;
+        int elementIndex = 0;
+        while (elementIndex < geometryCollection.getDimension()) {
+            element = geometryCollection.getGeometryN(elementIndex);
+            if (!element.isEmpty()) {
+                return element;
+            }
+            elementIndex++;
+        }
+
+        return element;
+    }
+
     private void persistEntity(OsmEntity entity, Geometry geometry, Map<String, String> tags) {
-        if (geometry == null){
-            log.warn("Could not save Subject with null geometry");
+        // If the geometry is null or not valid, it will be skipped
+        if (geometry == null || !geometry.isValid()) {
+            log.warn("Could not build {}: {} (geometry not valid): {}", entity.getClass(), entity.getId(), geometry);
             return;
         }
+
+        // Check if it's a GeometryCollection and dump it to a chosen geometry eventually
+        if (geometry instanceof GeometryCollection && !(geometry instanceof MultiPolygon)) {
+            Geometry chosenGeo = dumpGeometryCollection((GeometryCollection) geometry);
+            if (chosenGeo == null) {
+                log.warn("Could not build {}: {} (geometry collection contains only empty geometries): {}", entity.getClass(), entity.getId(), geometry);
+                return;
+            }
+            geometry = chosenGeo;
+        }
+
         geometry.setSRID(Subject.SRID);
         // Save subject
         Subject subject = new Subject(

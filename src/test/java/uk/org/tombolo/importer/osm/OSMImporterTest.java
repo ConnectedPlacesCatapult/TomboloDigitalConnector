@@ -1,6 +1,6 @@
 package uk.org.tombolo.importer.osm;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.*;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
@@ -14,6 +14,7 @@ import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,7 @@ public class OSMImporterTest extends AbstractTest {
 
     @Test
     public void importDatasource() throws Exception {
-        importer.importDatasource("OSMGreenspace", Arrays.asList(TEST_AREA), Collections.emptyList(), null);
+        importer.importDatasource("OSMHighways", Arrays.asList(TEST_AREA), Collections.emptyList(), null);
 
         // Test attribute import
         Attribute landuse = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "landuse");
@@ -103,5 +104,20 @@ public class OSMImporterTest extends AbstractTest {
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeLabel);
         FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, attribute);
         assertEquals("Value for key (" + subject.getLabel() + "," + attributeLabel + ")", value, fixedValue.getValue());
+    }
+
+    @Test
+    public void testDumpGeometryCollection() throws Exception {
+        GeometryFactory factory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
+        MultiPolygon multiPolygon = new MultiPolygon(new Polygon[0], factory);
+        Geometry point = TestFactory.makePointGeometry(3.5, 3.5);
+        Geometry[] geometries = {multiPolygon, point};
+
+        OSMEntityHandler handler = new OSMEntityHandler(importer, "OSMLanduse");
+
+        Method method = OSMEntityHandler.class.getDeclaredMethod("dumpGeometryCollection", GeometryCollection.class);
+        method.setAccessible(true);
+        Geometry geometry = (Geometry) method.invoke(handler, new GeometryCollection(geometries, factory));
+        assertEquals("Point", geometry.getGeometryType());
     }
 }
