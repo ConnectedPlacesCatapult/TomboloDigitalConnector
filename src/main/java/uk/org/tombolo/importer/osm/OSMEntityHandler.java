@@ -150,7 +150,7 @@ public class OSMEntityHandler implements OsmHandler {
      * @return Returns the chosen geometry from the collection
      */
     private Geometry dumpGeometryCollection(GeometryCollection geometryCollection) {
-        Geometry element = null;
+        Geometry element = new GeometryFactory().createGeometryCollection(null);
         int elementIndex = 0;
         while (elementIndex < geometryCollection.getDimension()) {
             element = geometryCollection.getGeometryN(elementIndex);
@@ -173,7 +173,7 @@ public class OSMEntityHandler implements OsmHandler {
         // Check if it's a GeometryCollection and dump it to a chosen geometry eventually
         if (geometry instanceof GeometryCollection && !(geometry instanceof MultiPolygon)) {
             Geometry chosenGeo = dumpGeometryCollection((GeometryCollection) geometry);
-            if (chosenGeo == null) {
+            if (chosenGeo.isEmpty()) {
                 log.warn("Could not build {}: {} (geometry collection contains only empty geometries): {}", entity.getClass(), entity.getId(), geometry);
                 return;
             }
