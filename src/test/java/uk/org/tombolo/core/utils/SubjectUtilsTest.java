@@ -76,10 +76,24 @@ public class SubjectUtilsTest extends AbstractTest {
 
 	@Test
 	public void testGetSubjectByTypeAndName(){
-		Subject subject = SubjectUtils.getSubjectByTypeAndName(localAuthority, "City of London");
+		List<Subject> subject = SubjectUtils.getSubjectByTypeAndName(localAuthority, "City of London");
 
-		assertEquals("E09000001", subject.getLabel());
-		assertEquals("City of London", subject.getName());
+		assertEquals("E09000001", subject.get(0).getLabel());
+		assertEquals("City of London", subject.get(0).getName());
+	}
+
+	@Test
+	public void testGetSubjectByTypeAndNameIsNullWithNullTrue(){
+		List<Subject> subject = SubjectUtils.getSubjectByTypeAndNameIsNull(localAuthority, true);
+
+		assertEquals(0, subject.size());
+	}
+
+	@Test
+	public void testGetSubjectByTypeAndNameIsNullWithNullFalse(){
+		List<Subject> subject = SubjectUtils.getSubjectByTypeAndNameIsNull(localAuthority, false);
+
+		assertEquals(2, subject.size());
 	}
 	
 	@Test
