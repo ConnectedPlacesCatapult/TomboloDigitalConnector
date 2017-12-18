@@ -52,6 +52,11 @@ make sure that you do before you proceed.**
 * [Gradle (2.12+)](https://gradle.org/)
 * [Git](https://git-scm.com/download/)
 
+## Installation Guides
+* [Windows](documentation/Windows-Installation-Guide.md)
+* macOS **(Coming Soon)**
+* Ubuntu/Debian **(Coming Soon)**
+
 ## Quick start
 
 This tutorial will guide you to a quick start on **macOS**. Installation tutorials for other operating systems will come soon.
