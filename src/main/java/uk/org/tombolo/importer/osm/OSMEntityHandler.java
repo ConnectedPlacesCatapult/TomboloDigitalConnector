@@ -164,9 +164,10 @@ public class OSMEntityHandler implements OsmHandler {
     }
 
     private void persistEntity(OsmEntity entity, Geometry geometry, Map<String, String> tags) {
-        // If the geometry is null or not valid, it will be skipped
-        if (geometry == null || !geometry.isValid()) {
-            log.warn("Could not build {}: {} (geometry not valid): {}", entity.getClass(), entity.getId(), geometry);
+        // If the geometry is null, not valid or empty, it will be skipped
+        if (geometry == null || !geometry.isValid() || geometry.isEmpty()) {
+            log.warn("Could not build {}: {} (geometry not valid or empty): {}", entity.getClass(), entity.getId(),
+                    geometry);
             return;
         }
 
@@ -174,7 +175,8 @@ public class OSMEntityHandler implements OsmHandler {
         if (geometry instanceof GeometryCollection && !(geometry instanceof MultiPolygon)) {
             Geometry chosenGeo = dumpGeometryCollection((GeometryCollection) geometry);
             if (chosenGeo.isEmpty()) {
-                log.warn("Could not build {}: {} (geometry collection contains only empty geometries): {}", entity.getClass(), entity.getId(), geometry);
+                log.warn("Could not build {}: {} (geometry collection contains only empty geometries): {}",
+                        entity.getClass(), entity.getId(), geometry);
                 return;
             }
             geometry = chosenGeo;
