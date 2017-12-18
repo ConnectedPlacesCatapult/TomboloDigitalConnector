@@ -53,7 +53,9 @@ make sure that you do before you proceed.**
 * [Git](https://git-scm.com/download/)
 
 ## Installation Guides
-[Windows](documentation/Windows-Installation-Guide.md)
+* [Windows](documentation/Windows-Installation-Guide.md)
+* macOS **(Coming Soon)**
+* Ubuntu/Debian **(Coming Soon)**
 
 ## Quick start
 
