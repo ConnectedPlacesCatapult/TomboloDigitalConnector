@@ -50,17 +50,24 @@ public class DownloadUtils {
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
 
+			// HTTP Response handling
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.connect();
 			switch (connection.getResponseCode()) {
 				case HttpURLConnection.HTTP_OK:
 					log.info(url.toString() + " is OK");
+					URLConnection urlConnection = url.openConnection();
+					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+					urlConnection.connect();
 				case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
-					log.info(url.toString() + ": gateway timeout. Aborting download of dataset.");
-					break;
+					log.info(url.toString() + ": gateway timeout. Using header.");
+					urlConnection = url.openConnection();
+					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+					urlConnection.connect();
 				case HttpURLConnection.HTTP_FORBIDDEN:
-					connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					connection.connect();
+					log.info(url.toString() + ": HTTP forbidden. Using header.");
+					urlConnection = url.openConnection();
+					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+					urlConnection.connect();
 				case HttpURLConnection.HTTP_UNAVAILABLE:
 					System.out.println(url.toString() +  ": unavailable");
 					break;
