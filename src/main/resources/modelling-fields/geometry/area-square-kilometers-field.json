@@ -1,0 +1,12 @@
+{
+  "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+  "operation": "div",
+  "field1" : {
+    "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+    "targetCRSCode": 27700
+  },
+  "field2" : {
+    "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+    "value": "1000000"
+  }
+}

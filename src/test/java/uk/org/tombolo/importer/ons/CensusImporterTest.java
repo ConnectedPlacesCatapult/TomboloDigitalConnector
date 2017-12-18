@@ -64,6 +64,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void getDataUrl() throws Exception {
+        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
         assertEquals("https://www.nomisweb.co.uk/api/v01/dataset/nm_568_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298", importer.getDataUrl(MTW_ID, "lsoa"));
     }
 
