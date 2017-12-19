@@ -14,6 +14,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,24 +61,31 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope,  List<String> datasourceLocation) throws Exception {
-        InputStream inputStream = downloadUtils.fetchJSONStream(new URL(OaType.valueOf(datasource.getDatasourceSpec().getId()).datafile), getProvider().getLabel());
-        FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);
+        // Setting suffix and dataUrl
+        setSuffix(".json");
+        setDataURL(new URL(OaType.valueOf(datasource.getDatasourceSpec().getId()).datafile));
 
-        List<Subject> subjects = new ArrayList<Subject>();
-        while(featureIterator.hasNext()) {
-            Feature feature = featureIterator.next();
-            Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
-            geometry.setSRID(Subject.SRID);
+        try (InputStream inputStream = downloadUtils.fetchInputStream(getDataURL(), getProvider().getLabel(), getSuffix())) {
+            FeatureIterator<SimpleFeature> featureIterator = new FeatureJSON().streamFeatureCollection(inputStream);
 
-            subjects.add(new Subject(
-                    datasource.getUniqueSubjectType(),
-                    getFeatureSubjectLabel(feature),
-                    getFeatureSubjectName(feature),
-                    geometry
-            ));
+            List<Subject> subjects = new ArrayList<Subject>();
+            while (featureIterator.hasNext()) {
+                Feature feature = featureIterator.next();
+                Geometry geometry = (Geometry) feature.getDefaultGeometryProperty().getValue();
+                geometry.setSRID(Subject.SRID);
+
+                subjects.add(new Subject(
+                        datasource.getUniqueSubjectType(),
+                        getFeatureSubjectLabel(feature),
+                        getFeatureSubjectName(feature),
+                        geometry
+                ));
+            }
+
+            saveAndClearSubjectBuffer(subjects);
+        } catch (IOException|RuntimeException exception) {
+            super.importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
         }
-
-        saveAndClearSubjectBuffer(subjects);
     }
 
     private String getFeatureSubjectLabel(Feature feature) {

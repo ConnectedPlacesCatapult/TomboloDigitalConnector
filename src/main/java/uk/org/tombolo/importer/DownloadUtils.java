@@ -47,6 +47,7 @@ public class DownloadUtils {
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
 			URLConnection connection = url.openConnection();
+			if (suffix.equals(".json")) connection.setRequestProperty("Accept", "application/json");
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);
@@ -94,5 +95,10 @@ public class DownloadUtils {
 
 	private void createCacheDir(String prefix) throws IOException {
 		FileUtils.forceMkdir(new File(tomboloDataCacheRootDirectory + "/" + TOMBOLO_DATA_CACHE_DIRECTORY + "/" + prefix));
+	}
+
+	public boolean deleteLocalDatasource(URL url, String prefix, String suffix) {
+		File fileToDelete = urlToLocalFile(url, prefix, suffix);
+		return !fileToDelete.exists() || fileToDelete.delete();
 	}
 }

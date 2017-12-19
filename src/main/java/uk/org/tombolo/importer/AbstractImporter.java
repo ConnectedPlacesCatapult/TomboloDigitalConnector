@@ -8,6 +8,7 @@ import uk.org.tombolo.importer.utils.JournalEntryUtils;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
 import javax.annotation.Nonnull;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,8 @@ public abstract class AbstractImporter implements Importer {
 	protected List<String> temporalLabels;
 	protected Config config;
 	protected List<SubjectRecipe> subjectRecipes;
+	private String suffix;
+	private URL dataURL;
 
 	protected final static String DEFAULT_GEOGRAPHY = "all";
 	protected final static String DEFAULT_TEMPORAL = "all";
@@ -59,6 +62,22 @@ public abstract class AbstractImporter implements Importer {
 	@Override
 	public List<String> getTemporalLabels() {
 		return temporalLabels;
+	}
+
+	protected void setSuffix(String suffix) {
+		this.suffix = suffix;
+	}
+
+	protected void setDataURL(URL dataURL) {
+		this.dataURL = dataURL;
+	}
+
+	protected String getSuffix() {
+		return suffix;
+	}
+
+	protected URL getDataURL() {
+		return dataURL;
 	}
 
 	public void setDownloadUtils(DownloadUtils downloadUtils){
@@ -147,7 +166,11 @@ public abstract class AbstractImporter implements Importer {
 	 * @param datasourceLocation
 	 * @throws Exception
 	 */
-	protected abstract void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception;
+	protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+		log.info("Local datasource is corrupted, deleting the file");
+		downloadUtils.deleteLocalDatasource(getDataURL(), getProvider().getLabel(), getSuffix());
+		importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
+	}
 
 	/**
 	 * Loads the given properties resource into the main properties object
