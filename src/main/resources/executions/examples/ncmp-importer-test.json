@@ -1,0 +1,114 @@
+  {
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "localAuthority",
+        "provider": "uk.gov.ons"
+        ,
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090000%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+//      // The below contains the components of the subindex "Rate of regular physical activity higher than the East London average"
+//      // Note that two components from Active People Survey are pending
+//      {
+//        "importerClass": "uk.org.tombolo.importer.manifestohealth.MVPAImporter",
+//        "datasourceId": "MVPAactive"
+//
+//      },
+      // The below three datasets contain the components of subindex "Healthy weigh better than the East London average"
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestohealth.NCMPImporter",
+        "datasourceId": "childhoodObesity"
+
+      }
+//    ,
+//      {
+//        "importerClass": "uk.org.tombolo.importer.manifestohealth.NHSAdmissionsImporter",
+//        "datasourceId": "NHSObese"
+//
+//      },
+//      {
+//        "importerClass": "uk.org.tombolo.importer.manifestohealth.ObeseImporter",
+//        "datasourceId": "BMIObese"
+//
+//      },
+
+      // The below contains the components of the subindex "Personal wellbeing and happiness above the London average."
+//      {
+//        "importerClass": "uk.org.tombolo.importer.manifestohealth.ONSWellbeingImporter",
+//        "datasourceId": "ONSWellbeing"
+//
+//      }
+    ],
+    // The below will define our fields. We need a PercentilesField that will contain a LatestValueField for each component
+    "fields": [
+      {
+//        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+//        "label": "BMI_obesity_Percentiles",
+//        "percentileCount": 4,
+//        "inverse": false,
+//        "valueField": {
+//          "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
+//          "label": "year6_excess_weight",
+//          "subject": {
+//            "subjectType": "localAuthority",
+//            "provider": "uk.gov.ons"
+//          },
+//          "maxRadius": 100,
+//          "field": {
+//            "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+//            "label": "year6_excess_weight",
+//            "attribute": {
+//              "provider": "uk.nhs.phe",
+//              "label": "year6_excess_weight"
+//            }
+//          }
+
+        "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+        "label": "bal",
+        "operation": "add",
+        "field1": {
+          "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+          "label": "Fudge",
+          "value": "1"
+        },
+        "field2": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "label": "year6_excess_weight",
+          "attribute": {
+            "provider": "uk.nhs.phe",
+            "label": "year6_excess_weight"
+        }
+
+
+
+          }
+//        },
+//        "normalizationSubjects": [
+//          // Specification that determines that we calculate percentile boundaries nationally
+//          {
+//            "subjectType": "localAuthority",
+//            "provider": "uk.gov.ons"
+//          ,
+//            "matchRule": {
+//              "attribute": "label",
+//              "pattern": "E090000%"
+//            }
+//          }
+//        ]
+     }
+    ]
+  },
+    "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+    "timeStamp":false
+
+}
+    

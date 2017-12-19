@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer.manifestohealth;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,6 +10,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
@@ -16,7 +18,12 @@ import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,16 +32,18 @@ import java.util.List;
  */
 public class NCMPImporter extends AbstractImporter {
 
-    private static final String DATASOURCE = "/Users/tbantis/Desktop/Copy of NCMP_data_LA_and_England.xlsx";
+    private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/610203/NCMP_data_LA_and_England.xlsx";
 
     // A standard importer inherits the below classes from AbstractImporter
 
-    // This config file is an inheritance for a future dynamic implementation through the user. For now it doesn't do anything
     public NCMPImporter(Config config) {
         super(config);
-        // This is to get the datasourceIds without need to specify it in the recipe, as we already implemented DatasourceId
-        datasourceIds = stringsFromEnumeration(DatasourceId.class);
-
+        try {
+            // Specifying the datasourceId. This will be used by the DC recipe
+            datasourceIds = Arrays.asList(getDatasourceSpec("childhoodObesity").getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected static final Provider PROVIDER = new Provider(
@@ -42,19 +51,18 @@ public class NCMPImporter extends AbstractImporter {
             "Public Health England"
     );
 
-    private enum DatasourceId {
-        NCMPImporter(new DatasourceSpec(
-                NCMPImporter.class,
+    // Instantiating the datasoure specifications.
+    @Override
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        DatasourceSpec datasourceSpec = new DatasourceSpec(
+                NHSAdmissionsImporter.class,
                 "childhoodObesity",
                 "Childhood Obesity",
-                "",
-                DATASOURCE)
-        );
-        private DatasourceSpec datasourceSpec;
-        DatasourceId(DatasourceSpec datasourceSpec) {
-            this.datasourceSpec = datasourceSpec;
-        }
+                "Prevalence of excess weight among children in Year 6 (age 10-11 years)",
+                DATASOURCE);
+        return datasourceSpec;
     }
+
 
 
     // This is implemented once per dataset and we create a new object new Provider() with the details of our dataset
@@ -63,12 +71,6 @@ public class NCMPImporter extends AbstractImporter {
         return PROVIDER;
     }
 
-    // This is implemented once per dataset and we create a new object new DatasourceId object with the detailed specification of our dataset
-    // including the local URL. We are returning a datasourceSpec object.
-    @Override
-    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
-        return DatasourceId.valueOf(datasourceId).datasourceSpec;
-    }
 
     // This is where the actual importing happens
     @Override
@@ -81,11 +83,26 @@ public class NCMPImporter extends AbstractImporter {
                 OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
 
         // We create an empty list that will keep our excell sheet values
-        List<FixedValue> fixedValues = new ArrayList<FixedValue>();
+        List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
-        // We read the excel file locally
-        FileInputStream excelFile = new FileInputStream(new File(DATASOURCE));
-        Workbook workbook = new XSSFWorkbook(excelFile);
+        String fileLocation = getDatasourceSpec("childhoodObesity").getUrl();
+
+        // The code below fetches the .xls file from the URL we specified in our DatasourceSpec object
+        URL url;
+        try {
+            url = new URL(fileLocation);
+        } catch (MalformedURLException e) {
+            File file;
+            if (!(file = new File(fileLocation)).exists()) {
+                System.out.println("ERROR: File does not exist: " + fileLocation);
+            }
+            url = file.toURI().toURL();
+        }
+
+        // Fetching and reading the file using fetchInputStream
+        InputStream isr = downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".xlsx");
+
+        XSSFWorkbook workbook = new XSSFWorkbook(isr);
         DataFormatter dataFormatter = new DataFormatter();
 
         int sheet = 3;
@@ -108,40 +125,38 @@ public class NCMPImporter extends AbstractImporter {
             // Dataset specific: The dataset contains mixed geometries. Check that the geometries in the excel file
             // match the "Area code" column. If they are not null proceed
             if (subject!=null){
+                // Dataset specific:  Looping through the time values
+                for (int timeValuesIndex=2; timeValuesIndex <= 21; timeValuesIndex+=5) {
+                    Row rowTime = datatypeSheet.getRow(1);
+                    String year = rowTime.getCell(timeValuesIndex).toString();
+                    year = year.substring(0, 4);
+                    LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+                    Double record = row.getCell(timeValuesIndex + 2).getNumericCellValue();
 
-                // Dataset specific: attributeIndex is the column index that we are interested in. In this case the proportion
-                // of children that have found to be with excess weight
-                int attributeIndex = 2;
-
-                for (Attribute attribute : datasource.getFixedValueAttributes()) {
-                    fixedValues.add(new FixedValue(
+                    // Here is where we are assigning the values of our .xls file to the attribute fields we
+                    // created.
+                    Attribute attribute = datasource.getTimedValueAttributes().get(0);
+                    timedValues.add(new TimedValue(
                             subject,
                             attribute,
-                            dataFormatter.formatCellValue(row.getCell(attributeIndex))));
-
-                    // Dataset specific: attributeIndex needs to be increment by 5 as this is the next column of interest
-                    attributeIndex+=5;
+                            timestamp,
+                            record));
+                    }
                 }
-            }
         }
-
-//        saveAndClearFixedValueBuffer(fixedValues);
-
-        FixedValueUtils.save(fixedValues);
-        fixedValues.clear();
-
+        saveAndClearTimedValueBuffer(timedValues);
     }
+
+
+
+
     @Override
-    public List<Attribute> getFixedValueAttributes(String datasourceID) {
+    public List<Attribute> getTimedValueAttributes(String datasourceID) {
 
+        // Adding the attribute
         List<Attribute> attributes = new ArrayList<>();
-        // Dataset specific: we hardcode the columns from the excel sheet
-        String[] elements = { "reception_excess_2010_2012", "reception_excess_2011_2013", "reception_excess_2012_2014"};
+        attributes.add(new Attribute(getProvider(), "year6_excess_weight", "year6_excess_weight"));
 
-        for( int i = 0; i < elements.length; i++) {
-            attributes.add(new Attribute(getProvider(), elements[i], elements[i]));
-
-        }
         return attributes;
     }
 

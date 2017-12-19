@@ -43,36 +43,31 @@ public class DownloadUtils {
 	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
-
-
 		log.info("Fetching local file: {}", localDatasourceFile.getCanonicalPath());
 		if (!localDatasourceFile.exists()){
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
-
 			// HTTP Response handling
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			switch (connection.getResponseCode()) {
-				case HttpURLConnection.HTTP_OK:
-					log.info(url.toString() + " is OK");
-					URLConnection urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
-					log.info(url.toString() + ": gateway timeout. Using header.");
-					urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_FORBIDDEN:
-					log.info(url.toString() + ": HTTP forbidden. Using header.");
-					urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_UNAVAILABLE:
-					System.out.println(url.toString() +  ": unavailable");
-					break;
-			}
-
+//			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//			switch (connection.getResponseCode()) {
+//				case HttpURLConnection.HTTP_OK:
+//					log.info(url.toString() + " is OK");
+//					URLConnection urlConnection = url.openConnection();
+//					urlConnection.connect();
+//				case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
+//					log.info(url.toString() + ": gateway timeout. Using header.");
+//					urlConnection = url.openConnection();
+//					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+//					urlConnection.connect();
+//				case HttpURLConnection.HTTP_FORBIDDEN:
+//					log.info(url.toString() + ": HTTP forbidden. Using header.");
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			connection.connect();
+//				case HttpURLConnection.HTTP_UNAVAILABLE:
+//					System.out.println(url.toString() +  ": unavailable");
+//					break;
+//			}
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);

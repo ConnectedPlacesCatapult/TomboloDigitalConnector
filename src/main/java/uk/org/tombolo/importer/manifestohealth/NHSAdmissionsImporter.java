@@ -9,6 +9,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -69,7 +71,7 @@ public class NHSAdmissionsImporter extends AbstractImporter {
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType localauthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
                 OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
-        List<FixedValue> fixedValues = new ArrayList<FixedValue>();
+        List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
         String fileLocation = getDatasourceSpec("NHSObese").getUrl();
 
@@ -123,13 +125,16 @@ public class NHSAdmissionsImporter extends AbstractImporter {
 
                 String record = dataFormatter.formatCellValue(row.getCell(attributeIndex));
 
+                String year = "2017";
+                LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
                 // Here is where we are assigning the values of our .csv file to the attribute fields we
                 // created.
-                for (Attribute attribute : datasource.getFixedValueAttributes()) {
-                    fixedValues.add(new FixedValue(
+                for (Attribute attribute : datasource.getTimedValueAttributes()) {
+                    timedValues.add(new TimedValue(
                             subject,
                             attribute,
-                            record));
+                            timestamp,
+                            Double.parseDouble(record.replace(",",""))));
 
                     attributeIndex++;
 
@@ -137,14 +142,12 @@ public class NHSAdmissionsImporter extends AbstractImporter {
                 }
             }
         }
-        FixedValueUtils.save(fixedValues);
-        fixedValues.clear();
-
+        saveAndClearTimedValueBuffer(timedValues);
     }
 
 
     @Override
-    public List<Attribute> getFixedValueAttributes(String datasourceID) {
+    public List<Attribute> getTimedValueAttributes(String datasourceID) {
         // Creating a placeholder for our attributes
         List<Attribute> attributes = new ArrayList<>();
 

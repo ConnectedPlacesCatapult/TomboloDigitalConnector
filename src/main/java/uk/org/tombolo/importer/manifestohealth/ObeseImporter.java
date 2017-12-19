@@ -8,6 +8,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -75,7 +77,7 @@ public class ObeseImporter extends AbstractImporter {
                 OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
 
         // We create an empty list that will keep our .csv values
-        List<FixedValue> fixedValues = new ArrayList<FixedValue>();
+        List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
         CSVFormat format = CSVFormat.DEFAULT;
         String fileLocation = getDatasourceSpec("BMIObese").getUrl();
@@ -126,30 +128,40 @@ public class ObeseImporter extends AbstractImporter {
                     // Dataset specific: attributeIndex is the column index that we are interested in.
                     int attributeIndex = 3;
 
-                    // The value is a string in our .csv file. We need to clean it before using it.
-                    // We  need to check for invalid rows so we will suround this with a try catch clause
-                    try {
-                        String record = row.get(attributeIndex).replace("%","");
+                    // Creating the time index
+                    for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++) {
 
-                        // We discard the rows that contain no values. In the .csv these are depicted as '*'
-                        if (!Objects.equals(record, "*")){
-                            System.out.println(record);
-                            // Here is where we are assigning the values of our .csv file to the attribute fields we
-                            // created.
-                            for (Attribute attribute : datasource.getFixedValueAttributes()) {
-                                fixedValues.add(new FixedValue(
+                        CSVRecord rowTime = (CSVRecord) csvRecords.get(5);
+                        String year = rowTime.get(timeValuesIndex).toString();
+                        year = year.substring(0, 4);
+                        LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+
+                        // The value is a string in our .csv file. We need to clean it before using it.
+                        // We  need to check for invalid rows so we will suround this with a try catch clause
+                        try {
+                            String recordString = row.get(timeValuesIndex).replace("%", "");
+                            try {
+
+                                Double record = Double.parseDouble(recordString);
+
+                                // Here is where we are assigning the values of our .csv file to the attribute fields we
+                                // created.
+                                Attribute attribute = datasource.getTimedValueAttributes().get(0);
+                                timedValues.add(new TimedValue(
                                         subject,
                                         attribute,
+                                        timestamp,
                                         record));
-
-                                // We increment to get the rest of the values in the row
-                                attributeIndex++;
-
+                            } catch (IllegalStateException | NumberFormatException e) {
+                                // TODO fix the missing values so they appear something else rather than 0. The NumberFormatException is for catching the * character
+                                continue;
                             }
+
+                            // Catching invalid rows
+                        } catch (ArrayIndexOutOfBoundsException npe) {
+                            System.out.println("INFO - Found invalid row: Skipping");
+
                         }
-                    // Catching invalid rows
-                    } catch (ArrayIndexOutOfBoundsException npe) {
-                        System.out.println("INFO - Found invalid row: Skipping");
 
                     }
                 }
@@ -166,28 +178,16 @@ public class ObeseImporter extends AbstractImporter {
             }
 
         }
-
         // Finally we save the values in the database
-        FixedValueUtils.save(fixedValues);
-        fixedValues.clear();
-
+        saveAndClearTimedValueBuffer(timedValues);
     }
 
     @Override
-    public List<Attribute> getFixedValueAttributes(String datasourceID) {
+    public List<Attribute> getTimedValueAttributes(String datasourceID) {
         // Creating a placeholder for our attributes
         List<Attribute> attributes = new ArrayList<>();
+        attributes.add(new Attribute(getProvider(), "BMI_obesity", "BMI_obesity"));
 
-        // Dataset specific: we hardcode the columns names for the our .csv file
-        String[] elements = { "BMI_obesity_2013", "BMI_obesity_2014", "BMI_obesity_2015"};
-
-        // We loop through the elements of the elements object and adding an Attribute object in the list
-        // with nour column names.
-        for( int i = 0; i < elements.length; i++) {
-            attributes.add(new Attribute(getProvider(), elements[i], elements[i]));
-
-        }
         return attributes;
     }
-
 }
