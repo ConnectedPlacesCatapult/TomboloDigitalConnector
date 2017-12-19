@@ -47,6 +47,7 @@ public class DownloadUtils {
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
 			URLConnection connection = url.openConnection();
+			if (suffix.equals(".json")) connection.setRequestProperty("Accept", "application/json");
 			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);
@@ -63,23 +64,7 @@ public class DownloadUtils {
 
 	public JSONObject fetchJSON(URL url, String prefix) throws IOException, ParseException {
 		JSONParser parser = new JSONParser();
-		return (JSONObject) parser.parse(new InputStreamReader(fetchJSONStream(url, prefix)));
-	}
-
-	public InputStream fetchJSONStream(URL url, String prefix) throws IOException {
-		createCacheDir(prefix);
-		File localDatasourceFile = urlToLocalFile(url, prefix,".json");
-		log.info("Fetching local file: {}", localDatasourceFile.getCanonicalPath());
-		if (!localDatasourceFile.exists()){
-			log.info("Local file not found: {} \nDownloading external resource: {}",
-												localDatasourceFile.getCanonicalPath(), url.toString());
-			URLConnection connection = url.openConnection();
-			// ONS requires this be set, or else you get 406 errors.
-			connection.setRequestProperty("Accept", "application/json");
-			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
-		} else {
-			return new FileInputStream(localDatasourceFile);
-		}
+		return (JSONObject) parser.parse(new InputStreamReader(fetchInputStream(url, prefix, ".json")));
 	}
 
 	private File urlToLocalFile (URL url, String prefix, String suffix){
