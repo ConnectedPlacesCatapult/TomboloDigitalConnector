@@ -73,7 +73,7 @@
           "fields": [
             {
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
-              "label": "BMI_obesity_Percentiles",
+              "label": "PHE_child_obesity_Percentiles",
               "percentileCount": 10,
               "inverse": true,
               "valueField": {
