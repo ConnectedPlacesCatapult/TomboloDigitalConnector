@@ -51,7 +51,7 @@
 //        "datasourceId": "ONSWellbeing"
 //
 //      }
-    ],
+   ],
     // The below will define our fields. We need a PercentilesField that will contain a LatestValueField for each component
     "fields": [
       {
@@ -87,31 +87,93 @@
         //                }
 
 
-        //        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
-        //        "label": "BMI_obesity_Percentiles",
-        //        "percentileCount": 4,
-        //        "inverse": false,
-        //        "valueField": {
-        "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
-        "label": "NitrogenDioxide",
-        "fields": [
-          {
-            "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
-            "subject": {
-              "provider": "uk.gov.ons",
-              "subjectType": "englandGeneralisedBoundaries"
-            },
-            "field": {
+        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+        "label": "BMI_obesity_Percentiles",
+        "percentileCount": 4,
+        "inverse": false,
+        "valueField": {
+          "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+          "label": "year6_excess_weight",
+          "fields": [
+            {
               "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
               "label": "year6_excess_weight",
               "attribute": {
                 "provider": "uk.nhs.phe",
                 "label": "year6_excess_weight"
               }
+            },
+            {
+              "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+              "subject": {
+                "provider": "uk.gov.ons",
+                "subjectType": "englandGeneralisedBoundaries"
+              },
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+                "label": "year6_excess_weight",
+                "subject": {
+                  "provider": "uk.gov.ons",
+                  "subjectType": "localAuthority"
+                },
+                "function": "mean",
+                "field": {
+                  "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                  "label": "year6_excess_weight",
+                  "attribute": {
+                    "provider": "uk.nhs.phe",
+                    "label": "year6_excess_weight"
+                  }
+                }
+              }
             }
-          }
-        ]
+          ]
+        },
+                  "normalizationSubjects": [
+                    // Specification that determines that we calculate percentile boundaries nationally
+                    {
+                      "subjectType": "localAuthority",
+                      "provider": "uk.gov.ons",
+                      "matchRule": {
+                        "attribute": "label",
+                        "pattern": "E090000%"
+                      }
+                    }
+                  ]
       }
+
+      ]
+
+
+
+
+              //        "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+//        "label": "NitrogenDioxide",
+//        "fields": [
+//          {
+//              "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+//              "label": "SumCountPedalCycles",
+//              "subject": {
+//                "provider": "uk.gov.ons",
+//                "subjectType": "englandGeneralisedBoundaries"
+//              ,
+//                "matchRule": {
+//                  "attribute": "label",
+//                  "pattern": "E12000007"
+//                }
+//              },
+//              "function": "mean",
+//            "field": {
+//              "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+//              "label": "year6_excess_weight",
+//              "attribute": {
+//                "provider": "uk.nhs.phe",
+//                "label": "year6_excess_weight"
+//              }
+//            }
+//          }
+//        ]
+//      }
 //      ,
 //
 
@@ -171,7 +233,7 @@
 //          ]
 //        }
 //      }
-    ]
+//    ]
   },
     "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
     "timeStamp":false
