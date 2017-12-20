@@ -28,7 +28,9 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
         msoa(new DatasourceSpec(OaImporter.class, "msoa", "MSOA", "Middle Layer Super Output Areas", null),
                 "http://geoportal.statistics.gov.uk/datasets/826dc85fb600440889480f4d9dbb1a24_2.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
-                "http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson");
+                "http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson"),
+        englandGeneralisedBoundaries(new DatasourceSpec(OaImporter.class, "englandGeneralisedBoundaries", "England Boundaries", "England Boundaries", null),
+                "https://opendata.arcgis.com/datasets/f99b145881724e15a04a8a113544dfc5_4.geojson");
 
         public DatasourceSpec datasourceSpec;
         private String datafile;
