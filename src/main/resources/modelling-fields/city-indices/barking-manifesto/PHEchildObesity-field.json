@@ -1,0 +1,24 @@
+{
+    // Sum of green space areas
+    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+    "label": "GreenSpaceSum",
+    "aggregationSubjectProvider": "org.openstreetmap",
+    "aggregationSubjectType": "OSMEntity",
+    "function": "sum",
+    "field": {
+        "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+        "label": "Landuse",
+        "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
+        "attributes": [
+        {
+            "provider": "org.openstreetmap",
+            "label": "built-in-greenspace"
+        }
+        ],
+        "field": {
+            "fieldClass": "uk.org.tombolo.field.transformation.AreaField",
+            "label": "GreenSpaceGeographyArea",
+            "targetCRSCode": 27700
+        }
+    }
+}
