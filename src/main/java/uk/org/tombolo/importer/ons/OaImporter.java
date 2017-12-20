@@ -84,7 +84,8 @@ public final class OaImporter extends AbstractONSImporter implements Importer {
 
             saveAndClearSubjectBuffer(subjects);
         } catch (IOException|RuntimeException exception) {
-            super.importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
+            if (isExceptionThrownBy(exception, "org.geotools.geojson.feature.FeatureJSON"))
+                super.importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
         }
     }
 

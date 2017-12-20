@@ -172,6 +172,19 @@ public abstract class AbstractImporter implements Importer {
 		importDatasource(datasource, geographyScope, temporalScope, datasourceLocation);
 	}
 
+	protected String deriveOuterClassName(String className) {
+		if (className.contains("$")) {
+			 className = className.substring(0, className.indexOf("$"));
+			 if (className.contains("$")) deriveOuterClassName(className);
+		}
+		return className;
+	}
+
+	protected boolean isExceptionThrownBy(Exception ex, String className) throws Exception {
+		return Class.forName(deriveOuterClassName(ex.getStackTrace()[0].getClassName()))
+													.isInstance(Class.forName(className).newInstance());
+	}
+
 	/**
 	 * Loads the given properties resource into the main properties object
 	 *
