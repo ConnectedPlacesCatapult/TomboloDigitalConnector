@@ -1,3 +1,10 @@
+//Recipe type: Raw Recipe
+//
+//
+//Description: 
+//
+//
+
 // We want to work out the correlation between the number of cars (incl. taxis)
 // passing by a road traffic counter, and the no2 of the closest air quality sensor
 {
@@ -36,7 +43,7 @@
     ],
     "fields" : [
       {
-        // Field for returning the latest count of cars and taxis for the traffic counter
+        // Filed for returning the latest count of cars and taxis for the traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
