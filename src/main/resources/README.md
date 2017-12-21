@@ -14,4 +14,4 @@ Contains examples of recipes in various formats which are further separated into
 - 
 Modelling fields are pre-specified fields, that can be 'plugged-in' to other recipes. If your recipe involves building a field that you think others may find valuable then it may be worth turning this field into a modelling-field for others to use in their recipes. This is often particularly valuable if your field is particularly nested and/or complex. 
 
-The modelling fields are grouped into themes which relate to their purpose. All modelling-fields that are used by the city-indexes exist in the city-indices folder within modelling-fields. For more information on modelling-fields see [here](../executions/methodologicalexamples/modeling-fields/README.md)
+The modelling fields are grouped into themes which relate to their purpose. All modelling-fields that are used by the city-indexes exist in the city-indices folder within modelling-fields. For more information on modelling-fields see [here](executions/methodologicalexamples/modeling-fields/README.md)
