@@ -254,7 +254,7 @@ When you’ve run this example, you can expect a map that looks like this:
 
   ```bash
   gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
+    -PdataExportSpecFile='src/main/resources/executions/methodologicalexamples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
     -PoutputFile='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
   ```
 
