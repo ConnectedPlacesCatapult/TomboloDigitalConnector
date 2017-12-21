@@ -7,8 +7,8 @@ Within this folder, there are two sub-folders to be aware of:
 - 
 Contains examples of recipes in various formats which are further separated into two sub-folders. 
 
-1. The**methodologicalexamples**folder provides a series of recipes that demonstrate the functionality of the Tombolo Digital Connector in different ways. If you are looking to use previous recipes as a way of building your own then using these is a good place to start.  
-2. The**city-indices**folder contains recipes that generate*indexes*. In the context of the Tombolo Digital Connector an index is typically a combination of multiple components. For example, the summation of different measures from the census to generate a single number. Notice that in the Tombolo Digital Connector, these city-indices are often comprised of**modeling-fields**(discussed below) and the main index and its components are identified in the field `label`.
+1. The **methodologicalexamples** folder provides a series of recipes that demonstrate the functionality of the Tombolo Digital Connector in different ways. If you are looking to use previous recipes as a way of building your own then using these is a good place to start.  
+2. The **city-indices** folder contains recipes that generate*indexes*. In the context of the Tombolo Digital Connector an index is typically a combination of multiple components. For example, the summation of different measures from the census to generate a single number. Notice that in the Tombolo Digital Connector, these city-indices are often comprised of**modeling-fields**(discussed below) and the main index and its components are identified in the field `label`.
 
 **modelling-fields** 
 - 

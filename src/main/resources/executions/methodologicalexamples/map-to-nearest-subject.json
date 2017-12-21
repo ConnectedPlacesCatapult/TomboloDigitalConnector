@@ -36,7 +36,7 @@
     ],
     "fields" : [
       {
-        // Filed for returning the latest count of cars and taxis for the traffic counter
+        // Field for returning the latest count of cars and taxis for the traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
