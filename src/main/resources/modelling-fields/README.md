@@ -2,8 +2,8 @@ This directory contains a number of built-in model recipes that Tombolo
 Digital Connector users can use. The recipes can be exported as self
 contained fields or combined together using the Digital Connector field
 constructs. Examples of uses of these models can be found above in
-[examples](executions/methodologicalexamples) and
-[city-indices](executions/methodologicalexamples).
+[examples](../executions/methodologicalexamples) and
+[city-indices](../executions/methodologicalexamples).
 
 At the time of writing, the built-in models are organised into several
 sub-folders.
