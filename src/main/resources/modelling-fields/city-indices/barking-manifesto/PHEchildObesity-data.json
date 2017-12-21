@@ -1,7 +1,16 @@
 [
   {
-    //": "Green space data for the entire UK",
-    "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
-    "datasourceId": "OSMGreenspace"
+    // The below contains the components of the subindex "Rate of regular physical activity higher than the East London average"
+    // Note that two components from Active People Survey are pending
+    "importerClass": "uk.org.tombolo.importer.manifestohealth.MVPAImporter",
+    "datasourceId": "MVPAactive"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "englandGeneralisedBoundaries"
+  },
+  {
+    "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+    "datasourceId": "localAuthority"
   }
 ]

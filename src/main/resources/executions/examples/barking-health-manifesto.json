@@ -50,7 +50,7 @@
 
       }
    ],
-    // The below will define our fields. We need a PercentilesField that will contain a LatestValueField for each component
+    // Derive decildecileses for the dataset that will be exported
     "fields": [
       {
         "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
@@ -58,6 +58,8 @@
         "percentileCount": 10,
         "inverse": false,
         "valueField": {
+          // Combine individual datasets using a LinearCombinationField with unity scalars.
+          // The fields of the LinearCombinationField are the individual datasets
           "fieldClass": "uk.org.tombolo.field.transformation.LinearCombinationField",
           "label": "linear_combination",
           "scalars": [
@@ -72,11 +74,18 @@
           ],
           "fields": [
             {
+              // Child obesity dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "PHE_child_obesity_Percentiles",
               "percentileCount": 10,
               "inverse": true,
               "valueField": {
+                // Child obesity dataset. We are using BackOffField to deal with localAuthorities (subjects)
+                // having no data. The BackOffField "fills" those localAuthorities with data resulting from a
+                // geographical operation on a more generalised geometry (in this case englandGeneralisedBoundaries)
+                // BackOffField takes a field of the dataset of interest and a MapToContainingSubjectField that maps
+                // the resulting operation to that. The MapToContainingSubjectField contains the geographical operation
+                // (in this case the mean value of all local authorities)
                 "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
                 "label": "year6_excess_weight",
                 "fields": [
@@ -115,7 +124,7 @@
                 ]
               },
               "normalizationSubjects": [
-                // Specification that determines that we calculate percentile boundaries nationally
+                // the PercentilesField takes the argument normalizationSubjects (see class reference)
                 {
                   "subjectType": "localAuthority",
                   "provider": "uk.gov.ons",
@@ -127,6 +136,7 @@
               ]
             },
             {
+              // Intensity of physical activity dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "MVPA_active_Percentiles",
               "percentileCount": 10,
@@ -170,7 +180,6 @@
                 ]
               },
               "normalizationSubjects": [
-                // Specification that determines that we calculate percentile boundaries nationally
                 {
                   "subjectType": "localAuthority",
                   "provider": "uk.gov.ons",
@@ -182,6 +191,7 @@
               ]
             },
             {
+              // Hospital admissions related to obesity dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "NHS_admissions_Percentiles",
               "percentileCount": 10,
@@ -237,6 +247,7 @@
               ]
             },
             {
+              // Body mass index that points to obesity dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "BMI_obese_Percentiles",
               "percentileCount": 10,
@@ -292,6 +303,7 @@
               ]
             },
             {
+              // Life satisfaction leveles dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "ONS_satisfaction_Percentiles",
               "percentileCount": 10,
@@ -347,6 +359,7 @@
               ]
             },
             {
+              // Life worthwhile levels dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "ONS_worthwhile_Percentiles",
               "percentileCount": 10,
@@ -402,6 +415,7 @@
               ]
             },
             {
+              // Life happiness levels dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "ONS_happy_Percentiles",
               "percentileCount": 10,
@@ -457,6 +471,7 @@
               ]
             },
             {
+              // Life axiety levels dataset. We are using PercentilesField.
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "ONS_anxiety_Percentiles",
               "percentileCount": 10,

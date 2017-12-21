@@ -7,7 +7,7 @@
         "provider": "uk.gov.dft",
         "subjectType" : "trafficCounter",
         "geoMatchRule" : {
-          "geoRelation" : "within",
+          "geoRelation" : "union",
           "subjects" : [
             {
               "subjectType" : "localAuthority",

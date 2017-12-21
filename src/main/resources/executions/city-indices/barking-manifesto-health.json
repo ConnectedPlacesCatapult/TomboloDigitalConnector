@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "localAuthority",
+        "provider": "uk.gov.ons"
+      ,
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090000%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "index:PHE_child_obesity_Percentiles",
+        "recipe": "city-indices/barking-manifesto/PHEchildObesity"
+      }
+    ]
+  },
+  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp":false
+}

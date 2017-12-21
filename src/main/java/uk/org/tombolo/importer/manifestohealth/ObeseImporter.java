@@ -5,7 +5,6 @@ import org.apache.commons.csv.CSVParser;
 
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -125,9 +124,6 @@ public class ObeseImporter extends AbstractImporter {
 
                 // Checking not matched geometries
                 if (subject!=null){
-                    // Dataset specific: attributeIndex is the column index that we are interested in.
-                    int attributeIndex = 3;
-
                     // Creating the time index
                     for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++) {
 
