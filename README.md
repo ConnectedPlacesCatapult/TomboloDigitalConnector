@@ -1,4 +1,4 @@
-[![Tombolo](http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png)](http://www.tombolo.org.uk/products/)
+[![Tombolo](https://user-images.githubusercontent.com/14051876/34300521-c74ced0a-e728-11e7-9f1a-fa233a987750.png)](http://www.tombolo.org.uk/products/)
 
 # Tombolo Digital Connector
 
