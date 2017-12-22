@@ -1,6 +1,6 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         "subjectType": "lsoa",
         "provider": "uk.gov.ons",
@@ -19,26 +19,26 @@
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
-        "datasourceId" : "lsoa"
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.lac.LAQNImporter",
+        "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
         "datasourceId": "airQualityControl"
       }
     ],
-    "fields" : [
+    "fields": [
       {
         "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
         "label": "NitrogenDioxide",
@@ -50,8 +50,8 @@
         "field": {
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "attribute": {
-            "provider" : "erg.kcl.ac.uk",
-            "label" : "NO2 40 ug/m3 as an annual me"
+            "provider": "erg.kcl.ac.uk",
+            "label": "NO2 40 ug/m3 as an annual me"
           }
         }
       },
@@ -70,8 +70,8 @@
           "field": {
             "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
             "attribute": {
-              "provider" : "uk.gov.dft",
-              "label" : "CountPedalCycles"
+              "provider": "uk.gov.dft",
+              "label": "CountPedalCycles"
             }
           }
         },
@@ -94,5 +94,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

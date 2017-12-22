@@ -1,22 +1,22 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
-        "provider" : "uk.gov.ons",
-        "subjectType" : "lsoa",
+        "provider": "uk.gov.ons",
+        "subjectType": "lsoa",
         "matchRule": {
           "attribute": "name",
           "pattern": "Leeds%"
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       }
     ],
-    "fields" : [
+    "fields": [
       {
         "label": "index:social_isolation",
         "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
@@ -54,5 +54,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }
