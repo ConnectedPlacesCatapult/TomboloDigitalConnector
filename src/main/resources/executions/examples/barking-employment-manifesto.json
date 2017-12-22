@@ -31,13 +31,13 @@
     // Derive decildecileses for the dataset that will be exported
     "fields": [
       {
-                    "fieldClass": "uk.org.tombolo.field.value.TimeseriesField",
-              "label": "NOMIS_Income",
-              "attribute": {
-                "provider": "nomisweb.co.uk",
-                "label": "NOMIS_Income"
-              }
-            }
+        "fieldClass": "uk.org.tombolo.field.value.TimeseriesField",
+        "label": "NOMIS_Income",
+        "attribute": {
+          "provider": "nomisweb.co.uk",
+          "label": "NOMIS_Income"
+        }
+      }
 
       //   "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
       //   "label": "employment_manifesto",
