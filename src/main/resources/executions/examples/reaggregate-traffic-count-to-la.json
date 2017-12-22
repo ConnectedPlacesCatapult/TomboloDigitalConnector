@@ -1,11 +1,11 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         // The output geographies are traffic counters
-        "subjectType" : "trafficCounter",
-        "provider" : "uk.gov.dft",
-        "geoMatchRule" : {
+        "subjectType": "trafficCounter",
+        "provider": "uk.gov.dft",
+        "geoMatchRule": {
           "geoRelation": "within",
           "subjects": [
             {
@@ -20,20 +20,20 @@
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         // Importer for Local Authorities in the UK
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       },
       {
         // Importer for the DfT traffic counts for London
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       }
     ],
-    "fields" : [
+    "fields": [
       {
         // An arthmetic field that divides one field value with another
         // In this case we calcluate for each traffic counter
@@ -48,8 +48,8 @@
           "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
           "label": "CountPedalCycles",
           "attribute": {
-            "provider" : "uk.gov.dft",
-            "label" : "CountPedalCycles"
+            "provider": "uk.gov.dft",
+            "label": "CountPedalCycles"
           }
         },
         "field2": {
@@ -75,8 +75,8 @@
               "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
               "label": "CountPedalCycles",
               "attribute": {
-                "provider" : "uk.gov.dft",
-                "label" : "CountPedalCycles"
+                "provider": "uk.gov.dft",
+                "label": "CountPedalCycles"
               }
             }
           }
@@ -84,5 +84,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

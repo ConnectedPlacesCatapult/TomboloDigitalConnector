@@ -1,6 +1,6 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         "subjectType": "lsoa",
         "provider": "uk.gov.ons",
@@ -19,21 +19,21 @@
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
-        "datasourceId" : "lsoa"
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
-        "datasourceId" : "msoa"
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "msoa"
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       }
     ],
-    "fields" : [
+    "fields": [
       {
         "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
         "label": "NitrogenDioxide",
@@ -75,9 +75,9 @@
             "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
             "datasources": [
               {
-                "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-                "datasourceId" : "trafficCounts",
-                "geographyScope" : ["London"]
+                "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                "datasourceId": "trafficCounts",
+                "geographyScope": ["London"]
               }
             ]
           },
@@ -92,9 +92,9 @@
               "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
               "datasources": [
                 {
-                  "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-                  "datasourceId" : "trafficCounts",
-                  "geographyScope" : ["London"]
+                  "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                  "datasourceId": "trafficCounts",
+                  "geographyScope": ["London"]
                 }
               ]
             }
@@ -110,9 +110,9 @@
               "recipe": "transport/traffic-counts-aggregated-bicycles-to-cars-ratio",
               "datasources": [
                 {
-                  "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-                  "datasourceId" : "trafficCounts",
-                  "geographyScope" : ["London"]
+                  "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+                  "datasourceId": "trafficCounts",
+                  "geographyScope": ["London"]
                 }
               ]
             }
@@ -121,5 +121,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }
