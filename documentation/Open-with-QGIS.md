@@ -1,20 +1,20 @@
-### Open with QGIS
+# Open with QGIS
 
-+ Install and open QGis
+- Install and open QGis
  
   Click [here](http://www.qgis.org/en/site/forusers/download.html) to download and choose the option relevant to your 
   operating 
   system.
  
-+ Open the Digital Connector output in QGis by following these steps:
+- Open the Digital Connector output in QGis by following these steps:
  
-  + Click on **Layer -> Add Layer -> Add Vector Layer -> Browse (Choose the output file) -> Open**
+  - Click on **Layer -> Add Layer -> Add Vector Layer -> Browse (Choose the output file) -> Open**
   
     Now your screen should look something like this.
  
     ![Raw Output File](https://user-images.githubusercontent.com/14051876/33429690-ba36cb8c-d5c5-11e7-97d6-a3da8b917eb2.png)
  
-  + Change the Projection to the British National Grid by clicking the button next to Render at the bottom of QGIS.
+  - Change the Projection to the British National Grid by clicking the button next to Render at the bottom of QGIS.
  
     ![Projection Options](https://user-images.githubusercontent.com/14051876/33429687-b9e95d8e-d5c5-11e7-893a-1d719fda620d.png)
  
@@ -26,7 +26,7 @@
  
     ![Raw Output with UK Projection](https://user-images.githubusercontent.com/14051876/33429689-ba1e5066-d5c5-11e7-8816-32ae9ba7ead5.png)
  
-  + On left side under Layers Panel, Right Click on your filename layer which in this tutorial is “qgis_tutorial 
+  - On left side under Layers Panel, Right Click on your filename layer which in this tutorial is “qgis_tutorial 
    OGRGeoJSON Polygon” and choose Properties. This page will allow you to style the map.
  
       ![Layers Panel](https://user-images.githubusercontent.com/14051876/33429679-b930f1c2-d5c5-11e7-96e0-9ca338ad69fa.png)
@@ -43,7 +43,7 @@
  
       ![Output without map in the background](https://user-images.githubusercontent.com/14051876/33429683-b985b7f2-d5c5-11e7-9855-83e4b8adc094.png)
  
-   + To add the background map layer click on Plugins -> Manage and Install Plugins
+   - To add the background map layer click on Plugins -> Manage and Install Plugins
  
      ![Plugins menu](https://user-images.githubusercontent.com/14051876/33429684-b99d00c4-d5c5-11e7-8f34-f39631017f9a.png)
  
@@ -60,9 +60,8 @@
  
      ![Final Output](https://user-images.githubusercontent.com/14051876/33429677-b8fc5796-d5c5-11e7-8dd3-159bbb657200.png)
  
-   + Now to save as an image Go to Project -> Save as Image. 
+   - Now to save as an image Go to Project -> Save as Image. 
     Give it a name of your choice and save it in your preferred directory. 
     The file you just saved should look like this.
  
      ![Output in PNG](https://user-images.githubusercontent.com/14051876/33429682-b96d18f0-d5c5-11e7-8ca5-b86f0eaa7376.png)
-
