@@ -1,4 +1,4 @@
-## Continuous Integration
+# Continuous Integration
 
 We're using [Wercker](http://wercker.com/) for CI. Commits and PRs will be run
 against the CI server automatically. If you don't have access, you can use the
