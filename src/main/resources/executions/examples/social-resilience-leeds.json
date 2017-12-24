@@ -1,24 +1,24 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         // The output subjects are all LSOAs whose name starts with 'Leeds'
-        "subjectType" : "lsoa",
-        "provider":"uk.gov.ons",
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
         "matchRule": {
           "attribute": "name",
           "pattern": "Leeds%"
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         // Importer for LSOA geographies
         "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "lsoa"
       }
     ],
-    "fields" : [
+    "fields": [
       // Deprecated while we fix the bug in CensusImporter for qs303ew
       //{
       //  // Modelling field for Disability Resilience (built-in model)
@@ -49,5 +49,5 @@
       //}
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

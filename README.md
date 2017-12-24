@@ -1,7 +1,6 @@
-<a href="http://www.tombolo.org.uk/products/">
-<p align="center"> <img src="http://www.tombolo.org.uk/wp-content/uploads/2017/09/xDigital-Connector-Icon.png.pagespeed.ic.17pEUiGbW4.png" width="256" height="256"/>
-</p></a>
-<h1 align="center"> Tombolo Digital Connector</h1>
+[![Tombolo](https://user-images.githubusercontent.com/14051876/34300521-c74ced0a-e728-11e7-9f1a-fa233a987750.png)](http://www.tombolo.org.uk/products/)
+
+# Tombolo Digital Connector
 
 [![wercker status](https://app.wercker.com/status/2279bdc90688501386b12c693be6a186/s/master "wercker status")](https://app.wercker.com/project/byKey/2279bdc90688501386b12c693be6a186)
 
@@ -19,26 +18,24 @@ There are three particularly important parts to the Tombolo Digital Connector:
 
 For further information see the [documentation](documentation/Home.md).
 
-
 ## Table of Contents:
 
-* [Contributing](#contributing)
-* [Requirements](#requirements)
-* [Quick start](#quick-start)
-* [Local Deploy](#local-deploy)
-* [Run Tasks](#run-tasks)
-* [Start/Stop server](#start-stop-server)
-* [License](#license)
+- [Contributing](#contributing)
+- [Requirements](#requirements)
+- [Quick start](#quick-start)
+- [Local Deploy](#local-deploy)
+- [Run Tasks](#run-tasks)
+- [Start/Stop server](#start-stop-server)
+- [License](#license)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true" alt="DigitalConnectorGif"/>
-</p>
+![The Challenge](https://user-images.githubusercontent.com/14051876/33429706-cf9edfdc-d5c5-11e7-9cff-f57e9b85f097.gif?raw=true)
 
 ## Contributing
 
 Looking to get involved? Have a look at the [Open Source Community milestone](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) where we have selected *low hanging fruit* for you to easily get involved and contribute.
 
 ## Requirements
+
 To get started you will need to install the requirements to run the Digital Connector.
 
 **Note: you’ll need to have administrator rights on your machine to install these - 
@@ -46,16 +43,17 @@ make sure that you do before you proceed.**
   
 **Install the following** via the link through to their installation page:
 
-* [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [PostgreSQL (9.4+)](https://www.postgresql.org/)
-* [PostGIS (2.1+)](http://postgis.net/)
-* [Gradle (2.12+)](https://gradle.org/)
-* [Git](https://git-scm.com/download/)
+- [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [PostgreSQL (9.4+)](https://www.postgresql.org/)
+- [PostGIS (2.1+)](http://postgis.net/)
+- [Gradle (2.12+)](https://gradle.org/)
+- [Git](https://git-scm.com/download/)
 
 ## Installation Guides
-* [Windows](documentation/Windows-Installation-Guide.md)
-* macOS **(Coming Soon)**
-* Ubuntu/Debian **(Coming Soon)**
+
+- [Windows](documentation/Windows-Installation-Guide.md)
+- macOS **(Coming Soon)**
+- Ubuntu/Debian **(Coming Soon)**
 
 ## Quick start
 
@@ -70,11 +68,11 @@ return/enter, the terminal will execute it and complete the task.
 
 **Make sure to press return after typing a command before you enter the next one.**
 
-#### Let's start
+### Let's start
 
-* Open the **Terminal**. All the following steps will operate in it.
+- Open the **Terminal**. All the following steps will operate in it.
 
-* Check if you have installed the right versions for the requirements by entering each of the following commands in 
+- Check if you have installed the right versions for the requirements by entering each of the following commands in 
 the Terminal.
 
   ```bash
@@ -111,7 +109,7 @@ the Terminal.
   git version 2.10.1 (Apple Git-78)
   ```
 
-* Get the Digital Connector code to your local machine by cloning its repository.
+- Get the Digital Connector code to your local machine by cloning its repository.
 
   ```bash
   git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector
@@ -129,7 +127,7 @@ the Terminal.
   Resolving deltas: 100% (7647/7647), done.
   ```
 
-* Go to the Digital Connetor root directory and rename the properties files. These can be done you running each of the
+- Go to the Digital Connector root directory and rename the properties files. These can be done you running each of the
 following commands and pressing enter.
 
   ```bash
@@ -141,7 +139,6 @@ following commands and pressing enter.
   The previous commands will allow you to use the default project settings.  
 
   *If you prefer/need you can amend the settings altering the default ones to the ones you decide.*
-
 
 ### Set up database
 
@@ -235,7 +232,6 @@ Execution failed for task ':test'.
 
 If you see other errors, try to go back and follow the steps again.
 
-
 ### Run the Digital Connector
 
 Now you are all set to run a task on the Digital Connector.
@@ -248,9 +244,9 @@ When you’ve run this example, you can expect a map that looks like this:
 
 ![Final Output](https://user-images.githubusercontent.com/14051876/33429682-b96d18f0-d5c5-11e7-8ca5-b86f0eaa7376.png)
 
-##### To get started:
+#### To get started:
 
-+ Run the following command into the Terminal.
+- Run the following command into the Terminal.
 
   ```bash
   gradle runExport \
@@ -258,7 +254,7 @@ When you’ve run this example, you can expect a map that looks like this:
     -PoutputFile='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
   ```
 
-+ You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
+- You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
 Change the path in the command in case you want it saved elsewhere.
 
   The output will look similar to the next content:
@@ -287,26 +283,23 @@ Change the path in the command in case you want it saved elsewhere.
   }
   ```
   
-+ Once you have your output, you can open with a geospatial visualisation tool. For this example, we recommend QGIS,
+- Once you have your output, you can open with a geospatial visualisation tool. For this example, we recommend QGIS,
  and [here](/documentation/Open-with-QGIS.md) you can find a guide on how to use it.
-
 
 **We need your feedback!  
 If you have any issues with setting up the tool, or running the tutorial, or if you have some advice about how we can 
 do this better, please contact us by creating an [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues). 
 Our goal is for someone to get back to you within 24 hours.**
 
-
 #### See also:
 
-* [Learn more about the **example** used in this tutorial](documentation/Tutorial.md)
+- [Learn more about the **example** used in this tutorial](documentation/Tutorial.md)
   
-* [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
+- [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
 
-* [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
+- [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
 
-*  [Learn how to build your own recipe](documentation/Recipe-Language.md)
-
+-  [Learn how to build your own recipe](documentation/Recipe-Language.md)
 
 ### Run tests
 
@@ -331,7 +324,7 @@ and Defaults -> JUnit):
 
 To deploy to your local Maven installation (`~/.m2` by default):
 
-```
+```bash
 gradle install
 ```
 
