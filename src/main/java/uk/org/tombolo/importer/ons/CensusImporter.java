@@ -10,7 +10,6 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.utils.JSONReader;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
@@ -21,8 +20,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
@@ -48,7 +45,11 @@ public class CensusImporter extends AbstractONSImporter {
 
     public CensusImporter(Config config) throws IOException {
         super(config);
-        datasourceIds = getDataSourceIDs();
+    }
+
+    @Override
+    public List<String> getDatasourceIds() {
+        return getDataSourceIDs();
     }
 
     @Override
@@ -131,8 +132,7 @@ public class CensusImporter extends AbstractONSImporter {
     private ArrayList<CensusDescription> getSeedData() throws IOException {
 
         ArrayList<LinkedHashMap<String, List<String>>> jsonData =
-                new JSONReader(new DownloadUtils("/tmp")
-                        .fetchJSONStream(new URL(SEED_URL), "uk.gov.ons"),
+                new JSONReader(downloadUtils.fetchInputStream(new URL(SEED_URL), "uk.gov.ons", ".json"),
                         Arrays.asList("id", "value")).getData();
 
         String regEx = "(qs)(\\d+)(ew)";
@@ -160,9 +160,15 @@ public class CensusImporter extends AbstractONSImporter {
         return descriptions;
     }
 
-    private ArrayList<String> getDataSourceIDs() throws IOException {
-        return getSeedData().stream().map(CensusDescription::getDataSetTable)
-                .collect(Collectors.toCollection(ArrayList::new));
+    private List<String> getDataSourceIDs() {
+        try {
+            return getSeedData().stream().map(CensusDescription::getDataSetTable)
+                    .collect(Collectors.toCollection(ArrayList::new));
+        } catch (IOException e) {
+            log.error("An error has occurred while downloading DatasourceID's" + e.getMessage());
+        }
+
+        return Collections.emptyList();
     }
 
     private DatasourceSpec getDataSourceSpecObject(String dataSourceId) {

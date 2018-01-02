@@ -1,6 +1,14 @@
 
 # Windows Installation Guide
 
+## Table of Contents
+
+- [Installing Java](#installing-java)
+- [Installing Gradle](#installing-gradle)
+- [Installing Postgresql and Postgis](#installing-postgresql-and-postgis)
+- [Installing Git](#installing-git)
+- [Clone Tombolo Digital Connector Repository](#clone-tombolo-digital-connector-repository)
+
 ## Installing Java
 
 ### Check if java is already installed
@@ -13,7 +21,7 @@
 - It could be a possibility that java is installed but **Environment Variable** is not set.
 - To check that go to 'C:\Program Files' and see if you see a folder named **Java**. If there is no folder like that 
 then we can be sure that Java is not installed on your computer.
-- Incase you find the Java folder there, then skip to **Set Environment Variable** Section
+- In case you find the Java folder there, then skip to **Set Environment Variable** Section
 
 ### Install Java
 
@@ -79,7 +87,6 @@ Now you should see something like this.
 ![Java Installed](https://user-images.githubusercontent.com/19670372/33494869-7dfd288a-d6bc-11e7-8aaa-5ae94faf4ca8.png)
 
 ###### Congratulations you have successfully installed java, now let's move on to installing Gradle 
-
 
 ## Installing Gradle
 
@@ -271,23 +278,23 @@ You can check that by looking the path in the **Command Prompt** window before *
 - If yours also follows the same pattern as ```C:\Users\<user-name>``` then you are good to go. If not then change 
 it by typing ```cd C:\Users\<user-name>```. Now that we are in our home directory, we can type following 
 commands to clone **TomboloDigitalConnector** repo.
-```
+
+```bash
 cd Desktop
 mkdir Tombolo
 cd Tombolo
 git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector.git
-
 ```
+
 - Now wait for it to download, when it is downloaded you would see something like below.
 ![Git cloning tombolo](https://user-images.githubusercontent.com/19670372/33494906-8167d1e6-d6bc-11e7-951c-8d898167e836.png)
 - Now type ```cd TomboloDigitalConnector```.
 - We have rename 2 project files **gradle.properties.example** and **apikeys.properties.example**. 
 To do that just type the following commands in **Command Prompt**
 
-```
+```bash
 rename gradle.properties.example gradle.properties
 rename apikeys.properties.example apikeys.properties
-
 ``` 
 
 ### Setup Databases
@@ -296,20 +303,18 @@ rename apikeys.properties.example apikeys.properties
 
 - Type the following commands
 
-```
-
+```bash
 psql -U postgres
 Enter the password for the account and hit enter (You have set this password while installing postgres)
 CREATE USER tombolo WITH PASSWORD ‘tombolo’;
 CREATE DATABASE tombolo WITH ENCODING=UTF8;
-
 ``` 
 ![Pg create role](https://user-images.githubusercontent.com/19670372/33494853-7c9cefd4-d6bc-11e7-8838-41598ffabbfa.png)
 ![Pg create database](https://user-images.githubusercontent.com/19670372/33494855-7cd1b200-d6bc-11e7-83f1-4dd434831d3e.png)
 
 - Make **tombolo** a **superuser**
 
-```
+```bash
 ALTER USER tombolo WITH SUPERUSER;
 ```
 ![Pg alter role](https://user-images.githubusercontent.com/19670372/33494856-7cee79f8-d6bc-11e7-8767-df5edc9f069d.png)
@@ -317,22 +322,20 @@ ALTER USER tombolo WITH SUPERUSER;
 - Type ```\q``` to quit
 - We now need to create **postgis** extension
 
-```
+```bash
 psql -d tombolo -U tombolo
 Enter the password as tombolo and now Type the following commands
 CREATE EXTENSION postgis;
 SET NAMES ‘UTF8’;
-
 ```
 ![Pg create extension](https://user-images.githubusercontent.com/19670372/33494854-7cb9e724-d6bc-11e7-8391-0e02f9bdf069.png)
 
 - Type ```\q``` to quit
 - Now run the sql script to setup your database
 
-```
+```bash
 psql -d tombolo -U tombolo < src\main\resources\sql\create_database.sql
 Enter the password as ‘tombolo’
-
 ```
 ![Tombolo script output](https://user-images.githubusercontent.com/19670372/33494821-79893352-d6bc-11e7-8447-7f86b0a3fd61.png)
 
@@ -353,7 +356,7 @@ for the passwords. Below are just the screenshots for the steps:
 - Now you are all set to build the project **TomboloDigitalConnector**. To build the project 
 in **Command Prompt** type the following
 
-```
+```bash
 gradle clean build
 ```
 - Running the aforementioned command should start downloading the packages required to run **DigitalConnector**, 
@@ -369,7 +372,7 @@ machine with 8gb of ram it should not take more than 15 minutes to run the tests
 
 - Type the following command in the **Command Prompt**
 
-```
+```bash
 gradle runExport ^
 -PdataExportSpecFile=src\main\resources\executions\examples\reaggregate-traffic-count-to-la.json ^ 
 -PoutputFile=reaggregate-traffic-count-to-la_output.json
@@ -381,19 +384,12 @@ gradle runExport ^
 
 ##### View output in a file
 
-```
+```bash
 start notepad reaggregate-traffic-count-to-la_output.json
 ```
 
 ##### View output in a Folder
 
-```
+```bash
 start .
 ```
-
-  
-
-
- 
-
-

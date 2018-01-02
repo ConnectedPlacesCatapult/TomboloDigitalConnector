@@ -1,59 +1,58 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         // The subject output is a traffic counter from DfT
         // Restricted to only traffic counters from Greenwich and Islington
         "provider": "uk.gov.dft",
-        "subjectType" : "trafficCounter",
-        "geoMatchRule" : {
-          "geoRelation" : "within",
-          "subjects" : [
+        "subjectType": "trafficCounter",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
             {
-              "subjectType" : "localAuthority",
+              "subjectType": "localAuthority",
               "provider": "uk.gov.ons",
-              "matchRule" : {
-                "attribute" : "name",
-                "pattern" : "Greenwich"
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Greenwich"
               }
             },
             {
-              "subjectType" : "localAuthority",
+              "subjectType": "localAuthority",
               "provider": "uk.gov.ons",
-              "matchRule" : {
-                "attribute" : "name",
-                "pattern" : "Islington"
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Islington"
               }
             }
           ]
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         // Importer for DfT traffic counts for London
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       },
       {
         // Importer for Local Authorities in the UK
-        "importerClass" : "uk.org.tombolo.importer.ons.OaImporter",
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
         "datasourceId": "localAuthority"
       }
     ],
-    "fields" : [
+    "fields": [
       {
         // Filed for returning the latest count of cars and taxis for the sensor (traffic counter)
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
-          "provider" : "uk.gov.dft",
-          "label" : "CountCarsTaxis"
+          "provider": "uk.gov.dft",
+          "label": "CountCarsTaxis"
         }
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }
-
