@@ -24,6 +24,7 @@ import uk.org.tombolo.recipe.SubjectRecipe;
 import java.io.File;
 import java.io.Writer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataExportEngine implements ExecutionEngine {
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
@@ -121,19 +122,23 @@ public class DataExportEngine implements ExecutionEngine {
 		if (!specificationFile.exists()) return validProvider;
 		JSONReader reader = new JSONReader(specificationFile, new ArrayList<>(Arrays.asList("importerClass", "provider")));
 		reader.getData();
-		ArrayList<String> importers = reader.getTagValueFromAllSections("importerClass");
-		ArrayList<String> providers = reader.getTagValueFromAllSections("provider");
+		List<String> importers = reader.getTagValueFromAllSections("importerClass").stream().distinct().collect(Collectors.toList());
+		List<String> providers = reader.getTagValueFromAllSections("provider").stream().distinct().collect(Collectors.toList());
 
 		mainLoop:
 		for (String importer : importers) {
-			for (String provider : providers) {
+			if (providers.isEmpty()) break mainLoop;
+
+			for (int i = 0; i < providers.size(); i++) {
 				Importer imp = initialiseImporter(importer, "");
-				if (!provider.equals(imp.getProvider().getLabel())) {
-					validProvider = provider;
-					break mainLoop;
+				if (providers.get(i).equals(imp.getProvider().getLabel())) {
+					providers.remove(i);
+					i = i - 1;
 				}
 			}
 		}
+
+		if (providers.size() > 0) validProvider = String.join(", ", providers);
 
 		return validProvider;
 	}
