@@ -1,11 +1,11 @@
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         // This specifies that all subjects of type "trafficCounter" should be returned.
-        "subjectType" : "trafficCounter",
-        "provider":"uk.gov.dft",
-        "geoMatchRule" : {
+        "subjectType": "trafficCounter",
+        "provider": "uk.gov.dft",
+        "geoMatchRule": {
           "geoRelation": "within",
           "subjects": [
             {
@@ -20,26 +20,26 @@
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         // Importer for DfT traffic counts in London
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       }
     ],
-    "fields" : [
+    "fields": [
       {
         // The latest count of pedal cycles for that traffic counter
         "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
-          "provider" : "uk.gov.dft",
-          "label" : "CountPedalCycles"
+          "provider": "uk.gov.dft",
+          "label": "CountPedalCycles"
         }
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter",
-  "timeStamp" : false
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
 }

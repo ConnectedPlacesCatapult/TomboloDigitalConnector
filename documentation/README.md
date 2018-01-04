@@ -1,4 +1,4 @@
-## Digital Connector Documentation
+# Digital Connector Documentation
 
 The Tombolo Digital Connector is software for interconnecting data-sets and urban models. Its aim is to advance the technology that can help policy makers, planners, designers and developers make better, evidence-based decisions, tailored to the cities they work in.
 
@@ -33,12 +33,11 @@ The below you can find the suggested reading order of this documentation.
 
 [Tutorial - Cycling and Air Quality](Tutorial.md)
 
-
 ## Documentation to pdf
 
 To create a PDF version of the documentation run the gradle build in the `/TomboloDigitalConnector/documentation`
 directory.
 
-```
+```bash
 gradle build
 ```

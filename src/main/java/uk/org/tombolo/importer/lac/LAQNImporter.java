@@ -132,7 +132,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
 
     private ArrayList<LinkedHashMap<String, List<String>>> readData(String url) throws IOException {
 
-        reader = new JSONReader(downloadUtils.fetchJSONStream(new URL(url), "uk.lac"));
+        reader = new JSONReader(downloadUtils.fetchInputStream(new URL(url), "uk.lac", ".json"));
         return reader.getData();
     }
 

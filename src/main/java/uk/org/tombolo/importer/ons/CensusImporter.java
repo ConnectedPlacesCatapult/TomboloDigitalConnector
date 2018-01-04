@@ -132,7 +132,7 @@ public class CensusImporter extends AbstractONSImporter {
     private ArrayList<CensusDescription> getSeedData() throws IOException {
 
         ArrayList<LinkedHashMap<String, List<String>>> jsonData =
-                new JSONReader(downloadUtils.fetchJSONStream(new URL(SEED_URL), "uk.gov.ons"),
+                new JSONReader(downloadUtils.fetchInputStream(new URL(SEED_URL), "uk.gov.ons", ".json"),
                         Arrays.asList("id", "value")).getData();
 
         String regEx = "(qs)(\\d+)(ew)";

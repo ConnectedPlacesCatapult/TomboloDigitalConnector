@@ -1,13 +1,13 @@
 // We want to work out the correlation between the number of cars (incl. taxis)
 // passing by a road traffic counter, and the no2 of the closest air quality sensor
 {
-  "dataset" : {
-    "subjects" : [
+  "dataset": {
+    "subjects": [
       {
         // The subject output is a traffic counter from DfT
-        "subjectType" : "trafficCounter",
+        "subjectType": "trafficCounter",
         "provider": "uk.gov.dft",
-        "geoMatchRule" : {
+        "geoMatchRule": {
           "geoRelation": "within",
           "subjects": [
             {
@@ -22,26 +22,26 @@
         }
       }
     ],
-    "datasources" : [
+    "datasources": [
       {
         // Importer for DfT traffic counts for Milton Keynes
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       },
       {
         "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
         "datasourceId": "airQualityControl"
       }
     ],
-    "fields" : [
+    "fields": [
       {
         // Filed for returning the latest count of cars and taxis for the traffic counter
       "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
         "label": "CountPedalCycles",
         "attribute": {
-          "provider" : "uk.gov.dft",
-          "label" : "CountCarsTaxis"
+          "provider": "uk.gov.dft",
+          "label": "CountCarsTaxis"
         }
       },
       {
@@ -63,5 +63,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }
