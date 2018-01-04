@@ -45,7 +45,6 @@ public class CensusImporter extends AbstractONSImporter {
 
     public CensusImporter(Config config) throws IOException {
         super(config);
-        this.config = config;
     }
 
     @Override
