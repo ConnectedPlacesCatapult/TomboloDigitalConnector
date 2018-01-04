@@ -4,15 +4,20 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.*;
+import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.Importer;
+import uk.org.tombolo.importer.ParsingException;
 import uk.org.tombolo.importer.utils.JSONReader;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -23,6 +28,7 @@ import java.util.stream.IntStream;
  * London Air Quality Importer
  */
 public class LAQNImporter extends AbstractImporter implements Importer{
+    private static final Logger log = LoggerFactory.getLogger(LAQNImporter.class);
 
     private static final String LAQN_PROVIDER_LABEL = "erg.kcl.ac.uk";
     private static final String LAQN_PROVIDER_NAME = "Environmental Research Group Kings College London";
@@ -161,20 +167,25 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         return fixedValues;
     }
 
-    private ArrayList<TimedValue> getTimedValue(List<Subject> subjects, ArrayList<Attribute> attributes) throws InterruptedException {
+    private ArrayList<TimedValue> getTimedValue(List<Subject> subjects, ArrayList<Attribute> attributes) throws InterruptedException, ParsingException {
         ArrayList<TimedValue> timedValues = new ArrayList<>();
 
         IntStream.range(0, flatJson.size()).forEachOrdered(i -> {
             Subject subject = subjects.get(i);
             IntStream.range(0, flatJson.get(i).get("@SpeciesCode").size()).forEachOrdered(j -> {
+
                 for (Attribute attribute : attributes) {
                     if (attribute.getLabel().startsWith(flatJson.get(i).get("@SpeciesCode").get(j)) &&
                             attribute.getDescription().equalsIgnoreCase(flatJson.get(i).get("@ObjectiveName").get(j))) {
-
-                        timedValues.add(new TimedValue(subject, attribute,
-                                time(flatJson.get(i).get("@Year").get(j)),
-                                Double.parseDouble(flatJson.get(i).get("@Value").get(j))));
-                        break;
+                        try {
+                            timedValues.add(new TimedValue(subject, attribute,
+                                    time(flatJson.get(i).get("@Year").get(j)),
+                                    Double.parseDouble(flatJson.get(i).get("@Value").get(j))));
+                        } catch (ParsingException pe) {
+                            log.warn(pe.getMessage());
+                        } finally {
+                            break;
+                        }
                     }
                 }
             });
@@ -184,7 +195,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
         return timedValues;
     }
 
-    private LocalDateTime time(String time) {
+    private LocalDateTime time(String time) throws ParsingException {
         return TimedValueUtils.parseTimestampString(time);
     }
 
