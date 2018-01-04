@@ -5,13 +5,14 @@ import org.apache.commons.csv.CSVParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.JSONReader;
-import uk.org.tombolo.importer.utils.JournalEntryUtils;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
-import javax.annotation.Nonnull;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -89,22 +90,6 @@ public class CensusImporter extends AbstractONSImporter {
                 + "&" + "measures=20100"
                 + "&" + "rural_urban=total"
                 + "&" + "geography=" + GEOGRAPHIES.get(geography);
-    }
-
-    @Override
-    public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope,
-                                 List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force) throws Exception {
-        OaImporter oaImporter = new OaImporter(config);
-        oaImporter.setDownloadUtils(downloadUtils);
-        for (SubjectRecipe subjectRecipe : subjectRecipes) {
-            if (!DatabaseJournal.journalHasEntry(JournalEntryUtils.getJournalEntryForDatasourceId(
-                "uk.org.tombolo.importer.ons.OaImporter", subjectRecipe.getSubjectType(), geographyScope,
-                    temporalScope, datasourceLocation))) {
-                oaImporter.importDatasource(subjectRecipe.getSubjectType(), Collections.EMPTY_LIST, Collections.EMPTY_LIST,
-                        Collections.EMPTY_LIST, subjectRecipes, false);
-            }
-        }
-        super.importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, subjectRecipes, force);
     }
 
     @Override
