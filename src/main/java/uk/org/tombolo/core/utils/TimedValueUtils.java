@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.ParsingException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -128,7 +129,7 @@ public class TimedValueUtils {
 	 * @param timestampString
 	 * @return
 	 */
-	public static LocalDateTime parseTimestampString(String timestampString){
+	public static LocalDateTime parseTimestampString(String timestampString) throws ParsingException {
 		// Check if well formed to the second
 		if (timestampString.matches("^\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d$"))
 			return LocalDateTime.parse(timestampString);
@@ -156,7 +157,7 @@ public class TimedValueUtils {
 		}
 
 		// Neither well formed to the second nor year
-		return null;
+		throw new ParsingException("Unparsable timestamp: " + timestampString);
 	}
 
 	/**

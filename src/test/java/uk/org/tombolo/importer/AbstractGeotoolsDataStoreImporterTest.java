@@ -33,7 +33,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
         }
 
         @Override
-        public LocalDateTime getTimestampForFeature(SimpleFeature feature) {
+        public LocalDateTime getTimestampForFeature(SimpleFeature feature)  throws ParsingException {
             return TimedValueUtils.parseTimestampString((String) feature.getAttribute("time_modified"));
         }
 

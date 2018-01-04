@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  */
 public class CensusImporter extends AbstractONSImporter {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
-    private static final LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
     private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
     private ArrayList<CensusDescription> descriptions = new ArrayList<>();
     private static final Set<String> BLACK_LIST_HEADERS
@@ -92,6 +91,7 @@ public class CensusImporter extends AbstractONSImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+        LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();
