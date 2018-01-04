@@ -31,7 +31,6 @@ public class CensusImporter extends AbstractONSImporter {
     private ArrayList<CensusDescription> descriptions = new ArrayList<>();
     private static final Set<String> BLACK_LIST_HEADERS
             = new HashSet<>(Arrays.asList("date", "geography", "geography code", "Rural Urban"));
-    private Config config;
 
     /**
      * These are the geography codes mapped by nomis for respective granularity
