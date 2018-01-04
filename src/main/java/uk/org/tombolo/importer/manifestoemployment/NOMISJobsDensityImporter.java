@@ -3,13 +3,7 @@ package uk.org.tombolo.importer.manifestoemployment;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
@@ -19,7 +13,6 @@ import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,28 +23,27 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by tbantis on 21/12/2017.
+ * Created by tbantis on 02/01/2018.
  */
-public class NOMISIncomeImporter extends AbstractImporter {
-    private static final String DATASOURCE = "http://www.nomisweb.co.uk/api/v01/dataset/NM_30_1.data.csv?geography=1941962753...1941962958&date=latestMINUS1-latest&sex=8&item=2&pay=7&measures=20100,20701&select=date_name,geography_name,geography_code,sex_name,pay_name,item_name,measures_name,obs_value,obs_status_name";
+public class NOMISJobsDensityImporter extends AbstractImporter {
+
+    private static final String DATASOURCE = "http://www.nomisweb.co.uk/api/v01/dataset/NM_57_1.data.csv?geography=1870659585...1870659791,1870659801,1870659792...1870659800&date=latestMINUS1-latest&item=1,3&measures=20100&select=date_name,geography_name,geography_code,item_name,measures_name,obs_value,obs_status_name";
     private List csvRecords;
 
-    public NOMISIncomeImporter(Config config) {
+    public NOMISJobsDensityImporter(Config config) {
         super(config);
         try {
             // Specifying the datasourceId. This will be used by the DC recipe
-            datasourceIds = Arrays.asList(getDatasourceSpec("NOMISIncome").getId());
+            datasourceIds = Arrays.asList(getDatasourceSpec("NOMISJobsDensityImporter").getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     // Instantiating the data Provider
     protected static final Provider PROVIDER = new Provider(
             "nomisweb.co.uk",
-            "NOMIS Income"
+            "NOMIS Jobs density and total jobs"
     );
-
     @Override
     public Provider getProvider() {
         return PROVIDER;
@@ -61,13 +53,14 @@ public class NOMISIncomeImporter extends AbstractImporter {
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         DatasourceSpec datasourceSpec = new DatasourceSpec(
-                NOMISIncomeImporter.class,
-                "NOMISIncome",
-                "NOMIS Income",
-                "annual survey of hours and earnings  - resident analysis",
+                NOMISJobsDensityImporter.class,
+                "NOMISJobs",
+                "NOMIS Jobs",
+                "Jobs Density and Total jobs",
                 DATASOURCE);
         return datasourceSpec;
     }
+
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
@@ -79,7 +72,7 @@ public class NOMISIncomeImporter extends AbstractImporter {
         // We create an empty list that will keep our values
         List<TimedValue> timedValues = new ArrayList<TimedValue>();
         CSVFormat format = CSVFormat.DEFAULT;
-        String fileLocation = getDatasourceSpec("NOMISIncome").getUrl();
+        String fileLocation = getDatasourceSpec("NOMISJobs").getUrl();
 
         // The code below fetches the .xls file from the URL we specified in our DatasourceSpec object
         URL url;
@@ -107,14 +100,15 @@ public class NOMISIncomeImporter extends AbstractImporter {
 
         while (rowIterator.hasNext()) {
             CSVRecord row = rowIterator.next();
-            if (String.valueOf(row.get(6)).trim().equals("Value")){
+            if (String.valueOf(row.get(6)).trim().equals("Normal Value")){
                 try {
                     Subject subject = SubjectUtils.getSubjectByTypeAndLabel(localauthority, String.valueOf(row.get(2)).trim());
                     if (subject!=null){
                         String year = row.get(0).toString();
-                        if (year.trim().equals("2016")){
+                        String variable = row.get(3).toString();
+                        if (year.trim().equals("2014") && variable.trim().equals("Total jobs")){
 
-                            Double record = Double.parseDouble(row.get(7));
+                            Double record = Double.parseDouble(row.get(5));
                             LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
                             // Here is where we are assigning the values of our .csv file to the attribute fields we
                             // created.
@@ -127,12 +121,40 @@ public class NOMISIncomeImporter extends AbstractImporter {
                                     timestamp,
                                     record));
                         }
-                        if (year.trim().equals("2017")){
-                            Double record = Double.parseDouble(row.get(7));
+                        if (year.trim().equals("2015") && variable.trim().equals("Total jobs")){
+                            Double record = Double.parseDouble(row.get(5));
                             LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
                             // Here is where we are assigning the values of our .csv file to the attribute fields we
                             // created.
                             Attribute attribute = datasource.getTimedValueAttributes().get(1);
+
+                            timedValues.add(new TimedValue(
+                                    subject,
+                                    attribute,
+                                    timestamp,
+                                    record));
+                        }
+                        if (year.trim().equals("2014") && variable.trim().equals("Jobs density")){
+
+                            Double record = Double.parseDouble(row.get(5));
+                            LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+                            // Here is where we are assigning the values of our .csv file to the attribute fields we
+                            // created.
+                            Attribute attribute = datasource.getTimedValueAttributes().get(2);
+
+
+                            timedValues.add(new TimedValue(
+                                    subject,
+                                    attribute,
+                                    timestamp,
+                                    record));
+                        }
+                        if (year.trim().equals("2015") && variable.trim().equals("Jobs density")){
+                            Double record = Double.parseDouble(row.get(5));
+                            LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+                            // Here is where we are assigning the values of our .csv file to the attribute fields we
+                            // created.
+                            Attribute attribute = datasource.getTimedValueAttributes().get(3);
 
                             timedValues.add(new TimedValue(
                                     subject,
@@ -154,14 +176,13 @@ public class NOMISIncomeImporter extends AbstractImporter {
         }
         saveAndClearTimedValueBuffer(timedValues);
 
-    
     }
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceID) {
         // Creating a placeholder for our attributes
         List<Attribute> attributes = new ArrayList<>();
-        String[] elements = { "Annual_pay_median_2016", "Annual_pay_median_2017"};
+        String[] elements = { "total_jobs_2014", "total_jobs_2015", "job_density_2014", "job_density_2015"};
         for( int i = 0; i < elements.length; i++) {
             attributes.add(new Attribute(getProvider(), elements[i], elements[i]));
 

@@ -471,7 +471,7 @@
               ]
             },
             {
-              // Life axiety levels dataset. We are using PercentilesField.
+              // Life axiety levels dataset. We are using PercentilesField. Greatest survival is good so we make it inverse
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "ONS_anxiety_Percentiles",
               "percentileCount": 10,
