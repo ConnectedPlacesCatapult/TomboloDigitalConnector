@@ -51,6 +51,10 @@ public abstract class AbstractRunner {
         return RecipeDeserializer.fromJsonFile(file, DataExportRecipe.class);
     }
 
+    protected static DataExportRecipe getSpecificationFromString(String specification) throws IOException {
+        return RecipeDeserializer.fromJsonString(specification, DataExportRecipe.class);
+    }
+
     protected static DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
         Properties properties = loadProperties(SYSTEM_PROPERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
         log.info("Setting file download cache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));

@@ -22,12 +22,19 @@ public class DataExportRunner extends AbstractRunner {
         String outputFile = args[1];
         String forceImports = args[2];
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
+        String executionSpec = args[4];
 
-        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache);
+        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache, executionSpec);
     }
 
     protected static void run(String executionSpecPath, String outputFile,
                               String forceImports, Boolean clearDatabaseCache) throws Exception {
+    
+        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache, "None");
+    }
+
+    protected static void run(String executionSpecPath, String outputFile,
+                              String forceImports, Boolean clearDatabaseCache, String executionSpec) throws Exception {
         HibernateUtil.startup();
         if (clearDatabaseCache) {
             DatabaseUtils.clearAllData();
@@ -39,11 +46,13 @@ public class DataExportRunner extends AbstractRunner {
         // Create engine
         DataExportEngine engine = new DataExportEngine(apiKeys, initialiseDowloadUtils());
 
-        validateSpecification(executionSpecPath);
+        if (!executionSpecPath.equalsIgnoreCase("None")) validateSpecification(executionSpecPath);
+        if (!executionSpec.equalsIgnoreCase("None")) validateSpecificationOfString(executionSpec);
 
         try (Writer writer = getOutputWriter(outputFile)) {
             engine.execute(
-                    getSpecification(executionSpecPath),
+                    !executionSpecPath.equalsIgnoreCase("None") ? getSpecification(executionSpecPath) : 
+                                                                    getSpecificationFromString(executionSpec),
                     writer,
                     new ImporterMatcher(forceImports.trim())
             );
@@ -62,14 +71,24 @@ public class DataExportRunner extends AbstractRunner {
         }
     }
 
+    private static void validateSpecificationOfString(String executionSpec) {
+        ProcessingReport report = DataExportRecipeValidator.validate(new BufferedReader(new InputStreamReader(
+                                                                        new ByteArrayInputStream(executionSpec.getBytes()))));
+        if (!report.isSuccess()) {
+            DataExportRecipeValidator.display(report);
+            System.exit(1);
+        }
+    }
+
     private static void validateArguments(String[] args) {
-        if (args.length != 4){
-            log.error("Use: {} {} {} {}",
+        if (args.length != 5){
+            log.error("Use: {} {} {} {} {}",
                     DataExportRunner.class.getCanonicalName(),
                     "dataExportSpecFile",
                     "outputFile",
                     "clearDatabaseCache",
-                    "forceImports (className:datasourceId,...)"
+                    "forceImports (className:datasourceId,...)",
+                    "dataExportSpec"
             );
             System.exit(1);
         }
