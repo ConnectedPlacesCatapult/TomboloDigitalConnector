@@ -10,11 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractOaImporter extends AbstractImporter {
-    private Config config;
 
     public AbstractOaImporter(Config config) {
         super(config);
-        this.config = config;
     }
 
     @Override
