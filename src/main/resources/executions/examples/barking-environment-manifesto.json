@@ -23,8 +23,8 @@
       // The below contains the components of the subindex "Rate of regular physical activity higher than the East London average"
       // Note that two components from Active People Survey are pending
       {
-        "importerClass": "uk.org.tombolo.importer.manifestoenvironment.WasteWaterImporter",
-        "datasourceId": "DefraWastewater"
+        "importerClass": "uk.org.tombolo.importer.manifestoenvironment.WasteImporter",
+        "datasourceId": "WasteImporter"
 
       }
    ],

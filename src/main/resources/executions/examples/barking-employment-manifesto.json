@@ -701,7 +701,7 @@
               "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
               "label": "NOMIS_benefits_per_1000_habitants_percentiles",
               "percentileCount": 10,
-              "inverse": true,
+              "inverse": false,
               "valueField": {
                 "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
                 "label": "standardised_benefits_per_population",

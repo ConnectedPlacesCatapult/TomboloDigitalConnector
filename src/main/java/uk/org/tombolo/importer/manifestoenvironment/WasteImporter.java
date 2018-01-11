@@ -26,14 +26,14 @@ import java.util.List;
 /**
  * Created by tbantis on 03/01/2018.
  */
-public class WasteWaterImporter extends AbstractImporter {
+public class WasteImporter extends AbstractImporter {
     private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/664608/LA_and_Regional_Spreadsheet_201617.xlsx";
 
-    public WasteWaterImporter(Config config) {
+    public WasteImporter(Config config) {
         super(config);
         try {
             // Specifying the datasourceId. This will be used by the DC recipe
-            datasourceIds = Arrays.asList(getDatasourceSpec("DefraWastewater").getId());
+            datasourceIds = Arrays.asList(getDatasourceSpec("DefraWaste").getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,8 +52,8 @@ public class WasteWaterImporter extends AbstractImporter {
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         DatasourceSpec datasourceSpec = new DatasourceSpec(
-                WasteWaterImporter.class,
-                "DefraWastewater",
+                WasteImporter.class,
+                "DefraWaste",
                 "Waste Statistics",
                 "Local Authority Collected Waste Statistics - Local Authority data",
                 DATASOURCE);
