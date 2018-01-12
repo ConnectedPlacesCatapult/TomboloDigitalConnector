@@ -92,11 +92,6 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec, List<SubjectRecipe> subjectRecipes) throws Exception {
-		Config importerConfiguration = null;
-		String configFile = datasourceSpec.getConfigFile();
-		if (configFile != null && !"".equals(configFile)) {
-			importerConfiguration = ConfigUtils.loadConfig(
-					AbstractRunner.loadProperties("Configuration file", configFile));
 
 		Importer importer = initialiseImporter(datasourceSpec.getImporterClass(), datasourceSpec.getConfigFile());
 		importer.configure(apiKeys);
