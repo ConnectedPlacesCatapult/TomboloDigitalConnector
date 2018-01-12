@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
 import uk.org.tombolo.importer.utils.JournalEntryUtils;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,7 @@ public abstract class AbstractImporter implements Importer {
 	protected List<String> geographyLabels;
 	protected List<String> temporalLabels;
 	protected Config config;
+	protected List<SubjectRecipe> subjectRecipes;
 
 	protected final static String DEFAULT_GEOGRAPHY = "all";
 	protected final static String DEFAULT_TEMPORAL = "all";
@@ -73,8 +76,8 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, false);
+	public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, Collections.emptyList(), false);
 	}
 
 	/**
@@ -87,7 +90,7 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, Boolean force) throws Exception {
+	public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
@@ -98,6 +101,8 @@ public abstract class AbstractImporter implements Importer {
 		} else {
 			log.info("Importing {}:{}",
 					this.getClass().getCanonicalName(), datasourceId);
+			// Setting Subject Recipe object
+			this.subjectRecipes = subjectRecipes;
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
 			saveDatasourceMetadata(datasource);

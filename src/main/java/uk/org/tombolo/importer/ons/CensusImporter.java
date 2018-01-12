@@ -10,8 +10,8 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.utils.JSONReader;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
 import java.io.*;
 import java.net.URL;
@@ -20,24 +20,35 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
  */
 public class CensusImporter extends AbstractONSImporter {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
-    private static final LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
     private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
     private ArrayList<CensusDescription> descriptions = new ArrayList<>();
     private static final Set<String> BLACK_LIST_HEADERS
             = new HashSet<>(Arrays.asList("date", "geography", "geography code", "Rural Urban"));
 
+    /**
+     * These are the geography codes mapped by nomis for respective granularity
+     * e.g https://www.nomisweb.co.uk/api/v01/dataset/NM_522_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298
+     * Providing geography=TYPE298 would download data for lsoa
+     */
+    private static final Map<String, String> GEOGRAPHIES = new HashMap<String, String>() {{
+               put("lsoa", "TYPE298");
+               put("msoa", "TYPE297");
+               put("localAuthority", "TYPE463");
+    }};
 
     public CensusImporter(Config config) throws IOException {
         super(config);
-        datasourceIds = getDataSourceIDs();
+    }
+
+    @Override
+    public List<String> getDatasourceIds() {
+        return getDataSourceIDs();
     }
 
     @Override
@@ -47,38 +58,40 @@ public class CensusImporter extends AbstractONSImporter {
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceIdString) throws Exception {
-        String headerRowUrl = getDataUrl(datasourceIdString) + "&recordlimit=0";
-        File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
-        CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
-
         List<Attribute> attributes = new ArrayList<>();
-        for (String header : csvParser.getHeaderMap().keySet()) {
-            if (!BLACK_LIST_HEADERS.contains(header)) {
-                String attributeLabel = attributeLabelFromHeader(header);
-                attributes.add(new Attribute(getProvider(), attributeLabel, header));
+        for (SubjectRecipe subjectRecipe : subjectRecipes) {
+            String headerRowUrl = getDataUrl(datasourceIdString, subjectRecipe.getSubjectType()) + "&recordlimit=0";
+            File headerRowStream = downloadUtils.fetchFile(new URL(headerRowUrl), getProvider().getLabel(), ".csv");
+            CSVParser csvParser = new CSVParser(new FileReader(headerRowStream), CSVFormat.RFC4180.withFirstRecordAsHeader());
+
+            for (String header : csvParser.getHeaderMap().keySet()) {
+                if (!BLACK_LIST_HEADERS.contains(header)) {
+                    String attributeLabel = attributeLabelFromHeader(header);
+                    attributes.add(new Attribute(getProvider(), attributeLabel, header));
+                }
             }
         }
         return attributes;
     }
 
     private String attributeLabelFromHeader(String header) {
-        // FIXME: Make sure that this generalises over all datasets
         int end = header.indexOf(";");
         return header.substring(0, end);
     }
 
-    protected String getDataUrl(String datasourceIdString) {
+    protected String getDataUrl(String datasourceIdString, String geography) {
         return "https://www.nomisweb.co.uk/api/v01/dataset/"
                 + getRecordId(datasourceIdString)
                 + ".bulk.csv?"
                 + "time=latest"
                 + "&" + "measures=20100"
                 + "&" + "rural_urban=total"
-                + "&" + "geography=TYPE298";
+                + "&" + "geography=" + GEOGRAPHIES.get(geography);
     }
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+        LocalDateTime TIMESTAMP = TimedValueUtils.parseTimestampString("2011");
 
         // Collect materialised attributes
         List<Attribute> attributes = new ArrayList<>();
@@ -86,38 +99,40 @@ public class CensusImporter extends AbstractONSImporter {
             attributes.add(AttributeUtils.getByProviderAndLabel(attribute.getProvider(), attribute.getLabel()));
         }
 
-        // FIXME: Generalise this beyond LSOA
-        SubjectType lsoa = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
-                OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
-        List<TimedValue> timedValueBuffer = new ArrayList<>();
-        String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId());
+        // Looping through all the subjects provided in the recipe and saving there respective values
+        for (SubjectRecipe subjectTypeFromRecipe : subjectRecipes) {
+            OaImporter.OaType oaType = OaImporter.OaType.valueOf(subjectTypeFromRecipe.getSubjectType());
+            SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                    oaType.name(), oaType.datasourceSpec.getDescription());
 
-        // FIXME: Use stream instead of file
-        InputStream dataStream = downloadUtils.fetchInputStream(
-                new URL(dataUrl), getProvider().getLabel(), ".csv");
+            List<TimedValue> timedValueBuffer = new ArrayList<>();
+            String dataUrl = getDataUrl(datasource.getDatasourceSpec().getId(), subjectTypeFromRecipe.getSubjectType());
 
-        CSVParser csvParser = new CSVParser(new InputStreamReader(dataStream),
-                CSVFormat.RFC4180.withFirstRecordAsHeader());
+            InputStream dataStream = downloadUtils.fetchInputStream(
+                    new URL(dataUrl), getProvider().getLabel(), ".csv");
 
-        csvParser.forEach(record -> {
-            Subject subject = SubjectUtils.getSubjectByTypeAndLabel(lsoa, record.get("geography code"));
-            if (subject != null) {
-                attributes.forEach(attribute -> {
-                    String value = record.get(attribute.getDescription());
-                    TimedValue timedValue = new TimedValue(subject, attribute, TIMESTAMP, Double.valueOf(value));
-                    timedValueBuffer.add(timedValue);
-                });
-            }
-        });
+            CSVParser csvParser = new CSVParser(new InputStreamReader(dataStream),
+                    CSVFormat.RFC4180.withFirstRecordAsHeader());
 
-        saveAndClearTimedValueBuffer(timedValueBuffer);
+            csvParser.forEach(record -> {
+                Subject subject = SubjectUtils.getSubjectByTypeAndLabel(subjectType, record.get("geography code"));
+                if (subject != null) {
+                    attributes.forEach(attribute -> {
+                        String value = record.get(attribute.getDescription());
+                        TimedValue timedValue = new TimedValue(subject, attribute, TIMESTAMP, Double.valueOf(value));
+                        timedValueBuffer.add(timedValue);
+                    });
+                }
+            });
+
+            saveAndClearTimedValueBuffer(timedValueBuffer);
+        }
     }
 
     private ArrayList<CensusDescription> getSeedData() throws IOException {
 
         ArrayList<LinkedHashMap<String, List<String>>> jsonData =
-                new JSONReader(new DownloadUtils("/tmp")
-                        .fetchJSONStream(new URL(SEED_URL), "uk.gov.ons"),
+                new JSONReader(downloadUtils.fetchInputStream(new URL(SEED_URL), "uk.gov.ons", ".json"),
                         Arrays.asList("id", "value")).getData();
 
         String regEx = "(qs)(\\d+)(ew)";
@@ -145,9 +160,15 @@ public class CensusImporter extends AbstractONSImporter {
         return descriptions;
     }
 
-    private ArrayList<String> getDataSourceIDs() throws IOException {
-        return getSeedData().stream().map(CensusDescription::getDataSetTable)
-                .collect(Collectors.toCollection(ArrayList::new));
+    private List<String> getDataSourceIDs() {
+        try {
+            return getSeedData().stream().map(CensusDescription::getDataSetTable)
+                    .collect(Collectors.toCollection(ArrayList::new));
+        } catch (IOException e) {
+            log.error("An error has occurred while downloading DatasourceID's" + e.getMessage());
+        }
+
+        return Collections.emptyList();
     }
 
     private DatasourceSpec getDataSourceSpecObject(String dataSourceId) {

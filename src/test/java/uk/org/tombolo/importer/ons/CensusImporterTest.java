@@ -9,17 +9,20 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
-import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CensusImporterTest extends AbstractTest {
     private static final String MTW_ID = "qs701ew";
     private static final String POP_ID = "qs102ew";
     private static final String POD_ID = "qs303ew";
     private static CensusImporter importer;
+    private static List<SubjectRecipe> subjectRecipes = Collections.singletonList(new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),
+                                        "lsoa", null, null));
 
     Subject cityOfLondon01;
     Subject cityOfLondon02;
@@ -28,7 +31,7 @@ public class CensusImporterTest extends AbstractTest {
 
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         importer = new CensusImporter(TestFactory.DEFAULT_CONFIG);
         mockDownloadUtils(importer);
 
@@ -40,30 +43,34 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void getTimedValueAttributesMTW() throws Exception {
+        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(MTW_ID);
         assertEquals(13, attributes.size());
     }
 
     @Test
     public void getTimedValueAttributesPOP() throws Exception {
+        importer.importDatasource(POP_ID, null, null, null, subjectRecipes, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(POP_ID);
         assertEquals(3, attributes.size());
     }
 
     @Test
     public void getTimedValueAttributesPOD() throws Exception {
+        importer.importDatasource(POD_ID, null, null, null, subjectRecipes, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(POD_ID);
         assertEquals(4, attributes.size());
     }
 
     @Test
     public void getDataUrl() throws Exception {
-        assertEquals("https://www.nomisweb.co.uk/api/v01/dataset/nm_568_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298", importer.getDataUrl(MTW_ID));
+        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
+        assertEquals("https://www.nomisweb.co.uk/api/v01/dataset/nm_568_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298", importer.getDataUrl(MTW_ID, "lsoa"));
     }
 
     @Test
     public void importDatasourceMTW() throws Exception {
-        importer.importDatasource(MTW_ID, null, null, null);
+        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(52, importer.getTimedValueCount());
@@ -101,7 +108,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourcePOP() throws Exception {
-        importer.importDatasource(POP_ID, null, null, null);
+        importer.importDatasource(POP_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(12, importer.getTimedValueCount());
@@ -124,7 +131,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourcePOD() throws Exception {
-        importer.importDatasource(POD_ID, null, null, null);
+        importer.importDatasource(POD_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(16, importer.getTimedValueCount());

@@ -1,0 +1,68 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "provider": "uk.gov.ons",
+        "subjectType": "msoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Birmingham%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "msoa"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "index:land_use_variance",
+        "recipe": "land-use/land-use-variance"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "index:land_use_urban_variance",
+        "recipe": "land-use/land-use-urban-variance"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "index:land_use_co",
+        "recipe": "land-use/land-use-coefficient-of-variation"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_commercial",
+        "recipe": "land-use/fraction-commercial"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_commercial-of-urban",
+        "recipe": "land-use/fraction-commercial-of-urban"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_residential",
+        "recipe": "land-use/fraction-residential"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_residential-of-urban",
+        "recipe": "land-use/fraction-residential-of-urban"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_retail",
+        "recipe": "land-use/fraction-retail"
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.modelling.SingleValueModellingField",
+        "label": "component:fraction_retail-of-urban",
+        "recipe": "land-use/fraction-retail-of-urban"
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
+}

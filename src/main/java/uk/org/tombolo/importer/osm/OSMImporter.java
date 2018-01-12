@@ -56,7 +56,8 @@ public class OSMImporter extends AbstractImporter {
             "europe/great-britain/england/west-yorkshire",
             "europe/great-britain/england/wiltshire",
             "europe/great-britain/england/worcestershire",
-            "europe/great-britain/wales"
+            "europe/great-britain/wales",
+            "europe/great-britain/scotland"
     );
 
 
