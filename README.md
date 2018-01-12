@@ -43,7 +43,7 @@ make sure that you do before you proceed.**
   
 **Install the following** via the link through to their installation page:
 
-- [Java Development Kit (1.8+)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Java Development Kit (1.8.x)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [PostgreSQL (9.4+)](https://www.postgresql.org/)
 - [PostGIS (2.1+)](http://postgis.net/)
 - [Gradle (2.12+)](https://gradle.org/)

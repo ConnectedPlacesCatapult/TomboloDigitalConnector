@@ -14,11 +14,12 @@ import java.util.Properties;
 
 public class DataExportRunner extends AbstractRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
+    public static String executionSpecPath = "";
 
     public static void main(String[] args) throws Exception {
         validateArguments(args);
 
-        String executionSpecPath = args[0];
+        executionSpecPath = args[0];
         String outputFile = args[1];
         String forceImports = args[2];
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
@@ -64,7 +65,13 @@ public class DataExportRunner extends AbstractRunner {
     }
 
     private static void validateSpecification(String executionSpecPath) throws FileNotFoundException {
-        ProcessingReport report = DataExportRecipeValidator.validate(new FileReader(executionSpecPath));
+        File file = new File(executionSpecPath);
+        if (!file.exists()) {
+            log.error("File not found: {}", executionSpecPath);
+            System.exit(1);
+        }
+
+        ProcessingReport report = DataExportRecipeValidator.validate(new FileReader(file));
         if (!report.isSuccess()) {
             DataExportRecipeValidator.display(report);
             System.exit(1);
