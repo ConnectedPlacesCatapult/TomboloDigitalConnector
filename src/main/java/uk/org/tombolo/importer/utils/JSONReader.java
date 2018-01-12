@@ -4,7 +4,6 @@ import javax.json.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -192,6 +191,7 @@ public class JSONReader {
         JsonReader reader = Json.createReader(is);
         JsonValue value = reader.read();
         convertTreeToHashMap(value, EMPTY_KEY);
+        getFlatJsonTree().add(individualSectionOfTree);
         setFlatJsonTree(flatJsonTree);
 
         return getFlatJsonTree();
