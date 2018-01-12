@@ -25,7 +25,7 @@ public class CSVUtils {
     public static void extractAndSaveTimedValues(List<TimedValueExtractor> extractors, Importer importer, File localFile)
             throws IOException, ExtractorException {
 
-        String line = null;
+        String line;
         BufferedReader br = new BufferedReader(new FileReader(localFile));
         List<TimedValue> timedValueBuffer = new ArrayList<>();
         while ((line = br.readLine())!=null) {
@@ -46,6 +46,8 @@ public class CSVUtils {
                     // No reason to panic even if Subject does not exist and no reason to run the rest of the extractors
                     // Keep Calm and Break
                     break;
+                } catch (ExtractorException ee) {
+                    ee.getMessage();
                 }
             }
         }

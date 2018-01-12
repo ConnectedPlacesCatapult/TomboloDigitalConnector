@@ -7,6 +7,7 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.ParsingException;
 
 import java.time.LocalDateTime;
 
@@ -42,9 +43,12 @@ public class TimedValueExtractor {
         Attribute attribute = AttributeUtils.getByProviderAndLabel(provider, attributeLabelExtractor.extract());
         if (attribute == null)
             throw new ExtractorException("Unknown attribute: "+attributeLabelExtractor.extract());
-        LocalDateTime timestamp = TimedValueUtils.parseTimestampString(timestampExtractor.extract());
-        if (timestamp == null)
+        LocalDateTime timestamp;
+        try {
+            timestamp = TimedValueUtils.parseTimestampString(timestampExtractor.extract());
+        } catch (ParsingException e) {
             throw new ExtractorException("Unparsable timestamp: " + timestampExtractor.extract());
+        }
         String valueString = valueExtractor.extract();
         // Parsing out proper numbers
         valueString = valueString.replaceAll("[^\\d]+(-?\\d+\\.?\\d+)[^\\d]+", "$1");
