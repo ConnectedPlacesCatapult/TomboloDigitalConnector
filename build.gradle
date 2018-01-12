@@ -96,12 +96,16 @@ task runExport(dependsOn: ['classes'], type: JavaExec) {
 		systemProperty("databasePassword", databasePassword)
 		systemProperty("environment", "export")
 
-		def argumentsSet = project.hasProperty('dataExportSpecFile') && project.hasProperty('outputFile');
+		def argumentsSet = (project.hasProperty('dataExportSpecFile') || project.hasProperty('dataExportSpec')) && project.hasProperty('outputFile');
 		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+		def requiredOne = project.hasProperty('dataExportSpecFile') && project.hasProperty('dataExportSpec');
+		if (requiredOne) throw new GradleException('From dataExportSpecFile and dataExportSpec only one is required. See the README.')
 		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
 		if (!project.hasProperty('forceImports')) { ext.forceImports = "None" }
+		if (!project.hasProperty('dataExportSpecFile')) { ext.dataExportSpecFile = "None" }
+		if (!project.hasProperty('dataExportSpec')) { ext.dataExportSpec = "None" }
 
-		args(dataExportSpecFile, outputFile, forceImports, clearDatabaseCache)
+		args(dataExportSpecFile, outputFile, forceImports, clearDatabaseCache, dataExportSpec)
 	}
 }
 
