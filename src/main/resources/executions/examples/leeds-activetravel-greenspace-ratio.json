@@ -24,7 +24,7 @@
       {
         "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
         "datasourceId": "OSMGreenspace",
-        "geographyScope" : ["europe/great-britain/england/greater-london"]
+        "geographyScope" : ["europe/great-britain/england/west-yorkshire"]
       },
       {
         "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
