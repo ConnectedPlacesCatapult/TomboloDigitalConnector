@@ -9,7 +9,6 @@ import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.manifestoenvironment.WasteImporter;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 
@@ -26,14 +25,14 @@ import java.util.List;
 /**
  * Created by tbantis on 11/01/2018.
  */
-public class ActivePeopleSurveyWalkImporter extends AbstractImporter {
-    private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/536499/cw0105.ods";
+public class ActivePeopleSurveyCycleImporter extends AbstractImporter {
+    private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/536501/cw0104.ods";
 
-    public ActivePeopleSurveyWalkImporter(Config config) {
+    public ActivePeopleSurveyCycleImporter(Config config) {
         super(config);
         try {
             // Specifying the datasourceId. This will be used by the DC recipe
-            datasourceIds = Arrays.asList(getDatasourceSpec("ActivePeopleWalk").getId());
+            datasourceIds = Arrays.asList(getDatasourceSpec("ActivePeopleCycle").getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,9 +53,9 @@ public class ActivePeopleSurveyWalkImporter extends AbstractImporter {
     public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
         DatasourceSpec datasourceSpec = new DatasourceSpec(
                 ActivePeopleSurveyWalkImporter.class,
-                "ActivePeopleWalk",
-                "Proportion of how often and how long adults walk for (at least 10 minutes) by local authority",
-                "Proportion of how often and how long adults walk for (at least 10 minutes) by local authority",
+                "ActivePeopleCycle",
+                "Proportion of adults who cycle at least once per week",
+                "Proportion of adults who cycle at least once per week",
                 DATASOURCE);
         return datasourceSpec;
     }
@@ -95,7 +94,7 @@ public class ActivePeopleSurveyWalkImporter extends AbstractImporter {
                 String year = "2017";
                 LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
-                Double record = row.getCellByIndex(5).getDoubleValue();
+                Double record = row.getCellByIndex(3).getDoubleValue();
                 System.out.println(record);
 
                 // Here is where we are assigning the values of our .xls file to the attribute fields we
@@ -115,7 +114,7 @@ public class ActivePeopleSurveyWalkImporter extends AbstractImporter {
     public List<Attribute> getTimedValueAttributes(String datasourceID) {
         // Creating a placeholder for our attributes
         List<Attribute> attributes = new ArrayList<>();
-        attributes.add(new Attribute(getProvider(), "walk_x5pw", "percent of people tha walk at least 5 times a week"));
+        attributes.add(new Attribute(getProvider(), "cycle_x1pw", "Proportion of adults who cycle at least once per week"));
 
         return attributes;
     }

@@ -38,6 +38,14 @@
       {
         "importerClass": "uk.org.tombolo.importer.manifestohealth.ONSWellbeingImporter",
         "datasourceId": "ONSWellbeing"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestohealth.ActivePeopleSurveyCycleImporter",
+        "datasourceId": "ActivePeopleCycle"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestohealth.ActivePeopleSurveyWalkImporter",
+        "datasourceId": "ActivePeopleWalk"
       }
     ],
     "fields": [

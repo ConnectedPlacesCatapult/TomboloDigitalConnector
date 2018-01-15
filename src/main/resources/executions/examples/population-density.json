@@ -1,0 +1,517 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Tower Hamlets%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Newham%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Waltham Forest%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Barking and Dagenham%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Redbridge%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Havering%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hackney%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "City of London%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Barnet%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Bexley%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Brent%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Bromley%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Camden%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Croydon%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Ealing%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Enfield%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Greenwich%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hammersmith and Fulham%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Haringey%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Harrow%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Havering%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hillingdon%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hounslow%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Islington%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Kensington and Chelsea%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Kingston upon Thames%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Lambeth%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Lewisham%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Merton%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Newham%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Redbridge%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Richmond upon Thames%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Southwark%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Sutton%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Tower Hamlets%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Waltham Forest%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Wandsworth%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Westminster%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Thurrock%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Slough%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Chiltern%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "South Bucks%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Brentwood%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Epping Forest%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Broxbourne%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hertsmere%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Three Rivers%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Watford%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Welwyn Hatfield%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Dartford%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Sevenoaks%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Elmbridge%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Epsom and Ewell%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Reigate and Banstead%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Runnymede%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Spelthorne%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Tandridge%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Woking%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Westminster%"
+              }
+            },
+            {
+              "subjectType": "lsoa",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Bromley%"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+        "datasourceId": "qs102ew"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+        "label": "Area/Population Density: All usual residents; measures: Value",
+        "attribute": {
+          "provider": "uk.gov.ons",
+          "label": "Area/Population Density: All usual residents"
+        }
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
+}

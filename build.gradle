@@ -59,6 +59,7 @@ dependencies {
 	compile 'de.topobyte:osm4j-geometry:0.0.15'
 	// twitter4j
 	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
+	// Read OpenOffice .ods
 	compile group: 'org.apache.odftoolkit', name: 'simple-odf', version: '0.8.2-incubating'
 
 }
@@ -73,6 +74,7 @@ task runExport(dependsOn: ['classes'], type: JavaExec) {
 	main = 'uk.org.tombolo.DataExportRunner'
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs '-disableassertions'
+	//jvmArgs '-Xmx3g'
 	doFirst {
 		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
 		if (!configured) throw new GradleException('Environment not configured. See the README.')

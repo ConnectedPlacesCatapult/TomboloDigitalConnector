@@ -4,9 +4,66 @@
       {
         "subjectType": "localAuthority",
         "provider": "uk.gov.ons",
-        "matchRule": {
-          "attribute": "label",
-          "pattern": "E090000%"
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Tower Hamlets"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Newham"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Waltham Forest"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Barking and Dagenham"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Redbridge"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Havering"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hackney"
+              }
+            }
+          ]
         }
       }
     ],
@@ -243,9 +300,66 @@
           {
             "subjectType": "localAuthority",
             "provider": "uk.gov.ons",
-            "matchRule": {
-              "attribute": "label",
-              "pattern": "E090000%"
+            "geoMatchRule": {
+              "geoRelation": "within",
+              "subjects": [
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Tower Hamlets"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Newham"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Waltham Forest"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Barking and Dagenham"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Redbridge"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Havering"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Hackney"
+                  }
+                }
+              ]
             }
           }
         ]

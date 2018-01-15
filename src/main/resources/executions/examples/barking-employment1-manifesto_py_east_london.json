@@ -1,0 +1,331 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "localAuthority",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Tower Hamlets"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Newham"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Waltham Forest"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Barking and Dagenham"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Redbridge"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Havering"
+              }
+            },
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "name",
+                "pattern": "Hackney"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "englandGeneralisedBoundaries"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestoemployment.NOMISIncomeImporter",
+        "datasourceId": "NOMISIncome"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestoemployment.ONSBusinessDemographyImporter",
+        "datasourceId": "ONSBusiness"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestoemployment.NOMISJobsDensityImporter",
+        "datasourceId": "NOMISJobs"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestoemployment.NOMISEmploymentImporter",
+        "datasourceId": "NOMISEmployment"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.manifestoemployment.NOMISBenefitsImporter",
+        "datasourceId": "NOMISBenefits"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.CensusImporter",
+        "datasourceId": "qs102ew"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
+        "label": "percentile_percent_increase_field_east_london",
+        "percentileCount": 10,
+        "inverse": true,
+        "valueField": {
+          "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+          "label": "percent_increase_field",
+          "operation": "div",
+          "field1": {
+            "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+            "label": "increase_Annual_pay_median_field",
+            "operation": "sub",
+            "field1": {
+              "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+              "label": "backoff_Annual_pay_median_2017_field",
+              "fields": [
+                {
+                  "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                  "label": "Annual_pay_median_2017_field",
+                  "attribute": {
+                    "provider": "nomisweb.co.uk",
+                    "label": "Annual_pay_median_2017"
+                  }
+                },
+                {
+                  "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+                  "label": "map_Annual_pay_median_2017_field",
+                  "subject": {
+                    "subjectType": "englandGeneralisedBoundaries",
+                    "provider": "uk.gov.ons"
+                  },
+                  "field": {
+                    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+                    "label": "geo_Annual_pay_median_2017_field",
+                    "subject": {
+                      "subjectType": "localAuthority",
+                      "provider": "uk.gov.ons",
+                      "matchRule": {
+                        "attribute": "label",
+                        "pattern": "E090000%"
+                      }
+                    },
+                    "function": "mean",
+                    "field": {
+                      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                      "label": "Annual_pay_median_2017_field",
+                      "attribute": {
+                        "provider": "nomisweb.co.uk",
+                        "label": "Annual_pay_median_2017"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "field2": {
+              "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+              "label": "backoff_Annual_pay_median_2016_field",
+              "fields": [
+                {
+                  "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                  "label": "Annual_pay_median_2016_field",
+                  "attribute": {
+                    "provider": "nomisweb.co.uk",
+                    "label": "Annual_pay_median_2016"
+                  }
+                },
+                {
+                  "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+                  "label": "map_Annual_pay_median_2016_field",
+                  "subject": {
+                    "subjectType": "englandGeneralisedBoundaries",
+                    "provider": "uk.gov.ons"
+                  },
+                  "field": {
+                    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+                    "label": "geo_Annual_pay_median_2016_field",
+                    "subject": {
+                      "subjectType": "localAuthority",
+                      "provider": "uk.gov.ons",
+                      "matchRule": {
+                        "attribute": "label",
+                        "pattern": "E090000%"
+                      }
+                    },
+                    "function": "mean",
+                    "field": {
+                      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                      "label": "Annual_pay_median_2016_field",
+                      "attribute": {
+                        "provider": "nomisweb.co.uk",
+                        "label": "Annual_pay_median_2016"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "field2": {
+            "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
+            "label": "mult_Annual_pay_median_2016_field_x100",
+            "operation": "mul",
+            "field1": {
+              "fieldClass": "uk.org.tombolo.field.aggregation.BackOffField",
+              "label": "backoff_Annual_pay_median_2016_field",
+              "fields": [
+                {
+                  "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                  "label": "Annual_pay_median_2016_field",
+                  "attribute": {
+                    "provider": "nomisweb.co.uk",
+                    "label": "Annual_pay_median_2016"
+                  }
+                },
+                {
+                  "fieldClass": "uk.org.tombolo.field.aggregation.MapToContainingSubjectField",
+                  "label": "map_Annual_pay_median_2016_field",
+                  "subject": {
+                    "subjectType": "englandGeneralisedBoundaries",
+                    "provider": "uk.gov.ons"
+                  },
+                  "field": {
+                    "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+                    "label": "geo_Annual_pay_median_2016_field",
+                    "subject": {
+                      "subjectType": "localAuthority",
+                      "provider": "uk.gov.ons",
+                      "matchRule": {
+                        "attribute": "label",
+                        "pattern": "E090000%"
+                      }
+                    },
+                    "function": "mean",
+                    "field": {
+                      "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+                      "label": "Annual_pay_median_2016_field",
+                      "attribute": {
+                        "provider": "nomisweb.co.uk",
+                        "label": "Annual_pay_median_2016"
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "field2": {
+              "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+              "label": "Constant",
+              "value": 100
+            }
+          }
+        },
+        "normalizationSubjects": [
+          {
+            "subjectType": "localAuthority",
+            "provider": "uk.gov.ons",
+            "geoMatchRule": {
+              "geoRelation": "within",
+              "subjects": [
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Tower Hamlets"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Newham"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Waltham Forest"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Barking and Dagenham"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Redbridge"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Havering"
+                  }
+                },
+                {
+                  "subjectType": "localAuthority",
+                  "provider": "uk.gov.ons",
+                  "matchRule": {
+                    "attribute": "name",
+                    "pattern": "Hackney"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
+}
