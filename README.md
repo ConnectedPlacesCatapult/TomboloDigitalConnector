@@ -250,8 +250,8 @@ When you’ve run this example, you can expect a map that looks like this:
 
   ```bash
   gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
-    -PoutputFile='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+    -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
+    -Poutput='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
   ```
 
 - You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
@@ -336,10 +336,10 @@ We use the Gradle task `runExport` to run exports. The parameters are as follows
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='path/to/spec/file.json' \
-    -PoutputFile='output_file.json' \
-    -PforceImports='com.className'
-    -PclearDatabaseCache=true
+    -Precipe='path/to/spec/file.json' \
+    -Poutput='output_file.json' \
+    -Pforce='com.className'
+    -Pclear=true
 ```
 
 For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic
@@ -347,8 +347,8 @@ in a given borough and outputs the results to the file `reaggregate-traffic-coun
 
 ```bash
 gradle runExport \
-    -PdataExportSpecFile='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
-    -PoutputFile='reaggregate-traffic-count-to-la_output.json'
+    -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
+    -Poutput='reaggregate-traffic-count-to-la_output.json'
 ```
 
 ### Export data catalogue

@@ -28,7 +28,7 @@ public class DataExportRecipeValidator {
     }
 
     public static void display(ProcessingReport report) {
-        String logString = "The specification file contains errors\n\n";
+        String logString = "The recipe file contains errors.\n\n";
 
         for (ProcessingMessage message : report) {
             logString += message.getMessage() + "\n";

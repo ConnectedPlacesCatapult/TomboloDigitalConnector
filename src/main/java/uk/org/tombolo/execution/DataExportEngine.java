@@ -3,7 +3,6 @@ package uk.org.tombolo.execution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.AbstractRunner;
-import uk.org.tombolo.DataExportRunner;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.exporter.Exporter;
@@ -21,9 +20,13 @@ import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class DataExportEngine implements ExecutionEngine {
@@ -38,25 +41,14 @@ public class DataExportEngine implements ExecutionEngine {
 		fieldCache = new FieldCache();
 	}
 
-	public void execute(DataExportRecipe dataExportSpec, Writer writer) throws Exception {
-		execute(dataExportSpec, writer, new ImporterMatcher(""));
-	}
-
-	public void execute(DataExportRecipe dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
-
-		//Check for Valid Providers
-		String vProvider = verifyProvider();
-		if (null != vProvider) {
-			throw new Error(vProvider + " is not recognised as a valid Provider Name");
-		}
-
+	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
-		for (DatasourceRecipe datasourceSpec : dataExportSpec.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceSpec, dataExportSpec.getDataset().getSubjects());
+		for (DatasourceRecipe datasourceRecipe : dataExportRecipe.getDataset().getDatasources()) {
+			importDatasource(forceImports, datasourceRecipe, dataExportRecipe.getDataset().getSubjects());
 		}
 
 		// Generate fields
-		List<FieldRecipe> fieldSpecs = dataExportSpec.getDataset().getFields();
+		List<FieldRecipe> fieldSpecs = dataExportRecipe.getDataset().getFields();
 		List<Field> fields = new ArrayList<>();
 		for (FieldRecipe fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
@@ -64,14 +56,14 @@ public class DataExportEngine implements ExecutionEngine {
 			fields.add(field);
 		}
 
-		prepareFields(fields, dataExportSpec.getDataset().getSubjects(), forceImports);
+		prepareFields(fields, dataExportRecipe.getDataset().getSubjects(), forceImports);
 
 		// Use the new fields method
 		log.info("Exporting ...");
-		List<SubjectRecipe> subjectSpecList = dataExportSpec.getDataset().getSubjects();
-		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporter()).newInstance();
+		List<SubjectRecipe> subjectSpecList = dataExportRecipe.getDataset().getSubjects();
+		Exporter exporter = (Exporter) Class.forName(dataExportRecipe.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
-		exporter.write(writer, subjects, fields, dataExportSpec.getTimeStamp());
+		exporter.write(writer, subjects, fields, dataExportRecipe.getTimeStamp());
 	}
 
 	private void prepareFields(List<Field> fields, List<SubjectRecipe> subjectRecipes, ImporterMatcher forceImports) throws Exception {
@@ -92,18 +84,18 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 
-	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec, List<SubjectRecipe> subjectRecipes) throws Exception {
+	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceRecipe, List<SubjectRecipe> subjectRecipes) throws Exception {
 
-		Importer importer = initialiseImporter(datasourceSpec.getImporterClass(), datasourceSpec.getConfigFile());
+		Importer importer = initialiseImporter(datasourceRecipe.getImporterClass(), datasourceRecipe.getConfigFile());
 		importer.configure(apiKeys);
 		importer.setDownloadUtils(downloadUtils);
 		importer.importDatasource(
-				datasourceSpec.getDatasourceId(),
-				datasourceSpec.getGeographyScope(),
-				datasourceSpec.getTemporalScope(),
-				datasourceSpec.getLocalData(),
+				datasourceRecipe.getDatasourceId(),
+				datasourceRecipe.getGeographyScope(),
+				datasourceRecipe.getTemporalScope(),
+				datasourceRecipe.getLocalData(),
 				subjectRecipes,
-				forceImports.doesMatch(datasourceSpec.getImporterClass())
+				forceImports.doesMatch(datasourceRecipe.getImporterClass())
 		);
 	}
 
@@ -117,19 +109,25 @@ public class DataExportEngine implements ExecutionEngine {
 		return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
 	}
 
-	private String verifyProvider() throws Exception {
+	public String verifyProvider(String recipe, boolean isString) throws Exception {
 		String validProvider = null;
+		JSONReader reader;
+		ArrayList<String> tags = new ArrayList<>(Arrays.asList("importerClass", "provider"));
 
-		File specificationFile = new File(DataExportRunner.executionSpecPath);
-		if (!specificationFile.exists()) return validProvider;
-		JSONReader reader = new JSONReader(specificationFile, new ArrayList<>(Arrays.asList("importerClass", "provider")));
+		if (!isString) {
+			File recipeFile = new File(recipe);
+			if (!recipeFile.exists()) return validProvider;
+			reader = new JSONReader(recipeFile, tags);
+		} else {
+			reader = new JSONReader(new ByteArrayInputStream(recipe.getBytes()), tags);
+		}
+
 		reader.getData();
 		List<String> importers = reader.getTagValueFromAllSections("importerClass").stream().distinct().collect(Collectors.toList());
 		List<String> providers = reader.getTagValueFromAllSections("provider").stream().distinct().collect(Collectors.toList());
 
-		mainLoop:
 		for (String importer : importers) {
-			if (providers.isEmpty()) break mainLoop;
+			if (providers.isEmpty()) break;
 
 			for (int i = 0; i < providers.size(); i++) {
 				Importer imp = initialiseImporter(importer, "");
