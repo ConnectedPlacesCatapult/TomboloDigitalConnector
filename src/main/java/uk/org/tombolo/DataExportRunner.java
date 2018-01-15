@@ -67,20 +67,7 @@ public class DataExportRunner extends AbstractRunner {
 
         // Perform the correlation analysis
         if (!correlation.equals("None")) {
-            List<FieldRecipe> fields = dataExportRecipe.getDataset().getFields();
-
-            // Read in data file
-            RealMatrix matrix;
-            if (dataExportRecipe.getExporter().equals(GeoJsonExporter.class.getCanonicalName())){
-                matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(output, fields);
-            }else if(dataExportRecipe.getExporter().equals(CSVExporter.class.getCanonicalName())){
-                matrix = CorrelationAnalysisEngine.readCSVDataExport(output, fields);
-            }else {
-                throw new Error("Unknown exporter class for intermediate data.");
-            }
-
-            // Calculate and output correlations
-            CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fields, correlation);
+            runner.runCorrelation(dataExportRecipe, output, correlation);
         }
     }
 
@@ -119,13 +106,14 @@ public class DataExportRunner extends AbstractRunner {
 
     @Override
     protected void validateArguments(String[] args) {
-        if (args.length != 5) {
+        if (args.length != 6) {
             log.info("Use: {} {} {} {} {}",
                     "s",
                     "recipe",
                     "output",
-                    "clearDatabaseCache",
-                    "forceImports (className:datasourceId,...)"
+                    "correlation",
+                    "force (className:datasourceId,...)",
+                    "clear"
             );
             System.exit(1);
         }

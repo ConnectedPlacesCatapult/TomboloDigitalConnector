@@ -224,6 +224,7 @@ task runExport(dependsOn: ['classes', runExportHelp], type: JavaExec) {
         if (!project.hasProperty('clear')) { ext.clear = false }
         if (!project.hasProperty('force')) { ext.force = "None" }
         if (!project.hasProperty('correlation')) { ext.correlation = "None" }
+        if (project.hasProperty('s')) { ext.s = true }
 
         args(s, recipe, output, correlation, force, clear)
     }

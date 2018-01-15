@@ -109,6 +109,16 @@ public class DataExportEngine implements ExecutionEngine {
 		return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
 	}
 
+	/**
+	 * Checks if the providers specified in the recipe are valid.
+	 * This implementation checks only the visible providers for the specified recipe not the ones in the ones in the
+	 * modeling fields if any present.
+	 *
+	 * @param recipe recipe
+	 * @param isString boolean indication if the recipe is a json string or filename
+	 * @return
+	 * @throws Exception
+	 */
 	public String verifyProvider(String recipe, boolean isString) throws Exception {
 		String validProvider = null;
 		JSONReader reader;
