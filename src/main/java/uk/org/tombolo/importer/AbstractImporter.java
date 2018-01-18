@@ -34,6 +34,8 @@ public abstract class AbstractImporter implements Importer {
 	protected Properties properties = new Properties();
 	protected DownloadUtils downloadUtils;
 
+	public AbstractImporter() {}
+
 	public AbstractImporter(Config config) {
 		datasourceIds = Collections.emptyList();
 		geographyLabels = Collections.singletonList(DEFAULT_GEOGRAPHY);
