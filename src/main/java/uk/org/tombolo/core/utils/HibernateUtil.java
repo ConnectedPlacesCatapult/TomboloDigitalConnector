@@ -42,30 +42,20 @@ public class HibernateUtil {
             settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/tombolo");
             settings.put(Environment.USER, "tombolo");
             settings.put(Environment.PASS, "tombolo");
-            settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect");
+            settings.put(Environment.DIALECT, "org.hibernate.spatial.dialect.postgis.PostgisDialect");
             
             registryBuilder.applySettings(settings);
-            // registryBuilder.loadProperties(new File("/Users/hemanshu/Desktop/UptodateProject/TomboloDigitalConnector/src/main/resources/hibernate.cfg.xml"));
             registry = registryBuilder.build();
             MetadataSources sources = new MetadataSources(registry)
-            .addAnnotatedClass(uk.org.tombolo.core.Provider.class);
+            .addAnnotatedClass(uk.org.tombolo.core.Provider.class)
+            .addAnnotatedClass(uk.org.tombolo.core.Attribute.class)
+            .addAnnotatedClass(uk.org.tombolo.core.Subject.class)
+            .addAnnotatedClass(uk.org.tombolo.core.SubjectType.class)
+            .addAnnotatedClass(uk.org.tombolo.core.FixedValue.class)
+            .addAnnotatedClass(uk.org.tombolo.core.TimedValue.class);
+
             Metadata metadata = sources.getMetadataBuilder().build();
             factory = metadata.getSessionFactoryBuilder().build();
-
-
-            // Configuration cfg = new Configuration();
-            // cfg.addClass(uk.org.tombolo.core.Provider.class);
-            // cfg.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-            // cfg.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/tombolo");
-            // cfg.setProperty("hibernate.connection.username", "tombolo");
-            // cfg.setProperty("hibernate.connection.password", "tombolo");
-            // cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
-            // StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
-            // registryBuilder.applySettings(cfg.getProperties()).build();
-            // registry = registryBuilder.build();
-            // MetadataSources sources = new MetadataSources(registry);
-            // Metadata metadata = sources.getMetadataBuilder().build();
-            // factory = metadata.getSessionFactoryBuilder().build();
             
         } catch (Exception ex) {
             throw new ServiceConfigurationError("Failed to create SessionFactory", ex);

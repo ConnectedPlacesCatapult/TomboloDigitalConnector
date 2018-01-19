@@ -12,6 +12,5 @@ public class Py4jServer {
         server = new GatewayServer(new PythonImporter());
         server.start();
         log.info("Server has started!!!!");
-        // System.out.println("Server has started!!!!");
     }
 }
