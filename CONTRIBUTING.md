@@ -26,7 +26,7 @@ If you are new to github you might want to read more about [issues](https://help
 and [pull requests](https://help.github.com/articles/about-pull-requests/). 
 To contribute to the project follow these steps:
 - [Fork the repository](https://help.github.com/articles/fork-a-repo/).
-- [Choose the issue]((https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22)) you want to start 
+- [Choose the issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) you want to start
 working on, change its tag to `in progress` and tag a project maintainer to inform about it.
 - Use the Github issue to discuss on the requirements, ask for more information, update on the progress or upload 
 images related to the issue.
@@ -69,7 +69,7 @@ Wercker CLI is configured to run tests on GitHub, so when you open a PR the test
  next to the build.
 
 To run the test suite locally, use `gradle test` from the project root. If you use IntelliJ JUnit test runner, find the 
-configuration [here](README.md#Run-tests).
+configuration [here](README.md#run-tests).
 
 ## Conventions
 We don't like to impose strict code conventions, but we must think about the people that will read and eventually 
@@ -98,6 +98,6 @@ change it in the future. Try to follow as much as possible the
   - Package names should be all lowercase, no spaces and be descriptive of what they contain.
   - Packages should follow the url format (`tombolo.org.uk` => `uk.org.tombolo`).
   - Packages should be used to "group" similar objects together, their names should guide where a new class should be 
-  places upon creation.
+  placed upon creation.
   - For importers: create a new package for each provider, both for source and test.
   - For fields: create a new package to organise a new type of field or use existing ones accordingly.

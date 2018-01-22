@@ -155,7 +155,7 @@ chmod +x create_db.sh
 
 *For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
 
-### Run tests 
+### Run tests
 
 A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
 everything went fine.
@@ -302,7 +302,7 @@ Our goal is for someone to get back to you within 24 hours.**
 
 -  [Learn how to build your own recipe](documentation/Recipe-Language.md)
 
-### `Run tests`
+### Run tests
 
 ```bash
 gradle test
