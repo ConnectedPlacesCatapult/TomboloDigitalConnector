@@ -33,6 +33,7 @@ For further information see the [documentation](documentation/Home.md).
 ## Contributing
 
 Looking to get involved? Have a look at the [Open Source Community milestone](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) where we have selected *low hanging fruit* for you to easily get involved and contribute.
+Read our [Guide to contribution](CONTRIBUTING.md) for details.
 
 ## Requirements
 
@@ -301,7 +302,7 @@ Our goal is for someone to get back to you within 24 hours.**
 
 -  [Learn how to build your own recipe](documentation/Recipe-Language.md)
 
-### Run tests
+### `Run tests`
 
 ```bash
 gradle test
