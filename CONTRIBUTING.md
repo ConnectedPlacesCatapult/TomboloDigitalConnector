@@ -13,13 +13,12 @@ milestone contains issues we think are interesting for you to work on. You can f
 [`help wanted`](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) 
 tag. Feel free to check the other milestones in case you find something that excites you more.
 If none of the issues reflects your problem/feature create a new one following the 
-[issue template](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/.github/ISSUE_TEMPLATE.md).
+[issue template](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues/new).
 Include screenshots and error log if available. 
 
 ## In progress
-Chosen the issue you want to work on, let us know by tagging one of the project maintainers: *@thanosbnt*, 
-*@sassalley*, *@lorenaqendro*, *@arya-hemanshu* and change the issue tag from `help wanted` to `in progress`. Regular
- update on its status is much appreciated, so that everyone knows its proceeding and eventually help.
+Once you have started to work on an issue, let us know by putting in a comment and tagging one of the project maintainers:`*@thanosbnt*`, `*@sassalley*`, `*@lorenaqendro*`, `*@arya-hemanshu*`. Regular updates on the status will be useful
+ to the team, and will allow us to not only provide support but also to understand the progress.
 
 ## Choosing an issue and start contributing
 If you are new to github you might want to read more about [issues](https://help.github.com/articles/about-issues/)
@@ -27,10 +26,10 @@ and [pull requests](https://help.github.com/articles/about-pull-requests/).
 To contribute to the project follow these steps:
 - [Fork the repository](https://help.github.com/articles/fork-a-repo/).
 - [Choose the issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) you want to start
-working on, change its tag to `in progress` and tag a project maintainer to inform about it.
+working on and tag a project maintainer to inform about it.
 - Use the Github issue to discuss on the requirements, ask for more information, update on the progress or upload 
 images related to the issue.
-- Create a pull request when you feel you have addressed the issue.
+- Create a [pull request](https://help.github.com/articles/about-pull-requests/) when you feel you have addressed the issue.
 
 ## Submitting a Pull Request (PR)
 When you are happy with your solution you can create a PR so we can review your contribution. Before submitting 
@@ -45,13 +44,13 @@ make sure that:
   ```
 - Run all the tests locally in your IDE or via `gradle test`.
 - Check the Wercker CLI pipeline succeeded with your last changes.
-- You have merged the last version of master into your branch.
+- You have merged the last version of `master` into your branch.
 
 Now you are ready to open a PR by following this considerations:
 - Include a description of your changes and approach taken, if many create a list of changes.
 - Reference the issue number you are addressing.
 - Keep it brief and clear. We won't complain about short PRs. Promise! ;)
-- Assign it for a review to a project owner.
+- Tag a project maintainer to inform about it. The project maintainers are: `*@lorenaqendro*`, `*@arya-hemanshu*`, `*@thanosbnt*`, `*@sassalley*`. We will assign the issue for the appropriate reviewer.
 
 ## Unit tesing
 We would like to make sure that the Digital Connector works properly and if any bugs are introduced figure it out as 
