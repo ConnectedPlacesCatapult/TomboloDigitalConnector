@@ -52,7 +52,9 @@ public class DataExportEngine implements ExecutionEngine {
 
 		// Import datasources that are in the global dataset specification
 		for (DatasourceRecipe datasourceSpec : dataExportSpec.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceSpec, dataExportSpec.getDataset().getSubjects());
+			if (!datasourceSpec.getImporterClass().isEmpty()) {
+				importDatasource(forceImports, datasourceSpec, dataExportSpec.getDataset().getSubjects());
+			}
 		}
 
 		// Generate fields

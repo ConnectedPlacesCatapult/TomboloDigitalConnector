@@ -47,11 +47,27 @@ public class PythonImporter extends AbstractImporter {
 
     @Override
     public void saveAndClearTimedValueBuffer(List<TimedValue> timedValueBuffer) {
+        List<Subject> subjects = new ArrayList<>();
+        List<Attribute> attributes = new ArrayList<>();
+        timedValueBuffer.forEach(var -> {
+            subjects.add(var.getId().getSubject());
+            attributes.add(var.getId().getAttribute());
+        });
+        saveAndClearSubjectBuffer(subjects);
+        saveAttributes(attributes);
         super.saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     @Override
     public void saveAndClearFixedValueBuffer(List<FixedValue> fixedValueBuffer) {
+        List<Subject> subjects = new ArrayList<>();
+        List<Attribute> attributes = new ArrayList<>();
+        fixedValueBuffer.forEach(var -> {
+            subjects.add(var.getId().getSubject());
+            attributes.add(var.getId().getAttribute());
+        });
+        saveAndClearSubjectBuffer(subjects);
+        saveAttributes(attributes);
         super.saveAndClearFixedValueBuffer(fixedValueBuffer);
     }
 
