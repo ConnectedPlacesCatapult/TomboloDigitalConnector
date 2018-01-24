@@ -13,6 +13,7 @@ import uk.org.tombolo.recipe.SubjectRecipe.SubjectAttributeMatchRule;
 
 import javax.persistence.Parameter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -135,11 +136,13 @@ public class SubjectUtils {
 
 		// Add Geo Match Rule if exists
 		if (null != subjectRecipe.getGeoMatchRule()){
-			if (subjectRecipe.getGeoMatchRule().geoRelation == SubjectRecipe.SubjectGeoMatchRule.GeoRelation.within){
-				hqlQuery += " and within(shape, :geom) = true";
+			List<SubjectRecipe.SubjectGeoMatchRule.GeoRelation> geoRel = new ArrayList<>();
+			Collections.addAll(geoRel, SubjectRecipe.SubjectGeoMatchRule.GeoRelation.values());
+			if (geoRel.contains(subjectRecipe.getGeoMatchRule().geoRelation)){
+				hqlQuery += " and " + subjectRecipe.getGeoMatchRule().geoRelation.name() + "(shape, :geom) = true";
 			}else{
 				throw new IllegalArgumentException(String.format(
-						"SubjectGeoMatchRule attribute is not a valid type (is %s, can only be within)",
+						"SubjectGeoMatchRule attribute is not a valid type",
 						subjectRecipe.getGeoMatchRule().geoRelation.name()));
 			}
 		}
