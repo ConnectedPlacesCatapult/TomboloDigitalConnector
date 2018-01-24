@@ -10,10 +10,7 @@ import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
@@ -26,26 +23,27 @@ import java.util.stream.Collectors;
  * Get a list of datasources for an importer
  */
 public class CatalogueExportRunner extends AbstractRunner {
-    static Logger log = LoggerFactory.getLogger(CatalogueExportRunner.class);
+    private static final Logger log = LoggerFactory.getLogger(CatalogueExportRunner.class);
+    private static final CatalogueExportRunner runner = new CatalogueExportRunner();
 
     public static void main(String[] args) throws Exception {
-        validateArguments(args);
-        CatalogueExportRunner exportRunner = new CatalogueExportRunner();
-        JsonWriter writer = new JsonWriter(exportRunner.getOutputWriter(args[0]));
-        List<Class<? extends Importer>> importers = exportRunner.getImporterClasses();
+        runner.validateArguments(args);
+
+        JsonWriter writer = new JsonWriter(runner.getOutputWriter(args[0]));
+        List<Class<? extends Importer>> importers = runner.getImporterClasses();
 
         writer.beginArray();
 
         for (Class<? extends Importer> i : importers) {
 
             if (!i.getCanonicalName().equals("uk.org.tombolo.importer.generalcsv.GeneralCSVImporter")) {
-                Importer importer = exportRunner.getImporter(i);
+                Importer importer = runner.getImporter(i);
 
-                List<String> datasources = exportRunner.getDatasourceIds(importer);
+                List<String> datasources = runner.getDatasourceIds(importer);
 
                 for (String d : datasources) {
-                    if (datasources.size() > 0) importer = exportRunner.getImporter(i);
-                    Datasource datasource = exportRunner.getDatasource(d, importer);
+                    if (datasources.size() > 0) importer = runner.getImporter(i);
+                    Datasource datasource = runner.getDatasource(d, importer);
 
                     if (null != datasource.getDatasourceSpec()) datasource.writeJSON(writer);
                 }
@@ -93,20 +91,10 @@ public class CatalogueExportRunner extends AbstractRunner {
         return importer.getDatasource(dataSourceId);
     }
 
-    private static void validateArguments(String[] args) {
+    protected void validateArguments(String[] args) {
         if (args.length != 2){
             log.error("Must provide filename to export to");
             System.exit(1);
-        }
-    }
-
-    private Writer getOutputWriter(String path) {
-        try {
-            return new FileWriter(path);
-        } catch (IOException e) {
-            log.error("Error initialising output writer: %s", path);
-            System.exit(1);
-            return null;
         }
     }
 }

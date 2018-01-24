@@ -1,16 +1,15 @@
 package uk.org.tombolo;
 
+import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.org.tombolo.recipe.DataExportRecipe;
-import uk.org.tombolo.recipe.RecipeDeserializer;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.DataExportRecipeValidator;
+import uk.org.tombolo.recipe.RecipeDeserializer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -25,7 +24,7 @@ public abstract class AbstractRunner {
     private static final String SYSTEM_PROPERTIES_FILENAME = "gradle.properties";
     private static final String FILE_DOWNLOAD_CACHE = "fileDownloadCache";
 
-    protected static Properties loadApiKeys() throws ConfigurationException {
+    protected Properties loadApiKeys() throws ConfigurationException {
         return loadProperties(API_KEYS_PROPERTY_NAME, API_KEYS_FILENAME);
     }
 
@@ -34,7 +33,7 @@ public abstract class AbstractRunner {
         try {
             properties = new Properties();
             properties.load(new FileReader(propertyFilename));
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             throw new ConfigurationException("Missing " + propertyName + " file: " + propertyFilename, e);
         } catch (IOException e) {
             throw new ConfigurationException("Could not load " + propertyName + " from file: " + propertyFilename, e);
@@ -42,25 +41,45 @@ public abstract class AbstractRunner {
         return properties;
     }
 
-    protected static DataExportRecipe getSpecification(String specificationPath) throws IOException {
-        File file = new File(specificationPath);
-        if (!file.exists()){
-            log.error("File not found: {}", specificationPath);
+    protected DataExportRecipe getRecipe(String recipe, boolean isString) throws IOException {
+        validateRecipe(recipe, isString);
+
+        if (isString) {
+            return RecipeDeserializer.fromJsonString(recipe, DataExportRecipe.class);
+        }
+        File file = new File(recipe);
+        if (!file.exists()) {
+            log.error("Could not find recipe file: {}", recipe);
             System.exit(1);
         }
         return RecipeDeserializer.fromJsonFile(file, DataExportRecipe.class);
     }
 
-    protected static DataExportRecipe getSpecificationFromString(String specification) throws IOException {
-        return RecipeDeserializer.fromJsonString(specification, DataExportRecipe.class);
-    }
-
-    protected static DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
+    protected DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
         Properties properties = loadProperties(SYSTEM_PROPERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
         log.info("Setting file download cache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));
         DownloadUtils downloadUtils = new DownloadUtils(DownloadUtils.DEFAULT_DATA_CACHE_ROOT);
         if (properties.getProperty(FILE_DOWNLOAD_CACHE) != null)
             downloadUtils = new DownloadUtils(properties.getProperty(FILE_DOWNLOAD_CACHE));
         return downloadUtils;
+    }
+
+    private void validateRecipe(String recipe, boolean isString) throws FileNotFoundException {
+        ProcessingReport report = DataExportRecipeValidator.validate(!isString? new FileReader(recipe) :
+                new BufferedReader(new InputStreamReader(new ByteArrayInputStream(recipe.getBytes()))));
+        if (!report.isSuccess()) {
+            DataExportRecipeValidator.display(report);
+            System.exit(1);
+        }
+    }
+
+    protected Writer getOutputWriter(String path) {
+        try {
+            return new FileWriter(path);
+        } catch (IOException e) {
+            log.error("Error initialising output writer: {}", path);
+            System.exit(1);
+            return null;
+        }
     }
 }
