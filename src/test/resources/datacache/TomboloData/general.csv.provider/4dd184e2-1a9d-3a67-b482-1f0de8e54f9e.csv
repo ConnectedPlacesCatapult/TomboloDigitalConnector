@@ -1,0 +1,3 @@
+LSOA,lat(north),long(east),attribute1,attribute2,attribute3,attribute4,attribute5,attribute6
+E01000001,53.482330322265625,-2.8906469345092773,value01,value10,value11,value100,value101,value110
+E01000002,185870,530600,value1,value2,value3,value4,value5,value6
