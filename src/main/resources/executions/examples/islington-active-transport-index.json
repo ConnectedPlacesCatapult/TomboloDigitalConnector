@@ -18,17 +18,17 @@
       {
         "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
         "datasourceId": "OSMCycling",
-        "geographyScope" : ["europe/great-britain/england/greater-london"]
+        "geographyScope": ["europe/great-britain/england/greater-london"]
       },
       {
         "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
         "datasourceId": "OSMHighways",
-        "geographyScope" : ["europe/great-britain/england/greater-london"]
+        "geographyScope": ["europe/great-britain/england/greater-london"]
       },
       {
-        "importerClass" : "uk.org.tombolo.importer.dft.TrafficCountImporter",
-        "datasourceId" : "trafficCounts",
-        "geographyScope" : ["London"]
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": ["London"]
       }
     ],
     "fields": [
@@ -54,5 +54,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

@@ -2,10 +2,10 @@
 
 As a demonstrative example of how Tombolo Digital Connector works we present a story of a fictional user called Thomas, who works for a London based active transport lobby. Thomas wants to visualise the relation between bicycle friendly boroughs in London and air quality. He browses the Tombolo Digital Connector catalogue of importable data and finds traffic counts from Department for Transport and air quality measurements from the London Air Quality Network. In order to combine the two datasets, he writes a Tombolo data export recipe (also known as model recipe) that returns a GeoJson file with the following output:
 
-* the geographic shape of each London borough, 
-* the name of the borough,
-* the cycle traffic in the borough as a fraction of car traffic,
-* and the average nitrogen dioxide concentration as a proxy for air quality.
+- the geographic shape of each London borough, 
+- the name of the borough,
+- the cycle traffic in the borough as a fraction of car traffic,
+- and the average nitrogen dioxide concentration as a proxy for air quality.
 
 After exporting the data, Thomas opens the file in QGIS and even if he is not a GIS expert he can create simple heat-maps if he is given the right GeoJson data.
 
@@ -76,7 +76,6 @@ Thomas will now specify the datasources as follows:
 ```
 
 The first datasource refers to **local authorities** from the **Output Area Importer** from **ONS**. The second datasource refers to **traffic counts** from the Department for Transport (**DfT**). Since the Department for Transport provides data-files for each region separately, Thomas can specify that he is only interested in traffic counts within **London**. The third datasource refers to **air quality** data from the London Air Quality Network (**LAQN**) from King's College London.
-
 
 For more information about specifying data-sources see the [data-source section of the recipe language](Recipe-Language.md#datasource-recipe).
 
@@ -156,10 +155,10 @@ The latter field is slightly more complicated and outputs the bicycle count from
 
 Now that Thomas has put his model recipe together, the next step in the process is to run the Tombolo Digital Connector on the recipe. We use the Gradle build tool to do that from the command line.
 
-```
+```bash
 gradle runExport \
-    -PdataExportRecipe='path/to/recipe/file.json' \
-    -PoutputFile='path/to/output/file.json'
+    -Precipe='path/to/recipe/file.json' \
+    -Poutput='path/to/output/file.json'
 ```
 
 The command takes two parameters, one pointing to the model recipe that was built in the previous step and one pointing to the output file to be generated.
@@ -214,8 +213,8 @@ Having exported the data, Thomas can open the output file in QGIS and export sim
 
 ![London Bicycle Fraction](https://user-images.githubusercontent.com/14051876/33561209-f8a01814-d909-11e7-87ba-1483ac3c5e9a.png))
 
-_Heat map of bicycle traffic counts as a fraction of car traffic counts._
+*Heat map of bicycle traffic counts as a fraction of car traffic counts.*
 
 ![London Nitrogen Dioxide](https://user-images.githubusercontent.com/14051876/33561210-f8bdac4e-d909-11e7-932e-b21504abdb40.png)
 
-_Heat map of annual nitrogen dioxide levels._
+*Heat map of annual nitrogen dioxide levels.*

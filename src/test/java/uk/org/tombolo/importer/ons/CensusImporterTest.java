@@ -73,7 +73,7 @@ public class CensusImporterTest extends AbstractTest {
         importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
-        assertEquals(52, importer.getTimedValueCount());
+        assertEquals(78, importer.getTimedValueCount());
 
         Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
                 "Method of Travel to Work: All categories: Method of travel to work");
@@ -111,7 +111,7 @@ public class CensusImporterTest extends AbstractTest {
         importer.importDatasource(POP_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
-        assertEquals(12, importer.getTimedValueCount());
+        assertEquals(18, importer.getTimedValueCount());
 
         Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
                 "Area/Population Density: Density (number of persons per hectare)");
@@ -134,7 +134,7 @@ public class CensusImporterTest extends AbstractTest {
         importer.importDatasource(POD_ID, null, null, null, subjectRecipes, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
-        assertEquals(16, importer.getTimedValueCount());
+        assertEquals(24, importer.getTimedValueCount());
 
         Attribute attribute01 = AttributeUtils.getByProviderAndLabel(importer.getProvider(),
                 "Disability: Day-to-day activities limited a little");

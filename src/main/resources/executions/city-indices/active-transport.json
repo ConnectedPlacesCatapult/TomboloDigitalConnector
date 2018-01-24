@@ -3,7 +3,11 @@
     "subjects": [
       {
         "provider": "uk.gov.ons",
-        "subjectType": "lsoa"
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Manchester%"
+        }
       }
     ],
     "datasources": [

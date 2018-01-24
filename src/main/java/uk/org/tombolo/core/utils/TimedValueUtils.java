@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.TimedValue;
+import uk.org.tombolo.importer.ParsingException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -128,7 +129,7 @@ public class TimedValueUtils {
 	 * @param timestampString
 	 * @return
 	 */
-	public static LocalDateTime parseTimestampString(String timestampString){
+	public static LocalDateTime parseTimestampString(String timestampString) throws ParsingException {
 		// Check if well formed to the second
 		if (timestampString.matches("^\\d\\d\\d\\d-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d$"))
 			return LocalDateTime.parse(timestampString);
@@ -147,19 +148,34 @@ public class TimedValueUtils {
 
 		// Check if Mon-yr format that is occasionally used by ONS
 		if (timestampString.matches("^\\w\\w\\w-\\d\\d")) {
-
-			DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-					.appendPattern("MMM-yy")
-					.parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
-					.parseDefaulting(ChronoField.HOUR_OF_DAY, 23)
-					.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 59)
-					.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
-					.toFormatter();
-			return LocalDateTime.parse(timestampString, formatter)
-					.with(TemporalAdjusters.lastDayOfMonth());
+			return parse(timestampString,"MMM-yy");
+			// Check if "Month year" format that is occasionally used by ONS claimants
+		} else if (timestampString.matches("(^|\\s)" +
+				"(January|February|March|April|May|June|July|August|September|October|November|December)" +
+				"\\s(19|20)\\d\\d?")) {
+			return parse(timestampString, "MMMM yyyy");
 		}
 
 		// Neither well formed to the second nor year
-		return null;
+		throw new ParsingException("Unparsable timestamp: " + timestampString);
+	}
+
+	/**
+	 * Parses the timestamp string given the pattern.
+	 *
+	 * @param timestampString input timestamp string
+	 * @param pattern time pattern
+	 * @return last day of the month given in the string
+	 */
+	private static LocalDateTime parse(String timestampString, String pattern) {
+		DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+				.appendPattern(pattern)
+				.parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+				.parseDefaulting(ChronoField.HOUR_OF_DAY, 23)
+				.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 59)
+				.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
+				.toFormatter();
+		return LocalDateTime.parse(timestampString, formatter)
+				.with(TemporalAdjusters.lastDayOfMonth());
 	}
 }

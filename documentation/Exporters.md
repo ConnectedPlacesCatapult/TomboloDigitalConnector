@@ -5,7 +5,6 @@ Since the main goal of the Tombolo Digital Connector is to connect urban data an
 - **GeoJson** is one of the most common data format for geographic data. It allows for easy integration between the Tombolo Digital Connector and Geographic Information Systems such as QGIS.
 - **CSV** is one of the most common data format for relational data. It allows for easy integration between the Connector and various data processing and analytics tools.
 
-
 The workflow of exporting data is core functionality of the current state of the Tombolo Digital Connector. The user creates a recipe file where they describe the output data they would like to get. The recipe file consists of four parts:
 
 - **Subjects:** The user can specify the set of subjects for which data and models are to be exported. As an example, subjects can be all spatial network segments for a specific geographic area, all LSOAs within a certain geographic area, etc. 

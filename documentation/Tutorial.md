@@ -2,20 +2,20 @@
 
 In this page we will give a tutorial of how to use the Tombolo Digital Connector.
 
-# Install system
+## Install system
 First of all you should follow the 
 [Quick Start](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector#quick-start) 
 guide to get the digital connector up and running by installing requirements, configuring the project and setting up both the main and test databases.
 
-# Export data
+## Export data
 Having installed the system, it is time to run a data export recipe. In the 
 [Use Case on Cycling and Air Quality](Use-Case-on-Cycling-and-Air-Quality.md) 
 we described an example recipe where we output, for every borough in London, information about NO2 concentration and the ratio between the bicycle traffic and car traffic ([see recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json)). To run the export recipe, run the following command from the root directory of the Tombolo Digital Connector:
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-output.json'
+  -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' \
+  -Poutput='london-cycle-traffic-air-quality-output.json'
 ```
 
 As mentioned in the [use case description](Use-Case-on-Cycling-and-Air-Quality.md), this will give you a GeoJson file 
@@ -23,7 +23,7 @@ with the cycling and air quality indicators for each of the 33 London boroughs. 
 
 ![London borough cycle to car count ratio](https://user-images.githubusercontent.com/14051876/33561213-f9071faa-d909-11e7-98df-a8edae0c3a6a.png) 
 
-# Change granularity
+## Change granularity
 Suppose you want to get the cycling information at a finer granularity, say at [LSOA](Glossary#lsoa) level. Copy the data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa.json`.
 
 Change the subjects clause from outputting all 33 London boroughs to outputting all LSOA geographies that fall inside the 33 London boroughs. I.e., change:
@@ -77,8 +77,8 @@ What this does is that it tells the Digital Connector to output all LSOA geograp
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-output.json'
 ```
 
 When looking at the output from the Digital Connector you will notice that you get very many warnings. This is because that there are very many LSOAs that do not have either a traffic counter in them or an air quality sensor, and hence there is no data to output. Yet, the Digital Connector does return a GeoJson file with the LSOA geographies. If you, again, use QGIS to create a quantile-based colouring of the LSOAs, you should get an image that looks like the one below. 
@@ -89,7 +89,7 @@ If you compare this image with the one from the first export you can see that it
 
 Before we dive into back-off fields, it is better to introduce the the notion of modelling-fields.
 
-# Modelling Fields
+## Modelling Fields
 In the running example we have been using a combination of geographic aggregation fields and arithmetic fields to get the aggregated NO2 value for an area and the aggregated bicycle-to-car ratio for an area. These data aggregations and transformations are fairly basic and likely to be useful in city data analysis projects beyond this example. Hence we have wrapped them up as model recipes that can be used across different jobs without copying and pasting the entire code.
 
 In order to demonstrate this, copy your lsoa data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa-modelling.json`.
@@ -163,13 +163,13 @@ This recipe is quite simpler than before ([see full recipe](https://github.com/F
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa-modelling.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa-modelling.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
 ```
 
 If you look at the resulting file in QGIS, you will see that you get the same output as before but by utilising more simplified and re-usable code.
 
-# Back-off Fields
+## Back-off Fields
 Now that we have simplified the export recipe, we can go back to our intention to use back-off fields to overcome the sparseness of traffic counters and air quality sensors. A Back-off field takes as input an array of fields. It will try to calculate a value for each of the fields in order, and when it finds one it will output that one.
 
 In order to demonstrate this, copy your modelling data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa-backoff.json`.
@@ -225,8 +225,8 @@ The back-off field for the ratio of bicycles to cars is exactly the same, only w
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa-backoff.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa-backoff.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
 ```
 
 Using QGIS to visualise the back-off model in a similar manner as done above, we get a much less sparse data output as shown in the image below.

@@ -1,9 +1,9 @@
 # Frequently Asked Questions
 
-* [General](#general)
-* [Data](#data)
-* [Fields](#fields)
-* [Model recipes](#model-recipes)
+- [General](#general)
+- [Data](#data)
+- [Fields](#fields)
+- [Model recipes](#model-recipes)
 
 ## General
 

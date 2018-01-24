@@ -7,160 +7,226 @@ version = '0.1.0'
 
 repositories {
     maven { name = "osgeo"; url = "http://download.osgeo.org/webdav/geotools/" }
-	maven { name = "osm4j"; url = "http://mvn.topobyte.de" }
+    maven { name = "osm4j"; url = "http://mvn.topobyte.de" }
     mavenCentral()
 }
 
 dependencies {
-	// Geo Tools
-	compile group:'org.geotools',			name: 'gt-referencing', 	version: '14.0'
-	compile group:'org.geotools',			name: 'gt-geojson', 		version: '14.0'
-	compile group:'org.geotools',			name: 'gt-shapefile', 		version: '14.0'
-	compile group:'org.geotools',			name: 'gt-epsg-extension', 	version: '14.0'
-	compile group:'org.geotools',			name: 'gt-epsg-hsql',		version: '14.0'
-	compile group:'org.geotools.jdbc',		name: 'gt-jdbc-postgis',	version: '14.0'
-	compile group:'org.geotools',			name: 'gt-geojsondatastore',	version: '15.0'
+    // Geo Tools
+    compile group:'org.geotools',            name: 'gt-referencing',     version: '14.0'
+    compile group:'org.geotools',            name: 'gt-geojson',         version: '14.0'
+    compile group:'org.geotools',            name: 'gt-shapefile',         version: '14.0'
+    compile group:'org.geotools',            name: 'gt-epsg-extension',     version: '14.0'
+    compile group:'org.geotools',            name: 'gt-epsg-hsql',        version: '14.0'
+    compile group:'org.geotools.jdbc',        name: 'gt-jdbc-postgis',    version: '14.0'
+    compile group:'org.geotools',            name: 'gt-geojsondatastore',    version: '15.0'
 
     // POI Excel file manipulation
-	compile group: 'org.apache.poi',		name: 'poi',		version: '3.16'
-	compile group: 'org.apache.poi',		name: 'poi-ooxml',	version: '3.16'
-	
-	// JSON handling
-	compile group: 'javax.json', 			name: 'javax.json-api',			version: '1.1'
-	compile group: 'com.googlecode.json-simple', name: 'json-simple', 		version: '1.1.1'
-	compile group: 'com.google.code.gson',	name: 'gson', 					version: '2.4'
-	compile group: 'com.github.fge', 		name: 'json-schema-validator',	version: '2.2.6'
-	compile 'org.glassfish:javax.json:1.0.4'
-	
-	// Commons
-	compile group: 'commons-io',			name: 'commons-io',				version: '2.4'
-	compile group: 'org.apache.commons',	name: 'commons-compress',		version: '1.10'
-	compile group: 'org.apache.commons',	name: 'commons-collections4',	version: '4.1'
-	compile group: 'org.apache.commons',	name: 'commons-csv',			version: '1.4'
-	compile group: 'org.apache.commons',	name: 'commons-math3',			version: '3.6.1'
+    compile group: 'org.apache.poi',        name: 'poi',        version: '3.16'
+    compile group: 'org.apache.poi',        name: 'poi-ooxml',    version: '3.16'
 
-	// ORM
-	compile group: 'org.postgresql', 		name: 'postgresql', 			version: '9.4-1200-jdbc41'
-	compile group: 'org.hibernate', 		name: 'hibernate-core',			version: '5.2.10.Final'
-	compile group: 'org.hibernate',			name: 'hibernate-spatial',		version: '5.2.10.Final'
-	compile group: 'org.hibernate',			name: 'hibernate-java8',		version: '5.2.10.Final'
-	compile group: 'org.hibernate.javax.persistence',	name: 'hibernate-jpa-2.1-api',	version: '1.0.0.Final'
-    compile group: 'org.hibernate', 		name: 'hibernate-ehcache', 		version: '5.2.10.Final'
+    // JSON handling
+    compile group: 'javax.json',             name: 'javax.json-api',            version: '1.1'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple',         version: '1.1.1'
+    compile group: 'com.google.code.gson',    name: 'gson',                     version: '2.4'
+    compile group: 'com.github.fge',         name: 'json-schema-validator',    version: '2.2.6'
+    compile 'org.glassfish:javax.json:1.0.4'
 
-	// Ehcache
-	compile group: 'org.ehcache', name: 'ehcache', version: '3.3.1'
+    // Commons
+    compile group: 'commons-io',            name: 'commons-io',                version: '2.4'
+    compile group: 'org.apache.commons',    name: 'commons-compress',        version: '1.10'
+    compile group: 'org.apache.commons',    name: 'commons-collections4',    version: '4.1'
+    compile group: 'org.apache.commons',    name: 'commons-csv',            version: '1.4'
+    compile group: 'org.apache.commons',    name: 'commons-math3',            version: '3.6.1'
 
-	// Testing
-	testCompile group: 'org.skyscreamer',	name: 'jsonassert',			version: '1.3.0'
-	testCompile group: 'org.hamcrest', 		name: 'hamcrest-core', 		version: '1.3'
+    // ORM
+    compile group: 'org.postgresql',         name: 'postgresql',             version: '9.4-1200-jdbc41'
+    compile group: 'org.hibernate',         name: 'hibernate-core',            version: '5.2.10.Final'
+    compile group: 'org.hibernate',            name: 'hibernate-spatial',        version: '5.2.10.Final'
+    compile group: 'org.hibernate',            name: 'hibernate-java8',        version: '5.2.10.Final'
+    compile group: 'org.hibernate.javax.persistence',    name: 'hibernate-jpa-2.1-api',    version: '1.0.0.Final'
+    compile group: 'org.hibernate',         name: 'hibernate-ehcache',         version: '5.2.10.Final'
 
-	// Logging
-	compile group: 'ch.qos.logback',		name: 'logback-classic',	version: '1.1.3'
+    // Ehcache
+    compile group: 'org.ehcache', name: 'ehcache', version: '3.3.1'
 
-	// Reflection
-	compile group: 'org.reflections', 		name: 'reflections',		version: '0.9.10'
+    // Testing
+    testCompile group: 'org.skyscreamer',    name: 'jsonassert',            version: '1.3.0'
+    testCompile group: 'org.hamcrest',         name: 'hamcrest-core',         version: '1.3'
 
-	// osm4j
-	compile 'de.topobyte:osm4j-core:0.0.20'
-	compile 'de.topobyte:osm4j-utils:0.0.23'
-	compile 'de.topobyte:osm4j-xml:0.0.5'
-	compile 'de.topobyte:osm4j-pbf:0.0.10'
-	compile 'de.topobyte:osm4j-tbo:0.0.10'
-	compile 'de.topobyte:osm4j-geometry:0.0.15'
+    // Logging
+    compile group: 'ch.qos.logback',        name: 'logback-classic',    version: '1.1.3'
 
-	// twitter4j
-	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
+    // Reflection
+    compile group: 'org.reflections',         name: 'reflections',        version: '0.9.10'
+
+    // osm4j
+    compile 'de.topobyte:osm4j-core:0.0.20'
+    compile 'de.topobyte:osm4j-utils:0.0.23'
+    compile 'de.topobyte:osm4j-xml:0.0.5'
+    compile 'de.topobyte:osm4j-pbf:0.0.10'
+    compile 'de.topobyte:osm4j-tbo:0.0.10'
+    compile 'de.topobyte:osm4j-geometry:0.0.15'
+
+    // twitter4j
+    compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
 
 }
 
 configurations.all {
-	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
 }
 
 task copyDeps(type: Copy) {
-	from configurations.runtime
-	into 'build/dependency-cache/'
+    from configurations.runtime
+    into 'build/dependency-cache/'
 }
 
-task runExport(dependsOn: ['classes'], type: JavaExec) {
-	main = 'uk.org.tombolo.DataExportRunner'
-	classpath = sourceSets.main.runtimeClasspath
-	jvmArgs '-disableassertions'
-
-	doFirst {
-		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
-		if (!configured) throw new GradleException('Environment not configured. See the README.')
-
-		systemProperty("databaseURI", databaseURI)
-		systemProperty("databaseUsername", databaseUsername)
-		systemProperty("databasePassword", databasePassword)
-		systemProperty("environment", "export")
-
-		def argumentsSet = project.hasProperty('dataExportSpecFile') && project.hasProperty('outputFile');
-		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
-		if (!project.hasProperty('forceImports')) { ext.forceImports = "None" }
-
-		args(dataExportSpecFile, outputFile, forceImports, clearDatabaseCache)
-	}
+def checkEnv() {
+    def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
+    if (!configured) throw new GradleException('ENVIRONMENT NOT CONFIGURED. Check the main database info ' +
+            'in **gradle.properties**.\nSee the README: https://github.com/FutureCitiesCatapult/TomboloDigitalConnector')
 }
 
 task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
-	main = 'uk.org.tombolo.CorrelationAnalysisRunner'
-	classpath = sourceSets.main.runtimeClasspath
-	jvmArgs '-disableassertions'
+    main = 'uk.org.tombolo.CorrelationAnalysisRunner'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-disableassertions'
 
-	doFirst {
-		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
-		if (!configured) throw new GradleException('Environment not configured. See the README.')
+    doFirst {
+        checkEnv()
+        systemProperty("databaseURI", databaseURI)
+        systemProperty("databaseUsername", databaseUsername)
+        systemProperty("databasePassword", databasePassword)
+        systemProperty("environment", "export")
 
-		systemProperty("databaseURI", databaseURI)
-		systemProperty("databaseUsername", databaseUsername)
-		systemProperty("databasePassword", databasePassword)
-		systemProperty("environment", "export")
+        def argumentsSet = project.hasProperty('recipe') && project.hasProperty('output') && project.hasProperty('correlationAnalysisOutput');
+        if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+        if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
+        if (!project.hasProperty('forceImports')) { ext.forceImports = "None" }
 
-		def argumentsSet = project.hasProperty('dataExportSpecificationPath') && project.hasProperty('dataExportOutputPath') && project.hasProperty('correlationAnalysisOutputPath');
-		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-		if (!project.hasProperty('clearDatabaseCache')) { ext.clearDatabaseCache = false }
-		if (!project.hasProperty('forceImports')) { ext.forceImports = "" }
-
-		args(dataExportSpecificationPath, dataExportOutputPath, correlationAnalysisOutputPath, forceImports, clearDatabaseCache)
-	}
+        args(recipe, output, correlationAnalysisOutput, forceImports, clearDatabaseCache)
+    }
 }
 
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
-	maxHeapSize = "4096m"
-	main = 'uk.org.tombolo.CatalogueExportRunner'
-	classpath = sourceSets.main.runtimeClasspath
-	jvmArgs '-disableassertions'
+    maxHeapSize = "4096m"
+    main = 'uk.org.tombolo.CatalogueExportRunner'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-disableassertions'
 
-	doFirst {
-		def configured = project.hasProperty('databaseURI') && project.hasProperty('databaseUsername') && project.hasProperty('databasePassword');
-		if (!configured) throw new GradleException('Environment not configured. See the README.')
+    doLast {
+        checkEnv()
+        systemProperty("databaseURI", databaseURI)
+        systemProperty("databaseUsername", databaseUsername)
+        systemProperty("databasePassword", databasePassword)
+        systemProperty("environment", "export")
 
-		systemProperty("databaseURI", databaseURI)
-		systemProperty("databaseUsername", databaseUsername)
-		systemProperty("databasePassword", databasePassword)
-		systemProperty("environment", "export")
-
-		def argumentsSet = project.hasProperty('outputFile');
-		if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
-		if (project.hasProperty('webResourcePath')) args(webOutputFile, webResourcePath)
-		else throw new GradleException('Path to Web Directory resources folder is required')
-	}
+        def argumentsSet2 = project.hasProperty('outputFile')
+        if (!argumentsSet2) throw new GradleException('Required properties not specified. See the README.')
+        if (project.hasProperty('webResourcePath')) args(outputFile, webResourcePath)
+        else throw new GradleException('Path to Web Directory resources folder is required')
+    }
 }
 
 test {
-	maxHeapSize = "2048m"
-	jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
+    maxHeapSize = "2048m"
+    jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
 
-	doFirst {
-		def configured = project.hasProperty('testDatabaseURI') && project.hasProperty('testDatabaseUsername') && project.hasProperty('testDatabasePassword');
-		if (!configured) throw new GradleException('Test environment not configured. See the README.')
+    doFirst {
+        def configured = project.hasProperty('testDatabaseURI') && project.hasProperty('testDatabaseUsername') && project.hasProperty('testDatabasePassword')
+        if (!configured) throw new GradleException('TEST ENVIRONMENT NOT CONFIGURED. Check the test database info' +
+                'in **gradle.properties**.\nSee the README: https://github.com/FutureCitiesCatapult/TomboloDigitalConnector')
 
-		systemProperty("databaseURI", testDatabaseURI)
-		systemProperty("databaseUsername", testDatabaseUsername)
-		systemProperty("databasePassword", testDatabasePassword)
-		systemProperty("environment", "test")
-	}
+        systemProperty("databaseURI", testDatabaseURI)
+        systemProperty("databaseUsername", testDatabaseUsername)
+        systemProperty("databasePassword", testDatabasePassword)
+        systemProperty("environment", "test")
+    }
+}
+
+
+task runExportHelp {
+    ext.info = """
+Project version: ${version}
+Gradle version: ${gradle.gradleVersion}
+
+
+||||||||||      |||||||||
+ |||    |||    |||     |||
+ |||     |||  |||
+ |||     |||  |||         TOMBOLO DIGITAL CONNECTOR
+ |||     |||  |||
+ |||    |||    |||     |||
+||||||||||      |||||||||
+
+
+USAGE: gradle runExport [-Ps] -Precipe -Poutput [-Pcorrelation] [-Pforce] [-Pclear]
+------
+
+DESCRIPTION:
+------------
+
+-Precipe        -Precipe=path/to/recipe/file
+                Mandatory absolute path to the recipe file.
+                Recipe is a json file that describes the data or models that we want to get out of the system, without 
+                describing how to generate the data. The recipe language is expressed in JSON format. 
+
+-Ps             -Ps
+                Optional property indicating that the recipe contains a recipe string and not the path.
+                Used primaryly when the command is run from insid code not on the commandline.
+
+-Poutput        -Poutput=path/to/output/file
+                Mandatory absolute path to the output file with the model results.
+
+-Pcorrelation   -Pcorrelation=path/to/correlation/analisys/output/file
+                Optional absolute path to the output file with the correlation analysis' results.
+                Calculates correlation between all input fields and output the Pearson correlation coefficient,
+                the pValue and the standard error to a JSON file. 
+                Note: only supports the use of GeoJson as the intermediate data export format.
+
+-Pforce         -Pforce=className:datasourceId,...
+                Optional list of classes to reimport.
+                It will re-download from the source and update the local file.
+
+-Pclear         -Pclear=true/false
+                Optional boolean triggering the database cache to be cleaned so the data will be persisted again.
+
+Examples:
+
+gradle runExport -Precipe='src/main/resources/executions/examples/greenspace-hertfordshire.json' -Poutput='output.json' -Pforce='uk.org.tombolo.importer.osm.OSMImporter' -Pclear=true
+
+gradle runExport -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa.json' -Poutput='output.json'
+
+gradle runExport -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa.json' -Poutput='output.json' -Pcorrelation='correlation_output.json'
+
+
+"""
+}
+
+task runExport(dependsOn: ['classes', runExportHelp], type: JavaExec) {
+    main = 'uk.org.tombolo.DataExportRunner'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-disableassertions'
+
+    doFirst {
+        checkEnv()
+        systemProperty("databaseURI", databaseURI)
+        systemProperty("databaseUsername", databaseUsername)
+        systemProperty("databasePassword", databasePassword)
+        systemProperty("environment", "export")
+
+        def argumentsSet = project.hasProperty('recipe') && project.hasProperty('output');
+        if (!argumentsSet) {
+            print(runExportHelp.info)
+            throw new StopExecutionException()
+        }
+        if (!project.hasProperty('clear')) { ext.clear = false }
+        if (!project.hasProperty('force')) { ext.force = "None" }
+        if (!project.hasProperty('correlation')) { ext.correlation = "None" }
+        ext.s = false
+        if (project.hasProperty('s')) { ext.s = true }
+
+        args(s, recipe, output, correlation, force, clear)
+    }
 }
