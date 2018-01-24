@@ -1,7 +1,8 @@
 # Contributing to Tombolo Digital Connector
 
 Thank you for choosing to contribute to this project. **We need your superpowers!**  
-To learn more about the Tombolo vision checkout our [website](http://www.tombolo.org.uk/).
+
+To learn more about the Tombolo vision check out our [website](http://www.tombolo.org.uk/).
 
 Before starting to contribute have a look at the [README](README.md) and [docs](documentation). Our suggestion is to 
 start with the [system architecture](documentation/System-Architecture.md) and [local datastore](documentation/Local-Datastore.md), and 
@@ -12,8 +13,7 @@ eventually go further in the documentation with other topics of your interest.
 milestone contains issues we think are interesting for you to work on. You can find them also through 
 [`help wanted`](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22) 
 tag. Feel free to check the other milestones in case you find something that excites you more.
-If none of the issues reflects your problem/feature create a new one following the 
-[issue template](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues/new).
+If none of the existing reflects your problem/feature create a new [issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/issues/new).
 Include screenshots and error log if available. 
 
 ## In progress
@@ -27,7 +27,7 @@ To contribute to the project follow these steps:
 - [Fork the repository](https://help.github.com/articles/fork-a-repo/).
 - [Choose the issue](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) you want to start
 working on and tag a project maintainer to inform about it.
-- Use the Github issue to discuss on the requirements, ask for more information, update on the progress or upload 
+- Use the Github issue to discuss the requirements, ask for more information, update on the progress or upload 
 images related to the issue.
 - Create a [pull request](https://help.github.com/articles/about-pull-requests/) when you feel you have addressed the issue.
 
@@ -46,7 +46,7 @@ make sure that:
 - Check the Wercker CLI pipeline succeeded with your last changes.
 - You have merged the last version of `master` into your branch.
 
-Now you are ready to open a PR by following this considerations:
+Now you are ready to open a PR by following these considerations:
 - Include a description of your changes and approach taken, if many create a list of changes.
 - Reference the issue number you are addressing.
 - Keep it brief and clear. We won't complain about short PRs. Promise! ;)
@@ -79,11 +79,11 @@ change it in the future. Try to follow as much as possible the
  code.  
 
 - Code
-  - Indent with 4 spaces, not tabs.
+  - Indent with 4 spaces.
   - No trailing whitespace. Blank lines should not have empty spaces.
   - End a file with a newline.
   - Use `a = b` and not `a=b`, `x += 1` and not `x+=1`, ...
-  - Use `my_method(my_arg)` not `my_method( my_arg )`.
+  - Use `myMethod(myArg)` not `myMethod( myArg )`.
   - Prefer `method { implementation }` instead of `method{implementation}` for single-line blocks.
   - ALWAYS `if(condition) { do_something; }` not `if(condition) do_something;` for single-line blocks.
   - Javadoc comments should be add to every method, with parameters and return statements to explain their purpose.
