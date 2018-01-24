@@ -42,6 +42,8 @@ public abstract class AbstractRunner {
     }
 
     protected DataExportRecipe getRecipe(String recipe, boolean isString) throws IOException {
+        validateRecipe(recipe, isString);
+
         if (isString) {
             return RecipeDeserializer.fromJsonString(recipe, DataExportRecipe.class);
         }
@@ -62,7 +64,7 @@ public abstract class AbstractRunner {
         return downloadUtils;
     }
 
-    protected void validateRecipe(String recipe, boolean isString) throws FileNotFoundException {
+    private void validateRecipe(String recipe, boolean isString) throws FileNotFoundException {
         ProcessingReport report = DataExportRecipeValidator.validate(!isString? new FileReader(recipe) :
                 new BufferedReader(new InputStreamReader(new ByteArrayInputStream(recipe.getBytes()))));
         if (!report.isSuccess()) {
@@ -70,8 +72,6 @@ public abstract class AbstractRunner {
             System.exit(1);
         }
     }
-
-    protected abstract void validateArguments(String[] args);
 
     protected Writer getOutputWriter(String path) {
         try {

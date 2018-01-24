@@ -22,16 +22,12 @@ public class DataExportRunner extends AbstractRunner {
     private static final DataExportRunner runner = new DataExportRunner();
 
     public static void main(String[] args) throws Exception {
-        runner.validateArguments(args);
-
         Boolean isString = Boolean.parseBoolean(args[0]);
         String recipe = args[1];
         String output = args[2];
         String correlation = args[3];
         String forceImports = args[4];
         Boolean clearDatabaseCache = Boolean.parseBoolean(args[5]);
-
-        runner.validateRecipe(recipe, isString);
 
         run(isString, recipe, output, correlation, forceImports, clearDatabaseCache);
     }
@@ -102,20 +98,5 @@ public class DataExportRunner extends AbstractRunner {
 
         // Calculate and output correlations
         CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fields, correlation);
-    }
-
-    @Override
-    protected void validateArguments(String[] args) {
-        if (args.length != 6) {
-            log.info("Use: {} {} {} {} {}",
-                    "s",
-                    "recipe",
-                    "output",
-                    "correlation",
-                    "force (className:datasourceId,...)",
-                    "clear"
-            );
-            System.exit(1);
-        }
     }
 }

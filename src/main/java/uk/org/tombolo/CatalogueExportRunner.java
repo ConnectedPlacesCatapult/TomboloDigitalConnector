@@ -91,7 +91,6 @@ public class CatalogueExportRunner extends AbstractRunner {
         return importer.getDatasource(dataSourceId);
     }
 
-    @Override
     protected void validateArguments(String[] args) {
         if (args.length != 2){
             log.error("Must provide filename to export to");
