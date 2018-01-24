@@ -1,0 +1,15 @@
+databaseURI=jdbc:postgresql://localhost:5432/tombolo
+databaseUsername=tombolo
+databasePassword=tombolo
+
+! If you make this the same as your main database, it will be cleared on every test run
+testDatabaseURI=jdbc:postgresql://localhost:5432/tombolo_test
+testDatabaseUsername=tombolo_test
+testDatabasePassword=tombolo_test
+
+! Where to download temporary files while importing data
+fileDownloadCache=/tmp
+
+! Set path of catalogue file and give path of Web Project
+webOutputFile=path/of/output/file
+webResourcePath=path/of/web/project
