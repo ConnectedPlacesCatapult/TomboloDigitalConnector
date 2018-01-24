@@ -33,6 +33,7 @@ For further information see the [documentation](documentation/Home.md).
 ## Contributing
 
 Looking to get involved? Have a look at the [Open Source Community milestone](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/milestone/22) where we have selected *low hanging fruit* for you to easily get involved and contribute.
+Read our [Guide to contribution](CONTRIBUTING.md) for details.
 
 ## Requirements
 
@@ -154,7 +155,7 @@ chmod +x create_db.sh
 
 *For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
 
-### Run tests 
+### Run tests
 
 A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
 everything went fine.
