@@ -157,8 +157,8 @@ Now that Thomas has put his model recipe together, the next step in the process 
 
 ```bash
 gradle runExport \
-    -PdataExportRecipe='path/to/recipe/file.json' \
-    -PoutputFile='path/to/output/file.json'
+    -Precipe='path/to/recipe/file.json' \
+    -Poutput='path/to/output/file.json'
 ```
 
 The command takes two parameters, one pointing to the model recipe that was built in the previous step and one pointing to the output file to be generated.

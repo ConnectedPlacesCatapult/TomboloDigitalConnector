@@ -374,8 +374,8 @@ machine with 8gb of ram it should not take more than 15 minutes to run the tests
 
 ```bash
 gradle runExport ^
--PdataExportSpecFile=src\main\resources\executions\examples\reaggregate-traffic-count-to-la.json ^ 
--PoutputFile=reaggregate-traffic-count-to-la_output.json
+-Precipe=src\main\resources\executions\examples\reaggregate-traffic-count-to-la.json ^
+-Poutput=reaggregate-traffic-count-to-la_output.json
 ```
 
 - Below are couple of screenshots of start and end of the process.

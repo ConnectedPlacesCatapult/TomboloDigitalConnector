@@ -20,16 +20,17 @@
 [T](Glossary#t)|
 [U](Glossary#u)|
 [V](Glossary#v)|
+[W](Glossary#w)|
 [X](Glossary#x)|
 [Y](Glossary#y)|
 [Z](Glossary#z)|
-[W](Glossary#w)|
+
 
 # A
 
 ## Attribute
-A data object representing anything that could be measured or calculated, such as population density (for an LSOA), CO2 concentration (for an air quality sensor), obesity rate (for a local authority), etc. 
-[See further](Local-Datastore.md#attribute)
+A data object representing anything that could be measured or calculated, such as population density (for an LSOA), CO2 concentration (for an air quality sensor), obesity rate (for a local authority), etc.
+ [See further](Local-Datastore.md#attribute)
 
 # B
 
@@ -76,10 +77,10 @@ A data object representing anything that could be measured or calculated, such a
 
 # V
 
+# W
+
 # X
 
 # Y
 
 # Z
-
-# W

@@ -14,8 +14,8 @@ we described an example recipe where we output, for every borough in London, inf
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-output.json'
+  -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' \
+  -Poutput='london-cycle-traffic-air-quality-output.json'
 ```
 
 As mentioned in the [use case description](Use-Case-on-Cycling-and-Air-Quality.md), this will give you a GeoJson file 
@@ -77,8 +77,8 @@ What this does is that it tells the Digital Connector to output all LSOA geograp
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-output.json'
 ```
 
 When looking at the output from the Digital Connector you will notice that you get very many warnings. This is because that there are very many LSOAs that do not have either a traffic counter in them or an air quality sensor, and hence there is no data to output. Yet, the Digital Connector does return a GeoJson file with the LSOA geographies. If you, again, use QGIS to create a quantile-based colouring of the LSOAs, you should get an image that looks like the one below. 
@@ -163,8 +163,8 @@ This recipe is quite simpler than before ([see full recipe](https://github.com/F
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa-modelling.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa-modelling.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
 ```
 
 If you look at the resulting file in QGIS, you will see that you get the same output as before but by utilising more simplified and re-usable code.
@@ -225,8 +225,8 @@ The back-off field for the ratio of bicycles to cars is exactly the same, only w
 
 ```bash
 gradle runExport \
-  -PdataExportSpecFile='london-cycle-traffic-air-quality-lsoa-backoff.json' \
-  -PoutputFile='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+  -Precipe='london-cycle-traffic-air-quality-lsoa-backoff.json' \
+  -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
 ```
 
 Using QGIS to visualise the back-off model in a similar manner as done above, we get a much less sparse data output as shown in the image below.
