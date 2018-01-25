@@ -16,13 +16,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/*
+Once the Py4jServer is running, importer built in python 
+uses this class to pass the objects and save them in database.
+*/
 public class PythonImporter extends AbstractImporter {
 
     public void downloadData(String url, String dataCacheRootDirectory, String prefix, String suffix) throws IOException{
         DownloadUtils utils = new DownloadUtils(dataCacheRootDirectory);
         InputStream stream = utils.fetchInputStream(new URL(url), prefix, suffix);
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        String read = "";
+        String read;
         Py4jServerInterface serverInterface = (Py4jServerInterface) Py4jServer.server.getPythonServerEntryPoint(new Class[] {Py4jServerInterface.class});
         while ((read = reader.readLine()) != null) serverInterface.streamData(read);
     }
@@ -87,5 +91,4 @@ public class PythonImporter extends AbstractImporter {
 			List<String> datasourceLocation) throws Exception {
 		
     }
-
 }

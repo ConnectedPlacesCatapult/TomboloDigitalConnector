@@ -12,10 +12,9 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'lib', include: ['*.jar'])
-}
+    //Py4j jars
+    compile group: 'net.sf.py4j',           name: 'py4j',               version: '0.10.6'
 
-dependencies {
 	// Geo Tools
 	compile group:'org.geotools',			name: 'gt-referencing', 	version: '14.0'
 	compile group:'org.geotools',			name: 'gt-geojson', 		version: '14.0'
