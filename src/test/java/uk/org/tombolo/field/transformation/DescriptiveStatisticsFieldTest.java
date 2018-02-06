@@ -18,10 +18,10 @@ public class DescriptiveStatisticsFieldTest {
             "my-label",
             DescriptiveStatisticsField.Statistic.mean,
             Arrays.asList(
-                    FieldBuilder.fixedAnnotationField("field1", "2").build(),
-                    FieldBuilder.fixedAnnotationField("field2", "2").build(),
-                    FieldBuilder.fixedAnnotationField("field3", "3").build(),
-                    FieldBuilder.fixedAnnotationField("field4", "5").build()
+                    FieldBuilder.ConstantField("field1", "2").build(),
+                    FieldBuilder.ConstantField("field2", "2").build(),
+                    FieldBuilder.ConstantField("field3", "3").build(),
+                    FieldBuilder.ConstantField("field4", "5").build()
             )
     );
 
@@ -29,10 +29,10 @@ public class DescriptiveStatisticsFieldTest {
             "my-label",
             DescriptiveStatisticsField.Statistic.sum,
             Arrays.asList(
-                    FieldBuilder.fixedAnnotationField("field1", "2").build(),
-                    FieldBuilder.fixedAnnotationField("field2", "2").build(),
-                    FieldBuilder.fixedAnnotationField("field3", "3").build(),
-                    FieldBuilder.fixedAnnotationField("field4", "5").build()
+                    FieldBuilder.ConstantField("field1", "2").build(),
+                    FieldBuilder.ConstantField("field2", "2").build(),
+                    FieldBuilder.ConstantField("field3", "3").build(),
+                    FieldBuilder.ConstantField("field4", "5").build()
             )
     );
 
@@ -45,7 +45,7 @@ public class DescriptiveStatisticsFieldTest {
                 "my-label",
                 DescriptiveStatisticsField.Statistic.sum,
                 Arrays.asList(
-                        FieldBuilder.fixedAnnotationField("field1", "1").build(),
+                        FieldBuilder.ConstantField("field1", "1").build(),
                         FieldBuilder.valuesByTime("provider", "attribute").build()
                 )
         );

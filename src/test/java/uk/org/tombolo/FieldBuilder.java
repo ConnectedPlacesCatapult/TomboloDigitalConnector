@@ -57,9 +57,9 @@ public class FieldBuilder implements JSONAware {
         return spec;
     }
 
-    public static FieldBuilder fixedAnnotationField(String label, String value) {
+    public static FieldBuilder ConstantField(String label, String value) {
         FieldBuilder spec = new FieldBuilder();
-        spec    .setFieldClass("uk.org.tombolo.field.value.FixedAnnotationField")
+        spec    .setFieldClass("uk.org.tombolo.field.value.ConstantField")
                 .setLabel(label)
                 .set("value", value);
         return spec;
