@@ -43,8 +43,10 @@ public class DataExportEngine implements ExecutionEngine {
 
 	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
-		for (DatasourceRecipe datasourceRecipe : dataExportRecipe.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceRecipe, dataExportRecipe.getDataset().getSubjects());
+		for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
+			if (!datasourceSpec.getImporterClass().isEmpty()) {
+				importDatasource(forceImports, datasourceSpec, dataExportRecipe.getDataset().getSubjects());
+			}
 		}
 
 		// Generate fields
