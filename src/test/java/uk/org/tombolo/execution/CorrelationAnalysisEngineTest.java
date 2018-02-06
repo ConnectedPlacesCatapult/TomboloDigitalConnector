@@ -19,9 +19,9 @@ public class CorrelationAnalysisEngineTest {
     @Before
     public void createFields(){
         fields = new ArrayList<>();
-        fields.add(FieldBuilder.fixedAnnotationField("field1",null).build());
-        fields.add(FieldBuilder.fixedAnnotationField("field2",null).build());
-        fields.add(FieldBuilder.fixedAnnotationField("field3",null).build());
+        fields.add(FieldBuilder.ConstantField("field1",null).build());
+        fields.add(FieldBuilder.ConstantField("field2",null).build());
+        fields.add(FieldBuilder.ConstantField("field3",null).build());
     }
 
     @Test

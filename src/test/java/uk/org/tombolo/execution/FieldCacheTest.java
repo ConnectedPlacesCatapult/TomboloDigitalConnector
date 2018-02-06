@@ -14,7 +14,7 @@ public class FieldCacheTest extends AbstractTest {
 
     @Test
     public void getChachedValue() throws Exception {
-        Field field = FieldBuilder.fixedAnnotationField("mylabel", "myvalue").build().toField();
+        Field field = FieldBuilder.ConstantField("mylabel", "myvalue").build().toField();
         Subject subject = TestFactory.makeNamedSubject("E01000001");
 
         // Nothing has been put into cache

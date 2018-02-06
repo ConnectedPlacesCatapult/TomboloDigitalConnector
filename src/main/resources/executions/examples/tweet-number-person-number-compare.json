@@ -59,7 +59,7 @@
         },
         "function": "sum",
         "field": {
-          "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+          "fieldClass": "uk.org.tombolo.field.value.ConstantField",
           "label": "Tweet",
           "value": "1"
         }

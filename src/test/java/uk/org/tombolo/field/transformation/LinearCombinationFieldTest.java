@@ -17,10 +17,10 @@ public class LinearCombinationFieldTest extends AbstractTest {
             "aLabel",
             Arrays.asList(0.6f, 0.2f, 0.1f, 0.1f),
             Arrays.asList(
-                    FieldBuilder.fixedAnnotationField("field1", "1").build(),
-                    FieldBuilder.fixedAnnotationField("field2", "2").build(),
-                    FieldBuilder.fixedAnnotationField("field3", "3").build(),
-                    FieldBuilder.fixedAnnotationField("field4", "4").build()
+                    FieldBuilder.ConstantField("field1", "1").build(),
+                    FieldBuilder.ConstantField("field2", "2").build(),
+                    FieldBuilder.ConstantField("field3", "3").build(),
+                    FieldBuilder.ConstantField("field4", "4").build()
             )
     );
 
@@ -33,8 +33,8 @@ public class LinearCombinationFieldTest extends AbstractTest {
                 "aLabel",
                 Arrays.asList(0.6f, 0.3f, 0.1f),
                 Arrays.asList(
-                        FieldBuilder.fixedAnnotationField("field1", "1").build(),
-                        FieldBuilder.fixedAnnotationField("field2", "2").build()
+                        FieldBuilder.ConstantField("field1", "1").build(),
+                        FieldBuilder.ConstantField("field2", "2").build()
                )
         );
         thrown.expect(Error.class);
@@ -48,7 +48,7 @@ public class LinearCombinationFieldTest extends AbstractTest {
                 "aLabel",
                 Arrays.asList(0.6f, 0.4f),
                 Arrays.asList(
-                        FieldBuilder.fixedAnnotationField("field1", "1").build(),
+                        FieldBuilder.ConstantField("field1", "1").build(),
                         FieldBuilder.valuesByTime("provider", "attribute").build()
                 )
         );
@@ -69,7 +69,7 @@ public class LinearCombinationFieldTest extends AbstractTest {
         LinearCombinationField simpleLinearCombinationField = new LinearCombinationField(
                 "aLabel",
                 Arrays.asList(2f),
-                Arrays.asList(FieldBuilder.fixedAnnotationField("field2", "2").build())
+                Arrays.asList(FieldBuilder.ConstantField("field2", "2").build())
         );
         String jsonString = simpleLinearCombinationField.jsonValueForSubject(null, false).toJSONString();
         JSONAssert.assertEquals("{aLabel: 4}", jsonString, false);

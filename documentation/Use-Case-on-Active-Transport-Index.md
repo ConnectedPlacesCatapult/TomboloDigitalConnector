@@ -126,7 +126,7 @@ The implementation of the back-off field is as follows:
       }
     },
     {
-      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+      "fieldClass": "uk.org.tombolo.field.value.ConstantField",
       "value" : "0.0"
     }
   ]
@@ -202,7 +202,7 @@ The cycling infrastructure component of the active transport index is also a bac
       }
     },
     {
-      "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+      "fieldClass": "uk.org.tombolo.field.value.ConstantField",
       "label" : "default value",
       "value" : "0.0"
     }
@@ -255,7 +255,7 @@ where the CycleLaneCount model is an arithmetic-field where we divide the count 
         }
       ],
       "field": {
-        "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+        "fieldClass": "uk.org.tombolo.field.value.ConstantField",
         "value": "1"
       }
     }
@@ -278,7 +278,7 @@ where the CycleLaneCount model is an arithmetic-field where we divide the count 
         }
       ],
       "field": {
-        "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+        "fieldClass": "uk.org.tombolo.field.value.ConstantField",
         "value": "1"
       }
     }
