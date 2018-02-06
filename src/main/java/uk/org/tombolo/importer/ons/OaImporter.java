@@ -19,7 +19,6 @@ import java.util.List;
 
 public final class OaImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    public static final String PROP_ONS_API_KEY = "apiKeyOns";
 
     public static final Provider PROVIDER = new Provider(
             "uk.gov.ons",
@@ -27,14 +26,12 @@ public final class OaImporter extends AbstractImporter {
     );
 
     public enum OaType {
-        ward(new DatasourceSpec(OaImporter.class,"ward","WARD","Wards in Great Britain December 2016",null),
-                "https://opendata.arcgis.com/datasets/afcc88affe5f450e9c03970b237a7999_0.geojson"),
         lsoa(new DatasourceSpec(OaImporter.class,"lsoa","LSOA","Lower Layer Super Output Areas",null),
-                "https://opendata.arcgis.com/datasets/da831f80764346889837c72508f046fa_1.geojson"),
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__LSOA.geojson"),
         msoa(new DatasourceSpec(OaImporter.class, "msoa", "MSOA", "Middle Layer Super Output Areas", null),
-                "https://opendata.arcgis.com/datasets/826dc85fb600440889480f4d9dbb1a24_1.geojson"),
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__MSOA.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
-                "https://opendata.arcgis.com/datasets/8edafbe3276d4b56aec60991cbddda50_2.geojson");
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson");
 
 
         public DatasourceSpec datasourceSpec;
