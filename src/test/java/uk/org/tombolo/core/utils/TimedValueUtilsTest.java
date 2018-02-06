@@ -27,7 +27,7 @@ public class TimedValueUtilsTest extends AbstractTest {
 	@Test
 	public void testParseTimestampString() throws Exception {
 		Map<String, LocalDateTime> testCases = new HashMap<String, LocalDateTime>();
-		
+
 		testCases.put("2013", LocalDateTime.parse("2013-12-31T23:59:59"));
 		testCases.put("2013 - 15", LocalDateTime.parse("2015-12-31T23:59:59"));
 		testCases.put("2014/15", LocalDateTime.parse("2015-12-31T23:59:59"));

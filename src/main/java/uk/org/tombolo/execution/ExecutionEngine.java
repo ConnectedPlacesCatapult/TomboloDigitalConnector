@@ -6,6 +6,5 @@ import uk.org.tombolo.importer.ImporterMatcher;
 import java.io.Writer;
 
 public interface ExecutionEngine {
-	public void execute(DataExportRecipe specification, Writer writer) throws Exception;
-	public void execute(DataExportRecipe specification, Writer writer, ImporterMatcher forceImports) throws Exception;
+	void execute(DataExportRecipe specification, Writer writer, ImporterMatcher forceImports) throws Exception;
 }

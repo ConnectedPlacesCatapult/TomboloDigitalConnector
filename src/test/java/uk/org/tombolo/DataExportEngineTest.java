@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 public class DataExportEngineTest extends AbstractTest {
     private SubjectType lsoa;
     private SubjectType localAuthority;
+    private ImporterMatcher emptyImporterMatcher;
 
     DataExportEngine engine;
     DataExportSpecificationBuilder builder = DataExportSpecificationBuilder.withGeoJsonExporter();
@@ -45,11 +46,12 @@ public class DataExportEngineTest extends AbstractTest {
         TestFactory.makeNamedSubject("E01002766");
         TestFactory.makeNamedSubject("E01002767");
         TestFactory.makeNamedSubject("E08000035");
+        emptyImporterMatcher = new ImporterMatcher("");
     }
 
     @Test
     public void testReturnsEmptyOnBlankSpec() throws Exception {
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
 
         JSONAssert.assertEquals(writer.toString(), "{type:'FeatureCollection', features:[]}", false);
     }
@@ -60,7 +62,7 @@ public class DataExportEngineTest extends AbstractTest {
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(),"lsoa").setMatcher("label", "E01000001")
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{features: [{properties: {name: 'City of London 001A', label: 'E01000001'}}]}", writer.toString(), false);
     }
 
@@ -72,7 +74,7 @@ public class DataExportEngineTest extends AbstractTest {
         builder.addSubjectSpecification(
                 new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E10000006")
         ).addDatasourceSpecification("uk.org.tombolo.importer.ons.OaImporter", "localAuthority", null);
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
 
         // ...we expect the importer not to have imported them, so we should have no features
         JSONAssert.assertEquals("{type:'FeatureCollection', features:[]}", writer.toString(), false);
@@ -114,7 +116,7 @@ public class DataExportEngineTest extends AbstractTest {
                 ))
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -147,7 +149,7 @@ public class DataExportEngineTest extends AbstractTest {
                 ))
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -179,7 +181,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -213,7 +215,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -246,7 +248,7 @@ public class DataExportEngineTest extends AbstractTest {
                     ))
             );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  type: 'FeatureCollection'," +
                 "  features: [{" +
@@ -284,7 +286,7 @@ public class DataExportEngineTest extends AbstractTest {
                 )
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         String jsonString = writer.toString();
         JSONAssert.assertEquals("{" +
                         "  features: [" +
@@ -328,7 +330,7 @@ public class DataExportEngineTest extends AbstractTest {
                 )
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -353,7 +355,7 @@ public class DataExportEngineTest extends AbstractTest {
                                 .setDivisorAttribute("uk.gov.ons", "Age: All categories: Age") // total population
                 );
 
-        engine.execute(csvBuilder.build(), writer);
+        engine.execute(csvBuilder.build(), writer, emptyImporterMatcher);
 
         List<CSVRecord> records = CSVParser.parse(writer.toString(), CSVFormat.DEFAULT.withHeader()).getRecords();
 
@@ -382,7 +384,7 @@ public class DataExportEngineTest extends AbstractTest {
                         ))
                 );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +
@@ -425,7 +427,7 @@ public class DataExportEngineTest extends AbstractTest {
                 FieldBuilder.modellingField("aLabel", "ModellingFieldTest")
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [{" +
                 "    properties: {" +
@@ -450,7 +452,7 @@ public class DataExportEngineTest extends AbstractTest {
                     FieldBuilder.modellingField("aLabel", "ModellingFieldTest")))
         );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [{" +
                 "    properties: {" +
@@ -479,7 +481,7 @@ public class DataExportEngineTest extends AbstractTest {
                                 .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_")))
                 );
 
-        engine.execute(builder.build(), writer);
+        engine.execute(builder.build(), writer, emptyImporterMatcher);
         JSONAssert.assertEquals("{" +
                 "  features: [" +
                 "    {" +

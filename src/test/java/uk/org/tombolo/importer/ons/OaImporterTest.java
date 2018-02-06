@@ -18,9 +18,9 @@ import static org.junit.Assert.assertEquals;
 /**
  * Using the following test data files:
  *
- * lsoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy9kYTgzMWY4MDc2NDM0Njg4OTgzN2M3MjUwOGYwNDZmYV8yLmdlb2pzb24=.json
- * msoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy84MjZkYzg1ZmI2MDA0NDA4ODk0ODBmNGQ5ZGJiMWEyNF8yLmdlb2pzb24=.json
- * las aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy8zOTQzYzIxMTRkNzY0Mjk0YTdjMDA3OWM0MDIwZDU1OF80Lmdlb2pzb24=.json
+ * lsoas 0220da63-778d-3712-a4bf-eafa8e5ab7ab.json
+ * msoas 8812b68c-a1e4-3583-8a4b-3fcbae0d3ed7.json
+ * las 6081d478-b3b1-3764-aa95-00ec0c92d213.json
  */
 public class OaImporterTest extends AbstractTest {
     OaImporter importer;
