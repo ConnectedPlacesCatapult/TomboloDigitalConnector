@@ -102,7 +102,7 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	private Importer initialiseImporter(String importerClass, String configFile) throws Exception {
-		if (configFile != null) {
+		if (configFile != null && !"".equals(configFile)) {
 			Config importerConfiguration = ConfigUtils.loadConfig(
 					AbstractRunner.loadProperties("Configuration file", configFile));
 			return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
