@@ -39,3 +39,4 @@ public class WrapperFieldTest extends AbstractTest {
                 RecipeDeserializer.fromJson(FieldBuilder.constantField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
     }
 }
+

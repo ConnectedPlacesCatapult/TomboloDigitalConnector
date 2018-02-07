@@ -116,3 +116,4 @@ public class AttributeMatcherFieldTest extends AbstractTest {
                 FieldRecipe.class);
     }
 }
+

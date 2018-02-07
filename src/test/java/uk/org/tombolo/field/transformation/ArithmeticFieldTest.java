@@ -78,3 +78,4 @@ public class ArithmeticFieldTest extends AbstractTest {
                 FieldRecipe.class);
     }
 }
+
