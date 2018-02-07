@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.phe;
 
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.importer.AbstractOaImporter;
-import uk.org.tombolo.importer.Config;
 
 /**
  * Abstract importer for all date provided by Public Health England.
@@ -12,10 +11,6 @@ public abstract class AbstractPheImporter extends AbstractOaImporter {
             "uk.gov.phe",
             "Public Health England"
     );
-
-    public AbstractPheImporter(Config config) {
-        super(config);
-    }
 
     @Override
     public Provider getProvider() {

@@ -11,15 +11,11 @@ import java.util.List;
 
 public abstract class AbstractOaImporter extends AbstractImporter {
 
-    public AbstractOaImporter(Config config) {
-        super(config);
-    }
-
     @Override
     public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope,
                                  List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force)
                                 throws Exception {
-        OaImporter oaImporter = new OaImporter(config);
+        OaImporter oaImporter = new OaImporter();
         oaImporter.setDownloadUtils(downloadUtils);
         for (SubjectRecipe subjectRecipe : subjectRecipes) {
             if (!DatabaseJournal.journalHasEntry(JournalEntryUtils.getJournalEntryForDatasourceId(

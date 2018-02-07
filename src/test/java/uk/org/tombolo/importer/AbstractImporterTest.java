@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer;
 
 import org.junit.Test;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.Provider;
@@ -14,12 +13,9 @@ import static org.junit.Assert.assertTrue;
 
 public class AbstractImporterTest {
 
-    TestAbstractImporter importer = new TestAbstractImporter(TestFactory.DEFAULT_CONFIG);
+    TestAbstractImporter importer = new TestAbstractImporter();
 
     class TestAbstractImporter extends AbstractImporter {
-        public TestAbstractImporter(Config config){
-            super(config);
-        }
 
         @Override
         protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {

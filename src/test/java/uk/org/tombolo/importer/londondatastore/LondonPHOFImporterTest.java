@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.TimedValue;
@@ -24,7 +23,7 @@ public class LondonPHOFImporterTest extends AbstractLondonDatastoreTestUtil {
 
 	@Before
 	public void before(){
-		importer = new LondonPHOFImporter(TestFactory.DEFAULT_CONFIG);
+		importer = new LondonPHOFImporter();
 		mockDownloadUtils(importer);
 	}
 

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
  * Local file: 30313bb6-b3eb-3ea4-9cea-95e04b25cc4f.csv
  */
 public class IMDImporterTest extends AbstractTest {
-    IMDImporter imdImporter = new IMDImporter(TestFactory.DEFAULT_CONFIG);
+    IMDImporter imdImporter = new IMDImporter();
 
     Subject subject1;
     Subject subject2;

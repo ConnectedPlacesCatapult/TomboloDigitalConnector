@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.dft;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -55,7 +54,7 @@ public class AccessibilityImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new AccessibilityImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new AccessibilityImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
 
         cityofLondon001A = TestFactory.makeNamedSubject("E01000001");

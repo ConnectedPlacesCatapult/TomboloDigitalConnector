@@ -5,7 +5,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -56,8 +55,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
 
     private enum AttributeId {claimantCount};
 
-    public ONSClaimantsImporter(Config config){
-        super(config);
+    public ONSClaimantsImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

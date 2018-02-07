@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -42,8 +41,7 @@ public final class OaImporter extends AbstractImporter {
         }
     }
 
-    public OaImporter(Config config){
-        super(config);
+    public OaImporter(){
         datasourceIds = stringsFromEnumeration(OaType.class);
     }
 

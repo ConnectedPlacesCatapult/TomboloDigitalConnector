@@ -12,7 +12,6 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ParsingException;
 import uk.org.tombolo.importer.utils.JSONReader;
@@ -43,9 +42,7 @@ public class LAQNImporter extends AbstractImporter implements Importer{
     private int attributeSize;
     private ArrayList<LinkedHashMap<String, List<String>>> flatJson;
 
-    public LAQNImporter(Config config) throws Exception {
-        super(config);
-
+    public LAQNImporter() throws Exception {
         datasourceSpec = new DatasourceSpec(getClass(), LAQN_SUBJECT_TYPE_LABEL, LAQN_SUBJECT_TYPE_LABEL,
                 LAQN_SUBJECT_TYPE_DESC, dataSourceURL);
         datasourceIds = Arrays.asList(datasourceSpec.getId());

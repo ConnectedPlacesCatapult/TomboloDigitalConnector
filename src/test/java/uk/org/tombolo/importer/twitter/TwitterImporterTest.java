@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.FixedValue;
 import uk.org.tombolo.core.Subject;
@@ -35,7 +34,7 @@ public class TwitterImporterTest extends AbstractTest {
 
     @Before
     public void before(){
-        importer = new TwitterImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new TwitterImporter();
         mockDownloadUtils(importer);
     }
 

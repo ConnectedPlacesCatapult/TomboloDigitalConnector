@@ -9,7 +9,6 @@ import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.JSONReader;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
@@ -41,10 +40,6 @@ public class CensusImporter extends AbstractONSImporter {
                put("msoa", "TYPE297");
                put("localAuthority", "TYPE463");
     }};
-
-    public CensusImporter(Config config) throws IOException {
-        super(config);
-    }
 
     @Override
     public List<String> getDatasourceIds() {
