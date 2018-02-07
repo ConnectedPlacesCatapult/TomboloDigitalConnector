@@ -6,13 +6,13 @@ import uk.org.tombolo.field.AbstractField;
 import uk.org.tombolo.field.SingleValueField;
 
 /**
- * FixedAnnotationField.java
+ * ConstantField.java
  * Returns a fixed value for annotation purposes.
  */
-public class FixedAnnotationField extends AbstractField implements SingleValueField {
+public class ConstantField extends AbstractField implements SingleValueField {
     private final String value;
 
-    public FixedAnnotationField(String label, String value) {
+    public ConstantField(String label, String value) {
         super(label);
         this.value = value;
     }
