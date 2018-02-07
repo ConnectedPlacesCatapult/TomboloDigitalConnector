@@ -1,7 +1,6 @@
 package uk.org.tombolo.core;
 
 import com.google.gson.stream.JsonWriter;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
 import java.io.IOException;
@@ -68,11 +67,9 @@ public class Datasource {
 		writer.name("url").value(datasourceSpec.getUrl());
 
 		// Adding provider in order to have it in Catalogue, we may need to review this in future
-		Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
-				new SubjectType(new Provider("", ""), "", "")).build();
 		Class<?> theClass = Class.forName(datasourceSpec.getImporterClass().getCanonicalName());
-		Constructor<?> constructor = theClass.getConstructor(Config.class);
-		Importer importer = (Importer) constructor.newInstance(DEFAULT_CONFIG);
+		Constructor<?> constructor = theClass.getConstructor();
+		Importer importer = (Importer) constructor.newInstance();
 		writer.name("provider");
 		importer.getProvider().writeJSON(writer);
 

@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 
 import java.net.URL;
 import java.util.Collections;
@@ -34,8 +33,7 @@ public final class HealthOrganisationImporter extends AbstractImporter {
         DatasourceId(DatasourceSpec datasourceSpec) { this.datasourceSpec = datasourceSpec; }
     }
 
-    public HealthOrganisationImporter(Config config) {
-        super(config);
+    public HealthOrganisationImporter() {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

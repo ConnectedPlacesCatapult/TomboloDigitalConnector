@@ -2,7 +2,6 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.TimedValue;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class AdultObesityImporterTest extends AbstractLondonDatastoreTestUtil {
     static final private String DATASOURCE_ID = "adultObesity";
-    private AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
+    private AdultObesityImporter importer = new AdultObesityImporter();
 
     @Before
     public void setUp() throws Exception {

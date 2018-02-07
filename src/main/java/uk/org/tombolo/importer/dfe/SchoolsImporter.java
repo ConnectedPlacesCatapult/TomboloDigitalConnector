@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.LatLong;
@@ -63,8 +62,7 @@ public class SchoolsImporter extends AbstractDfEImporter {
         }
     }
 
-    public SchoolsImporter(Config config) {
-        super(config);
+    public SchoolsImporter() {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

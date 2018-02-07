@@ -22,8 +22,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
     // A controlled implementation of the abstract class so we can test it
     class TestGeotoolsDataStoreImporter extends AbstractGeotoolsDataStoreImporter {
 
-        public TestGeotoolsDataStoreImporter(Config config) {
-            super(config);
+        public TestGeotoolsDataStoreImporter() {
             datasourceIds = Arrays.asList("osm_polyline_processed");
         }
 
@@ -84,7 +83,7 @@ public class AbstractGeotoolsDataStoreImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new TestGeotoolsDataStoreImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new TestGeotoolsDataStoreImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
         testSubjectType = SubjectTypeUtils.getOrCreate(TestFactory.DEFAULT_PROVIDER, "example", "Test Example");
     }

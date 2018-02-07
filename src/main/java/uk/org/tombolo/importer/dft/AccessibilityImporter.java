@@ -12,7 +12,6 @@ import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -89,8 +88,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
     ExcelUtils excelUtils = new ExcelUtils();
 
-    public AccessibilityImporter(Config config){
-        super(config);
+    public AccessibilityImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

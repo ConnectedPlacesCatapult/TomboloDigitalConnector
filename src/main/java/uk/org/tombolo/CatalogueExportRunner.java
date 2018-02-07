@@ -5,12 +5,9 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
-import uk.org.tombolo.core.Provider;
-import uk.org.tombolo.core.SubjectType;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.Importer;
 
-import java.io.*;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
@@ -68,12 +65,10 @@ public class CatalogueExportRunner extends AbstractRunner {
     public Importer getImporter(Class<? extends Importer> importerClass) {
         Importer importer = null;
         try {
-            Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
-                    new SubjectType(new Provider("", ""), "", "")).build();
 
             Class<?> theClass = Class.forName(importerClass.getCanonicalName());
-            Constructor<?> constructor = theClass.getConstructor(Config.class);
-            importer = (Importer) constructor.newInstance(DEFAULT_CONFIG);
+            Constructor<?> constructor = theClass.getConstructor();
+            importer = (Importer) constructor.newInstance();
             importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
         } catch (Exception e) {

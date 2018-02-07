@@ -35,7 +35,7 @@ public class ONSWagesImporterTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        importer = new ONSWagesImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ONSWagesImporter();
         mockDownloadUtils(importer);
         cityOfLondon = TestFactory.makeNamedSubject("E09000001");
         islington = TestFactory.makeNamedSubject("E09000019");
