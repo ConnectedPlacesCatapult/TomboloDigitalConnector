@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
@@ -19,8 +18,6 @@ public final class TestFactory {
     public static final Provider DEFAULT_PROVIDER = new Provider("default_provider_label", "default_provider_name");
     public static final String TIMESTAMP = "2011-01-01T00:00:00";
     public static final Geometry FAKE_POINT_GEOMETRY = makePointGeometry(0d, 0d);
-    public static final Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
-            new SubjectType(new Provider("", ""), "", "")).build();
 
     /**
      * makeFakeGeometry

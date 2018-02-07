@@ -37,15 +37,15 @@ public class OSMBuiltInAttributeMatcherFieldTest extends AbstractTest {
         AttributeMatcher attributeMatcher = new AttributeMatcher(osmProvider.getLabel(),
                 "built-in-landuse", null);
         OSMBuiltInAttributeMatcherField field = new OSMBuiltInAttributeMatcherField("builtInField",
-                Arrays.asList(attributeMatcher), makeFixedAnnotationFieldSpec());
+                Arrays.asList(attributeMatcher), makeConstantFieldSpec());
 
         // Test
         assertEquals("5.0",field.valueForSubject(subjectWithAttributeMatch, true));
     }
 
-    private FieldRecipe makeFixedAnnotationFieldSpec() {
+    private FieldRecipe makeConstantFieldSpec() {
         return RecipeDeserializer.fromJson(
-                FieldBuilder.fixedAnnotationField("default_provider_label", "5.0").toJSONString(),
+                FieldBuilder.constantField("default_provider_label", "5.0").toJSONString(),
                 FieldRecipe.class);
     }
 }

@@ -10,7 +10,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -81,8 +80,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
 
     private ExcelUtils excelUtils = new ExcelUtils();;
 
-    public ChildhoodObesityImporter(Config config){
-        super(config);
+    public ChildhoodObesityImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);

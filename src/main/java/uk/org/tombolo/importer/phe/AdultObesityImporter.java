@@ -10,7 +10,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -52,8 +51,7 @@ public class AdultObesityImporter extends AbstractPheImporter {
 
     private enum AttributeLabel {fractionUnderweight,fractionHealthyWeight,fractionOverweight,fractionObese,fractionExcessWeight}
 
-    public AdultObesityImporter(Config config){
-        super(config);
+    public AdultObesityImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

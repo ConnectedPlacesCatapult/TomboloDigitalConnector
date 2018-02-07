@@ -6,7 +6,6 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.lac.LAQNImporter;
 
 import java.lang.reflect.Constructor;
@@ -24,18 +23,12 @@ import static org.junit.Assert.assertEquals;
 public class LAQNImporterTest extends AbstractTest {
 
     private LAQNImporter laqnImporter;
-    private Config defaultConfig = new Config.Builder(0, "",
-                            "", "erg.kcl.ac.uk",
-                            new SubjectType(new Provider("erg.kcl.ac.uk",
-                                    "Environmental Research Group Kings College London"),
-                                    "airQualityControl", "Quantity of gases in air by Kings College London"))
-            .build();
 
 
     @Before
     public void setUp() throws Exception {
 
-        laqnImporter = new LAQNImporter(defaultConfig);
+        laqnImporter = new LAQNImporter();
         mockDownloadUtils(laqnImporter);
 
     }
@@ -45,8 +38,8 @@ public class LAQNImporterTest extends AbstractTest {
                                                String... args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 
         Class<?> theClass = Class.forName("uk.org.tombolo.importer.lac.LAQNImporter");
-        Constructor<?> constructor = theClass.getConstructor(Config.class);
-        Object object = constructor.newInstance(defaultConfig);
+        Constructor<?> constructor = theClass.getConstructor();
+        Object object = constructor.newInstance();
 
         Method method;
         if (args.length > 0) {

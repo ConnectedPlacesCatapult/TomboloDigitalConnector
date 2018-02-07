@@ -10,7 +10,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.ExcelUtils;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
 import uk.org.tombolo.importer.utils.extraction.RowCellExtractor;
@@ -130,8 +129,7 @@ public class ONSWagesImporter extends AbstractONSImporter {
             "Female Full-Time", "Female Part-Time"};
     private String[] metricNames = {"Mean", "Median"};
 
-    public ONSWagesImporter(Config config){
-        super(config);
+    public ONSWagesImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
