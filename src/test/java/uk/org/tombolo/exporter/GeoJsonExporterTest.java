@@ -13,7 +13,7 @@ import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.recipe.AttributeMatcher;
-import uk.org.tombolo.field.value.FixedAnnotationField;
+import uk.org.tombolo.field.value.ConstantField;
 import uk.org.tombolo.field.value.TimeseriesField;
 
 import java.io.StringWriter;
@@ -56,7 +56,7 @@ public class GeoJsonExporterTest extends AbstractTest {
 
 		exporter.write(writer,
 				Arrays.asList(SubjectUtils.getSubjectByTypeAndLabel(localAuthority, "E09000001")),
-				Arrays.asList(new FixedAnnotationField("some_label", "some_value")), false
+				Arrays.asList(new ConstantField("some_label", "some_value")), false
 		);
 
 		JSONAssert.assertEquals("{" +
