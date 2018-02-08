@@ -92,6 +92,11 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
     }
 
     @Override
+    protected List<String> getOaDatasourceIds() {
+        return Arrays.asList(super.getOaDatasourceIds().get(0), OaImporter.OaType.msoa.datasourceSpec.getId());
+    }
+
+    @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope,  List<String> datasourceLocation) throws Exception {
         // Choose the apppropriate workbook sheet
         Workbook workbook = excelUtils.getWorkbook(

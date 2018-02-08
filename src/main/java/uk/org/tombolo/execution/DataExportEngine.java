@@ -42,10 +42,11 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
+		List<SubjectRecipe> subjectRecipes = dataExportRecipe.getDataset().getSubjects();
 		// Import datasources that are in the global dataset specification
 		for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
 			if (!datasourceSpec.getImporterClass().isEmpty()) {
-				importDatasource(forceImports, datasourceSpec, dataExportRecipe.getDataset().getSubjects());
+				importDatasource(forceImports, datasourceSpec, subjectRecipes);
 			}
 		}
 
@@ -62,7 +63,7 @@ public class DataExportEngine implements ExecutionEngine {
 
 		// Use the new fields method
 		log.info("Exporting ...");
-		List<SubjectRecipe> subjectSpecList = dataExportRecipe.getDataset().getSubjects();
+		List<SubjectRecipe> subjectSpecList = subjectRecipes;
 		Exporter exporter = (Exporter) Class.forName(dataExportRecipe.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
 		exporter.write(writer, subjects, fields, dataExportRecipe.getTimeStamp());
@@ -102,7 +103,7 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	private Importer initialiseImporter(String importerClass, String configFile) throws Exception {
-		if (configFile != null) {
+		if (configFile != null && !"".equals(configFile)) {
 			Config importerConfiguration = ConfigUtils.loadConfig(
 					AbstractRunner.loadProperties("Configuration file", configFile));
 			return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);

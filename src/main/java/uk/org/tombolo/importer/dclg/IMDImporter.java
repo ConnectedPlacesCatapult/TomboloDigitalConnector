@@ -64,6 +64,12 @@ public class IMDImporter extends AbstractDCLGImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
+//        // Persist the lsoa subjects from OaImporter as we do not define a new subject type here but get an existing
+//        // one
+//        OaImporter oaImporter = new OaImporter();
+//        oaImporter.setDownloadUtils(downloadUtils);
+//        oaImporter.importDatasource(OaImporter.OaType.lsoa.datasourceSpec.getId(), null, null, null);
+
         // Save timed values
         LocalDateTime timestamp = LocalDateTime.parse("2015-01-01T00:00:01", TimedValueId.DATE_TIME_FORMATTER);
         String line;

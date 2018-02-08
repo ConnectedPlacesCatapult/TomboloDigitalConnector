@@ -19,11 +19,6 @@ import java.util.List;
 public final class OaImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
 
-    public static final Provider PROVIDER = new Provider(
-            "uk.gov.ons",
-            "Office for National Statistics"
-    );
-
     public enum OaType {
         lsoa(new DatasourceSpec(OaImporter.class,"lsoa","LSOA","Lower Layer Super Output Areas",null),
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__LSOA.geojson"),
@@ -52,7 +47,7 @@ public final class OaImporter extends AbstractImporter {
 
     @Override
     public Provider getProvider() {
-        return PROVIDER;
+        return AbstractONSImporter.PROVIDER;
     }
 
     @Override
