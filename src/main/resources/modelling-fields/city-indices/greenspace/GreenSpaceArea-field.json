@@ -8,7 +8,7 @@
     },
     "function": "sum",
     "field": {
-        "fieldClass": "uk.org.tombolo.field.assertion.BuiltInAttributeMatcherField",
+        "fieldClass": "uk.org.tombolo.field.assertion.OSMBuiltInAttributeMatcherField",
         "label": "Landuse",
         "builtInClass": "uk.org.tombolo.importer.osm.OSMBuiltInImporters",
         "attributes": [
