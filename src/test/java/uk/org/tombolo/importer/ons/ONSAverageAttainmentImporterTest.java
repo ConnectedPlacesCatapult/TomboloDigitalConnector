@@ -1,21 +1,22 @@
-package uk.org.tombolo.importer.barkingindices;
+package uk.org.tombolo.importer.ons;
 
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
-import uk.org.tombolo.core.utils.*;
+import uk.org.tombolo.core.utils.AttributeUtils;
+import uk.org.tombolo.core.utils.TimedValueUtils;
+import uk.org.tombolo.importer.ons.ONSAverageAttainmentImporter;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class ONSAverageAttainmentImporterTest extends AbstractTest {
-    private static ONSAverageAttainmentImporter importer;
+    private static uk.org.tombolo.importer.ons.ONSAverageAttainmentImporter importer;
     Subject barking;
     Subject islington;
-
 
     @Before
     public void before(){
@@ -24,17 +25,20 @@ public class ONSAverageAttainmentImporterTest extends AbstractTest {
         barking = TestFactory.makeNamedSubject("E09000002");
         islington = TestFactory.makeNamedSubject("E09000019");
     }
+
     @Test
     public void testGetProvider(){
         Provider provider = importer.getProvider();
         assertEquals("uk.gov.ons", provider.getLabel());
-        assertEquals("Average Attainment 8 score per pupil", provider.getName());
+        assertEquals("Office for National Statistics", provider.getName());
     }
+
     @Test
     public void testGetDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
         assertEquals(1,datasources.size());
     }
+
     @Test
     public void testGetDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("ONSAverageAttainment");

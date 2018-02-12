@@ -1,6 +1,5 @@
-package uk.org.tombolo.importer.barkingindices;
+package uk.org.tombolo.importer.ons;
 
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,9 +10,8 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
+import uk.org.tombolo.importer.AbstractOaImporter;
 import uk.org.tombolo.importer.Config;
-import uk.org.tombolo.importer.ons.AbstractONSImporter;
-import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.File;
 import java.io.InputStream;
@@ -32,7 +30,7 @@ import java.util.List;
  * Geography: Local authorities
  * Unit of measurement: Please consult https://www.gov.uk/education/school-performance-measures
  */
-public class ONSAverageAttainmentImporter extends AbstractImporter {
+public class ONSAverageAttainmentImporter extends AbstractONSImporter {
     private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/652293/SFR57_2017_LA__tables.xlsx";
     private static final Logger log = LoggerFactory.getLogger(ONSAverageAttainmentImporter.class);
 
@@ -44,16 +42,6 @@ public class ONSAverageAttainmentImporter extends AbstractImporter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    // Instantiating the data Provider
-    protected static final Provider PROVIDER = new Provider(
-            "uk.gov.ons",
-            "Average Attainment 8 score per pupil"
-    );
-
-    @Override
-    public Provider getProvider() {
-        return PROVIDER;
     }
 
     @Override
@@ -79,7 +67,7 @@ public class ONSAverageAttainmentImporter extends AbstractImporter {
         } catch (MalformedURLException e) {
             File file;
             if (!(file = new File(fileLocation)).exists()) {
-                log.warn("ERROR: File does not exist: " + fileLocation);
+                log.error("ERROR: File does not exist: " + fileLocation);
             }
             url = file.toURI().toURL();
         }
@@ -106,19 +94,23 @@ public class ONSAverageAttainmentImporter extends AbstractImporter {
 
             // Dataset specific: The dataset contains mixed geometries. Check that the geometries in the excel file
             // match the "Area code" column. If they are not null proceed
+
             if (subject!=null){
-                Row rowTimeTest = datatypeSheet.getRow(5);
                 // Looping through the time values
                 for (int timeValuesIndex=3; timeValuesIndex <= 5; timeValuesIndex++ ) {
-                    // This is the row number that contains our time values (years) in the dataset
 
+                    // This is the row number that contains our time values (years) in the dataset
                     Row rowTime = datatypeSheet.getRow(5);
                     String year = rowTime.getCell(timeValuesIndex).toString();
 
+                    // The date is formated as first year appearing. Eg: 2014/15 is formatted as 2014
                     year = year.substring(0, 4);
                     LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+
                     try {
+
                         Double record = row.getCell(timeValuesIndex).getNumericCellValue();
+
                         // Here is where we are assigning the values of our .csv file to the attribute fields we
                         // created.
                         Attribute attribute = datasource.getTimedValueAttributes().get(0);
@@ -129,8 +121,7 @@ public class ONSAverageAttainmentImporter extends AbstractImporter {
                                 record));
 
                     } catch (IllegalStateException e) {
-                        // TODO fix the missing values so they appear something else rather than 0
-                        log.warn("Missing value: setting to 0.0");
+                        log.warn("Missing value fo subject:" + subject.getLabel().toString() + ". Defaulting to zero. Consider using BackoffField or ConstantField");
                         continue;
                     }
 
@@ -149,5 +140,6 @@ public class ONSAverageAttainmentImporter extends AbstractImporter {
 
         return attributes;
     }
+
 
 }
