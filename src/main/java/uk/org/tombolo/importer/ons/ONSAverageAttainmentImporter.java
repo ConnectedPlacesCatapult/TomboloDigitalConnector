@@ -34,8 +34,7 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
     private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/652293/SFR57_2017_LA__tables.xlsx";
     private static final Logger log = LoggerFactory.getLogger(ONSAverageAttainmentImporter.class);
 
-    public ONSAverageAttainmentImporter(Config config) {
-        super(config);
+    public ONSAverageAttainmentImporter() {
         try {
             // Specifying the datasourceId. This will be used by the DC recipe
             datasourceIds = Arrays.asList(getDatasourceSpec("ONSAverageAttainment").getId());

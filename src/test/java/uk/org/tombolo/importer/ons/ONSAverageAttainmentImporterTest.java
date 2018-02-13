@@ -20,7 +20,7 @@ public class ONSAverageAttainmentImporterTest extends AbstractTest {
 
     @Before
     public void before(){
-        importer = new ONSAverageAttainmentImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ONSAverageAttainmentImporter();
         mockDownloadUtils(importer);
         barking = TestFactory.makeNamedSubject("E09000002");
         islington = TestFactory.makeNamedSubject("E09000019");
