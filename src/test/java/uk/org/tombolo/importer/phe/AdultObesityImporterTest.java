@@ -27,11 +27,11 @@ public class AdultObesityImporterTest extends AbstractTest {
 	private static final String DATASOURCE_ID = "adultObesity";
 	private AdultObesityImporter importer = new AdultObesityImporter();
 
-	private Subject cityOfLondon;
+	private Subject islington;
 
 	@Before
 	public void addSubjectFixtures() {
-		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
+		islington = TestFactory.makeNamedSubject("E09000019");
 	}
 
 	@Before
@@ -50,21 +50,20 @@ public class AdultObesityImporterTest extends AbstractTest {
 	@Test
 	public void testImportDatasource() throws Exception{
 		importer.importDatasource(DATASOURCE_ID, null, null, null);
-		
-		//FIXME: Find a way to match Gateshead etc.
-		assertEquals(5, importer.getTimedValueCount());
+
+		// 3 years, 3 attributes
+		assertEquals(9, importer.getTimedValueCount());
 
 		Map<String, Double> groundTruthCoL = new HashMap();
 
-		groundTruthCoL.put("fractionUnderweight", 0.001916d);
-		groundTruthCoL.put("fractionHealthyWeight", 0.530573d);
-		groundTruthCoL.put("fractionOverweight", 0.287439d);
-		groundTruthCoL.put("fractionObese", 0.180070d);
-		groundTruthCoL.put("fractionExcessWeight", 0.467510d);
+		// Test only for fractionOverweight and fractionObese as the rest of the attributes have missing values in the dataset
+		groundTruthCoL.put("fractionOverweight", 0.260d);
+		groundTruthCoL.put("fractionObese", 0.0775d);
+		groundTruthCoL.put("fractionHealthyWeight", 0.62d);
 
 		for (String attributeName : groundTruthCoL.keySet()) {
 			Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
-			TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityOfLondon, attribute);
+			TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington, attribute);
 			assertEquals("Value for "+attributeName, groundTruthCoL.get(attributeName), timedValue.getValue(), 0.0001d);
 		}
 	}
