@@ -17,14 +17,16 @@ public abstract class AbstractOaImporter extends AbstractImporter {
     public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope,
                                  List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force)
                                 throws Exception {
-        OaImporter oaImporter = new OaImporter();
-        oaImporter.setDownloadUtils(downloadUtils);
-        // Import the subjects defined by OaImporter first
-        for (String id : getOaDatasourceIds()) {
-            oaImporter.importDatasource(id, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST,
-                    subjectRecipes, false);
+        List<String> oaDatasourceIds = getOaDatasourceIds();
+        if (!oaDatasourceIds.isEmpty()) {
+            OaImporter oaImporter = new OaImporter();
+            oaImporter.setDownloadUtils(downloadUtils);
+            // Import the subjects defined by OaImporter first
+            for (String id : oaDatasourceIds) {
+                oaImporter.importDatasource(id, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                        subjectRecipes, false);
+            }
         }
-
         super.importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, subjectRecipes, force);
     }
 

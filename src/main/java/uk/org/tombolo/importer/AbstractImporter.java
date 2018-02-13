@@ -37,6 +37,7 @@ public abstract class AbstractImporter implements Importer {
 		datasourceIds = Collections.emptyList();
 		geographyLabels = Collections.singletonList(DEFAULT_GEOGRAPHY);
 		temporalLabels = Collections.singletonList(DEFAULT_TEMPORAL);
+		subjectRecipes = Collections.emptyList();
 	}
 
 	@Override

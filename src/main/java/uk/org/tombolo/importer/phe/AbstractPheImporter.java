@@ -6,7 +6,6 @@ import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.util.Collections;
 import java.util.List;
-
 /**
  * Abstract importer for all date provided by Public Health England.
  */

@@ -11,6 +11,7 @@ import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,15 +25,23 @@ import static org.junit.Assert.assertEquals;
  * Local: 1a02e39e-59ac-3c05-a11e-51d0bbb58a0f.xlsx
  */
 public class AdultObesityImporterTest extends AbstractTest {
+	//Create this private class to avoid importing the oa data that slows down the test
+	private class ImporterTest extends AdultObesityImporter {
+		@Override
+		protected List<String> getOaDatasourceIds() {
+
+			return Collections.emptyList();
+		}
+	}
 	private static final String DATASOURCE_ID = "adultObesity";
-	private AdultObesityImporter importer = new AdultObesityImporter();
+	private AdultObesityImporter importer = new ImporterTest();
 
 	private Subject cityOfLondon;
-
 	@Before
 	public void addSubjectFixtures() {
 		cityOfLondon = TestFactory.makeNamedSubject("E09000001");
 	}
+
 
 	@Before
 	public void setDownloadUtils() {
