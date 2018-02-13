@@ -23,6 +23,8 @@ The below you can find the suggested reading order of this documentation.
 
 [Recipe Language](Recipe-Language.md)
 
+[Python Implementation](https://github.com/FutureCitiesCatapult/digital-connector-python)
+
 [HowTo: Importer Implementation](HowTo-Importer-Implementation.md)
 
 [Glossary](Glossary.md)

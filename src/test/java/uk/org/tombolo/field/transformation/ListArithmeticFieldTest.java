@@ -58,7 +58,7 @@ public class ListArithmeticFieldTest extends AbstractTest {
 
         private FieldRecipe makeFieldSpec(String label, String value) {
             return RecipeDeserializer.fromJson(
-                    FieldBuilder.fixedAnnotationField(label, value).toJSONString(),
+                    FieldBuilder.constantField(label, value).toJSONString(),
                     FieldRecipe.class);
         }
 }

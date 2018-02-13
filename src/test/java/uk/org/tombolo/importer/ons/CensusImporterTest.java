@@ -32,7 +32,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Before
     public void setup() throws Exception {
-        importer = new CensusImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new CensusImporter();
         mockDownloadUtils(importer);
 
         cityOfLondon01 = TestFactory.makeNamedSubject("E01000001");

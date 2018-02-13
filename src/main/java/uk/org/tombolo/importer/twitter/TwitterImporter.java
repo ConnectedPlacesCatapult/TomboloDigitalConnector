@@ -11,7 +11,6 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ZipUtils;
 
 import javax.json.Json;
@@ -162,8 +161,7 @@ public class TwitterImporter extends AbstractImporter {
         }
     }
 
-    public TwitterImporter(Config config) {
-        super(config);
+    public TwitterImporter() {
         datasourceIds = Arrays.asList(DatasourceId.twitter.name());
     }
 

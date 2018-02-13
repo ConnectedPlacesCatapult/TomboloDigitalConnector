@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -19,7 +18,6 @@ import java.util.List;
 
 public final class OaImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
-    public static final String PROP_ONS_API_KEY = "apiKeyOns";
 
     public static final Provider PROVIDER = new Provider(
             "uk.gov.ons",
@@ -28,11 +26,12 @@ public final class OaImporter extends AbstractImporter {
 
     public enum OaType {
         lsoa(new DatasourceSpec(OaImporter.class,"lsoa","LSOA","Lower Layer Super Output Areas",null),
-                "http://geoportal.statistics.gov.uk/datasets/da831f80764346889837c72508f046fa_2.geojson"),
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__LSOA.geojson"),
         msoa(new DatasourceSpec(OaImporter.class, "msoa", "MSOA", "Middle Layer Super Output Areas", null),
-                "http://geoportal.statistics.gov.uk/datasets/826dc85fb600440889480f4d9dbb1a24_2.geojson"),
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__MSOA.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
-                "http://geoportal.statistics.gov.uk/datasets/3943c2114d764294a7c0079c4020d558_4.geojson");
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson");
+
 
         public DatasourceSpec datasourceSpec;
         private String datafile;
@@ -42,8 +41,7 @@ public final class OaImporter extends AbstractImporter {
         }
     }
 
-    public OaImporter(Config config){
-        super(config);
+    public OaImporter(){
         datasourceIds = stringsFromEnumeration(OaType.class);
     }
 

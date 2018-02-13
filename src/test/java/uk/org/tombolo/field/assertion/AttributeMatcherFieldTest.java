@@ -88,7 +88,7 @@ public class AttributeMatcherFieldTest extends AbstractTest {
         AttributeMatcher attributeMatcher2 = new AttributeMatcher(TestFactory.DEFAULT_PROVIDER.getLabel(),
                 testAttribute2.getLabel(), Arrays.asList("value"));
         AttributeMatcherField field = new AttributeMatcherField("blafield",
-                Arrays.asList(attributeMatcher1, attributeMatcher2), makeFixedAnnotationFieldSpec());
+                Arrays.asList(attributeMatcher1, attributeMatcher2), makeConstantFieldSpec());
 
         // Test
         assertEquals("3.0",field.valueForSubject(subjectWithOneAttributeMatch, true));
@@ -110,9 +110,10 @@ public class AttributeMatcherFieldTest extends AbstractTest {
                 FieldRecipe.class);
     }
 
-    private FieldRecipe makeFixedAnnotationFieldSpec() {
+    private FieldRecipe makeConstantFieldSpec() {
         return RecipeDeserializer.fromJson(
-                FieldBuilder.fixedAnnotationField("default_provider_label", "3.0").toJSONString(),
+                FieldBuilder.constantField("default_provider_label", "3.0").toJSONString(),
                 FieldRecipe.class);
     }
 }
+

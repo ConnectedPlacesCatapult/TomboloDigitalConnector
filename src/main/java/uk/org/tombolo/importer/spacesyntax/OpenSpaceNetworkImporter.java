@@ -30,10 +30,6 @@ public class OpenSpaceNetworkImporter extends AbstractGeotoolsDataStoreImporter 
 
     private DatasourceSpec datasourceSpec;
 
-    public OpenSpaceNetworkImporter(Config config) {
-        super(config);
-    }
-
     @Override
     public Provider getProvider() {
         return PROVIDER;

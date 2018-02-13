@@ -10,7 +10,7 @@ Value fields are the most basic fields. Their purpose is to being able to export
 
 Currently we have implemented the following value fields:
 
-- **Fixed Annotation Field:** Returns a fixed value for annotation purposes.
+- **Constant Field:** Returns a fixed value for annotation purposes.
 - **Fixed Value Field:** Returns the Fixed Value of a specified Attribute for a given Subject.
 - **Latest Value Field:** Returns the latest Timed Value for a particular Attribute on the given Subject.
 - **Subject Latitude Field:** Returns the latitude of the centroid of the Subject.

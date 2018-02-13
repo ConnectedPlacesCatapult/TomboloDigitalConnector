@@ -35,7 +35,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new ChildhoodObesityImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ChildhoodObesityImporter();
         mockDownloadUtils(importer);
 
         cityOfLondon001 = TestFactory.makeNamedSubject("E02000001");  // City of London 001

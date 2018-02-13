@@ -36,6 +36,7 @@ public class WrapperFieldTest extends AbstractTest {
 
     private List<FieldRecipe> makeFieldSpec() {
         return Collections.singletonList(
-                RecipeDeserializer.fromJson(FieldBuilder.fixedAnnotationField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
+                RecipeDeserializer.fromJson(FieldBuilder.constantField("anotherLabel", "aValue").toJSONString(), FieldRecipe.class));
     }
 }
+

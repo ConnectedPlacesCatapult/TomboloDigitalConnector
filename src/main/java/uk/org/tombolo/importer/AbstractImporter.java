@@ -20,7 +20,6 @@ public abstract class AbstractImporter implements Importer {
 	protected List<String> datasourceIds;
 	protected List<String> geographyLabels;
 	protected List<String> temporalLabels;
-	protected Config config;
 	protected List<SubjectRecipe> subjectRecipes;
 
 	protected final static String DEFAULT_GEOGRAPHY = "all";
@@ -34,11 +33,10 @@ public abstract class AbstractImporter implements Importer {
 	protected Properties properties = new Properties();
 	protected DownloadUtils downloadUtils;
 
-	public AbstractImporter(Config config) {
+	public AbstractImporter() {
 		datasourceIds = Collections.emptyList();
 		geographyLabels = Collections.singletonList(DEFAULT_GEOGRAPHY);
 		temporalLabels = Collections.singletonList(DEFAULT_TEMPORAL);
-		this.config = config;
 	}
 
 	@Override
@@ -64,8 +62,6 @@ public abstract class AbstractImporter implements Importer {
 	public void setDownloadUtils(DownloadUtils downloadUtils){
 		this.downloadUtils = downloadUtils;
 	}
-
-	public void setConfig(Config config) { this.config = config; }
 
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store

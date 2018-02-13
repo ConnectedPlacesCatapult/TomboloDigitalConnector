@@ -43,8 +43,10 @@ public class DataExportEngine implements ExecutionEngine {
 
 	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
 		// Import datasources that are in the global dataset specification
-		for (DatasourceRecipe datasourceRecipe : dataExportRecipe.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceRecipe, dataExportRecipe.getDataset().getSubjects());
+		for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
+			if (!datasourceSpec.getImporterClass().isEmpty()) {
+				importDatasource(forceImports, datasourceSpec, dataExportRecipe.getDataset().getSubjects());
+			}
 		}
 
 		// Generate fields
@@ -100,13 +102,13 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	private Importer initialiseImporter(String importerClass, String configFile) throws Exception {
-		Config importerConfiguration = null;
 		if (configFile != null && !"".equals(configFile)) {
-			importerConfiguration = ConfigUtils.loadConfig(
+			Config importerConfiguration = ConfigUtils.loadConfig(
 					AbstractRunner.loadProperties("Configuration file", configFile));
+			return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
 
 		}
-		return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
+		return (Importer) Class.forName(importerClass).getDeclaredConstructor().newInstance();
 	}
 
 	/**
