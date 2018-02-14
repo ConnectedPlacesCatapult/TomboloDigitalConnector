@@ -78,7 +78,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         } catch (MalformedURLException e) {
             File file;
             if (!(file = new File(fileLocation)).exists()) {
-                System.out.println("ERROR: File does not exist: " + fileLocation);
+                log.error("File does not exist: " + fileLocation);
             }
             url = file.toURI().toURL();
         }
@@ -96,28 +96,38 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
             Iterator<Row> rowIterator = datatypeSheet.rowIterator();
 
             // Dataset specific: this is to skip the first two lines that don't have any values of interest
-            rowIterator.next();
-            rowIterator.next();
-            rowIterator.next();
+            if (which_datasource.equals("childhoodObesityLA") || which_datasource.equals("childhoodObesityMSOA")){
+                rowIterator.next();
+                rowIterator.next();
+                rowIterator.next();
+            } else {
+                rowIterator.next();
+                rowIterator.next();
+                rowIterator.next();
+                rowIterator.next();
+            }
+
 
             while (rowIterator.hasNext()) {
+
                 Row row = rowIterator.next();
-                Subject subject = SubjectUtils.getSubjectByTypeAndLabel(getSubjectGeometry(which_datasource), String.valueOf(row.getCell(0)).trim());
+                List<Integer> loopingIndices = getLoopingIndices(which_datasource);
+                Subject subject = SubjectUtils.getSubjectByTypeAndLabel(getSubjectGeometry(which_datasource), String.valueOf(row.getCell(loopingIndices.get(2))).trim());
 
                 // Dataset specific: The dataset contains mixed geometries. Check that the geometries in the excel file
                 // match the "Area code" column. If they are not null proceed
                 if (subject!=null){
 
-                    // Dataset specific:  Looping through the time values
-                    List<Integer> loopingIndices = getLoopingIndices(which_datasource);
-                    for (int timeValuesIndex=loopingIndices.get(0); timeValuesIndex <= datatypeSheet.getRow(1).getLastCellNum(); timeValuesIndex+=loopingIndices.get(1)) {
+                    // Dataset specific:  Looping through the time value
+                    for (int timeValuesIndex=loopingIndices.get(0); timeValuesIndex < datatypeSheet.getRow(loopingIndices.get(3)).getLastCellNum(); timeValuesIndex+=loopingIndices.get(1)) {
 
-                        Row rowTime = datatypeSheet.getRow(1);
+                        Row rowTime = datatypeSheet.getRow(loopingIndices.get(3));
+
                         String year = rowTime.getCell(timeValuesIndex).toString();
                         year =  "20" + year.substring(year.length()-2);
                         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
-                        Row rowAttr = datatypeSheet.getRow(2);
+                        Row rowAttr = datatypeSheet.getRow(loopingIndices.get(3)+1);
 
                         String attr_percentage = rowAttr.getCell(timeValuesIndex+ 2).getStringCellValue();
                         String attr_lci = rowAttr.getCell(timeValuesIndex+ 3).getStringCellValue();
@@ -169,13 +179,26 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
     }
 
     public List<Integer> getLoopingIndices (String which_datasource){
+        // There are discrepancies in the excel files when it comes to column/row numbers
+        // This function creates a list that corresponds to the column names we are interested in
         List<Integer> loopingIndices = new ArrayList<>();
         if (which_datasource.equals("childhoodObesityLA")){
+            // This corresponds to the position of the data column
             loopingIndices.add(2);
             loopingIndices.add(5);
+            loopingIndices.add(0);
+            loopingIndices.add(1);
         } else if (which_datasource.equals("childhoodObesityMSOA")){
+            // This corresponds to the position of the data column
             loopingIndices.add(4);
             loopingIndices.add(5);
+            loopingIndices.add(0);
+            loopingIndices.add(1);
+        } else {
+            loopingIndices.add(5);
+            loopingIndices.add(5);
+            loopingIndices.add(1);
+            loopingIndices.add(2);
         }
         return loopingIndices;
     }
@@ -189,6 +212,9 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         } else if (which_datasource.equals("childhoodObesityMSOA")){
             subjectGeometry = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
                     OaImporter.OaType.msoa.name(), OaImporter.OaType.msoa.datasourceSpec.getDescription());
+        } else {
+            subjectGeometry = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+                    OaImporter.OaType.ward.name(), OaImporter.OaType.ward.datasourceSpec.getDescription());
         }
         return subjectGeometry;
     }

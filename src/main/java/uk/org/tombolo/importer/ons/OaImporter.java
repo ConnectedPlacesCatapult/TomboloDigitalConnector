@@ -30,7 +30,9 @@ public final class OaImporter extends AbstractImporter {
         msoa(new DatasourceSpec(OaImporter.class, "msoa", "MSOA", "Middle Layer Super Output Areas", null),
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__MSOA.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
-                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson");
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson"),
+        ward(new DatasourceSpec(OaImporter.class, "ward", "Ward", "Ward", null),
+                "https://opendata.arcgis.com/datasets/afcc88affe5f450e9c03970b237a7999_3.geojson");
 
 
         public DatasourceSpec datasourceSpec;
