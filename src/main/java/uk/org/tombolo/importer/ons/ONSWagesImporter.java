@@ -18,6 +18,7 @@ import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -136,6 +137,11 @@ public class ONSWagesImporter extends AbstractONSImporter {
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
         return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
+    }
+
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList(OaImporter.OaType.localAuthority.datasourceSpec.getId());
     }
 
     @Override

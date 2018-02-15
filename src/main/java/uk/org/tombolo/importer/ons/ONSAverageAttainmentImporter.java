@@ -9,9 +9,6 @@ import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.AbstractOaImporter;
-import uk.org.tombolo.importer.Config;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,7 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,32 +31,43 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
     private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/652293/SFR57_2017_LA__tables.xlsx";
     private static final Logger log = LoggerFactory.getLogger(ONSAverageAttainmentImporter.class);
 
-    public ONSAverageAttainmentImporter() {
-        try {
-            // Specifying the datasourceId. This will be used by the DC recipe
-            datasourceIds = Arrays.asList(getDatasourceSpec("ONSAverageAttainment").getId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
-        DatasourceSpec datasourceSpec = new DatasourceSpec(
+    public enum DatasourceId {
+        ONSAverageAttainment(new DatasourceSpec(
                 ONSAverageAttainmentImporter.class,
                 "ONSAverageAttainment",
                 "Average Attainment 8 score per pupil",
                 "Average Attainment 8 scores by local authority and region",
-                DATASOURCE);
-        return datasourceSpec;
+                DATASOURCE),
+                4
+        );
+
+        private DatasourceSpec datasourceSpec;
+        private int sheet;
+
+        DatasourceId(DatasourceSpec datasourceSpec, int sheet) {
+            this.datasourceSpec = datasourceSpec;
+            this.sheet = sheet;
+        }
+    }
+
+    public ONSAverageAttainmentImporter() {
+            // Specifying the datasourceId. This will be used by the DC recipe
+            datasourceIds = stringsFromEnumeration(DatasourceId.class);
+    }
+
+    @Override
+    public DatasourceSpec getDatasourceSpec(String datasourceId) throws Exception {
+        return DatasourceId.valueOf(datasourceId).datasourceSpec;
     }
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-        SubjectType localauthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
-                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
-        List<TimedValue> timedValues = new ArrayList<TimedValue>();
-        String fileLocation = getDatasourceSpec("ONSAverageAttainment").getUrl();
+        SubjectType localauthority = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                AbstractONSImporter.PROVIDER.getLabel(),
+                OaImporter.OaType.localAuthority.name()
+        );
+        List<TimedValue> timedValues = new ArrayList<>();
+        String fileLocation = DatasourceId.ONSAverageAttainment.datasourceSpec.getUrl();
         URL url;
         try {
             url = new URL(fileLocation);
@@ -73,8 +81,7 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
         InputStream isr = downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".xlsx");
 
         XSSFWorkbook workbook = new XSSFWorkbook(isr);
-        int sheet = 4;
-        Sheet datatypeSheet = workbook.getSheetAt(sheet);
+        Sheet datatypeSheet = workbook.getSheetAt(DatasourceId.ONSAverageAttainment.sheet);
 
         Iterator<Row> rowIterator = datatypeSheet.rowIterator();
 
@@ -94,15 +101,15 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
             // Dataset specific: The dataset contains mixed geometries. Check that the geometries in the excel file
             // match the "Area code" column. If they are not null proceed
 
-            if (subject!=null){
+            if (subject != null){
                 // Looping through the time values
-                for (int timeValuesIndex=3; timeValuesIndex <= 5; timeValuesIndex++ ) {
+                for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++ ) {
 
                     // This is the row number that contains our time values (years) in the dataset
                     Row rowTime = datatypeSheet.getRow(5);
                     String year = rowTime.getCell(timeValuesIndex).toString();
 
-                    // The date is formated as first year appearing. Eg: 2014/15 is formatted as 2014
+                    log.info("The date is formated as first year appearing. Eg: 2014/15 is formatted as 2014");
                     year = year.substring(0, 4);
                     LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
@@ -113,11 +120,7 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
                         // Here is where we are assigning the values of our .csv file to the attribute fields we
                         // created.
                         Attribute attribute = datasource.getTimedValueAttributes().get(0);
-                        timedValues.add(new TimedValue(
-                                subject,
-                                attribute,
-                                timestamp,
-                                record));
+                        timedValues.add(new TimedValue(subject, attribute, timestamp, record));
 
                     } catch (IllegalStateException e) {
                         log.warn("Missing value fo subject:" + subject.getLabel().toString() + ". Defaulting to zero. Consider using BackoffField or ConstantField");
@@ -141,4 +144,8 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
     }
 
 
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList("localAuthority");
+    }
 }
