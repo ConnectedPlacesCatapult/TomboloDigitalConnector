@@ -12,7 +12,6 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ParsingException;
 import uk.org.tombolo.importer.utils.JSONReader;
 
@@ -26,7 +25,7 @@ import java.util.stream.IntStream;
 /**
  * London Air Quality Importer
  */
-public class LAQNImporter extends AbstractImporter implements Importer{
+public class LAQNImporter extends AbstractImporter {
     private static final Logger log = LoggerFactory.getLogger(LAQNImporter.class);
 
     private static final String LAQN_PROVIDER_LABEL = "erg.kcl.ac.uk";

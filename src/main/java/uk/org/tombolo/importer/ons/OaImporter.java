@@ -19,11 +19,6 @@ import java.util.List;
 public final class OaImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
 
-    public static final Provider PROVIDER = new Provider(
-            "uk.gov.ons",
-            "Office for National Statistics"
-    );
-
     public enum OaType {
         ward(new DatasourceSpec(OaImporter.class, "ward", "Ward", "Ward", null),
                 "https://opendata.arcgis.com/datasets/afcc88affe5f450e9c03970b237a7999_3.geojson"),
@@ -55,7 +50,7 @@ public final class OaImporter extends AbstractImporter {
 
     @Override
     public Provider getProvider() {
-        return PROVIDER;
+        return AbstractONSImporter.PROVIDER;
     }
 
     @Override

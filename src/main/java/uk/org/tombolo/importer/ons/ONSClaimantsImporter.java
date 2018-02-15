@@ -65,6 +65,11 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
     }
 
     @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList(OaImporter.OaType.lsoa.datasourceSpec.getId());
+    }
+
+    @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
                 OaImporter.OaType.lsoa.name(), OaImporter.OaType.lsoa.datasourceSpec.getDescription());
