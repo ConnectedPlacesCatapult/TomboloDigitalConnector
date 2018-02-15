@@ -2,6 +2,7 @@ package uk.org.tombolo.importer.ons;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.lang3.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
@@ -43,12 +44,32 @@ public class CensusImporter extends AbstractONSImporter {
 
     @Override
     public List<String> getDatasourceIds() {
-        return getDataSourceIDs();
+        try {
+            return getSeedData().stream().map(CensusDescription::getDataSetTable)
+                    .collect(Collectors.toCollection(ArrayList::new));
+        } catch (IOException e) {
+            log.error("An error has occurred while downloading DatasourceID's" + e.getMessage());
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return subjectRecipes.stream().filter(subjectRecipe ->
+            EnumUtils.isValidEnum(OaImporter.OaType.class, subjectRecipe.getSubjectType())).map(subjectRecipe ->
+                subjectRecipe.getSubjectType()).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
-        return getDataSourceSpecObject(datasourceIdString);
+        for (CensusDescription description : descriptions) {
+            if (description.getDataSetTable().equalsIgnoreCase(datasourceIdString)) {
+                return new DatasourceSpec(getClass(), datasourceIdString, description.getDataSetDescription(), description.getDataSetDescription(),
+                        "https://www.nomisweb.co.uk/census/2011/" + datasourceIdString);
+            }
+        }
+        throw new Error("Unknown data-source-id: " + datasourceIdString);
     }
 
     @Override
@@ -153,27 +174,6 @@ public class CensusImporter extends AbstractONSImporter {
         });
 
         return descriptions;
-    }
-
-    private List<String> getDataSourceIDs() {
-        try {
-            return getSeedData().stream().map(CensusDescription::getDataSetTable)
-                    .collect(Collectors.toCollection(ArrayList::new));
-        } catch (IOException e) {
-            log.error("An error has occurred while downloading DatasourceID's" + e.getMessage());
-        }
-
-        return Collections.emptyList();
-    }
-
-    private DatasourceSpec getDataSourceSpecObject(String dataSourceId) {
-        for (CensusDescription description : descriptions) {
-            if (description.getDataSetTable().equalsIgnoreCase(dataSourceId)) {
-                return new DatasourceSpec(getClass(), dataSourceId, description.getDataSetDescription(), description.getDataSetDescription(),
-                        "https://www.nomisweb.co.uk/census/2011/" + dataSourceId);
-            }
-        }
-        throw new Error("Unknown data-source-id: " + dataSourceId);
     }
 
     private String getRecordId(String dataSourceId) {
