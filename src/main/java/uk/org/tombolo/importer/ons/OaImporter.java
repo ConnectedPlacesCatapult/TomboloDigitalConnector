@@ -25,7 +25,7 @@ public final class OaImporter extends AbstractImporter {
     );
 
     public enum OaType {
-        ward(new DatasourceSpec(OaImporter.class, "ward", "Ward", "Ward", null),
+        ward(new DatasourceSpec(OaImporter.class, "ward", "Ward", "Ward Boundaries", null),
                 "https://opendata.arcgis.com/datasets/afcc88affe5f450e9c03970b237a7999_3.geojson"),
         lsoa(new DatasourceSpec(OaImporter.class,"lsoa","LSOA","Lower Layer Super Output Areas",null),
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__LSOA.geojson"),
