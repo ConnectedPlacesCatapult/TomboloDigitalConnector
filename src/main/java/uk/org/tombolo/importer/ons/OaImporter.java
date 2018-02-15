@@ -33,7 +33,7 @@ public final class OaImporter extends AbstractImporter {
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__MSOA.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson");
-;
+
 
 
         public DatasourceSpec datasourceSpec;
