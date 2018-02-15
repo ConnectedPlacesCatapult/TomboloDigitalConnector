@@ -158,6 +158,9 @@ public final class TestFactory {
             case "E02000564":
                 subjectType = makeNamedSubjectType("msoa");
                 return makeSubject(subjectType, label, "Islington 011", FAKE_POINT_GEOMETRY);
+            case "E05000371":
+                subjectType = makeNamedSubjectType("ward");
+                return makeSubject(subjectType, label, "Finsbury Park", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
@@ -174,6 +177,9 @@ public final class TestFactory {
                 break;
             case "msoa":
                 subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                break;
+            case "ward":
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.ward);
                 break;
             default:
                 return null;

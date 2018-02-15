@@ -21,6 +21,9 @@ import java.util.*;
 
 /**
  * Importer for importing childhood obesity data.
+ * Note that this is the second iteration of the importer after the data for the first became obsolete
+ * As a result, the importer underwent major reformatting. If you wish to refer to the first iteration
+ * importer please trace the appropriate node on github.
  */
 public class ChildhoodObesityImporter extends AbstractPheImporter {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
@@ -121,14 +124,13 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                     // Dataset specific:  Looping through the time value
                     for (int timeValuesIndex=loopingIndices.get(0); timeValuesIndex < datatypeSheet.getRow(loopingIndices.get(3)).getLastCellNum(); timeValuesIndex+=loopingIndices.get(1)) {
 
+                        // The temporal framework is given in intervals. We take the end of the interval to be our time value
                         Row rowTime = datatypeSheet.getRow(loopingIndices.get(3));
-
                         String year = rowTime.getCell(timeValuesIndex).toString();
                         year =  "20" + year.substring(year.length()-2);
                         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
                         Row rowAttr = datatypeSheet.getRow(loopingIndices.get(3)+1);
-
                         String attr_percentage = rowAttr.getCell(timeValuesIndex+ 2).getStringCellValue();
                         String attr_lci = rowAttr.getCell(timeValuesIndex+ 3).getStringCellValue();
                         String attr_uci = rowAttr.getCell(timeValuesIndex+ 4).getStringCellValue();
@@ -145,7 +147,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                                             subject,
                                             attribute_percentage,
                                             timestamp,
-                                            record_percentage));
+                                            record_percentage/100.));
 
                                 } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attribute_sheet_name + "_" + attr_lci)){
                                     Double record_lci = row.getCell(timeValuesIndex + 3).getNumericCellValue();
@@ -154,7 +156,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                                             subject,
                                             attribute_lci,
                                             timestamp,
-                                            record_lci));
+                                            record_lci/100.));
 
                                 } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attribute_sheet_name + "_" + attr_uci)){
                                     Double record_uci = row.getCell(timeValuesIndex + 4).getNumericCellValue();
@@ -163,7 +165,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                                             subject,
                                             attribute_uci,
                                             timestamp,
-                                            record_uci));
+                                            record_uci/100.));
                                 } else {
                                     continue;
                                 }
@@ -185,11 +187,13 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         if (which_datasource.equals("childhoodObesityLA")){
             // This corresponds to the position of the data column
             loopingIndices.add(2);
+            // This corresponds to the loop step
             loopingIndices.add(5);
+            // This corresponds to the subject column
             loopingIndices.add(0);
+            // This corresponds to the time column
             loopingIndices.add(1);
         } else if (which_datasource.equals("childhoodObesityMSOA")){
-            // This corresponds to the position of the data column
             loopingIndices.add(4);
             loopingIndices.add(5);
             loopingIndices.add(0);
