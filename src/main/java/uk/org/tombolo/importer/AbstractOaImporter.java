@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer;
 
 import uk.org.tombolo.importer.ons.OaImporter;
-import uk.org.tombolo.recipe.SubjectRecipe;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -15,7 +14,7 @@ public abstract class AbstractOaImporter extends AbstractImporter {
 
     @Override
     public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope,
-                                 List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force)
+                                 List<String> datasourceLocation, Boolean force)
                                 throws Exception {
         List<String> oaDatasourceIds = getOaDatasourceIds();
         if (!oaDatasourceIds.isEmpty()) {
@@ -24,10 +23,10 @@ public abstract class AbstractOaImporter extends AbstractImporter {
             // Import the subjects defined by OaImporter first
             for (String id : oaDatasourceIds) {
                 oaImporter.importDatasource(id, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                        subjectRecipes, false);
+                        false);
             }
         }
-        super.importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, subjectRecipes, force);
+        super.importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, force);
     }
 
     /**

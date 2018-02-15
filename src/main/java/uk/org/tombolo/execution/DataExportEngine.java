@@ -92,12 +92,12 @@ public class DataExportEngine implements ExecutionEngine {
 		Importer importer = initialiseImporter(datasourceRecipe.getImporterClass(), datasourceRecipe.getConfigFile());
 		importer.configure(apiKeys);
 		importer.setDownloadUtils(downloadUtils);
+		importer.setSubjectRecipes(subjectRecipes);
 		importer.importDatasource(
 				datasourceRecipe.getDatasourceId(),
 				datasourceRecipe.getGeographyScope(),
 				datasourceRecipe.getTemporalScope(),
 				datasourceRecipe.getLocalData(),
-				subjectRecipes,
 				forceImports.doesMatch(datasourceRecipe.getImporterClass())
 		);
 	}

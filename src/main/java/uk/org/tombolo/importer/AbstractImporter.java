@@ -64,6 +64,9 @@ public abstract class AbstractImporter implements Importer {
 		this.downloadUtils = downloadUtils;
 	}
 
+	@Override
+	public void setSubjectRecipes(List<SubjectRecipe> subjectRecipes) { this.subjectRecipes  = subjectRecipes; }
+
 	/**
 	 * Loads the data-source identified by datasourceId into the underlying data store
 	 *
@@ -74,12 +77,12 @@ public abstract class AbstractImporter implements Importer {
 	 */
 	@Override
 	public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, Collections.emptyList(), false);
+		importDatasource(datasourceId, geographyScope, temporalScope, datasourceLocation, false);
 	}
 
 	/**
-	 * Loads the data-source identified by datasourceId into the underlying data store 
-	 * 
+	 * Loads the data-source identified by datasourceId into the underlying data store
+	 *
 	 * @param datasourceId
 	 * @param geographyScope
 	 * @param temporalScope
@@ -87,7 +90,7 @@ public abstract class AbstractImporter implements Importer {
 	 * @throws Exception
 	 */
 	@Override
-	public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force) throws Exception {
+	public void importDatasource(@Nonnull String datasourceId, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation, Boolean force) throws Exception {
 		if (!datasourceExists(datasourceId))
 			throw new ConfigurationException("Unknown DatasourceId:" + datasourceId);
 
@@ -98,8 +101,6 @@ public abstract class AbstractImporter implements Importer {
 		} else {
 			log.info("Importing {}:{}",
 					this.getClass().getCanonicalName(), datasourceId);
-			// Setting Subject Recipe object
-			this.subjectRecipes = subjectRecipes;
 			// Get the details for the data source
 			Datasource datasource = getDatasource(datasourceId);
 			saveDatasourceMetadata(datasource);
