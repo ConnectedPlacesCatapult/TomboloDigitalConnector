@@ -74,8 +74,8 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope,  List<String> datasourceLocation) throws Exception {
 
         // Check the datasourceid to reference the corresponding url
-        String which_datasource = datasource.getDatasourceSpec().getId();
-        String fileLocation = getDatasourceSpec(which_datasource).getUrl();
+        String whichDatasource = datasource.getDatasourceSpec().getId();
+        String fileLocation = getDatasourceSpec(whichDatasource).getUrl();
 
         List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
@@ -94,33 +94,24 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         // Fetching and reading the file using fetchInputStream
         InputStream isr = downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook(isr);
-        DataFormatter dataFormatter = new DataFormatter();
-
 
         // Loop through the excell sheets
         for (int sheet = 1; sheet <= 4; sheet = sheet+1){
             Sheet datatypeSheet = workbook.getSheetAt(sheet);
 
             Iterator<Row> rowIterator = datatypeSheet.rowIterator();
+            int j = whichDatasource.equals("childhoodObesityLA")
+                    || whichDatasource.equals("childhoodObesityMSOA") ? 3 : 4;
+            for (int i=0; i<j; i++){
+                    rowIterator.next();
 
-            // Dataset specific: this is to skip the first two lines that don't have any values of interest
-            if (which_datasource.equals("childhoodObesityLA") || which_datasource.equals("childhoodObesityMSOA")){
-                rowIterator.next();
-                rowIterator.next();
-                rowIterator.next();
-            } else {
-                rowIterator.next();
-                rowIterator.next();
-                rowIterator.next();
-                rowIterator.next();
             }
-
 
             while (rowIterator.hasNext()) {
 
                 Row row = rowIterator.next();
-                List<Integer> loopingIndices = getLoopingIndices(which_datasource);
-                Subject subject = SubjectUtils.getSubjectByTypeAndLabel(getSubjectGeometry(which_datasource), String.valueOf(row.getCell(loopingIndices.get(2))).trim());
+                List<Integer> loopingIndices = getLoopingIndices(whichDatasource);
+                Subject subject = SubjectUtils.getSubjectByTypeAndLabel(getSubjectGeometry(whichDatasource), String.valueOf(row.getCell(loopingIndices.get(2))).trim());
 
                 // Dataset specific: The dataset contains mixed geometries. Check that the geometries in the excel file
                 // match the "Area code" column. If they are not null proceed
@@ -136,16 +127,16 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
 
                         Row rowAttr = datatypeSheet.getRow(loopingIndices.get(3)+1);
-                        String attr_percentage = rowAttr.getCell(timeValuesIndex+ 2).getStringCellValue();
-                        String attr_lci = rowAttr.getCell(timeValuesIndex+ 3).getStringCellValue();
-                        String attr_uci = rowAttr.getCell(timeValuesIndex+ 4).getStringCellValue();
+                        String attrPercentage = rowAttr.getCell(timeValuesIndex+ 2).getStringCellValue();
+                        String attrLci = rowAttr.getCell(timeValuesIndex+ 3).getStringCellValue();
+                        String attrUci = rowAttr.getCell(timeValuesIndex+ 4).getStringCellValue();
 
                         try {
 
-                            String attribute_sheet_name = datatypeSheet.getSheetName();
+                            String attributeSheetName = datatypeSheet.getSheetName();
 
                             for( int i = 0; i < datasource.getTimedValueAttributes().size(); i++) {
-                                if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attribute_sheet_name + "_" + attr_percentage)){
+                                if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attributeSheetName + "_" + attrPercentage)){
                                     Double record_percentage = row.getCell(timeValuesIndex + 2).getNumericCellValue();
                                     Attribute attribute_percentage = datasource.getTimedValueAttributes().get(i);
                                     timedValues.add(new TimedValue(
@@ -154,7 +145,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                                             timestamp,
                                             record_percentage/100.));
 
-                                } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attribute_sheet_name + "_" + attr_lci)){
+                                } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attributeSheetName + "_" + attrLci)){
                                     Double record_lci = row.getCell(timeValuesIndex + 3).getNumericCellValue();
                                     Attribute attribute_lci = datasource.getTimedValueAttributes().get(i);
                                     timedValues.add(new TimedValue(
@@ -163,7 +154,7 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                                             timestamp,
                                             record_lci/100.));
 
-                                } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attribute_sheet_name + "_" + attr_uci)){
+                                } else if (datasource.getTimedValueAttributes().get(i).getLabel().contains(attributeSheetName + "_" + attrUci)){
                                     Double record_uci = row.getCell(timeValuesIndex + 4).getNumericCellValue();
                                     Attribute attribute_uci = datasource.getTimedValueAttributes().get(i);
                                     timedValues.add(new TimedValue(
@@ -183,31 +174,23 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
             }
         }
         saveAndClearTimedValueBuffer(timedValues);
+        workbook.close();
     }
 
     public List<Integer> getLoopingIndices (String which_datasource){
         // There are discrepancies in the excel files when it comes to column/row numbers
         // This function creates a list that corresponds to the column names we are interested in
+        // First element corresponds to the position of the data column
+        // Second element corresponds to the loop step
+        // Third element  corresponds to the subject column
+        // Fourth element  corresponds to the time column
         List<Integer> loopingIndices = new ArrayList<>();
         if (which_datasource.equals("childhoodObesityLA")){
-            // This corresponds to the position of the data column
-            loopingIndices.add(2);
-            // This corresponds to the loop step
-            loopingIndices.add(5);
-            // This corresponds to the subject column
-            loopingIndices.add(0);
-            // This corresponds to the time column
-            loopingIndices.add(1);
+            loopingIndices = Arrays.asList(2,5,0,1);
         } else if (which_datasource.equals("childhoodObesityMSOA")){
-            loopingIndices.add(4);
-            loopingIndices.add(5);
-            loopingIndices.add(0);
-            loopingIndices.add(1);
+            loopingIndices = Arrays.asList(4,5,0,1);
         } else {
-            loopingIndices.add(5);
-            loopingIndices.add(5);
-            loopingIndices.add(1);
-            loopingIndices.add(2);
+            loopingIndices = Arrays.asList(5,5,1,2);
         }
         return loopingIndices;
     }

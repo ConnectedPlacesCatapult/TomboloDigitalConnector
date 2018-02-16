@@ -29,7 +29,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     private ChildhoodObesityImporter importer;
 
     private Subject cityOfLondon001;
-    private Subject finsbury_park;
+    private Subject finsburyPark;
     private Subject leeds;
 
     @Before
@@ -38,7 +38,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         mockDownloadUtils(importer);
 
         cityOfLondon001 = TestFactory.makeNamedSubject("E02000001");  // City of London 001
-        finsbury_park = TestFactory.makeNamedSubject("E05000371");  // Finsbury Park
+        finsburyPark = TestFactory.makeNamedSubject("E05000371");  // Finsbury Park
         leeds = TestFactory.makeNamedSubject("E08000035"); // Leeds
     }
 
@@ -84,7 +84,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
 
         for (String attributeName : groundTruthCoL001.keySet()) {
             Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
-            TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(finsbury_park, attribute);
+            TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(finsburyPark, attribute);
             assertEquals("Value for "+attributeName, groundTruthCoL001.get(attributeName), timedValue.getValue(), 0.0001d);
         }
     }
