@@ -21,9 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Importer for importing the adult self reported obesity from the PHE NOO website.
- * NOTE: the importer has been refactored to account  as original link is dead. New data fetched from
- * http://activepeople.sportengland.org
+ * Importer for importing the adult obesity from the Sports England website.
+ * data fetched from http://activepeople.sportengland.org
  */
 public class AdultObesityImporter extends AbstractPheImporter {
 
@@ -57,16 +56,17 @@ public class AdultObesityImporter extends AbstractPheImporter {
 
     }
 
-    // Instantiating the list that will hold our .csv rows
-    private List csvRecords;
-
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
 
+        // Instantiating the list that will hold our .csv rows
+        List csvRecords;
+
         // We create SubjectType object that we will use to get the appropriate geometries
         // from OaImporter class
-        SubjectType localauthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
-                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
+        SubjectType localauthority = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(AbstractONSImporter.PROVIDER.getLabel(),"localAuthority");
+//        SubjectType localauthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
+//                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
 
         // We create an empty list that will keep our .csv values
         List<TimedValue> timedValues = new ArrayList<TimedValue>();
@@ -118,12 +118,12 @@ public class AdultObesityImporter extends AbstractPheImporter {
                     for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++) {
 
                         CSVRecord rowTime = (CSVRecord) csvRecords.get(5);
-                        String year = rowTime.get(timeValuesIndex).toString();
+                        String year = rowTime.get(timeValuesIndex);
 
                         // Cleaning the year record as it appears as: 2014 (Mid-January 2014 to Mid-January 2015)
                         year = year.substring(0, 4);
                         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
-
+                        log.info("The date appears as :" + rowTime.get(timeValuesIndex) + " in the dataset. Saving it as: " + timestamp.toString());
                         // The value is a string in our .csv file. We need to clean it before using it.
                         // We  need to check for invalid rows so we will suround this with a try catch clause
                         try {

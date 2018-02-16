@@ -63,6 +63,7 @@ public class AdultObesityImporterTest extends AbstractTest {
 
 		for (String attributeName : groundTruthCoL.keySet()) {
 			Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
+			System.out.println(attribute.getLabel());
 			TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington, attribute);
 			assertEquals("Value for "+attributeName, groundTruthCoL.get(attributeName), timedValue.getValue(), 0.0001d);
 		}
