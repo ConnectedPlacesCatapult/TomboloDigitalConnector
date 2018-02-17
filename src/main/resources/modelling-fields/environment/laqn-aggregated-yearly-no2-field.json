@@ -3,7 +3,7 @@
   "label": "laqn-aggregated-yearly-no2",
   "subject": {
     "provider": "erg.kcl.ac.uk",
-    "subjectType": "airQualityControl"
+    "subjectType": "airQualitySensor"
   },
   "function": "mean",
   "field": {
