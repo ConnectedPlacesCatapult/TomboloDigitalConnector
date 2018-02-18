@@ -1,36 +1,36 @@
-[A](Glossary#a)|
-[B](Glossary#b)|
-[C](Glossary#c)|
-[D](Glossary#d)|
-[E](Glossary#e)|
-[F](Glossary#f)|
-[G](Glossary#g)|
-[H](Glossary#h)|
-[I](Glossary#i)|
-[J](Glossary#j)|
-[K](Glossary#k)|
-[L](Glossary#l)|
-[M](Glossary#m)|
-[N](Glossary#n)|
-[O](Glossary#o)|
-[P](Glossary#p)|
-[Q](Glossary#q)|
-[R](Glossary#r)|
-[S](Glossary#s)|
-[T](Glossary#t)|
-[U](Glossary#u)|
-[V](Glossary#v)|
-[W](Glossary#w)|
-[X](Glossary#x)|
-[Y](Glossary#y)|
-[Z](Glossary#z)|
+[A](glossary#a)|
+[B](glossary#b)|
+[C](glossary#c)|
+[D](glossary#d)|
+[E](glossary#e)|
+[F](glossary#f)|
+[G](glossary#g)|
+[H](glossary#h)|
+[I](glossary#i)|
+[J](glossary#j)|
+[K](glossary#k)|
+[L](glossary#l)|
+[M](glossary#m)|
+[N](glossary#n)|
+[O](glossary#o)|
+[P](glossary#p)|
+[Q](glossary#q)|
+[R](glossary#r)|
+[S](glossary#s)|
+[T](glossary#t)|
+[U](glossary#u)|
+[V](glossary#v)|
+[W](glossary#w)|
+[X](glossary#x)|
+[Y](glossary#y)|
+[Z](glossary#z)|
 
 
 # A
 
 ## Attribute
 A data object representing anything that could be measured or calculated, such as population density (for an LSOA), CO2 concentration (for an air quality sensor), obesity rate (for a local authority), etc.
- [See further](Local-Datastore.md#attribute)
+ [See further](local-datastore.md#attribute)
 
 # B
 

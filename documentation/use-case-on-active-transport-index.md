@@ -10,10 +10,10 @@ In particular, the index consists or three components:
 Below we will describe the generation of the index in detail, but see also [the model recipe for the active transport index](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/modelling-fields/city-indices/active-transport/ActiveTransportIndex-field.json) and [recipe for exporting as GeoJson the active transport index, together with its components for all LSOAs in England and Wales](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/city-indices/active-transport.json).
 
 ## Export recipe
-As with other [export recipes](Recipe-Language.md), [the active transport index export recipe](https://github
+As with other [export recipes](recipe-language.md), [the active transport index export recipe](https://github
 .com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/city-indices/active-transport.json) has 4 main parts.
 
-- **subjects**: Tells the digital connector to calculate values for each [LSOA](Glossary.md#lsoa) in the UK.
+- **subjects**: Tells the digital connector to calculate values for each [LSOA](glossary.md#lsoa) in the UK.
 - **datasources**: Tells which datasources need to be imported. In this case only the LSOAs, since any additional datasources needed by the index are covered by the recipe for the respective index or index component.
 - **fields**: Tells the digital connector to export 4 fields: the index itself, together with its 3 components. The last 3 fields are not necessary when exporting the index, but for the [city index explorer application](https://labs.tombolo.org.uk/city-index-explorer/) we do need this information for data visualisation purposes.
 - **exporter**: Tell the digital connector to export the data as GeoGson.
@@ -88,7 +88,7 @@ As described above, the active transport index is composed of three components. 
 
 In the future we might consider implementing the index as a "linear-combination-field". Pending implementation of that field.
 
-Each component is described below. 
+Each component is described below.
 
 ## Cycle traffic
 The [cycle-traffic](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/modelling-fields/transport/traffic-counts-aggregated-bicycles-to-cars-ratio-field.json) component uses the Department for Transport traffic counts to calculated ratio between cycle traffic count and the sum of both cycle and car traffic counts. The field is implemented as a back-off-field where we first try to calculate a value for the corresponding LSOA. If there is no traffic counter within the LSOA, we back-off to outputting the ratio based on all traffic counters in the surrounding MSOA. If no traffic counters exist in the MSOA, we back-off to the value for the surrounding local-authority. Finally, for local-authorities with no traffic counts, a default value of zero is returned.
