@@ -33,9 +33,17 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testGetDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("lsoa", "msoa", "localAuthority"), datasources);
+        assertEquals(Arrays.asList("ward","lsoa", "msoa", "localAuthority"), datasources);
     }
 
+    @Test
+    public void testGetDatasourceWard() throws Exception {
+        Datasource datasource = importer.getDatasource("ward");
+        assertEquals("ward", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.ons", importer.getProvider().getLabel());
+        assertEquals("Ward", datasource.getDatasourceSpec().getName());
+        assertEquals("Ward Boundaries", datasource.getDatasourceSpec().getDescription());
+    }
     @Test
     public void testGetDatasourceLSOA() throws Exception {
         Datasource datasource = importer.getDatasource("lsoa");
@@ -52,6 +60,19 @@ public class OaImporterTest extends AbstractTest {
         assertEquals("uk.gov.ons", importer.getProvider().getLabel());
         assertEquals("MSOA", datasource.getDatasourceSpec().getName());
         assertEquals("Middle Layer Super Output Areas", datasource.getDatasourceSpec().getDescription());
+    }
+
+    @Test
+    public void testImportWards() throws Exception {
+        importer.importDatasource("ward", null, null, null);
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "ward");
+        Subject ward = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "E05000371");
+
+        assertEquals("Finsbury Park", ward.getName());
+        assertEquals("ward", ward.getSubjectType().getLabel());
+        assertEquals(-0.113478544062306, ward.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.5618238999826, ward.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(100, importer.getSubjectCount());
     }
 
     @Test

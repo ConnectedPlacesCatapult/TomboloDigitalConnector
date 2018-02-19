@@ -54,7 +54,14 @@ public class SubjectUtils {
 					.list();
 		});
 	}
-
+	public static Subject getSubjectByTypeAndNameUnique(SubjectType subjectType, String name){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and name = :name", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("name", name)
+					.uniqueResult();
+		});
+	}
 	public static List<Subject> getSubjectByTypeAndNameIsNull(SubjectType subjectType, boolean includeNull){
 		return HibernateUtil.withSession(session -> {
 			Query query;
