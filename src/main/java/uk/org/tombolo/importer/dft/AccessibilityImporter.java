@@ -21,6 +21,7 @@ import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -105,6 +106,10 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         return super.getDatasource(datasourceId);
     }
 
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList(OaImporter.OaType.lsoa.datasourceSpec.getId());
+    }
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {
