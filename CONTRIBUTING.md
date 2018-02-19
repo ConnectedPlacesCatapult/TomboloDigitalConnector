@@ -5,7 +5,7 @@ Thank you for choosing to contribute to this project. **We need your superpowers
 To learn more about the Tombolo vision check out our [website](http://www.tombolo.org.uk/).
 
 Before starting to contribute have a look at the [README](README.md) and [docs](documentation). Our suggestion is to 
-start with the [system architecture](documentation/System-Architecture.md) and [local datastore](documentation/Local-Datastore.md), and 
+start with the [system architecture](documentation/system-architecture.md) and [local datastore](documentation/local-datastore.md), and 
 eventually go further in the documentation with other topics of your interest.
 
 ## Help wanted

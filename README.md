@@ -6,14 +6,14 @@
 
 The [Tombolo Digital Connector](http://www.tombolo.org.uk/products/) is an open source tool that enables users to 
 seamlessly combine different sources of datasets in an efficient, transparent and reproducible way.  
-  
-There are three particularly important parts to the Tombolo Digital Connector: 
 
-- [***Importers***](documentation/Importers.md)
+There are three particularly important parts to the Tombolo Digital Connector:
+
+- [***Importers***](documentation/importers.md)
   - Built-in importers harvest a range of data sources into the centralised data format. Examples include data from ONS, OpenStreetMap, NOMIS, the London Air Quality Network and the London Data Store. **We welcome the creation of additional importers**.
-- [***Centralised data format***](documentation/Local-Datastore.md)
+- [***Centralised data format***](documentation/local-datastore.md)
   - All data imported into the Tombolo Digital Connector adopts the centralised data format. This makes it easier to combine and modify data from different sources.
-- [***Recipes***](documentation/Recipe-Language.md)
+- [***Recipes***](documentation/recipe-language.md)
   - Users generate recipes with a declarative 'recipe language' to combine the data in different ways. This combination can generate new models, indexes and insights. For example, [existing recipes](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples) can generate models of social isolation, calculate the proportion of an area covered by greenspace and even generate an active transport index. **We welcome the creation of additional recipes**.
 
 For further information see the [documentation](documentation/README.md).
@@ -53,7 +53,7 @@ make sure that you do before you proceed.**
 
 ## Installation Guides
 
-- [Windows](documentation/Windows-Installation-Guide.md)
+- [Windows](documentation/windows-installation-guide.md)
 - macOS **(Coming Soon)**
 - Ubuntu/Debian **(Coming Soon)**
 
@@ -240,7 +240,7 @@ Now you are all set to run a task on the Digital Connector.
 
 The next step is to run an example to show how the digital connector combines different data sets.
 We’re using an example that shows the relationship between air pollution (demonstrated in this example by NO2 levels), 
-and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/Tutorial.md).  
+and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/tutorial.md).  
 
 When you’ve run this example, you can expect a map that looks like this: 
 
@@ -286,7 +286,7 @@ Change the path in the command in case you want it saved elsewhere.
   ```
   
 - Once you have your output, you can open with a geospatial visualisation tool. For this example, we recommend QGIS,
- and [here](/documentation/Open-with-QGIS.md) you can find a guide on how to use it.
+ and [here](/documentation/open-with-qgis.md) you can find a guide on how to use it.
 
 **We need your feedback!  
 If you have any issues with setting up the tool, or running the tutorial, or if you have some advice about how we can 
@@ -295,13 +295,13 @@ Our goal is for someone to get back to you within 24 hours.**
 
 #### See also:
 
-- [Learn more about the **example** used in this tutorial](documentation/Tutorial.md)
+- [Learn more about the **example** used in this tutorial](documentation/tutorial.md)
   
 - [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
 
 - [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
 
--  [Learn how to build your own recipe](documentation/Recipe-Language.md)
+-  [Learn how to build your own recipe](documentation/recipe-language.md)
 
 ### Run tests
 
