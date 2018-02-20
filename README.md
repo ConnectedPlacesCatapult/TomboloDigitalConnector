@@ -54,7 +54,7 @@ make sure that you do before you proceed.**
 ## Installation Guides
 
 - [Windows](documentation/windows-installation-guide.md)
-- macOS **(Coming Soon)**
+- [macOS](documentation/macOS-installation-guide.md)
 - Ubuntu/Debian **(Coming Soon)**
 
 ## Quick start
