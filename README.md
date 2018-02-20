@@ -54,8 +54,8 @@ make sure that you do before you proceed.**
 ## Installation Guides
 
 - [Windows](documentation/windows-installation-guide.md)
-- macOS **(Coming Soon)**
-- Ubuntu/Debian **(Coming Soon)**
+- [macOS](documentation/macOS-installation-guide.md)
+- [Ubuntu](documentation/ubuntu-installation-guide.md)
 
 ## Quick start
 
@@ -147,6 +147,7 @@ following commands and pressing enter.
 The following step sets up a main and a test database after starting the server.
 The test database is used by the tests and is cleared routinely. We use this to gain control over what is in the 
 database when our tests are running and to avoid affecting any important data in your main database.
+###### IMPORTANT NOTE: The tombolo_test database is not optional, if not set up the tests will fail.
 
 ```bash
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
@@ -218,6 +219,7 @@ The former error log is launched if the server is not running and to solve it yo
 ```bash
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 ```
+OR if you did not set up the tombolo_test database.
 
 In case you see this other error instead, it means that you did not rename the settings files successfully.
 

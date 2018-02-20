@@ -340,6 +340,7 @@ Enter the password as ‘tombolo’
 ![Tombolo script output](https://user-images.githubusercontent.com/19670372/33494821-79893352-d6bc-11e7-8447-7f86b0a3fd61.png)
 
 #### Test Database
+ ###### IMPORTANT NOTE: This database is not optional, if not set up the tests will fail.
 
 - The steps for setting up the test database is same as setting up the main database. Thus follow the steps 
 starting from **Main Database** section and replace **tombolo** with **tombolo_test** everywhere even 
