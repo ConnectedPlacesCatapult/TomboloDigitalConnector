@@ -10,26 +10,34 @@ import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
-import uk.org.tombolo.importer.ons.OaImporter;
-import java.io.File;
+
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
- * Importer for importing the adult obesity from the Sports England website.
- * data fetched from http://activepeople.sportengland.org
+ * Importer for importing the adult obesity from the Sports England website and provided by Public Health England.
+ * Data fetched from http://activepeople.sportengland.org. Visualise full dataset at:
+ * http://activepeople.sportengland.org/Result/ExportTable?Id=104519&TabDimension=2&RowDimension=1&ColDimension=4&SelectedTabs[0]=7&ValueMode=0
+ */
+
+/* INFO FOR RECIPE
+"importerClass":"uk.org.tombolo.importer.londondatastore.AdultObesityImporter"
+"datasourceId":"adultObesity"
+"provider":"uk.gov.london"
+"subjectTypes":["localAuthority"]
+"timedValueAttributes":[
+    {"label":"fractionUnderweight","provider":"uk.gov.london"},
+    {"label":"fractionHealthyWeight","provider":"uk.gov.london"},
+    {"label":"fractionOverweight","provider":"uk.gov.london"},
+    {"label":"fractionObese","provider":"uk.gov.london"},
+    {"label":"fractionExcessWeight","provider":"uk.gov.london"
+    ]
+"fixedValueAttributes":[]
  */
 public class AdultObesityImporter extends AbstractPheImporter {
-
     private static Logger log = LoggerFactory.getLogger(AdultObesityImporter.class);
-
-    // Instantiating the link to our .csv file
-    private static final String DATASOURCE = "http://activepeople.sportengland.org/Result/ExportTable?Id=104519&TabDimension=2&RowDimension=1&ColDimension=4&SelectedTabs[0]=7&ValueMode=0";
 
     private enum DatasourceId {
         adultObesity(new DatasourceSpec(
@@ -37,7 +45,7 @@ public class AdultObesityImporter extends AbstractPheImporter {
                 "adultObesity",
                 "Local Authority Adult Obesity",
                 "Self reported adult obesity",
-                DATASOURCE)
+                "http://activepeople.sportengland.org/Result/ExportTable?Id=104519&TabDimension=2&RowDimension=1&ColDimension=4&SelectedTabs[0]=7&ValueMode=0")
         );
 
         private DatasourceSpec datasourceSpec;
@@ -58,142 +66,79 @@ public class AdultObesityImporter extends AbstractPheImporter {
 
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
-
-        // Instantiating the list that will hold our .csv rows
-        List csvRecords;
-
-        // We create SubjectType object that we will use to get the appropriate geometries
-        // from OaImporter class
-        SubjectType localauthority = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(AbstractONSImporter.PROVIDER.getLabel(),"localAuthority");
-//        SubjectType localauthority = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
-//                OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
-
-        // We create an empty list that will keep our .csv values
-        List<TimedValue> timedValues = new ArrayList<TimedValue>();
-
-        CSVFormat format = CSVFormat.DEFAULT;
-        String fileLocation = getDatasourceSpec("adultObesity").getUrl();
-
-        // The code below fetches the .csv file from the URL we specified in our DatasourceSpec object
-        URL url;
-        try {
-            url = new URL(fileLocation);
-        } catch (MalformedURLException e) {
-            File file;
-            if (!(file = new File(fileLocation)).exists()) {
-                log.error("ERROR: File does not exist: " + fileLocation);
-            }
-            url = file.toURI().toURL();
-        }
-
+        // Fetching the data
+        String fileLocation = DatasourceId.adultObesity.datasourceSpec.getUrl();
         InputStreamReader isr = new InputStreamReader(
-                downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".csv"));
+                downloadUtils.fetchInputStream(new URL(fileLocation), getProvider().getLabel(), ".csv"));
 
         // Parsing our csv file
-        CSVParser csvFileParser = new CSVParser(isr, format);
-        csvRecords = csvFileParser.getRecords();
-
-
-        // We discard the first 6 records in our data file as these don't hold any meaningfull information.
-        // We do this  calling an iterator object and simply ignoring them:
+        CSVParser csvFileParser = new CSVParser(isr, CSVFormat.DEFAULT);
+        // Instantiating the list that will hold our .csv rows, contains also the empty lines so wee need to handle them
+        List<CSVRecord> csvRecords = csvFileParser.getRecords();
         Iterator<CSVRecord> rowIterator = csvRecords.iterator();
 
-        // skipping first 6 rows
-        rowIterator.next();
-        rowIterator.next();
-        rowIterator.next();
-        rowIterator.next();
-        rowIterator.next();
-        rowIterator.next();
+        // We discard the first 6 records in our data file as these don't hold any meaningful information.
+        int ignore = 0;
+        while (ignore++ < 5) {
+            rowIterator.next();
+        }
 
+        // Time labels
+        CSVRecord rowTime = rowIterator.next();
+        // Time series in the list
+        HashMap<LocalDateTime, Integer> persistedTime = new HashMap<>();
+        // The values are at columns: 3, 4, 5
+        for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++) {
+            String year = rowTime.get(timeValuesIndex);
+
+            // Cleaning the year record as it appears as: 2014 (Mid-January 2014 to Mid-January 2015)
+            LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year.substring(0, 4));
+            persistedTime.put(timestamp, timeValuesIndex);
+            log.info("The date appears as e.g. " + year + " in the dataset. Saving it as: " + timestamp);
+        }
+
+        // Get the SubjectType that we will use to get the appropriate geometries from OaImporter class
+        SubjectType localauthority = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
+                AbstractONSImporter.PROVIDER.getLabel(),"localAuthority");
+        // We create an empty list that will keep our .csv values. This importer contains timed values as they change
+        // over time in the dataset.
+        List<TimedValue> timedValues = new ArrayList<>();
         // Looping through the rows of the .csv file
-        while (rowIterator.hasNext()){
+        while (rowIterator.hasNext()) {
             CSVRecord row = rowIterator.next();
-            try{
-                Subject subject = SubjectUtils.getSubjectByTypeAndNameUnique(localauthority, String.valueOf(row.get(2)).trim());
+            try {
+                String geography = row.get(2).trim();
+                Subject subject = SubjectUtils.getSubjectByTypeAndNameUnique(localauthority, geography);
 
-                // Checking not matched geometries
-                if (subject!=null){
-                    // Creating the time index
-                    for (int timeValuesIndex = 3; timeValuesIndex <= 5; timeValuesIndex++) {
-
-                        CSVRecord rowTime = (CSVRecord) csvRecords.get(5);
-                        String year = rowTime.get(timeValuesIndex);
-
-                        // Cleaning the year record as it appears as: 2014 (Mid-January 2014 to Mid-January 2015)
-                        year = year.substring(0, 4);
-                        LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
-                        log.info("The date appears as :" + rowTime.get(timeValuesIndex) + " in the dataset. Saving it as: " + timestamp.toString());
-                        // The value is a string in our .csv file. We need to clean it before using it.
-                        // We  need to check for invalid rows so we will suround this with a try catch clause
-                        try {
-                            String recordString = row.get(timeValuesIndex).replace("%", "");
-                            String attributeName = row.get(0);
-                            try {
-
-                                Double record = Double.parseDouble(recordString);
-                                // Here is where we are assigning the values of our .csv file to the attribute fields we
-                                // created.
-                                if (attributeName.contains("Underweight")){
-                                    Attribute attribute = datasource.getTimedValueAttributes().get(0);
-                                    timedValues.add(new TimedValue(
-                                            subject,
-                                            attribute,
-                                            timestamp,
-                                            record/100.));
-                                }
-                                else if (attributeName.contains("Healthy")){
-                                    Attribute attribute = datasource.getTimedValueAttributes().get(1);
-                                    timedValues.add(new TimedValue(
-                                            subject,
-                                            attribute,
-                                            timestamp,
-                                            record/100.));
-                                }
-                                else if (attributeName.contains("Overweight")){
-                                    Attribute attribute = datasource.getTimedValueAttributes().get(2);
-                                    timedValues.add(new TimedValue(
-                                            subject,
-                                            attribute,
-                                            timestamp,
-                                            record/100.));
-                                }
-                                else if (attributeName.contains("Obese")){
-                                    Attribute attribute = datasource.getTimedValueAttributes().get(3);
-                                    timedValues.add(new TimedValue(
-                                            subject,
-                                            attribute,
-                                            timestamp,
-                                            record/100.));
-                                }
-                                else if (attributeName.contains("Morbidly obese")){
-                                    Attribute attribute = datasource.getTimedValueAttributes().get(4);
-                                    timedValues.add(new TimedValue(
-                                            subject,
-                                            attribute,
-                                            timestamp,
-                                            record/100.));
-                                }
-                            } catch (IllegalStateException | NumberFormatException e) {
-                                log.warn("Value for subject " + subject.getLabel().toString() + " not found. Defaulting to 0.0. Consider using a BackoffField or ConstantField");
-                                continue;
-                            }
-                            // Catching invalid rows
-                        } catch (ArrayIndexOutOfBoundsException npe) {
-                            log.info("Found invalid row: Skipping");
-
-                        }
-                    }
-                }
-                // Catching invalid geometries
-                else {
-                    log.warn("Geometry not found for "+ row.get(2) + ": Skipping");
+                if (subject == null) {
+                    // Invalid or unknown geometries. In this importer a geometry is unknown to the system if it
+                    // was not previously imported with the other Oa geometries.
+                    log.warn("Geometry not found for " + geography + ": Skipping...");
                     continue;
                 }
-            }
-            // We need to check for again for invalid rows when looping through the local authorities names
-            catch (ArrayIndexOutOfBoundsException npe){
-                log.warn("Found invalid local authority row: Skipping");
+
+                String attributeName = row.get(0);
+                // Removing ≤] to avoid encoding issues in matching the description
+                attributeName = attributeName.trim().subSequence(0, attributeName.length() - 2).toString();
+                // Here is where we are assigning the values of our .csv file to the attribute fields we created.
+                Attribute attribute = AttributeId.getAttributeIdByDesc(attributeName).attribute;
+                for (LocalDateTime timestamp: persistedTime.keySet()) {
+                    // We  need to check for invalid rows so we will surround this with a try catch clause
+                    try {
+                        // The value is a string in our .csv file, representing the value as percentage. We are
+                        // persisting it as a fraction (/100) to make it easier for operations.
+                        String recordString = row.get(persistedTime.get(timestamp)).replace("%", "");
+                        Double record = Double.parseDouble(recordString);
+                        timedValues.add(new TimedValue(subject, attribute, timestamp, record / 100.));
+                    } catch (IllegalStateException | NumberFormatException e) {
+                        log.warn("Value for subject " + subject.getLabel().toString() + " not found. " +
+                                "Defaulting to 0.0. Consider using a BackoffField or ConstantField.");
+                        continue;
+                    }
+                }
+                // We need to check for again for invalid rows when looping through the local authorities names
+            } catch (ArrayIndexOutOfBoundsException npe) {
+                log.warn("Found invalid local authority row: Skipping...");
                 continue;
             }
         }
@@ -201,20 +146,36 @@ public class AdultObesityImporter extends AbstractPheImporter {
         saveAndClearTimedValueBuffer(timedValues);
     }
 
+
+    public enum AttributeId {
+        fractionUnderweight("BMI (Body Mass Index) - Underweight [BMI < 18.5 kg/m≤]"),
+        fractionHealthyWeight("BMI (Body Mass Index) - Healthy weight  [BMI range 18.5 - 24.9 kg/m≤]"),
+        fractionOverweight("BMI (Body Mass Index) - Overweight [BMI range 25 - 29.9 kg/m≤]"),
+        fractionObese("BMI (Body Mass Index) - Obese [BMI range 30-39.9 kg/m≤]"),
+        fractionMorbidlyObese("BMI (Body Mass Index) - Morbidly obese [BMI > 40 kg/m≤]")
+        ;
+
+        // Description of the attribute
+        String description;
+        Attribute attribute;
+
+        AttributeId(String description) {
+            this.description = description;
+            attribute = new Attribute(AbstractPheImporter.PROVIDER, name(), description);
+        }
+
+        public static AttributeId getAttributeIdByDesc(String description) {
+            return Arrays.stream(AttributeId.values()).filter(element -> element.description.contains(description))
+                    .findFirst().get();
+        }
+    }
+
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceId) {
-
         // Creating a placeholder for our attributes
         List<Attribute> attributes = new ArrayList<>();
-
-        // Dataset specific: we hardcode the columns names for the our .csv file
-        String[] elements = { "fractionUnderweight", "fractionHealthyWeight", "fractionOverweight", "fractionObese", "fractionExcessWeight"};
-        String[] descriptions = { "BMI less than 18.5kg/m2", "BMI greater than or equal to 18.5 but less than 25kg/m2", "BMI greater than or equal to 25 but less than 30kg/m2", "BMI greater than or equal to 30kg/m2", "BMI greater than or equal to 25kg/m2 (overweight including obese)"};
-
-        // We loop through the elements of the elements object and adding an Attribute object in the list
-        // with nour column names.
-        for( int i = 0; i < elements.length; i++) {
-            attributes.add(new Attribute(getProvider(), elements[i], descriptions[i]));
+        for (AttributeId id : AttributeId.values()) {
+            attributes.add(id.attribute);
         }
         return attributes;
     }
