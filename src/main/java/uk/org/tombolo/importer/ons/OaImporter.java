@@ -27,7 +27,9 @@ public final class OaImporter extends AbstractImporter {
         msoa(new DatasourceSpec(OaImporter.class, "msoa", "MSOA", "Middle Layer Super Output Areas", null),
                 "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__MSOA.geojson"),
         localAuthority(new DatasourceSpec(OaImporter.class, "localAuthority", "Local Authority", "Local Authority", null),
-                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson");
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/UK_2011_Census_Boundaries__Local_Authority.geojson"),
+        englandBoundaries(new DatasourceSpec(OaImporter.class, "englandBoundaries", "England Boundaries", "England Boundaries", null),
+                "https://raw.githubusercontent.com/FutureCitiesCatapult/TomboloOpenData/master/Regions_December_2016_Ultra_Generalised_Clipped_Boundaries_in_England.geojson");
 
 
         public DatasourceSpec datasourceSpec;
