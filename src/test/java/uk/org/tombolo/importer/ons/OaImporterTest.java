@@ -64,7 +64,7 @@ public class OaImporterTest extends AbstractTest {
 
     @Test
     public void testGetDatasourceEnglandBoundaries() throws Exception {
-        Datasource datasource = importer.getDatasource("msoa");
+        Datasource datasource = importer.getDatasource("englandBoundaries");
         assertEquals("englandBoundaries", datasource.getDatasourceSpec().getId());
         assertEquals("uk.gov.ons", importer.getProvider().getLabel());
         assertEquals("England Boundaries", datasource.getDatasourceSpec().getName());
