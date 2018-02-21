@@ -117,9 +117,7 @@ public class AdultObesityImporter extends AbstractPheImporter {
                     continue;
                 }
 
-                String attributeName = row.get(0);
-                // Removing ≤] to avoid encoding issues in matching the description
-                attributeName = attributeName.trim().subSequence(0, attributeName.length() - 2).toString();
+                String attributeName = row.get(0).trim();
                 // Here is where we are assigning the values of our .csv file to the attribute fields we created.
                 Attribute attribute = AttributeId.getAttributeIdByDesc(attributeName).attribute;
                 for (LocalDateTime timestamp: persistedTime.keySet()) {
@@ -148,24 +146,26 @@ public class AdultObesityImporter extends AbstractPheImporter {
 
 
     public enum AttributeId {
-        fractionUnderweight("BMI (Body Mass Index) - Underweight [BMI < 18.5 kg/m≤]"),
-        fractionHealthyWeight("BMI (Body Mass Index) - Healthy weight  [BMI range 18.5 - 24.9 kg/m≤]"),
-        fractionOverweight("BMI (Body Mass Index) - Overweight [BMI range 25 - 29.9 kg/m≤]"),
-        fractionObese("BMI (Body Mass Index) - Obese [BMI range 30-39.9 kg/m≤]"),
-        fractionMorbidlyObese("BMI (Body Mass Index) - Morbidly obese [BMI > 40 kg/m≤]")
+        fractionUnderweight("Underweight", "BMI (Body Mass Index) - Underweight [BMI < 18.5 kg/m≤]"),
+        fractionHealthyWeight("Healthy weight", "BMI (Body Mass Index) - Healthy weight  [BMI range 18.5 - 24.9 kg/m≤]"),
+        fractionOverweight("Overweight", "BMI (Body Mass Index) - Overweight [BMI range 25 - 29.9 kg/m≤]"),
+        fractionObese("Obese", "BMI (Body Mass Index) - Obese [BMI range 30-39.9 kg/m≤]"),
+        fractionMorbidlyObese("Morbidly obese", "BMI (Body Mass Index) - Morbidly obese [BMI > 40 kg/m≤]")
         ;
 
-        // Description of the attribute
+        // Name and escription of the attribute
+        String name;
         String description;
         Attribute attribute;
 
-        AttributeId(String description) {
+        AttributeId(String name, String description) {
+            this.name = name;
             this.description = description;
             attribute = new Attribute(AbstractPheImporter.PROVIDER, name(), description);
         }
 
         public static AttributeId getAttributeIdByDesc(String description) {
-            return Arrays.stream(AttributeId.values()).filter(element -> element.description.contains(description))
+            return Arrays.stream(AttributeId.values()).filter(element -> description.contains(element.name))
                     .findFirst().get();
         }
     }
