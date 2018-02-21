@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jackson.JsonLoader;
+import com.github.fge.jsonschema.core.exceptions.InvalidSchemaException;
 import com.github.fge.jsonschema.core.report.ProcessingMessage;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.github.fge.jsonschema.main.JsonSchemaFactory;
@@ -22,8 +23,12 @@ public class DataExportRecipeValidator {
             JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
             ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.ALLOW_COMMENTS, true);
             return factory.getJsonSchema(node).validate(mapper.readTree(jsonFile));
-        } catch (Exception e) {
+        }
+        catch (InvalidSchemaException e){
             throw new Error("Validator JSON Schema is invalid", e);
+        }
+        catch (Exception e) {
+            throw new Error(e.getMessage(), e);
         }
     }
 
