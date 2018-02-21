@@ -20,7 +20,8 @@ psql -d tombolo -c "SET NAMES 'UTF8';"
 # Create DB tables and load initial fixtures
 psql -d tombolo -U tombolo < src/main/resources/sql/create_database.sql
 
-# Test database setu
+# Test database setup
+# IMPORTANT NOTE: The tombolo_test database is not optional, if not set up the tests will fail.
 # Create a user and database
 createuser tombolo_test
 createdb -O tombolo_test tombolo_test -E UTF8
