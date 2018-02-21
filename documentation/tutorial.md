@@ -3,13 +3,13 @@
 In this page we will give a tutorial of how to use the Tombolo Digital Connector.
 
 ## Install system
-First of all you should follow the 
-[Quick Start](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector#quick-start) 
+First of all you should follow the
+[Quick Start](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector#quick-start)
 guide to get the digital connector up and running by installing requirements, configuring the project and setting up both the main and test databases.
 
 ## Export data
-Having installed the system, it is time to run a data export recipe. In the 
-[Use Case on Cycling and Air Quality](Use-Case-on-Cycling-and-Air-Quality.md) 
+Having installed the system, it is time to run a data export recipe. In the
+[Use Case on Cycling and Air Quality](use-case-on-cycling-and-air-quality.md)
 we described an example recipe where we output, for every borough in London, information about NO2 concentration and the ratio between the bicycle traffic and car traffic ([see recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json)). To run the export recipe, run the following command from the root directory of the Tombolo Digital Connector:
 
 ```bash
@@ -18,13 +18,13 @@ gradle runExport \
   -Poutput='london-cycle-traffic-air-quality-output.json'
 ```
 
-As mentioned in the [use case description](Use-Case-on-Cycling-and-Air-Quality.md), this will give you a GeoJson file 
+As mentioned in the [use case description](use-case-on-cycling-and-air-quality.md), this will give you a GeoJson file
 with the cycling and air quality indicators for each of the 33 London boroughs. Opening the Json file in QGIS and using a quantile-based colouring of the boroughs should give you an image similar to the one below ([See QGIS tutorial for reference](http://www.qgistutorials.com/en/docs/basic_vector_styling.html)).
 
-![London borough cycle to car count ratio](https://user-images.githubusercontent.com/14051876/33561213-f9071faa-d909-11e7-98df-a8edae0c3a6a.png) 
+![London borough cycle to car count ratio](https://user-images.githubusercontent.com/14051876/33561213-f9071faa-d909-11e7-98df-a8edae0c3a6a.png)
 
 ## Change granularity
-Suppose you want to get the cycling information at a finer granularity, say at [LSOA](Glossary#lsoa) level. Copy the data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa.json`.
+Suppose you want to get the cycling information at a finer granularity, say at [LSOA](glossary.md#lsoa) level. Copy the data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa.json`.
 
 Change the subjects clause from outputting all 33 London boroughs to outputting all LSOA geographies that fall inside the 33 London boroughs. I.e., change:
 
@@ -81,7 +81,7 @@ gradle runExport \
   -Poutput='london-cycle-traffic-air-quality-lsoa-output.json'
 ```
 
-When looking at the output from the Digital Connector you will notice that you get very many warnings. This is because that there are very many LSOAs that do not have either a traffic counter in them or an air quality sensor, and hence there is no data to output. Yet, the Digital Connector does return a GeoJson file with the LSOA geographies. If you, again, use QGIS to create a quantile-based colouring of the LSOAs, you should get an image that looks like the one below. 
+When looking at the output from the Digital Connector you will notice that you get very many warnings. This is because that there are very many LSOAs that do not have either a traffic counter in them or an air quality sensor, and hence there is no data to output. Yet, the Digital Connector does return a GeoJson file with the LSOA geographies. If you, again, use QGIS to create a quantile-based colouring of the LSOAs, you should get an image that looks like the one below.
 
 ![London borough cycle to car count ratio](https://user-images.githubusercontent.com/14051876/33561215-f91ff0b6-d909-11e7-9d20-53e9c59ee0e5.png)
 
@@ -94,7 +94,7 @@ In the running example we have been using a combination of geographic aggregatio
 
 In order to demonstrate this, copy your lsoa data export recipe into a new file called `london-cycle-traffic-air-quality-lsoa-modelling.json`.
 
-In this file you can replace the actual calculation with the corresponding pre-defined model recipe. I.e. replace: 
+In this file you can replace the actual calculation with the corresponding pre-defined model recipe. I.e. replace:
 
 ```json
 {
@@ -182,7 +182,7 @@ Then replace the NO2 aggregation calculation:
   "label": "NitrogenDioxide",
   "recipe": "environment/laqn-aggregated-yearly-no2"
 }
-``` 
+```
 
 with a back-off field that first tries to aggregate the NO2 values for the output geography (LSOAs). If no air quality sensor exists within the LSOA, it tries to aggregate NO2 values for the surrounding MSOA. If no air quality sensor exists within the MSOA, it will aggregate NO2 values for the surrounding local authority (borough). The resulting back-off field looks like this:
 

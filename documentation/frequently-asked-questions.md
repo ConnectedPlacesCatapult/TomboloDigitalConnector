@@ -30,7 +30,7 @@ No, it provides you a tool to get the data.
 No, but you can write and importer for it or introduce a back-off field.
 
 ### What is the difference between fixed values and timed values?
-In the [centralised data-format](Local-Datastore.md), subjects can be assigned two types of attributes: fixed and timed
+In the [centralised data-format](local-datastore.md), subjects can be assigned two types of attributes: fixed and timed
 . Fixed attributes are the ones whose values do not have a time associated with them, e.g. name of a road segment, type of a road, category of an Open Street Map geography, etc. Timed attributes are the ones whose values have a time associated with them. e.g. number of deprived households in a certain LSOA according to the 2011 Census, NO concentration for an air quality sensor at 2pm on a certain day, etc.
 
 ## Fields
