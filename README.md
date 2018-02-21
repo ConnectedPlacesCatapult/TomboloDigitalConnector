@@ -361,7 +361,7 @@ We use the Gradle task `exportCatalogue` to export a JSON file detailing the cap
 and explore the data catalogue.
 
 ```bash
-gradle exportCatalogue -PoutputFile=catalogue.json
+gradle exportCatalogue -Poutput=catalogue.json
 ```
 
 ## Start/Stop server
