@@ -96,13 +96,13 @@ public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
         InputStream isr = downloadUtils.fetchInputStream(url, getProvider().getLabel(), ".ods");
 
         SpreadsheetDocument workbook = SpreadsheetDocument.loadDocument(isr);
+        // Getting only the first sheet
         Table sheet = workbook.getSheetByIndex(0);
         Iterator<Row> rowIterator = sheet.getRowIterator();
 
+        // This dataset contains both subject types
         SubjectType localauthority = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(AbstractONSImporter.PROVIDER.getLabel(), getOaDatasourceIds().get(0));
         SubjectType englandboundaries = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(AbstractONSImporter.PROVIDER.getLabel(), getOaDatasourceIds().get(1));
-
-        List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
         int ignore = 0;
         while (ignore++ < 7) {
@@ -114,44 +114,32 @@ public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
         List<Integer> columnLoop = new ArrayList<>();
         while ( columnIndex++ <= 24) {
             if (!(columnIndex % 5 == 0 && columnIndex != 0)) {
-                columnLoop.add(columnIndex+1);
+                // +1 one to match the fact that the values do not start from column 0
+                columnLoop.add(columnIndex + 1);
             }
         }
 
         Row rowTime = sheet.getRowByIndex(3);
         String year = rowTime.getCellByIndex(0).getStringValue();
-        year =  "20" + year.substring(year.length()-2);
-        LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+        LocalDateTime timestamp = TimedValueUtils.parseTimestampString("20" + year.substring(year.length() - 2));
+        log.info("Time is presented in the dataset as {} and we persist it as {}", year, timestamp);
+
+        List<TimedValue> timedValues = new ArrayList<>();
 
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
-
-            Subject subject = SubjectUtils.getSubjectByTypeAndLabel(localauthority, String.valueOf(row.getCellByIndex(0).getDisplayText()).trim());
-            Subject subjecteb = SubjectUtils.getSubjectByTypeAndLabel(englandboundaries, String.valueOf(row.getCellByIndex(0).getDisplayText()).trim());
+            String geograghy = row.getCellByIndex(0).getDisplayText().trim();
+            Subject subject = SubjectUtils.getSubjectByTypeAndLabel(localauthority, geograghy);
+            subject = subject != null ? subject : SubjectUtils.getSubjectByTypeAndLabel(englandboundaries, geograghy);
 
             if (subject != null) {
                 for (int i = 0; i < columnLoop.size(); i++) {
                     Double record = row.getCellByIndex(columnLoop.get(i)).getDoubleValue();
                     Attribute attribute = datasource.getTimedValueAttributes().get(i);
-
-                    timedValues.add(new TimedValue(
-                            subject,
-                            attribute,
-                            timestamp,
-                            record/100.));
+                    timedValues.add(new TimedValue(subject, attribute, timestamp, record/100.));
                 }
-            }
-            else if (subjecteb != null) {
-                for (int i = 0; i < columnLoop.size(); i++) {
-                    Double record = row.getCellByIndex(columnLoop.get(i)).getDoubleValue();
-                    Attribute attribute = datasource.getTimedValueAttributes().get(i);
-
-                    timedValues.add(new TimedValue(
-                            subjecteb,
-                            attribute,
-                            timestamp,
-                            record/100.));
-                }
+            } else {
+                log.warn("Could not find subject for {}", geograghy);
             }
         }
         saveAndClearTimedValueBuffer(timedValues);
