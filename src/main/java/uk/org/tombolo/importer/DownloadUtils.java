@@ -12,7 +12,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DownloadUtils {
@@ -50,29 +53,19 @@ public class DownloadUtils {
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
 
-			// HTTP Response handling
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			switch (connection.getResponseCode()) {
-				case HttpURLConnection.HTTP_OK:
-					log.info(url.toString() + " is OK");
-					URLConnection urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
-					log.info(url.toString() + ": gateway timeout. Using header.");
-					urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_FORBIDDEN:
-					log.info(url.toString() + ": HTTP forbidden. Using header.");
-					urlConnection = url.openConnection();
-					urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-					urlConnection.connect();
-				case HttpURLConnection.HTTP_UNAVAILABLE:
-					System.out.println(url.toString() +  ": unavailable");
-					break;
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			urlConnection.connect();
+
+			if (urlConnection instanceof HttpURLConnection) {
+				HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+				int responseCode = httpURLConnection.getResponseCode();
+				if (responseCode != HttpURLConnection.HTTP_OK) {
+					log.warn(responseCode +": "+ httpURLConnection.getResponseMessage());
+				}
 			}
-			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+
+			return new TeeInputStream(urlConnection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}
