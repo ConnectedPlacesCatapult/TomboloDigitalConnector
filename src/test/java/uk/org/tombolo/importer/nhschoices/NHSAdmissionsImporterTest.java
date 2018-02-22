@@ -7,7 +7,6 @@ import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.ons.ONSAverageAttainmentImporter;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  * Created by tbantis on 16/02/2018.
  */
 public class NHSAdmissionsImporterTest extends AbstractTest {
-    private static uk.org.tombolo.importer.nhschoices.NHSAdmissionsImporter importer;
+    private static NHSAdmissionsImporter importer;
     Subject islington;
     Subject barking;
 

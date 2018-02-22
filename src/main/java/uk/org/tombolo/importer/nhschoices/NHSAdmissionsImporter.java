@@ -46,15 +46,10 @@ public class NHSAdmissionsImporter extends AbstractImporter {
     }
 
     // Instantiating the data Provider
-    protected static final Provider PROVIDER = new Provider(
-            "uk.digital.nhs",
-            "NHS Digital"
-    );
-
     // Getting the data Provider
     @Override
     public Provider getProvider() {
-        return PROVIDER;
+        return new Provider("uk.digital.nhs", "NHS Digital");
     }
 
     // Instantiating the datasoure specifications.
