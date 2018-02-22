@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.importer.Importer;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,13 +30,13 @@ public class CatalogueExportRunner extends AbstractRunner {
 
         for (Class<? extends Importer> i : importers) {
 
-            if (!i.getCanonicalName().equals("uk.org.tombolo.importer.generalcsv.GeneralCSVImporter")) {
+            if (!i.getCanonicalName().equals("uk.org.tombolo.importer.generalcsv.GeneralCSVImporter")
+                    && !i.getCanonicalName().equals("uk.org.tombolo.importer.PythonImporter")) {
                 Importer importer = runner.getImporter(i);
 
                 List<String> datasources = runner.getDatasourceIds(importer);
 
                 for (String d : datasources) {
-                    if (datasources.size() > 0) importer = runner.getImporter(i);
                     Datasource datasource = runner.getDatasource(d, importer);
 
                     if (null != datasource.getDatasourceSpec()) datasource.writeJSON(writer);
@@ -50,8 +47,6 @@ public class CatalogueExportRunner extends AbstractRunner {
         writer.endArray();
         writer.close();
 
-        Files.copy(new File(args[0]).toPath(), new File(args[1] + "/src/main/resources/catalogue.json").toPath(),
-                                                                                    StandardCopyOption.REPLACE_EXISTING);
     }
 
     private List<Class<? extends Importer>> getImporterClasses() {
@@ -87,7 +82,7 @@ public class CatalogueExportRunner extends AbstractRunner {
     }
 
     protected void validateArguments(String[] args) {
-        if (args.length != 2){
+        if (args.length != 1){
             log.error("Must provide filename to export to");
             System.exit(1);
         }

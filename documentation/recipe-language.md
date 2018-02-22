@@ -20,10 +20,10 @@ Example data export specification for GeoJson output:
 
 A dataset recipe is composed of three parts:
 
-- **Subjects**: Specifies the [Subjects](Local-Datastore.md#Subject) for which we return data in the final dataset. I
+- **Subjects**: Specifies the [Subjects](local-datastore.md#Subject) for which we return data in the final dataset. I
 .e., return all LSOAs in Milton Keynes, return all traffic counters in Greenwich, or return all local authorities in England. See further details in the [Subject recipe](#subject-recipe) section.
 - **Datasources**: A list of data-sources needed to be imported in order to export the data. As an example, data-sources can be the Space Syntax Open Space Map (SSx OSM) for the Royal Borough of Greenwich, traffic counts for London from Department for Transport (DFT), etc. See further details in the [Datasource recipe](#datasource-recipe) section.
-- **Fields**: A list of [Fields](Fields-and-Models.md) that are to be returned for each subject. As an example, for a 
+- **Fields**: A list of [Fields](fields-and-models.md) that are to be returned for each subject. As an example, for a
 set of spatial network segments the user could specify to export the connectivity of each segment according to SSx OSM, the nearest DfT traffic counts for that segment (if available) and a deprivation value for that segment disaggregated from the LSOA level deprivation scores from Department for Communities and Local Government (DCLG). In case a field is a transformation or a modelling field, the needed computation is performed at the time of exporting. See further details in the [Field recipe](#field-recipe) section.
 
 Example dataset specification skeleton:
@@ -53,7 +53,7 @@ Additionally a subject recipe can have two types of so-called match rules where 
 
 - **match-rule**: is a filter where we can restrict the returned subjects based on name or label. The match-rule is further composed of:
   - **attribute**: is the attribute on which we would like to filter. E.g. name or label.
-  - **pattern**: is a string pattern that the specified attribute should match. We use the SQL like syntax using % as the wildcard. E.g. for filtering all strings that start with the string 'Leeds' we use the pattern 'Leeds%'. 
+  - **pattern**: is a string pattern that the specified attribute should match. We use the SQL like syntax using % as the wildcard. E.g. for filtering all strings that start with the string 'Leeds' we use the pattern 'Leeds%'.
 - **geo-match-rule**: is a filter where we can restrict the returned subjects based on geographic constraints.
 
 Example where we return all LSOAs whose name starts with the string 'Leeds':
@@ -171,7 +171,7 @@ In addition each field has additional fields (sic) depending on the type of the 
 }
 ```
 
-As another example the arithmetic-field takes as an input the operation you want to apply and two fields 
+As another example the arithmetic-field takes as an input the operation you want to apply and two fields
 
 ```json
 {
@@ -183,10 +183,10 @@ As another example the arithmetic-field takes as an input the operation you want
 }
 ```
 
-Further examples can be found in the [Fields and Models](Fields-and-Models.md) description page.
+Further examples can be found in the [Fields and Models](fields-and-models.md) description page.
 
 ## Notes
 
-- Introduce two types of scope. 
+- Introduce two types of scope.
   - Subject scope (optional)
   - Normalisation scope (optional)
