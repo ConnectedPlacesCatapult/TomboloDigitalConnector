@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
@@ -26,7 +25,7 @@ public class OpenSpaceNetworkImporterTest extends AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        importer = new OpenSpaceNetworkImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new OpenSpaceNetworkImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
         Properties props = new Properties();
         props.put("openSpaceNetworkUsername", "");

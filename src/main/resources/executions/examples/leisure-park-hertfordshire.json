@@ -21,7 +21,7 @@
         //": "Green space data for the entire UK",
         "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
         "datasourceId": "OSMGreenspace",
-        "geographyScope" : ["europe/great-britain/england/hertfordshire"]
+        "geographyScope": ["europe/great-britain/england/hertfordshire"]
       }
     ],
     "fields": [
@@ -56,7 +56,6 @@
               "targetCRSCode": 27700
             }
           }
-
         },
         "field2": {
           // Area of LSOA
@@ -100,5 +99,5 @@
       }
     ]
   },
-  "exporter" : "uk.org.tombolo.exporter.GeoJsonExporter"
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
 }

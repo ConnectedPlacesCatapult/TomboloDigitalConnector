@@ -4,7 +4,11 @@
 {
   // The output subjects are all LSOAs
 "provider": "uk.gov.ons",
-"subjectType": "lsoa"
+"subjectType": "lsoa",
+  "matchRule": {
+    "attribute": "name",
+    "pattern": "Leeds%"
+  }
 }
 ],
 "datasources": [

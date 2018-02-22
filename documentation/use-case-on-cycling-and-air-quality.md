@@ -2,16 +2,16 @@
 
 As a demonstrative example of how Tombolo Digital Connector works we present a story of a fictional user called Thomas, who works for a London based active transport lobby. Thomas wants to visualise the relation between bicycle friendly boroughs in London and air quality. He browses the Tombolo Digital Connector catalogue of importable data and finds traffic counts from Department for Transport and air quality measurements from the London Air Quality Network. In order to combine the two datasets, he writes a Tombolo data export recipe (also known as model recipe) that returns a GeoJson file with the following output:
 
-* the geographic shape of each London borough, 
-* the name of the borough,
-* the cycle traffic in the borough as a fraction of car traffic,
-* and the average nitrogen dioxide concentration as a proxy for air quality.
+- the geographic shape of each London borough,
+- the name of the borough,
+- the cycle traffic in the borough as a fraction of car traffic,
+- and the average nitrogen dioxide concentration as a proxy for air quality.
 
 After exporting the data, Thomas opens the file in QGIS and even if he is not a GIS expert he can create simple heat-maps if he is given the right GeoJson data.
 
 ## Step 1: Create model recipe
 
-A Tombolo model [recipe](Recipe-Language.md) is a json file describing the dataset to be exported and the output format
+A Tombolo model [recipe](recipe-language.md) is a json file describing the dataset to be exported and the output format
 . An executable recipe can be found [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json), but below we we describe the building blocks.
 
 ```json
@@ -34,7 +34,7 @@ The dataset recipe has three parts
 
 The **subjects** are the entities for which you want to combine data. In Thomas' case these are London Boroughs. The **datasources** specify which datasets should be used. In Thomas' case this will be Department of Transport traffic counts and London Air Quality Network. Finally, the **fields** are descriptions of how the data should be combined together in the output file. In Thomas' case it could be one field for the cycling count as a proportion of car traffic counts and average yearly NO<sub>2</sub> levels across each borough.
 
-For more information on each of these components see [the description of the local datastore](Local-Datastore.md).
+For more information on each of these components see [the description of the local datastore](local-datastore.md).
 
 ### Subjects
 
@@ -49,9 +49,9 @@ Thomas will specify that he wants London Boroughs as follows:
     "pattern": "E090%"
   }
 }
-``` 
+```
 
-Literally this means that the Tombolo Digital Connector will output each **local authority**, as provided by Office for National Statistics (**ONS**), that has a **label** starting with the string **"E090"**. It happens that the London Boroughs can be uniquely identified by that string prefix. For more information about how to specify subjects see the [subject section in the recipe language](Recipe-Language#subject-recipe).
+Literally this means that the Tombolo Digital Connector will output each **local authority**, as provided by Office for National Statistics (**ONS**), that has a **label** starting with the string **"E090"**. It happens that the London Boroughs can be uniquely identified by that string prefix. For more information about how to specify subjects see the [subject section in the recipe language](recipe-language.md#subject-recipe).
 
 ### Datasources
 
@@ -77,15 +77,14 @@ Thomas will now specify the datasources as follows:
 
 The first datasource refers to **local authorities** from the **Output Area Importer** from **ONS**. The second datasource refers to **traffic counts** from the Department for Transport (**DfT**). Since the Department for Transport provides data-files for each region separately, Thomas can specify that he is only interested in traffic counts within **London**. The third datasource refers to **air quality** data from the London Air Quality Network (**LAQN**) from King's College London.
 
-
-For more information about specifying data-sources see the [data-source section of the recipe language](Recipe-Language.md#datasource-recipe).
+For more information about specifying data-sources see the [data-source section of the recipe language](recipe-language.md#datasource-recipe).
 
 At the moment we are relying on users knowing a lot about the data they want to import. This will be resolved in late 2017 with a user interface for supporting recipe generation.
 
 ### Fields
 
 To finish his model recipe Thomas needs to specify the two data fields he wants to associate to each borough.
-Since both Department for Transport and London Air Quality Network sensor report readings for points (but not boroughs), Thomas needs to aggregate the sensor values to the borough level. Since he has already specified that he wants London Boroughs as outputs, the aggregation can be done automatically by the built-in **Geographic Aggregation Field**. 
+Since both Department for Transport and London Air Quality Network sensor report readings for points (but not boroughs), Thomas needs to aggregate the sensor values to the borough level. Since he has already specified that he wants London Boroughs as outputs, the aggregation can be done automatically by the built-in **Geographic Aggregation Field**.
 
 That is, the first field outputs the average nitrogen dioxide level for each borough, aggregated over all air quality sensors in the borough, and is specified as follows:
 
@@ -156,10 +155,10 @@ The latter field is slightly more complicated and outputs the bicycle count from
 
 Now that Thomas has put his model recipe together, the next step in the process is to run the Tombolo Digital Connector on the recipe. We use the Gradle build tool to do that from the command line.
 
-```
+```bash
 gradle runExport \
-    -PdataExportRecipe='path/to/recipe/file.json' \
-    -PoutputFile='path/to/output/file.json'
+    -Precipe='path/to/recipe/file.json' \
+    -Poutput='path/to/output/file.json'
 ```
 
 The command takes two parameters, one pointing to the model recipe that was built in the previous step and one pointing to the output file to be generated.
@@ -182,7 +181,7 @@ This will generate a GeoJson file with one geographic shape (know as feature in 
         "label":"E09000001",
         "name":"City of London",
         "Nitrogen Dioxide":81.3333333333333,
-        "Bicycle Fraction":0.25473695591455 
+        "Bicycle Fraction":0.25473695591455
       }
     },
     {
@@ -200,7 +199,7 @@ This will generate a GeoJson file with one geographic shape (know as feature in 
         "label":"E09000002",
         "name":"Barking and Dagenham",
         "Nitrogen Dioxide":34,
-        "Bicycle Fraction":0.00615611326607704 
+        "Bicycle Fraction":0.00615611326607704
       }
     },
     ...
@@ -214,8 +213,8 @@ Having exported the data, Thomas can open the output file in QGIS and export sim
 
 ![London Bicycle Fraction](https://user-images.githubusercontent.com/14051876/33561209-f8a01814-d909-11e7-87ba-1483ac3c5e9a.png))
 
-_Heat map of bicycle traffic counts as a fraction of car traffic counts._
+*Heat map of bicycle traffic counts as a fraction of car traffic counts.*
 
 ![London Nitrogen Dioxide](https://user-images.githubusercontent.com/14051876/33561210-f8bdac4e-d909-11e7-932e-b21504abdb40.png)
 
-_Heat map of annual nitrogen dioxide levels._
+*Heat map of annual nitrogen dioxide levels.*

@@ -5,7 +5,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.utils.CSVUtils;
 import uk.org.tombolo.importer.utils.extraction.CSVExtractor;
 import uk.org.tombolo.importer.utils.extraction.ConstantExtractor;
@@ -40,7 +39,7 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
 
         private DatasourceSpec datasourceSpec;
         DatasourceId(DatasourceSpec datasource) {
-            this.datasourceSpec = datasourceSpec;
+            this.datasourceSpec = datasource;
         }
     }
 
@@ -51,12 +50,12 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
             "age=0&" +
             "measure=1&" +
             "measures=20100&" +
-            "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
+            "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name," +
+            "obs_value,obs_status_name";
 
     private enum AttributeId {claimantCount};
 
-    public ONSClaimantsImporter(Config config){
-        super(config);
+    public ONSClaimantsImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
@@ -64,6 +63,12 @@ public class ONSClaimantsImporter extends AbstractONSImporter {
     public DatasourceSpec getDatasourceSpec(String datasourceIdString) throws Exception {
         return DatasourceId.valueOf(datasourceIdString).datasourceSpec;
     }
+
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList(OaImporter.OaType.lsoa.datasourceSpec.getId());
+    }
+
     @Override
     protected void importDatasource(Datasource datasource, List<String> geographyScope, List<String> temporalScope, List<String> datasourceLocation) throws Exception {
         SubjectType subjectType = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,

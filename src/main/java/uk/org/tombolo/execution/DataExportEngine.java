@@ -5,10 +5,6 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.AbstractRunner;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.recipe.DataExportRecipe;
-import uk.org.tombolo.recipe.DatasourceRecipe;
-import uk.org.tombolo.recipe.FieldRecipe;
-import uk.org.tombolo.recipe.SubjectRecipe;
 import uk.org.tombolo.exporter.Exporter;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.ParentField;
@@ -18,11 +14,20 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
 import uk.org.tombolo.importer.utils.ConfigUtils;
+import uk.org.tombolo.importer.utils.JSONReader;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.DatasourceRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
+import uk.org.tombolo.recipe.SubjectRecipe;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class DataExportEngine implements ExecutionEngine {
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
@@ -36,18 +41,17 @@ public class DataExportEngine implements ExecutionEngine {
 		fieldCache = new FieldCache();
 	}
 
-	public void execute(DataExportRecipe dataExportSpec, Writer writer) throws Exception {
-		execute(dataExportSpec, writer, new ImporterMatcher(""));
-	}
-
-	public void execute(DataExportRecipe dataExportSpec, Writer writer, ImporterMatcher forceImports) throws Exception {
+	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
+		List<SubjectRecipe> subjectRecipes = dataExportRecipe.getDataset().getSubjects();
 		// Import datasources that are in the global dataset specification
-		for (DatasourceRecipe datasourceSpec : dataExportSpec.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceSpec, dataExportSpec.getDataset().getSubjects());
+		for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
+			if (!datasourceSpec.getImporterClass().isEmpty()) {
+				importDatasource(forceImports, datasourceSpec, subjectRecipes);
+			}
 		}
 
 		// Generate fields
-		List<FieldRecipe> fieldSpecs = dataExportSpec.getDataset().getFields();
+		List<FieldRecipe> fieldSpecs = dataExportRecipe.getDataset().getFields();
 		List<Field> fields = new ArrayList<>();
 		for (FieldRecipe fieldSpec : fieldSpecs) {
 			Field field = fieldSpec.toField();
@@ -55,14 +59,14 @@ public class DataExportEngine implements ExecutionEngine {
 			fields.add(field);
 		}
 
-		prepareFields(fields, dataExportSpec.getDataset().getSubjects(), forceImports);
+		prepareFields(fields, dataExportRecipe.getDataset().getSubjects(), forceImports);
 
 		// Use the new fields method
 		log.info("Exporting ...");
-		List<SubjectRecipe> subjectSpecList = dataExportSpec.getDataset().getSubjects();
-		Exporter exporter = (Exporter) Class.forName(dataExportSpec.getExporter()).newInstance();
+		List<SubjectRecipe> subjectSpecList = subjectRecipes;
+		Exporter exporter = (Exporter) Class.forName(dataExportRecipe.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
-		exporter.write(writer, subjects, fields, dataExportSpec.getTimeStamp());
+		exporter.write(writer, subjects, fields, dataExportRecipe.getTimeStamp());
 	}
 
 	private void prepareFields(List<Field> fields, List<SubjectRecipe> subjectRecipes, ImporterMatcher forceImports) throws Exception {
@@ -82,24 +86,73 @@ public class DataExportEngine implements ExecutionEngine {
 		}
 	}
 
-	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceSpec, List<SubjectRecipe> subjectRecipes) throws Exception {
-		Config importerConfiguration = null;
-		String configFile = datasourceSpec.getConfigFile();
-		if (configFile != null && !"".equals(configFile)) {
-			importerConfiguration = ConfigUtils.loadConfig(
-					AbstractRunner.loadProperties("Configuration file", configFile));
 
-		}
-		Importer importer = (Importer) Class.forName(datasourceSpec.getImporterClass()).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
+	private void importDatasource(ImporterMatcher forceImports, DatasourceRecipe datasourceRecipe, List<SubjectRecipe> subjectRecipes) throws Exception {
+
+		Importer importer = initialiseImporter(datasourceRecipe.getImporterClass(), datasourceRecipe.getConfigFile());
 		importer.configure(apiKeys);
 		importer.setDownloadUtils(downloadUtils);
+		importer.setSubjectRecipes(subjectRecipes);
 		importer.importDatasource(
-				datasourceSpec.getDatasourceId(),
-				datasourceSpec.getGeographyScope(),
-				datasourceSpec.getTemporalScope(),
-				datasourceSpec.getLocalData(),
-				subjectRecipes,
-				forceImports.doesMatch(datasourceSpec.getImporterClass())
+				datasourceRecipe.getDatasourceId(),
+				datasourceRecipe.getGeographyScope(),
+				datasourceRecipe.getTemporalScope(),
+				datasourceRecipe.getLocalData(),
+				forceImports.doesMatch(datasourceRecipe.getImporterClass())
 		);
+	}
+
+	private Importer initialiseImporter(String importerClass, String configFile) throws Exception {
+		if (configFile != null && !"".equals(configFile)) {
+			Config importerConfiguration = ConfigUtils.loadConfig(
+					AbstractRunner.loadProperties("Configuration file", configFile));
+			return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
+
+		}
+		return (Importer) Class.forName(importerClass).getDeclaredConstructor().newInstance();
+	}
+
+	/**
+	 * Checks if the providers specified in the recipe are valid.
+	 * This implementation checks only the visible providers for the specified recipe not the ones in the ones in the
+	 * modeling fields if any present.
+	 *
+	 * @param recipe recipe
+	 * @param isString boolean indication if the recipe is a json string or filename
+	 * @return
+	 * @throws Exception
+	 */
+	public String verifyProvider(String recipe, boolean isString) throws Exception {
+		String validProvider = null;
+		JSONReader reader;
+		ArrayList<String> tags = new ArrayList<>(Arrays.asList("importerClass", "provider"));
+
+		if (!isString) {
+			File recipeFile = new File(recipe);
+			if (!recipeFile.exists()) return validProvider;
+			reader = new JSONReader(recipeFile, tags);
+		} else {
+			reader = new JSONReader(new ByteArrayInputStream(recipe.getBytes()), tags);
+		}
+
+		reader.getData();
+		List<String> importers = reader.getTagValueFromAllSections("importerClass").stream().distinct().collect(Collectors.toList());
+		List<String> providers = reader.getTagValueFromAllSections("provider").stream().distinct().collect(Collectors.toList());
+
+		for (String importer : importers) {
+			if (providers.isEmpty()) break;
+
+			for (int i = 0; i < providers.size(); i++) {
+				Importer imp = initialiseImporter(importer, "");
+				if (providers.get(i).equals(imp.getProvider().getLabel())) {
+					providers.remove(i);
+					i = i - 1;
+				}
+			}
+		}
+
+		if (providers.size() > 0) validProvider = String.join(", ", providers);
+
+		return validProvider;
 	}
 }

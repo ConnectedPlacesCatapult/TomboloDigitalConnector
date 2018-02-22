@@ -11,10 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
-import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
-import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
@@ -38,7 +37,7 @@ import java.util.*;
  * - http://api.dft.gov.uk/v3/trafficcounts/export/la/Aberdeen+City.csv
  *
  */
-public class TrafficCountImporter extends AbstractDFTImporter {
+public class TrafficCountImporter extends AbstractImporter {
 	private static final String REGION = "region/";
 	private static final String LA = "la/";
 	private static final String CSV_POSTFIX = ".csv";
@@ -251,13 +250,17 @@ public class TrafficCountImporter extends AbstractDFTImporter {
 
 	private static final Logger log = LoggerFactory.getLogger(TrafficCountImporter.class);
 
-	public TrafficCountImporter(Config config) {
-		super(config);
+	public TrafficCountImporter() {
 		datasourceIds = stringsFromEnumeration(DatasourceId.class);
 		geographyLabels = new ArrayList<>(regions);
 		geographyLabels.addAll(localAuthorities);
 	}
 
+	@Override
+	public Provider getProvider() {
+		return AbstractDFTImporter.PROVIDER;
+	}
+	
 	@Override
 	public int getTimedValueBufferSize() {
 		return TIMED_VALUE_BUFFER_SIZE;

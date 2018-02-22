@@ -19,6 +19,10 @@ public class RecipeDeserializer {
         return fromJson(FileUtils.readFileToString(jsonFile), returningClass);
     }
 
+    public static <T> T fromJsonString(String json, Class<T> returningClass) throws IOException {
+        return fromJson(json, returningClass);
+    }
+
     private static class FieldDeserializer implements JsonDeserializer<FieldRecipe> {
         @Override
         public FieldRecipe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

@@ -1,7 +1,6 @@
 package uk.org.tombolo.importer.dft;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -14,6 +13,7 @@ import uk.org.tombolo.core.utils.TimedValueUtils;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,28 +23,28 @@ import static org.junit.Assert.assertEquals;
  * Using the following test data files:
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357458/acs0501.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NTgvYWNzMDUwMS54bHM=.xls
+ * Local: a3faf937-48bb-36b4-8958-dd9a709fc9d3.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357460/acs0502.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjAvYWNzMDUwMi54bHM=.xls
+ * Local: 76b20598-45e0-3a6f-a9e1-3f73aaff0074.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357461/acs0503.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjEvYWNzMDUwMy54bHM=.xls
+ * Local: c41f2008-202b-38a1-adf1-0524cc4ae41c.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357464/acs0504.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjQvYWNzMDUwNC54bHM=.xls
+ * Local: b35edb6f-be66-35cd-89e4-6b37681334cb.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0505.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjcvYWNzMDUwNS54bHM=.xls
+ * Local: 7616e60e-b597-3fa6-92eb-6c77c72184bf.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357468/acs0506.xls
  * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjgvYWNzMDUwNi54bHM=.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357469/acs0507.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjkvYWNzMDUwNy54bHM=.xls
+ * Local: ad79ebbb3-339b-34cd-807b-00350da67033.xls
  *
  * Remote: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/357467/acs0508.xls
- * Local: aHR0cHM6Ly93d3cuZ292LnVrL2dvdmVybm1lbnQvdXBsb2Fkcy9zeXN0ZW0vdXBsb2Fkcy9hdHRhY2htZW50X2RhdGEvZmlsZS8zNTc0NjcvYWNzMDUwOC54bHM=.xls
+ * Local: 767f0676-d56b-3d2f-ab29-754898185b8e.xls
  *
  */
 public class AccessibilityImporterTest extends AbstractTest {
@@ -53,11 +53,18 @@ public class AccessibilityImporterTest extends AbstractTest {
     private Subject cityofLondon001B;
     private Subject islington015E;
 
+    //Create this private class to avoid importing the oa data that slows down the test
+    private class ImporterTest extends AccessibilityImporter {
+        @Override
+        protected List<String> getOaDatasourceIds() {
+            return Collections.emptyList();
+        }
+    }
+
     @Before
     public void setUp() throws Exception {
-        importer = new AccessibilityImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ImporterTest();
         importer.setDownloadUtils(makeTestDownloadUtils());
-
         cityofLondon001A = TestFactory.makeNamedSubject("E01000001");
         cityofLondon001B = TestFactory.makeNamedSubject("E01000002");
         islington015E = TestFactory.makeNamedSubject("E01002766");

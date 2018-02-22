@@ -10,7 +10,6 @@ import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
@@ -51,8 +50,7 @@ public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImport
     private static final String DATAFILE
             = "https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls";
 
-    public WalkingCyclingBoroughImporter(Config config) {
-        super(config);
+    public WalkingCyclingBoroughImporter() {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

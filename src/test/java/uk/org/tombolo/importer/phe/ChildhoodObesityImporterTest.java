@@ -29,62 +29,87 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     private ChildhoodObesityImporter importer;
 
     private Subject cityOfLondon001;
-    private Subject islington011;
-
+    private Subject finsburyPark;
     private Subject leeds;
 
     @Before
     public void setUp() throws Exception {
-        importer = new ChildhoodObesityImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ChildhoodObesityImporter();
         mockDownloadUtils(importer);
 
         cityOfLondon001 = TestFactory.makeNamedSubject("E02000001");  // City of London 001
-        islington011 = TestFactory.makeNamedSubject("E02000564");  // Islington 011
+        finsburyPark = TestFactory.makeNamedSubject("E05000371");  // Finsbury Park
         leeds = TestFactory.makeNamedSubject("E08000035"); // Leeds
     }
 
     @Test
     public void getDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("childhoodObesity"), datasources);
+        assertEquals(Arrays.asList("childhoodObesityLA", "childhoodObesityMSOA", "childhoodObesityWard"), datasources);
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("childhoodObesity");
+        Datasource datasourceLA = importer.getDatasource("childhoodObesityLA");
+        assertEquals(12, datasourceLA.getTimedValueAttributes().size());
 
-        assertEquals(18, datasource.getTimedValueAttributes().size());
+        Datasource datasourceMSOA = importer.getDatasource("childhoodObesityMSOA");
+        assertEquals(12, datasourceMSOA.getTimedValueAttributes().size());
+
+        Datasource datasourceWard = importer.getDatasource("childhoodObesityWard");
+        assertEquals(12, datasourceWard.getTimedValueAttributes().size());
     }
 
     @Test
     public void importDatasourceWard() throws Exception {
-        //FIXME: Implement this if/when we decide to support wards as Subjects
+        importer.importDatasource("childhoodObesityWard", Arrays.asList("ward"), null, null);
+
+        Map<String, Double> groundTruthCoL001 = new HashMap();
+
+        groundTruthCoL001.put("Reception_Obese_%", 12.6499163078488d/100.);
+        groundTruthCoL001.put("Reception_Obese_LCI", 10.0088058246682d/100.);
+        groundTruthCoL001.put("Reception_Obese_UCI", 15.8650930439096d/100.);
+
+        groundTruthCoL001.put("Year6_ExcessWeight_%", 41.3519022837799d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_LCI", 36.479137705224d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_UCI", 46.4001005504903d/100.);
+
+        groundTruthCoL001.put("Year6_Obese_%", 25.2708697857725d/100.);
+        groundTruthCoL001.put("Year6_Obese_LCI", 21.1379194228944d/100.);
+        groundTruthCoL001.put("Year6_Obese_UCI", 29.9054706457531d/100.);
+
+        groundTruthCoL001.put("Reception_ExcessWeight_%", 24.582235216267d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_LCI", 20.9979461342944d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_UCI", 28.5571922578152d/100.);
+
+        for (String attributeName : groundTruthCoL001.keySet()) {
+            Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
+            TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(finsburyPark, attribute);
+            assertEquals("Value for "+attributeName, groundTruthCoL001.get(attributeName), timedValue.getValue(), 0.0001d);
+        }
     }
 
     @Test
     public void importDatasourceMSOA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
+        importer.importDatasource("childhoodObesityMSOA", Arrays.asList("msoa"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
-        groundTruthCoL001.put("receptionNumberMeasured", 81d);
-        groundTruthCoL001.put("year6NumberMeasured", 56d);
-        groundTruthCoL001.put("receptionNumberObese", 9d);
-        groundTruthCoL001.put("receptionPercentageObese", 0.1111d);
-        groundTruthCoL001.put("receptionPercentageObeseLowerLimit", 0.0595d);
-        groundTruthCoL001.put("receptionPercentageObeseUpperLimit", 0.1978d);
-        groundTruthCoL001.put("year6NumberObese", 13d);
-        groundTruthCoL001.put("year6PercentageObese", 0.2321d);
-        groundTruthCoL001.put("year6PercentageObeseLowerLimit", 0.1409d);
-        groundTruthCoL001.put("year6PercentageObeseUpperLimit", 0.3576d);
-        groundTruthCoL001.put("receptionNumberExcessWeight", 12d);
-        groundTruthCoL001.put("receptionPercentageExcessWeight", 0.1481d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightLowerLimit", 0.0868d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightUpperLimit", 0.2413d);
-        groundTruthCoL001.put("year6NumberExcessWeight", 19d);
-        groundTruthCoL001.put("year6PercentageExcessWeight", 0.3392d);
-        groundTruthCoL001.put("year6PercentageExcessWeightLowerLimit", 0.2291d);
-        groundTruthCoL001.put("year6PercentageExcessWeightUpperLimit", 0.4700d);
+        groundTruthCoL001.put("Reception_Obese_%", 13.2530120481928d/100.);
+        groundTruthCoL001.put("Reception_Obese_LCI", 7.56430649275991d/100.);
+        groundTruthCoL001.put("Reception_Obese_UCI", 22.1927463845418d/100.);
+
+        groundTruthCoL001.put("Year6_ExcessWeight_%", 40d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_LCI", 27.6083897302565d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_UCI", 53.8185622524106d/100.);
+
+        groundTruthCoL001.put("Year6_Obese_%", 28d/100.);
+        groundTruthCoL001.put("Year6_Obese_LCI", 17.4741706659112d/100.);
+        groundTruthCoL001.put("Year6_Obese_UCI", 41.6651236959566d/100.);
+
+        groundTruthCoL001.put("Reception_ExcessWeight_%", 28.9156626506024d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_LCI", 20.2674488491748d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_UCI", 39.4292208345229d/100.);
 
         for (String attributeName : groundTruthCoL001.keySet()) {
             Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
@@ -94,65 +119,26 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
     }
 
     @Test
-    public void importDatasourceMSOAWithEmpty() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("msoa"), null, null);
-
-        Map<String, Double> groundTruthCoL001 = new HashMap();
-
-        groundTruthCoL001.put("receptionNumberMeasured", 211d);
-        groundTruthCoL001.put("year6NumberMeasured", 208d);
-        groundTruthCoL001.put("receptionNumberObese", null);
-        groundTruthCoL001.put("receptionPercentageObese", 0.1279d);
-        groundTruthCoL001.put("receptionPercentageObeseLowerLimit", 0.0894d);
-        groundTruthCoL001.put("receptionPercentageObeseUpperLimit", 0.1797d);
-        groundTruthCoL001.put("year6NumberObese", null);
-        groundTruthCoL001.put("year6PercentageObese", 0.2115);
-        groundTruthCoL001.put("year6PercentageObeseLowerLimit", 0.1615d);
-        groundTruthCoL001.put("year6PercentageObeseUpperLimit", 0.2720d);
-        groundTruthCoL001.put("receptionNumberExcessWeight", null);
-        groundTruthCoL001.put("receptionPercentageExcessWeight", 0.2748d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightLowerLimit", 0.2190d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightUpperLimit", 0.3387d);
-        groundTruthCoL001.put("year6NumberExcessWeight", null);
-        groundTruthCoL001.put("year6PercentageExcessWeight", 0.3509d);
-        groundTruthCoL001.put("year6PercentageExcessWeightLowerLimit", 0.2893d);
-        groundTruthCoL001.put("year6PercentageExcessWeightUpperLimit", 0.4179d);
-
-        for (String attributeName : groundTruthCoL001.keySet()) {
-            Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);
-            TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(islington011, attribute);
-            if (groundTruthCoL001.get(attributeName) == null) {
-                assertNull(timedValue);
-            }else{
-                assertEquals("Value for " + attributeName, groundTruthCoL001.get(attributeName), timedValue.getValue(), 0.0001d);
-            }
-        }
-    }
-
-    @Test
     public void importDatasourceLA() throws Exception {
-        importer.importDatasource("childhoodObesity", Arrays.asList("la"), null, null);
+        importer.importDatasource("childhoodObesityLA", Arrays.asList("localAuthority"), null, null);
 
         Map<String, Double> groundTruthCoL001 = new HashMap();
 
-        groundTruthCoL001.put("receptionNumberMeasured", 26128d);
-        groundTruthCoL001.put("year6NumberMeasured", 19299d);
-        groundTruthCoL001.put("receptionNumberObese", 2396d);
-        groundTruthCoL001.put("receptionPercentageObese", 0.0917d);
-        groundTruthCoL001.put("receptionPercentageObeseLowerLimit", 0.0882d);
-        groundTruthCoL001.put("receptionPercentageObeseUpperLimit", 0.0952d);
-        groundTruthCoL001.put("year6NumberObese", 3772d);
-        groundTruthCoL001.put("year6PercentageObese", 0.1954d);
-        groundTruthCoL001.put("year6PercentageObeseLowerLimit", 0.1899d);
-        groundTruthCoL001.put("year6PercentageObeseUpperLimit", 0.2011d);
-        groundTruthCoL001.put("receptionNumberExcessWeight", 5984d);
-        groundTruthCoL001.put("receptionPercentageExcessWeight", 0.2290d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightLowerLimit", 0.2239d);
-        groundTruthCoL001.put("receptionPercentageExcessWeightUpperLimit", 0.2341d);
-        groundTruthCoL001.put("year6NumberExcessWeight", 6633d);
-        groundTruthCoL001.put("year6PercentageExcessWeight", 0.3436d);
-        groundTruthCoL001.put("year6PercentageExcessWeightLowerLimit", 0.3370d);
-        groundTruthCoL001.put("year6PercentageExcessWeightUpperLimit", 0.3504d);
+        groundTruthCoL001.put("Reception_Obese_%", 8.99749373433584d/100.);
+        groundTruthCoL001.put("Reception_Obese_LCI", 8.6675250022043d/100.);
+        groundTruthCoL001.put("Reception_Obese_UCI", 9.33873978681711d/100.);
+
+        groundTruthCoL001.put("Year6_ExcessWeight_%", 34.218667138059d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_LCI", 33.6032225305155d/100.);
+        groundTruthCoL001.put("Year6_ExcessWeight_UCI", 34.8394690949314d/100.);
+
+        groundTruthCoL001.put("Year6_Obese_%", 19.6659006540569d/100.);
+        groundTruthCoL001.put("Year6_Obese_LCI", 19.1531845465194d/100.);
+        groundTruthCoL001.put("Year6_Obese_UCI", 20.1889143941324d/100.);
+
+        groundTruthCoL001.put("Reception_ExcessWeight_%", 21.9298245614035d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_LCI", 21.4484446971911d/100.);
+        groundTruthCoL001.put("Reception_ExcessWeight_UCI", 22.4189248405252d/100.);
 
         for (String attributeName : groundTruthCoL001.keySet()) {
             Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeName);

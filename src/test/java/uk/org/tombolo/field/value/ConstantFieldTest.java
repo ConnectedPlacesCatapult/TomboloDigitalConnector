@@ -7,8 +7,8 @@ import uk.org.tombolo.core.Subject;
 
 import static org.junit.Assert.assertEquals;
 
-public class FixedAnnotationFieldTest extends AbstractTest {
-    FixedAnnotationField field = new FixedAnnotationField("aLabel", "aValue");
+public class ConstantFieldTest extends AbstractTest {
+    ConstantField field = new ConstantField("aLabel", "aValue");
     Subject subject = new Subject();
 
     @Test

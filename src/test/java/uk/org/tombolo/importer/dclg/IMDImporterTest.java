@@ -10,6 +10,7 @@ import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -22,13 +23,22 @@ import static org.junit.Assert.assertEquals;
  * Local file: 30313bb6-b3eb-3ea4-9cea-95e04b25cc4f.csv
  */
 public class IMDImporterTest extends AbstractTest {
-    IMDImporter imdImporter = new IMDImporter(TestFactory.DEFAULT_CONFIG);
+    //Create this private class to avoid importing the oa data that slows down the test
+    private class ImporterTest extends IMDImporter {
+        @Override
+        protected List<String> getOaDatasourceIds() {
+            return Collections.emptyList();
+        }
+    }
+
+    IMDImporter imdImporter;
 
     Subject subject1;
     Subject subject2;
 
     @Before
     public void setUp() throws Exception {
+        imdImporter = new ImporterTest();
         imdImporter.setDownloadUtils(makeTestDownloadUtils());
 
         subject1 = TestFactory.makeNamedSubject("E01000001");

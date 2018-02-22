@@ -3,7 +3,6 @@ package uk.org.tombolo.importer.dfe;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.FixedValueUtils;
@@ -24,7 +23,7 @@ public class SchoolsImporterTest extends AbstractTest {
 
     @Before
     public void before(){
-        importer = new SchoolsImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new SchoolsImporter();
         mockDownloadUtils(importer);
     }
 

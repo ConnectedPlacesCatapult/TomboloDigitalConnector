@@ -2,7 +2,7 @@
 
 In this section we describe the Tombolo Digital Connector fields and how modelling can be seen as fields. As with importers we have a set of built-in fields, recipes and models, together with a field specification language where users can define their own custom fields and models.
 
-See also FAQ about [fields](Frequently-Asked-Questions.md#fields) and [model recipes](Frequently-Asked-Questions.md#model-recipes).
+See also FAQ about [fields](frequently-asked-questions.md#fields) and [model recipes](frequently-asked-questions.md#model-recipes).
 
 ## Value Fields
 
@@ -10,7 +10,7 @@ Value fields are the most basic fields. Their purpose is to being able to export
 
 Currently we have implemented the following value fields:
 
-- **Fixed Annotation Field:** Returns a fixed value for annotation purposes.
+- **Constant Field:** Returns a fixed value for annotation purposes.
 - **Fixed Value Field:** Returns the Fixed Value of a specified Attribute for a given Subject.
 - **Latest Value Field:** Returns the latest Timed Value for a particular Attribute on the given Subject.
 - **Subject Latitude Field:** Returns the latitude of the centroid of the Subject.
@@ -39,16 +39,16 @@ The aggregation and disaggregation fields are types of transformation fields whe
 
 For an up-to-date list, see here: [aggregation fields](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/java/uk/org/tombolo/field/aggregation).
 
-## Modelling Fields and Built-in Models 
+## Modelling Fields and Built-in Models
 Modelling Fields and Built-in models are an important part of the Tombolo Digital Connector. It allows users to share definitions of custom fields and models. They are also used to encode built-in models that have been developed within the Tombolo project to address the City Challenges.
 Basic Modelling Field: A field that takes as input a specification (recipe) of a potentially complex field and returns a value that is calculated according to the specification. The recipe/specification can also be seen as a model.
 
 At the time of writing we include the following Built-in models:
 
-- **[Active Transport Index](Use-Case-on-Active-Transport-Index.md):** A modelling field combining traffic counts 
-from Department for Transport, cycling 
+- **[Active Transport Index](use-case-on-active-transport-index.md):** A modelling field combining traffic counts
+from Department for Transport, cycling
 infrastructure from Open Street Map and travel to work information from the UK Census.
 - **Social Isolation Score:** A modelling field for applying the Age UK model described in the city challenges description below.
 
-These models are them selves combinations of sub models, e.g. for calculating the fraction of households renting in 
+These models are them selves combinations of sub models, e.g. for calculating the fraction of households renting in
 an LSOA. For browsing the available built-in models see [modelling fields](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/modelling-fields).

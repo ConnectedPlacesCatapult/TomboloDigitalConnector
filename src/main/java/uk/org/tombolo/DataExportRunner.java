@@ -1,87 +1,102 @@
 package uk.org.tombolo;
 
-import com.github.fge.jsonschema.core.report.ProcessingReport;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.utils.DatabaseUtils;
 import uk.org.tombolo.core.utils.HibernateUtil;
+import uk.org.tombolo.execution.CorrelationAnalysisEngine;
 import uk.org.tombolo.execution.DataExportEngine;
-import uk.org.tombolo.recipe.DataExportRecipeValidator;
+import uk.org.tombolo.exporter.CSVExporter;
+import uk.org.tombolo.exporter.GeoJsonExporter;
 import uk.org.tombolo.importer.ImporterMatcher;
+import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.FieldRecipe;
 
-import java.io.*;
+import java.io.Writer;
+import java.util.List;
 import java.util.Properties;
 
 public class DataExportRunner extends AbstractRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
+    private static final DataExportRunner runner = new DataExportRunner();
 
     public static void main(String[] args) throws Exception {
-        validateArguments(args);
+        Boolean isString = Boolean.parseBoolean(args[0]);
+        String recipe = args[1];
+        String output = args[2];
+        String correlation = args[3];
+        String forceImports = args[4];
+        Boolean clearDatabaseCache = Boolean.parseBoolean(args[5]);
 
-        String executionSpecPath = args[0];
-        String outputFile = args[1];
-        String forceImports = args[2];
-        Boolean clearDatabaseCache = Boolean.parseBoolean(args[3]);
-
-        run(executionSpecPath, outputFile, forceImports, clearDatabaseCache);
+        run(isString, recipe, output, correlation, forceImports, clearDatabaseCache);
     }
 
-    protected static void run(String executionSpecPath, String outputFile,
-                              String forceImports, Boolean clearDatabaseCache) throws Exception {
+    private static void run(Boolean isString, String recipe, String output, String correlation, String forceImports,
+                            Boolean clearDatabaseCache) throws Exception {
         HibernateUtil.startup();
         if (clearDatabaseCache) {
             DatabaseUtils.clearAllData();
         }
 
         // Load API keys
-        Properties apiKeys = loadApiKeys();
+        Properties apiKeys = runner.loadApiKeys();
+
+        // Loading the recipe for future use
+        DataExportRecipe dataExportRecipe = runner.getRecipe(recipe, isString);
 
         // Create engine
-        DataExportEngine engine = new DataExportEngine(apiKeys, initialiseDowloadUtils());
+        DataExportEngine engine = new DataExportEngine(apiKeys, runner.initialiseDowloadUtils());
 
-        validateSpecification(executionSpecPath);
-
-        try (Writer writer = getOutputWriter(outputFile)) {
-            engine.execute(
-                    getSpecification(executionSpecPath),
-                    writer,
-                    new ImporterMatcher(forceImports.trim())
-            );
+        try (Writer writer = runner.getOutputWriter(output)) {
+            String vProvider = engine.verifyProvider(recipe, isString);
+            if (null != vProvider) {
+                throw new Error(vProvider + " is not recognised as a valid Provider Name");
+            }
+            engine.execute(dataExportRecipe, writer, new ImporterMatcher(forceImports));
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         } finally {
             HibernateUtil.shutdown();
         }
-    }
 
-    private static void validateSpecification(String executionSpecPath) throws FileNotFoundException {
-        ProcessingReport report = DataExportRecipeValidator.validate(new FileReader(executionSpecPath));
-        if (!report.isSuccess()) {
-            DataExportRecipeValidator.display(report);
-            System.exit(1);
+        // Perform the correlation analysis
+        if (!correlation.equals("None")) {
+            runner.runCorrelation(dataExportRecipe, output, correlation);
         }
     }
 
-    private static void validateArguments(String[] args) {
-        if (args.length != 4){
-            log.error("Use: {} {} {} {}",
-                    DataExportRunner.class.getCanonicalName(),
-                    "dataExportSpecFile",
-                    "outputFile",
-                    "clearDatabaseCache",
-                    "forceImports (className:datasourceId,...)"
-            );
-            System.exit(1);
-        }
-    }
+    /**
+     * Performs correlation analysis.
+     *
+     * Calculates the correlation between all input fields and output the Pearson correlation coefficient,
+     * the pValue and the standard error to a JSON file.
+     *
+     * Currently we only support the use of GeoJson as the intermediate data export format.
+     * We chose this since it is a cleaner implementation than our CSV exporter
+     * and the additional benefit is to be able to visualise the intermediate data in QGIS.
+     *
+     * @param dataExportRecipe Data export recipe
+     * @param output File containing the exported fields to use in the correlation analysis. We get this file by running
+     *               the recipe.
+     * @param correlation Output file for the correlation results
+     * @throws Exception
+     */
+    private void runCorrelation(DataExportRecipe dataExportRecipe, String output, String correlation) throws Exception {
+        List<FieldRecipe> fields = dataExportRecipe.getDataset().getFields();
 
-    private static Writer getOutputWriter(String path) {
-        try {
-            return new FileWriter(path);
-        } catch (IOException e) {
-            log.error("Error initialising output writer: {}", path);
-            System.exit(1);
-            return null;
+        // Read in data file
+        RealMatrix matrix;
+        if (dataExportRecipe.getExporter().equals(GeoJsonExporter.class.getCanonicalName())){
+            matrix = CorrelationAnalysisEngine.readGeoJsonDataExport(output, fields);
+        }else if(dataExportRecipe.getExporter().equals(CSVExporter.class.getCanonicalName())){
+            matrix = CorrelationAnalysisEngine.readCSVDataExport(output, fields);
+        }else {
+            throw new Error("Unknown exporter class for intermediate data.");
         }
+
+        // Calculate and output correlations
+        CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fields, correlation);
     }
 }

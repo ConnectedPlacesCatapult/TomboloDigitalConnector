@@ -6,7 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Provider;
 import uk.org.tombolo.core.Subject;
@@ -43,7 +42,7 @@ public class TrafficCountImporterTest extends AbstractTest {
 
 	@Before
 	public void before(){
-		importer = new TrafficCountImporter(TestFactory.DEFAULT_CONFIG);
+		importer = new TrafficCountImporter();
 		mockDownloadUtils(importer);
 	}
 

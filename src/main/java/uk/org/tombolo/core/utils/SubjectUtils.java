@@ -37,6 +37,40 @@ public class SubjectUtils {
 		});
 	}
 
+	public static List<Subject> getSubjectByTypeAndNamePattern(SubjectType subjectType, String namePattern){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and lower(name) like :namePattern", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("namePattern", namePattern.toLowerCase())
+					.list();
+		});
+	}
+
+	public static List<Subject> getSubjectByTypeAndName(SubjectType subjectType, String name){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and name = :name", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("name", name)
+					.list();
+		});
+	}
+	public static Subject getSubjectByTypeAndNameUnique(SubjectType subjectType, String name){
+		return HibernateUtil.withSession(session -> {
+			return session.createQuery("from Subject where subjectType = :subjectType and name = :name", Subject.class)
+					.setParameter("subjectType", subjectType)
+					.setParameter("name", name)
+					.uniqueResult();
+		});
+	}
+	public static List<Subject> getSubjectByTypeAndNameIsNull(SubjectType subjectType, boolean includeNull){
+		return HibernateUtil.withSession(session -> {
+			Query query;
+			if (includeNull) query = session.createQuery("from Subject where subjectType = :subjectType and name is null", Subject.class);
+			else query = session.createQuery("from Subject where subjectType = :subjectType and name is not null", Subject.class);
+			return query.setParameter("subjectType", subjectType).list();
+		});
+	}
+
 	public static List<Subject> getSubjectBySpecification(DatasetRecipe datasetRecipe) {
 		List<Subject> subjects = new ArrayList<>();
 

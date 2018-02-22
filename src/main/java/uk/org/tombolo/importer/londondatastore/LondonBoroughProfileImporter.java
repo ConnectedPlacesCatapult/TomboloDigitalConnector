@@ -5,14 +5,12 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.extraction.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,8 +49,7 @@ public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporte
     private static final String DATAFILE
             = "https://files.datapress.com/london/dataset/london-borough-profiles/2017-01-26T18:50:00/london-borough-profiles.csv";
 
-    public LondonBoroughProfileImporter(Config config) {
-        super(config);
+    public LondonBoroughProfileImporter() {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 

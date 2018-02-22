@@ -32,7 +32,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        importer = new ONSClaimantsImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ONSClaimantsImporter();
         mockDownloadUtils(importer);
     }
 
@@ -83,7 +83,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         assertEquals(LocalDateTime.parse("2017-06-30T23:59:59"),wyreValue.getId().getTimestamp());
         assertEquals(5d, wyreValue.getValue(), 0.1d);
 
-        //Dec-17,Blaby 010A,E01025613,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
+        //December 2017,Blaby 010A,E01025613,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
         TimedValue blabyValue = TimedValueUtils.getLatestBySubjectAndAttribute(blaby010A, claimantsAttribute);
         assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),blabyValue.getId().getTimestamp());
         assertEquals(5d, blabyValue.getValue(), 0.1d);

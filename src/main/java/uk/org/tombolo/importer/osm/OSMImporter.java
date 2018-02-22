@@ -4,11 +4,13 @@ import de.topobyte.osm4j.pbf.seq.PbfReader;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.importer.AbstractImporter;
-import uk.org.tombolo.importer.Config;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Open street map importer
@@ -56,12 +58,12 @@ public class OSMImporter extends AbstractImporter {
             "europe/great-britain/england/west-yorkshire",
             "europe/great-britain/england/wiltshire",
             "europe/great-britain/england/worcestershire",
-            "europe/great-britain/wales"
+            "europe/great-britain/wales",
+            "europe/great-britain/scotland"
     );
 
 
-    public OSMImporter(Config config) {
-        super(config);
+    public OSMImporter() {
         datasourceIds = new ArrayList<>();
         Arrays.stream(OSMBuiltInImporters.values()).map(builtin -> builtin.name()).forEach(datasourceIds::add);
     }

@@ -44,10 +44,6 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
     private List<TimedValue> timedValueBuffer = new ArrayList<>();
     private List<FixedValue> fixedValueBuffer = new ArrayList<>();
 
-    public AbstractGeotoolsDataStoreImporter(Config config) {
-        super(config);
-    }
-
     private List<Subject> subjectBuffer = new ArrayList<>();
 
     /**
@@ -85,7 +81,7 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
      * @param feature A geographic feature
      * @return A timestamp for the feature's TimedValues
      */
-    protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature);
+    protected abstract LocalDateTime getTimestampForFeature(SimpleFeature feature) throws ParsingException;
 
     /**
      * getTypeNameForDatasource
@@ -176,9 +172,14 @@ public abstract class AbstractGeotoolsDataStoreImporter extends AbstractImporter
     }
 
     private List<TimedValue> buildTimedValuesFromFeature(Datasource datasource, SimpleFeature feature, Subject subject) {
-        LocalDateTime modified = getTimestampForFeature(feature);
         List<TimedValue> timedValues = new ArrayList<>();
-
+        LocalDateTime modified;
+        try {
+             modified = getTimestampForFeature(feature);
+        } catch (ParsingException pe) {
+            log.warn("Unable to get timestamp for feature: {}", feature);
+            return timedValues;
+        }
         for (Attribute attribute : datasource.getTimedValueAttributes()){
             if (feature.getAttribute(attribute.getLabel()) == null)
                 continue;
