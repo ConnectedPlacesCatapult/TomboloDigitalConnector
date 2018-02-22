@@ -123,7 +123,7 @@ public class ONSAverageAttainmentImporter extends AbstractONSImporter {
                         timedValues.add(new TimedValue(subject, attribute, timestamp, record));
 
                     } catch (IllegalStateException e) {
-                        log.warn("Missing value fo subject:" + subject.getLabel().toString() + ". Defaulting to zero. Consider using BackoffField or ConstantField");
+                        log.warn("Missing value fo subject:" + subject.getLabel() + ". Defaulting to zero. Consider using BackoffField or ConstantField");
                         continue;
                     }
 
