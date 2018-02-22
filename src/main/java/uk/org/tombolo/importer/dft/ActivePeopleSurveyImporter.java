@@ -125,6 +125,7 @@ public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
 
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
+
             Subject subject = SubjectUtils.getSubjectByTypeAndLabel(localauthority, String.valueOf(row.getCellByIndex(0).getDisplayText()).trim());
             Subject subjecteb = SubjectUtils.getSubjectByTypeAndLabel(englandboundaries, String.valueOf(row.getCellByIndex(0).getDisplayText()).trim());
 
@@ -170,11 +171,11 @@ public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
                     "fractionWalkRecreation_less30mins", "fractionWalkRecreation_less60mins", "fractionWalkRecreation_less120mins", "fractionWalkRecreation_more120mins"
             };
             String[] description = {
-                    "% of adults that walk at least 1 x per month", "% of adults that walk at least 1 x per week", "% of adults that walk at least 3 x per week", "% of adults that walk at least 5 x per week",
-                    "% of adults that walk for recreational purposes at least 1 x per month", "% of adults that walk for recreational purposes at least 1 x per week", "% of adults that walk for recreational purposes at least 3 x per week", "% of adults that walk for recreational purposes at least 5 x per week",
-                    "% of adults that walk for utility purposes at least at least 1 x per month", "% of adults that walk for utility purposes at least at least 1 x per week", "% of adults that walk for utility purposes at least at least 3 x per week", "% of adults that walk for utility purposes at least at least 5 x per week",
-                    "% of adults usually walking for given lengths of time per day < half hour", "% of adults usually walking for given lengths of time per day half to <1 hour", "% of adults usually walking for given lengths of time per day 1 to <2 hours", "% of adults usually walking for given lengths of time per day 2 to 17 hours",
-                    "% of adults usually walking recreationally for given lengths of time per day < half hour", "% of adults usually walking recreationally for given lengths of time per day half to <1 hour", "% of adults usually walking recreationally for given lengths of time per day 1 to <2 hours", "% of adults usually walking recreationally for given lengths of time per day 2 to 17 hours"
+                    "fraction of adults that walk at least 1 x per month", "% of adults that walk at least 1 x per week", "% of adults that walk at least 3 x per week", "% of adults that walk at least 5 x per week",
+                    "fraction of adults that walk for recreational purposes at least 1 x per month", "% of adults that walk for recreational purposes at least 1 x per week", "% of adults that walk for recreational purposes at least 3 x per week", "% of adults that walk for recreational purposes at least 5 x per week",
+                    "fraction of adults that walk for utility purposes at least at least 1 x per month", "% of adults that walk for utility purposes at least at least 1 x per week", "% of adults that walk for utility purposes at least at least 3 x per week", "% of adults that walk for utility purposes at least at least 5 x per week",
+                    "fraction of adults usually walking for given lengths of time per day < half hour", "% of adults usually walking for given lengths of time per day half to <1 hour", "% of adults usually walking for given lengths of time per day 1 to <2 hours", "% of adults usually walking for given lengths of time per day 2 to 17 hours",
+                    "fraction of adults usually walking recreationally for given lengths of time per day < half hour", "% of adults usually walking recreationally for given lengths of time per day half to <1 hour", "% of adults usually walking recreationally for given lengths of time per day 1 to <2 hours", "% of adults usually walking recreationally for given lengths of time per day 2 to 17 hours"
             };
             for (int i = 0; i < elements.length; i++) {
                 attributes.add(new Attribute(getProvider(), elements[i], description[i]));
@@ -188,11 +189,11 @@ public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
                     "fractionCycleRecreation_less30mins", "fractionCycleRecreation_less60mins", "fractionCycleRecreation_less120mins", "fractionCycleRecreation_more120mins"
             };
             String[] description = {
-                    "% of adults that cycle at least 1 x per month", "% of adults that cycle at least 1 x per week", "% of adults that cycle at least 3 x per week", "% of adults that cycle at least 5 x per week",
-                    "% of adults that cycle for recreational purposes at least 1 x per month", "% of adults that cycle for recreational purposes at least 1 x per week", "% of adults that cycle for recreational purposes at least 3 x per week", "% of adults that cycle for recreational purposes at least 5 x per week",
-                    "% of adults that cycle for utility purposes at least at least 1 x per month", "% of adults that cycle for utility purposes at least at least 1 x per week", "% of adults that cycle for utility purposes at least at least 3 x per week", "% of adults that cycle for utility purposes at least at least 5 x per week",
-                    "% of adults usually cycleing for given lengths of time per day < half hour", "% of adults usually cycling for given lengths of time per day half to <1 hour", "% of adults usually cycling for given lengths of time per day 1 to <2 hours", "% of adults usually cycling for given lengths of time per day 2 to 17 hours",
-                    "% of adults usually cycleing recreationally for given lengths of time per day < half hour", "% of adults usually cycling recreationally for given lengths of time per day half to <1 hour", "% of adults usually cycling recreationally for given lengths of time per day 1 to <2 hours", "% of adults usually cycling recreationally for given lengths of time per day 2 to 17 hours"
+                    "fraction of adults that cycle at least 1 x per month", "% of adults that cycle at least 1 x per week", "% of adults that cycle at least 3 x per week", "% of adults that cycle at least 5 x per week",
+                    "fraction of adults that cycle for recreational purposes at least 1 x per month", "% of adults that cycle for recreational purposes at least 1 x per week", "% of adults that cycle for recreational purposes at least 3 x per week", "% of adults that cycle for recreational purposes at least 5 x per week",
+                    "fraction of adults that cycle for utility purposes at least at least 1 x per month", "% of adults that cycle for utility purposes at least at least 1 x per week", "% of adults that cycle for utility purposes at least at least 3 x per week", "% of adults that cycle for utility purposes at least at least 5 x per week",
+                    "fraction of adults usually cycleing for given lengths of time per day < half hour", "% of adults usually cycling for given lengths of time per day half to <1 hour", "% of adults usually cycling for given lengths of time per day 1 to <2 hours", "% of adults usually cycling for given lengths of time per day 2 to 17 hours",
+                    "fraction of adults usually cycleing recreationally for given lengths of time per day < half hour", "% of adults usually cycling recreationally for given lengths of time per day half to <1 hour", "% of adults usually cycling recreationally for given lengths of time per day 1 to <2 hours", "% of adults usually cycling recreationally for given lengths of time per day 2 to 17 hours"
             };
             for (int i = 0; i < elements.length; i++) {
                 attributes.add(new Attribute(getProvider(), elements[i], description[i]));
