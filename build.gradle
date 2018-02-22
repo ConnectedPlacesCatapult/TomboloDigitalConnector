@@ -115,22 +115,22 @@ task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
 }
 
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
-    maxHeapSize = "4096m"
+    maxHeapSize = "8192m"
     main = 'uk.org.tombolo.CatalogueExportRunner'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-disableassertions'
 
-    doLast {
+    doFirst {
         checkEnv()
         systemProperty("databaseURI", databaseURI)
         systemProperty("databaseUsername", databaseUsername)
         systemProperty("databasePassword", databasePassword)
         systemProperty("environment", "export")
 
-        def argumentsSet2 = project.hasProperty('outputFile')
-        if (!argumentsSet2) throw new GradleException('Required properties not specified. See the README.')
-        if (project.hasProperty('webResourcePath')) args(outputFile, webResourcePath)
-        else throw new GradleException('Path to Web Directory resources folder is required')
+        def argumentsSet = project.hasProperty('output')
+        if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+
+        args(output)
     }
 }
 
