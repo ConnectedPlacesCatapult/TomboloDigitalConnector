@@ -51,15 +51,15 @@ public class ONSWellbeingImporterTest  extends AbstractTest {
     @Test
     public void testImportDatasource() throws Exception {
         importer.importDatasource("ONSWellbeing", null, null, null);
-        testTimedValue(islington, "life_satisfaction", 7.38);
-        testTimedValue(islington, "worthwhile", 7.44);
-        testTimedValue(islington, "happiness", 7.31);
-        testTimedValue(islington, "anxiety", 3.26);
+        testTimedValue(islington, "lifeSatisfactionMeanRatings", 7.38);
+        testTimedValue(islington, "worthwhileMeanRatings", 7.44);
+        testTimedValue(islington, "happinessMeanRatings", 7.31);
+        testTimedValue(islington, "anxietyMeanRatings", 3.26);
 
-        testTimedValue(northEast, "life_satisfaction", 7.61);
-        testTimedValue(northEast, "worthwhile", 7.79);
-        testTimedValue(northEast, "happiness", 7.43);
-        testTimedValue(northEast, "anxiety", 2.84);
+        testTimedValue(northEast, "lifeSatisfactionMeanRatings", 7.61);
+        testTimedValue(northEast, "worthwhileMeanRatings", 7.79);
+        testTimedValue(northEast, "happinessMeanRatings", 7.43);
+        testTimedValue(northEast, "anxietyMeanRatings", 2.84);
 
 
     }
