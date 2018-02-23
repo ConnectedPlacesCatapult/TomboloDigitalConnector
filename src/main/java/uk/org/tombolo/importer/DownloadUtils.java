@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,16 +53,19 @@ public class DownloadUtils {
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
 
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			URLConnection urlConnection = url.openConnection();
 			urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 " +
 					"(KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 			if (suffix.equals(".json")) { urlConnection.setRequestProperty("Accept", "application/json"); }
 			urlConnection.connect();
 
-			int responseCode = urlConnection.getResponseCode();
-			if (responseCode != HttpURLConnection.HTTP_OK) {
-				throw new IOException(String.format("Cannot get the stream from the specified URL: %s\n%d: %s",
-						url.getPath(), responseCode, urlConnection.getResponseMessage()));
+			if (urlConnection instanceof HttpURLConnection) {
+				HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+				int responseCode = httpURLConnection.getResponseCode();
+				if (responseCode != HttpURLConnection.HTTP_OK) {
+					throw new IOException(String.format("Cannot get the stream from the specified URL: %s\n%d: %s",
+						url.getPath(), responseCode, httpURLConnection.getResponseMessage()));
+				}
 			}
 			return new TeeInputStream(urlConnection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
