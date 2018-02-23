@@ -51,7 +51,7 @@ public class DownloadUtils {
 		log.info("Fetching local file: {}", localDatasourceFile.getCanonicalPath());
 		if (!localDatasourceFile.exists()){
 			log.info("Local file not found: {} \nDownloading external resource: {}",
-					localDatasourceFile.getCanonicalPath(), url.toString());
+												localDatasourceFile.getCanonicalPath(), url.toString());
 
 			URLConnection urlConnection = url.openConnection();
 			urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 " +
@@ -64,7 +64,7 @@ public class DownloadUtils {
 				int responseCode = httpURLConnection.getResponseCode();
 				if (responseCode != HttpURLConnection.HTTP_OK) {
 					throw new IOException(String.format("Cannot get the stream from the specified URL: %s\n%d: %s",
-							url.getPath(), responseCode, httpURLConnection.getResponseMessage()));
+						url.getPath(), responseCode, httpURLConnection.getResponseMessage()));
 				}
 			}
 			return new TeeInputStream(urlConnection.getInputStream(), new FileOutputStream(localDatasourceFile));
