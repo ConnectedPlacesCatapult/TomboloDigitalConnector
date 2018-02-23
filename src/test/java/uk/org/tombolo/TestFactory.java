@@ -164,6 +164,9 @@ public final class TestFactory {
             case "E05000371":
                 subjectType = makeNamedSubjectType("ward");
                 return makeSubject(subjectType, label, "Finsbury Park", FAKE_POINT_GEOMETRY);
+            case "E12000001":
+                subjectType = makeNamedSubjectType("englandBoundaries");
+                return makeSubject(subjectType, label, "North East", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
@@ -172,6 +175,9 @@ public final class TestFactory {
     public static SubjectType makeNamedSubjectType(String label) {
         SubjectType subjectType;
         switch (label) {
+            case "englandBoundaries":
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.englandBoundaries);
+                break;
             case "localAuthority":
                 subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
                 break;
@@ -200,7 +206,7 @@ public final class TestFactory {
     public static SubjectType makeSubjectType(Provider provider, String label, String name) {
         return SubjectTypeUtils.getOrCreate(provider, label, name);
     }
-    
+
     public static Subject makeSubject(SubjectType subjectType, String label, String name, Geometry geometry) {
         Subject subject = new Subject(subjectType, label, name, geometry);
         SubjectUtils.save(Collections.singletonList(subject));
