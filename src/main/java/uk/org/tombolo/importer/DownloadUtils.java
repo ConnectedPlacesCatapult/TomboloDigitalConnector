@@ -37,7 +37,7 @@ public class DownloadUtils {
 		if (!localDatasourceFile.exists()){
 			// Local datafile does not exist so we should download it
 			log.info("Local file not found: {} \nDownloading external resource: {}",
-													localDatasourceFile.getCanonicalPath(), url.toString());
+					localDatasourceFile.getCanonicalPath(), url.toString());
 			FileUtils.copyURLToFile(url, localDatasourceFile);
 		}
 		return localDatasourceFile;
