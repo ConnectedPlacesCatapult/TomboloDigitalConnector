@@ -9,9 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DownloadUtils {
@@ -19,7 +23,7 @@ public class DownloadUtils {
 
 	public static final String DEFAULT_DATA_CACHE_ROOT = "/tmp";
 	private static final String TOMBOLO_DATA_CACHE_DIRECTORY = "TomboloData";
-	
+
 	private String tomboloDataCacheRootDirectory = DEFAULT_DATA_CACHE_ROOT;	// Configurable root to where to store cached data
 
 	public DownloadUtils(String dataCacheRootDirectory){
@@ -42,13 +46,28 @@ public class DownloadUtils {
 	public InputStream fetchInputStream(URL url, String prefix, String suffix) throws IOException {
 		createCacheDir(prefix);
 		File localDatasourceFile = urlToLocalFile(url, prefix, suffix);
+
+
 		log.info("Fetching local file: {}", localDatasourceFile.getCanonicalPath());
 		if (!localDatasourceFile.exists()){
 			log.info("Local file not found: {} \nDownloading external resource: {}",
 												localDatasourceFile.getCanonicalPath(), url.toString());
-			URLConnection connection = url.openConnection();
-			if (suffix.equals(".json")) connection.setRequestProperty("Accept", "application/json");
-			return new TeeInputStream(connection.getInputStream(), new FileOutputStream(localDatasourceFile));
+
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 " +
+					"(KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+			if (suffix.equals(".json")) { urlConnection.setRequestProperty("Accept", "application/json"); }
+			urlConnection.connect();
+
+			if (urlConnection instanceof HttpURLConnection) {
+				HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
+				int responseCode = httpURLConnection.getResponseCode();
+				if (responseCode != HttpURLConnection.HTTP_OK) {
+					throw new IOException(String.format("Cannot get the stream from the specified URL: %s\n%d: %s",
+						url.getPath(), responseCode, httpURLConnection.getResponseMessage()));
+				}
+			}
+			return new TeeInputStream(urlConnection.getInputStream(), new FileOutputStream(localDatasourceFile));
 		} else {
 			return new FileInputStream(localDatasourceFile);
 		}
