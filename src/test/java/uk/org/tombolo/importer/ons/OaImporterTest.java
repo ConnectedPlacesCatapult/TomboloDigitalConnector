@@ -33,7 +33,7 @@ public class OaImporterTest extends AbstractTest {
     @Test
     public void testGetDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("ward","lsoa", "msoa", "localAuthority"), datasources);
+        assertEquals(Arrays.asList("ward","lsoa", "msoa", "localAuthority","englandBoundaries"), datasources);
     }
 
     @Test
@@ -62,6 +62,14 @@ public class OaImporterTest extends AbstractTest {
         assertEquals("Middle Layer Super Output Areas", datasource.getDatasourceSpec().getDescription());
     }
 
+    @Test
+    public void testGetDatasourceEnglandBoundaries() throws Exception {
+        Datasource datasource = importer.getDatasource("englandBoundaries");
+        assertEquals("englandBoundaries", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.ons", importer.getProvider().getLabel());
+        assertEquals("England Boundaries", datasource.getDatasourceSpec().getName());
+        assertEquals("England Boundaries", datasource.getDatasourceSpec().getDescription());
+    }
     @Test
     public void testImportWards() throws Exception {
         importer.importDatasource("ward", null, null, null);
@@ -112,5 +120,18 @@ public class OaImporterTest extends AbstractTest {
         assertEquals(-1.2592784934731256, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(54.66957856523336, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
         assertEquals(7, importer.getSubjectCount());
+    }
+
+    @Test
+    public void testImportEnglandBoundaries() throws Exception {
+        importer.importDatasource("englandBoundaries", null, null, null);
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "englandBoundaries");
+        Subject englandboundaries = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E12000001");
+
+        assertEquals("North East", englandboundaries.getName());
+        assertEquals("englandBoundaries", englandboundaries.getSubjectType().getLabel());
+        assertEquals(-1.9039748587373244, englandboundaries.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(55.019350338323875, englandboundaries.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(9, importer.getSubjectCount());
     }
 }
