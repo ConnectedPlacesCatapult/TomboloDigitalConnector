@@ -53,6 +53,13 @@ public final class TestFactory {
         return lineString;
     }
 
+    public static Geometry makeLineStringGeometry(Coordinate[] coordinates) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Geometry lineString =  geometryFactory.createLineString(coordinates);
+        lineString.setSRID(Subject.SRID);
+        return lineString;
+    }
+
     /**
      * Returns a square geometry
      * @param lowerLeftXOffset x-coordinate of lower left corner

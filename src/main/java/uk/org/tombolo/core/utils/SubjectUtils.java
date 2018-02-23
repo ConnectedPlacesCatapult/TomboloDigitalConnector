@@ -142,7 +142,7 @@ public class SubjectUtils {
 				hqlQuery += " and " + subjectRecipe.getGeoMatchRule().geoRelation.name() + "(shape, :geom) = true";
 			}else{
 				throw new IllegalArgumentException(String.format(
-						"SubjectGeoMatchRule attribute is not a valid type",
+						"SubjectGeoMatchRule attribute is not a valid type: ",
 						subjectRecipe.getGeoMatchRule().geoRelation.name()));
 			}
 		}
