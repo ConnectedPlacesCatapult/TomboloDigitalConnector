@@ -84,11 +84,12 @@ public class ONSWellbeingImporter extends AbstractONSImporter {
         List<TimedValue> timedValues = new ArrayList<TimedValue>();
 
         HSSFWorkbook workbook = new HSSFWorkbook(isr);
-        int sheetIndex = 0;
+        int attributeIndex = 0;
 
         // Looping through the excell sheets
         for (int sheet = 1; sheet <= 8; sheet = sheet+2){
             Sheet datatypeSheet = workbook.getSheetAt(sheet);
+            Row rowTime = datatypeSheet.getRow(5);
 
             // Creating the row iterator object
             Iterator<Row> rowIterator = datatypeSheet.rowIterator();
@@ -111,17 +112,16 @@ public class ONSWellbeingImporter extends AbstractONSImporter {
                     // Looping through the time values
                     for (int timeValuesIndex=2; timeValuesIndex <= 7; timeValuesIndex++ ) {
                         // This is the row number that contains our time values (years) in the dataset
-                        Row rowTime = datatypeSheet.getRow(5);
                         String year = rowTime.getCell(timeValuesIndex).toString();
                         year = year.substring(0, year.length() - 3);
-
                         LocalDateTime timestamp = TimedValueUtils.parseTimestampString(year);
+                        log.info("Time is presented in the dataset as {} and we persist it as {}", year, timestamp);
 
                         try {
                             Double record = row.getCell(timeValuesIndex).getNumericCellValue();
                             // Here is where we are assigning the values of our .xls file to the attribute fields we
                             // created.
-                            Attribute attribute = datasource.getTimedValueAttributes().get(sheetIndex);
+                            Attribute attribute = datasource.getTimedValueAttributes().get(attributeIndex);
                             timedValues.add(new TimedValue(
                                     subject,
                                     attribute,
@@ -135,9 +135,10 @@ public class ONSWellbeingImporter extends AbstractONSImporter {
                     }
                 }
             }
-            sheetIndex++;
+            attributeIndex++;
         }
         saveAndClearTimedValueBuffer(timedValues);
+        workbook.close();
     }
 
     @Override
@@ -146,8 +147,8 @@ public class ONSWellbeingImporter extends AbstractONSImporter {
         List<Attribute> attributes = new ArrayList<>();
 
         // Dataset specific: we hardcode the columns names for the our .csv file
-        String[] elements = { "life_satisfaction", "worthwhile", "happiness", "anxiety"};
-        String[] description = { "Self-perception of Life satisfaction", "Self-perception of Worthiness", "Self-perception of Happiness", "Self-perception of Anxiety"};
+        String[] elements = { "lifeSatisfactionMeanRatings", "worthwhileMeanRatings", "happinessMeanRatings", "anxietyMeanRatings"};
+        String[] description = { "Self-perception of Life satisfaction (mean ratings)", "Self-perception of Worthiness (mean ratings)", "Self-perception of Happiness (mean ratings)", "Self-perception of Anxiety (mean ratings)"};
 
         // We loop through the elements of the elements object and adding an Attribute object in the list
         // with nour column names.
