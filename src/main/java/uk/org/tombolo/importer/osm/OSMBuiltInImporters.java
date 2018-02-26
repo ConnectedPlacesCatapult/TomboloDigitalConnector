@@ -28,6 +28,22 @@ public enum OSMBuiltInImporters {
             new AbstractMap.SimpleEntry<>("natural", Arrays.asList(
                     "fell", "grassland", "heath", "scrub", "wood")))
             .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
+    OSMEducation("built-in-education-infrastructure", "Open Street Map education infrastructure data", Collections.unmodifiableMap(Stream.of(
+            new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
+                    "school", "library", "university", "college", "kindergarten")))
+            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
+    OSMHealth("built-in-health-infrastructure", "Open Street Map health infrastructure data", Collections.unmodifiableMap(Stream.of(
+            new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
+                    "clinic", "dentist", "doctors", "hospital", "pharmacy")))
+            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
+    OSMCivic("built-in-civic-infrastructure", "Open Street Map education infrastructure data", Collections.unmodifiableMap(Stream.of(
+            new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
+                    "courthouse", "coworking_space", "bench", "fire_station", "place_of_worship", "police", "post-box", "post_office", "public_bath", "recycling", "town_hall", "waste_disposal")))
+            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
+    OSMEnternainment("built-in-entertainment-infrastructure", "Open Street Map entertainment infrastructure data", Collections.unmodifiableMap(Stream.of(
+            new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
+                    "school", "library", "university", "college")))
+            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
     OSMHighways("built-in-highways", "Open Street Map highways data", Collections.unmodifiableMap(Stream.of(
             new AbstractMap.SimpleEntry<>("highway",
                     Arrays.asList("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified","residential", "service")))
