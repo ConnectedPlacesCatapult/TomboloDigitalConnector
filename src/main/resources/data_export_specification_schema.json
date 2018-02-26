@@ -38,7 +38,7 @@
                 "properties": {
                   "geoRelation": {
                     "type": "string",
-                    "enum": ["within", "equals", "disjoint", "intersects", "touches", "crosses", "contains", "overlaps", "relate"]
+                    "enum": ["within", "equals", "disjoint", "intersects", "touches", "crosses", "contains", "overlaps"]
                   },
                   "subjects": {
                     "type": "array"
