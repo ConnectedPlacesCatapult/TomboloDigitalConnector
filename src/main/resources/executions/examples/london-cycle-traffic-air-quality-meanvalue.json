@@ -1,3 +1,19 @@
+/*
+  This recipe gets three datasources
+     - London Air Quality data by calling the LAQNImporter.java
+     - London Traffic data using TrafficCountImporter.java
+     - London localAuthority data using OaImporter.java
+
+  By using TimeseriesMeanValueField it performs 3 operations 
+    - Mean of 'NO2 40 ug/m3 as an annual me' - 1
+    - Sum of the mean of 'CarCountTaxis' - 2
+    - Sum of the mean of 'CountPedalCycles' - 3
+  
+  Then for each localAuthority using GeographicAggregationField
+    - It dividies 2/3 to get 'BicycleFraction' - 4
+  
+  Then writes 1 and 4 to the output file for every localAuthority using GeographicAggregationField
+*/
 {
     "dataset" : {
       "subjects" : [
