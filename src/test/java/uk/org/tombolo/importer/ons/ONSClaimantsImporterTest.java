@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Using the following test data files:
  *
+ * claimantsCount
  * Remote: "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
  *      "geography=1249902593...1249937345&" +
  *      "date=latest&" +
@@ -26,6 +27,41 @@ import static org.junit.Assert.assertEquals;
  *      "measures=20100&" +
  *      "select=date_name,geography_name,geography_code,gender_name,age_name,measure_name,measures_name,obs_value,obs_status_name";
  * Local: 41340fec-3141-3932-ae52-49477ff6c05d.csv
+ *
+ * JSAclaimantsCount
+ * Remote: "http://www.nomisweb.co.uk/api/v01/dataset/NM_18_1.csv?geography=TYPE463&"+
+ * "date=latest&"+
+ * "sex=7&"+
+ * "age=0&"+
+ * "duration=0&"+
+ * "measures=20100&"+
+ * "select=date_name,geography_name,geography_code,measures_name,duration_name,sex_name,obs_value,obs_status_name"
+ * Local: 8d68b4ed-7660-3540-ac06-e7bb76a91c70.csv
+ *
+ * JSAclaimantsProportion
+ * Remote: "http://www.nomisweb.co.uk/api/v01/dataset/NM_18_1.csv?geography=TYPE463&"+
+ * "date=latest&"+
+ * "sex=7&"+
+ *"age=0&"+
+ * "duration=0&"+
+ * "measures=20206&"+
+ * "select=date_name,geography_name,geography_code,measures_name,duration_name,sex_name,obs_value,obs_status_name"
+ * Local: 8ab4eaa0-a426-3228-9150-38b4e682ebaf.csv
+ *
+ * ESAclaimants
+ * Remote: "http://www.nomisweb.co.uk/api/v01/dataset/NM_134_1.csv?geography=TYPE463&"+
+ * "date=latest&"+
+ * "sex=7&"+
+ * "age=0&"+
+ * "esa_phase=0&"+
+ * "payment_type=0&"+
+ * "icdgp_condition=0&"+
+ * "duration=0&"+
+ * "ethnic_group=0&"+
+ * "measures=20100&"+
+ * "select=date_name,geography_name,geography_code,measures_name,duration_name,sex_name,obs_value,obs_status_name"
+ * Local: 4aa524ae-89f6-3cee-b09f-ab08e1bb35af.csv
+ *
  */
 public class ONSClaimantsImporterTest extends AbstractTest {
     public ONSClaimantsImporter importer;
@@ -39,17 +75,17 @@ public class ONSClaimantsImporterTest extends AbstractTest {
     @Test
     public void getDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("claimants"),datasources);
+        assertEquals(Arrays.asList("claimantsCount","JSAclaimantsCount","JSAclaimantsProportion","ESAclaimants"),datasources);
     }
 
     @Test
     public void getDatasource() throws Exception {
-        Datasource datasource = importer.getDatasource("claimants");
-        assertEquals(1, datasource.getTimedValueAttributes().size());
+        Datasource datasource = importer.getDatasource("JSAclaimantsCount");
+        assertEquals(4, datasource.getTimedValueAttributes().size());
     }
 
     @Test
-    public void importDatasource() throws Exception {
+    public void importDatasourceClaimantsCount() throws Exception {
 
         SubjectType lsoa = TestFactory.makeNamedSubjectType("lsoa");
         Subject london001A = TestFactory.makeSubject(lsoa,"E01000001","City of London 001A",TestFactory.FAKE_POINT_GEOMETRY);
@@ -59,9 +95,9 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         Subject wyre010A = TestFactory.makeSubject(lsoa, "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
         Subject blaby010A = TestFactory.makeSubject(lsoa, "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
-        importer.importDatasource("claimants", null, null, null);
+        importer.importDatasource("claimantsCount", null, null, null);
 
-        Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "claimantCount");
+        Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "claimantsCount");
 
         //Jan-16,City of London 001A,E01000001,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
         TimedValue londonValueA = TimedValueUtils.getLatestBySubjectAndAttribute(london001A, claimantsAttribute);
@@ -87,6 +123,69 @@ public class ONSClaimantsImporterTest extends AbstractTest {
         TimedValue blabyValue = TimedValueUtils.getLatestBySubjectAndAttribute(blaby010A, claimantsAttribute);
         assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),blabyValue.getId().getTimestamp());
         assertEquals(5d, blabyValue.getValue(), 0.1d);
+    }
+    @Test
+    public void importDatasourceJSAclaimantsCount() throws Exception {
+
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject cityofLondon = TestFactory.makeSubject(localAuthority,"E09000001","City of London",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("JSAclaimantsCount", null, null, null);
+
+        Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "JSAclaimantsCount");
+
+        //Jan-18,City of London
+        TimedValue londonValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2018-01-31T23:59:59"),londonValue.getId().getTimestamp());
+        assertEquals(25d, londonValue.getValue(), 0.1d);
+
+        //Jan-18,Barking
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2018-01-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(2355d, londonValueB.getValue(), 0.1d);
+    }
+    @Test
+    public void importDatasourceJSAclaimantsFraction() throws Exception {
+
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject cityofLondon = TestFactory.makeSubject(localAuthority,"E09000001","City of London",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("JSAclaimantsProportion", null, null, null);
+
+        Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "JSAclaimantsProportion");
+
+        //Jan-18,City of London
+        TimedValue londonValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2018-01-31T23:59:59"),londonValue.getId().getTimestamp());
+        assertEquals(0.4d, londonValue.getValue(), 0.01d);
+
+        //Jan-18,Barking
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2018-01-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(1.8d, londonValueB.getValue(), 0.01d);
+    }
+    @Test
+    public void importDatasourceESAclaimants() throws Exception {
+
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject cityofLondon = TestFactory.makeSubject(localAuthority,"E09000001","City of London",TestFactory.FAKE_POINT_GEOMETRY);
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("ESAclaimants", null, null, null);
+
+        Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "ESAclaimants");
+
+        //Jan-18,City of London
+        TimedValue londonValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2017-08-31T23:59:59"),londonValue.getId().getTimestamp());
+        assertEquals(140d, londonValue.getValue(), 0.1d);
+
+        //Jan-18,Barking
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, claimantsAttribute);
+        assertEquals(LocalDateTime.parse("2017-08-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(7550d, londonValueB.getValue(), 0.1d);
     }
 
 }
