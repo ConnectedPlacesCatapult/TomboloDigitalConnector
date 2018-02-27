@@ -40,10 +40,6 @@ public enum OSMBuiltInImporters {
             new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
                     "courthouse", "coworking_space", "bench", "fire_station", "place_of_worship", "police", "post-box", "post_office", "public_bath", "recycling", "town_hall", "waste_disposal")))
             .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
-    OSMEnternainment("built-in-entertainment-infrastructure", "Open Street Map entertainment infrastructure data", Collections.unmodifiableMap(Stream.of(
-            new AbstractMap.SimpleEntry<>("amenity", Arrays.asList(
-                    "school", "library", "university", "college")))
-            .collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue())))),
     OSMHighways("built-in-highways", "Open Street Map highways data", Collections.unmodifiableMap(Stream.of(
             new AbstractMap.SimpleEntry<>("highway",
                     Arrays.asList("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified","residential", "service")))

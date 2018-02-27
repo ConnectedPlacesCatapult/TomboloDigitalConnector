@@ -12,7 +12,7 @@
               "provider": "uk.gov.ons",
               "matchRule": {
                 "attribute": "label",
-                "pattern": "E09000007%"
+                "pattern": "E0900%"
               }
             }
           ]
@@ -125,52 +125,80 @@
         "label": "Sum of civic amenities",
         "fields": [
 
-{
-          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-          "label": "amenity",
-          "attributes": [
-            {
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Health Count",
+            "subject": {
               "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
               "label": "amenity",
-              "values": ["courthouse", "coworking_space", "recycling", "fire_station", "place_of_worship",
-                "police", "post_office", "town_hall", "waste_disposal"]
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["clinic", "dentist", "doctors", "hospital", "pharmacy"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
             }
-          ],
-          "field": {
-            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
-            "value": "1"
-          }
-        },
-{
-          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-          "label": "amenity",
-          "attributes": [
-            {
+          },
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Education Count",
+            "subject": {
               "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
               "label": "amenity",
-              "values": ["clinic", "dentist", "doctors", "hospital", "pharmacy"]
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["school", "library", "university", "college", "kindergarten"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
             }
-          ],
-          "field": {
-            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
-            "value": "1"
-          }
-        },
-{
-          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
-          "label": "amenity",
-          "attributes": [
-            {
+          },
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Civic Count",
+            "subject": {
               "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
               "label": "amenity",
-              "values": ["school", "library", "university", "college", "kindergarten"]
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["courthouse", "coworking_space", "recycling", "fire_station", "place_of_worship",
+                    "police", "post_office", "town_hall", "waste_disposal"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
             }
-          ],
-          "field": {
-            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
-            "value": "1"
           }
-        }
+
         ]
       }
     ]
