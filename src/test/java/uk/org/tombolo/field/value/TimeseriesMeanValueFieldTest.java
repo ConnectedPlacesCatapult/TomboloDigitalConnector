@@ -32,11 +32,13 @@ public class TimeseriesMeanValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-01T00:00", 100d);
         String jsonString = field.jsonValueForSubject(subject, null).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel:" +
+                "  aLabel:[" +
                 "    {" +
                 "      value: 100," +
-                "      timestamp: '2011-01-01T00:00'" +
+                "      timestamp: '2011-01-01T00:00:00'" +
                 "    }" +
+                "   ]," +
+                " aLabel Mean: 100" +
                 "}", jsonString, false);
     }
 
@@ -46,11 +48,17 @@ public class TimeseriesMeanValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-02T00:00", 200d);
         String jsonString = field.jsonValueForSubject(subject, true).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel:" +
+                "  aLabel: [" +
                 "    {" +
-                "      value: 150," +
-                "      timestamp: '2011-01-01T00:00 - 2011-01-02T00:00'" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }," +
+                "    {" +
+                "      value: 200," +
+                "      timestamp: '2011-01-02T00:00:00'" +
                 "    }" +
+                "  ]," +
+                "  aLabel Mean: 150" +
                 "}", jsonString, false);
     }
 
@@ -60,7 +68,17 @@ public class TimeseriesMeanValueFieldTest extends AbstractTest {
         TestFactory.makeTimedValue(subject.getSubjectType(), "E01000001", attribute, "2011-01-02T00:00", 200d);
         String jsonString = field.jsonValueForSubject(subject, false).toJSONString();
         JSONAssert.assertEquals("{" +
-                "  aLabel: 150" +
+                "  aLabel: [" +
+                "    {" +
+                "      value: 100," +
+                "      timestamp: '2011-01-01T00:00:00'" +
+                "    }," +
+                "    {" +
+                "      value: 200," +
+                "      timestamp: '2011-01-02T00:00:00'" +
+                "    }" +
+                "  ]," +
+                "  aLabel Mean: 150" +
                 "}", jsonString, false);
     }
 
