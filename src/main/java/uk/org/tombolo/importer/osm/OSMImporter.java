@@ -20,7 +20,9 @@ public class OSMImporter extends AbstractImporter {
     // Default area is the whole Great Britain, if the geography scope is empty or null the default area will be considered.
     // The following are the geographic regions for the UK as in geofabrik download server.
     private static final List<String> DEFAULT_AREA = Arrays.asList(
+            "europe/great-britain/england/bedfordshire",
             "europe/great-britain/england/berkshire",
+            "europe/great-britain/england/bristol",
             "europe/great-britain/england/buckinghamshire",
             "europe/great-britain/england/cambridgeshire",
             "europe/great-britain/england/cheshire",
@@ -42,8 +44,11 @@ public class OSMImporter extends AbstractImporter {
             "europe/great-britain/england/kent",
             "europe/great-britain/england/lancashire",
             "europe/great-britain/england/leicestershire",
+            "europe/great-britain/england/lincolnshire",
+            "europe/great-britain/england/merseyside",
             "europe/great-britain/england/norfolk",
             "europe/great-britain/england/north-yorkshire",
+            "europe/great-britain/england/northamptonshire",
             "europe/great-britain/england/northumberland",
             "europe/great-britain/england/nottinghamshire",
             "europe/great-britain/england/oxfordshire",
@@ -53,6 +58,7 @@ public class OSMImporter extends AbstractImporter {
             "europe/great-britain/england/staffordshire",
             "europe/great-britain/england/suffolk",
             "europe/great-britain/england/surrey",
+            "europe/great-britain/england/warwickshire",
             "europe/great-britain/england/west-midlands",
             "europe/great-britain/england/west-sussex",
             "europe/great-britain/england/west-yorkshire",
