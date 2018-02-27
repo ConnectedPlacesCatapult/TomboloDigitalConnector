@@ -20,9 +20,9 @@ public class OSMImporter extends AbstractImporter {
     // Default area is the whole Great Britain, if the geography scope is empty or null the default area will be considered.
     // The following are the geographic regions for the UK as in geofabrik download server.
     private static final List<String> DEFAULT_AREA = Arrays.asList(
-
             "europe/great-britain/england/bedfordshire",
             "europe/great-britain/england/berkshire",
+            "europe/great-britain/england/bristol",
             "europe/great-britain/england/buckinghamshire",
             "europe/great-britain/england/cambridgeshire",
             "europe/great-britain/england/cheshire",
