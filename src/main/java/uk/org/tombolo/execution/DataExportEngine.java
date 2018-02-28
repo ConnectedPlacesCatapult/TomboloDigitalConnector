@@ -42,9 +42,12 @@ public class DataExportEngine implements ExecutionEngine {
 	}
 
 	public void execute(DataExportRecipe dataExportRecipe, Writer writer, ImporterMatcher forceImports) throws Exception {
+		List<SubjectRecipe> subjectRecipes = dataExportRecipe.getDataset().getSubjects();
 		// Import datasources that are in the global dataset specification
-		for (DatasourceRecipe datasourceRecipe : dataExportRecipe.getDataset().getDatasources()) {
-			importDatasource(forceImports, datasourceRecipe, dataExportRecipe.getDataset().getSubjects());
+		for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
+			if (!datasourceSpec.getImporterClass().isEmpty()) {
+				importDatasource(forceImports, datasourceSpec, subjectRecipes);
+			}
 		}
 
 		// Generate fields
@@ -60,7 +63,7 @@ public class DataExportEngine implements ExecutionEngine {
 
 		// Use the new fields method
 		log.info("Exporting ...");
-		List<SubjectRecipe> subjectSpecList = dataExportRecipe.getDataset().getSubjects();
+		List<SubjectRecipe> subjectSpecList = subjectRecipes;
 		Exporter exporter = (Exporter) Class.forName(dataExportRecipe.getExporter()).newInstance();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(subjectSpecList);
 		exporter.write(writer, subjects, fields, dataExportRecipe.getTimeStamp());
@@ -89,24 +92,24 @@ public class DataExportEngine implements ExecutionEngine {
 		Importer importer = initialiseImporter(datasourceRecipe.getImporterClass(), datasourceRecipe.getConfigFile());
 		importer.configure(apiKeys);
 		importer.setDownloadUtils(downloadUtils);
+		importer.setSubjectRecipes(subjectRecipes);
 		importer.importDatasource(
 				datasourceRecipe.getDatasourceId(),
 				datasourceRecipe.getGeographyScope(),
 				datasourceRecipe.getTemporalScope(),
 				datasourceRecipe.getLocalData(),
-				subjectRecipes,
 				forceImports.doesMatch(datasourceRecipe.getImporterClass())
 		);
 	}
 
 	private Importer initialiseImporter(String importerClass, String configFile) throws Exception {
-		Config importerConfiguration = null;
 		if (configFile != null && !"".equals(configFile)) {
-			importerConfiguration = ConfigUtils.loadConfig(
+			Config importerConfiguration = ConfigUtils.loadConfig(
 					AbstractRunner.loadProperties("Configuration file", configFile));
+			return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
 
 		}
-		return (Importer) Class.forName(importerClass).getDeclaredConstructor(Config.class).newInstance(importerConfiguration);
+		return (Importer) Class.forName(importerClass).getDeclaredConstructor().newInstance();
 	}
 
 	/**

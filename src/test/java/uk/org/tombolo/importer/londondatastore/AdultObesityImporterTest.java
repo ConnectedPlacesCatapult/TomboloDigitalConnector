@@ -2,13 +2,13 @@ package uk.org.tombolo.importer.londondatastore;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,8 +17,16 @@ import static org.junit.Assert.assertEquals;
  * This test is using data from 0bf8b2be-3dca-3512-8f8d-48bdb704eb3c.xls
  */
 public class AdultObesityImporterTest extends AbstractLondonDatastoreTestUtil {
+    //Create this private class to avoid importing the oa data that slows down the test
+    private class ImporterTest extends AdultObesityImporter {
+        @Override
+        protected List<String> getOaDatasourceIds() {
+
+            return Collections.emptyList();
+        }
+    }
     static final private String DATASOURCE_ID = "adultObesity";
-    private AdultObesityImporter importer = new AdultObesityImporter(TestFactory.DEFAULT_CONFIG);
+    private AdultObesityImporter importer = new ImporterTest();
 
     @Before
     public void setUp() throws Exception {

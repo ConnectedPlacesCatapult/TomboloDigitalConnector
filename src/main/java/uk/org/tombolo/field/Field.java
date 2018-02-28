@@ -12,7 +12,7 @@ import uk.org.tombolo.execution.FieldCache;
  * functions that map from Subjects to values. The job of Exporters is to take each Subject,
  * pass it through a set of Fields, and collect the outputs.
  *
- * Note that the Field is not required to use the Subject. See the FixedAnnotationField for
+ * Note that the Field is not required to use the Subject. See the ConstantField for
  * an example of this.
  *
  * Fields have different characteristics — for instance some fields may be able to return a

@@ -7,6 +7,7 @@ import uk.org.tombolo.core.Subject;
 
 public abstract class AbstractLondonDatastoreTestUtil extends AbstractTest {
 
+
     Subject cityOfLondon;
     Subject islington;
 

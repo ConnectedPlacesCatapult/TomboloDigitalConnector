@@ -5,7 +5,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.io.BufferedReader;
@@ -46,8 +45,7 @@ public class IMDImporter extends AbstractDCLGImporter {
             = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/" +
             "File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv";
 
-    public IMDImporter(Config config) {
-        super(config);
+    public IMDImporter() {
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
         geographyLabels = stringsFromEnumeration(GeographyLabel.class);
         temporalLabels = stringsFromEnumeration(TemporalLabel.class);
@@ -71,6 +69,7 @@ public class IMDImporter extends AbstractDCLGImporter {
         String line;
         BufferedReader br = new BufferedReader(new InputStreamReader(
                 downloadUtils.fetchInputStream(new URL(IMD_DATA_CSV), getProvider().getLabel(), ".csv")));
+        List<TimedValue> timedValueBuffer = new ArrayList<>();
         while ((line = br.readLine())!=null){
             CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
             List<CSVRecord> records = parser.getRecords();
@@ -84,7 +83,6 @@ public class IMDImporter extends AbstractDCLGImporter {
             if (lsoa == null)
                 continue;
 
-            List<TimedValue> timedValueBuffer = new ArrayList<>();
             for (int i = 0; i < datasource.getTimedValueAttributes().size(); i++){
                 TimedValue timedValue = new TimedValue(
                         lsoa,
@@ -93,8 +91,8 @@ public class IMDImporter extends AbstractDCLGImporter {
                         Double.valueOf(records.get(0).get(i+4)));
                 timedValueBuffer.add(timedValue);
             }
-            saveAndClearTimedValueBuffer(timedValueBuffer);
         }
+        saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     private enum AttributeId {

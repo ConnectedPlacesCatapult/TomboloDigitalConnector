@@ -6,7 +6,7 @@
     "targetCRSCode": 27700
   },
   "field2" : {
-    "fieldClass": "uk.org.tombolo.field.value.FixedAnnotationField",
+    "fieldClass": "uk.org.tombolo.field.value.ConstantField",
     "value": "1000000"
   }
 }

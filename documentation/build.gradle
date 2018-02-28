@@ -28,15 +28,15 @@ task build {
   def source = "Home.md"
   def target = "Tombolo-Digital-Connector-Manual.pdf"
   def sections = [
-    "Features" : "Features.md",
-    "Using the Digital Connector": "Using-the-Digital-Connector.md",
-    "System Architecture" : "System-Architecture.md",
-    "Local Datastore" : "Local-Datastore.md",
-    "Importers" : "Importers.md",
-    "Fields and Models" : "Fields-and-Models.md",
-    "Exporters" : "Exporters.md",
-    "Recipe Language" : "Recipe-Language.md",
-    "HowTo: Importer Implementation" : "HowTo-Importer-Implementation.md"
+    "Features" : "features.md",
+    "Using the Digital Connector": "using-the-digital-connector.md",
+    "System Architecture" : "system-architecture.md",
+    "Local Datastore" : "local-datastore.md",
+    "Importers" : "importers.md",
+    "Fields and Models" : "fields-and-models.md",
+    "Exporters" : "exporters.md",
+    "Recipe Language" : "recipe-language.md",
+    "HowTo: Importer Implementation" : "howto-importer-implementation.md"
   ]
 
   //Convert from markdown to html
@@ -69,8 +69,8 @@ task build {
 
 task usecases() {
   def sources = [
-          "Cycling and Air Quality":"Use-Case-on-Cycling-and-Air-Quality.md",
-          "Active Transport Index":"Use-Case-on-Active-Transport-Index.md"
+          "Cycling and Air Quality":"use-case-on-cycling-and-air-quality.md",
+          "Active Transport Index":"use-case-on-active-transport-index.md"
   ]
   def target = "Tombolo-Digital-Connector-Examples.pdf"
 

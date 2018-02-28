@@ -32,7 +32,7 @@ public class ONSClaimantsImporterTest extends AbstractTest {
 
     @Before
     public void before() throws Exception {
-        importer = new ONSClaimantsImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new ONSClaimantsImporter();
         mockDownloadUtils(importer);
     }
 

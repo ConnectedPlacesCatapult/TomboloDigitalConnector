@@ -32,7 +32,8 @@ public class CensusImporterTest extends AbstractTest {
 
     @Before
     public void setup() throws Exception {
-        importer = new CensusImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new CensusImporter();
+        importer.setSubjectRecipes(subjectRecipes);
         mockDownloadUtils(importer);
 
         cityOfLondon01 = TestFactory.makeNamedSubject("E01000001");
@@ -43,34 +44,34 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void getTimedValueAttributesMTW() throws Exception {
-        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(MTW_ID, null, null, null, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(MTW_ID);
         assertEquals(13, attributes.size());
     }
 
     @Test
     public void getTimedValueAttributesPOP() throws Exception {
-        importer.importDatasource(POP_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(POP_ID, null, null, null, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(POP_ID);
         assertEquals(3, attributes.size());
     }
 
     @Test
     public void getTimedValueAttributesPOD() throws Exception {
-        importer.importDatasource(POD_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(POD_ID, null, null, null, false);
         List<Attribute> attributes = importer.getTimedValueAttributes(POD_ID);
         assertEquals(4, attributes.size());
     }
 
     @Test
     public void getDataUrl() throws Exception {
-        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(MTW_ID, null, null, null, false);
         assertEquals("https://www.nomisweb.co.uk/api/v01/dataset/nm_568_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298", importer.getDataUrl(MTW_ID, "lsoa"));
     }
 
     @Test
     public void importDatasourceMTW() throws Exception {
-        importer.importDatasource(MTW_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(MTW_ID, null, null, null, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(78, importer.getTimedValueCount());
@@ -108,7 +109,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourcePOP() throws Exception {
-        importer.importDatasource(POP_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(POP_ID, null, null, null, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(18, importer.getTimedValueCount());
@@ -131,7 +132,7 @@ public class CensusImporterTest extends AbstractTest {
 
     @Test
     public void importDatasourcePOD() throws Exception {
-        importer.importDatasource(POD_ID, null, null, null, subjectRecipes, false);
+        importer.importDatasource(POD_ID, null, null, null, false);
         assertEquals(0, importer.getSubjectCount());
         assertEquals(0, importer.getFixedValueCount());
         assertEquals(24, importer.getTimedValueCount());

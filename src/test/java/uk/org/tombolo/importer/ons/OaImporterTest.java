@@ -3,7 +3,6 @@ package uk.org.tombolo.importer.ons;
 import org.junit.Before;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
-import uk.org.tombolo.TestFactory;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.core.SubjectType;
@@ -18,25 +17,33 @@ import static org.junit.Assert.assertEquals;
 /**
  * Using the following test data files:
  *
- * lsoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy9kYTgzMWY4MDc2NDM0Njg4OTgzN2M3MjUwOGYwNDZmYV8yLmdlb2pzb24=.json
- * msoas aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy84MjZkYzg1ZmI2MDA0NDA4ODk0ODBmNGQ5ZGJiMWEyNF8yLmdlb2pzb24=.json
- * las aHR0cDovL2dlb3BvcnRhbC5zdGF0aXN0aWNzLmdvdi51ay9kYXRhc2V0cy8zOTQzYzIxMTRkNzY0Mjk0YTdjMDA3OWM0MDIwZDU1OF80Lmdlb2pzb24=.json
+ * lsoas 0220da63-778d-3712-a4bf-eafa8e5ab7ab.json
+ * msoas 8812b68c-a1e4-3583-8a4b-3fcbae0d3ed7.json
+ * las 6081d478-b3b1-3764-aa95-00ec0c92d213.json
  */
 public class OaImporterTest extends AbstractTest {
     OaImporter importer;
 
     @Before
     public void setUp() throws Exception {
-        importer = new OaImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new OaImporter();
         importer.setDownloadUtils(makeTestDownloadUtils());
     }
 
     @Test
     public void testGetDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("lsoa", "msoa", "localAuthority"), datasources);
+        assertEquals(Arrays.asList("ward","lsoa", "msoa", "localAuthority","englandBoundaries"), datasources);
     }
 
+    @Test
+    public void testGetDatasourceWard() throws Exception {
+        Datasource datasource = importer.getDatasource("ward");
+        assertEquals("ward", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.ons", importer.getProvider().getLabel());
+        assertEquals("Ward", datasource.getDatasourceSpec().getName());
+        assertEquals("Ward Boundaries", datasource.getDatasourceSpec().getDescription());
+    }
     @Test
     public void testGetDatasourceLSOA() throws Exception {
         Datasource datasource = importer.getDatasource("lsoa");
@@ -53,6 +60,27 @@ public class OaImporterTest extends AbstractTest {
         assertEquals("uk.gov.ons", importer.getProvider().getLabel());
         assertEquals("MSOA", datasource.getDatasourceSpec().getName());
         assertEquals("Middle Layer Super Output Areas", datasource.getDatasourceSpec().getDescription());
+    }
+
+    @Test
+    public void testGetDatasourceEnglandBoundaries() throws Exception {
+        Datasource datasource = importer.getDatasource("englandBoundaries");
+        assertEquals("englandBoundaries", datasource.getDatasourceSpec().getId());
+        assertEquals("uk.gov.ons", importer.getProvider().getLabel());
+        assertEquals("England Boundaries", datasource.getDatasourceSpec().getName());
+        assertEquals("England Boundaries", datasource.getDatasourceSpec().getDescription());
+    }
+    @Test
+    public void testImportWards() throws Exception {
+        importer.importDatasource("ward", null, null, null);
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "ward");
+        Subject ward = SubjectUtils.getSubjectByTypeAndLabel(subjectType, "E05000371");
+
+        assertEquals("Finsbury Park", ward.getName());
+        assertEquals("ward", ward.getSubjectType().getLabel());
+        assertEquals(-0.113478544062306, ward.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(51.5618238999826, ward.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(100, importer.getSubjectCount());
     }
 
     @Test
@@ -92,5 +120,18 @@ public class OaImporterTest extends AbstractTest {
         assertEquals(-1.2592784934731256, localAuthority.getShape().getCentroid().getX(), 0.1E-6);
         assertEquals(54.66957856523336, localAuthority.getShape().getCentroid().getY(), 0.1E-6);
         assertEquals(7, importer.getSubjectCount());
+    }
+
+    @Test
+    public void testImportEnglandBoundaries() throws Exception {
+        importer.importDatasource("englandBoundaries", null, null, null);
+        SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel(importer.getProvider().getLabel(), "englandBoundaries");
+        Subject englandboundaries = SubjectUtils.getSubjectByTypeAndLabel(subjectType,"E12000001");
+
+        assertEquals("North East", englandboundaries.getName());
+        assertEquals("englandBoundaries", englandboundaries.getSubjectType().getLabel());
+        assertEquals(-1.9039748587373244, englandboundaries.getShape().getCentroid().getX(), 0.1E-6);
+        assertEquals(55.019350338323875, englandboundaries.getShape().getCentroid().getY(), 0.1E-6);
+        assertEquals(9, importer.getSubjectCount());
     }
 }

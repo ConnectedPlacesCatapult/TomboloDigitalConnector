@@ -18,7 +18,7 @@ public interface Importer {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getDatasourceIds();
+	List<String> getDatasourceIds();
 
 	/**
 	 * Returns true if a datasource with said id exists
@@ -33,7 +33,7 @@ public interface Importer {
 	 *
 	 * @return
 	 */
-	public List<String> getGeographyLabels();
+	List<String> getGeographyLabels();
 
 	/**
 	 * Returna all labels that can be used to restrict the temporal scope of the import.
@@ -56,8 +56,8 @@ public interface Importer {
 	 * @param datasourceLocation A list of file locations in case the data comes from a local source
 	 * @throws Exception
 	 */
-	public void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation) throws Exception;
-	public void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, @Nonnull List<SubjectRecipe> subjectRecipes, Boolean force) throws Exception;
+	void importDatasource(@Nonnull  String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation) throws Exception;
+	void importDatasource(@Nonnull String datasourceId, @Nullable List<String> geographyScope, @Nullable List<String> temporalScope, @Nullable List<String> datasourceLocation, Boolean force) throws Exception;
 
 	/**
 	 * Function that takes in a buffer of subjects and saves it to the database and clears the buffer.
@@ -84,6 +84,11 @@ public interface Importer {
 	void saveAndClearFixedValueBuffer(List<FixedValue> fixedValues);
 
 	void setDownloadUtils(DownloadUtils downloadUtils);
+
+	/*
+	 * Sets the subjects specified in the recipe to be used by the importer to make import decisions.
+	 */
+	void setSubjectRecipes(List<SubjectRecipe> subjectRecipes);
 
 	void configure(Properties properties) throws ConfigurationException;
 	void verifyConfiguration() throws ConfigurationException;

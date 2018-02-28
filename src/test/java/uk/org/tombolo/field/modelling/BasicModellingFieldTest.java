@@ -57,7 +57,7 @@ public class BasicModellingFieldTest extends AbstractTest {
                 Collections.singletonList(new DatasourceRecipe(
                         "uk.org.tombolo.importer.ons.OaImporter",
                         "lsoa",
-                        null, null, null)));
+                        null, null, null, null)));
 
         assertEquals(1, field.getDatasources().size());
     }

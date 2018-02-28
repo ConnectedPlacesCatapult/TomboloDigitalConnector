@@ -12,7 +12,6 @@ import uk.org.tombolo.core.DatasourceSpec;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.core.utils.AttributeUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.AbstractONSImporter;
 import uk.org.tombolo.importer.ons.OaImporter;
 import uk.org.tombolo.importer.utils.ExcelUtils;
@@ -22,6 +21,7 @@ import uk.org.tombolo.importer.utils.extraction.TimedValueExtractor;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -89,8 +89,7 @@ public class AccessibilityImporter extends AbstractDFTImporter {
 
     ExcelUtils excelUtils = new ExcelUtils();
 
-    public AccessibilityImporter(Config config){
-        super(config);
+    public AccessibilityImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
     }
 
@@ -107,6 +106,10 @@ public class AccessibilityImporter extends AbstractDFTImporter {
         return super.getDatasource(datasourceId);
     }
 
+    @Override
+    protected List<String> getOaDatasourceIds() {
+        return Collections.singletonList(OaImporter.OaType.lsoa.datasourceSpec.getId());
+    }
 
     @Override
     public List<Attribute> getTimedValueAttributes(String datasourceId) throws Exception {

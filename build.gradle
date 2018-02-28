@@ -12,14 +12,17 @@ repositories {
 }
 
 dependencies {
-    // Geo Tools
-    compile group:'org.geotools',            name: 'gt-referencing',     version: '14.0'
-    compile group:'org.geotools',            name: 'gt-geojson',         version: '14.0'
-    compile group:'org.geotools',            name: 'gt-shapefile',         version: '14.0'
-    compile group:'org.geotools',            name: 'gt-epsg-extension',     version: '14.0'
-    compile group:'org.geotools',            name: 'gt-epsg-hsql',        version: '14.0'
-    compile group:'org.geotools.jdbc',        name: 'gt-jdbc-postgis',    version: '14.0'
-    compile group:'org.geotools',            name: 'gt-geojsondatastore',    version: '15.0'
+    //Py4j jars
+    compile group: 'net.sf.py4j',           name: 'py4j',               version: '0.10.6'
+
+	// Geo Tools
+	compile group:'org.geotools',			name: 'gt-referencing', 	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-geojson', 		version: '14.0'
+	compile group:'org.geotools',			name: 'gt-shapefile', 		version: '14.0'
+	compile group:'org.geotools',			name: 'gt-epsg-extension', 	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-epsg-hsql',		version: '14.0'
+	compile group:'org.geotools.jdbc',		name: 'gt-jdbc-postgis',	version: '14.0'
+	compile group:'org.geotools',			name: 'gt-geojsondatastore',	version: '15.0'
 
     // POI Excel file manipulation
     compile group: 'org.apache.poi',        name: 'poi',        version: '3.16'
@@ -71,6 +74,8 @@ dependencies {
     // twitter4j
     compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
 
+    // Read OpenOffice .ods
+    compile group: 'org.apache.odftoolkit', name: 'simple-odf', version: '0.8.2-incubating'
 }
 
 configurations.all {
@@ -110,22 +115,22 @@ task runCorrelation(dependsOn: ['classes'], type: JavaExec) {
 }
 
 task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
-    maxHeapSize = "4096m"
+    maxHeapSize = "8192m"
     main = 'uk.org.tombolo.CatalogueExportRunner'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-disableassertions'
 
-    doLast {
+    doFirst {
         checkEnv()
         systemProperty("databaseURI", databaseURI)
         systemProperty("databaseUsername", databaseUsername)
         systemProperty("databasePassword", databasePassword)
         systemProperty("environment", "export")
 
-        def argumentsSet2 = project.hasProperty('outputFile')
-        if (!argumentsSet2) throw new GradleException('Required properties not specified. See the README.')
-        if (project.hasProperty('webResourcePath')) args(outputFile, webResourcePath)
-        else throw new GradleException('Path to Web Directory resources folder is required')
+        def argumentsSet = project.hasProperty('output')
+        if (!argumentsSet) throw new GradleException('Required properties not specified. See the README.')
+
+        args(output)
     }
 }
 

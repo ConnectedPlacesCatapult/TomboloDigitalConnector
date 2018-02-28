@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.Config;
 import uk.org.tombolo.importer.ons.OaImporter;
 
 import java.time.LocalDateTime;
@@ -19,8 +18,6 @@ public final class TestFactory {
     public static final Provider DEFAULT_PROVIDER = new Provider("default_provider_label", "default_provider_name");
     public static final String TIMESTAMP = "2011-01-01T00:00:00";
     public static final Geometry FAKE_POINT_GEOMETRY = makePointGeometry(0d, 0d);
-    public static final Config DEFAULT_CONFIG = new Config.Builder(0, "", "", "",
-            new SubjectType(new Provider("", ""), "", "")).build();
 
     /**
      * makeFakeGeometry
@@ -155,6 +152,9 @@ public final class TestFactory {
             case "E09000001":
                 subjectType = makeNamedSubjectType("localAuthority");
                 return makeSubject(subjectType, label, "City of London", FAKE_POINT_GEOMETRY);
+            case "E09000002":
+                subjectType = makeNamedSubjectType("localAuthority");
+                return makeSubject(subjectType, label, "Barking and Dagenham", FAKE_POINT_GEOMETRY);
             case "E09000019":
                 subjectType = makeNamedSubjectType("localAuthority");
                 return makeSubject(subjectType, label, "Islington", FAKE_POINT_GEOMETRY);
@@ -173,6 +173,12 @@ public final class TestFactory {
             case "E02000564":
                 subjectType = makeNamedSubjectType("msoa");
                 return makeSubject(subjectType, label, "Islington 011", FAKE_POINT_GEOMETRY);
+            case "E05000371":
+                subjectType = makeNamedSubjectType("ward");
+                return makeSubject(subjectType, label, "Finsbury Park", FAKE_POINT_GEOMETRY);
+            case "E12000001":
+                subjectType = makeNamedSubjectType("englandBoundaries");
+                return makeSubject(subjectType, label, "North East", FAKE_POINT_GEOMETRY);
             default:
                 throw new IllegalArgumentException(String.format("%s is not a valid named subject fixture, see TestFactory#makeNamedSubject for a list of valid subject labels.", label));
         }
@@ -181,6 +187,9 @@ public final class TestFactory {
     public static SubjectType makeNamedSubjectType(String label) {
         SubjectType subjectType;
         switch (label) {
+            case "englandBoundaries":
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.englandBoundaries);
+                break;
             case "localAuthority":
                 subjectType = OaImporter.getSubjectType(OaImporter.OaType.localAuthority);
                 break;
@@ -189,6 +198,9 @@ public final class TestFactory {
                 break;
             case "msoa":
                 subjectType = OaImporter.getSubjectType(OaImporter.OaType.msoa);
+                break;
+            case "ward":
+                subjectType = OaImporter.getSubjectType(OaImporter.OaType.ward);
                 break;
             default:
                 return null;
@@ -206,7 +218,7 @@ public final class TestFactory {
     public static SubjectType makeSubjectType(Provider provider, String label, String name) {
         return SubjectTypeUtils.getOrCreate(provider, label, name);
     }
-    
+
     public static Subject makeSubject(SubjectType subjectType, String label, String name, Geometry geometry) {
         Subject subject = new Subject(subjectType, label, name, geometry);
         SubjectUtils.save(Collections.singletonList(subject));

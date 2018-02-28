@@ -33,7 +33,7 @@ public class OSMImporterTest extends AbstractTest {
 
     @Before
     public void before(){
-        importer = new OSMImporter(TestFactory.DEFAULT_CONFIG);
+        importer = new OSMImporter();
         mockDownloadUtils(importer);
     }
 

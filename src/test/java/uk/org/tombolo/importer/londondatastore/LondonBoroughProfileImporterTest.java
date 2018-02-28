@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
  *  Local: 633bdc29-cd58-36bf-bba2-8ff48ea7d46a.csv
  */
 public class LondonBoroughProfileImporterTest extends AbstractLondonDatastoreTestUtil {
-    LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter(TestFactory.DEFAULT_CONFIG);
+    LondonBoroughProfileImporter importer = new LondonBoroughProfileImporter();
 
     @Before
     public void setUp() throws Exception {

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
 import uk.org.tombolo.core.utils.SubjectUtils;
-import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.Config;
+import uk.org.tombolo.importer.GeneralImporter;
 import uk.org.tombolo.importer.utils.CoordinateUtils;
 
 import java.io.File;
@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 /**
  * General importer for CSV files.
  */
-public class GeneralCSVImporter extends AbstractImporter {
+public class GeneralCSVImporter extends GeneralImporter {
     static Logger log = LoggerFactory.getLogger(GeneralCSVImporter.class);
 
     private List csvRecords;
