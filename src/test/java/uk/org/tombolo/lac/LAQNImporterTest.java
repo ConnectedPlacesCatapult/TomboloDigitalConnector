@@ -62,7 +62,7 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetProvider() throws Exception {
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         Provider provider = ProviderUtils.getByLabel("erg.kcl.ac.uk");
@@ -75,7 +75,7 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetAttributes() throws Exception {
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
@@ -91,19 +91,19 @@ public class LAQNImporterTest extends AbstractTest {
         List<String> datasources = laqnImporter.getDatasourceIds();
 
         assertEquals(1, datasources.size());
-        assertEquals("airQualityControl", datasources.get(0));
+        assertEquals("airQualitySensor", datasources.get(0));
 
     }
 
     @Test
     public void testGetSubjectType() throws Exception {
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         SubjectType subjectType = SubjectTypeUtils.getSubjectTypeByProviderAndLabel("erg.kcl.ac.uk",
-                "airQualityControl");
+                "airQualitySensor");
 
-        assertEquals("airQualityControl", subjectType.getLabel());
+        assertEquals("airQualitySensor", subjectType.getLabel());
         assertEquals("Quantity of gases in air by Kings College London", subjectType.getName());
     }
 
@@ -111,12 +111,12 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testGetSubjects() throws Exception {
 
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
-                                "erg.kcl.ac.uk","airQualityControl"),"%%");
+                                "erg.kcl.ac.uk","airQualitySensor"),"%%");
 
         assertEquals("BG1", subjects.get(0).getLabel());
         assertEquals("Barking and Dagenham - Rush Green", subjects.get(0).getName());
@@ -128,13 +128,13 @@ public class LAQNImporterTest extends AbstractTest {
 
     @Test
     public void testGetFixedValue() throws Exception {
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
 
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
-                                "erg.kcl.ac.uk","airQualityControl"),"%%");
+                                "erg.kcl.ac.uk","airQualitySensor"),"%%");
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk", "SiteCode");
 
@@ -168,13 +168,13 @@ public class LAQNImporterTest extends AbstractTest {
     @Test
     public void testTimedValue() throws Exception {
 
-        laqnImporter.importDatasource("airQualityControl",
+        laqnImporter.importDatasource("airQualitySensor",
                 Collections.singletonList("London"), Collections.singletonList("2010"), null);
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
 
-                                "erg.kcl.ac.uk","airQualityControl"),"%%");
+                                "erg.kcl.ac.uk","airQualitySensor"),"%%");
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk",
                                                     "NO2 40 ug/m3 as an annual me");

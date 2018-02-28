@@ -30,7 +30,7 @@ public class LAQNImporter extends AbstractImporter {
 
     private static final String LAQN_PROVIDER_LABEL = "erg.kcl.ac.uk";
     private static final String LAQN_PROVIDER_NAME = "Environmental Research Group Kings College London";
-    private static final String LAQN_SUBJECT_TYPE_LABEL = "airQualityControl";
+    private static final String LAQN_SUBJECT_TYPE_LABEL = "airQualitySensor";
     private static final String LAQN_SUBJECT_TYPE_DESC = "Quantity of gases in air by Kings College London";
     private static final ArrayList<String> UNIQUE_TAGS = new ArrayList<>(Arrays.asList("@SiteCode",
             "@SiteName", "@SiteType", "@Latitude", "@Longitude", "@LatitudeWGS84", "@LongitudeWGS84",
@@ -89,7 +89,7 @@ public class LAQNImporter extends AbstractImporter {
         List<Subject> subjects =
                 SubjectUtils.getSubjectByTypeAndLabelPattern(
                         SubjectTypeUtils.getSubjectTypeByProviderAndLabel(
-                                "erg.kcl.ac.uk","airQualityControl"),"%%");
+                                "erg.kcl.ac.uk","airQualitySensor"),"%%");
 
         ArrayList<Attribute> attributes = getAttributes().stream()
                                         .map(attribute -> AttributeUtils.getByProviderAndLabel(getProvider().getLabel(),

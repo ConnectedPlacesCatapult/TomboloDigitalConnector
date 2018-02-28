@@ -22,7 +22,7 @@
       },
       {
         "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
-        "datasourceId": "airQualityControl"
+        "datasourceId": "airQuality"
       }
     ],
     "fields" : [
@@ -31,7 +31,7 @@
         "label": "NitrogenDioxide",
         "subject": {
           "provider": "erg.kcl.ac.uk",
-          "subjectType": "airQualityControl"
+          "subjectType": "airQualitySensor"
         },
         "function": "mean",
         "field": {

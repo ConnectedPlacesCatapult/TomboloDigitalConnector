@@ -2,14 +2,14 @@
   "dataset": {
     "subjects": [
       {
-        "subjectType": "airQualityControl",
+        "subjectType": "airQualitySensor",
         "provider": "erg.kcl.ac.uk"
       }
     ],
     "datasources": [
       {
         "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
-        "datasourceId": "airQualityControl"
+        "datasourceId": "airQuality"
       }
     ],
     "fields": [

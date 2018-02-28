@@ -31,7 +31,7 @@
       },
       {
         "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
-        "datasourceId": "airQualityControl"
+        "datasourceId": "airQuality"
       }
     ],
     "fields": [
@@ -48,7 +48,7 @@
         "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
         "label": "NO2",
         "subject": {
-          "subjectType": "airQualityControl",
+          "subjectType": "airQualitySensor",
           "provider": "erg.kcl.ac.uk"
         },
         "maxRadius": 0.1,
