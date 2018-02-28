@@ -11,6 +11,7 @@ import uk.org.tombolo.exporter.CSVExporter;
 import uk.org.tombolo.exporter.GeoJsonExporter;
 import uk.org.tombolo.importer.ImporterMatcher;
 import uk.org.tombolo.recipe.DataExportRecipe;
+import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.recipe.FieldRecipe;
 
 import java.io.Writer;
@@ -56,6 +57,11 @@ public class DataExportRunner extends AbstractRunner {
         } finally {
             HibernateUtil.shutdown();
         }
+        for (DatasourceRecipe datasourceSpec : dataExportRecipe.getDataset().getDatasources()) {
+            if (!datasourceSpec.getImporterClass().isEmpty()) {
+                log.info("Attributes/URL's used in the recipe: " + String.valueOf(engine.getDatasourseSpecInfo(datasourceSpec)));
+            }
+        }
 
         // Perform the correlation analysis
         if (!correlation.equals("None")) {
@@ -91,7 +97,6 @@ public class DataExportRunner extends AbstractRunner {
         }else {
             throw new Error("Unknown exporter class for intermediate data.");
         }
-
         // Calculate and output correlations
         CorrelationAnalysisEngine.calculateAndOutputCorrelations(matrix, fields, correlation);
     }

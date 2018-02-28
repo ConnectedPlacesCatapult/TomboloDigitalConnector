@@ -106,4 +106,17 @@ public class DataExportEngine implements ExecutionEngine {
 		}
 		return (Importer) Class.forName(importerClass).getDeclaredConstructor().newInstance();
 	}
+
+	public List<String> getDatasourseSpecInfo ( DatasourceRecipe datasourceRecipe) {
+		List<String> specs = new ArrayList<>();
+		try {
+			Importer importer = initialiseImporter(datasourceRecipe.getImporterClass(), datasourceRecipe.getConfigFile());
+			specs.add(importer.getDatasourceSpec(datasourceRecipe.getDatasourceId()).getName());
+			specs.add(importer.getDatasourceSpec(datasourceRecipe.getDatasourceId()).getUrl());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return specs;
+	}
 }
