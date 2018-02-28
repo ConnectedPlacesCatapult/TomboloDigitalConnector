@@ -67,8 +67,8 @@
 	gradle clean build
 
 ## Run an Example
-    gradle runExport -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' 
-    -Poutput='reaggregate-traffic-count-to-la_output.json'
+    gradle runExport -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' -Poutput='reaggregate-traffic-count-to-la_output.json'
+
 
 ## View output file
 	open reaggregate-traffic-count-to-la_output.json
