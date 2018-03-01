@@ -14,20 +14,15 @@ import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.importer.Importer;
 import uk.org.tombolo.importer.ImporterMatcher;
 import uk.org.tombolo.importer.utils.ConfigUtils;
-import uk.org.tombolo.importer.utils.JSONReader;
 import uk.org.tombolo.recipe.DataExportRecipe;
 import uk.org.tombolo.recipe.DatasourceRecipe;
 import uk.org.tombolo.recipe.FieldRecipe;
 import uk.org.tombolo.recipe.SubjectRecipe;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class DataExportEngine implements ExecutionEngine {
 	private static final Logger log = LoggerFactory.getLogger(DataExportEngine.class);
@@ -110,49 +105,5 @@ public class DataExportEngine implements ExecutionEngine {
 
 		}
 		return (Importer) Class.forName(importerClass).getDeclaredConstructor().newInstance();
-	}
-
-	/**
-	 * Checks if the providers specified in the recipe are valid.
-	 * This implementation checks only the visible providers for the specified recipe not the ones in the ones in the
-	 * modeling fields if any present.
-	 *
-	 * @param recipe recipe
-	 * @param isString boolean indication if the recipe is a json string or filename
-	 * @return
-	 * @throws Exception
-	 */
-	public String verifyProvider(String recipe, boolean isString) throws Exception {
-		String validProvider = null;
-		JSONReader reader;
-		ArrayList<String> tags = new ArrayList<>(Arrays.asList("importerClass", "provider"));
-
-		if (!isString) {
-			File recipeFile = new File(recipe);
-			if (!recipeFile.exists()) return validProvider;
-			reader = new JSONReader(recipeFile, tags);
-		} else {
-			reader = new JSONReader(new ByteArrayInputStream(recipe.getBytes()), tags);
-		}
-
-		reader.getData();
-		List<String> importers = reader.getTagValueFromAllSections("importerClass").stream().distinct().collect(Collectors.toList());
-		List<String> providers = reader.getTagValueFromAllSections("provider").stream().distinct().collect(Collectors.toList());
-
-		for (String importer : importers) {
-			if (providers.isEmpty()) break;
-
-			for (int i = 0; i < providers.size(); i++) {
-				Importer imp = initialiseImporter(importer, "");
-				if (providers.get(i).equals(imp.getProvider().getLabel())) {
-					providers.remove(i);
-					i = i - 1;
-				}
-			}
-		}
-
-		if (providers.size() > 0) validProvider = String.join(", ", providers);
-
-		return validProvider;
 	}
 }
