@@ -34,7 +34,7 @@ public final class TestFactory {
     }
 
     /**
-     * makeFakeGeometry
+     * makeLineStringGeometry
      * Returns a lineString at the offset provided
      * @param xOffset
      * @param yOffset
@@ -45,6 +45,18 @@ public final class TestFactory {
         GeometryFactory geometryFactory = new GeometryFactory();
         Coordinate[] coordinates = {new Coordinate(xOffset, yOffset),
                 new Coordinate(xOffset + length, yOffset)};
+        Geometry lineString =  geometryFactory.createLineString(coordinates);
+        lineString.setSRID(Subject.SRID);
+        return lineString;
+    }
+
+    /**
+     * Make LineString given the coordinates
+     * @param coordinates
+     * @return
+     */
+    public static Geometry makeLineStringGeometry(Coordinate[] coordinates) {
+        GeometryFactory geometryFactory = new GeometryFactory();
         Geometry lineString =  geometryFactory.createLineString(coordinates);
         lineString.setSRID(Subject.SRID);
         return lineString;

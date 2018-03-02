@@ -69,6 +69,7 @@ public class IMDImporter extends AbstractDCLGImporter {
         String line;
         BufferedReader br = new BufferedReader(new InputStreamReader(
                 downloadUtils.fetchInputStream(new URL(IMD_DATA_CSV), getProvider().getLabel(), ".csv")));
+        List<TimedValue> timedValueBuffer = new ArrayList<>();
         while ((line = br.readLine())!=null){
             CSVParser parser = CSVParser.parse(line, CSVFormat.DEFAULT);
             List<CSVRecord> records = parser.getRecords();
@@ -82,7 +83,6 @@ public class IMDImporter extends AbstractDCLGImporter {
             if (lsoa == null)
                 continue;
 
-            List<TimedValue> timedValueBuffer = new ArrayList<>();
             for (int i = 0; i < datasource.getTimedValueAttributes().size(); i++){
                 TimedValue timedValue = new TimedValue(
                         lsoa,
@@ -91,8 +91,8 @@ public class IMDImporter extends AbstractDCLGImporter {
                         Double.valueOf(records.get(0).get(i+4)));
                 timedValueBuffer.add(timedValue);
             }
-            saveAndClearTimedValueBuffer(timedValueBuffer);
         }
+        saveAndClearTimedValueBuffer(timedValueBuffer);
     }
 
     private enum AttributeId {
