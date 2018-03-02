@@ -13,8 +13,11 @@ import uk.org.tombolo.recipe.SubjectRecipe.SubjectAttributeMatchRule;
 
 import javax.persistence.Parameter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SubjectUtils {
 	static Logger log = LoggerFactory.getLogger(TimedValueUtils.class);
@@ -134,20 +137,23 @@ public class SubjectUtils {
 			} else if (subjectRecipe.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.name) {
 				hqlQuery += " and lower(name) like :pattern";
 			} else {
-				throw new IllegalArgumentException(String.format(
-						"SubjectAttributeMatchRule attribute is not a valid type (is %s, can be either name or label)",
-						subjectRecipe.getMatchRule().attribute.name()));
+				throw new IllegalArgumentException(
+						"SubjectAttributeMatchRule attribute is not a valid type (can be either name or label)");
 			}
 		}
 
 		// Add Geo Match Rule if exists
 		if (null != subjectRecipe.getGeoMatchRule()){
-			if (subjectRecipe.getGeoMatchRule().geoRelation == SubjectRecipe.SubjectGeoMatchRule.GeoRelation.within){
-				hqlQuery += " and within(shape, :geom) = true";
-			}else{
+			List<SubjectRecipe.SubjectGeoMatchRule.GeoRelation> geoRel = new ArrayList<>();
+			Collections.addAll(geoRel, SubjectRecipe.SubjectGeoMatchRule.GeoRelation.values());
+			SubjectRecipe.SubjectGeoMatchRule.GeoRelation gr = subjectRecipe.getGeoMatchRule().geoRelation;
+			if (geoRel.contains(subjectRecipe.getGeoMatchRule().geoRelation)){
+				hqlQuery += " and " + subjectRecipe.getGeoMatchRule().geoRelation.name() + "(shape, :geom) = true";
+			} else {
 				throw new IllegalArgumentException(String.format(
-						"SubjectGeoMatchRule attribute is not a valid type (is %s, can only be within)",
-						subjectRecipe.getGeoMatchRule().geoRelation.name()));
+						"SubjectGeoMatchRule geoRelation is not a valid type.\nSupported spatial joins: %s.",
+						Stream.of(SubjectRecipe.SubjectGeoMatchRule.GeoRelation.values()).map(Enum::name)
+								.collect(Collectors.toList()).toString()));
 			}
 		}
 
