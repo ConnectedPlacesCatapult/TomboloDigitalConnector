@@ -42,7 +42,7 @@ public class LatestValueField extends BasicValueField implements SingleValueFiel
     private TimedValue getTimedValue(Subject subject) throws IncomputableFieldException {
         TimedValue timedValue = TimedValueUtils.getLatestBySubjectAndAttribute(subject, getAttribute());
         if (timedValue == null) {
-            throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
+            throw new IncomputableFieldException(String.format("No TimedValue found for Attribute %s and Subject %s", getAttribute().getLabel(), subject.getName()));
         }
         return timedValue;
     }
