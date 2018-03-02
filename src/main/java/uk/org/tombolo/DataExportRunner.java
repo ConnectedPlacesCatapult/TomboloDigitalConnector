@@ -49,10 +49,6 @@ public class DataExportRunner extends AbstractRunner {
         DataExportEngine engine = new DataExportEngine(apiKeys, runner.initialiseDowloadUtils());
 
         try (Writer writer = runner.getOutputWriter(output)) {
-            String vProvider = engine.verifyProvider(recipe, isString);
-            if (null != vProvider) {
-                throw new Error(vProvider + " is not recognised as a valid Provider Name");
-            }
             engine.execute(dataExportRecipe, writer, new ImporterMatcher(forceImports));
         } catch (Exception e) {
             e.printStackTrace();
