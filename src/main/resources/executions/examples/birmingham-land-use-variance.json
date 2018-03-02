@@ -6,7 +6,8 @@
         "subjectType": "msoa",
         "matchRule": {
           "attribute": "name",
-          "pattern": "Birmingham%"
+          "filter": "startsWith",
+          "value": "Birmingham"
         }
       }
     ],

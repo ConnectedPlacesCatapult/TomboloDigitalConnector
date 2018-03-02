@@ -6,7 +6,8 @@
         "subjectType": "lsoa",
         "matchRule": {
           "attribute": "name",
-          "pattern": "Leeds%"
+          "filter": "startsWith",
+          "value": "Leeds"
         }
       }
     ],

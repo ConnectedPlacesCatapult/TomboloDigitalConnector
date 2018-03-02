@@ -3,14 +3,16 @@
     "subjects": [{
       "provider":"uk.gov.ons",
       "matchRule": {
-        "pattern": "E01002766",
+        "value": "E01002766",
+        "filter": "equals",
         "attribute": "label"
       },
       "subjectType": "lsoa"
     }, {
       "provider":"uk.gov.ons",
       "matchRule": {
-        "pattern": "E08000035",
+        "value": "E08000035",
+        "filter": "equals",
         "attribute": "label"
       },
       "subjectType": "localAuthority"

@@ -36,7 +36,7 @@ public class SpatialJoinTest extends AbstractTest {
 
         SubjectSpecificationBuilder parentSpec = new SubjectSpecificationBuilder(
                 TestFactory.DEFAULT_PROVIDER.getLabel(), subjectType1.getLabel())
-                .setMatcher("label", subject1.getLabel());
+                .setMatcher("label", "equals", subject1.getLabel());
         List<SubjectSpecificationBuilder> parentSpecs = new ArrayList<>();
         parentSpecs.add(parentSpec);
 

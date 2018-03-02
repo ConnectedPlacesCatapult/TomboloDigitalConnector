@@ -13,10 +13,11 @@ public class SubjectSpecificationBuilder implements JSONAware {
         jsonSpec.put("subjectType", subjectType);
     }
 
-    public SubjectSpecificationBuilder setMatcher(String attribute, String pattern) {
+    public SubjectSpecificationBuilder setMatcher(String attribute, String filter, String value) {
         JSONObject matchRule = new JSONObject();
         matchRule.put("attribute", attribute);
-        matchRule.put("pattern", pattern);
+        matchRule.put("filter", filter);
+        matchRule.put("value", value);
         jsonSpec.put("matchRule", matchRule);
         return this;
     }

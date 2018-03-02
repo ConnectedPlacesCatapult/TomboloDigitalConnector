@@ -13,7 +13,9 @@ import uk.org.tombolo.recipe.SubjectRecipe.SubjectAttributeMatchRule;
 
 import javax.persistence.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -132,10 +134,9 @@ public class SubjectUtils {
 
 		// Add Attribute Match Rule if exists
 		if (null != subjectRecipe.getMatchRule()){
-			if (subjectRecipe.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.label) {
-				hqlQuery += " and lower(label) like :pattern";
-			} else if (subjectRecipe.getMatchRule().attribute == SubjectAttributeMatchRule.MatchableAttribute.name) {
-				hqlQuery += " and lower(name) like :pattern";
+			if (Arrays.asList(SubjectAttributeMatchRule.MatchableAttribute.values()).contains(subjectRecipe.getMatchRule().attribute)) {
+					hqlQuery += " and lower(" + subjectRecipe.getMatchRule().attribute.name() + 
+								") like :" + subjectRecipe.getMatchRule().filter.name();
 			} else {
 				throw new IllegalArgumentException(
 						"SubjectAttributeMatchRule attribute is not a valid type (can be either name or label)");
@@ -163,8 +164,6 @@ public class SubjectUtils {
 		for (Parameter parameter : query.getParameters()) {
 			if (Objects.equals(parameter.getName(), "subjectType")) {
 				query.setParameter("subjectType", subjectType);
-			} else if (Objects.equals(parameter.getName(), "pattern")) {
-				query.setParameter("pattern", subjectRecipe.getMatchRule().pattern.toLowerCase());
 			} else if (Objects.equals(parameter.getName(), "geom")) {
 				List<Subject> parents = getSubjectBySpecifications(subjectRecipe.getGeoMatchRule().subjects);
 
@@ -177,6 +176,9 @@ public class SubjectUtils {
 				}
 				union.setSRID(Subject.SRID);
 				query.setParameter("geom", union);
+			} else if (EnumSet.allOf(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.class)
+					.contains(Enum.valueOf(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.class, parameter.getName()))) {
+				query.setParameter(parameter.getName(), buildQuery(subjectRecipe.getMatchRule().filter.name(), subjectRecipe.getMatchRule().value).toLowerCase());
 			}
 		}
 
@@ -213,5 +215,24 @@ public class SubjectUtils {
 			query.setMaxResults(1);
 			return (Subject) query.uniqueResult();
 		});
+	}
+
+	private static String buildQuery(String filter, String value) {
+		String query;
+
+		if (filter.equals(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.contains.name())) {
+			query = "%" + value + "%";
+		} else if (filter.equals(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.startsWith.name())) {
+			query = value + "%";
+		} else if (filter.equals(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.endsWith.name())) {
+			query = "%" + value;
+		} else if (filter.equals(SubjectRecipe.SubjectAttributeMatchRule.MatchableType.equals.name())) {
+			query = value;
+		} else {
+			throw new IllegalArgumentException(
+						"SubjectAttributeMatchRule filter is not a valid type (can be either contains, startsWith, endsWith, equals)");
+		}
+
+		return query;
 	}
 }

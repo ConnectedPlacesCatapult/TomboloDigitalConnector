@@ -140,7 +140,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationLabelSearch() throws Exception {
 		DatasetRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "E09%")
+				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("label", "startsWith", "E09%")
 		).build().getDataset();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Label " + subjects.get(0).getLabel() + " matches searched pattern E09%", subjects.get(0).getLabel().contains("E09"));
@@ -149,7 +149,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationNameSearch() throws Exception {
 		DatasetRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
+				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "endsWith", "%don")
 		).build().getDataset();
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
@@ -158,7 +158,7 @@ public class SubjectUtilsTest extends AbstractTest {
 	@Test
 	public void testGetSubjectBySpecificationWithSubject() throws Exception {
 		SubjectRecipe spec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
-				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "%don")
+				new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "localAuthority").setMatcher("name", "endsWith", "%don")
 		).build().getDataset().getSubjects().get(0);
 		List<Subject> subjects = SubjectUtils.getSubjectBySpecification(spec);
 		assertTrue("Name " + subjects.get(0).getName() + " matches searched pattern %don", subjects.get(0).getName().contains("don"));
@@ -185,7 +185,7 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		// Testing sensors inside Square One
 		SubjectSpecificationBuilder squareOneSpec =
-				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("name",squareOne.getName());
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("name", "equals", squareOne.getName());
 		List<SubjectSpecificationBuilder> parentSpecs = new ArrayList<>();
 		parentSpecs.add(squareOneSpec);
 		SubjectRecipe childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
@@ -198,7 +198,7 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		// Testing sensors inside Square One and Two
 		SubjectSpecificationBuilder squareTwoSpec =
-				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("label",squareTwo.getLabel());
+				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), squareAuthority.getLabel()).setMatcher("label", "equals", squareTwo.getLabel());
 		parentSpecs.add(squareTwoSpec);
 		childSpec = DataExportSpecificationBuilder.withCSVExporter().addSubjectSpecification(
 				new SubjectSpecificationBuilder(TestFactory.DEFAULT_PROVIDER.getLabel(), pointSensor.getLabel()).setGeoMatcher("within", parentSpecs)

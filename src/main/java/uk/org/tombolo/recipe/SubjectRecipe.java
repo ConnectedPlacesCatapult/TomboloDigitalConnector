@@ -6,12 +6,15 @@ public class SubjectRecipe {
 
 	public static class SubjectAttributeMatchRule {
 		public enum MatchableAttribute {label, name};
+		public enum MatchableType {contains, startsWith, endsWith, equals};
 		public final MatchableAttribute attribute;
-		public final String pattern;
+		public final MatchableType filter;
+		public final String value;
 
-		public SubjectAttributeMatchRule(MatchableAttribute attribute, String pattern) {
+		public SubjectAttributeMatchRule(MatchableAttribute attribute, MatchableType filter, String value) {
 			this.attribute = attribute;
-			this.pattern = pattern;
+			this.filter = filter;
+			this.value = value;
 		}
 	}
 

@@ -23,13 +23,18 @@
                     "type": "string",
                     "enum": ["label", "name"]
                   },
-                  "pattern": {
+                  "filter": {
+                    "type": "string",
+                    "enum": ["contains", "startsWith", "endsWith", "equals"]
+                  },
+                  "value": {
                     "type": "string"
                   }
                 },
                 "required": [
                   "attribute",
-                  "pattern"
+                  "filter",
+                  "value"
                 ],
                 "additionalProperties": false
               },

@@ -14,7 +14,8 @@
               "provider": "uk.gov.ons",
               "matchRule": {
                 "attribute": "name",
-                "pattern": "Greenwich"
+                "filter": "equals",
+                "value": "Greenwich"
               }
             },
             {
@@ -22,7 +23,8 @@
               "provider": "uk.gov.ons",
               "matchRule": {
                 "attribute": "name",
-                "pattern": "Islington"
+                "filter": "equals",
+                "value": "Islington"
               }
             }
           ]
