@@ -1,0 +1,210 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "lsoa",
+        "provider": "uk.gov.ons",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E0900%"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "lsoa"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMHealth",
+        "geographyScope": ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMEducation",
+        "geographyScope": ["europe/great-britain/england/greater-london"]
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMCivic",
+        "geographyScope": ["europe/great-britain/england/greater-london"]
+      }
+    ],
+    "fields": [
+
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "Health Count",
+        "subject": {
+          "provider": "org.openstreetmap",
+          "subjectType": "OSMEntity"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+          "label": "amenity",
+          "attributes": [
+            {
+        "provider": "org.openstreetmap",
+        "label": "amenity",
+        "values": ["clinic", "dentist", "doctors", "hospital", "pharmacy"]
+      }
+          ],
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+            "value": "1"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "Education Count",
+        "subject": {
+          "provider": "org.openstreetmap",
+          "subjectType": "OSMEntity"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+          "label": "amenity",
+          "attributes": [
+            {
+              "provider": "org.openstreetmap",
+              "label": "amenity",
+              "values": ["school", "library", "university", "college", "kindergarten"]
+            }
+          ],
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+            "value": "1"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "Civic Count",
+        "subject": {
+          "provider": "org.openstreetmap",
+          "subjectType": "OSMEntity"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+          "label": "amenity",
+          "attributes": [
+            {
+              "provider": "org.openstreetmap",
+              "label": "amenity",
+              "values": ["courthouse", "coworking_space", "recycling", "fire_station", "place_of_worship",
+                "police", "post_office", "town_hall", "waste_disposal"]
+            }
+          ],
+          "field": {
+            "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+            "value": "1"
+          }
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
+        "operation": "add",
+        "label": "Sum of civic amenities",
+        "fields": [
+
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Health Count",
+            "subject": {
+              "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+              "label": "amenity",
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["clinic", "dentist", "doctors", "hospital", "pharmacy"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
+            }
+          },
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Education Count",
+            "subject": {
+              "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+              "label": "amenity",
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["school", "library", "university", "college", "kindergarten"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
+            }
+          },
+          {
+            "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+            "label": "Civic Count",
+            "subject": {
+              "provider": "org.openstreetmap",
+              "subjectType": "OSMEntity"
+            },
+            "function": "sum",
+            "field": {
+              "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+              "label": "amenity",
+              "attributes": [
+                {
+                  "provider": "org.openstreetmap",
+                  "label": "amenity",
+                  "values": ["courthouse", "coworking_space", "recycling", "fire_station", "place_of_worship",
+                    "police", "post_office", "town_hall", "waste_disposal"]
+                }
+              ],
+              "field": {
+                "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+                "value": "1"
+              }
+            }
+          }
+
+        ]
+      }
+    ]
+  },
+
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
+}
+
