@@ -16,7 +16,7 @@ public class SubjectRecipe {
 	}
 
 	public static class SubjectGeoMatchRule {
-		public enum GeoRelation {within};
+		public enum GeoRelation {within, equals, disjoint, intersects, touches, crosses, contains, overlaps};
 		public final GeoRelation geoRelation;
 		public final List<SubjectRecipe> subjects;
 
