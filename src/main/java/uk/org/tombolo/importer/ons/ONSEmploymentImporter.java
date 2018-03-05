@@ -82,7 +82,7 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
                         "The JSA datasets have all been moved to a new Jobseeker's Allowance theme.",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_162_1.data.csv?" +
                         "geography=1249902593...1249937345&" +
-                        "date=latest&" +
+                        "date=latestMINUS1-latest&" +
                         "gender=0&" +
                         "age=0&" +
                         "measure=1&" +
@@ -93,13 +93,13 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         JSAclaimantsCount(new DatasourceSpec(
                 ONSEmploymentImporter.class,
                 "JSAclaimantsCount",
-                "Claimants per LA",
+                "Claimants per Local Authority",
                 "Total counts of Jobseeker's Allowance (JSA) claimants " +
                         "Aged 16-64, All claimant durations,  All sexes. " +
                         "Totals exclude non-computerised clerical claims (approx. 1%). " +
                         "Available for Local Authorities. For more details visit https://www.nomisweb.co.uk/api/v01/help",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_18_1.csv?geography=TYPE463&"+
-                        "date=latest&"+
+                        "date=latestMINUS1-latest&"+
                         "sex=7&"+
                         "age=0&"+
                         "duration=0&"+
@@ -109,13 +109,13 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         JSAclaimantsProportion(new DatasourceSpec(
                 ONSEmploymentImporter.class,
                 "JSAclaimantsProportion",
-                "Jobseeker's Allowance (JSA) claimants proportion of resident population per LA",
+                "Jobseeker's Allowance (JSA) claimants proportion of resident population per Local Authority",
                 "Claimants proportion of resident population of Jobseeker's Allowance (JSA) claimants " +
                         "Aged 16-64, All claimant durations,  All sexes. " +
                         "Totals exclude non-computerised clerical claims (approx. 1%). " +
                         "Available for Local Authorities. For more details visit https://www.nomisweb.co.uk/api/v01/help",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_18_1.csv?geography=TYPE463&"+
-                        "date=latest&"+
+                        "date=latestMINUS1-latest&"+
                         "sex=7&"+
                         "age=0&"+
                         "duration=0&"+
@@ -125,12 +125,12 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         ESAclaimants(new DatasourceSpec(
                 ONSEmploymentImporter.class,
                 "ESAclaimants",
-                "Total number of people who are claiming Employment and Support Allowance (ESA) per LA",
+                "Total number of people who are claiming Employment and Support Allowance (ESA) per Local Authority",
                 "Total number of people who are claiming Employment and Support Allowance (ESA) per Local Authority " +
                         "Aged 16-64, All claimant durations,  All sexes. " +
                         "Available for Local Authorities. For more details visit https://www.nomisweb.co.uk/api/v01/help",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_134_1.csv?geography=TYPE463&"+
-                        "date=latest&"+
+                        "date=latestMINUS1-latest&"+
                         "sex=7&"+
                         "age=0&"+
                         "esa_phase=0&"+
@@ -144,13 +144,13 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         APSEmploymentRate(new DatasourceSpec(
                 ONSWagesImporter.class,
                 "APSEmploymentRate",
-                "Annual Population Survey (APS) Employment Rate per LA",
+                "Annual Population Survey (APS) Employment Rate per Local Authority",
                 "A residence based labour market survey encompassing population, economic activity (employment) per local authority " +
                         "Aged 16-64" +
                         "Available for Local Authorities. The date appears in the dataset as yearly interval and are imported using the latest date. " +
                         "For more details visit https://www.nomisweb.co.uk/api/v01/help",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_17_5.data.csv?geography=TYPE463&"+
-                        "date=latest&"+
+                        "date=latestMINUS1-latest&"+
                         "variable=45&"+
                         "measures=20599&"+
                         "select=date_name,geography_name,geography_code,variable_name,measures_name,obs_value,obs_status_name")
@@ -158,16 +158,55 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         APSUnemploymentRate(new DatasourceSpec(
                 ONSEmploymentImporter.class,
                 "APSUnemploymentRate",
-                "Annual Population Survey (APS) Unemployment Rate per LA",
+                "Annual Population Survey (APS) Unemployment Rate per Local Authority",
                 "A residence based labour market survey encompassing population, economic activity (unemployment) per local authority " +
                         "Aged 16-64" +
                         "Available for Local Authorities. The date appears in the dataset as yearly interval and are imported using the latest date" +
                         "For more details visit https://www.nomisweb.co.uk/api/v01/help",
                 "http://www.nomisweb.co.uk/api/v01/dataset/NM_17_5.data.csv?geography=TYPE463&"+
-                        "date=latest&"+
+                        "date=latestMINUS1-latest&"+
                         "variable=84&"+
                         "measures=20599&"+
                         "select=date_name,geography_name,geography_code,variable_name,measures_name,obs_value,obs_status_name")
+        ),
+        ONSJobsDensity(new DatasourceSpec(
+                ONSEmploymentImporter.class,
+                "ONSJobsDensity",
+                "Jobs density per Local Authority",
+                "The number of jobs in an area divided by the resident population aged 16-64 in that area. For example, a job density of 1.0 " +
+                        "would mean that there is one job for every resident aged 16-64. " +
+                        "For more details visit https://www.nomisweb.co.uk/query/construct/summary.asp?mode=construct&version=0&dataset=57",
+                "http://www.nomisweb.co.uk/api/v01/dataset/NM_57_1.data.csv?geography=TYPE463&"+
+                        "date=latestMINUS1-latest&"+
+                        "item=3&"+
+                        "measures=20100&"+
+                        "select=date_name,geography_name,geography_code,item_name,measures_name,obs_value,obs_status_name")
+        ),
+        ONSTotalJobs(new DatasourceSpec(
+                ONSEmploymentImporter.class,
+                "ONSTotalJobs",
+                "Total Jobs per Local Authority",
+                "The total number of jobs is a workplace-based measure and comprises employee jobs, self-employed, government-supported trainees and HM Forces. " +
+                        "For more details visit https://www.nomisweb.co.uk/query/construct/summary.asp?mode=construct&version=0&dataset=57",
+                "http://www.nomisweb.co.uk/api/v01/dataset/NM_57_1.data.csv?geography=TYPE463&"+
+                        "date=latestMINUS1-latest&"+
+                        "item=1&"+
+                        "measures=20100&"+
+                        "select=date_name,geography_name,geography_code,item_name,measures_name,obs_value,obs_status_name")
+        ),
+        ONSGrossAnnualIncome(new DatasourceSpec(
+                ONSEmploymentImporter.class,
+                "ONSGrossAnnualIncome",
+                "Median Gross Annual Income in GB pounds per Local Authority",
+                "Annual Survey of Hours and Earnings - Residential Gross Annual Income. " +
+                        "For more details visit https://www.nomisweb.co.uk/datasets/asher",
+                "http://www.nomisweb.co.uk/api/v01/dataset/NM_30_1.data.csv?geography=TYPE463&"+
+                        "date=latestMINUS1-latest&"+
+                        "sex=8&"+
+                        "item=2&"+
+                        "pay=7&"+
+                        "measures=20100&"+
+                        "select=date_name,geography_name,geography_code,item_name,measures_name,obs_value,obs_status_name")
         )
         ;
         private DatasourceSpec datasourceSpec;
@@ -176,7 +215,8 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
         }
     }
 
-    private enum AttributeId {claimantsCount,JSAclaimantsCount,JSAclaimantsProportion,ESAclaimants, APSEmploymentRate,APSUnemploymentRate};
+    private enum AttributeId {claimantsCount,JSAclaimantsCount,JSAclaimantsProportion,ESAclaimants, APSEmploymentRate,APSUnemploymentRate,
+        ONSJobsDensity,ONSTotalJobs,ONSGrossAnnualIncome};
 
     public ONSEmploymentImporter(){
         datasourceIds = stringsFromEnumeration(DatasourceId.class);
@@ -220,6 +260,9 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
                 break;
             case "APSEmploymentRate":
             case "APSUnemploymentRate":
+            case "ONSJobsDensity":
+            case "ONSTotalJobs":
+            case "ONSGrossAnnualIncome":
                 columnID = 5;
                 subjectID = 1;
                 break;
@@ -246,7 +289,10 @@ public class ONSEmploymentImporter extends AbstractONSImporter {
                 new Attribute(getProvider(), AttributeId.JSAclaimantsProportion.name(), "Jobseeker's Allowance (JSA) claimants proportion (represented as fraction) per LA"),
                 new Attribute(getProvider(), AttributeId.ESAclaimants.name(), "Total number of people who are claiming Employment and Support Allowance (ESA) per LA"),
                 new Attribute(getProvider(), AttributeId.APSEmploymentRate.name(), "Annual Population Survey (APS) Employment Rate per LA"),
-                new Attribute(getProvider(), AttributeId.APSUnemploymentRate.name(), "Annual Population Survey (APS) Unemployment Rate per LA"));
+                new Attribute(getProvider(), AttributeId.APSUnemploymentRate.name(), "Annual Population Survey (APS) Unemployment Rate per LA"),
+                new Attribute(getProvider(), AttributeId.ONSJobsDensity.name(), "The number of jobs in an area divided by the resident population aged 16-64 in that area"),
+                new Attribute(getProvider(), AttributeId.ONSTotalJobs.name(), "The total number of jobs is a workplace-based measure and comprises employee jobs, self-employed, government-supported trainees and HM Forces"),
+                new Attribute(getProvider(), AttributeId.ONSGrossAnnualIncome.name(), "Annual Survey of Hours and Earnings - Residential Gross Annual Income"));
     }
 
 }
