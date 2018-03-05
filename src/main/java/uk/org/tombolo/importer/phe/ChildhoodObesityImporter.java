@@ -33,21 +33,21 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
                 ChildhoodObesityImporter.class,
                 "childhoodObesityLA",
                 "Childhood Obesity at local authority level",
-                "",
+                "Prevalence of excess weight among children in Year 6 (age 10-11 years) at Local Authority level",
                 "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/610203/NCMP_data_LA_and_England.xlsx")
         ),
         childhoodObesityMSOA(new DatasourceSpec(
                 ChildhoodObesityImporter.class,
                 "childhoodObesityMSOA",
                 "Childhood Obesity at MSOA level",
-                "",
+                "Prevalence of excess weight among children in Year 6 (age 10-11 years) at MSOA level",
                 "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/610199/NCMP_data_MSOA.xlsx")
         ),
         childhoodObesityWard(new DatasourceSpec(
                 ChildhoodObesityImporter.class,
                 "childhoodObesityWard",
                 "Childhood Obesity at Ward level",
-                "",
+                "Prevalence of excess weight among children in Year 6 (age 10-11 years) at Ward level",
                 "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/652653/NCMP_data_Ward.xlsx")
         );
         private DatasourceSpec datasourceSpec;
@@ -200,7 +200,6 @@ public class ChildhoodObesityImporter extends AbstractPheImporter {
         if (which_datasource.equals("childhoodObesityLA")){
             subjectGeometry = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
                     OaImporter.OaType.localAuthority.name(), OaImporter.OaType.localAuthority.datasourceSpec.getDescription());
-
         } else if (which_datasource.equals("childhoodObesityMSOA")){
             subjectGeometry = SubjectTypeUtils.getOrCreate(AbstractONSImporter.PROVIDER,
                     OaImporter.OaType.msoa.name(), OaImporter.OaType.msoa.datasourceSpec.getDescription());

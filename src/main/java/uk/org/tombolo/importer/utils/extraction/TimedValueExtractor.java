@@ -52,6 +52,9 @@ public class TimedValueExtractor {
         String valueString = valueExtractor.extract();
         // Parsing out proper numbers
         valueString = valueString.replaceAll("[^\\d]+(-?\\d+\\.?\\d+)[^\\d]+", "$1");
+        if (valueString.isEmpty()) {
+            throw new ExtractorException("Unparsable number: " + valueExtractor.extract());
+        }
         Double value =  Double.parseDouble(valueString);
         if (value == null)
             throw new ExtractorException("Unparsable number: " + valueExtractor.extract());
