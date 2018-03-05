@@ -75,13 +75,14 @@ public class ONSEmploymentImporterTest extends AbstractTest {
     @Test
     public void getDatasourceIds() throws Exception {
         List<String> datasources = importer.getDatasourceIds();
-        assertEquals(Arrays.asList("claimantsCount","JSAclaimantsCount","JSAclaimantsProportion","ESAclaimants","APSEmploymentRate", "APSUnemploymentRate"),datasources);
+        assertEquals(Arrays.asList("claimantsCount","JSAclaimantsCount","JSAclaimantsProportion","ESAclaimants",
+                "APSEmploymentRate", "APSUnemploymentRate","ONSJobsDensity","ONSTotalJobs","ONSGrossAnnualIncome"),datasources);
     }
 
     @Test
     public void getDatasource() throws Exception {
         Datasource datasource = importer.getDatasource("JSAclaimantsCount");
-        assertEquals(6, datasource.getTimedValueAttributes().size());
+        assertEquals(9, datasource.getTimedValueAttributes().size());
     }
 
     @Test
@@ -92,7 +93,7 @@ public class ONSEmploymentImporterTest extends AbstractTest {
         Subject london001B = TestFactory.makeSubject(lsoa,"E01000002","City of London 001B",TestFactory.FAKE_POINT_GEOMETRY);
         Subject london001C = TestFactory.makeSubject(lsoa,"E01000003","City of London 001C",TestFactory.FAKE_POINT_GEOMETRY);
 
-        Subject wyre010A = TestFactory.makeSubject(lsoa, "E01025542", "Wyre 011B", TestFactory.FAKE_POINT_GEOMETRY);
+        Subject wyre010A = TestFactory.makeSubject(lsoa, "E01025542", "Wyre 010A", TestFactory.FAKE_POINT_GEOMETRY);
         Subject blaby010A = TestFactory.makeSubject(lsoa, "E01025613", "Blaby 010A", TestFactory.FAKE_POINT_GEOMETRY);
 
         importer.importDatasource("claimantsCount", null, null, null);
@@ -101,23 +102,23 @@ public class ONSEmploymentImporterTest extends AbstractTest {
 
         //Jan-16,City of London 001A,E01000001,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
         TimedValue londonValueA = TimedValueUtils.getLatestBySubjectAndAttribute(london001A, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2016-01-31T23:59:59"),londonValueA.getId().getTimestamp());
-        assertEquals(0d, londonValueA.getValue(), 0.1d);
+        assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),londonValueA.getId().getTimestamp());
+        assertEquals(5d, londonValueA.getValue(), 0.1d);
 
         //Feb-16,City of London 001B,E01000002,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
         TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(london001B, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2016-02-29T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),londonValueB.getId().getTimestamp());
         assertEquals(0d, londonValueB.getValue(), 0.1d);
 
         //Feb-17,City of London 001C,E01000003,Total,All categories: Age 16+,Claimant count,Value,15,Normal Value
         TimedValue londonValueC = TimedValueUtils.getLatestBySubjectAndAttribute(london001C, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2017-02-28T23:59:59"),londonValueC.getId().getTimestamp());
+        assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),londonValueC.getId().getTimestamp());
         assertEquals(15d, londonValueC.getValue(), 0.1d);
 
         //Jun-17,Wyre 010A,E01025542,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
         TimedValue wyreValue = TimedValueUtils.getLatestBySubjectAndAttribute(wyre010A, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2017-06-30T23:59:59"),wyreValue.getId().getTimestamp());
-        assertEquals(5d, wyreValue.getValue(), 0.1d);
+        assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),wyreValue.getId().getTimestamp());
+        assertEquals(10d, wyreValue.getValue(), 0.1d);
 
         //December 2017,Blaby 010A,E01025613,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
         TimedValue blabyValue = TimedValueUtils.getLatestBySubjectAndAttribute(blaby010A, claimantsAttribute);
@@ -134,11 +135,6 @@ public class ONSEmploymentImporterTest extends AbstractTest {
         importer.importDatasource("JSAclaimantsCount", null, null, null);
 
         Attribute claimantsAttribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "JSAclaimantsCount");
-
-        //Jan-18,City of London
-        TimedValue londonValue = TimedValueUtils.getLatestBySubjectAndAttribute(cityofLondon, claimantsAttribute);
-        assertEquals(LocalDateTime.parse("2018-01-31T23:59:59"),londonValue.getId().getTimestamp());
-        assertEquals(25d, londonValue.getValue(), 0.1d);
 
         //Jan-18,Barking
         TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, claimantsAttribute);
@@ -217,5 +213,49 @@ public class ONSEmploymentImporterTest extends AbstractTest {
         assertEquals(LocalDateTime.parse("2017-09-30T23:59:59"),londonValueB.getId().getTimestamp());
         assertEquals(9.4d, londonValueB.getValue(), 0.1d);
     }
+    @Test
+    public void importDatasourceONSJobsDensity() throws Exception {
 
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("ONSJobsDensity", null, null, null);
+
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "ONSJobsDensity");
+
+        //Barking
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, attribute);
+        assertEquals(LocalDateTime.parse("2016-12-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(0.49d, londonValueB.getValue(), 0.01d);
+    }
+    @Test
+    public void importDatasourceONSTotalJobs() throws Exception {
+
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("ONSTotalJobs", null, null, null);
+
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "ONSTotalJobs");
+
+        //Barking
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, attribute);
+        assertEquals(LocalDateTime.parse("2016-12-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(64000d, londonValueB.getValue(), 0.01d);
+    }
+    @Test
+    public void importDatasourceONSGrossAnnualIncome() throws Exception {
+
+        SubjectType localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
+        Subject barkingAndDagenham = TestFactory.makeSubject(localAuthority,"E09000002","Barking and Dagenham",TestFactory.FAKE_POINT_GEOMETRY);
+
+        importer.importDatasource("ONSGrossAnnualIncome", null, null, null);
+
+        Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), "ONSGrossAnnualIncome");
+
+        //Barking 2017
+        TimedValue londonValueB = TimedValueUtils.getLatestBySubjectAndAttribute(barkingAndDagenham, attribute);
+        assertEquals(LocalDateTime.parse("2017-12-31T23:59:59"),londonValueB.getId().getTimestamp());
+        assertEquals(30167d, londonValueB.getValue(), 0.01d);
+    }
 }
