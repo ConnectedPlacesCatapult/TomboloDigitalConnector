@@ -52,6 +52,7 @@ public class OSMImporter extends AbstractImporter {
             "europe/great-britain/england/northumberland",
             "europe/great-britain/england/nottinghamshire",
             "europe/great-britain/england/oxfordshire",
+            "europe/great-britain/england/rutland",
             "europe/great-britain/england/shropshire",
             "europe/great-britain/england/somerset",
             "europe/great-britain/england/south-yorkshire",

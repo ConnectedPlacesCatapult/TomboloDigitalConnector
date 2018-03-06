@@ -156,6 +156,13 @@ public class TimedValueUtils {
 			return parse(timestampString, "MMMM yyyy");
 		}
 
+		// Check for www dddd-www dddd format of ONS Employment/Unemployment
+		if (timestampString.matches("^\\w\\w\\w\\s\\d\\d\\d\\d-\\w\\w\\w\\s\\d\\d\\d\\d")) {
+			timestampString = timestampString.substring(timestampString.lastIndexOf("-") + 1);
+			log.info("Raw timestamp " + timestampString + ". Defaulting to END: " + parse(timestampString,"MMM yyyy"));
+			return parse(timestampString,"MMM yyyy");
+		}
+
 		// Neither well formed to the second nor year
 		throw new ParsingException("Unparsable timestamp: " + timestampString);
 	}

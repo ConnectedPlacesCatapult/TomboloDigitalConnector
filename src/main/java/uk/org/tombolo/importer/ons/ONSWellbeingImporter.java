@@ -153,7 +153,7 @@ public class ONSWellbeingImporter extends AbstractONSImporter {
         // We loop through the elements of the elements object and adding an Attribute object in the list
         // with nour column names.
         for( int i = 0; i < elements.length; i++) {
-            attributes.add(new Attribute(getProvider(), elements[i], elements[i]));
+            attributes.add(new Attribute(getProvider(), elements[i], description[i]));
 
         }
         return attributes;
