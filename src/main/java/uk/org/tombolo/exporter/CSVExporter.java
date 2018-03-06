@@ -69,8 +69,12 @@ public class CSVExporter implements Exporter {
 			try {
 				property.put(field.getLabel(), ((SingleValueField) field).valueForSubject(subject, timeStamp));
 			} catch (IncomputableFieldException e) {
-				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
+				log.warn("\u001b[0;33m" + "Could not compute Field {} for Subject {}, reason: {}" + "\u001b[m",
+						field.getLabel(), subject.getLabel(), e.getMessage());
 				property.put(field.getLabel(), null);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(String.format("Could not compute Field %s for Subject %s" +
+						"(%s), reason: %s", field.getLabel(), subject.getLabel(), subject.getId(), e.getMessage()));
 			}
 		} else {
 			throw new IllegalArgumentException(String.format("Field %s cannot return a single value", field.getLabel()));

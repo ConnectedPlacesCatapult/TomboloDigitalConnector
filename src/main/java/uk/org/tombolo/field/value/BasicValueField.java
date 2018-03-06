@@ -24,15 +24,15 @@ public abstract class BasicValueField extends AbstractField {
     }
 
     protected Attribute getAttribute() throws IncomputableFieldException {
-        if (null != attributeObject) return attributeObject;
-
-        Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
-        if (null == attr) {
-            throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.provider, attribute.label));
-        } else {
-            attributeObject = attr;
-            return attr;
+        if (attributeObject == null) {
+            Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
+            if (null == attr) {
+                throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.provider, attribute.label));
+            } else {
+                attributeObject = attr;
+            }
         }
+        return attributeObject;
     }
 
     protected JSONObject withinMetadata(JSONArray contents) {

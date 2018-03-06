@@ -3,7 +3,7 @@
   "label": "CombinedSocialResilience",
   "percentileCount": 4,
   "inverse": false,
-  "valueField":{
+  "field":{
     "fieldClass": "uk.org.tombolo.field.transformation.ListArithmeticField",
     "operation": "add",
     "label": "SumSocialResilience",
@@ -25,7 +25,7 @@
       }
     ]
   },
-  "normalizationSubjects": [
+  "subjects": [
     {
       "subjectType": "lsoa",
       "provider":"uk.gov.ons"

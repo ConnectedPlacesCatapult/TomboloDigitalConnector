@@ -20,10 +20,6 @@ public class OSMBuiltInAttributeMatcherField extends AttributeMatcherField {
 
     @Override
     protected Map<Attribute, List<String>> getAttributeValueMatches(AttributeMatcher attributeMatcher) {
-        try {
             return OSMBuiltInImporters.checkBuiltIn(attributeMatcher);
-        } catch (Exception e) {
-            throw new Error("Unknown built-in importer class: " + e.getMessage());
-        }
     }
 }

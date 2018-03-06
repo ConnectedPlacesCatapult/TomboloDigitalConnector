@@ -24,9 +24,9 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
     private static Logger log = LoggerFactory.getLogger(PercentilesField.class);
 
     // The field over which to calculate the percentiles
-    private final FieldRecipe valueField;
+    private final FieldRecipe field;
     // The subjects over which the percentiles are calculated
-    private final List<SubjectRecipe> normalizationSubjects;
+    private final List<SubjectRecipe> subjects;
     // The number of percentiles
     private final Integer percentileCount;
     // True if the ordering of the percentiles is supposed to be inverse to the field
@@ -37,13 +37,12 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
 
     public PercentilesField(
             String label,
-            String name,
-            FieldRecipe valueField,
-            List<SubjectRecipe> normalizationSubjects,
+            FieldRecipe field,
+            List<SubjectRecipe> subjects,
             Integer percentileCount, Boolean inverse) {
         super(label);
-        this.valueField = valueField;
-        this.normalizationSubjects = normalizationSubjects;
+        this.field = field;
+        this.subjects = subjects;
         this.percentileCount = percentileCount;
         this.inverse = inverse;
     }
@@ -88,12 +87,12 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
     public void initialize() {
         if (singleValueField == null) {
             try {
-                singleValueField = (SingleValueField) valueField.toField();
+                singleValueField = (SingleValueField) field.toField();
                 singleValueField.setFieldCache(fieldCache);
             } catch (ClassNotFoundException e) {
-                throw new Error("Field class not found.", e);
+                throw new IllegalArgumentException("Field class not found.", e);
             } catch (ClassCastException e){
-                throw new Error("Field must be SingleValueField", e);
+                throw new IllegalArgumentException("Field must be SingleValueField", e);
             }
         }
 
@@ -101,22 +100,23 @@ public class PercentilesField extends AbstractField implements ParentField, Sing
             inverse = false;
 
         if (percentiles == null){
-            List<Subject> subjects = SubjectUtils.getSubjectBySpecifications(normalizationSubjects);
+            List<Subject> percentileSubjects = SubjectUtils.getSubjectBySpecifications(subjects);
             Percentile percentile = new Percentile(percentileCount);
 
-            double[] values = new double[subjects.size()];
+            double[] values = new double[percentileSubjects.size()];
 
-            for (int i = 0; i< subjects.size(); i++){
+            for (int i = 0; i< percentileSubjects.size(); i++){
                 try {
-                    values[i] = Double.valueOf(singleValueField.valueForSubject(subjects.get(i), true));
-                } catch (IncomputableFieldException e) {
-                    throw new Error(String.format("Error calculating percentiles. Encountered when computing Field %1$s for Subject %2$s.\n" +
-                            "Check that Field %1$s exists for Subject %2$s \n" +
-                            "If not, you may have to calculate percentiles over a different range of subjects", singleValueField.getLabel(), subjects.get(i).getLabel()), e);
+                    values[i] = Double.valueOf(singleValueField.valueForSubject(percentileSubjects.get(i), true));
+                } catch (IncomputableFieldException | NumberFormatException e) {
+                    throw new IllegalArgumentException(String.format("Error calculating percentiles. Encountered when" +
+                            " computing Field %1$s for Subject %2$s\nCheck that Field %1$s exists for Subject %2$s \n" +
+                            "If not, you may have to calculate percentiles over a different range of subjects.",
+                            singleValueField.getLabel(), percentileSubjects.get(i).getLabel()), e);
                 }
             }
             percentile.setData(values);
-            log.info("Normalising percentiles of {} over {} subjects", singleValueField.getLabel(), subjects.size());
+            log.info("Normalising percentiles of {} over {} subjects", singleValueField.getLabel(), percentileSubjects.size());
             log.info("Min value: {}", StatUtils.min(values));
             log.info("Max value: {}", StatUtils.max(values));
             log.info("Median: {}", StatUtils.mean(values));

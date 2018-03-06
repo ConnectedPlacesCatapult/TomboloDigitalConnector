@@ -1,5 +1,6 @@
 package uk.org.tombolo;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +52,8 @@ public class DataExportRunner extends AbstractRunner {
         try (Writer writer = runner.getOutputWriter(output)) {
             engine.execute(dataExportRecipe, writer, new ImporterMatcher(forceImports));
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+            log.error("\n" + "\u001b[1;31m" + "-----> TASK FAILED: " + e.getMessage()  + "<-----\nCaused by " +
+                    e.getCause() + "\n\n" + "\u001b[0;31m" + ExceptionUtils.getStackTrace(e) + "\u001b[m");
         } finally {
             HibernateUtil.shutdown();
         }

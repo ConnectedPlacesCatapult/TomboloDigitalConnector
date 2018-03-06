@@ -31,7 +31,7 @@
         "label": "RentingResiliencePercentiles",
         "percentileCount": 4,
         "inverse": true,
-        "valueField": {
+        "field": {
           // The value field calcualates the renting households in an LSOA
           // as a fraction of the total number of households in the LSOA
           "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
@@ -64,7 +64,7 @@
             }
           }
         },
-        "normalizationSubjects": [
+        "subjects": [
           // Specification that determines that we calculate percentile boundaries nationally
           {
             "provider": "uk.gov.ons",

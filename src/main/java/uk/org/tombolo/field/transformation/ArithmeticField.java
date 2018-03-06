@@ -52,8 +52,12 @@ public class ArithmeticField extends AbstractField implements SingleValueField, 
             singleValueField1.setFieldCache(fieldCache);
             this.singleValueField2 = (SingleValueField) field2.toField();
             singleValueField2.setFieldCache(fieldCache);
-        } catch (Exception e) {
-            throw new Error("Field not valid: " + e.getClass());
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Function not supported. Supporting {div, mul, add, sub}");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Field class not found.");
+        } catch (ClassCastException e){
+            throw new IllegalArgumentException("Field must be SingleValueField");
         }
     }
 
@@ -75,9 +79,15 @@ public class ArithmeticField extends AbstractField implements SingleValueField, 
             return Double.parseDouble(cachedValue);
 
         if (null == singleValueField1) { initialize(); }
-        Double retVal = operator.apply(
-                Double.parseDouble(singleValueField1.valueForSubject(subject, true)),
-                Double.parseDouble(singleValueField2.valueForSubject(subject, true)));
+        Double retVal;
+        try {
+            retVal = operator.apply(
+                    Double.parseDouble(singleValueField1.valueForSubject(subject, true)),
+                    Double.parseDouble(singleValueField2.valueForSubject(subject, true)));
+        } catch (NullPointerException | NumberFormatException e) {
+                throw new IncomputableFieldException("Subject value cannot be converted to numeric type.\nCheck the " +
+                        "attributes specified in the field are numeric.");
+        }
 
         if (retVal.isNaN()) {
             throw new IncomputableFieldException(String.format("Arithmetic operation %s returned NaN (possible division by zero?)", operation));

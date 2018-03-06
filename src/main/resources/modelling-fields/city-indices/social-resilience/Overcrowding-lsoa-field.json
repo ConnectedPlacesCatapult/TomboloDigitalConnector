@@ -1,10 +1,9 @@
 {
   "fieldClass": "uk.org.tombolo.field.transformation.PercentilesField",
   "label": "OvercrowdingResilience",
-  "name": "Overcrowding Resilience",
   "percentileCount": 4,
   "inverse": true,
-  "valueField": {
+  "field": {
     "fieldClass": "uk.org.tombolo.field.transformation.ArithmeticField",
     "operation": "div",
     "field1": {
@@ -38,7 +37,7 @@
       }
     }
   },
-  "normalizationSubjects": [
+  "subjects": [
     {
       "subjectType": "lsoa",
       "provider": "uk.gov.ons"
