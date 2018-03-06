@@ -156,9 +156,7 @@ The latter field is slightly more complicated and outputs the bicycle count from
 Now that Thomas has put his model recipe together, the next step in the process is to run the Tombolo Digital Connector on the recipe. We use the Gradle build tool to do that from the command line.
 
 ```bash
-gradle runExport \
-    -Precipe='path/to/recipe/file.json' \
-    -Poutput='path/to/output/file.json'
+gradle runExport -Precipe='path/to/recipe/file.json' -Poutput='path/to/output/file.json'
 ```
 
 The command takes two parameters, one pointing to the model recipe that was built in the previous step and one pointing to the output file to be generated.
