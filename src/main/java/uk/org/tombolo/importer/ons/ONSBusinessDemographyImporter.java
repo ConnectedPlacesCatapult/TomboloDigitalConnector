@@ -157,6 +157,7 @@ public class ONSBusinessDemographyImporter extends AbstractONSImporter{
             }
         }
         saveAndClearTimedValueBuffer(timedValues);
+        workbook.close();
     }
 
     private enum AttributeId {
