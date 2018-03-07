@@ -1,0 +1,7 @@
+DATE_NAME,GEOGRAPHY_NAME,GEOGRAPHY_CODE,GENDER_NAME,AGE_NAME,MEASURE_NAME,MEASURES_NAME,OBS_VALUE,OBS_STATUS_NAME
+Dec-17,City of London 001A,E01000001,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value
+Dec-17,City of London 001B,E01000002,Total,All categories: Age 16+,Claimant count,Value,0,Normal Value
+Dec-17,City of London 001C,E01000003,Total,All categories: Age 16+,Claimant count,Value,15,Normal Value
+Dec-17,City of London 001E,E01000005,Total,All categories: Age 16+,Claimant count,Value,35,Normal Value
+Dec-17,Wyre 010A,E01025542,Total,All categories: Age 16+,Claimant count,Value,10,Normal Value
+Dec-17,Blaby 010A,E01025613,Total,All categories: Age 16+,Claimant count,Value,5,Normal Value

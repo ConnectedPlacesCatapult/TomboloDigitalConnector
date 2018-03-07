@@ -162,9 +162,7 @@ Note that in this case we additionally pass a list of datasources to the traffic
 This recipe is quite simpler than before ([see full recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-modelling.json)). Now, run the new recipe by executing the command:
 
 ```bash
-gradle runExport \
-  -Precipe='london-cycle-traffic-air-quality-lsoa-modelling.json' \
-  -Poutput='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
+gradle runExport -Precipe='london-cycle-traffic-air-quality-lsoa-modelling.json' -Poutput='london-cycle-traffic-air-quality-lsoa-modelling-output.json'
 ```
 
 If you look at the resulting file in QGIS, you will see that you get the same output as before but by utilising more simplified and re-usable code.
