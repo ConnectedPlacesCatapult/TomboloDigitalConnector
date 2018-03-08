@@ -12,7 +12,8 @@
               "provider": "uk.gov.ons",
               "matchRule": {
                 "attribute": "label",
-                "pattern": "E090%"
+                "filter": "startsWith",
+                "value": "E090"
               }
             }
           ]

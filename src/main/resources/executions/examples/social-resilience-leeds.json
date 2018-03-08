@@ -7,7 +7,8 @@
         "provider": "uk.gov.ons",
         "matchRule": {
           "attribute": "name",
-          "pattern": "Leeds%"
+          "filter": "startsWith",
+          "value": "Leeds"
         }
       }
     ],

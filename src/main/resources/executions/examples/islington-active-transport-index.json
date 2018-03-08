@@ -6,7 +6,8 @@
         "subjectType": "lsoa",
         "matchRule": {
           "attribute": "name",
-          "pattern": "Islington%"
+          "filter": "startsWith",
+          "value": "Islington"
         }
       }
     ],

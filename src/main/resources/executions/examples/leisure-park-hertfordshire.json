@@ -7,7 +7,8 @@
         "subjectType": "lsoa",
         "matchRule": {
           "attribute": "name",
-          "pattern": "St Albans%"
+          "filter": "startsWith",
+          "value": "St Albans"
         }
       }
     ],
