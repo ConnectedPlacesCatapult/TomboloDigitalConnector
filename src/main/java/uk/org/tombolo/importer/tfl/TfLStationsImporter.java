@@ -26,6 +26,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * INFO FOR RECIPE
+ * "importerClass": "uk.org.tombolo.importer.londondatastore.AdultObesityImporter"
+ * "datasourceId": "StationList"
+ * "provider": "uk.gov.tfl"
+ * "subjectTypes": [TfLStation]
+ *
+ * "timedValueAttributes": [{"label":"ServingLineCount", "provider":"uk.gov.tfl"}]
+ *
+ * "fixedValueAttributes": []
+ */
+
 public class TfLStationsImporter extends TfLImporter {
 
 	protected enum DatasourceId {

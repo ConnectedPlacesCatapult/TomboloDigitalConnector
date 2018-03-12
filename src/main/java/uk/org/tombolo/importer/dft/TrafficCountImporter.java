@@ -37,6 +37,46 @@ import java.util.*;
  * - http://api.dft.gov.uk/v3/trafficcounts/export/la/Aberdeen+City.csv
  *
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.dft.AccessibilityImporter"
+ * "datasourceId": "trafficVolume"
+ * "provider": "uk.gov.dft"
+ * "subjectTypes": [trafficCounter]
+ *
+ * "timedValueAttributes": [
+ * 		{"label":"VolumePedalCycles", "provider":"uk.gov.dft"},
+ *      {"label":"VolumeMotorcycles", "provider":"uk.gov.dft"},
+ *      {"label":"VolumeCarsTaxis", "provider":"uk.gov.dft"},
+ *      {"label":"VolumeBusesCoaches", "provider":"uk.gov.dft"},
+ *      {"label":"VolumeLightGoodsVehicles", "provider":"uk.gov.dft"},
+ *      {"label":"VolumeHeavyGoodsVehicles", "provider":"uk.gov.dft"}]
+ *
+ * "fixedValueAttributes": []
+ *
+ *
+ * "importerClass": "uk.org.tombolo.importer.dft.AccessibilityImporter"
+ * "datasourceId": "trafficCounts"
+ * "provider": "uk.gov.dft"
+ * "subjectTypes": [trafficCounter]
+ *
+ * "timedValueAttributes": [
+ * 		{"label":"CountPedalCycles", "provider":"uk.gov.dft"},
+ *      {"label":"CountMotorcycles", "provider":"uk.gov.dft"},
+ *      {"label":"CountCarsTaxis", "provider":"uk.gov.dft"},
+ *      {"label":"CountBusesCoaches", "provider":"uk.gov.dft"},
+ *      {"label":"CountLightGoodsVehicles", "provider":"uk.gov.dft"},
+ *      {"label":"CountHeavyGoodsVehicles", "provider":"uk.gov.dft"}]
+ *
+ * "fixedValueAttributes": [
+ * 		{"label":"RoadName", "provider":"uk.gov.dft"},
+ *      {"label":"RoadCategory", "provider":"uk.gov.dft"},
+ *      {"label":"StartJunction", "provider":"uk.gov.dft"},
+ *      {"label":"EndJunction", "provider":"uk.gov.dft"}]
+ */
+
 public class TrafficCountImporter extends AbstractImporter {
 	private static final String REGION = "region/";
 	private static final String LA = "la/";

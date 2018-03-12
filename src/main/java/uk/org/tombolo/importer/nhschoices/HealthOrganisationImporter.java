@@ -16,6 +16,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.nhschoices.NHSAdmissionsImporter"
+ * "datasourceId": "NHSAdmissionsObese"
+ * "provider": "uk.digital.nhs"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [
+ *      {"label":"admissions_all", "provider":"uk.digital.nhs"},
+ *      {"label":"admissions_male", "provider":"uk.digital.nhs"},
+ *      {"label":"admissions_female", "provider":"uk.digital.nhs"}]
+ *
+ * "fixedValueAttributes": []
+ */
+
 public final class HealthOrganisationImporter extends AbstractImporter {
     private Logger log = LoggerFactory.getLogger(HealthOrganisationImporter.class);
     private enum DatasourceId {

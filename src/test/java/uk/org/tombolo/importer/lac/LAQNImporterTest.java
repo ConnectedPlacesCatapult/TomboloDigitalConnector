@@ -1,4 +1,4 @@
-package uk.org.tombolo.lac;
+package uk.org.tombolo.importer.lac;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.junit.Before;
@@ -6,7 +6,6 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.lac.LAQNImporter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
