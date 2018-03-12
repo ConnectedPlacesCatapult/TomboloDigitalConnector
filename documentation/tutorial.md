@@ -109,7 +109,7 @@ In this file you can replace the actual calculation with the corresponding pre-d
     "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
     "attribute": {
       "provider" : "erg.kcl.ac.uk",
-      "label" : "NO2 40 ug/m3 as an annual me"
+      "label" : "NO2 40 ug/m3 as an annual mean"
     }
   }
 }
