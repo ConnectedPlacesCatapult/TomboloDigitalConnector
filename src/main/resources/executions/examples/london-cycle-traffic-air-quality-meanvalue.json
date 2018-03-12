@@ -5,7 +5,7 @@
      - London localAuthority data using OaImporter.java
 
   By using TimeseriesMeanValueField it performs 3 operations 
-    - Mean of 'NO2 40 ug/m3 as an annual me' - 1
+    - Mean of 'NO2 40 ug/m3 as an annual mean' - 1
     - Sum of the mean of 'CarCountTaxis' - 2
     - Sum of the mean of 'CountPedalCycles' - 3
   
@@ -54,7 +54,7 @@
             "fieldClass": "uk.org.tombolo.field.value.TimeseriesMeanValueField",
             "attribute": {
               "provider": "erg.kcl.ac.uk",
-              "label": "NO2 40 ug/m3 as an annual me"
+              "label": "NO2 40 ug/m3 as an annual mean"
             }
           }
         },
