@@ -34,7 +34,8 @@ import java.util.stream.IntStream;
  * "provider": "uk.gov.phe"
  * "subjectTypes": ["airQualityControl"]
  *
- * "timedValueAttributes": [check catalogue.json]
+ * "timedValueAttributes": [see http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/GroupName=London/json
+ * attribute label is : "@SpeciesCode" + " " + "@ObjectiveName" ]
  *
  * "fixedValueAttributes": []
  */

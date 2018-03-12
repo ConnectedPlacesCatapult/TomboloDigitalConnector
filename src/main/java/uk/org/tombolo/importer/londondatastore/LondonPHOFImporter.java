@@ -34,7 +34,7 @@ import java.util.*;
  * "provider": "uk.gov.london"
  * "subjectTypes": [localAuthority]
  *
- * "timedValueAttributes": [ See file]
+ * "timedValueAttributes": [ check catalogue.json ]
  * "fixedValueAttributes": []
  */
 

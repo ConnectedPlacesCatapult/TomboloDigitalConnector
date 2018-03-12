@@ -206,6 +206,7 @@ public class JSONReader {
      */
 
     private void convertTreeToHashMap(JsonValue value, String key) {
+
         switch (value.getValueType()) {
 
             case OBJECT:

@@ -2,21 +2,12 @@
   "dataset": {
     "subjects": [
       {
-        "provider": "org.openstreetmap",
-        "subjectType": "OSMEntity",
-        "geoMatchRule": {
-        "geoRelation": "within",
-        "subjects": [
-          {
-            "subjectType": "localAuthority",
-            "provider": "uk.gov.ons",
-            "matchRule": {
-              "attribute": "label",
-              "pattern": "E090000%"
-            }
-          }
-        ]
-      }
+        "provider": "uk.gov.ons",
+        "subjectType": "lsoa",
+        "matchRule": {
+          "attribute": "name",
+          "pattern": "Manchester%"
+        }
       }
     ],
     "datasources": [

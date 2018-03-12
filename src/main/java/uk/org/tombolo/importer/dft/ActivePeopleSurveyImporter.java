@@ -38,8 +38,7 @@ import java.util.List;
  *
  * "timedValueAttributes": [
  * {"provider": "uk.gov.dft", "label": "fractionCycle_1pm"}
- *  ... for the rest check elements array in line 165
- *  ]
+ *  ... for the rest check elements array in line 191 ]
  *
  * {
  *  "importerClass": "uk.org.tombolo.importer.dft.ActivePeopleSurveyImporter",
@@ -48,8 +47,7 @@ import java.util.List;
  *
  * "timedValueAttributes": [
  * {"provider": "uk.gov.dft", "label": "fractionWalk_1pm"}
-
- *  ]
+ *  ... for the rest check elements array in line 173 ]
  *
  * "fixedValueAttributes": []
  *

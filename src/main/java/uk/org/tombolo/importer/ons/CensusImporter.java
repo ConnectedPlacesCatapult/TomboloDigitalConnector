@@ -33,7 +33,8 @@ import java.util.stream.Collectors;
  * "provider": "uk.gov.ons"
  * "subjectTypes": ["lsoa", "msoa", "localAuthority"]
  *
- * "timedValueAttributes": [ check catalogue.json ]
+ * "timedValueAttributes": [ check e.g https://www.nomisweb.co.uk/api/v01/dataset/NM_522_1.bulk.csv?time=latest&measures=20100&rural_urban=total&geography=TYPE298
+ * Providing geography=TYPE298 would download data for lsoa]
  *
  * "fixedValueAttributes": []
  */
