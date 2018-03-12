@@ -106,9 +106,7 @@ public class LAQNImporter extends AbstractImporter {
 
         ArrayList<String> keepTrack = new ArrayList<>();
         flatJson.forEach(data -> IntStream.range(0, data.get("@SpeciesCode").size()).forEachOrdered(i -> {
-            String attrlabel = data.get("@SpeciesCode").get(i) + " " +
-                    data.get("@ObjectiveName").get(i).substring(0, data.get("@ObjectiveName").get(i).length() < 25 ?
-                            data.get("@ObjectiveName").get(i).length() : 24);
+            String attrlabel = data.get("@SpeciesCode").get(i) + " " + data.get("@ObjectiveName").get(i);
             if (!keepTrack.contains(attrlabel)) {
 
                 attributes.add(new Attribute(getProvider(), attrlabel,

@@ -1,7 +1,7 @@
 /*
   This recipe gets the London Air Quality data by calling the LAQNImporter.java
   Then by using TimeseriesMeanValueField it takes mean of attribute 
-  'NO2 40 ug/m3 as an annual me'
+  'NO2 40 ug/m3 as an annual mean'
 */
 {
     "dataset": {
@@ -23,7 +23,7 @@
           "label": "Anual NO2",
           "attribute": {
             "provider": "erg.kcl.ac.uk",
-            "label": "NO2 40 ug/m3 as an annual me"
+            "label": "NO2 40 ug/m3 as an annual mean"
           }
         }
       ]

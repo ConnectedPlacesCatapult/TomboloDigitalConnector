@@ -101,7 +101,7 @@ That is, the first field outputs the average nitrogen dioxide level for each bor
     "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
     "attribute": {
       "provider" : "erg.kcl.ac.uk",
-      "label" : "NO2 40 ug/m3 as an annual me"
+      "label" : "NO2 40 ug/m3 as an annual mean"
     }
   }
 }

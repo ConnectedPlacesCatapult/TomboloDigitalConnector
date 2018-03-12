@@ -57,7 +57,7 @@
           "label": "Anual NO2",
           "attribute": {
             "provider": "erg.kcl.ac.uk",
-            "label": "NO2 40 ug/m3 as an annual me"
+            "label": "NO2 40 ug/m3 as an annual mean"
           }
         }
       }
