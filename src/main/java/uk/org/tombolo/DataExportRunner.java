@@ -22,6 +22,12 @@ public class DataExportRunner extends AbstractRunner {
     private static final Logger log = LoggerFactory.getLogger(DataExportRunner.class);
     private static final DataExportRunner runner = new DataExportRunner();
 
+    // Unicode for colors to use in the log messages
+    public static final String YELLOW = "\u001b[0;33m";
+    public static final String RED = "\u001b[0;31m";
+    public static final String BRIGHT_RED = "\u001b[1;31m";
+    public static final String END = "\u001b[m";
+
     public static void main(String[] args) throws Exception {
         Boolean isString = Boolean.parseBoolean(args[0]);
         String recipe = args[1];
@@ -52,8 +58,8 @@ public class DataExportRunner extends AbstractRunner {
         try (Writer writer = runner.getOutputWriter(output)) {
             engine.execute(dataExportRecipe, writer, new ImporterMatcher(forceImports));
         } catch (Exception e) {
-            log.error("\n" + "\u001b[1;31m" + "-----> TASK FAILED: " + e.getMessage()  + "<-----\nCaused by " +
-                    e.getCause() + "\n\n" + "\u001b[0;31m" + ExceptionUtils.getStackTrace(e) + "\u001b[m");
+            log.error("\n" + BRIGHT_RED+ "-----> TASK FAILED: " + e.getMessage()  + "<-----\nCaused by " +
+                    e.getCause() + "\n\n" + RED + ExceptionUtils.getStackTrace(e) + END);
         } finally {
             HibernateUtil.shutdown();
         }

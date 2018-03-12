@@ -26,11 +26,11 @@ public class TimeseriesField extends BasicValueField {
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        JSONArray arr = new JSONArray();
         List<TimedValue> timedValues = TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute());
         if (timedValues.isEmpty()) {
             throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
         }
+        JSONArray arr = new JSONArray();
         arr.addAll(timedValues.stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
             pair.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));

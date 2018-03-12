@@ -33,7 +33,6 @@ public class TimeseriesMeanValueField extends BasicValueField implements SingleV
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
-        JSONArray arr = new JSONArray();
         List<TimedValue> timedValue = TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute());
         if (timedValue.isEmpty()) {
             throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
@@ -42,6 +41,7 @@ public class TimeseriesMeanValueField extends BasicValueField implements SingleV
         double sum = 0.0;
         int counterNonNull = 0;
 
+        JSONArray arr = new JSONArray();
         for (TimedValue value : timedValue) {
             if (null == value || null == value.getValue() || "".equals(value.getValue())) {
                 continue;
