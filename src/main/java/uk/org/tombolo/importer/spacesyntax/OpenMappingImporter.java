@@ -89,7 +89,6 @@ public class OpenMappingImporter extends AbstractImporter{
         Path dir = ZipUtils.unzipToTemporaryDirectory(localFile);
 
         File file = new File(dir + "/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv");
-        System.out.println("here2");
         InputStreamReader isr = new InputStreamReader(new FileInputStream(file));
         CSVParser csvFileParser = new CSVParser(isr, CSVFormat.DEFAULT);
 
@@ -110,7 +109,6 @@ public class OpenMappingImporter extends AbstractImporter{
 
         while (rowIterator.hasNext()) {
             CSVRecord row = rowIterator.next();
-            System.out.println(row.get(35).trim());
 
             String geography = row.get(35).trim();
             label = getProvider().getLabel()+"_"+row.get(LABEL_COLUMN_INDEX);

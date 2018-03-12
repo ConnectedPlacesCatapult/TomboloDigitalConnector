@@ -43,8 +43,8 @@ public class OpenMappingImporterTest extends AbstractTest {
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
         assertEquals("5470", subject.getName());
-        testTimedValue(subject, "fractionCycle_1pm", 8.78045207738247/100.);
-
+        testTimedValue(subject, "choice2km", 20460.);
+        testFixedValue(subject, "meridian_road_name", "STENTIFORD HILL ROAD");
     }
     private void testFixedValue(Subject subject, String attributeLabel, String value) {
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeLabel);

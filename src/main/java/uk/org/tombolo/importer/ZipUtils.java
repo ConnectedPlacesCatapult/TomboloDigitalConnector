@@ -31,7 +31,6 @@ public class ZipUtils {
             }
             zipFile.close();
         }
-        System.out.println(tempDirectory.toPath());
         return tempDirectory.toPath();
     }
     /**
