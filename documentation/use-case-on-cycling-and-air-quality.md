@@ -101,7 +101,7 @@ That is, the first field outputs the average nitrogen dioxide level for each bor
     "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
     "attribute": {
       "provider" : "erg.kcl.ac.uk",
-      "label" : "NO2 40 ug/m3 as an annual me"
+      "label" : "NO2 40 ug/m3 as an annual mean"
     }
   }
 }
@@ -156,9 +156,7 @@ The latter field is slightly more complicated and outputs the bicycle count from
 Now that Thomas has put his model recipe together, the next step in the process is to run the Tombolo Digital Connector on the recipe. We use the Gradle build tool to do that from the command line.
 
 ```bash
-gradle runExport \
-    -Precipe='path/to/recipe/file.json' \
-    -Poutput='path/to/output/file.json'
+gradle runExport -Precipe='path/to/recipe/file.json' -Poutput='path/to/output/file.json'
 ```
 
 The command takes two parameters, one pointing to the model recipe that was built in the previous step and one pointing to the output file to be generated.

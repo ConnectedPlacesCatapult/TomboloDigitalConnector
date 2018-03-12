@@ -33,7 +33,7 @@ public class FixedValueField extends BasicValueField implements SingleValueField
     private FixedValue getFixedValue(Subject subject) throws IncomputableFieldException {
         FixedValue fixedValue = FixedValueUtils.getBySubjectAndAttribute(subject, getAttribute());
         if (fixedValue == null) {
-            throw new IncomputableFieldException(String.format("No FixedValue found for attribute %s", getAttribute().getLabel()));
+            throw new IncomputableFieldException(String.format("No FixedValue found for Attribute %s and Subject %s", getAttribute().getLabel(), subject.getName()));
         }
         return fixedValue;
     }
