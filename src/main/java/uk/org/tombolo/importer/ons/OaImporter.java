@@ -16,6 +16,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.ons.OaImporter"
+ * "datasourceId": "ward", "lsoa", "msoa", "localAuthority", "englandBoundaries"
+ * "provider": "uk.gov.ons"
+ * "subjectTypes": ["ward", "lsoa", "msoa", "localAuthority", "englandBoundaries"]
+ *
+ * "timedValueAttributes": []
+ *
+ * "fixedValueAttributes": []
+ */
 public final class OaImporter extends AbstractImporter {
     private static Logger log = LoggerFactory.getLogger(OaImporter.class);
 

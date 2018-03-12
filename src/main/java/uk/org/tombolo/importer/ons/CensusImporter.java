@@ -24,6 +24,19 @@ import java.util.stream.Collectors;
 /**
  * Importer for the ONS 2011 Census using the Nomisweb API.
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.ons.OaImporter"
+ * "datasourceId": "lsoa", "msoa", "localAuthority"
+ * "provider": "uk.gov.ons"
+ * "subjectTypes": ["lsoa", "msoa", "localAuthority"]
+ *
+ * "timedValueAttributes": [ check catalogue.json ]
+ *
+ * "fixedValueAttributes": []
+ */
 public class CensusImporter extends AbstractONSImporter {
     private static Logger log = LoggerFactory.getLogger(CensusImporter.class);
     private static final String SEED_URL = "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json";
@@ -84,6 +97,7 @@ public class CensusImporter extends AbstractONSImporter {
                 if (!BLACK_LIST_HEADERS.contains(header)) {
                     String attributeLabel = attributeLabelFromHeader(header);
                     attributes.add(new Attribute(getProvider(), attributeLabel, header));
+                    System.out.print(attributeLabel);
                 }
             }
         }

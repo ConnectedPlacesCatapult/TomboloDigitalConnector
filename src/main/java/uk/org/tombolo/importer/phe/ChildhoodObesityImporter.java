@@ -25,6 +25,20 @@ import java.util.*;
  * As a result, the importer underwent major reformatting. If you wish to refer to the first iteration
  * importer please trace the appropriate node on github.
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.phe.ChildhoodObesityImporter"
+ * "datasourceId": "childhoodObesityLA", "childhoodObesityMSOA", "childhoodObesityWard"
+ * "provider": "uk.gov.phe"
+ * "subjectTypes": ["localAuthority", "msoa", "ward"]
+ *
+ * "timedValueAttributes": [ see elements in line #234]
+ *
+ * "fixedValueAttributes": []
+ */
+
 public class ChildhoodObesityImporter extends AbstractPheImporter {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 

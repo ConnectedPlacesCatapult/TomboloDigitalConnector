@@ -1,0 +1,88 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "OSMEntity",
+        "provider": "org.openstreetmap",
+        "geoMatchRule": {
+          "geoRelation": "within",
+          "subjects": [
+            {
+              "subjectType": "localAuthority",
+              "provider": "uk.gov.ons",
+              "matchRule": {
+                "attribute": "label",
+                "pattern": "E090000%"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
+        "datasourceId": "OSMHighways",
+        "geographyScope": [
+          "europe/great-britain/england/greater-london"
+        ]
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter",
+        "datasourceId": "airQualityControl"
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.assertion.AttributeMatcherField",
+        "label": "highway",
+        "attributes": [
+          {
+            "provider": "org.openstreetmap",
+            "label": "highway"
+          }
+        ],
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.ConstantField",
+          "value": "1"
+        }
+      },
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.MapToNearestSubjectField",
+        "label": "NitrogenDioxide",
+        "maxRadius": 1.0,
+        "subject": {
+          "subjectType": "airQualityControl",
+          "provider": "erg.kcl.ac.uk",
+          "geoMatchRule": {
+            "geoRelation": "within",
+            "subjects": [
+              {
+                "subjectType": "localAuthority",
+                "provider": "uk.gov.ons",
+                "matchRule": {
+                  "attribute": "label",
+                  "pattern": "E090000%"
+                }
+              }
+            ]
+          }
+        },
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "label": "NO2 40 ug/m3 as an annual me",
+          "attribute": {
+            "provider": "erg.kcl.ac.uk",
+            "label": "NO2 40 ug/m3 as an annual me"
+          }
+        }
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
+}

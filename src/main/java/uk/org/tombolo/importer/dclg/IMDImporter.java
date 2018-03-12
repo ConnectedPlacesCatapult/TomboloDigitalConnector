@@ -21,6 +21,72 @@ import java.util.List;
  * https://www.gov.uk/government/statistics/english-indices-of-deprivation-2015
  * https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/467774/File_7_ID_2015_All_ranks__deciles_and_scores_for_the_Indices_of_Deprivation__and_population_denominators.csv
  */
+
+/**
+ * INFO FOR RECIPE
+ * "importerClass": "uk.org.tombolo.importer.dclg.IMDImporter"
+ * "datasourceId": "imd"
+ * "provider": "uk.gov.dclg"
+ * "subjectTypes": ["lsoa"]
+ *
+ * "timedValueAttributes":[
+ *      {"label":"score", "provider":"uk.gov.dclg"},
+ *      {"label":"rank", "provider":"uk.gov.dclg"},
+ *      {"label":"decile", "provider":"uk.gov.dclg"},
+ *      {"label":"income_score", "provider":"uk.gov.dclg"},
+ *      {"label":"income_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"income_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"employment_score", "provider":"uk.gov.dclg"},
+ *      {"label":"employment_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"employment_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"education_score", "provider":"uk.gov.dclg"},
+ *      {"label":"education_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"education_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"disability_score", "provider":"uk.gov.dclg"},
+ *      {"label":"disability_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"disability_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"crime_score", "provider":"uk.gov.dclg"},
+ *      {"label":"crime_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"crime_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"housing_score", "provider":"uk.gov.dclg"},
+ *      {"label":"housing_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"housing_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"environment_score", "provider":"uk.gov.dclg"},
+ *      {"label":"environment_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"environment_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"idaci_score", "provider":"uk.gov.dclg"}
+ *      {"label":"idaci_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"idaci_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"idaopi_score", "provider":"uk.gov.dclg"},
+ *      {"label":"idaopi_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"idaopi_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"cypsd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"cypsd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"cypsd_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"assd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"assd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"assd_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"gbsd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"gbsd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"gbsd_decile", "provider":"uk.gov.dclg"}
+ *      {"label":"wbsd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"wbsd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"wbsd_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"isd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"isd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"isd_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"osd_score", "provider":"uk.gov.dclg"},
+ *      {"label":"osd_rank", "provider":"uk.gov.dclg"},
+ *      {"label":"osd_decile", "provider":"uk.gov.dclg"},
+ *      {"label":"totalPopulation", "provider":"uk.gov.dclg"},
+ *      {"label":"childrenPopulation", "provider":"uk.gov.dclg"},
+ *      {"label":"adultPopulation", "provider":"uk.gov.dclg"},
+ *      {"label":"elderlyPopulation", "provider":"uk.gov.dclg"}
+ *      {"label":"workingAgePopulation", "provider":"uk.gov.dclg"}
+ * ]
+ *
+ * "fixedValueAttributes":[]
+ */
 public class IMDImporter extends AbstractDCLGImporter {
 
     private enum DatasourceId {

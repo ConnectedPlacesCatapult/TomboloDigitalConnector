@@ -1,10 +1,12 @@
 [
   {
     "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
-    "datasourceId": "OSMCycling"
+    "datasourceId": "OSMCycling",
+    "geographyScope": ["europe/great-britain/england/greater-london"]
   },
   {
     "importerClass": "uk.org.tombolo.importer.osm.OSMImporter",
-    "datasourceId": "OSMHighways"
+    "datasourceId": "OSMHighways",
+    "geographyScope": ["europe/great-britain/england/greater-london"]
   }
 ]

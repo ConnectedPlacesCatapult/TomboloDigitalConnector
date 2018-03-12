@@ -26,6 +26,25 @@ import java.util.List;
  *
  * http://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/placeofresidencebylocalauthorityashetable8
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.ons.ONSWagesImporter"
+ * "datasourceId": "wages"
+ * "provider": "uk.gov.ons"
+ * "subjectTypes": ["localAuthority"]
+ *
+ * Field:
+ * {
+ *     "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+ *     "label": "mean",
+ *     "attribute": {
+ *         "provider": "uk.gov.ons",
+ *         "label": "asheTable81aWeeklyPayGrossMaleMean"
+ *   }
+ *  }
+ */
 public class ONSWagesImporter extends AbstractONSImporter {
 
     private enum DatasourceId {

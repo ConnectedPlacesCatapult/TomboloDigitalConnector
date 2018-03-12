@@ -22,7 +22,19 @@ import java.util.stream.IntStream;
  * Class importing schools in England
  *
  * Data sourced here: https://www.gov.uk/government/publications/schools-in-england
+ * File: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/597965/EduBase_Schools_April_2017.xlsx
  * NOTE the file containing the schools is updated monthly (in theory).
+ */
+
+/**
+ * INFO FOR RECIPE
+ * "importerClass": "uk.org.tombolo.importer.dfe.SchoolsImporter"
+ * "datasourceId": "schools"
+ * "provider": "uk.gov.education"
+ * "subjectTypes": [dfeSchools]
+ *
+ * "fixedValueAttributes": [check catalogue.json]
+ * "timedValueAttributes": []
  */
 public class SchoolsImporter extends AbstractDfEImporter {
     // Column index for the subject label builder

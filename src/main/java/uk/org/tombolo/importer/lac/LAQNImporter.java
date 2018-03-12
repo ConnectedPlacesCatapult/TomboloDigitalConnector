@@ -25,6 +25,19 @@ import java.util.stream.IntStream;
 /**
  * London Air Quality Importer
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter"
+ * "datasourceId": "airQualityControl"
+ * "provider": "uk.gov.phe"
+ * "subjectTypes": ["airQualityControl"]
+ *
+ * "timedValueAttributes": [check catalogue.json]
+ *
+ * "fixedValueAttributes": []
+ */
 public class LAQNImporter extends AbstractImporter {
     private static final Logger log = LoggerFactory.getLogger(LAQNImporter.class);
 
