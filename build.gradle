@@ -134,6 +134,34 @@ task exportCatalogue(dependsOn: ['classes'], type: JavaExec) {
     }
 }
 
+task info(dependsOn: ['classes'], type: JavaExec) {
+    maxHeapSize = "4096m"
+    main = 'uk.org.tombolo.ImporterSpecificationRunner'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-disableassertions'
+
+    doFirst {
+        checkEnv()
+        systemProperty("databaseURI", databaseURI)
+        systemProperty("databaseUsername", databaseUsername)
+        systemProperty("databasePassword", databasePassword)
+        systemProperty("environment", "export")
+
+        def importer = project.hasProperty('i')
+        if (!importer) ext.i = 'None'
+        
+        ext.s = false
+        ext.a = false
+        ext.p = false
+
+        if (project.hasProperty('s')) { ext.s = true }
+        if (project.hasProperty('a')) { ext.a = true }
+        if (project.hasProperty('p')) { ext.p = true }
+
+        args(i, s, a, p)
+    }
+}
+
 test {
     maxHeapSize = "2048m"
     jvmArgs '-enableassertions', '-disableassertions:org.geotools...'
