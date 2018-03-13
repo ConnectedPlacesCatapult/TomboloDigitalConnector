@@ -26,7 +26,21 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * Created by tbantis on 08/03/2018.
+ * Space Syntax Open Mapping importer. This importer uses a subset of the original dataset (Greater London Authority)
+ * The full dataset can be found at    https://github.com/spacesyntax/OpenMapping
+ * Please see    https://github.com/spacesyntax/OpenMapping for code of conduct and terms of use.
+ *
+ * How to use in a recipe:
+ *
+ * {
+ *   "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+ *   "label": "choice2kmlog",
+ *     "attribute": {
+ *     "provider": "com.spacesyntax",
+ *     "label": "choice2kmlog"
+ *   }
+ * }
+ *
  */
 public class OpenMappingImporter extends AbstractImporter{
     private static Logger log = LoggerFactory.getLogger(OpenMappingImporter.class);
@@ -110,8 +124,8 @@ public class OpenMappingImporter extends AbstractImporter{
                 String oneLine = mylist.get(i);
                 String otherThanQuote = " [^\"] ";
                 String quotedString = String.format(" \" %s* \" ", otherThanQuote);
-                // regex to capture the WKT geometry
-                String regex = String.format("(?x) "+ // enable comments, ignore white spaces
+                // Regex for the WKT geometry
+                String regex = String.format("(?x) "+
                                 ",                         "+
                                 "(?=                       "+
                                 "  (?:                     "+
@@ -120,7 +134,7 @@ public class OpenMappingImporter extends AbstractImporter{
                                 "  )*                      "+
                                 "  %s*                     "+
                                 "  $                       "+
-                                ")                         ",
+                                ")                         ", 
                         otherThanQuote, quotedString, otherThanQuote);
 
                 List<String> records = new ArrayList<>();

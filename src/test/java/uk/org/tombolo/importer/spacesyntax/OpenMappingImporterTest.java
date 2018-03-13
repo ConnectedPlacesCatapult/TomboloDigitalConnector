@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Using b5cb7394-e18a-3060-affe-ac36c73192df.zip
+ * Using 85749def-2230-31aa-9387-e04adbb42505.zip
  */
 public class OpenMappingImporterTest extends AbstractTest {
     private static OpenMappingImporter importer;
