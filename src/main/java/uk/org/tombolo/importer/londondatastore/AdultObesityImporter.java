@@ -24,8 +24,26 @@ import java.util.List;
 
 /**
  * Importer for importing the adult self reported obesity from the London datastore.
- *
+ * Source: https://files.datapress.com/london/dataset/obesity-adults/population-bmi-classification-london.xls
  */
+
+/**
+ * INFO FOR RECIPE
+ * "importerClass": "uk.org.tombolo.importer.londondatastore.AdultObesityImporter"
+ * "datasourceId": "see OSMBuiltInImporters enum"
+ * "provider": "uk.gov.london"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [
+ *      {"label":"fractionUnderweight", "provider":"uk.gov.london"},
+ *      {"label":"fractionHealthyWeight", "provider":"uk.gov.london"},
+ *      {"label":"fractionOverweight", "provider":"uk.gov.london"},
+ *      {"label":"fractionObese", "provider":"uk.gov.london"},
+ *      {"label":"fractionExcessWeight", "provider":"uk.gov.london"}]
+ *
+ * "fixedValueAttributes": []
+ */
+
 public class AdultObesityImporter extends AbstractLondonDatastoreImporter {
     private static Logger log = LoggerFactory.getLogger(ChildhoodObesityImporter.class);
 

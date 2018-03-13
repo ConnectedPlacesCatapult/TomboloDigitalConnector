@@ -38,6 +38,19 @@ import java.util.zip.GZIPInputStream;
  * This importer considers that the user has already downloaded the data.
  *
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass":"uk.org.tombolo.importer.twitter.TwitterImporter"
+ * "datasourceId": "twitter"
+ * "provider": "com.twitter"
+ * "subjectTypes":["Tweet"]
+ *
+ * "timedValueAttributes":[]
+ *
+ * "fixedValueAttributes":[ all lowercase attributes in AttributeEnum]
+ */
 public class TwitterImporter extends AbstractImporter {
 
     private static final int SUBJECT_BUFFER_SIZE = 100000;
@@ -155,7 +168,7 @@ public class TwitterImporter extends AbstractImporter {
         private String name;
         private String desc;
 
-        private AttributeEnum(String name, String desc) {
+        AttributeEnum(String name, String desc) {
             this.name = name;
             this.desc = desc;
         }

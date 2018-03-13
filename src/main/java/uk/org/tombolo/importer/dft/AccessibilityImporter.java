@@ -27,9 +27,24 @@ import java.util.List;
 /**
  * Importer for DfT Accessibility information.
  *
- * https://www.gov.uk/government/statistical-data-sets/acs05-travel-time-destination-and-origin-indicators-to-key-sites-and-services-by-lower-super-output-area-lsoa
+ * FILE: https://www.gov.uk/government/statistical-data-sets/acs05-travel-time-destination-and-origin-indicators-to-key
+ * -sites-and-services-by-lower-super-output-area-lsoa
  *
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass":"uk.org.tombolo.importer.dft.AccessibilityImporter"
+ * "datasourceId": "acs0501", "acs0502", "acs0503", "acs0504", "acs0505", "acs0506", "acs0507"
+ * "provider": "uk.gov.dft"
+ * "subjectTypes": [lsoa]
+ *
+ * "timedValueAttributes": [check catalogue.json]
+ *
+ * "fixedValueAttributes": []
+ */
+
 public class AccessibilityImporter extends AbstractDFTImporter {
     private static final Logger log = LoggerFactory.getLogger(AccessibilityImporter.class);
     private static final String DATASET_FILE_SUFFIX = ".xls";

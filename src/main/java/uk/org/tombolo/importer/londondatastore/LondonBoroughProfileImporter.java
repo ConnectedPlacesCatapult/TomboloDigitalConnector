@@ -27,6 +27,25 @@ import java.util.List;
  * A more rigorous importing is desired but will be implemented on demand.
  *
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.londondatastore.LondonBoroughProfileImporter"
+ * "datasourceId": "londonBoroughProfiles"
+ * "provider": "uk.gov.london"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [
+ *      {"label":"populationDensity", "provider":"uk.gov.london"},
+ *      {"label":"householdIncome", "provider":"uk.gov.london"},
+ *      {"label":"medianHousePrice", "provider":"uk.gov.london"},
+ *      {"label":"fractionGreenspace", "provider":"uk.gov.london"},
+ *      {"label":"carbonEmission", "provider":"uk.gov.london"},
+ *      {"label":"carsPerHousehold", "provider":"uk.gov.london"}]
+ *
+ * "fixedValueAttributes": []
+ */
 public class LondonBoroughProfileImporter extends AbstractLondonDatastoreImporter {
     private enum DatasourceId {
         londonBoroughProfiles(new DatasourceSpec(

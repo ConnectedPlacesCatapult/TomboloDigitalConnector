@@ -1,0 +1,41 @@
+{
+    "dataset": {
+        // Identify the “subjects” over which you want your
+        // data to be exported. Imagine the “subjects”
+        // corresponding to rows in a table. These are often
+        // geographical entities e.g. LSOAs but can also be
+        // tweets or hospitals.
+      "subjects": [
+        {
+          "subjectType": "",
+          "provider": ""
+        }
+        // To add more subjects create more blocks like above (items in the subjects list)
+      ],
+        // Identify the “datasources” needed to provide the
+        // “subjects” AND the “datasources” needed for your
+        // “fields”.
+      "datasources": [
+        {
+          "importerClass": "",
+          "datasourceId": ""
+        }
+        // To add more datasources create more blocks like above (items in the datasources list)
+      ],
+        // Identify the “fields” you want in your data. 
+        // Imagine the “fields” corresponding to columns in a table.
+      "fields": [
+        {
+          "fieldClass": "",
+          "label": "",
+          "attribute": {
+            "provider": "",
+            "label": ""
+          }
+        }
+        // To add more fields create more blocks like above (items in the fields list)
+      ]
+    },
+    "exporter": "uk.org.tombolo.exporter.GeoJsonExporter"
+  }
+  
