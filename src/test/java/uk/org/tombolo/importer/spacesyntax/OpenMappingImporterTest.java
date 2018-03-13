@@ -39,12 +39,12 @@ public class OpenMappingImporterTest extends AbstractTest {
     public void testImportDatasource() throws Exception {
         importer.importDatasource("SpaceSyntaxOpenMapping", null, null, null);
 
-        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.spacesyntax","space_syntax"),"com.spacesyntax_5470");
+        List<Subject> subjects = SubjectUtils.getSubjectByTypeAndLabelPattern(SubjectTypeUtils.getSubjectTypeByProviderAndLabel("com.spacesyntax","space_syntax"),"com.spacesyntax_57927");
         assertEquals(1, subjects.size());
         Subject subject = subjects.get(0);
-        assertEquals("5470", subject.getName());
-        testTimedValue(subject, "choice2km", 20460.);
-        testFixedValue(subject, "meridian_road_name", "STENTIFORD HILL ROAD");
+        assertEquals("57927", subject.getName());
+        testTimedValue(subject, "choice2km", 7340.);
+        testFixedValue(subject, "meridian_number", "A2");
     }
     private void testFixedValue(Subject subject, String attributeLabel, String value) {
         Attribute attribute = AttributeUtils.getByProviderAndLabel(importer.getProvider(), attributeLabel);
