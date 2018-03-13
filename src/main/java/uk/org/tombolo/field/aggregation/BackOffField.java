@@ -15,12 +15,14 @@ import java.util.List;
 /**
  * Field for providing backed off values when none exist.
  * An example back-off would be mapping to a value for a parent geography.
+ *
+ * It can have many levels to back off to as long as they make sense for the specific task.
  */
 public class BackOffField extends AbstractField implements SingleValueField, ParentField {
 
     private List<FieldRecipe> fields;
 
-    private List<Field> materialisedFields;
+    private List<Field> singleValueFields;
 
     public BackOffField(String label, List<FieldRecipe> fields){
         super(label);
@@ -28,12 +30,12 @@ public class BackOffField extends AbstractField implements SingleValueField, Par
     }
 
     public void initialize() {
-        this.materialisedFields = new ArrayList<>();
+        this.singleValueFields = new ArrayList<>();
         for (FieldRecipe field : fields) {
             try {
-                materialisedFields.add(field.toField());
+                singleValueFields.add(field.toField());
             } catch (ClassNotFoundException e) {
-                throw new Error("Field not valid");
+                throw new IllegalArgumentException("Field class not found.");
             }
         }
     }
@@ -41,15 +43,17 @@ public class BackOffField extends AbstractField implements SingleValueField, Par
     @Override
     public String valueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
 
-        if (materialisedFields == null)
+        if (singleValueFields == null)
             initialize();
-        for (Field field : materialisedFields) {
-            String value = null;
+        for (Field field : singleValueFields) {
+            String value;
             try {
                 value = ((SingleValueField) field).valueForSubject(subject, timeStamp);
             } catch (IncomputableFieldException e){
                 // Keep calm and continue processing ... we will back-off
                 continue;
+            } catch (ClassCastException cce) {
+                throw new IllegalArgumentException("Parameters for BackOffField must be of type SingleValueField.");
             }
             if (value != null)
                 return value;
@@ -60,14 +64,13 @@ public class BackOffField extends AbstractField implements SingleValueField, Par
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         JSONObject obj = new JSONObject();
-        obj.put(null != this.label ? this.label : "value" ,
-                                        valueForSubject(subject, timeStamp));
+        obj.put(null != this.label ? this.label : "value" , valueForSubject(subject, timeStamp));
         return obj;
-        }
+    }
   
     public List<Field> getChildFields() {
-        if (materialisedFields == null)
+        if (singleValueFields == null)
             initialize();
-        return materialisedFields;
+        return singleValueFields;
     }
 }

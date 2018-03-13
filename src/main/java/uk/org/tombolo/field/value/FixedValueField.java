@@ -26,8 +26,7 @@ public class FixedValueField extends BasicValueField implements SingleValueField
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         FixedValue fixedValue = getFixedValue(subject);
         JSONObject obj = new JSONObject();
-        obj.put(null != this.label ? this.label : "value",
-                                            fixedValue.getValue());
+        obj.put(null != this.label ? this.label : "value", fixedValue.getValue());
         return obj;
     }
 

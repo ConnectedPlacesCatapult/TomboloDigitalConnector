@@ -1,6 +1,8 @@
 package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
@@ -12,6 +14,8 @@ import java.util.List;
  * Takes a list of fields as input and returns a field consisting of the sum of the other fields
  */
 public class FieldValueSumField extends AbstractField implements ParentField, SingleValueField {
+    private static Logger log = LoggerFactory.getLogger(FieldValueSumField.class);
+
     String name;
     List<FieldRecipe> fields;
     List<Field> sumFields;
@@ -44,8 +48,7 @@ public class FieldValueSumField extends AbstractField implements ParentField, Si
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
         JSONObject obj = new JSONObject();
-        obj.put(null != this.label ? this.label : "value",
-                                                sumFields(subject));
+        obj.put(null != this.label ? this.label : "value", sumFields(subject));
         return obj;
     }
 
@@ -57,9 +60,16 @@ public class FieldValueSumField extends AbstractField implements ParentField, Si
             initialize();
         Double sum = 0d;
         for (Field field : sumFields) {
-            if (!(field instanceof SingleValueField))
-                throw new IncomputableFieldException("Field sum only valid for single value fields");
-            sum += Double.parseDouble(((SingleValueField)field).valueForSubject(subject, true));
+            String value = null;
+            try {
+                value = ((SingleValueField)field).valueForSubject(subject, true);
+                sum += Double.parseDouble(value);
+            } catch (ClassCastException e) {
+                throw new IllegalArgumentException("Field sum only valid for single value fields");
+            } catch (NullPointerException | NumberFormatException e) {
+                log.warn("Incomputable field not included in operation for subject {} ({}), value {} cannot be " +
+                        "converted to numeric type.", subject.getName(), subject.getId(), value);
+            }
         }
         setCachedValue(subject, sum.toString());
         return sum;

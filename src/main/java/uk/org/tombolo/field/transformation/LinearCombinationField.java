@@ -32,7 +32,7 @@ public class LinearCombinationField extends AbstractField implements SingleValue
 
     public void initialize() {
         if (scalars.size() != fields.size())
-            throw new Error("For LinearCombinationField, scalars and fields must have same length");
+            throw new IllegalArgumentException("For LinearCombinationField, scalars and fields must have same length");
 
         try {
             singleValueFields = new ArrayList<>();
@@ -40,12 +40,12 @@ public class LinearCombinationField extends AbstractField implements SingleValue
             for (FieldRecipe fieldRecipe: fields) {
                 Field field = fieldRecipe.toField();
                 if (!(field instanceof SingleValueField))
-                    throw new IncomputableFieldException("Parameters for LinearCombinationField must be of type SingleValueField");
+                    throw new IllegalArgumentException("Parameters for LinearCombinationField must be of type SingleValueField");
                 field.setFieldCache(fieldCache);
                 singleValueFields.add(field);
             }
-        } catch (Exception e) {
-            throw new Error(e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Field class not found.");
         }
     }
 
@@ -73,15 +73,13 @@ public class LinearCombinationField extends AbstractField implements SingleValue
             String value;
             try {
                 value = ((SingleValueField) singleValueFields.get(i)).valueForSubject(subject, null);
-                linearCombination +=
-                        scalars.get(i)
-                                * ((value == null)? 0.0d : Double.parseDouble(value));
-            }catch (IncomputableFieldException e){
+                linearCombination += scalars.get(i) * ((value == null)? 0.0d : Double.parseDouble(value));
+            } catch (IncomputableFieldException | NumberFormatException e ) {
                 // Sub-field was not computable
                 // Nothing added to the linear combination
                 log.warn("LinearCombinationField {} has no computable for value sub-field {} and subject {} ({}}",
-                        (label == null)?"unlabelled":label,
-                        (singleValueFields.get(i).getLabel() == null)?"unlabelled":singleValueFields.get(i).getLabel(),
+                        (label == null) ? "unlabelled" : label,
+                        (singleValueFields.get(i).getLabel() == null) ? "unlabelled" : singleValueFields.get(i).getLabel(),
                         subject.getLabel(),
                         subject.getSubjectType().getLabel());
             }

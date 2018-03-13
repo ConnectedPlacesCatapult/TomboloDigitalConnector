@@ -40,7 +40,7 @@ public class DescriptiveStatisticsFieldTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testInitialiseNonSingeValueField(){
+    public void testInitialiseNonSingeValueField() {
         DescriptiveStatisticsField noneSingelValueField = new DescriptiveStatisticsField(
                 "my-label",
                 DescriptiveStatisticsField.Statistic.sum,
@@ -49,7 +49,7 @@ public class DescriptiveStatisticsFieldTest {
                         FieldBuilder.valuesByTime("provider", "attribute").build()
                 )
         );
-        thrown.expect(Error.class);
+        thrown.expect(Exception.class);
         thrown.expectMessage("Parameters for DescriptiveStatisticsField must be of type SingleValueField");
         noneSingelValueField.initialize();
     }

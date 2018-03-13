@@ -4,7 +4,7 @@
   "label": "GPResilience",
   "percentileCount": 4,
   "inverse": true,
-  "valueField": {
+  "field": {
     "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
     "label": "gpResilience",
     "subject": {
@@ -17,7 +17,7 @@
       "fieldClass": "uk.org.tombolo.field.value.ConstantField",
       "value": "1.0"
     },
-    "normalizationSubjects": [
+    "subjects": [
       {
         "subjectType": "lsoa",
         "provider":"uk.gov.ons"

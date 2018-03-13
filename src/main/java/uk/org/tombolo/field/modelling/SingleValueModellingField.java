@@ -30,6 +30,6 @@ public class SingleValueModellingField extends BasicModellingField implements Si
             }
             return cachedValue;
         }
-        throw new IncomputableFieldException("Modelling field must be Single Value Field");
+        throw new IncomputableFieldException("Modelling field must be SingleValueField");
     }
 }

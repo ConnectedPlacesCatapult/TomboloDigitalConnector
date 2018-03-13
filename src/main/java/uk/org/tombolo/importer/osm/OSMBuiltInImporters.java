@@ -89,6 +89,6 @@ public enum OSMBuiltInImporters {
                 return attributeValueMatches;
             }
         }
-        throw new Error("Built in attribute not supported: " + attributeMatcher.label);
+        throw new IllegalArgumentException("Built in attribute not supported: " + attributeMatcher.label);
     }
 }

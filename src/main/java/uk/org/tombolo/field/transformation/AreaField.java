@@ -27,7 +27,7 @@ public class AreaField extends AbstractField implements SingleValueField {
         this.targetCRSCode = targetCRSCode;
     }
 
-    private String getTransformedArea(Subject subject) {
+    private String getTransformedArea(Subject subject) throws IncomputableFieldException{
         String cachedValue = getCachedValue(subject);
         if (cachedValue == null) {
             Geometry geometry = subject.getShape();
@@ -39,9 +39,11 @@ public class AreaField extends AbstractField implements SingleValueField {
                     MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
                     geometry = JTS.transform(geometry, transform);
                 } catch (FactoryException e) {
-                    e.printStackTrace();
+                    throw new IncomputableFieldException(String.format("No math transform can be created for source Coordinate " +
+                            "Reference System (%s) and target (%s)", Subject.SRID, targetCRSCode));
                 } catch (TransformException e) {
-                    e.printStackTrace();
+                    throw new IncomputableFieldException(String.format("Cannot transform coordinate from source Coordinate " +
+                            "Reference System (%s) to target (%s)", Subject.SRID, targetCRSCode));
                 }
             }
             cachedValue = String.format("%.02f", geometry.getArea());

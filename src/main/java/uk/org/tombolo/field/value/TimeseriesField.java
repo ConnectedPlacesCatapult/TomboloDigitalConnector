@@ -3,11 +3,13 @@ package uk.org.tombolo.field.value;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import uk.org.tombolo.core.Subject;
+import uk.org.tombolo.core.TimedValue;
 import uk.org.tombolo.core.TimedValueId;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.field.IncomputableFieldException;
 import uk.org.tombolo.recipe.AttributeMatcher;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -24,8 +26,12 @@ public class TimeseriesField extends BasicValueField {
 
     @Override
     public JSONObject jsonValueForSubject(Subject subject, Boolean timeStamp) throws IncomputableFieldException {
+        List<TimedValue> timedValues = TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute());
+        if (timedValues.isEmpty()) {
+            throw new IncomputableFieldException(String.format("No TimedValue found for attribute %s", getAttribute().getLabel()));
+        }
         JSONArray arr = new JSONArray();
-        arr.addAll(TimedValueUtils.getBySubjectAndAttribute(subject, getAttribute()).stream().map(timedValue -> {
+        arr.addAll(timedValues.stream().map(timedValue -> {
             JSONObject pair = new JSONObject();
             pair.put("timestamp", timedValue.getId().getTimestamp().format(TimedValueId.DATE_TIME_FORMATTER));
             pair.put("value", timedValue.getValue());

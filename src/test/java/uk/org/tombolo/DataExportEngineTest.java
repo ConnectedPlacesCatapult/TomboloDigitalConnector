@@ -255,9 +255,7 @@ public class DataExportEngineTest extends AbstractTest {
                 "    type: 'Feature'," +
                 "    properties: {" +
                 "      name: 'Hartlepool'," +
-                "      attributes: {" +
-                "        populationDensity: []" +
-                "      }," +
+                "      attributes: {}," +
                 "      label: 'E06000001'" +
                 "    }" +
                 "  }]" +
@@ -477,8 +475,10 @@ public class DataExportEngineTest extends AbstractTest {
                 .addDatasourceSpecification("uk.org.tombolo.importer.ons.CensusImporter", "qs103ew", "")
                 .addFieldSpecification(
                         FieldBuilder.percentilesField("quartile", 4, false)
-                                .set("valueField", FieldBuilder.latestValue("uk.gov.ons", "Age: All categories: Age")) // total population
-                                .set("normalizationSubjects", Collections.singletonList(new SubjectSpecificationBuilder(AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_")))
+                                .set("field", FieldBuilder.latestValue("uk.gov.ons", "Age: All categories: Age"))
+                                // total population
+                                .set("subjects", Collections.singletonList(new SubjectSpecificationBuilder
+                                        (AbstractONSImporter.PROVIDER.getLabel(), "lsoa").setMatcher("label", "E0100276_")))
                 );
 
         engine.execute(builder.build(), writer, emptyImporterMatcher);

@@ -59,8 +59,12 @@ public class GeographicAggregationField extends AbstractField implements SingleV
             this.aggregator = aggregators.get(this.function);
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
-        } catch (Exception e) {
-            throw new Error("Field not valid", e);
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Function not supported. Supporting {sum, mean}");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Field class not found.", e);
+        } catch (ClassCastException e){
+            throw new IllegalArgumentException("Field must be SingleValueField");
         }
     }
 
@@ -75,12 +79,17 @@ public class GeographicAggregationField extends AbstractField implements SingleV
         ResizableDoubleArray doubles = new ResizableDoubleArray();
 
         for (Subject subject : aggregationSubjects) {
+            String value = null;
             try {
-                doubles.addElement(Double.parseDouble(singleValueField.valueForSubject(subject, true)));
+                value = singleValueField.valueForSubject(subject, true);
+                doubles.addElement(Double.parseDouble(value));
             } catch (IncomputableFieldException e) {
                 log.warn("Incomputable field not included in aggregation for subject {} ({})",
                         subject.getName(),
                         subject.getId());
+            } catch (NullPointerException | NumberFormatException e) {
+                log.warn("Incomputable field not included in aggregation for subject {} ({}), value {} cannot be " +
+                                "converted to numeric type.", subject.getName(), subject.getId(), value);
             }
         }
 
