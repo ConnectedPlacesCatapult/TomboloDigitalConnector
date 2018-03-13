@@ -1,15 +1,11 @@
 package uk.org.tombolo;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.importer.Importer;
-import uk.org.tombolo.importer.dft.AccessibilityImporter;
-import uk.org.tombolo.importer.nhschoices.HealthOrganisationImporter;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
