@@ -89,69 +89,110 @@ public class OpenMappingImporter extends AbstractImporter{
         Path dir = ZipUtils.unzipToTemporaryDirectory(localFile);
 
         File file = new File(dir + "/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv");
-        InputStreamReader isr = new InputStreamReader(new FileInputStream(file));
-        CSVParser csvFileParser = new CSVParser(isr, CSVFormat.DEFAULT);
+        InputStream isr = new FileInputStream(file);
 
-        List<CSVRecord> csvRecords = csvFileParser.getRecords();
-        Iterator<CSVRecord> rowIterator = csvRecords.iterator();
-
-        rowIterator.next();
+        BufferedReader br = new BufferedReader(new FileReader(file));
 
         List<TimedValue> timedValues = new ArrayList<>();
         List<FixedValue> fixedValues = new ArrayList<>();
-
+        LocalDateTime timestamp = TimedValueUtils.parseTimestampString("2018");
         List<Subject> subjects = new ArrayList<>();
-
         String label;
         String name;
 
-        LocalDateTime timestamp = TimedValueUtils.parseTimestampString("2018");
+        int batchSize = 1000;
+        String line = null;
+        long batchNumber = 1;
 
-        while (rowIterator.hasNext()) {
-            CSVRecord row = rowIterator.next();
+        List<String> mylist = null;
+        while ((line = br.readLine()) != null) {
+            System.out.println("Batch Number # " + batchNumber);
 
-            String geography = row.get(35).trim();
-            label = getProvider().getLabel()+"_"+row.get(LABEL_COLUMN_INDEX);
-            name = row.get(LABEL_COLUMN_INDEX);
+            mylist = readBatch(br, batchSize); // get/catch your (List) result here as returned from readBatch() method
 
-            Subject subject = new Subject(
-                    subjectType,
-                    label,
-                    name,
-                    getShape(geography)
-            );
+            for (int i = 0; i < mylist.size(); i++) {
+                String oneLine = mylist.get(i);
+                String otherThanQuote = " [^\"] ";
+                String quotedString = String.format(" \" %s* \" ", otherThanQuote);
 
-            if (subject == null) {
-                log.warn("Geometry not found for " + geography + ": Skipping...");
-                continue;
-            }
+                String regex = String.format("(?x) "+ // enable comments, ignore white spaces
+                                ",                         "+ // match a comma
+                                "(?=                       "+ // start positive look ahead
+                                "  (?:                     "+ //   start non-capturing group 1
+                                "    %s*                   "+ //     match 'otherThanQuote' zero or more times
+                                "    %s                    "+ //     match 'quotedString'
+                                "  )*                      "+ //   end group 1 and repeat it zero or more times
+                                "  %s*                     "+ //   match 'otherThanQuote'
+                                "  $                       "+ // match the end of the string
+                                ")                         ", // stop positive look ahead
+                        otherThanQuote, quotedString, otherThanQuote);
 
-            int attributeIndex = 0;
-            for (Attribute attribute : datasource.getTimedValueAttributes()) {
-                try {
-                    Double record = Double.parseDouble(row.get(attributeIndex).trim());
-                    timedValues.add(new TimedValue(subject,
-                            attribute,
-                            timestamp,
-                            record));
-                } catch (NumberFormatException e){
-                    String record = row.get(attributeIndex);
-                    fixedValues.add(new FixedValue(subject,attribute,record));
+                List<String> records = new ArrayList<>();
+
+                String[] tokens = oneLine.split(regex, -1);
+                for(String t : tokens) {
+                    records.add(t.toString());
                 }
-                attributeIndex++;
+
+                String geography = records.get(35).trim().replace("\"","");
+                label = getProvider().getLabel()+"_"+records.get(LABEL_COLUMN_INDEX);
+                name = records.get(LABEL_COLUMN_INDEX);
+
+                Subject subject = new Subject(
+                        subjectType,
+                        label,
+                        name,
+                        getShape(geography)
+                );
+
+                if (subject == null) {
+                    log.warn("Geometry not found for " + geography + ": Skipping...");
+                    continue;
+                }
+
+                int attributeIndex = 0;
+                for (Attribute attribute : datasource.getTimedValueAttributes()) {
+                    try {
+                        Double record = Double.parseDouble(records.get(attributeIndex).trim());
+                        timedValues.add(new TimedValue(subject,
+                                attribute,
+                                timestamp,
+                                record));
+                    } catch (NumberFormatException e){
+                        String record = records.get(attributeIndex);
+                        fixedValues.add(new FixedValue(subject,attribute,record));
+                    }
+                    attributeIndex++;
+                }
+                subjects.add(subject);
             }
-            subjects.add(subject);
+            saveAndClearSubjectBuffer(subjects);
+            saveAndClearTimedValueBuffer(timedValues);
+            saveAndClearFixedValueBuffer(fixedValues);
+            batchNumber++;
         }
-        saveAndClearSubjectBuffer(subjects);
-        saveAndClearTimedValueBuffer(timedValues);
-        saveAndClearFixedValueBuffer(fixedValues);
+
+        System.out.println("Lines are Successfully copied!");
+
+        br.close();  // one you are done .. dont forget to close/flush
+        br = null;   // all
 
     }
-
+    private static List<String> readBatch(BufferedReader br, int batchSize) throws IOException {
+        List<String> result = new ArrayList<>();
+        for (int i = 1; i < batchSize; i++) {
+            String line = br.readLine();
+            if (line != null) {
+                result.add(line);
+            } else {
+                return result;
+            }
+        }
+        return result;
+    }
     public Geometry getShape(String wtk) throws FactoryException, TransformException {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         WKTReader reader = new WKTReader(geometryFactory);
-
         MathTransform crsTransform = GeotoolsDataStoreUtils.makeCrsTransform("EPSG:27700");
 
         try {
