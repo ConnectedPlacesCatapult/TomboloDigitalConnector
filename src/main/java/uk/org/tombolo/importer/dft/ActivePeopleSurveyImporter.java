@@ -27,11 +27,29 @@ import java.util.List;
  * url: https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/536501/cw0104.ods
  *
  * Example of using this in recipe:
- * // datasource
+ *
+ *  "provider": "uk.gov.dft"
+ *  "subjectType": ["localAuthority", "englandBoundaries"]
+ *
  * {
  *  "importerClass": "uk.org.tombolo.importer.dft.ActivePeopleSurveyImporter",
  *  "datasourceId": "activePeopleCycle"
  * }
+ *
+ * "timedValueAttributes": [
+ * {"provider": "uk.gov.dft", "label": "fractionCycle_1pm"}
+ *  ... for the rest check elements array in line 191 ]
+ *
+ * {
+ *  "importerClass": "uk.org.tombolo.importer.dft.ActivePeopleSurveyImporter",
+ *  "datasourceId": "activePeopleWalk"
+ * }
+ *
+ * "timedValueAttributes": [
+ * {"provider": "uk.gov.dft", "label": "fractionWalk_1pm"}
+ *  ... for the rest check elements array in line 173 ]
+ *
+ * "fixedValueAttributes": []
  *
  * // field
  * {
@@ -43,6 +61,7 @@ import java.util.List;
  *   }
  * }
  */
+
 public class ActivePeopleSurveyImporter extends AbstractDFTImporter {
     private static Logger log = LoggerFactory.getLogger(ActivePeopleSurveyImporter.class);
 

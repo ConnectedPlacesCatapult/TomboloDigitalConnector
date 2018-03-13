@@ -25,6 +25,20 @@ import java.util.stream.IntStream;
 /**
  * London Air Quality Importer
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.lac.LAQNImporter"
+ * "datasourceId": "airQualityControl"
+ * "provider": "uk.gov.phe"
+ * "subjectTypes": ["airQualityControl"]
+ *
+ * "timedValueAttributes": [see http://api.erg.kcl.ac.uk/AirQuality/Annual/MonitoringObjective/GroupName=London/json
+ * attribute label is : "@SpeciesCode" + " " + "@ObjectiveName" ]
+ *
+ * "fixedValueAttributes": []
+ */
 public class LAQNImporter extends AbstractImporter {
     private static final Logger log = LoggerFactory.getLogger(LAQNImporter.class);
 
@@ -106,9 +120,7 @@ public class LAQNImporter extends AbstractImporter {
 
         ArrayList<String> keepTrack = new ArrayList<>();
         flatJson.forEach(data -> IntStream.range(0, data.get("@SpeciesCode").size()).forEachOrdered(i -> {
-            String attrlabel = data.get("@SpeciesCode").get(i) + " " +
-                    data.get("@ObjectiveName").get(i).substring(0, data.get("@ObjectiveName").get(i).length() < 25 ?
-                            data.get("@ObjectiveName").get(i).length() : 24);
+            String attrlabel = data.get("@SpeciesCode").get(i) + " " + data.get("@ObjectiveName").get(i);
             if (!keepTrack.contains(attrlabel)) {
 
                 attributes.add(new Attribute(getProvider(), attrlabel,

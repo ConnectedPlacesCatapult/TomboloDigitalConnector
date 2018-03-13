@@ -50,8 +50,7 @@ public class FractionOfTotalField extends AbstractField implements SingleValueFi
         ValueWithTimestamp valueWithTimestamp = getValue(subject);
         JSONObject obj = new JSONObject();
         if (null != timeStamp && !timeStamp) {
-            obj.put(null != this.label ? this.label : "value",
-                                            valueWithTimestamp.value);
+            obj.put(null != this.label ? this.label : "value", valueWithTimestamp.value);
             return withinJsonStructure(obj);
         }
         obj.put("timestamp", valueWithTimestamp.timestamp.format(TimedValueId.DATE_TIME_FORMATTER));

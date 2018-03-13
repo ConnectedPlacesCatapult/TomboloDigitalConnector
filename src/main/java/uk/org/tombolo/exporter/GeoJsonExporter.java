@@ -5,6 +5,7 @@ import org.geotools.geojson.geom.GeometryJSON;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.tombolo.DataExportRunner;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -63,8 +64,12 @@ public class GeoJsonExporter implements Exporter {
 			try {
 				properties.putAll(field.jsonValueForSubject(subject, timeStamp));
 			} catch (IncomputableFieldException e) {
-				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
+				log.warn(DataExportRunner.YELLOW + "Could not compute Field {} for Subject {}, reason: {}" +
+								DataExportRunner.END, field.getLabel(), subject.getLabel(), e.getMessage());
 				properties.put(field.getLabel(), null);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(String.format("Could not compute Field %s for Subject %s" +
+						"(%s), reason: %s", field.getLabel(), subject.getLabel(), subject.getId(), e.getMessage()));
 			}
 		});
 		return properties;

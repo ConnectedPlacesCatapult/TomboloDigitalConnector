@@ -1,4 +1,4 @@
-package uk.org.tombolo.lac;
+package uk.org.tombolo.importer.lac;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.junit.Before;
@@ -6,7 +6,6 @@ import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.core.*;
 import uk.org.tombolo.core.utils.*;
-import uk.org.tombolo.importer.lac.LAQNImporter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -177,7 +176,7 @@ public class LAQNImporterTest extends AbstractTest {
                                 "erg.kcl.ac.uk","airQualityControl"),"%%");
 
         Attribute attribute = AttributeUtils.getByProviderAndLabel("erg.kcl.ac.uk",
-                                                    "NO2 40 ug/m3 as an annual me");
+                                                    "NO2 40 ug/m3 as an annual mean");
 
         List<TimedValue> value = TimedValueUtils.getBySubjectAndAttribute(subjects.get(0), attribute);
         assertEquals(Double.toString(26.0), Double.toString(value.get(0).getValue()));

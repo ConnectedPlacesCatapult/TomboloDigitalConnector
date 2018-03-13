@@ -16,7 +16,6 @@ import uk.org.tombolo.recipe.AttributeMatcher;
  */
 public abstract class BasicValueField extends AbstractField {
     private AttributeMatcher attribute;
-    private Attribute attributeObject;
 
     public BasicValueField(String label, AttributeMatcher attribute) {
         super(label);
@@ -24,15 +23,12 @@ public abstract class BasicValueField extends AbstractField {
     }
 
     protected Attribute getAttribute() throws IncomputableFieldException {
-        if (null != attributeObject) return attributeObject;
-
         Attribute attr = AttributeUtils.getByProviderAndLabel(attribute.provider, attribute.label);
         if (null == attr) {
             throw new IncomputableFieldException(String.format("No attribute found for provider %s and label %s", attribute.provider, attribute.label));
-        } else {
-            attributeObject = attr;
-            return attr;
         }
+
+        return attr;
     }
 
     protected JSONObject withinMetadata(JSONArray contents) {

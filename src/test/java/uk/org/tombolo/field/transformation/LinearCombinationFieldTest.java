@@ -37,7 +37,7 @@ public class LinearCombinationFieldTest extends AbstractTest {
                         FieldBuilder.constantField("field2", "2").build()
                )
         );
-        thrown.expect(Error.class);
+        thrown.expect(Exception.class);
         thrown.expectMessage("For LinearCombinationField, scalars and fields must have same length");
         unevenField.initialize();
     }
@@ -52,7 +52,7 @@ public class LinearCombinationFieldTest extends AbstractTest {
                         FieldBuilder.valuesByTime("provider", "attribute").build()
                 )
         );
-        thrown.expect(Error.class);
+        thrown.expect(Exception.class);
         thrown.expectMessage("Parameters for LinearCombinationField must be of type SingleValueField");
         noneSingelValueField.initialize();
     }

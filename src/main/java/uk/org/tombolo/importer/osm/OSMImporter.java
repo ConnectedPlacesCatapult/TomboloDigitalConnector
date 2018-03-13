@@ -15,6 +15,19 @@ import java.util.List;
 /**
  * Open street map importer
  */
+
+/**
+ * INFO FOR RECIPE
+ * "importerClass": "uk.org.tombolo.importer.osm.OSMImporter"
+ * "datasourceId": "adultObesity"
+ * "provider": "org.openstreetmap"
+ * "subjectTypes": [OSMEntity]
+ *
+ * "timedValueAttributes": []
+ *
+ * "fixedValueAttributes":[ all elements in OSMBuiltInImporters.java enum]
+ */
+
 public class OSMImporter extends AbstractImporter {
     protected static final String URL = "http://download.geofabrik.de";
     // Default area is the whole Great Britain, if the geography scope is empty or null the default area will be considered.

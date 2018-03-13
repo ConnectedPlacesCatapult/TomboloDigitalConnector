@@ -28,6 +28,23 @@ import java.util.List;
 /**
  * NHS Admissions related to obesity
  * https://digital.nhs.uk
+ * FILE: https://digital.nhs.uk/media/28729/Statistics-on-Obesity-Physical-Activity-and-Diet-England-2016-Tables/Any/obes-phys-acti-diet-eng-2016-tab
+ */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.nhschoices.NHSAdmissionsImporter"
+ * "datasourceId": "NHSAdmissionsObese"
+ * "provider": "uk.digital.nhs"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [
+ *      {"label":"admissions_all", "provider":"uk.digital.nhs"},
+ *      {"label":"admissions_male", "provider":"uk.digital.nhs"},
+ *      {"label":"admissions_female", "provider":"uk.digital.nhs"}]
+ *
+ * "fixedValueAttributes": []
  */
 public class NHSAdmissionsImporter extends AbstractImporter {
 
@@ -125,11 +142,7 @@ public class NHSAdmissionsImporter extends AbstractImporter {
                 // created.
                 for (Attribute attribute : datasource.getTimedValueAttributes()) {
                     Double record = row.getCell(attributeIndex).getNumericCellValue();
-                    timedValues.add(new TimedValue(
-                            subject,
-                            attribute,
-                            timestamp,
-                            record));
+                    timedValues.add(new TimedValue(subject, attribute, timestamp, record));
                     attributeIndex++;
                 }
             }

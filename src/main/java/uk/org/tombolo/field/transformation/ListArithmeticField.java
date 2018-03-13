@@ -1,6 +1,8 @@
 package uk.org.tombolo.field.transformation;
 
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.*;
 import uk.org.tombolo.recipe.FieldRecipe;
@@ -16,7 +18,10 @@ import java.util.function.Function;
  * the operation on the list of fields' values.
  */
 public class ListArithmeticField extends AbstractField implements SingleValueField, ParentField {
-    public enum Operation {mul, add}
+    private static Logger log = LoggerFactory.getLogger(ListArithmeticField.class);
+
+    // Syntactic sugar to accept both add and sum
+    public enum Operation {mul, add, sum}
     private final List<FieldRecipe> fields;
     private final Operation operation;
 
@@ -35,20 +40,21 @@ public class ListArithmeticField extends AbstractField implements SingleValueFie
         operators = new HashMap<>();
         operators.put(Operation.mul, l -> l.stream().reduce(1.0, (a, b) -> a * b));
         operators.put(Operation.add, l -> l.stream().reduce(0.0, (a, b) -> a + b));
+        operators.put(Operation.sum, l -> l.stream().reduce(0.0, (a, b) -> a + b));
 
         try {
             this.operator = operators.get(this.operation);
             singleValueFields = new ArrayList<>();
 
             for (FieldRecipe fieldRecipe: fields) {
-                Field field = fieldRecipe.toField();
-                if (!(field instanceof SingleValueField))
-                    throw new IncomputableFieldException("Parameters for ListArithmetricField must be of type SingleValueField");
+                SingleValueField field = (SingleValueField) fieldRecipe.toField();
                 field.setFieldCache(fieldCache);
                 singleValueFields.add(field);
             }
-        } catch (Exception e) {
-            throw new Error("Field not valid", e);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Field class not found.", e);
+        } catch (ClassCastException e){
+            throw new IllegalArgumentException("Field must be SingleValueField", e);
         }
     }
 
@@ -72,8 +78,15 @@ public class ListArithmeticField extends AbstractField implements SingleValueFie
         if (null == singleValueFields || singleValueFields.isEmpty()) { initialize(); }
 
         List<Double> values = new ArrayList<>();
+        String value = null;
         for (Field singleValueField: singleValueFields) {
-            values.add(Double.parseDouble(((SingleValueField)singleValueField).valueForSubject(subject, true)));
+            try {
+                value = ((SingleValueField) singleValueField).valueForSubject(subject, true);
+                values.add(Double.parseDouble(value));
+            } catch (NullPointerException | NumberFormatException e) {
+                log.warn("Value {} not included in operation for subject {} ({}), cannot be converted to numeric type.",
+                        subject.getName(), subject.getId(), value);
+            }
         }
 
         Double retVal = operator.apply(values);

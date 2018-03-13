@@ -25,6 +25,22 @@ import java.util.List;
 
 /**
  * Importer for importing the walking and cycling statistics for boroughs.
+ * FILE: https://files.datapress.com/london/dataset/walking-and-cycling-borough/walking-cycling-borough.xls
+ */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.londondatastore.WalkingCyclingBoroughImporter"
+ * "datasourceId": "walkingCyclingBorough"
+ * "provider": "uk.gov.london"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [
+ *      {"label":"walk5xWeek", "provider":"uk.gov.london"},
+ *      {"label":"cycle1xWeek", "provider":"uk.gov.london"}]
+ *
+ * "fixedValueAttributes": []
  */
 public class WalkingCyclingBoroughImporter extends AbstractLondonDatastoreImporter {
     Logger log = LoggerFactory.getLogger(WalkingCyclingBoroughImporter.class);

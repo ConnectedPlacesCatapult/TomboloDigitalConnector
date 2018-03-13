@@ -39,7 +39,9 @@ public class MapToContainingSubjectField extends AbstractField implements Parent
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
         } catch (ClassNotFoundException e) {
-            throw new Error("Field not valid");
+            throw new IllegalArgumentException("Field class not found.");
+        } catch (ClassCastException e){
+            throw new IllegalArgumentException("Field must be SingleValueField");
         }
     }
 

@@ -71,11 +71,11 @@ public class DescriptiveStatisticsField extends AbstractField implements SingleV
             try {
                 Field field = fieldRecipe.toField();
                 if (!(field instanceof SingleValueField))
-                    throw new IncomputableFieldException("Parameters for DescriptiveStatisticsField must be of type SingleValueField");
+                    throw new IllegalArgumentException("Parameters for DescriptiveStatisticsField must be of type SingleValueField");
                 field.setFieldCache(fieldCache);
                 singleValueFields.add(field);
-            } catch (Exception e) {
-                throw new Error(e.getMessage(), e);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException("Field class not found.");
             }
         }
     }

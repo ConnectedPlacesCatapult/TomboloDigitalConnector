@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.tombolo.DataExportRunner;
 import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.field.Field;
 import uk.org.tombolo.field.IncomputableFieldException;
@@ -69,8 +70,12 @@ public class CSVExporter implements Exporter {
 			try {
 				property.put(field.getLabel(), ((SingleValueField) field).valueForSubject(subject, timeStamp));
 			} catch (IncomputableFieldException e) {
-				log.warn("Could not compute Field {} for Subject {}, reason: {}", field.getLabel(), subject.getLabel(), e.getMessage());
+				log.warn(DataExportRunner.YELLOW + "Could not compute Field {} for Subject {}, reason: {}" +
+								DataExportRunner.END, field.getLabel(), subject.getLabel(), e.getMessage());
 				property.put(field.getLabel(), null);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(String.format("Could not compute Field %s for Subject %s" +
+						"(%s), reason: %s", field.getLabel(), subject.getLabel(), subject.getId(), e.getMessage()));
 			}
 		} else {
 			throw new IllegalArgumentException(String.format("Field %s cannot return a single value", field.getLabel()));

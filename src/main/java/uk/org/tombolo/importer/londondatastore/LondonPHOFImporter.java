@@ -21,9 +21,23 @@ import java.util.*;
  * Importer for the Public Health Outcomes Framework (PHOF) indicators for London.
  *
  * URL: http://data.london.gov.uk/dataset/public-health-outcomes-framework-indicators
- *
+ * FILE : https://files.datapress.com/london/dataset/public-health-outcomes-framework-indicators/2015-11-10T12:05:53
+ * /phof-indicators-data-london-borough.xlsx
  *
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.londondatastore.LondonPHOFImporter"
+ * "datasourceId": "phofIndicatorsLondonBorough"
+ * "provider": "uk.gov.london"
+ * "subjectTypes": [localAuthority]
+ *
+ * "timedValueAttributes": [ check catalogue.json ]
+ * "fixedValueAttributes": []
+ */
+
 public class LondonPHOFImporter extends AbstractLondonDatastoreImporter {
     Logger log = LoggerFactory.getLogger(LondonPHOFImporter.class);
     private static final String DATAFILE_SUFFIX = ".xlsx";

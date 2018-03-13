@@ -27,6 +27,19 @@ import java.util.List;
  * Geography: Local authorities
  * Unit of measurement: Please consult https://www.gov.uk/education/school-performance-measures
  */
+
+/**
+ * INFO FOR RECIPE
+ *
+ * "importerClass": "uk.org.tombolo.importer.ons.ONSAverageAttainmentImporter"
+ * "datasourceId": "ONSAverageAttainment"
+ * "provider": "uk.gov.ons"
+ * "subjectTypes": ["localAuthority"]
+ *
+ * "timedValueAttributes": [{"label": "average_attainment", "provider": "uk.gov.ons"}]
+ *
+ * "fixedValueAttributes": []
+ */
 public class ONSAverageAttainmentImporter extends AbstractONSImporter {
     private static final String DATASOURCE = "https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/652293/SFR57_2017_LA__tables.xlsx";
     private static final Logger log = LoggerFactory.getLogger(ONSAverageAttainmentImporter.class);

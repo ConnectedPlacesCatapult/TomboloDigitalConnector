@@ -50,8 +50,10 @@ public class AttributeMatcherField extends AbstractField implements SingleValueF
         try {
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
-        } catch (Exception e) {
-            throw new Error("Field not valid", e);
+        } catch (ClassCastException e){
+            throw new IllegalArgumentException("Field must be SingleValueField");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("Field class not found.");
         }
     }
 
