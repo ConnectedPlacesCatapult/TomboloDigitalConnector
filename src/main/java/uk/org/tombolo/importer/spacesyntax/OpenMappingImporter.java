@@ -46,7 +46,7 @@ public class OpenMappingImporter extends AbstractImporter{
                         " The data is licensed under CC BY-SA 4.0. This allows people to use and modify the data as long as"+
                         " it is attributed to Space Syntax, and that any modifications are shared back under the same terms."+
                         " By licensing the data in this way we hope to encourage wider exploration, innovation and application.",
-                "https://github.com/spacesyntax/OpenMapping/releases/download/gb-v1/ssx_openmapping_gb_v1_csv.zip")
+                "https://github.com/FutureCitiesCatapult/TomboloOpenData/raw/master/ssx_openmapping_gb_v1_greaterlondon.zip")
         )
         ;
 
@@ -88,7 +88,7 @@ public class OpenMappingImporter extends AbstractImporter{
         File localFile = downloadUtils.fetchFile(url, getProvider().getLabel(), ".zip");
         Path dir = ZipUtils.unzipToTemporaryDirectory(localFile);
 
-        File file = new File(dir + "/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv");
+        File file = new File(dir + "/ssx_openmapping_gb_v1_greaterlondon.csv");
         InputStream isr = new FileInputStream(file);
 
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -100,14 +100,13 @@ public class OpenMappingImporter extends AbstractImporter{
         String label;
         String name;
 
-        int batchSize = 1000;
+        int batchSize = 10000;
         String line = null;
         long batchNumber = 1;
 
         List<String> mylist = null;
         while ((line = br.readLine()) != null) {
-            System.out.println("Batch Number # " + batchNumber);
-
+            log.info("Preparing to write #"+ batchNumber + " batch");
             mylist = readBatch(br, batchSize); // get/catch your (List) result here as returned from readBatch() method
 
             for (int i = 0; i < mylist.size(); i++) {
@@ -171,12 +170,8 @@ public class OpenMappingImporter extends AbstractImporter{
             saveAndClearFixedValueBuffer(fixedValues);
             batchNumber++;
         }
-
-        System.out.println("Lines are Successfully copied!");
-
-        br.close();  // one you are done .. dont forget to close/flush
-        br = null;   // all
-
+        br.close();
+        br = null;
     }
     private static List<String> readBatch(BufferedReader br, int batchSize) throws IOException {
         List<String> result = new ArrayList<>();
