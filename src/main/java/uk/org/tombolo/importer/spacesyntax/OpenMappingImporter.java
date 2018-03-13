@@ -110,17 +110,17 @@ public class OpenMappingImporter extends AbstractImporter{
                 String oneLine = mylist.get(i);
                 String otherThanQuote = " [^\"] ";
                 String quotedString = String.format(" \" %s* \" ", otherThanQuote);
-
+                // regex to capture the WKT geometry
                 String regex = String.format("(?x) "+ // enable comments, ignore white spaces
-                                ",                         "+ // match a comma
-                                "(?=                       "+ // start positive look ahead
-                                "  (?:                     "+ //   start non-capturing group 1
-                                "    %s*                   "+ //     match 'otherThanQuote' zero or more times
-                                "    %s                    "+ //     match 'quotedString'
-                                "  )*                      "+ //   end group 1 and repeat it zero or more times
-                                "  %s*                     "+ //   match 'otherThanQuote'
-                                "  $                       "+ // match the end of the string
-                                ")                         ", // stop positive look ahead
+                                ",                         "+
+                                "(?=                       "+
+                                "  (?:                     "+
+                                "    %s*                   "+
+                                "    %s                    "+
+                                "  )*                      "+
+                                "  %s*                     "+
+                                "  $                       "+
+                                ")                         ",
                         otherThanQuote, quotedString, otherThanQuote);
 
                 List<String> records = new ArrayList<>();
