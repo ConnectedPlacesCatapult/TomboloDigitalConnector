@@ -26,6 +26,7 @@ public class GeoJsonExporter implements Exporter {
 
 		jsonWriter.beginObject();
 		jsonWriter.name("type").value("FeatureCollection");
+		jsonWriter.name("crs").jsonValue(getProjection().toJSONString());
 		jsonWriter.name("features").beginArray();
 
 		log.info("Exporting {} subjects", subjects.size());
@@ -77,5 +78,15 @@ public class GeoJsonExporter implements Exporter {
 
 	private String getGeoJSONGeometryForSubject(Subject subject) {
 		return (new GeometryJSON()).toString(subject.getShape());
+	}
+
+	private JSONObject getProjection() {
+		JSONObject projection = new JSONObject();
+		projection.put("name", "urn:ogc:def:crs:EPSG::" + Subject.SRID);
+
+		JSONObject crs = new JSONObject();
+		crs.put("type", "name");
+		crs.put("properties", projection);
+		return crs;
 	}
 }
