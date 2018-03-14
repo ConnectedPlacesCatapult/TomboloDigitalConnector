@@ -104,18 +104,10 @@ public class SubjectUtils {
 			session.beginTransaction();
 			int saved = 0;
 			for (Subject subject : subjects) {
-				Subject savedSubject = getSubjectByTypeAndLabel(subject.getSubjectType(), subject.getLabel());
-
-				if (savedSubject == null) {
-					session.saveOrUpdate(subject);
-				} else {
-					// The IDs must be the same so hibernate knows which 'rows' to merge
-					subject.setId(savedSubject.getId());
-					session.update(session.merge(subject));
-				}
+				session.save(subject);
 				saved++;
 
-				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
+				if ( saved % 2000 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
 					session.flush();
 					session.clear();

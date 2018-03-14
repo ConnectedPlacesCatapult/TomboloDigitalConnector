@@ -114,14 +114,12 @@ public class OpenMappingImporter extends AbstractImporter{
         int batchSize = 10000;
         String line = null;
         long batchNumber = 1;
+        int counter = 0;
 
-        List<String> mylist = null;
+        List<String> mylist = new ArrayList<>();
+        log.info("Preparing to write #"+ batchNumber + " batch");
         while ((line = br.readLine()) != null) {
-            log.info("Preparing to write #"+ batchNumber + " batch");
-            mylist = readBatch(br, batchSize); // get/catch your (List) result here as returned from readBatch() method
 
-            for (int i = 0; i < mylist.size(); i++) {
-                String oneLine = mylist.get(i);
                 String otherThanQuote = " [^\"] ";
                 String quotedString = String.format(" \" %s* \" ", otherThanQuote);
                 // Regex for the WKT geometry
@@ -139,7 +137,7 @@ public class OpenMappingImporter extends AbstractImporter{
 
                 List<String> records = new ArrayList<>();
 
-                String[] tokens = oneLine.split(regex, -1);
+                String[] tokens = line.split(regex, -1);
                 for(String t : tokens) {
                     records.add(t.toString());
                 }
@@ -175,27 +173,20 @@ public class OpenMappingImporter extends AbstractImporter{
                     attributeIndex++;
                 }
                 subjects.add(subject);
+            counter++;
+            if (counter < 10000 && line != null) {
+                continue;
             }
             saveAndClearSubjectBuffer(subjects);
             saveAndClearTimedValueBuffer(timedValues);
             saveAndClearFixedValueBuffer(fixedValues);
             batchNumber++;
+            counter = 0;
+            log.info("Preparing to write #"+ batchNumber + " batch");
         }
         br.close();
-        br = null;
     }
-    private static List<String> readBatch(BufferedReader br, int batchSize) throws IOException {
-        List<String> result = new ArrayList<>();
-        for (int i = 1; i < batchSize; i++) {
-            String line = br.readLine();
-            if (line != null) {
-                result.add(line);
-            } else {
-                return result;
-            }
-        }
-        return result;
-    }
+
     public Geometry getShape(String wtk) throws FactoryException, TransformException {
         GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), Subject.SRID);
         WKTReader reader = new WKTReader(geometryFactory);

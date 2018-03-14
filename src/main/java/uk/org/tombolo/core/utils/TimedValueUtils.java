@@ -102,7 +102,7 @@ public class TimedValueUtils {
 			session.beginTransaction();
 			for (TimedValue timedValue : timedValues){
 				try{
-					session.saveOrUpdate(timedValue);
+					session.save(timedValue);
 					saved++;
 				}catch(NonUniqueObjectException e){
 					// This is happening because the TFL stations contain a duplicate ID
@@ -112,7 +112,7 @@ public class TimedValueUtils {
 							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
 							e.getMessage());
 				}
-				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
+				if ( saved % 2000 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
 					session.flush();
 					session.clear();

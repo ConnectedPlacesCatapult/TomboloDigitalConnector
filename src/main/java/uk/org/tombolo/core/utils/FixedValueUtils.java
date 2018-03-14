@@ -32,7 +32,7 @@ public class FixedValueUtils {
             session.beginTransaction();
             for (FixedValue fixedValue : fixedValues){
                 try{
-                    session.saveOrUpdate(fixedValue);
+                    session.save(fixedValue);
                     saved++;
                 }catch(NonUniqueObjectException e){
                     // This is happening because the TFL stations contain a duplicate ID
@@ -41,7 +41,7 @@ public class FixedValueUtils {
                             fixedValue.getId().getAttribute().getLabel(),
                             e.getMessage());
                 }
-                if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
+                if ( saved % 2000 == 0 ) { //20, same as the JDBC batch size
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();
