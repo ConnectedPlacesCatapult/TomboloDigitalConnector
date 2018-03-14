@@ -131,7 +131,7 @@ public class SubjectUtils {
 	if exists it updates else adds, but that increase overhead and compute time.
 	Using this method will only keep the old value and discard the new one, in case of 
 	duplicate records.
-	Fix Me: Need to find a better way to address it
+	FIXME: Need to find a better way to address it
 	*/
 	public static void saveWithoutUpdate(List<Subject> subjects){
 		HibernateUtil.withSession(session -> {
@@ -145,7 +145,11 @@ public class SubjectUtils {
                     log.warn("Could not save subject {}, name {},", subject.getLabel(), subject.getName());
                 }
 
-				if ( saved % 2000 == 0 ) { 
+				if ( saved % 2000 == 0 ) {
+					// FIXME:
+					// Flushing at small intervals increase overhead for the system to clear the session.
+					// The default behaviour of hibernate is to auto flush when it thinks is necessary thus it may be required to 
+					// flush the session manually but this requires testing, and can be cosidered as fixme 
 					session.flush();
 					session.clear();
 				}

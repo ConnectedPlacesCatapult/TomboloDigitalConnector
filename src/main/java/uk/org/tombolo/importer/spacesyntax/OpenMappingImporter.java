@@ -33,6 +33,10 @@ import java.util.*;
  * Please see    https://github.com/spacesyntax/OpenMapping for code of conduct and terms of use.
  *
  * How to use in a recipe:
+ *  "importerClass":"uk.org.tombolo.importer.spacesyntax.OpenMappingImporter"
+ *  "datasourceId":"SpaceSyntaxOpenMapping"
+ *  "provider":"com.spacesyntax"
+ *  "subjectTypes":["space_syntax"]
  *
  * {
  *   "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
