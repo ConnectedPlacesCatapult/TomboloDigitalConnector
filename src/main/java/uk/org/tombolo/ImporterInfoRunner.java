@@ -3,16 +3,12 @@ package uk.org.tombolo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Importer;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,15 +30,11 @@ public class ImporterInfoRunner extends AbstractRunner {
         if (importerClass.equals("None")) {
             CatalogueExportRunner cer = new CatalogueExportRunner();
             List<Class<? extends Importer>> dcImporters = cer.getImporterClasses();
-            List<String> importerNames = new ArrayList<>();
-            for (Class<? extends Importer> i : dcImporters) {
-                if (!i.getCanonicalName().endsWith("PythonImporter") && !i.getCanonicalName().endsWith("GeneralCSVImporter")) {
-                    importerNames.add(i.getCanonicalName());
-                }
-            }
-            
-            Collections.sort(importerNames);
-            log.info("\n\n" + "List of Digital Connector Importers: \n\n" + 
+            List<String> importerNames = dcImporters.stream()
+                                        .filter(i -> !i.getCanonicalName().endsWith("PythonImporter") && !i.getCanonicalName().endsWith("GeneralCSVImporter"))
+                                        .map(Class::getCanonicalName).sorted().collect(Collectors.toList());
+
+            log.info("\n\n" + "List of Digital Connector Importers: \n\n" +
                      String.join("\n", importerNames));
             return;
         }
