@@ -364,6 +364,27 @@ and explore the data catalogue.
 gradle exportCatalogue -Poutput=catalogue.json
 ```
 
+### Importer Info
+
+We use the Gradle task `info` to get details about a specific importer
+
+```bash
+gradle info
+```
+would give you list of all the Importers available in Digital Connector
+
+```bash
+gradle info -Pi='uk.org.tombolo.importer.dft.TrafficCountImporter'
+```
+Lists all the details of the Importer like Provider, SubjectTypes, Attributes, Datasourceids, Dataurl
+
+```bash
+gradle info -Pp -Pi='uk.org.tombolo.importer.dft.TrafficCountImporter'
+```
+would give user Datasourceids, Dataurl and Provider. Other option like -Pa and -Ps will give Attributes and SubjectType respectively.
+
+**Note:** Datasourceids and Dataurl will always be provided irrespective of the option given.
+
 ## Start/Stop server
 
 If you need to start or stop the server (on MacOS X), use the following commands.

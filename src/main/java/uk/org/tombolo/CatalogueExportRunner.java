@@ -49,7 +49,7 @@ public class CatalogueExportRunner extends AbstractRunner {
 
     }
 
-    private List<Class<? extends Importer>> getImporterClasses() {
+    public List<Class<? extends Importer>> getImporterClasses() {
         Reflections reflections = new Reflections("uk.org.tombolo");
         List<Class<? extends Importer>> toReturn;
         Set<Class<? extends  Importer>> data = reflections.getSubTypesOf(Importer.class);
