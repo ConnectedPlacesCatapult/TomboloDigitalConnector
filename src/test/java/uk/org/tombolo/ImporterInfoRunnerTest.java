@@ -9,11 +9,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ImporterSpecificationRunnerTest {
+public class ImporterInfoRunnerTest {
 
     Importer importer;
     Datasource datasource;
-    ImporterSpecificationRunner importerSpecificationRunner = new ImporterSpecificationRunner();;
+    ImporterInfoRunner importerSpecificationRunner = new ImporterInfoRunner();;
 
 
     @Before

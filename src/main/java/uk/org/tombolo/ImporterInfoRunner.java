@@ -3,21 +3,25 @@ package uk.org.tombolo;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+
 import uk.org.tombolo.core.Attribute;
 import uk.org.tombolo.core.Datasource;
 import uk.org.tombolo.core.SubjectType;
 import uk.org.tombolo.importer.Importer;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Get a list of datasources for an importer
  */
-public class ImporterSpecificationRunner extends AbstractRunner {
-    private static final Logger log = LoggerFactory.getLogger(ImporterSpecificationRunner.class);
-    private static final ImporterSpecificationRunner runner = new ImporterSpecificationRunner();
+public class ImporterInfoRunner extends AbstractRunner {
+    private static final Logger log = LoggerFactory.getLogger(ImporterInfoRunner.class);
+    private static final ImporterInfoRunner runner = new ImporterInfoRunner();
 
     public static void main(String[] args) throws Exception {
 
@@ -30,9 +34,16 @@ public class ImporterSpecificationRunner extends AbstractRunner {
         if (importerClass.equals("None")) {
             CatalogueExportRunner cer = new CatalogueExportRunner();
             List<Class<? extends Importer>> dcImporters = cer.getImporterClasses();
-            info.append("List of Digital Connector Importers: \n\n");
-            dcImporters.forEach(i -> info.append(i.getCanonicalName()).append("\n"));
-            log.info(info.toString());
+            List<String> importerNames = new ArrayList<>();
+            for (Class<? extends Importer> i : dcImporters) {
+                if (!i.getCanonicalName().endsWith("PythonImporter") && !i.getCanonicalName().endsWith("GeneralCSVImporter")) {
+                    importerNames.add(i.getCanonicalName());
+                }
+            }
+            
+            Collections.sort(importerNames);
+            log.info("\n\n" + "List of Digital Connector Importers: \n\n" + 
+                     String.join("\n", importerNames));
             return;
         }
 
@@ -57,14 +68,14 @@ public class ImporterSpecificationRunner extends AbstractRunner {
 
                 if (subjects) {
                     info.append("SubjectTypes: ")
-                        .append(runner.getSubjectType(dSource).toString()).append("\n");
+                        .append(String.join("\n\t\t", runner.getSubjectType(dSource))).append("\n");
 
                 }
                 if (attribute) {
                     info.append("Timed Value Attributes: ")
-                        .append(runner.getTimedValueAttributes(dSource).toString())
+                        .append(String.join("\n\t\t\t", runner.getTimedValueAttributes(dSource)))
                         .append("\nFixed Value Attributes: ")
-                        .append(runner.getFixedValueAttributes(dSource).toString())
+                        .append(String.join("\n\t\t\t", runner.getFixedValueAttributes(dSource)))
                         .append("\n");
                 }
                 log.info(info.toString());
