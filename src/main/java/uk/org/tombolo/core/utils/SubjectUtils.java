@@ -1,6 +1,7 @@
 package uk.org.tombolo.core.utils;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -104,11 +105,47 @@ public class SubjectUtils {
 			session.beginTransaction();
 			int saved = 0;
 			for (Subject subject : subjects) {
-				session.save(subject);
+				Subject savedSubject = getSubjectByTypeAndLabel(subject.getSubjectType(), subject.getLabel());
+
+				if (savedSubject == null) {
+					session.saveOrUpdate(subject);
+				} else {
+					// The IDs must be the same so hibernate knows which 'rows' to merge
+					subject.setId(savedSubject.getId());
+					session.update(session.merge(subject));
+				}
 				saved++;
 
-				if ( saved % 2000 == 0 ) { //20, same as the JDBC batch size
+				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+		});
+	}
+
+	/*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	Fix Me: Need to find a better way to address it
+	*/
+	public static void saveWithoutUpdate(List<Subject> subjects){
+		HibernateUtil.withSession(session -> {
+			session.beginTransaction();
+			int saved = 0;
+			for (Subject subject : subjects) {
+                try{
+                    session.save(subject);
+                    saved++;
+                }catch(NonUniqueObjectException e){
+                    log.warn("Could not save subject {}, name {},", subject.getLabel(), subject.getName());
+                }
+
+				if ( saved % 2000 == 0 ) { 
 					session.flush();
 					session.clear();
 				}

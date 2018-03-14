@@ -102,7 +102,7 @@ public class TimedValueUtils {
 			session.beginTransaction();
 			for (TimedValue timedValue : timedValues){
 				try{
-					session.save(timedValue);
+					session.saveOrUpdate(timedValue);
 					saved++;
 				}catch(NonUniqueObjectException e){
 					// This is happening because the TFL stations contain a duplicate ID
@@ -112,8 +112,40 @@ public class TimedValueUtils {
 							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
 							e.getMessage());
 				}
-				if ( saved % 2000 == 0 ) { //20, same as the JDBC batch size
+				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+			return saved;
+		});
+	}
+
+	/*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	Fix Me: Need to find a better way to address it
+	*/
+	public static int saveWithoutUpdate(List<TimedValue> timedValues){
+		return HibernateUtil.withSession((session) -> {
+			int saved = 0;
+			session.beginTransaction();
+			for (TimedValue timedValue : timedValues){
+				try{
+					session.save(timedValue);
+					saved++;
+				}catch(NonUniqueObjectException e){
+					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
+							timedValue.getId().getSubject().getLabel(),
+							timedValue.getId().getAttribute().getDescription(),
+							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+							e.getMessage());
+				}
+				if ( saved % 2000 == 0 ) { 
 					session.flush();
 					session.clear();
 				}

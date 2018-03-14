@@ -13,7 +13,9 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.*;
+import uk.org.tombolo.core.utils.FixedValueUtils;
 import uk.org.tombolo.core.utils.SubjectTypeUtils;
+import uk.org.tombolo.core.utils.SubjectUtils;
 import uk.org.tombolo.core.utils.TimedValueUtils;
 import uk.org.tombolo.importer.AbstractImporter;
 import uk.org.tombolo.importer.ZipUtils;
@@ -45,6 +47,7 @@ import java.util.*;
 public class OpenMappingImporter extends AbstractImporter{
     private static Logger log = LoggerFactory.getLogger(OpenMappingImporter.class);
     private static final int LABEL_COLUMN_INDEX = 0;
+    private int subjectCount, timedValueCount, fixedValueCount = 0;
 
     private enum DatasourceId {
         SpaceSyntaxOpenMapping(new DatasourceSpec(
@@ -119,70 +122,70 @@ public class OpenMappingImporter extends AbstractImporter{
         List<String> mylist = new ArrayList<>();
         log.info("Preparing to write #"+ batchNumber + " batch");
         while ((line = br.readLine()) != null) {
+            String otherThanQuote = " [^\"] ";
+            String quotedString = String.format(" \" %s* \" ", otherThanQuote);
+            // Regex for the WKT geometry
+            String regex = String.format("(?x) "+
+                            ",                         "+
+                            "(?=                       "+
+                            "  (?:                     "+
+                            "    %s*                   "+
+                            "    %s                    "+
+                            "  )*                      "+
+                            "  %s*                     "+
+                            "  $                       "+
+                            ")                         ", 
+                    otherThanQuote, quotedString, otherThanQuote);
 
-                String otherThanQuote = " [^\"] ";
-                String quotedString = String.format(" \" %s* \" ", otherThanQuote);
-                // Regex for the WKT geometry
-                String regex = String.format("(?x) "+
-                                ",                         "+
-                                "(?=                       "+
-                                "  (?:                     "+
-                                "    %s*                   "+
-                                "    %s                    "+
-                                "  )*                      "+
-                                "  %s*                     "+
-                                "  $                       "+
-                                ")                         ", 
-                        otherThanQuote, quotedString, otherThanQuote);
+            List<String> records = new ArrayList<>();
 
-                List<String> records = new ArrayList<>();
+            String[] tokens = line.split(regex, -1);
+            for(String t : tokens) {
+                records.add(t.toString());
+            }
 
-                String[] tokens = line.split(regex, -1);
-                for(String t : tokens) {
-                    records.add(t.toString());
-                }
+            String geography = records.get(35).trim().replace("\"","");
+            label = getProvider().getLabel()+"_"+records.get(LABEL_COLUMN_INDEX);
+            name = records.get(LABEL_COLUMN_INDEX);
 
-                String geography = records.get(35).trim().replace("\"","");
-                label = getProvider().getLabel()+"_"+records.get(LABEL_COLUMN_INDEX);
-                name = records.get(LABEL_COLUMN_INDEX);
+            Subject subject = new Subject(
+                    subjectType,
+                    label,
+                    name,
+                    getShape(geography)
+            );
 
-                Subject subject = new Subject(
-                        subjectType,
-                        label,
-                        name,
-                        getShape(geography)
-                );
-
-                if (subject == null) {
-                    log.warn("Geometry not found for " + geography + ": Skipping...");
-                    continue;
-                }
-
-                int attributeIndex = 0;
-                for (Attribute attribute : datasource.getTimedValueAttributes()) {
-                    try {
-                        Double record = Double.parseDouble(records.get(attributeIndex).trim());
-                        timedValues.add(new TimedValue(subject,
-                                attribute,
-                                timestamp,
-                                record));
-                    } catch (NumberFormatException e){
-                        String record = records.get(attributeIndex);
-                        fixedValues.add(new FixedValue(subject,attribute,record));
-                    }
-                    attributeIndex++;
-                }
-                subjects.add(subject);
-            counter++;
-            if (counter < 10000 && line != null) {
+            if (subject == null) {
+                log.warn("Geometry not found for " + geography + ": Skipping...");
                 continue;
             }
-            saveAndClearSubjectBuffer(subjects);
-            saveAndClearTimedValueBuffer(timedValues);
-            saveAndClearFixedValueBuffer(fixedValues);
+
+            int attributeIndex = 0;
+            for (Attribute attribute : datasource.getTimedValueAttributes()) {
+                try {
+                    Double record = Double.parseDouble(records.get(attributeIndex).trim());
+                    timedValues.add(new TimedValue(subject,
+                            attribute,
+                            timestamp,
+                            record));
+                } catch (NumberFormatException e){
+                    String record = records.get(attributeIndex);
+                    fixedValues.add(new FixedValue(subject,attribute,record));
+                }
+                attributeIndex++;
+            }
+            subjects.add(subject);
+            counter++;
+            if (counter < 10000) {
+                continue;
+            }
+            save(subjects, fixedValues, timedValues);
             batchNumber++;
             counter = 0;
             log.info("Preparing to write #"+ batchNumber + " batch");
+        }
+        if (!subjects.isEmpty() && !fixedValues.isEmpty() && !timedValues.isEmpty()) {
+            save(subjects, fixedValues, timedValues);
         }
         br.close();
     }
@@ -250,6 +253,27 @@ public class OpenMappingImporter extends AbstractImporter{
                 new Attribute(getProvider(), AttributeId.meridian_class_scale.name(), "meridian_class_scale"),
                 new Attribute(getProvider(), AttributeId.wkt.name(), "Road segment Well Known Text geometry")
                 );
+    }
+
+    public void save(List<Subject> subjects, List<FixedValue> fixedValues, List<TimedValue> timedValues) {
+        log.info("Preparing to write a batch of {} subjects ... ", subjects.size());
+        SubjectUtils.saveWithoutUpdate(subjects);
+        subjectCount += subjects.size();
+        subjects.clear();
+        log.info("Total subjects written: {}", subjectCount);
+
+        log.info("Preparing to write a batch of {} fixed values ...", fixedValues.size());
+        FixedValueUtils.saveWithoutUpdate(fixedValues);
+        fixedValueCount += fixedValues.size();
+        fixedValues.clear();
+        log.info("Total fixed values written: {}", fixedValueCount);
+
+        log.info("Preparing to write a batch of {} timed values ...", timedValues.size());
+        TimedValueUtils.saveWithoutUpdate(timedValues);
+        timedValueCount += timedValues.size();
+        timedValues.clear();
+        log.info("Total timed values written: {}", timedValueCount);
+
     }
 
 }
