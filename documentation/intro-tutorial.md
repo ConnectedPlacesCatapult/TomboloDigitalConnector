@@ -60,7 +60,7 @@ If you do not have this catalogue file you can also use the Tombolo Digital Conn
  if you don’t want to save it in the Tombolo Digital Connector Directory).
 3. Drag and drop it on an empty browser window to see the json.
 
-###How to open an importer file in Digital Connector
+### How to open an importer file in Digital Connector
 
 If you do not want to use the catalogue to populate your recipe, the importer files contain the information needed
 about the data sources to create a recipe. All of these importers are stored in the [importer folder](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/java/uk/org/tombolo/importer), to open a file:
