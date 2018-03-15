@@ -1,4 +1,5 @@
 ##Welcome to the Tombolo Digital Connector intro tutorial!
+
 This tutorial is designed to help you get data out of the Tombolo Digital Connector as soon as possible. Here we assume
 that you have set-up and installed the Tombolo Digital Connector using the instructions on our Github
 [repo](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector).
@@ -9,6 +10,7 @@ please do not worry. We’d like to know how useful our instructions are so try 
 how far you get.
 
 ###Tutorial Sections
+
 This tutorial has a number of sections that will help you to start making the most of the Tombolo Digital Connector. These sections are:
 - [Opening a recipe template](#opening-a-recipe-template)
 - [Finding the information to build a recipe](#finding-the-information-to-build-the-recipe)
@@ -25,18 +27,21 @@ and how to export it.** **To learn more about the recipe language please see [he
 Please also note that we often include links to the Github repo when we refer to a particular part of the codebase. These links are designed to be examples and where appropriate, you should navigate to your locally cloned equivalent.
 
 ###Getting Started
+
 There are three steps you need to take to get data from the digital connector, you will need to:
 1. Create a recipe which specifies where the data is coming from and what you want to do with it.
 2. Start the digital connector database server.
 3. Run the recipe.
 
 ###Opening a Recipe Template
+
 1. Open the digital connector folder (and associated files) in a text editor where you can see the file structure. We tend to use intelliJ or even Visual Studio Code, but any editor of your choice should work.
 2. In your local clone of the Tombolo Digital Connector, navigate to the [template file](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/template.json).
 3. Open the file called `template.json`.
 4. Save template.json with a new name in the [examples folder](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples), the recipe can be saved anywhere but you will need to include the absolute file path when you run the recipe.
 
 ###Finding the information to build the recipe
+
 The easiest way to learn about recipes is to have a look at the examples stored [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/resources/executions/examples). Try running them to see what
 they do and once you’ve tested a few, see if you can generate an output that is useful to you. If it’s tricky, open a
  few and walk through them and read more about recipes [here](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/3b2ac1b161b59d437a1ca9a4ca70c041d97fc0af/documentation/recipe-language.md).
@@ -56,6 +61,7 @@ If you do not have this catalogue file you can also use the Tombolo Digital Conn
 3. Drag and drop it on an empty browser window to see the json.
 
 ###How to open an importer file in Digital Connector
+
 If you do not want to use the catalogue to populate your recipe, the importer files contain the information needed
 about the data sources to create a recipe. All of these importers are stored in the [importer folder](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/java/uk/org/tombolo/importer), to open a file:
 1. In your IDE navigate to the [importer folder](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/tree/master/src/main/java/uk/org/tombolo/importer)
@@ -63,6 +69,7 @@ about the data sources to create a recipe. All of these importers are stored in 
 3. Open the java importer file you require
 
 ###Writing a Simple JSON Recipe - NO2 data in London
+
 There is a recipe in the examples folder that exports [NO2 data in London](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-no2.json), which you can check if you have any
 problems writing the recipe below.
 
@@ -109,6 +116,7 @@ To ensure that your recipe has been filled in successfully compare it with the [
 the case, you are ready to continue to the next step.
 
 ###Run the recipe - NO2 data in London
+
 To run a recipe you need to go to the root folder of the digital connector and run two commands:
 
 1. Make sure that the server is running. To start it on OSX in a console window type:
@@ -142,6 +150,7 @@ If you do get an error, check that both the `Precipe` and `Poutput` are run at t
 ![](https://user-images.githubusercontent.com/14051876/37464354-ff979de6-284f-11e8-867b-54d71b14ac06.jpg)
 
 ###Additional Notes / FAQ’s
+
 **Notes on Installing the Digital Connector on a Mac:**
 
 You have to have admin rights to install brew
