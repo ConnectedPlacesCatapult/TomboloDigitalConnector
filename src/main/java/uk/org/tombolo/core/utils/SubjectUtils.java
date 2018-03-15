@@ -1,6 +1,7 @@
 package uk.org.tombolo.core.utils;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -117,6 +118,38 @@ public class SubjectUtils {
 
 				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
 					//flush a batch of inserts and release memory:
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+		});
+	}
+
+	/*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	FIXME: Need to find a better way to address it
+	*/
+	public static void saveWithoutUpdate(List<Subject> subjects){
+		HibernateUtil.withSession(session -> {
+			session.beginTransaction();
+			int saved = 0;
+			for (Subject subject : subjects) {
+                try{
+                    session.save(subject);
+                    saved++;
+                }catch(NonUniqueObjectException e){
+                    log.warn("Could not save subject {}, name {},", subject.getLabel(), subject.getName());
+                }
+
+				if ( saved % 2000 == 0 ) {
+					// FIXME:
+					// Flushing at small intervals increase overhead for the system to clear the session.
+					// The default behaviour of hibernate is to auto flush when it thinks is necessary thus it may be required to 
+					// flush the session manually but this requires testing, and can be cosidered as fixme 
 					session.flush();
 					session.clear();
 				}
