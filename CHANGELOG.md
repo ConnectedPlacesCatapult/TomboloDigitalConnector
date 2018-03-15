@@ -1,10 +1,9 @@
 # Release notes
 
-### [v0.2.0 (15/03/2018)](TBD)
+### [v0.2.0 (15/03/2018)](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/releases/tag/v0.2.0)
 ### Changes
 
 - [Support max and min in GeographicAggregationField](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/529)
-- [Include projection in output file](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/526)
 - [Get importer information through gradle task](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/528)
 - [Improve error logging when recipe contains invalid arguments or the fields cannot be computed](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/519)
 - [Add json recipe template](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/524)
@@ -40,6 +39,6 @@
    + [NHS admissions](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/485)
    + [London Datastore: Age UK loneliness prevalence](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/pull/516)
 ### Meta
-- [Comparison since last release](TBD)
+- [Comparison since last release](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/compare/v0.1.0...v0.2.0)
 
 ### [v0.1.0 (04/01/2018)](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/releases/tag/v0.1.0)
