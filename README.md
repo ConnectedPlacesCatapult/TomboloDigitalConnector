@@ -51,6 +51,10 @@ make sure that you do before you proceed.**
 - [Gradle (2.12+)](https://gradle.org/)
 - [Git](https://git-scm.com/download/)
 
+After the successful installation of the requirements, you can use the Digital Connector by following the instructions 
+in the [quick start](#quick-start) section or by going through the [intro tutorial](/documentation/using-the-digital-connector.md)
+in the documentation.
+
 ## Installation Guides
 
 - [Windows](documentation/windows-installation-guide.md)
@@ -242,7 +246,7 @@ Now you are all set to run a task on the Digital Connector.
 
 The next step is to run an example to show how the digital connector combines different data sets.
 We’re using an example that shows the relationship between air pollution (demonstrated in this example by NO2 levels), 
-and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/tutorial.md).  
+and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/tutorial-cycling-air-quality.md).  
 
 When you’ve run this example, you can expect a map that looks like this: 
 
@@ -297,7 +301,7 @@ Our goal is for someone to get back to you within 24 hours.**
 
 #### See also:
 
-- [Learn more about the **example** used in this tutorial](documentation/tutorial.md)
+- [Learn more about the **example** used in this tutorial](documentation/tutorial-cycling-air-quality.md)
   
 - [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
 

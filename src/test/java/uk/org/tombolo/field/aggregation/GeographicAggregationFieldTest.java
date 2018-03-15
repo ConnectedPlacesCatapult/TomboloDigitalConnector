@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 
 public class GeographicAggregationFieldTest extends AbstractTest {
     private Attribute attribute;
-    private SubjectType localAuthority;
     private SubjectType lsoa;
 
     private GeographicAggregationField sumField = new GeographicAggregationField("aLabel",
@@ -35,6 +34,14 @@ public class GeographicAggregationFieldTest extends AbstractTest {
             new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
             GeographicAggregationField.AggregationFunction.mean, makeFieldSpec());
 
+    private GeographicAggregationField maxField = new GeographicAggregationField("aLabel",
+            new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
+            GeographicAggregationField.AggregationFunction.max, makeFieldSpec());
+
+    private GeographicAggregationField minField = new GeographicAggregationField("aLabel",
+            new SubjectRecipe(AbstractONSImporter.PROVIDER.getLabel(),"lsoa", null, null),
+            GeographicAggregationField.AggregationFunction.min, makeFieldSpec());
+
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -42,7 +49,6 @@ public class GeographicAggregationFieldTest extends AbstractTest {
     @Before
     public void setUp() {
         attribute = TestFactory.makeAttribute(TestFactory.DEFAULT_PROVIDER, "attr");
-        localAuthority = TestFactory.makeNamedSubjectType("localAuthority");
         lsoa = TestFactory.makeNamedSubjectType("lsoa");
     }
 
@@ -83,8 +89,53 @@ public class GeographicAggregationFieldTest extends AbstractTest {
         Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
 
         thrown.expect(IncomputableFieldException.class);
-        thrown.expectMessage("Aggregation function mean returned NaN (possible division by zero?)");
+        thrown.expectMessage("Aggregation function mean returned NaN (any NaN values in the set? " +
+                "or trying to operate on an empty set?)");
         meanField.valueForSubject(subject, true);
+    }
+
+    @Test
+    public void testValueForSubjectMax() throws Exception {
+        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
+        TestFactory.makeNamedSubject("E01000001");
+        TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeTimedValue(lsoa, "E01000001", attribute, "2011-01-01T00:00:00", 300d);
+        TestFactory.makeTimedValue(lsoa, "E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
+
+        String value = maxField.valueForSubject(subject, true);
+        assertEquals("300.0", value);
+    }
+
+    @Test
+    public void testValueForSubjectMaxWithNoValues() throws Exception {
+        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject with no contents
+
+        thrown.expect(IncomputableFieldException.class);
+        thrown.expectMessage("Aggregation function max returned NaN (any NaN values in the set? " +
+                "or trying to operate on an empty set?)");
+        maxField.valueForSubject(subject, true);
+    }
+
+    @Test
+    public void testValueForSubjectMin() throws Exception {
+        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject that contains subjects below
+        TestFactory.makeNamedSubject("E01000001");
+        TestFactory.makeNamedSubject("E01002766");
+        TestFactory.makeTimedValue(lsoa, "E01000001", attribute, "2011-01-01T00:00:00", 300d);
+        TestFactory.makeTimedValue(lsoa, "E01002766", attribute, "2011-01-01T00:00:00", 13.37d);
+
+        String value = minField.valueForSubject(subject, true);
+        assertEquals("13.37", value);
+    }
+
+    @Test
+    public void testValueForSubjectMinWithNoValues() throws Exception {
+        Subject subject = TestFactory.makeNamedSubject("E09000001"); // Subject with no contents
+
+        thrown.expect(IncomputableFieldException.class);
+        thrown.expectMessage("Aggregation function min returned NaN (any NaN values in the set? " +
+                "or trying to operate on an empty set?)");
+        minField.valueForSubject(subject, true);
     }
 
     @Test
