@@ -33,7 +33,7 @@ The below you can find the suggested reading order of this documentation.
 
 [Use case on Active Transport Index](use-case-on-active-transport-index.md)
 
-[Tutorial - Cycling and Air Quality](tutorial.md)
+[Tutorial - Cycling and Air Quality](tutorial-cycling-air-quality.md)
 
 ## Documentation to pdf
 
