@@ -14,7 +14,7 @@
     sudo apt-get install postgis
 
 ## Install Gradle
-    sudo apt-get install gradle 3.0
+    sudo apt-get install gradle
 
 ## Clone the repository
     mkdir Tombolo
@@ -39,7 +39,7 @@
 	Error:
 	Incase of error "Peer authentication failed for tombolo". Please follow these steps:
 	1) Open new terminal window
-	2) cd /etc/postgresql/9.x/main   (replace x by the verison of postgresql)
+	2) cd /etc/postgresql/<Version>/main  
 	3) sudo nano pg_hba.conf
 	4) Look for line "local   all	postgres	peer"
 	5) Once found create new line under it and write the following under the same words "local   all   tombolo   trust"
@@ -61,7 +61,7 @@
 	Error:
 	Incase of error "Peer authentication failed for tombolo_test". Please follow these steps:
 	1) Open new terminal window
-	2) cd /etc/postgresql/9.x/main   (replace x by the verison of postgresql)
+	2) cd /etc/postgresql/<Version>/main 
 	3) sudo nano pg_hba.conf
 	4) Look for line "local   all	postgres	peer"
 	5) Once found create new line under it and write the following under the same words "local   all   tombolo_test   trust"
