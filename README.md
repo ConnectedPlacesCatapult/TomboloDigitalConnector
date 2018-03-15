@@ -51,6 +51,10 @@ make sure that you do before you proceed.**
 - [Gradle (2.12+)](https://gradle.org/)
 - [Git](https://git-scm.com/download/)
 
+After the successful installation of the requirements, you can use the Digital Connector by following the instructions 
+in the [quick start](#quick-start) section or by going through the [intro tutorial](/documentation/using-the-digital-connector.md)
+in the documentation.
+
 ## Installation Guides
 
 - [Windows](documentation/windows-installation-guide.md)
