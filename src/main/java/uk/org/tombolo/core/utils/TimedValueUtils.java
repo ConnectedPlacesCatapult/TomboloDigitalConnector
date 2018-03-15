@@ -122,6 +122,42 @@ public class TimedValueUtils {
 			return saved;
 		});
 	}
+
+	/*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	FIXME: Need to find a better way to address it
+	*/
+	public static int saveWithoutUpdate(List<TimedValue> timedValues){
+		return HibernateUtil.withSession((session) -> {
+			int saved = 0;
+			session.beginTransaction();
+			for (TimedValue timedValue : timedValues){
+				try{
+					session.save(timedValue);
+					saved++;
+				}catch(NonUniqueObjectException e){
+					log.warn("Could not save timed value for subject {}, attribute {}, time {}: {}",
+							timedValue.getId().getSubject().getLabel(),
+							timedValue.getId().getAttribute().getDescription(),
+							timedValue.getId().getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+							e.getMessage());
+				}
+				if ( saved % 2000 == 0 ) { 
+					// FIXME:
+					// Flushing at small intervals increase overhead for the system to clear the session.
+					// The default behaviour of hibernate is to auto flush when it thinks is necessary thus it may be required to 
+					// flush the session manually but this requires testing, and can be cosidered as fixme
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+			return saved;
+		});
+	}
 	
 	/**
 	 * FIXME: Supports a very limited number of strings (implemented on-demand)
