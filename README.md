@@ -257,12 +257,10 @@ When you’ve run this example, you can expect a map that looks like this:
 - Run the following command into the Terminal.
 
   ```bash
-  gradle runExport \
-    -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
-    -Poutput='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+  gradle runExport -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
   ```
 
-- You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
+- You can expect it to take around 1.5 minutes to generate the output, which will be saved in the current directory.
 Change the path in the command in case you want it saved elsewhere.
 
   The output will look similar to the next content:
@@ -307,7 +305,10 @@ Our goal is for someone to get back to you within 24 hours.**
 
 - [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
 
--  [Learn how to build your own recipe](documentation/recipe-language.md)
+- [Learn how to build your own recipe](documentation/recipe-language.md)
+
+- [Learn more about the UK geographic boundaries (LSOA, MSOA, Ward, etc) we often refer to in our tutorials and
+recipes.](https://census.ukdataservice.ac.uk/use-data/guides/boundary-data)
 
 ### Run tests
 
@@ -343,20 +344,14 @@ gradle install
 We use the Gradle task `runExport` to run exports. The parameters are as follows:
 
 ```bash
-gradle runExport \
-    -Precipe='path/to/spec/file.json' \
-    -Poutput='output_file.json' \
-    -Pforce='com.className'
-    -Pclear=true
+gradle runExport -Precipe='path/to/spec/file.json' -Poutput='output_file.json' -Pforce='com.className' -Pclear=true
 ```
 
 For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic
 in a given borough and outputs the results to the file `reaggregate-traffic-count-to-la.json`:
 
 ```bash
-gradle runExport \
-    -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
-    -Poutput='reaggregate-traffic-count-to-la_output.json'
+gradle runExport -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' -Poutput='reaggregate-traffic-count-to-la_output.json'
 ```
 
 ### Export data catalogue

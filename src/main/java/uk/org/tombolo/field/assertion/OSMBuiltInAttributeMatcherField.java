@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  *  Returns the value of the 'field' if the subject has an attribute matching one of the built-in attributes in the
- *  built-in importer class specified. At the moment we only have built-in support for OSM importers.
+ *  built-in OSM importers we support.
  */
 public class OSMBuiltInAttributeMatcherField extends AttributeMatcherField {
 

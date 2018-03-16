@@ -75,7 +75,7 @@ public class NHSAdmissionsImporter extends AbstractImporter {
         DatasourceSpec datasourceSpec = new DatasourceSpec(
                 NHSAdmissionsImporter.class,
                 "NHSAdmissionsObese",
-                "NHS Admissiond Obese",
+                "NHS Admissions Obese",
                 "Admission Episodes with a primary or secondary diagnosis of obesity, by Region, Local Authority of residence and gender",
                 DATASOURCE);
         return datasourceSpec;
