@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Returns the value of the 'field' if the subject has an attribute matching one of the 'attributes'"
+ * Returns the value of the 'field' if the subject has an attribute matching one of the 'attributes'
  */
 public class AttributeMatcherField extends AbstractField implements SingleValueField, ParentField{
 
