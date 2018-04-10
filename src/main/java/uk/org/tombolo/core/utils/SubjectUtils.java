@@ -116,8 +116,7 @@ public class SubjectUtils {
 				}
 				saved++;
 
-				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
-					//flush a batch of inserts and release memory:
+				if ( saved % 50 == 0 ) { // because batch size in the hibernate config is 50
 					session.flush();
 					session.clear();
 				}
@@ -145,11 +144,7 @@ public class SubjectUtils {
                     log.warn("Could not save subject {}, name {},", subject.getLabel(), subject.getName());
                 }
 
-				if ( saved % 2000 == 0 ) {
-					// FIXME:
-					// Flushing at small intervals increase overhead for the system to clear the session.
-					// The default behaviour of hibernate is to auto flush when it thinks is necessary thus it may be required to 
-					// flush the session manually but this requires testing, and can be cosidered as fixme 
+				if ( saved % 50 == 0 ) {
 					session.flush();
 					session.clear();
 				}
