@@ -60,8 +60,8 @@
    	\q
 
 ## Rename project files
-    mv gradle.properties.example gradle.properties
-    mv apikeys.properties.example apikeys.properties
+    cp gradle.properties.example gradle.properties
+    cp apikeys.properties.example apikeys.properties
 
 ## Build TomboloDigitalConnector
 	gradle clean build

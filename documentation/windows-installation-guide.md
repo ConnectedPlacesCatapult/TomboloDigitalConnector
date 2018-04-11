@@ -293,8 +293,8 @@ git clone https://github.com/FutureCitiesCatapult/TomboloDigitalConnector.git
 To do that just type the following commands in **Command Prompt**
 
 ```bash
-rename gradle.properties.example gradle.properties
-rename apikeys.properties.example apikeys.properties
+copy gradle.properties.example gradle.properties
+copy apikeys.properties.example apikeys.properties
 ``` 
 
 ### Setup Databases
