@@ -78,43 +78,6 @@ return/enter, the terminal will execute it and complete the task.
 
 - Open the **Terminal**. All the following steps will operate in it.
 
-- Check if you have installed the right versions for the requirements by entering each of the following commands in 
-the Terminal.
-
-  ```bash
-  java -version
-  psql --version
-  gradle --version
-  git --version
-  ```
-
-  The output will look something like this:
-
-  ```bash
-  $ java -version
-  java version "1.8.0_121"
-  Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
-  Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
-  $ psql --version
-  psql (PostgreSQL) 9.6.3
-  $ gradle --version
-  
-  ------------------------------------------------------------
-  Gradle 3.4
-  ------------------------------------------------------------
-  
-  Build time:   2017-02-20 14:49:26 UTC
-  Revision:     73f32d68824582945f5ac1810600e8d87794c3d4
-  
-  Groovy:       2.4.7
-  Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
-  JVM:          1.8.0_121 (Oracle Corporation 25.121-b13)
-  OS:           Mac OS X 10.11.6 x86_64
-  
-  $ git --version
-  git version 2.10.1 (Apple Git-78)
-  ```
-
 - Get the Digital Connector code to your local machine by cloning its repository.
 
   ```bash
@@ -133,46 +96,10 @@ the Terminal.
   Resolving deltas: 100% (7647/7647), done.
   ```
 
-- Go to the Digital Connector root directory and rename the properties files. These can be done you running each of the
-following commands and pressing enter.
+- Go to the Digital Connector root directory and run `./setup/setup_osx.sh`
 
-  ```bash
-  cd TomboloDigitalConnector
-  mv gradle.properties.example gradle.properties
-  mv apikeys.properties.example apikeys.properties
-  ```
 
-  The previous commands will allow you to use the default project settings.  
-
-  *If you prefer/need you can amend the settings altering the default ones to the ones you decide.*
-
-### Set up database
-
-The following step sets up a main and a test database after starting the server.
-The test database is used by the tests and is cleared routinely. We use this to gain control over what is in the 
-database when our tests are running and to avoid affecting any important data in your main database.
-###### IMPORTANT NOTE: The tombolo_test database is not optional, if not set up the tests will fail.
-
-```bash
-pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-chmod +x create_db.sh
-./create_db.sh
-```
-
-*For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
-
-### Run tests
-
-A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
-everything went fine.
-
-Run the command in the Terminal.
-
-```bash
-gradle test
-```
-
-If successful the output will be as the following.
+If successful the final output will be as the following.
 
 ```bash
 $ gradle test

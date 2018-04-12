@@ -60,8 +60,8 @@ gradle --version
 echo "----------------------------------"
 echo "Set up defaults for project"
 echo "----------------------------------"
-cp gradle.properties.example gradle.properties
-cp apikeys.properties.example apikeys.properties
+mv gradle.properties.example gradle.properties
+mv apikeys.properties.example apikeys.properties
 
 echo "----------------------------------"
 echo "Set up database"
