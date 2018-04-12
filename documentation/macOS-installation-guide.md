@@ -31,6 +31,18 @@
 ## Start Database Server
 	pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 
+If the database cannot start because of the following error
+```
+2018-03-17 15:25:19.490 GMT [61228] LOG:  database system is shut down
+2018-03-17 15:26:50.247 GMT [61255] LOG:  listening on IPv6 address "::1", port 5432
+2018-03-17 15:26:50.247 GMT [61255] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-03-17 15:26:50.247 GMT [61255] LOG:  listening on IPv6 address "fe80::1%lo0", port 5432
+2018-03-17 15:26:50.247 GMT [61255] FATAL:  could not open lock file "/tmp/.s.PGSQL.5432.lock": Permission denied
+```
+it could be because the instance was started as a different user and stopped uncleanly leaving the lock file or 
+there is currently an instance running on the same port as a different user. In both cases, **restarting the OS** 
+would solve the issue.
+
 ## Setup Databases
  ### Important: For a correct use of the DC both databases are mandatory
 	/* Main Database */
