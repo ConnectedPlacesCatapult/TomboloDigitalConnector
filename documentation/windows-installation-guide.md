@@ -342,9 +342,28 @@ Enter the password as ‘tombolo’
 #### Test Database
  ###### IMPORTANT NOTE: This database is not optional, if not set up the tests will fail.
 
-- The steps for setting up the test database is same as setting up the main database. Thus follow the steps 
-starting from **Main Database** section and replace **tombolo** with **tombolo_test** everywhere even 
-for the passwords. Below are just the screenshots for the steps:
+- The steps for setting up the test database are the same as for the main database. Thus follow the steps as in the **Main Database** section and replace **tombolo** with **tombolo_test** everywhere even for the passwords as follows.
+```bash
+psql -U postgres
+# Enter the password for the account and hit enter
+# (You have set this password while installing postgres)
+CREATE USER tombolo_test WITH PASSWORD ‘tombolo_test’;
+CREATE DATABASE tombolo_test WITH ENCODING=UTF8;
+ALTER USER tombolo_test WITH SUPERUSER;
+
+\q # to quit
+
+psql -d tombolo -U tombolo
+Enter the password as tombolo and now Type the following commands
+CREATE EXTENSION postgis;
+SET NAMES ‘UTF8’;
+
+\q # to quit
+
+psql -d tombolo_test -U tombolo_test < src\main\resources\sql\create_database.sql
+Enter the password as ‘tombolo_test’
+```
+Below are just the screenshots for the steps:
 ![Tombolo Test database](https://user-images.githubusercontent.com/19670372/33494852-7c82926a-d6bc-11e7-8ec8-c6299e365501.png)
 ![Tombolo Test database 2](https://user-images.githubusercontent.com/19670372/33494851-7c6ad0f8-d6bc-11e7-9074-9b71f0482550.png)
 
