@@ -60,15 +60,15 @@ gradle --version
 echo "----------------------------------"
 echo "Set up defaults for project"
 echo "----------------------------------"
-mv gradle.properties.example gradle.properties
-mv apikeys.properties.example apikeys.properties
+cp gradle.properties.example gradle.properties
+cp apikeys.properties.example apikeys.properties
 
 echo "----------------------------------"
 echo "Set up database"
 echo "----------------------------------"
 pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-chmod +x create_db.sh
-./create_db.sh
+chmod +x setup/create_db.sh
+./setup/create_db.sh
 
 echo "----------------------------------"
 echo "Test setup"

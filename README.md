@@ -63,7 +63,7 @@ in the documentation.
 
 ## Quick start
 
-This tutorial will guide you to a quick start on **macOS**. Installation tutorials for other operating systems will come soon.
+This tutorial will guide you to a quick start on **macOS**.
 
 #### A note about the Terminal
 
