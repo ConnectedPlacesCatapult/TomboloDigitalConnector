@@ -22,6 +22,8 @@ public class CatalogueExportRunner extends AbstractRunner {
 
     public static void main(String[] args) throws Exception {
         runner.validateArguments(args);
+        // init properties
+        runner.init();
 
         JsonWriter writer = new JsonWriter(runner.getOutputWriter(args[0]));
         List<Class<? extends Importer>> importers = runner.getImporterClasses();

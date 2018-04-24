@@ -35,6 +35,6 @@ public class JournalEntryUtils {
         String importKey = datasourceId+scopeKey;
 
         return new DatabaseJournalEntry(className, importKey);
-    };
+    }
 
 }

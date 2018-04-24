@@ -39,6 +39,8 @@ public class ImporterInfoRunner extends AbstractRunner {
             return;
         }
 
+        // init properties
+        runner.init();
         Importer importer = runner.getImporter(importerClass);
         List<String> datasources = runner.getDatasourceIds(importer);
         

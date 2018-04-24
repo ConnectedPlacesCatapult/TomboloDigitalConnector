@@ -3,6 +3,7 @@ package uk.org.tombolo;
 import com.github.fge.jsonschema.core.report.ProcessingReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.org.tombolo.core.Subject;
 import uk.org.tombolo.importer.ConfigurationException;
 import uk.org.tombolo.importer.DownloadUtils;
 import uk.org.tombolo.recipe.DataExportRecipe;
@@ -24,8 +25,16 @@ public abstract class AbstractRunner {
     private static final String SYSTEM_PROPERTIES_FILENAME = "gradle.properties";
     private static final String FILE_DOWNLOAD_CACHE = "fileDownloadCache";
 
+    private Properties properties;
+
     protected Properties loadApiKeys() throws ConfigurationException {
         return loadProperties(API_KEYS_PROPERTY_NAME, API_KEYS_FILENAME);
+    }
+
+    protected void init() throws ConfigurationException {
+        properties = loadProperties(SYSTEM_PROPERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
+        //set system projection SRID
+        Subject.SRID = Integer.parseInt(properties.getProperty("SRID"));
     }
 
     public static Properties loadProperties(String propertyName, String propertyFilename) throws ConfigurationException {
@@ -56,7 +65,6 @@ public abstract class AbstractRunner {
     }
 
     protected DownloadUtils initialiseDowloadUtils() throws ConfigurationException {
-        Properties properties = loadProperties(SYSTEM_PROPERTIES_PROPERTY_NAME, SYSTEM_PROPERTIES_FILENAME);
         log.info("Setting file download cache: {}", properties.getProperty(FILE_DOWNLOAD_CACHE));
         DownloadUtils downloadUtils = new DownloadUtils(DownloadUtils.DEFAULT_DATA_CACHE_ROOT);
         if (properties.getProperty(FILE_DOWNLOAD_CACHE) != null)

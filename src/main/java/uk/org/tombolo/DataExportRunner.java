@@ -45,6 +45,8 @@ public class DataExportRunner extends AbstractRunner {
         if (clearDatabaseCache) {
             DatabaseUtils.clearAllData();
         }
+        // init properties
+        runner.init();
 
         // Load API keys
         Properties apiKeys = runner.loadApiKeys();

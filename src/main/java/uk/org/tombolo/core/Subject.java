@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Entity
 @Table(name="subject")
 public class Subject {
-	public static final int SRID = 4326;
+	// SRID in the system config file
+	public static int SRID;
 
 	Integer id;
 	SubjectType subjectType;
