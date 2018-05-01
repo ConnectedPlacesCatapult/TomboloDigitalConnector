@@ -1,5 +1,6 @@
 package uk.org.tombolo.importer.osm;
 
+import com.slimjars.dist.gnu.trove.map.TLongObjectMap;
 import com.vividsolutions.jts.geom.*;
 import de.topobyte.osm4j.core.access.OsmHandler;
 import de.topobyte.osm4j.core.dataset.InMemoryMapDataSet;
@@ -8,7 +9,7 @@ import de.topobyte.osm4j.core.model.util.OsmModelUtil;
 import de.topobyte.osm4j.core.resolve.EntityNotFoundException;
 import de.topobyte.osm4j.geometry.GeometryBuilder;
 import de.topobyte.osm4j.geometry.MissingEntitiesStrategy;
-import gnu.trove.map.TLongObjectMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.org.tombolo.core.Attribute;
