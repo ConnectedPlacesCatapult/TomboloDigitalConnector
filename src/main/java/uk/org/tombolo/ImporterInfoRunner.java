@@ -86,8 +86,9 @@ public class ImporterInfoRunner extends AbstractRunner {
             importer.setDownloadUtils(initialiseDowloadUtils());
             importer.configure(loadApiKeys());
         } catch (Exception e) {
-            log.error("\n" + DataExportRunner.BRIGHT_RED+ "-----> TASK FAILED: " + e.getMessage()  + "<-----\nCaused by " +
-            e.getCause() + "\n\n" + DataExportRunner.RED + ExceptionUtils.getStackTrace(e) + DataExportRunner.END);
+            e.printStackTrace();
+            // log.error("\n" + DataExportRunner.BRIGHT_RED+ "-----> TASK FAILED: " + e.getMessage()  + "<-----\nCaused by " +
+            // e.getCause() + "\n\n" + DataExportRunner.RED + ExceptionUtils.getStackTrace(e) + DataExportRunner.END);
         }
 
         return importer;
