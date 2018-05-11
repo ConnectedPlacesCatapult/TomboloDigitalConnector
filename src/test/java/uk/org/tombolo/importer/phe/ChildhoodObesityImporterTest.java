@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.phe;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Using the following test data files:
@@ -60,7 +60,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         assertEquals(12, datasourceWard.getTimedValueAttributes().size());
     }
 
-    @Test
+    @Test @Ignore
     public void importDatasourceWard() throws Exception {
         importer.importDatasource("childhoodObesityWard", Arrays.asList("ward"), null, null);
 
@@ -89,7 +89,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void importDatasourceMSOA() throws Exception {
         importer.importDatasource("childhoodObesityMSOA", Arrays.asList("msoa"), null, null);
 
@@ -118,7 +118,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         }
     }
 
-    @Test
+    @Test @Ignore
     public void importDatasourceLA() throws Exception {
         importer.importDatasource("childhoodObesityLA", Arrays.asList("localAuthority"), null, null);
 

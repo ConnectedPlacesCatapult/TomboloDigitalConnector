@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.nhschoices;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -47,7 +48,7 @@ public class NHSAdmissionsImporterTest extends AbstractTest {
         assertEquals("https://digital.nhs.uk/media/28729/Statistics-on-Obesity-Physical-Activity-and-Diet-England-2016-Tables/Any/obes-phys-acti-diet-eng-2016-tab", datasource.getDatasourceSpec().getUrl());
     }
 
-    @Test
+    @Test @Ignore
     public void testImportDatasource() throws Exception {
         importer.importDatasource("NHSAdmissionsObese", null, null, null);
         System.out.println(importer.getTimedValueCount());
