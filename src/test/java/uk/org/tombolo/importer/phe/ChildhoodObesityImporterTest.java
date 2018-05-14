@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
  * Remote: http://www.noo.org.uk/securefiles/161024_1352/20150511_MSOA_Ward_Obesity.xlsx
  * Local: c686dc46-0b81-3ede-b85d-29cd912f86be.xlsx
  */
+@Ignore ("Until the format issue is resolved")
 public class ChildhoodObesityImporterTest extends AbstractTest {
     private ChildhoodObesityImporter importer;
 
@@ -60,7 +61,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         assertEquals(12, datasourceWard.getTimedValueAttributes().size());
     }
 
-    @Test @Ignore
+    @Test
     public void importDatasourceWard() throws Exception {
         importer.importDatasource("childhoodObesityWard", Arrays.asList("ward"), null, null);
 
@@ -89,7 +90,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void importDatasourceMSOA() throws Exception {
         importer.importDatasource("childhoodObesityMSOA", Arrays.asList("msoa"), null, null);
 
@@ -118,7 +119,7 @@ public class ChildhoodObesityImporterTest extends AbstractTest {
         }
     }
 
-    @Test @Ignore
+    @Test
     public void importDatasourceLA() throws Exception {
         importer.importDatasource("childhoodObesityLA", Arrays.asList("localAuthority"), null, null);
 
