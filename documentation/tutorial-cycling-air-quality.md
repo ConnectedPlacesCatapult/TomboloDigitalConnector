@@ -13,9 +13,7 @@ Having installed the system, it is time to run a data export recipe. In the
 we described an example recipe where we output, for every borough in London, information about NO2 concentration and the ratio between the bicycle traffic and car traffic ([see recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality.json)). To run the export recipe, run the following command from the root directory of the Tombolo Digital Connector:
 
 ```bash
-gradle runExport \
-  -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' \
-  -Poutput='london-cycle-traffic-air-quality-output.json'
+gradle runExport -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality.json' -Poutput='london-cycle-traffic-air-quality-output.json'
 ```
 
 As mentioned in the [use case description](use-case-on-cycling-and-air-quality.md), this will give you a GeoJson file
@@ -76,9 +74,7 @@ and add the following datasource to the list of datasources:
 What this does is that it tells the Digital Connector to output all LSOA geographies that fall inside the 33 London boroughs (We are here basing our work on the fact that London boroughs can be identified by a label staring with `E090`) ([see the full recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa.json)). Run the new recipe by executing the command:
 
 ```bash
-gradle runExport \
-  -Precipe='london-cycle-traffic-air-quality-lsoa.json' \
-  -Poutput='london-cycle-traffic-air-quality-lsoa-output.json'
+gradle runExport -Precipe='london-cycle-traffic-air-quality-lsoa.json' -Poutput='london-cycle-traffic-air-quality-lsoa-output.json'
 ```
 
 When looking at the output from the Digital Connector you will notice that you get very many warnings. This is because that there are very many LSOAs that do not have either a traffic counter in them or an air quality sensor, and hence there is no data to output. Yet, the Digital Connector does return a GeoJson file with the LSOA geographies. If you, again, use QGIS to create a quantile-based colouring of the LSOAs, you should get an image that looks like the one below.
@@ -222,9 +218,7 @@ with a back-off field that first tries to aggregate the NO2 values for the outpu
 The back-off field for the ratio of bicycles to cars is exactly the same, only with changing the corresponding recipe ([see full recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/blob/master/src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json)). As before you run the recipe with the command:
 
 ```bash
-gradle runExport \
-  -Precipe='london-cycle-traffic-air-quality-lsoa-backoff.json' \
-  -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+gradle runExport -Precipe='london-cycle-traffic-air-quality-lsoa-backoff.json' -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
 ```
 
 Using QGIS to visualise the back-off model in a similar manner as done above, we get a much less sparse data output as shown in the image below.

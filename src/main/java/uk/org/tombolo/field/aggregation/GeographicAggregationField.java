@@ -1,6 +1,8 @@
 package uk.org.tombolo.field.aggregation;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.rank.Max;
+import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.apache.commons.math3.util.MathArrays;
 import org.apache.commons.math3.util.ResizableDoubleArray;
@@ -30,7 +32,7 @@ import java.util.Map;
 public class GeographicAggregationField extends AbstractField implements SingleValueField, ParentField {
     private static Logger log = LoggerFactory.getLogger(GeographicAggregationField.class);
 
-    public enum AggregationFunction {sum, mean}
+    public enum AggregationFunction {sum, mean, max, min}
     private final SubjectRecipe subject;
     private final FieldRecipe field;
     private final AggregationFunction function;
@@ -54,13 +56,15 @@ public class GeographicAggregationField extends AbstractField implements SingleV
         aggregators = new HashMap<>();
         aggregators.put(AggregationFunction.sum, new Sum());
         aggregators.put(AggregationFunction.mean, new Mean());
+        aggregators.put(AggregationFunction.max, new Max());
+        aggregators.put(AggregationFunction.min, new Min());
 
         try {
             this.aggregator = aggregators.get(this.function);
             this.singleValueField = (SingleValueField) field.toField();
             singleValueField.setFieldCache(fieldCache);
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("Function not supported. Supporting {sum, mean}");
+            throw new IllegalArgumentException("Function not supported. Supporting {sum, mean, max, min}");
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Field class not found.", e);
         } catch (ClassCastException e){
@@ -96,7 +100,9 @@ public class GeographicAggregationField extends AbstractField implements SingleV
         Double retVal = doubles.compute(aggregator);
 
         if (retVal.isNaN()) {
-            throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (possible division by zero?)", function));
+            throw new IncomputableFieldException(String.format("Aggregation function %s returned NaN (any " +
+                            "NaN values in the set? or trying to operate on an empty set?)",
+                    function));
         } else if (retVal.isInfinite()) {
             throw new IncomputableFieldException(String.format("Aggregation function %s returned Infinity (possible division by zero?)", function));
         }

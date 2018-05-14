@@ -41,8 +41,38 @@ public class FixedValueUtils {
                             fixedValue.getId().getAttribute().getLabel(),
                             e.getMessage());
                 }
-                if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
-                    //flush a batch of inserts and release memory:
+                if ( saved % 50 == 0 ) { // because batch size in the hibernate config is 50
+                    session.flush();
+                    session.clear();
+                }
+            }
+            session.getTransaction().commit();
+            return saved;
+        });
+    }
+
+    /*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	FIXME: Need to find a better way to address it
+	*/
+    public static int saveWithoutUpdate(List<FixedValue> fixedValues){
+        return HibernateUtil.withSession((session) -> {
+            int saved = 0;
+            session.beginTransaction();
+            for (FixedValue fixedValue : fixedValues){
+                try{
+                    session.save(fixedValue);
+                    saved++;
+                }catch(NonUniqueObjectException e){
+                    log.warn("Could not save fixed value for subject {}, attribute {}: {}",
+                            fixedValue.getId().getSubject().getLabel(),
+                            fixedValue.getId().getAttribute().getLabel(),
+                            e.getMessage());
+                }
+                if ( saved % 50 == 0 ) { 
                     session.flush();
                     session.clear();
                 }

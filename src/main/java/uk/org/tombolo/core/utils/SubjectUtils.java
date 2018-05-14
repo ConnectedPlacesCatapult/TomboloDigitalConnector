@@ -1,6 +1,7 @@
 package uk.org.tombolo.core.utils;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -115,8 +116,35 @@ public class SubjectUtils {
 				}
 				saved++;
 
-				if ( saved % 20 == 0 ) { //20, same as the JDBC batch size
-					//flush a batch of inserts and release memory:
+				if ( saved % 50 == 0 ) { // because batch size in the hibernate config is 50
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+		});
+	}
+
+	/*
+	Save and update requries to check in the database whether the entry exists or not,
+	if exists it updates else adds, but that increase overhead and compute time.
+	Using this method will only keep the old value and discard the new one, in case of 
+	duplicate records.
+	FIXME: Need to find a better way to address it
+	*/
+	public static void saveWithoutUpdate(List<Subject> subjects){
+		HibernateUtil.withSession(session -> {
+			session.beginTransaction();
+			int saved = 0;
+			for (Subject subject : subjects) {
+                try{
+                    session.save(subject);
+                    saved++;
+                }catch(NonUniqueObjectException e){
+                    log.warn("Could not save subject {}, name {},", subject.getLabel(), subject.getName());
+                }
+
+				if ( saved % 50 == 0 ) {
 					session.flush();
 					session.clear();
 				}

@@ -51,6 +51,10 @@ make sure that you do before you proceed.**
 - [Gradle (2.12+)](https://gradle.org/)
 - [Git](https://git-scm.com/download/)
 
+After the successful installation of the requirements, you can use the Digital Connector by following the instructions 
+in the [quick start](#quick-start) section or by going through the [intro tutorial](/documentation/using-the-digital-connector.md)
+in the documentation.
+
 ## Installation Guides
 
 - [Windows](documentation/windows-installation-guide.md)
@@ -59,7 +63,7 @@ make sure that you do before you proceed.**
 
 ## Quick start
 
-This tutorial will guide you to a quick start on **macOS**. Installation tutorials for other operating systems will come soon.
+This tutorial will guide you to a quick start on **macOS**.
 
 #### A note about the Terminal
 
@@ -73,43 +77,6 @@ return/enter, the terminal will execute it and complete the task.
 ### Let's start
 
 - Open the **Terminal**. All the following steps will operate in it.
-
-- Check if you have installed the right versions for the requirements by entering each of the following commands in 
-the Terminal.
-
-  ```bash
-  java -version
-  psql --version
-  gradle --version
-  git --version
-  ```
-
-  The output will look something like this:
-
-  ```bash
-  $ java -version
-  java version "1.8.0_121"
-  Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
-  Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
-  $ psql --version
-  psql (PostgreSQL) 9.6.3
-  $ gradle --version
-  
-  ------------------------------------------------------------
-  Gradle 3.4
-  ------------------------------------------------------------
-  
-  Build time:   2017-02-20 14:49:26 UTC
-  Revision:     73f32d68824582945f5ac1810600e8d87794c3d4
-  
-  Groovy:       2.4.7
-  Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
-  JVM:          1.8.0_121 (Oracle Corporation 25.121-b13)
-  OS:           Mac OS X 10.11.6 x86_64
-  
-  $ git --version
-  git version 2.10.1 (Apple Git-78)
-  ```
 
 - Get the Digital Connector code to your local machine by cloning its repository.
 
@@ -129,46 +96,10 @@ the Terminal.
   Resolving deltas: 100% (7647/7647), done.
   ```
 
-- Go to the Digital Connector root directory and rename the properties files. These can be done you running each of the
-following commands and pressing enter.
+- Go to the Digital Connector root directory and run `./setup/setup_osx.sh`
 
-  ```bash
-  cd TomboloDigitalConnector
-  mv gradle.properties.example gradle.properties
-  mv apikeys.properties.example apikeys.properties
-  ```
 
-  The previous commands will allow you to use the default project settings.  
-
-  *If you prefer/need you can amend the settings altering the default ones to the ones you decide.*
-
-### Set up database
-
-The following step sets up a main and a test database after starting the server.
-The test database is used by the tests and is cleared routinely. We use this to gain control over what is in the 
-database when our tests are running and to avoid affecting any important data in your main database.
-###### IMPORTANT NOTE: The tombolo_test database is not optional, if not set up the tests will fail.
-
-```bash
-pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-chmod +x create_db.sh
-./create_db.sh
-```
-
-*For more information or to change the default database and user settings access the file [create_db.sh](create_db.sh).*
-
-### Run tests
-
-A quick check on how everything has been set up is to run all the tests. If they are successful, it will mean that 
-everything went fine.
-
-Run the command in the Terminal.
-
-```bash
-gradle test
-```
-
-If successful the output will be as the following.
+If successful the final output will be as the following.
 
 ```bash
 $ gradle test
@@ -242,7 +173,7 @@ Now you are all set to run a task on the Digital Connector.
 
 The next step is to run an example to show how the digital connector combines different data sets.
 We’re using an example that shows the relationship between air pollution (demonstrated in this example by NO2 levels), 
-and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/tutorial.md).  
+and car and bicycle traffic in every borough in London. You can read more about this example [here](documentation/tutorial-cycling-air-quality.md).  
 
 When you’ve run this example, you can expect a map that looks like this: 
 
@@ -253,12 +184,10 @@ When you’ve run this example, you can expect a map that looks like this:
 - Run the following command into the Terminal.
 
   ```bash
-  gradle runExport \
-    -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' \
-    -Poutput='~/Desktop/london-cycle-traffic-air-quality-lsoa-backoff-output.json'
+  gradle runExport -Precipe='src/main/resources/executions/examples/london-cycle-traffic-air-quality-lsoa-backoff.json' -Poutput='london-cycle-traffic-air-quality-lsoa-backoff-output.json'
   ```
 
-- You can expect it to take around 1.5 minutes to generate the output, which will be saved in the Desktop.
+- You can expect it to take around 1.5 minutes to generate the output, which will be saved in the current directory.
 Change the path in the command in case you want it saved elsewhere.
 
   The output will look similar to the next content:
@@ -297,13 +226,16 @@ Our goal is for someone to get back to you within 24 hours.**
 
 #### See also:
 
-- [Learn more about the **example** used in this tutorial](documentation/tutorial.md)
+- [Learn more about the **example** used in this tutorial](documentation/tutorial-cycling-air-quality.md)
   
 - [Use other examples to trail the Digital Connector](src/main/resources/executions/examples)
 
 - [Understand the structure of the recipe](https://github.com/FutureCitiesCatapult/TomboloDigitalConnector/files/1548320/annotatedRecipe.pdf)
 
--  [Learn how to build your own recipe](documentation/recipe-language.md)
+- [Learn how to build your own recipe](documentation/recipe-language.md)
+
+- [Learn more about the UK geographic boundaries (LSOA, MSOA, Ward, etc) we often refer to in our tutorials and
+recipes.](https://census.ukdataservice.ac.uk/use-data/guides/boundary-data)
 
 ### Run tests
 
@@ -339,20 +271,14 @@ gradle install
 We use the Gradle task `runExport` to run exports. The parameters are as follows:
 
 ```bash
-gradle runExport \
-    -Precipe='path/to/spec/file.json' \
-    -Poutput='output_file.json' \
-    -Pforce='com.className'
-    -Pclear=true
+gradle runExport -Precipe='path/to/spec/file.json' -Poutput='output_file.json' -Pforce='com.className' -Pclear=true
 ```
 
 For example, this calculates the proportion of cycle traffic received at a traffic counter relative to the total traffic
 in a given borough and outputs the results to the file `reaggregate-traffic-count-to-la.json`:
 
 ```bash
-gradle runExport \
-    -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' \
-    -Poutput='reaggregate-traffic-count-to-la_output.json'
+gradle runExport -Precipe='src/main/resources/executions/examples/reaggregate-traffic-count-to-la.json' -Poutput='reaggregate-traffic-count-to-la_output.json'
 ```
 
 ### Export data catalogue
