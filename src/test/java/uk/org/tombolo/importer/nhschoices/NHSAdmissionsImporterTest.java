@@ -1,6 +1,7 @@
 package uk.org.tombolo.importer.nhschoices;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.TestFactory;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by tbantis on 16/02/2018.
  */
+@Ignore ("Until redirected to updated source")
 public class NHSAdmissionsImporterTest extends AbstractTest {
     private static NHSAdmissionsImporter importer;
     Subject islington;
