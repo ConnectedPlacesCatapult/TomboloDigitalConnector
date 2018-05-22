@@ -353,7 +353,7 @@ ALTER USER tombolo_test WITH SUPERUSER;
 
 \q # to quit
 
-psql -d tombolo -U tombolo
+psql -d tombolo_test -U tombolo_test
 Enter the password as tombolo and now Type the following commands
 CREATE EXTENSION postgis;
 SET NAMES ‘UTF8’;
