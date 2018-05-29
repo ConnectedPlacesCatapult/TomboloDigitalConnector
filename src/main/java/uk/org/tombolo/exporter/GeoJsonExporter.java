@@ -76,6 +76,7 @@ public class GeoJsonExporter implements Exporter {
 	}
 
 	private String getGeoJSONGeometryForSubject(Subject subject) {
-		return (new GeometryJSON()).toString(subject.getShape());
+		// For millimeter (mm) precision represent lat/lon with 8 decimal places in decimal degrees format.
+		return (new GeometryJSON(8)).toString(subject.getShape());
 	}
 }
