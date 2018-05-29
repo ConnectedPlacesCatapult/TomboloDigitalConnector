@@ -1,0 +1,48 @@
+<h3 class="mat-h3"><span>My Account</span><button mat-icon-button (click)="close()"><mat-icon svgIcon="cross"></mat-icon></button></h3>
+
+<h4 class="mat-body-2">Profile</h4>
+<hr>
+
+<form [formGroup]="profileForm">
+<mat-form-field class="full-width">
+  <input matInput placeholder="Name" formControlName="name" readonly>
+  <!--<button mat-icon-button matSuffix aria-label="Edit">
+    Edit
+  </button>-->
+</mat-form-field>
+<mat-form-field class="full-width">
+  <input matInput placeholder="Email address" formControlName="email" readonly>
+</mat-form-field>
+<mat-form-field class="full-width">
+  <input matInput type="password" placeholder="Password" formControlName="password" readonly>
+  <button mat-icon-button matSuffix aria-label="Change" (click)="changePassword()">
+    Change
+  </button>
+</mat-form-field>
+</form>
+
+<h4 class="mat-body-2">Usage Details</h4>
+
+<hr>
+
+<div class="usage" *ngIf="usage">
+  <div>
+    <p><span class="quota">Maps created</span><span class="usage-summary">{{usage.used.maps + ' of ' + usage.limit.maps}}</span></p>
+    <mat-progress-bar color="accent" class="full-width" [value]="usage.used.maps / usage.limit.maps * 100"></mat-progress-bar>
+  </div>
+
+  <div>
+    <p><span class="quota">Datasets uploaded</span><span class="usage-summary">{{usage.used.datasets + ' of ' + usage.limit.datasets}}</span></p>
+    <mat-progress-bar color="accent" class="full-width" [value]="usage.used.datasets / usage.limit.datasets * 100"></mat-progress-bar>
+  </div>
+
+  <div>
+    <p><span class="quota">Storage space</span><span class="usage-summary">{{storageUseText()}}</span></p>
+  <mat-progress-bar color="accent" class="full-width" [value]="usage.used.totalStorage / usage.limit.totalStorage * 100"></mat-progress-bar>
+
+  </div>
+</div>
+
+
+
+

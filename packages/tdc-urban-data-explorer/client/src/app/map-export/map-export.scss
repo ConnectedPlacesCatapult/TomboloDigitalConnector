@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+:host {
+  display: block;
+  position: relative;
+}
+
+.buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.spinner-wrapper {
+  @include mat-fill();
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(black, 0.2);
+  z-index: 1000;
+}
+
+

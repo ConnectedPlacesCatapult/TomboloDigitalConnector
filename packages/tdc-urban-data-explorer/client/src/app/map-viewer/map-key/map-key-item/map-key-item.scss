@@ -1,0 +1,40 @@
+@import '../../../../variables';
+
+$color-chip-size: 25px !default;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.chips {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chip-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chip {
+  position: relative;
+  display: block;
+  width: $color-chip-size;
+  height: $color-chip-size;
+}
+
+.chip-marker {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 1px solid rgba(0,0,0,0.05);
+
+  &.circle {
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,15 @@
+<div *ngIf="!user" class="button-box">
+  <button mat-icon-button disableRipple [routerLink]="['/', {outlets: {'loginBox': 'login', rightBar: null}}]"><mat-icon svgIcon="login"></mat-icon>Log In</button>
+  <button mat-icon-button disableRipple
+          [routerLink]="['/', {outlets: {'loginBox': 'signup', rightBar: null}}]"
+          [disabled]="!config.createAccountEnabled"><mat-icon svgIcon="signup"></mat-icon>Sign Up</button>
+  <button mat-icon-button disableRipple [routerLink]="['/', {outlets: {'rightBar': 'accountinfo'}}]"
+          angulartics2On="click"
+          angularticsCategory="View"
+          angularticsAction="AccountBenefits"><mat-icon svgIcon="info"></mat-icon>Account Benefits</button>
+</div>
+
+<div *ngIf="user" class="button-box">
+  <button mat-icon-button class="username-button" [routerLink]="['/', {outlets: {'loginBox': ['myaccount']}}]"><mat-icon svgIcon="user"></mat-icon><span class="username">{{user.email}}</span></button>
+  <button mat-icon-button (click)="logout()"><mat-icon svgIcon="logout"></mat-icon>Log Out</button>
+</div>

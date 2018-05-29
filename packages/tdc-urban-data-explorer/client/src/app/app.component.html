@@ -1,0 +1,35 @@
+<mat-sidenav-container [@fadeIn]>
+
+  <mat-sidenav class="sidebar sidebar-left" align="start" mode="over" [opened]="leftBarOpen">
+    <router-outlet></router-outlet>
+  </mat-sidenav>
+
+  <div class="minzoom-warning" *ngIf="minZoomWarning" [@fadeIn]>Zoom in to see your data</div>
+
+  <tombolo-mapbox
+    id="main-map"
+    [mapClass]="mapClass"
+    (mapClick)="onMapClick($event)"
+    (mouseMove)="onMapMouseMoved($event)"
+    (mapMoveEnd)="onMapMoveEnd($event)"
+    [style]= "{version: 8, sources:{}, layers:[]}"
+    [showHover]="showHover">
+  </tombolo-mapbox>
+
+  <div class="color-overlay"></div>
+
+  <map-controls></map-controls>
+
+  <login-controls></login-controls>
+  <div class="login-box">
+    <router-outlet name="loginBox"></router-outlet>
+  </div>
+
+  <mat-sidenav class="sidebar sidebar-right" align="end" mode="over" [opened]="rightBarOpen">
+    <div class="sidebar-tab"><button mat-icon-button (click)="rightBarOpen = !rightBarOpen" disableRipple><mat-icon [svgIcon]="iconForSidebarTab()" color="accent"></mat-icon></button></div>
+    <router-outlet name="rightBar"></router-outlet>
+  </mat-sidenav>
+
+</mat-sidenav-container>
+
+

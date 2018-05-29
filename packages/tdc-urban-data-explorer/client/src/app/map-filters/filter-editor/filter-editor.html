@@ -1,0 +1,55 @@
+<form [formGroup]="form">
+
+  <!-- Data layer select -->
+  <mat-form-field class="full-width" floatLabel="never">
+    <mat-select formControlName="dataLayerId" placeholder="Data Layer">
+      <mat-option *ngFor="let layer of map.dataLayers" [value]="layer.layerId">{{layer.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Data attribute select -->
+  <mat-form-field class="full-width" floatLabel="never">
+    <mat-select formControlName="dataAttribute" placeholder="Data Attribute">
+      <mat-select-trigger class="trigger-with-info">
+        <span class="attribute-info">
+          {{selectedAttribute?.name}}
+          <span *ngIf="selectedAttribute?.unit">({{selectedAttribute?.unit}})</span>
+        </span>
+        <span *ngIf="selectedAttribute?.description">
+          <mat-icon svgIcon="info" [matTooltip]="selectedAttribute?.description" matTooltipPosition="below"></mat-icon>
+        </span>
+      </mat-select-trigger>
+      <mat-option *ngFor="let attribute of attributesForSelectedLayer()"
+                  [value]="attribute.field">{{attribute.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Operator select -->
+  <mat-form-field class="full-width" floatLabel="never">
+    <mat-select  formControlName="operator" placeholder="Operator">
+      <mat-option value="==">Equals (=)</mat-option>
+      <mat-option value="!="> Not equal (!=)</mat-option>
+      <mat-option *ngIf="mode == 'number'" value=">">Greater than (&gt;)</mat-option>
+      <mat-option *ngIf="mode == 'number'" value="<">Less than (&lt;)</mat-option>
+      <mat-option *ngIf="mode == 'number'" value=">=">Greater than or equal (&gt;=)</mat-option>
+      <mat-option *ngIf="mode == 'number'" value="<=">Less than or equal (&lt;=)</mat-option>
+      <mat-option *ngIf="mode == 'string'" value="in">In (comma-separated list)</mat-option>
+      <mat-option *ngIf="mode == 'string'" value="!in">Not in (comma-separated list)</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- String Value -->
+  <mat-form-field *ngIf="mode == 'string'" class="full-width" floatLabel="never">
+    <input matInput placeholder="Value" formControlName="value">
+  </mat-form-field>
+
+  <!-- Number value -->
+
+  <number-slider-control *ngIf="mode == 'number'"
+                         class="full-width" formControlName="value"
+                         [min]="selectedAttribute?.minValue"
+                         [max]="selectedAttribute?.maxValue"
+                         [step]="attributeSliderStep()"></number-slider-control>
+
+
+</form>

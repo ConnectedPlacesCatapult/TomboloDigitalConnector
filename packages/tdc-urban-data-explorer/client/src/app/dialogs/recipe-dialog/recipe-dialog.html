@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>View Recipe</h1>
+
+<div mat-dialog-content>
+  <codemirror [config]="codemirrorConfig" [(ngModel)]="recipe" *ngIf="recipe"></codemirror>
+  <div *ngIf="!recipe" class="norecipe">
+    This map has no associated recipe.
+  </div>
+</div>
+
+<div mat-dialog-actions fxLayoutAlign="end">
+  <button type="button" mat-raised-button color="accent" class="tombolo-button" (click)="close()">Close</button>
+</div>

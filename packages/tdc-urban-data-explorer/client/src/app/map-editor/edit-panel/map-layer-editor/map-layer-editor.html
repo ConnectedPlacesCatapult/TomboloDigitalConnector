@@ -1,0 +1,52 @@
+<form [formGroup]="form">
+  <!-- Colour -->
+  <div class="panel-group">
+    <label>Colour: </label>
+    <mat-radio-group formControlName="colorRadio">
+      <mat-radio-button value="fixed" class="full-width flex-label">Fixed:
+        <color-well formControlName="fixedColor" (click)="$event.stopPropagation()"></color-well>
+      </mat-radio-button>
+
+      <mat-radio-button value="attribute" class="full-width radio-control-container">
+        <mat-select placeholder="Data Attribute" formControlName="colorAttribute">
+          <mat-option *ngFor="let attr of rampAttributes" [value]="attr.field">{{attr.name}}</mat-option>
+        </mat-select><br/>
+        <color-palette-select [palettes]="palettes" formControlName="palette" class="full-width"></color-palette-select>
+        <mat-checkbox class="full-width" formControlName="paletteInverted">Invert palette</mat-checkbox>
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <!-- Size -->
+  <div *ngIf="mode == 'circle'" class="panel-group">
+    <label>Size:</label>
+    <mat-radio-group formControlName="sizeRadio">
+      <number-slider-control [min]="minPointSize" max="50" step="1" unit="px" formControlName="size" class="full-width"></number-slider-control>
+      <mat-radio-button value="fixed" class="full-width radio-control-container">Fixed</mat-radio-button>
+      <mat-radio-button value="attribute" class="full-width">
+        <mat-select placeholder="Data Attribute" formControlName="sizeAttribute">
+          <mat-option *ngFor="let attr of rampAttributes" [value]="attr.field">{{attr.name}}</mat-option>
+        </mat-select>
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <!-- Label -->
+  <div class="panel-group">
+    <label>Label:</label>
+    <mat-form-field class="full-width" floatLabel="never">
+      <mat-select #labelSelect formControlName="labelAttribute" placeholder="None">
+        <mat-option value=""><i>None</i></mat-option>
+        <mat-option *ngFor="let attr of allAttributes" [value]="attr.field">{{attr.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Transparency -->
+  <div class="panel-group">
+    <label>Transparency:</label>
+    <number-slider-control min="0" max="100" step="1" unit="%" formControlName="opacity" class="full-width">
+    </number-slider-control>
+  </div>
+
+</form>

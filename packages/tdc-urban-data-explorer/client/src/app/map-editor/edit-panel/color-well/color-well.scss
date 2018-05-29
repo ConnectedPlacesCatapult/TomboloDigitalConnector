@@ -1,0 +1,21 @@
+@import '../../../../variables';
+
+.color-well-wrapper {
+  display: inline-block;
+  border: 1px solid #C8D9D9;
+  border-radius: 2px;
+  padding: 4px;
+
+  input {
+    display: block;
+    box-sizing: border-box;
+    padding: 0;
+    width: 32px;
+    height: 18px;
+    border: 1px solid #C8D9D9;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+}
+
+

@@ -1,0 +1,46 @@
+<p class="mat-body-2">Enter an optional name, description and units for each data attribute (or just click 'Next'):</p>
+
+<mat-table [dataSource]="datasource">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.field}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let element"> <mat-select [(value)]="element.type">
+      <mat-option>None</mat-option>
+      <mat-option value="CHARACTER VARYING">Text</mat-option>
+      <mat-option value="DOUBLE PRECISION">Float</mat-option>
+      <mat-option value="INTEGER">Integer</mat-option>
+      <mat-option value="BIGINT">Integer64</mat-option>
+      <mat-option value="DATE">Date</mat-option>
+      <mat-option value="TIMESTAMP WITH TIME ZONE">Date/Time</mat-option>
+    </mat-select></mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"><mat-form-field floatLabel="never"><input matInput placeholder="Name" type="text" [(ngModel)]="element.name"></mat-form-field></mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let element"><mat-form-field floatLabel="never"><input matInput placeholder="Description" type="text" [(ngModel)]="element.description"></mat-form-field></mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="unit">
+    <mat-header-cell *matHeaderCellDef> Unit </mat-header-cell>
+    <mat-cell *matCellDef="let element"><mat-form-field floatLabel="never"><input matInput placeholder="Unit" type="text" [(ngModel)]="element.unit"></mat-form-field></mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="remove">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element"><button mat-icon-button (click)="element.removed = !element.removed"><mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon></button></mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{removed: row.removed}"></mat-row>
+</mat-table>
+
+<p class="mat-body-1"><mat-icon fontSet="fa" fontIcon="fa-info-circle"></mat-icon> You can change the type of a data attribute or remove it completely from the dataset.</p>

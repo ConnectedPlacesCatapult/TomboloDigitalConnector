@@ -1,0 +1,4 @@
+<div class="progress-container" *ngIf="loading" [@mapLoading]><mat-progress-bar mode="indeterminate"></mat-progress-bar></div>
+<div #mapContainer class="map-container" [class.hover]="showHover" [style.opacity]="mapOpacity"></div>
+<button mat-mini-fab (click)="zoom(1)" class="zoom-button zoom-button-plus" color="accent"><mat-icon svgIcon="plus"></mat-icon></button>
+<button mat-mini-fab (click)="zoom(-1)" class="zoom-button zoom-button-minus" color="accent"><mat-icon svgIcon="minus"></mat-icon></button>

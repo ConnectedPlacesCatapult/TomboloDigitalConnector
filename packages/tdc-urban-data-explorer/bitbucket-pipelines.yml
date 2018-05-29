@@ -1,0 +1,68 @@
+image:
+  name: registry.emu-analytics.net/pipeline-image:1
+  username: $DOCKER_USER
+  password: $DOCKER_PASSWORD
+
+pipelines:
+  branches:
+    staging:
+      - step:
+          caches:
+            - node
+            - client-node
+            - yarn
+          script:
+
+            # Server build
+            - yarn
+            - npm run version
+            - npm run build
+
+            # Client build
+            - cd client
+            - yarn global add node-sass
+            - yarn global add @angular/cli
+            - yarn
+            - npm run build
+            - cd ..
+
+            # Docker build, tag and push
+            - docker login https://registry.emu-analytics.net -u $DOCKER_USER -p $DOCKER_PASSWORD
+            - docker build -t registry.emu-analytics.net/tombolo/viewer:ci -f Dockerfile.ci .
+            - docker push registry.emu-analytics.net/tombolo/viewer:ci
+
+
+  tags:
+      release-*:
+        - step:
+            caches:
+              - node
+              - client-node
+              - yarn
+            script:
+
+              # Server build
+              - yarn
+              - npm run version
+              - npm run build
+
+              # Client build
+              - cd client
+              - yarn global add node-sass
+              - yarn global add @angular/cli
+              - yarn
+              - npm run build
+              - cd ..
+
+              # Docker build, tag and push
+              - docker login https://registry.emu-analytics.net -u $DOCKER_USER -p $DOCKER_PASSWORD
+              - docker build -t registry.emu-analytics.net/tombolo/viewer:$BITBUCKET_TAG .
+              - docker push registry.emu-analytics.net/tombolo/viewer:$BITBUCKET_TAG
+
+options:
+  docker: true
+
+definitions:
+  caches:
+    client-node: client/node_modules
+    yarn: /usr/local/share/.cache/yarn/v1

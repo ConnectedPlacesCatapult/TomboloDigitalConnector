@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.292,
+          51.3736
+        ]
+      },
+      "properties": {
+        "property1": "text",
+        "property2": 1,
+        "property3": 1.1,
+        "property4": "1998-12-31T22:59:59"
+      }
+    }
+  ]
+}

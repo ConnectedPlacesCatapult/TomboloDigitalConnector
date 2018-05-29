@@ -1,0 +1,22 @@
+{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/maps": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/tiles": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/b": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/auth": {
+    "target": "http://localhost:3000",
+    "secure": false
+  }
+}

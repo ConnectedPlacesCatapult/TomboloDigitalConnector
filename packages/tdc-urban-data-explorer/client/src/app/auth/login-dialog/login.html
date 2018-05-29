@@ -1,0 +1,39 @@
+<h3 class="mat-h3"><span>Log In</span><button mat-icon-button (click)="close()"><mat-icon svgIcon="cross"></mat-icon></button></h3>
+<p class="mat-body">Not a member?
+  <br>
+  <button mat-icon-button (click)="signup()"><mat-icon svgIcon="signup"></mat-icon>Sign up</button>
+</p>
+
+<a href="/api/v1/auth/facebook"
+   mat-raised-button class="full-width button-facebook"
+   [disabled]="!this.config.createAccountEnabled || !this.config.socialLoginEnabled"
+   angulartics2On="click"
+   angularticsCategory="Account"
+   angularticsAction="LoginFacebook"><mat-icon fontSet="fa" fontIcon="fa-facebook"></mat-icon>Log in with Facebook</a><br/>
+<a href="/api/v1/auth/twitter" mat-raised-button class="full-width button-twitter"
+   [disabled]="!this.config.createAccountEnabled || !this.config.socialLoginEnabled"
+   angulartics2On="click"
+   angularticsCategory="Account"
+   angularticsAction="LoginTwitter"><mat-icon fontSet="fa" fontIcon="fa-twitter"></mat-icon>Log in with Twitter</a><br/>
+<!--
+<a mat-raised-button class="full-width button-google-plus"><mat-icon fontSet="fa" fontIcon="fa-google-plus"></mat-icon>Log in with Google</a><br/>
+-->
+<p class="mat-body top-margin">Or log in with email:</p>
+
+<form [formGroup]="loginForm">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Email address" formControlName="email" autofocus>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input type="password" matInput placeholder="Password" formControlName="password">
+  </mat-form-field>
+
+  <div class="error" *ngIf="errorMessage"><mat-icon svgIcon="info"></mat-icon>{{errorMessage}}</div>
+
+  <button mat-raised-button
+          (click)="login()"
+          [disabled]="!loginForm.valid"
+          class="full-width">Log in</button>
+</form>
+
+<p  class="mat-body top-margin">Forgot <a [routerLink]="['/',{outlets:{loginBox:['resetpassword']}}]">password</a>?</p>

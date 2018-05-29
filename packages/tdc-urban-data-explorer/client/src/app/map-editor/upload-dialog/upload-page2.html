@@ -1,0 +1,20 @@
+<form [formGroup]="form">
+  <p class="mat-body-2">Enter a name and description for your dataset:</p>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Name (required)" formControlName="name">
+    <mat-error *ngIf="form.get('name').invalid">
+      Please enter a name for your dataset.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Attribution" formControlName="attribution">
+    <mat-hint>Copyright or other legal information</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <textarea matInput  placeholder="Description" formControlName="description"></textarea>
+    <mat-hint>Supports markdown formatting</mat-hint>
+  </mat-form-field>
+
+</form>

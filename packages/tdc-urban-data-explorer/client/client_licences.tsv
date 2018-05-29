@@ -1,0 +1,194 @@
+@angular/animations (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/animations/package.json
+@angular/cdk (5.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/cdk/package.json
+@angular/common (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/common/package.json
+@angular/compiler (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/compiler/package.json
+@angular/core (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/core/package.json
+@angular/flex-layout (2.0.0-beta.12)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/flex-layout/package.json
+@angular/forms (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/forms/package.json
+@angular/http (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/http/package.json
+@angular/material (5.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/material/package.json
+@angular/platform-browser-dynamic (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/platform-browser-dynamic/package.json
+@angular/platform-browser (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/platform-browser/package.json
+@angular/router (5.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@angular/router/package.json
+@mapbox/mapbox-gl-style-spec (10.1.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/@mapbox/mapbox-gl-style-spec/package.json
+@mapbox/sphericalmercator (1.0.5)	BSD 2-clause "Simplified" License (http://www.opensource.org/licenses/BSD-2-Clause)	node_modules/@mapbox/sphericalmercator/package.json
+@ngx-share/core (5.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@ngx-share/core/package.json
+JSV (4.0.2)	FreeBSD (http://github.com/garycourt/JSV/raw/master/jsv.js)	node_modules/JSV/package.json
+acorn-jsx (3.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/acorn-jsx/package.json
+acorn-object-spread (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/acorn-object-spread/package.json
+acorn (3.3.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/acorn/package.json
+acorn (4.0.13)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/unassert/node_modules/acorn/package.json
+acorn (5.5.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/falafel/node_modules/acorn/package.json
+adler32cs (0.0.1)	MISSING	
+amdefine (1.0.1)	bsd 3 clause or mit	node_modules/amdefine/package.json
+angular-2-local-storage (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/angular-2-local-storage/package.json
+angulartics2 (5.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/angulartics2/package.json
+ansi-regex (2.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ansi-regex/package.json
+ansi-styles (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/nomnom/node_modules/ansi-styles/package.json
+ansi-styles (2.2.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/chalk/node_modules/ansi-styles/package.json
+argparse (1.0.10)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/argparse/package.json
+arr-union (3.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/arr-union/package.json
+atoa (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/atoa/package.json
+babylon (6.18.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/babylon/package.json
+base64-arraybuffer (0.1.5)	MIT (https://github.com/niklasvh/base64-arraybuffer/blob/master/LICENSE-MIT)	node_modules/base64-arraybuffer/package.json
+brfs (1.5.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/brfs/package.json
+browserify-package-json (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/browserify-package-json/package.json
+buble (0.15.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/buble/package.json
+bubleify (0.7.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/bubleify/package.json
+buffer-equal (0.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/buffer-equal/package.json
+bytewise-core (1.2.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/bytewise-core/package.json
+bytewise (1.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/bytewise/package.json
+call-matcher (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/call-matcher/package.json
+canvas-pixels (0.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/canvas-pixels/package.json
+canvas-toBlob (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/canvas-toBlob/package.json
+cf-blob.js (0.0.1)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/cf-blob.js/package.json
+chalk (0.4.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/nomnom/node_modules/chalk/package.json
+chalk (1.1.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/chalk/package.json
+codemirror (5.35.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/codemirror/package.json
+concat-stream (1.6.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/concat-stream/package.json
+contra (1.9.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/contra/package.json
+convert-source-map (1.5.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/convert-source-map/package.json
+core-js (2.5.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/core-js/package.json
+core-util-is (1.0.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/core-util-is/package.json
+crossvent (1.5.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/crossvent/package.json
+css-line-break (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/css-line-break/package.json
+csscolorparser (1.0.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/csscolorparser/package.json
+custom-event (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/crossvent/node_modules/custom-event/package.json
+debug (3.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/debug/package.json
+deep-equal (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/deep-equal/package.json
+deep-is (0.1.3)	MIT (https://github.com/thlorenz/deep-is/blob/master/LICENSE)	node_modules/deep-is/package.json
+dragula (3.7.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/dragula/package.json
+duplexer2 (0.1.4)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/duplexer2/package.json
+earcut (2.1.3)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/earcut/package.json
+escape-string-regexp (1.0.5)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/escape-string-regexp/package.json
+escodegen (1.9.1)	BSD 2-clause "Simplified" License (http://www.opensource.org/licenses/BSD-2-Clause)	node_modules/escodegen/package.json
+esprima (3.1.3)	BSD 2-clause "Simplified" License (http://www.opensource.org/licenses/BSD-2-Clause)	node_modules/escodegen/node_modules/esprima/package.json
+esprima (4.0.0)	BSD 2-clause "Simplified" License (http://www.opensource.org/licenses/BSD-2-Clause)	node_modules/esprima/package.json
+espurify (1.7.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/espurify/package.json
+estraverse (4.2.0)	BSD 2-clause "Simplified" License (http://www.opensource.org/licenses/BSD-2-Clause)	node_modules/estraverse/package.json
+esutils (2.0.2)	BSD (http://github.com/estools/esutils/raw/master/LICENSE.BSD)	node_modules/esutils/package.json
+extend-shallow (2.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/extend-shallow/package.json
+falafel (2.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/falafel/package.json
+fast-levenshtein (2.0.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/fast-levenshtein/package.json
+file-saver (1.3.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/file-saver/package.json
+flow-remove-types (1.2.3)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/flow-remove-types/package.json
+font-awesome (4.7.0)	ofl 1.1 and mit	node_modules/font-awesome/package.json
+foreach (2.0.5)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/foreach/package.json
+function-bind (1.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/function-bind/package.json
+geojson-rewind (0.3.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/geojson-rewind/package.json
+geojson-vt (3.0.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/geojson-vt/package.json
+get-value (2.0.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/get-value/package.json
+gray-matter (3.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/gray-matter/package.json
+grid-index (1.0.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/grid-index/package.json
+hammerjs (2.0.8)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/hammerjs/package.json
+has-ansi (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/has-ansi/package.json
+has-color (0.1.7)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/has-color/package.json
+has (1.0.1)	MIT (https://github.com/tarruda/has/blob/master/LICENSE-MIT)	node_modules/has/package.json
+html2canvas (1.0.0-alpha.10)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/html2canvas/package.json
+ieee754 (1.1.8)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/ieee754/package.json
+in-publish (2.0.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/in-publish/package.json
+inherits (2.0.3)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/inherits/package.json
+is-buffer (1.1.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/is-buffer/package.json
+is-extendable (0.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/is-extendable/package.json
+is-plain-object (2.0.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/is-plain-object/package.json
+isarray (0.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/isarray/package.json
+isarray (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/through2/node_modules/isarray/package.json
+isobject (3.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/isobject/package.json
+js-yaml (3.10.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/js-yaml/package.json
+jsonlint-lines-primitives (1.6.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/jsonlint-lines-primitives/README.md
+jsonlint (1.6.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/jsonlint/README.md
+jspdf (1.3.5)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/jspdf/package.json
+kdbush (1.0.1)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/kdbush/package.json
+kind-of (3.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/kind-of/package.json
+kind-of (5.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/gray-matter/node_modules/kind-of/package.json
+levn (0.3.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/levn/package.json
+lodash._baseisequal (3.0.7)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash._baseisequal/package.json
+lodash._bindcallback (3.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash._bindcallback/package.json
+lodash._getnative (3.9.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash._getnative/package.json
+lodash.isarguments (3.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash.isarguments/package.json
+lodash.isarray (3.0.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash.isarray/package.json
+lodash.isequal (3.0.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash.isequal/package.json
+lodash.istypedarray (3.0.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash.istypedarray/package.json
+lodash.keys (3.1.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/lodash.keys/package.json
+magic-string (0.14.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/buble/node_modules/magic-string/package.json
+magic-string (0.22.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/magic-string/package.json
+mapbox-gl (0.44.1)	see license in license.txt	node_modules/mapbox-gl/package.json
+marked (0.3.12)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/marked/package.json
+merge-source-map (1.0.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/merge-source-map/package.json
+minimist (0.0.8)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/@mapbox/mapbox-gl-style-spec/node_modules/minimist/package.json
+minimist (1.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/minimist/package.json
+ms (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ms/package.json
+multi-stage-sourcemap (0.2.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/multi-stage-sourcemap/package.json
+ng2-dragula (1.5.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ng2-dragula/package.json
+ngx-color-picker (5.3.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ngx-color-picker/package.json
+ngx-md (3.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ngx-md/package.json
+ngx-uploader (4.2.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ngx-uploader/package.json
+nomnom (1.8.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/nomnom/LICENSE
+object-assign (4.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/object-assign/package.json
+object-inspect (1.4.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/object-inspect/package.json
+object-keys (1.0.11)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/object-keys/package.json
+optionator (0.8.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/optionator/package.json
+os-homedir (1.0.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/os-homedir/package.json
+package-json-versionify (1.0.4)	Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0)	node_modules/package-json-versionify/package.json
+path-parse (1.0.5)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/path-parse/package.json
+pbf (3.1.0)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/pbf/package.json
+prelude-ls (1.1.2)	MIT (https://raw.github.com/gkz/prelude-ls/master/LICENSE)	node_modules/prelude-ls/package.json
+prismjs (1.11.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/prismjs/package.json
+process-nextick-args (1.0.7)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/process-nextick-args/package.json
+process-nextick-args (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/through2/node_modules/process-nextick-args/package.json
+protocol-buffers-schema (2.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/protocol-buffers-schema/package.json
+quickselect (1.0.1)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/quickselect/package.json
+quote-stream (1.0.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/quote-stream/package.json
+readable-stream (2.3.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/readable-stream/package.json
+readable-stream (2.3.5)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/through2/node_modules/readable-stream/package.json
+resolve-protobuf-schema (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/resolve-protobuf-schema/package.json
+resolve (1.5.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/resolve/package.json
+rw (1.3.3)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/rw/package.json
+rxjs (5.5.6)	Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0)	node_modules/rxjs/package.json
+safe-buffer (5.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/safe-buffer/package.json
+seedrandom (2.4.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/seedrandom/package.json
+set-value (0.4.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/set-value/package.json
+shallow-copy (0.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/shallow-copy/package.json
+shuffle-seed (1.1.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/shuffle-seed/package.json
+sort-asc (0.1.0)	MIT (https://github.com/jonschlinkert/sort-asc/blob/master/LICENSE-MIT)	node_modules/@mapbox/mapbox-gl-style-spec/node_modules/sort-asc/package.json
+sort-asc (0.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/sort-asc/package.json
+sort-desc (0.1.1)	MIT (https://github.com/jonschlinkert/sort-desc/blob/master/LICENSE-MIT)	node_modules/@mapbox/mapbox-gl-style-spec/node_modules/sort-desc/package.json
+sort-desc (0.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/sort-desc/package.json
+sort-object (0.3.2)	MIT (https://github.com/helpers/sort-object/blob/master/LICENSE-MIT)	node_modules/@mapbox/mapbox-gl-style-spec/node_modules/sort-object/package.json
+sort-object (3.0.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/sort-object/package.json
+source-map (0.1.43)	BSD (http://opensource.org/licenses/BSD-3-Clause)	node_modules/multi-stage-sourcemap/node_modules/source-map/package.json
+source-map (0.5.7)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/source-map/package.json
+sprintf-js (1.0.3)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/sprintf-js/package.json
+static-eval (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/static-eval/package.json
+static-module (2.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/static-module/package.json
+string_decoder (1.0.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/string_decoder/package.json
+strip-ansi (0.1.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/nomnom/node_modules/strip-ansi/package.json
+strip-ansi (3.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/strip-ansi/package.json
+strip-bom-string (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/strip-bom-string/package.json
+supercluster (2.3.0)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/supercluster/package.json
+supports-color (2.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/chalk/node_modules/supports-color/package.json
+symbol-observable (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/symbol-observable/package.json
+through2 (2.0.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/through2/package.json
+through (2.3.8)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/through/package.json
+ticky (1.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/ticky/package.json
+tinyqueue (1.2.3)	ISC License (http://www.isc.org/software/license, http://www.opensource.org/licenses/ISC)	node_modules/tinyqueue/package.json
+to-object-path (0.3.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/to-object-path/package.json
+tombolo-viewer-client (0.1.0)	unmatched: client_licences.tsv	
+tslib (1.9.0)	Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0, http://www.opensource.org/licenses/Apache-2.0)	node_modules/tslib/package.json
+type-check (0.3.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/type-check/package.json
+typedarray (0.0.6)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/typedarray/package.json
+typewise-core (1.2.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/typewise-core/package.json
+typewise (1.0.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/typewise/package.json
+unassert (1.5.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/unassert/package.json
+unassertify (2.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/unassertify/package.json
+underscore (1.6.0)	MIT (https://raw.github.com/jashkenas/underscore/master/LICENSE)	node_modules/underscore/package.json
+unflowify (1.0.1)	BSD 3-clause "New" or "Revised" License (http://www.opensource.org/licenses/BSD-3-Clause)	node_modules/unflowify/package.json
+union-value (0.2.4)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/union-value/package.json
+util-deprecate (1.0.2)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/util-deprecate/package.json
+vlq (0.2.3)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/vlq/package.json
+vt-pbf (3.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/vt-pbf/package.json
+webgl-to-canvas2d (1.1.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/webgl-to-canvas2d/package.json
+webworkify (1.5.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/webworkify/package.json
+wordwrap (1.0.0)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/optionator/node_modules/wordwrap/package.json
+xtend (4.0.1)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/xtend/package.json
+zone.js (0.8.20)	MIT License (http://www.opensource.org/licenses/MIT)	node_modules/zone.js/package.json

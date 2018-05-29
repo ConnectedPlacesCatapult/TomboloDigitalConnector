@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+<mat-radio-group class="basemap-radio-group" formControlName="basemapId">
+  <mat-radio-button *ngFor="let basemap of basemaps" [value]="basemap.id"
+                    angulartics2On="click"
+                    angularticsCategory="Playground"
+                    angularticsAction="SelectBasemap"
+                    [angularticsLabel]="basemap.name">
+    <img [src]="'/assets/images/' + basemap.id + '.png'">
+    <label>{{basemap.name}}</label>
+  </mat-radio-button>
+</mat-radio-group>
+</form>

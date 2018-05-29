@@ -1,0 +1,83 @@
+@import '../../../../variables';
+
+$control-spacing: $g;
+
+.layer-editor {
+  display: block;
+
+  .panel-group {
+    margin-top: $control-spacing;
+
+    &:first-child {
+      margin-top: $control-spacing / 2;
+    }
+
+    &.extra-margin {
+      margin-top: $control-spacing * 1.5;
+    }
+  }
+
+  .mat-radio-button {
+    margin-top: $control-spacing;
+    &:first-of-type {
+      margin-top: $control-spacing / 2;
+    }
+  }
+
+  color-palette-select {
+    margin-top: $control-spacing;
+  }
+
+  /* Radio control container */
+  .mat-radio-button.radio-control-container {
+    .mat-radio-label {
+      align-items: flex-start;
+    }
+
+    .mat-radio-label-content {
+      margin-top: -5px;
+    }
+
+    // Required for Firefox
+    .mat-radio-label, .mat-radio-label-content {
+      width: 100%;
+    }
+
+    // Checkboxes inside radio-control-container
+    .mat-checkbox {
+      margin-top: 20px;
+      display: block;
+    }
+  }
+
+  // Appy full-width to inner elements of radio button
+  .mat-radio-button.full-width {
+    .mat-radio-label, .mat-radio-label-content {
+      width: 100%;
+      line-height: 28px;
+    }
+  }
+
+  .mat-radio-button.flex-label {
+    .mat-radio-label-content {
+      display: inline-flex;
+      justify-content: space-between;
+    }
+  }
+
+  // Putting selects in a radio button label removes the normal underline
+  // Add it back here
+  .mat-radio-button .mat-select-trigger {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    height: 1.8em;
+  }
+
+  // Decrease top border of selects to move close to label
+  .mat-input-infix, .mat-form-field-infix {
+    border-top: 6px;
+  }
+
+
+}
+
+

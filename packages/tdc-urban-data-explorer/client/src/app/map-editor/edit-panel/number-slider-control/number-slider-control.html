@@ -1,0 +1,6 @@
+<div class="number-slider-component-wrapper">
+<mat-slider [min]="min" [max]="max" [step]="step" [tick-interval]="tickInterval" [ngModel]="value" (input)="setValueFromSlider($event.value)"></mat-slider>
+<mat-form-field>
+  <input matInput type="number" [min]="min" [max]="max" [(ngModel)]="value" (keyup)="propagateChange(value)"><span class="unit" matSuffix *ngIf="unit">{{unit}}</span>
+</mat-form-field>
+</div>

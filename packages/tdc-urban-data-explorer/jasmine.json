@@ -1,0 +1,8 @@
+{
+  "spec_dir": "test",
+  "spec_files": [
+    "startup.ts",
+    "specs/**/*.[sS]pec.ts",
+    "teardown.ts"
+  ]
+}

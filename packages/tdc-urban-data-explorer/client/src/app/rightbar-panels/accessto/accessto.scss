@@ -1,0 +1,41 @@
+@import '../../../variables';
+
+.access-to {
+
+  h4:first-child {
+    margin: 0 0 5px 0;
+  }
+
+  div[markdown] {
+    overflow-y: hidden;
+  }
+
+  // Transport mode radio buttons
+  .mat-radio-group {
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+  }
+
+  .mat-radio-label {
+    position: relative;
+  }
+
+  .mat-radio-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -6px 0 0 -10px;
+  }
+
+  .mat-radio-label-content {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    padding:0;
+    width: 50px;
+  }
+}

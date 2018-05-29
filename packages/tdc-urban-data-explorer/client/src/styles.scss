@@ -1,0 +1,95 @@
+$fa-font-path: "../node_modules/font-awesome/fonts";
+
+@import '~@angular/material/theming';
+@import '~font-awesome/scss/font-awesome';
+@import '~mapbox-gl/dist/mapbox-gl.css';
+@import '~dragula/dist/dragula.css';
+
+// Codemirror styles
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/addon/lint/lint.css';
+@import '~codemirror/theme/dracula.css';
+@import '~codemirror/theme/material.css';
+@import '~codemirror/theme/ambiance.css';
+
+// Tombolo theme
+@import 'variables.scss';
+@import 'app/tombolo-theme/tombolo-theme';
+
+$ptsans-typography: mat-typography-config(
+  $font-family: '"PT Sans", "Helvetica Neue", sans-serif'
+);
+
+@include mat-core($ptsans-typography);
+
+$app-primary: mat-palette($tombolo-darkblue);
+$app-accent:  mat-palette($tombolo-cyan);
+$app-warn:    mat-palette($mat-red);
+$dark-theme:  mat-dark-theme($app-primary, $app-accent, $app-warn);
+$light-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+
+
+// Apply material theme to base components
+@include angular-material-theme($light-theme);
+
+// Apply tombolo theme
+@include tombolo-theme($light-theme, $ptsans-typography);
+
+// Apply dark theme variant to left sidebar
+.sidebar-left {
+  @include angular-material-theme($dark-theme);
+  @include tombolo-theme($dark-theme, $ptsans-typography);
+}
+
+html {
+    // Disable 'bounce' overscroll on Chrome
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+
+  font-family: 'PT Sans', 'Helvetica Neue', sans-serif;
+
+  // Helps fonts on OSX looks more consistent with other systems
+  // Isn't currently in button styles due to performance concerns
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  height: 100%;
+  overflow: auto;
+  margin: 0;
+}
+
+
+/////////////////////////////////////
+// App loader screen
+
+.preloader {
+  @include mat-fill();
+  background-color: #efefef;
+  background-image: url(/assets/images/tombolo_logo.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 500px;
+}
+
+//////////////////////////////////////////
+// Global Angular Material style overrides
+
+// Ensure 'hidden' is really hidden
+[hidden] { display: none !important;}
+
+.mat-drawer-backdrop {
+  display: none !important;
+}
+
+.mat-horizontal-stepper-header{
+  pointer-events: none !important;
+}
+
+.mat-icon {
+  flex-shrink: 0 !important;
+}

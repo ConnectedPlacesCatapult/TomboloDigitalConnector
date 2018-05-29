@@ -1,0 +1,1160 @@
+@import '~@angular/material/theming';
+@import 'gradients';
+@import '../../variables';
+
+@mixin tombolo-theme($theme, $typography: null) {
+
+  @if $typography == null {
+    $typography: mat-typography-config();
+  }
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  tombolo-root {
+    /* Convenience style overrides */
+    .full-width {
+      width: 100% !important;
+    }
+
+    .float-right {
+      float: right;
+    }
+
+    .top-margin {
+      margin-top: $g / 2 !important;
+    }
+
+    .with-padding {
+      padding: $sidebar-padding !important;
+    }
+
+    .with-side-padding {
+      padding: 0 $sidebar-padding !important;
+    }
+
+    div.spacer {
+      height: $g / 2;
+    }
+
+    a {
+      color: mat-color($accent);
+      outline: none;
+      text-decoration: none;
+    }
+
+    /* Buttons */
+    .mat-raised-button {
+      color: white;
+      background-color: mat-color($accent);
+      border-radius: $br;
+    }
+
+    // Adjust positioning of icons in buttons
+    .mat-button, .mat-raised-button, .mat-icon-button {
+      .mat-icon.fa:before {
+        position: relative;
+        top: 4px;
+      }
+    }
+
+    // Compressed icon button that can be packed closer together
+    .mat-icon-button.compressed {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+    }
+
+    .button-facebook {
+      @include gradient-facebook-button();
+    }
+
+    .button-twitter {
+      @include gradient-twitter-button();
+    }
+
+    .button-google-plus {
+      @include gradient-google-button();
+    }
+
+    .button-playground {
+      @include gradient-dark-button();
+      margin: $g/2 $g;
+      width: $sidebar-left-width - $g * 2;
+      height: $g * 2;
+      .mat-button-wrapper {
+        font-weight: bold;
+        text-transform: uppercase;
+        color: mat-color($accent, 300);
+      }
+    }
+
+    .button-small {
+      @include mat-typography-level-to-styles($typography, caption);
+
+      color: mat-color($accent);
+      width: auto;
+      border-radius: 0;
+      padding: 0;
+      min-width: 0;
+
+      .mat-button-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .mat-icon {
+          padding-right: 0.1em;
+        }
+      }
+
+      &:hover {
+        color: mat-color($tombolo-darkblue, 500);
+      }
+    }
+
+    /* Sidebars */
+
+    .sidebar {
+      box-shadow: 0 0 20px 0px mat-color($primary, .15) !important;
+    }
+
+    .sidebar-left {
+      @include gradient-sidebar-left($primary);
+      color: white;
+      width: $sidebar-left-width;
+
+      h2 {
+        text-align: center;
+        font-weight: 300;
+      }
+
+      hr {
+        height: 1px;
+        margin: $g/2 $g;
+        background-color: mat-color($accent, 200, 0.2);
+        border: none;
+        border-bottom: 1px solid mat-color($tombolo-darkblue, 800, 0.7);
+
+        &.short {
+          background-color: mat-color($accent, 200, 0.4);
+          margin: $g $g * 4.5;
+        }
+      }
+
+      .mat-button {
+        color: mat-color($accent);
+      }
+    }
+
+    .sidebar-right {
+      width: $sidebar-right-width;
+      bottom: $g * 4.5 !important;
+
+      // Allow sidebar tab to stick out
+      overflow-y: visible !important;
+    }
+
+    /* Sidebar tab is button that sticks out from left side of righthand sidebar */
+    .sidebar-tab {
+
+      // Show even when sidebar is closed
+      visibility: visible;
+
+      // Position sticking out at top left of sidebar
+      position: absolute;
+      top: 0;
+      left: -$g * 2;
+      width: $g * 2;
+      height: $g * 2;
+
+      background-color: white;
+      border-radius: 0 0 0 $br;
+
+      .mat-icon-button:hover {
+        mat-icon {
+          color: mat-color($tombolo-darkblue, 500);
+        }
+      }
+    }
+
+    /* Filters map color to sit underneath blue background of translucent left sidebar */
+    .color-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: $sidebar-left-width;
+      bottom: 0;
+      background-color: mat-color($primary);
+      mix-blend-mode: hue;
+    }
+
+    /* Tombolo branding */
+    div.tombolo-branding {
+      height: $g * 4;
+      background-image: url(/assets/images/tombolo_fcc_logo.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+
+      a {
+        display: block;
+        height: 100%;
+        text-indent: -9999px;
+      }
+    }
+
+    /* Tombolo branding */
+    h1.app-header {
+      height: $g * 5;
+      background-image: url(/assets/images/app_logo.png);
+      background-size: 183px 62px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Left navigation expansion panel */
+
+    .sidebar-left .mat-expansion-panel {
+      background-color: inherit;
+      box-shadow: none !important;
+
+      // Add horizontal rule after panel (except last one)
+      &:not(:last-of-type)::after {
+        display: block;
+        height: 1px;
+        margin: $g/2 $g;
+        content: "";
+        background-color: mat-color($accent, 200, 0.2);
+        border-bottom: 1px solid mat-color($tombolo-darkblue, 800, 0.7);
+      }
+
+      // Truncate long group titles with ellipsis
+      .mat-expansion-panel-header {
+        padding: 0 24px 0 $g;
+        .mat-content {
+          display: inline-block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-transform: uppercase;
+        }
+      }
+
+      // Remove expansion panel padding
+      .mat-expansion-panel-body {
+        padding: 0;
+      }
+    }
+
+    /* Right navigation expansion panel */
+
+    .sidebar-right .mat-expansion-panel {
+      color: mat-color($primary);
+      background-color: inherit;
+      box-shadow: none !important;
+
+      .mat-expansion-panel-header {
+        @include gradient-right-expansion-header();
+        padding: 0 24px 0 $g - 4px;
+        .mat-content {
+          display: inline-flex;
+          padding-right: 4px;
+          align-items: center;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          .expansion-header-title {
+            margin-left: 4px;
+            flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .button-box {
+            color: mat-color($accent);
+            display: inline-block;
+          }
+        }
+      }
+
+      .mat-expansion-panel-body {
+        padding: 0 $g 16px $g;
+      }
+
+      &.map-layer-editor-panel .mat-expansion-panel-body {
+       padding: 0 0 16px 0;
+
+        .panel-group {
+          border-bottom: 1px solid rgba(228, 237, 237, 1);
+          padding: 0 $g 16px $g;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+
+    /* Basemap editor */
+    .basemap-editor {
+
+      padding-top: $g;
+
+      label {
+        @include mat-typography-level-to-styles($typography, caption);
+      }
+
+      img {
+        border: 1px solid #B2CFCF;
+      }
+
+      .mat-radio-button.mat-radio-checked {
+        img {
+          border: 5px solid mat-color($accent);
+        }
+      }
+    }
+
+    /* Geosearch component */
+    geosearch-component {
+
+      width: 100%;
+      padding: 0 15px 0 20px;
+      margin: $g / 2 0;
+
+      .mat-input-container {
+        width: 100%;
+        background-color: mat-color($primary, 600);
+        border: 1px solid mat-color($primary, 400);
+        border-radius: 3px;
+      }
+
+      .mat-input-flex {
+        box-sizing: border-box;
+        padding-left: 0.5em;
+      }
+
+      .mat-input-underline {
+        display: none;
+      }
+
+      .mat-input-subscript-wrapper {
+        display: none;
+      }
+
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+
+      .mat-form-field-infix {
+        border-top: 0;
+        color: white;
+      }
+
+      .mat-input-element {
+        caret-color: white;
+      }
+
+      .mat-focused .mat-form-field-label {
+        color: mat-color($primary, 400);
+      }
+
+      .mat-form-field-prefix .mat-icon-button, .mat-form-field-suffix .mat-icon-button {
+        color: mat-color($accent, 300);
+        width: 40px;
+        height: 30px;
+        position: relative;
+        right: -5px;
+      }
+
+      .mat-form-field-prefix .mat-icon-button .mat-icon, .mat-form-field-suffix .mat-icon-button .mat-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    /* Left sidebar nav list */
+
+    .sidebar-left .mat-nav-list {
+
+      padding-top: 0;
+
+      .mat-list-item {
+        color: mat-color($accent, 300);
+        font-size: 14px;
+        padding: 0;
+        height: $g * 2;
+
+        a {
+          line-height: $g * 2;
+        }
+
+        .mat-list-item-content {
+          // Right padding set to move list item button to correct position
+          padding: 0 13px 0 $g;
+
+          //text-overflow: ellipsis;
+          //white-space: nowrap;
+          //overflow: hidden;
+          //display: block;
+          //line-height: $g * 2;
+
+        }
+
+        &.list-item-placeholder .mat-list-item-content {
+          font-style: italic;
+          color: mat-color($accent, 300, 0.6);
+        }
+      }
+
+      // Nav list style for links with glowing radio button
+      &.link-list {
+
+        // Prefix icons for map types
+        .mat-icon {
+          // Add right padding to move text onto grid position
+          padding-right: $g - 4px;
+          color: mat-color($accent, 300);
+          position: relative;
+          top: 5px;
+        }
+
+        .mat-list-item-content {
+          padding: 0 $g * 2 0 $g;
+        }
+
+        // Add radio button as background image
+        .mat-list-item, .mat-list-item:hover {
+          background-image: url(/assets/icons/radio-off.svg) !important;
+          background-repeat: no-repeat !important;
+          background-position: $sidebar-left-width - 20px - $g center !important;
+        }
+
+        .mat-list-item.active, .mat-list-item.active:hover {
+          background-image: url(/assets/icons/radio-on.svg) !important;
+          background-repeat: no-repeat !important;
+          background-position: $sidebar-left-width - 25px - $g center !important;
+        }
+      }
+
+    }
+
+    /* Mapbox zoom buttons and attribution */
+
+    tombolo-mapbox {
+      .mapboxgl-ctrl-bottom-left {
+        left: $sidebar-left-width;
+      }
+
+      .zoom-button {
+        // Turn from circle to rounded square
+        border-radius: $br !important;
+
+        // Shrink from default FAB button radius
+        width: $map-zoom-button-size;
+        height: $map-zoom-button-size;
+
+        // Reposition at bottom left of map
+        top: auto !important;
+        bottom: $g * 1.5 !important;
+        left: $sidebar-left-width + $g * 1.5 !important;
+        &.zoom-button-plus {
+          bottom: $g * 1.5 + $map-zoom-button-size + 5px !important;
+        }
+
+        // Center the icons
+        .mat-button-wrapper {
+          display: block;
+          padding: 2px 0;
+        }
+      }
+    }
+
+    .mapboxgl-popup-content {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    // Map controls component
+    map-controls {
+      background-color: mat-color($accent);
+      color: $light-primary-text;
+
+      .basemap-detail-slider {
+        @include mat-typography-level-to-styles($typography, caption);
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        background-color: mat-color($accent, darker);
+        color: $light-primary-text;
+
+        .mat-slider-horizontal {
+          padding: 0;
+          height: $g * 1.5;
+
+          .mat-slider-wrapper {
+            top: 14px;
+            left: 16px;
+          }
+        }
+
+        .mat-slider-track-fill, .mat-slider-thumb {
+          background-color: mat-color($accent, 50);
+        }
+      }
+
+      .button-box {
+
+        .mat-icon-button {
+          @include mat-typography-level-to-styles($typography, caption);
+          border-radius: 0;
+          border-left: 1px solid mat-color($accent, 200);
+          border-right: 1px solid mat-color($accent, darker);
+        }
+
+        .mat-icon-button:hover {
+          color: mat-color($tombolo-darkblue, 500);
+        }
+
+        .mat-button-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          line-height: 20px;
+        }
+      }
+    }
+
+    /* Auth panel styling */
+    .auth-panel-component {
+
+      // Header bar styling with title and close button
+      h3 {
+        margin-top: -0.75em;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+
+        span {
+          flex: 1 1;
+        }
+      }
+
+      // Adjust paragraph spacing
+      p {
+        margin-top: 0;
+      }
+
+      // Small icon button with label to right
+      .mat-icon-button {
+        @include mat-typography-level-to-styles($typography, caption);
+        color: mat-color($accent);
+        width: auto;
+        border-radius: 0;
+
+        .mat-button-wrapper {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .mat-icon {
+            padding-right: 0.1em;
+          }
+        }
+
+        &:hover {
+          color: mat-color($tombolo-darkblue, 500);
+        }
+      }
+
+      // Push checkbox text away from box
+      .mat-checkbox {
+        @include mat-typography-level-to-styles($typography, body-1);
+        margin-right: 0.5em;
+      }
+
+      // Spacing for raised buttons
+      .mat-raised-button {
+        margin-bottom: $g / 2;
+      }
+
+      // Wrap checkbox labels on signup form
+      .mat-checkbox-layout {
+        white-space: normal !important;
+
+        .mat-checkbox-label {
+          line-height: normal !important;
+        }
+      }
+
+      .error, .message {
+        @include mat-typography-level-to-styles($typography, body-1);
+
+        .mat-icon {
+          position: relative;
+          top: 4px;
+          margin-right: 4px;
+          width: 18px;
+          height: 18px;
+        }
+        margin-bottom: 1em;
+      }
+
+      .error {
+        color: mat-color($warn);
+      }
+    }
+
+    /* Login Styling */
+
+    login-controls {
+      background-color: white;
+
+      border-radius: 0 0 $br 0;
+
+      .button-box {
+        padding: 0 $g;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      // Small icon button with label to right
+      .mat-icon-button {
+        @include mat-typography-level-to-styles($typography, caption);
+        color: mat-color($accent);
+        width: auto;
+        border-radius: 0;
+
+        .mat-button-wrapper {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .mat-icon {
+            padding-right: 0.1em;
+          }
+        }
+
+        &:hover {
+          color: mat-color($tombolo-darkblue, 500);
+        }
+      }
+
+      .username {
+        @include mat-typography-level-to-styles($typography, caption);
+      }
+    }
+
+    /* Sidebar styling */
+    .sidebar-component {
+      @include mat-fill();
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1.sidebar-header {
+      display: flex;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: space-around;
+      padding: $sidebar-padding;
+      margin: 0;
+
+      color: mat-color($accent, 0.5);
+      background-color: mat-color($primary, darker);
+      @include mat-typography-level-to-styles($typography, display-1);
+    }
+
+    h3.sidebar-header {
+      @include mat-typography-level-to-styles($typography, title);
+      font-size: 16px;
+
+      color: mat-color($primary, darker);
+
+      margin: 0 $g;
+      height: $g * 2;
+      line-height: $g * 2;
+      border-bottom: 1px solid #D7E4E4;
+    }
+
+    .sidebar-content {
+      @include mat-typography-level-to-styles($typography, body-1);
+
+      overflow-y: auto;
+      flex: 1 1;
+    }
+
+    .sidebar-footer {
+      position: relative;
+    }
+
+    // gradient fade at footer top
+    .sidebar-right .sidebar-footer:before {
+      @include gradient-fade();
+      position: absolute;
+      display:block;
+      height: 20px;
+      top: -20px;
+      left:0;
+      right:0;
+      content:'';
+      pointer-events: none;
+    }
+
+    /* Slider box */
+    .slider-box {
+      padding: 0 16px;
+      h3 {
+        @include mat-typography-level-to-styles($typography, caption);
+        padding: 0;
+        margin: 0;
+      }
+      .slider-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include mat-typography-level-to-styles($typography, caption);
+        text-transform: uppercase;
+        color: mat-color($foreground, hint-text);
+        .mat-slider {
+          margin: 0.5em;
+          flex: 1;
+        }
+      }
+    }
+
+    /* Drag & Drop container */
+    .drop-container {
+      color: #008297;
+      margin: 0 $g;
+      padding: 0 0 0 60px;
+      p {
+        margin: 0;
+      }
+
+      p.caption {
+        margin-top: 0.2em;
+      }
+
+      background-image: url(/assets/images/upload.svg);
+      background-repeat: no-repeat;
+      background-position: left center;
+      height: 70px;
+
+      .upload-button {
+        display: inline-block;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-weight: bold;
+        color: mat-color($accent);
+        input {
+          display: none;
+        }
+      }
+
+      &.dragOver {
+        color: mat-color($accent);
+        outline: 1px solid mat-color($accent);
+      }
+    }
+
+    /* Map Filters */
+    .map-filters {
+
+      // Filters heading with add button
+      h2 {
+        @include mat-typography-level-to-styles($typography, title);
+
+        display: flex;
+        margin: 4px 0;
+        padding: 0 $g - 8px 0 $g;
+
+        .title {
+          flex: 1 1;
+        }
+
+        .mat-icon-button {
+          @include mat-typography-level-to-styles($typography, caption);
+          color: mat-color($primary);
+          width: auto;
+          border-radius: 0;
+
+          .mat-button-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .mat-icon {
+              padding-right: 0.1em;
+              width: 30px;
+              height: 30px;
+            }
+          }
+
+          &:hover {
+            color: mat-color($accent);
+          }
+        }
+      }
+    }
+
+    /* Sidebar content in tabs */
+    .sidebar-content.with-tabs {
+      .mat-tab-group {
+
+        &, .mat-tab-body-wrapper {
+          height: 100%;
+        }
+
+        .mat-tab-header {
+          margin: 0 $g;
+        }
+
+        .mat-tab-labels {
+          justify-content: space-around;
+        }
+
+        .mat-ink-bar {
+          background-color: mat-color($accent);
+        }
+
+        .mat-tab-label {
+          @include mat-typography-level-to-styles($typography, caption);
+          font-weight: bold;
+          color: mat-color($primary);
+          padding: 0 $g / 2;
+          min-width: 128px;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .access-to {
+      color: mat-color($primary);
+
+      h4 {
+        @include mat-typography-level-to-styles($typography, subheading-1);
+        text-transform: uppercase;
+      }
+
+      hr {
+        height: 1px;
+        background-color: #D7E4E4;
+        border: none;
+      }
+    }
+
+
+  }
+
+  /////////////////////////////
+
+  /* Markdown styling */
+  div[markdown] {
+    h1 {
+      @include mat-typography-level-to-styles($typography, subheading-2);
+      margin-top: 0;
+    }
+
+    h2 {
+      @include mat-typography-level-to-styles($typography, subheading-1);
+    }
+
+    p {
+      @include mat-typography-level-to-styles($typography, body-1);
+    }
+
+
+    ul {
+      @include mat-typography-level-to-styles($typography, body-1);
+      list-style: none;
+      padding-left: 1.2em;
+
+      li::before {
+        content: "•";
+        color: mat-color($accent);
+        display: inline-block;
+        position: relative;
+        width: .6em;
+        margin-left: -0.4em;
+        top: 4px;
+        font-size: 24px;
+      }
+    }
+  }
+
+
+  // Layer grag & drop
+  .gu-mirror {
+    .grab-handle {
+      cursor: grab !important;
+    }
+
+    height: 40px !important;
+    .mat-expansion-panel-content, .button-box, .mat-expansion-indicator {
+      display: none;
+    }
+  }
+
+
+  // Map Key
+  .map-key {
+    margin: 10px 0;
+
+    .map-key-item {
+      @include mat-typography-level-to-styles($typography, caption);
+
+      padding-top: $g / 2;
+      border-top: 1px solid #E3ECEC;
+
+      .title {
+        //@include mat-typography-level-to-styles($typography, subheading-2);
+      }
+    }
+  }
+
+
+  /* Dialog-specific styles */
+
+  .cdk-overlay-pane {
+
+    // Error notification styling
+    .mat-snack-bar-container.error {
+      background-color: mat-color($warn);
+      .mat-simple-snackbar, .mat-simple-snackbar-action {
+        color: mat-contrast($warn, 500);
+      }
+    }
+
+    .datasets-dialog {
+
+      /* Search box styling */
+      .mat-input-container {
+        width: 100%;
+        background-color: #F3F6F6;
+        border: 1px solid #C8D9D9;
+        border-radius: 3px;
+      }
+
+      .mat-input-flex {
+        box-sizing: border-box;
+        padding-left: 0.5em;
+      }
+
+      .mat-input-underline {
+        display: none;
+      }
+
+      .mat-input-subscript-wrapper {
+        display: none;
+      }
+
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+
+      .mat-form-field-infix {
+        border-top: 0;
+      }
+
+      .mat-input-element {
+        caret-color: #888;
+      }
+
+      .mat-input-prefix .mat-icon-button, .mat-input-suffix .mat-icon-button {
+        color: mat-color($accent, 300);
+        width: 40px;
+        height: 30px;
+        position: relative;
+        right: -5px;
+      }
+
+      .mat-input-prefix .mat-icon-button .mat-icon, .mat-input-suffix .mat-icon-button .mat-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .mat-dialog-content {
+        padding-bottom: $g / 2;
+      }
+
+      hr {
+        margin: $g 0;
+        background-color: #E3ECEC;
+      }
+
+      h3 {
+        @include mat-typography-level-to-styles($typography, title);
+        margin: 0;
+      }
+
+      .left-column {
+        padding-right: $g;
+        border-right: 1px solid #E3ECEC;
+      }
+
+      .right-column {
+        padding-left: $g;
+      }
+
+      .mat-nav-list {
+        padding-top: $g;
+      }
+
+      .mat-list-item {
+        color: mat-color($accent);
+        height: $g * 2;
+
+        &.selected {
+          color: mat-color($primary);
+          background-color: #F3F6F6;
+        }
+      }
+
+      .message {
+        @include mat-typography-level-to-styles($typography, body-1);
+        font-style: italic;
+      }
+
+    }
+  }
+
+  // Data attribute table on Public Datasets dialog
+  .attribute-table-title {
+    @include mat-typography-level-to-styles($typography, subheading-2);
+    margin-bottom: 6px;
+  }
+
+  table.attribute-table {
+
+    @include mat-typography-level-to-styles($typography, body-1);
+
+    border-collapse: collapse;
+
+    tr {
+      border-bottom: 1px solid #E3ECEC;
+    }
+
+    th, td {
+      padding: 0.3em 1em;
+    }
+
+    thead {
+      @include mat-typography-level-to-styles($typography, body-2);
+      th {
+        text-align: left;
+      }
+    }
+
+    tbody {
+      @include mat-typography-level-to-styles($typography, caption);
+      td:first-child {
+        @include mat-typography-level-to-styles($typography, body-2);
+        font-weight: bold;
+      }
+    }
+  }
+
+  // Dialog styling
+  information-dialog, confirm-dialog {
+    p {
+      @include mat-typography-level-to-styles($typography, body-1);
+    }
+  }
+
+  // Wizard
+  .wizard-page-component {
+
+    p {
+      @include mat-typography-level-to-styles($typography, subheading-2);
+      margin: $g 0;
+    }
+
+    .substeps {
+
+      @include mat-typography-level-to-styles($typography, subheading-2);
+
+      list-style: none;
+      padding: 0;
+
+      li {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $g / 2 0;
+
+        .step-text.pending {
+          color: #C0D2D2;
+        }
+
+        .mat-progress-bar {
+          flex: 1 1;
+          margin: 0 $g;
+        }
+
+        .mat-icon {
+          width: 30px;
+          height: 30px;
+        }
+
+        &.error .mat-icon {
+          color: mat-color($warn);
+        }
+
+        &:first-child:before {
+          position: absolute;
+          top: 0;
+          right: 40px;
+          left: 0;
+          display: block;
+          content: '';
+          background: #E3ECEC;
+          height: 1px;
+        }
+
+        &:after {
+          position: absolute;
+          bottom: 0;
+          right: 40px;
+          left: 0;
+          display: block;
+          content: '';
+          background: #E3ECEC;
+          height: 1px;
+        }
+      }
+    }
+  }
+
+  .auth-panel-component {
+
+    h4 {
+      margin-bottom: $g / 2;
+    }
+
+    .usage {
+      padding-bottom: $g / 2;
+      p {
+        @include mat-typography-level-to-styles($typography, body-1);
+        display: flex;
+
+        margin: 0;
+        margin-bottom: $g / 4;
+        margin-top: $g;
+
+        .quota {
+          flex: 1 1
+        }
+        .usage-summary {
+          @include mat-typography-level-to-styles($typography, caption);
+        }
+      }
+    }
+  }
+}

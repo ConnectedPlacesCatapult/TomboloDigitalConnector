@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="202px" height="65px" viewBox="0 0 202 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0.000116393577 61.3588326 80.6335906 61.3588326 80.6335906 0.270017698 0.000116393577 0.270017698"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GrowthPlanner" transform="translate(-180.000000, -20.000000)">
+            <g id="Group-4" transform="translate(180.000000, 20.000000)">
+                <text id="Urban-Data-Explorer" transform="translate(148.500000, 33.000000) rotate(-360.000000) translate(-148.500000, -33.000000) " font-family="PTSans-Regular, PT Sans" font-size="22.2999992" font-weight="normal" line-spacing="28">
+                    <tspan x="103.912" y="25" fill="#FFFFFF">Urban </tspan>
+                    <tspan x="167.288598" y="25" font-family="PTSans-Bold, PT Sans" font-weight="bold" fill="#3BCAE2">Data</tspan>
+                    <tspan x="211.620996" y="25" font-size="28" fill="#FFFFFF"></tspan>
+                    <tspan x="94" y="51.1679077" font-size="28" letter-spacing="0.9" fill="#FFFFFF">Explorer</tspan>
+                </text>
+                <g id="Page-1" transform="translate(40.500000, 31.000000) rotate(-360.000000) translate(-40.500000, -31.000000) ">
+                    <g id="Group-112">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="Clip-111"></g>
+                        <polygon id="Fill-110" fill="#3BCAE2" mask="url(#mask-2)" points="76.8062982 38.8705486 68.0418619 38.8705486 68.0418619 19.570089 51.1558696 19.570089 51.1558696 26.5886851 47.0068266 26.5886851 47.0068266 5.53367351 41.7481647 5.53367351 41.7481647 0.270017698 30.1208343 0.270017698 30.1208343 5.53367351 24.8625605 5.53367351 24.8625605 24.8337448 22.4660167 24.8337448 22.4660167 21.3246409 14.3448489 21.3246409 14.3448489 24.8337448 9.08618703 24.8337448 9.08618703 45.8887564 3.8275252 45.8887564 3.8275252 58.1706199 0.000116393577 58.1706199 0.000116393577 61.0370095 6.69003124 61.0370095 6.69003124 48.7547576 11.3938837 48.7547576 11.9486931 48.7547576 13.2852793 48.7547576 14.7611499 48.7547576 20.2968284 48.7547576 21.772699 48.7547576 27.3083775 48.7547576 28.7846361 48.7547576 34.3203146 48.7547576 35.7961852 48.7547576 40.638546 48.7547576 40.638546 61.3589492 43.501052 61.3589492 43.501052 45.8887564 11.9486931 45.8887564 11.9486931 27.7001343 15.7761019 27.7001343 15.7761019 27.1447981 17.2073549 27.1447981 17.2073549 24.1910304 19.6038987 24.1910304 19.6038987 27.1447981 21.0347637 27.1447981 21.0347637 27.7001343 27.7250665 27.7001343 27.7250665 8.39967468 31.5520874 8.39967468 31.5520874 6.96706244 32.9837284 6.96706244 32.9837284 3.13601887 38.8856587 3.13601887 38.8856587 6.96706244 40.3169117 6.96706244 40.3169117 8.39967468 44.1443205 8.39967468 44.1443205 29.4546863 54.0183757 29.4546863 54.0183757 22.4364785 65.1793558 22.4364785 65.1793558 41.7365498 73.9437922 41.7365498 73.9437922 61.0370095 80.633707 61.0370095 80.633707 58.1706199 76.8062982 58.1706199"></polygon>
+                    </g>
+                    <path d="M67.3593299,45.5676322 L74.9789752,45.5676322" id="Stroke-113" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <path d="M67.3593299,50.8313657 L74.8782703,50.8313657" id="Stroke-115" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <path d="M67.3593299,56.0950992 L74.5691759,56.0950992" id="Stroke-117" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <path d="M10.9296424,31.6667887 L15.2443384,31.6667887" id="Stroke-119" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <path d="M10.9392808,36.9305222 L15.2443384,36.9305222" id="Stroke-121" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <path d="M11.1716001,42.1942556 L15.2443384,42.1942556" id="Stroke-123" stroke="#3BCAE2" stroke-width="3" stroke-linecap="round"></path>
+                    <g id="Group-2" transform="translate(11.000000, 9.000000)" fill="#FFFFFF" font-family="EurostileBold, Eurostile" font-weight="bold">
+                        <text id="010-101-010-010" font-size="6">
+                            <tspan x="19.3515625" y="6">010</tspan>
+                            <tspan x="19.3500977" y="13">101</tspan>
+                            <tspan x="19.3515625" y="20">010</tspan>
+                            <tspan x="19.3515625" y="27">010</tspan>
+                        </text>
+                        <text id="01-10-01-01-10-01" font-size="5">
+                            <tspan x="45.3615723" y="19">01</tspan>
+                            <tspan x="45.3615723" y="25">10</tspan>
+                            <tspan x="45.3615723" y="31">01</tspan>
+                            <tspan x="45.3615723" y="37">01</tspan>
+                            <tspan x="45.3615723" y="43">10</tspan>
+                            <tspan x="45.3615723" y="49">01</tspan>
+                        </text>
+                        <text id="10-01-10" font-size="5">
+                            <tspan x="7.36157227" y="24">10</tspan>
+                            <tspan x="7.36157227" y="30">01</tspan>
+                            <tspan x="7.36157227" y="36">10</tspan>
+                        </text>
+                        <text id="10101010-01010101" font-size="5">
+                            <tspan x="0" y="45">10101010</tspan>
+                            <tspan x="0" y="51">01010101</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

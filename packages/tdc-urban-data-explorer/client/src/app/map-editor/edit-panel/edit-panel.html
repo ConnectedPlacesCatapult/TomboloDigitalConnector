@@ -1,0 +1,67 @@
+<div class="sidebar-content with-tabs">
+
+  <mat-tab-group>
+    <mat-tab label="Map Editor">
+      <ng-template mat-tab-label>
+        <span
+          angulartics2On="click"
+          angularticsCategory="Playground"
+          angularticsAction="MapEditorTab"
+          [angularticsLabel]="map?.name">
+            Map Editor
+        </span>
+      </ng-template>
+      <ng-container *ngIf="map && palettes && basemaps">
+
+        <map-metadata-editor [map]="map"></map-metadata-editor>
+
+        <mat-accordion multi="true" displayMode="flat" [dragula]="'dragdrop'" [dragulaOptions]="dragulaOptions">
+          <!-- Map layers -->
+          <mat-expansion-panel class="map-layer-editor-panel" [id]="layer.layerId" *ngFor="let layer of layers; trackBy: trackLayerById" expanded="true">
+            <mat-expansion-panel-header collapsedHeight="40px" expandedHeight="40px">
+              <mat-icon svgIcon="grab-handle" class="grab-handle"></mat-icon>
+              <mat-icon [svgIcon]="typeIconForLayer(layer)"></mat-icon>
+              <span class="expansion-header-title">{{layer.name}}</span>
+              <div class="button-box">
+                <button mat-icon-button class="compressed" (click)="toggleLayerVisibility(layer); $event.stopPropagation()"><mat-icon [svgIcon]="eyeIconForLayer(layer)"></mat-icon></button>
+                <button mat-icon-button class="compressed" (click)="deleteLayer(layer); $event.stopPropagation()"><mat-icon svgIcon="trash"></mat-icon></button>
+              </div>
+            </mat-expansion-panel-header>
+            <map-layer-editor [map]="map" [layer]="layer" [palettes]="palettes" ></map-layer-editor>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- Basemap -->
+        <mat-accordion multi="true" displayMode="flat">
+          <mat-expansion-panel id="basemap-panel" expanded="true">
+            <mat-expansion-panel-header collapsedHeight="40px" expandedHeight="40px">
+              <mat-icon svgIcon="map"></mat-icon>
+              <span class="expansion-header-title">Basemap</span>
+            </mat-expansion-panel-header>
+            <map-basemap-editor [map]="map" [basemaps]="basemaps"></map-basemap-editor>
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+      </ng-container>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span
+          angulartics2On="click"
+          angularticsCategory="Playground"
+          angularticsAction="MapFiltersTab"
+          [angularticsLabel]="map?.name">
+            Map Filters
+        </span>
+      </ng-template>
+      <map-filters></map-filters>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>
+
+<div class="sidebar-footer">
+
+</div>
+

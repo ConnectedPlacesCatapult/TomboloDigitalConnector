@@ -1,0 +1,18 @@
+@import '~@angular/material/theming';
+
+@mixin dialog-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  // Error notification styling
+  .mat-snack-bar-container.error {
+    background-color: mat-color($warn);
+    .mat-simple-snackbar, .mat-simple-snackbar-action {
+      color: mat-contrast($warn, 500);
+    }
+  }
+}

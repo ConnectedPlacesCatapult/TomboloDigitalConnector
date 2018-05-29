@@ -1,0 +1,11 @@
+@import '../../variables';
+
+:host {
+  display: block;
+  min-height: 300px;
+  box-sizing: border-box;
+  width: $g * 15;
+  background-color: white;
+  padding: $g;
+}
+

@@ -1,0 +1,53 @@
+<h1 class="sidebar-header app-header"></h1>
+
+<div class="sidebar-content">
+
+  <geosearch-component (selectItem)="geosearchSelected($event)"></geosearch-component>
+
+  <mat-accordion multi="false" displayMode="flat">
+    <mat-expansion-panel *ngFor="let i = index; let group of mapGroups$ | async"
+                         #rla="routerLinkActive"
+                         routerLinkActive
+                         [expanded]="rla.isActive"
+                         [routerLinkActiveOptions]="{exact: false}">
+      <mat-expansion-panel-header collapsedHeight="40px" expandedHeight="40px">
+        {{group.name}}
+      </mat-expansion-panel-header>
+
+      <mat-nav-list class="link-list">
+        <mat-list-item *ngFor="let map of group.maps"
+                       angulartics2On="click"
+                       angularticsCategory="View"
+                       angularticsAction="ViewMap"
+                       [angularticsLabel]="map.name"
+                       [matTooltip]="map.name"
+                       matTooltipPosition="right"
+                       routerLinkActive="active"
+                       [routerLinkActiveOptions]="{exact: false}">
+          <a matLine
+             [routerLink]="['/',{outlets:{primary:['view', map.id], rightBar:[rightBarRoute(map)]}}]">
+            <mat-icon [svgIcon]="map.icon || 'map'" color="accent"></mat-icon>
+            {{map.name}}
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+</div>
+
+
+<div class="sidebar-footer">
+
+  <button mat-raised-button (click)="gotoPlayground()" class="button-playground"
+          angulartics2On="click"
+          angularticsCategory="View"
+          angularticsAction="GoToPlayground">
+    <mat-icon svgIcon="edit"></mat-icon>&nbsp;&nbsp;Go to playground
+  </button>
+  <div class="tombolo-branding">
+    <a href="http://www.tombolo.org.uk/" target="_blank">Tombolo</a>
+  </div>
+</div>

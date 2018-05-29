@@ -1,0 +1,48 @@
+<h3 class="mat-h3"><span>Sign Up</span><button mat-icon-button (click)="close()"><mat-icon svgIcon="cross"></mat-icon></button></h3>
+<p class="mat-body">Already a member?
+  <br>
+  <button mat-icon-button (click)="login()"><mat-icon svgIcon="login"></mat-icon>Log in</button>
+</p>
+
+<a href="/api/v1/auth/facebook" mat-raised-button class="full-width button-facebook"
+   [disabled]="!this.config.createAccountEnabled || !this.config.socialLoginEnabled"
+   angulartics2On="click"
+   angularticsCategory="Account"
+   angularticsAction="SignUpFacebook"><mat-icon fontSet="fa" fontIcon="fa-facebook"></mat-icon>Sign up with Facebook</a><br/>
+<a href="/api/v1/auth/twitter" mat-raised-button class="full-width button-twitter"
+   [disabled]="!this.config.createAccountEnabled || !this.config.socialLoginEnabled"
+   angulartics2On="click"
+   angularticsCategory="Account"
+   angularticsAction="SignUpTwitter"><mat-icon fontSet="fa" fontIcon="fa-twitter"></mat-icon>Sign up with Twitter</a><br/>
+<!--
+<a mat-raised-button class="full-width button-google-plus"><mat-icon fontSet="fa" fontIcon="fa-google-plus"></mat-icon>Sign up in with Google</a><br/>
+-->
+<p class="mat-body top-margin">Or sign up with email:</p>
+
+<form [formGroup]="signupForm">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Name" formControlName="name" autofocus>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Email address" formControlName="email" autofocus>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input type="password" matInput placeholder="Password" formControlName="password">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input type="password" matInput placeholder="Confirm password" formControlName="confirmPassword">
+  </mat-form-field>
+
+  <div class="error" *ngIf="errorMessage"><mat-icon svgIcon="info"></mat-icon>{{errorMessage}}</div>
+
+  <p class="mat-body"><mat-checkbox formControlName="acceptToC">I agree to the <a [routerLink]="['/', {outlets: {'rightBar': 'termsandconditions'}}]">Terms & Conditions</a>.</mat-checkbox></p>
+
+  <p class="mat-body"><mat-checkbox formControlName="newsletters">Yes, I want to receive Tombolo newsletters</mat-checkbox></p>
+
+  <button mat-raised-button (click)="signup()" [disabled]="!signupForm.valid" class="full-width">Sign Up</button>
+
+  <mat-progress-bar mode="indeterminate" color="accent" *ngIf="showProgress"></mat-progress-bar>
+
+  <p  class="mat-caption top-margin">View our <a [routerLink]="['/', {outlets: {'rightBar': 'privacypolicy'}}]">Privacy and Cookies Policy</a>.</p>
+
+</form>

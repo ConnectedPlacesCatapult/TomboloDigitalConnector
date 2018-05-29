@@ -1,0 +1,28 @@
+[db]
+host = "DB_HOST"
+port = "DB_PORT"
+username = "DB_USER"
+password = "DB_PASSWORD"
+database = "DB"
+
+[logger]
+level = "LOG_LEVEL"
+
+[cors]
+origin = "CORS_ORIGIN"
+
+[client]
+authEndpoint = "AUTH_ENDPOINT"
+
+[server]
+baseUrl = "SERVER_BASE_URL"
+mapAssetsUrl = "SERVER_MAP_ASSETS_URL"
+
+[smtp]
+host = "SMTP_HOST"
+port = "SMTP_PORT"
+secure = "SMTP_SECURE"
+
+[smtp.auth]
+user = "SMTP_USER"
+pass = "SMTP_PASSWORD"

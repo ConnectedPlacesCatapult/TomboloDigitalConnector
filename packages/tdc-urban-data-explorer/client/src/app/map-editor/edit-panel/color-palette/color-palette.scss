@@ -1,0 +1,15 @@
+@import '../../../../variables';
+
+$color-chip-size: 18px !default;
+$color-chip-spacing: 10px !default;
+
+.color-palette {
+  .color-chip {
+    display: inline-block;
+    width: $color-chip-size;
+    height: $color-chip-size;
+    &:not(:last-of-type) {
+      margin-right: $color-chip-spacing;
+    }
+  }
+}
