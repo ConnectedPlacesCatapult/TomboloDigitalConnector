@@ -325,7 +325,19 @@ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 
 ## Implementations
 
-- [Python](https://github.com/FutureCitiesCatapult/digital-connector-python)
+We have build some stand-alone and integrated packages to help you use the Digital Connector and demonstrate its 
+output. The following list contains a short description of them, but following the link you will find the proper 
+documentation and installation guides needed for each package.
+
+- [Python support](packages/tdc-python-recipe-importer)
+A library to build recipes and importers for Digital Connector using Python. Very helpful to get you up-to-speed 
+using the DC if you are more familiar with Python than Java and JSON.
+- [QGIS plugin](packages/tdc-qgis-plugin)
+A plugin for viewing, modifying and running the Tombolo Digital Connector through QGIS.
+- [Urban data explorer](packages/tdc-urban-data-explorer)
+ Visualization tool designed to support you exploring curated indexes and geospatial data made available through the 
+ Tombolo Digital Connector.
+
 
 ## License
 
