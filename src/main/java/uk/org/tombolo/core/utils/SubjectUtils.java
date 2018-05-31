@@ -242,4 +242,12 @@ public class SubjectUtils {
 			return (Subject) query.uniqueResult();
 		});
 	}
+
+	//TODO not working so try to get the metadata via hibernate for the column type
+	public static int findSRID() {
+		return HibernateUtil.withSession(session -> {
+			Query query = session.createQuery("select find_srid(public, subject, shape) as srid");
+			return ((Number) query.uniqueResult()).intValue();
+		});
+	}
 }

@@ -40,11 +40,12 @@ create table subject (
 	subject_type_id integer NOT NULL REFERENCES subject_type(id),
 	label           TEXT NOT NULL,
 	name	        TEXT,
-	shape           geometry,
+	shape           geometry(Geometry, 4326),
 	UNIQUE(subject_type_id, label),
 	PRIMARY KEY(id)
 );
 create index subject_label on subject (subject_type_id, label);
+
 
 -- Attribute
 create sequence attribute_id_sequence;
@@ -88,3 +89,5 @@ insert into provider(label, name) values
 -- Insert default subject types
 insert into subject_type(provider_label, label, name) values
 ('default_provider_label', 'unknown', 'Unknown Subject Type');
+
+select find_srid('public', 'subject', 'shape');

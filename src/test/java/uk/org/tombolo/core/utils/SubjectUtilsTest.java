@@ -2,6 +2,7 @@ package uk.org.tombolo.core.utils;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.org.tombolo.AbstractTest;
 import uk.org.tombolo.DataExportSpecificationBuilder;
@@ -288,7 +289,6 @@ public class SubjectUtilsTest extends AbstractTest {
 		cityOfLondon.setShape(TestFactory.makePointGeometry(100d, 100d));
 		islingtonLsoa.setShape(TestFactory.makePointGeometry(100.1d, 100d)); // make this one outside the radius
 		SubjectUtils.save(Arrays.asList(cityOfLondon, islingtonLsoa));
-
 		Subject returnedSubject = SubjectUtils.subjectNearestSubject(lsoa, cityOfLondon, 0.01d);
 		assertNull(returnedSubject);
 	}
@@ -302,5 +302,10 @@ public class SubjectUtilsTest extends AbstractTest {
 
 		Subject returnedSubject = SubjectUtils.subjectNearestSubject(msoa, cityOfLondon, 1d);
 		assertNull(returnedSubject);
+	}
+
+	@Test @Ignore
+	public  void testFindSRID() {
+		assertEquals(4326, SubjectUtils.findSRID());
 	}
 }
