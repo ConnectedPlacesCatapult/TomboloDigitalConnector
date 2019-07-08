@@ -42,6 +42,6 @@ build:
           -PtestDatabasePassword="$PGPASSWORD"
   after-steps:
     - slack-notifier:
-      url: https://hooks.slack.com/services/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
+      url: <Webhook URL goes here>
       channel: dev-bots
       username: werckerbot
