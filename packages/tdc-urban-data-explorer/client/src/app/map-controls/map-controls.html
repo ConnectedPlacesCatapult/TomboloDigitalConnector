@@ -1,0 +1,42 @@
+<div class="button-box">
+  <!-- Edit Button -->
+  <button *ngIf="mode == 'view'" mat-icon-button disableRipple
+          (click)="editMap()"
+          [disabled]="!editButtonEnabled()">
+    <mat-icon svgIcon="edit"></mat-icon>Edit
+  </button>
+
+  <!-- Save Button -->
+  <button *ngIf="mode == 'edit'" mat-icon-button disableRipple
+          (click)="saveMap()"
+          [disabled]="!saveButtonEnabled()">
+    <mat-icon svgIcon="save"></mat-icon>Save
+  </button>
+
+  <!-- Recipe Button -->
+  <button mat-icon-button disableRipple
+          [disabled]="!map"
+          (click)="showRecipeDialog()">
+    <mat-icon svgIcon="info"></mat-icon>Recipe
+  </button>
+
+  <!-- Export Button -->
+  <button mat-icon-button disableRipple
+          [disabled]="!map"
+          [routerLink]="['/', {outlets: {'rightBar': ['mapexport']}}]">
+    <mat-icon svgIcon="export"></mat-icon>Export
+  </button>
+
+  <!-- Share Button -->
+  <button mat-icon-button disableRipple
+          (click)="postBookmark()"
+          [disabled]="!shareButtonEnabled()">
+    <mat-icon svgIcon="share"></mat-icon>Share
+  </button>
+
+</div>
+
+<div class="basemap-detail-slider">
+  <span class="mat-caption">Basemap Detail</span>
+  <mat-slider min="0" max="4" step="1" value="4" tickInterval="1" (change)="basemapSliderChanged($event)" (input)="basemapSliderChanged($event)" [(ngModel)]="basemapDetailSliderValue"></mat-slider>
+</div>

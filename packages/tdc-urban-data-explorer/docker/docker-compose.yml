@@ -1,0 +1,43 @@
+version: "3.4"
+
+services:
+
+  nginx:
+    image: nginx:1.10
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+       - ./config/nginx:/etc/nginx/conf.d/:ro
+       - ./data/static:/static
+       - ./data/tile-cache:/tile-cache
+    depends_on:
+       - citydataexplorer
+
+  citydataexplorer:
+    image: emuanalytics/citydataexplorer
+    volumes:
+      - ./data/mbtiles:/app/data/mbtiles
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+
+      # DB Configuration
+      - DB_HOST=localhost
+      - DB_USER=tombolo_cde
+      - DB_PASSWORD=************
+      - DB=tombolo_cde
+
+      # Public URLs
+      - SERVER_BASE_URL=http://localhost:8080 # Public url of server
+      - SERVER_MAP_ASSETS_URL=http://localhost:8080/static # Public url of static map assets
+
+      # SMTP Server Configuration
+      - SMTP_HOST=************      # SMTP Host address
+      - SMTP_PORT=************      # SMTP Port e.g 25 or 587
+      - SMTP_USER=************      # SMTP User
+      - SMTP_PASSWORD=************  # SMTP Password
+
+      # Extra config for items without env variables can be done like this:
+      # - NODE_CONFIG={"fileUpload":{"maxFileSize":104428800}}

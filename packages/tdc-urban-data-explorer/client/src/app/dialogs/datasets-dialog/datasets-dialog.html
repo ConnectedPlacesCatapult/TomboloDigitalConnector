@@ -1,0 +1,101 @@
+<div mat-dialog-content fxLayout="row">
+  <div class="left-column">
+
+    <mat-input-container floatLabel="never">
+      <input matInput class="searchbar"
+             #searchBox
+             (keyup.enter)="filterByQuery(searchBox.value)"
+             placeholder="Search Datasets"
+             tabindex="-1">
+      <button mat-icon-button matSuffix (click)="filterByQuery(searchBox.value)">
+        <mat-icon svgIcon="search"></mat-icon>
+      </button>
+    </mat-input-container>
+    <hr>
+
+    <h3>Categories</h3>
+    <mat-nav-list class="categories-list" *ngIf="groups">
+      <mat-list-item *ngFor="let group of groups"
+                     [ngClass]="{selected: group == selectedGroup}"
+                     (click)="selectGroup(group)">
+        {{group.name}}
+      </mat-list-item>
+    </mat-nav-list>
+
+  </div>
+
+  <div *ngIf="!datasets" class="right-column" Markdown>
+    Browse our curated datasets
+    ===========================
+
+    Choose a **dataset category** from the list on the left to view a selection of curated datasets that you can add to
+    your map.
+
+    Your selected dataset will appear as a new layer on you map. Use the Map Editor to style your new layer after it has
+    been added.
+
+    You can also **search** for datasets using keywords. Datasets that match your keywords will be
+    shown. For example, a search for 'map' will find datasets that include 'map' or 'maps' in their name or description. A
+    search for 'uk map' will find datasets that match 'uk' *and* 'map'.
+  </div>
+
+  <div *ngIf="datasets" class="right-column">
+    <h3>Datasets</h3>
+
+    <mat-nav-list class="datasets-list" *ngIf="datasets">
+      <mat-list-item *ngFor="let dataset of datasets"
+                     [ngClass]="{selected: dataset.id === selectedDataset?.id}"
+                     (click)="selectDataset(dataset)"><mat-icon [svgIcon]="typeIconForGeometryType(dataset.geometryType)"></mat-icon>{{dataset.name}}
+      </mat-list-item>
+    </mat-nav-list>
+
+    <hr>
+
+    <div *ngIf="datasets?.length && !selectedDataset" class="message">
+      Select a dataset from the list above to view its description.
+    </div>
+
+    <div *ngIf="datasets && datasets.length == 0" class="message">
+      Your search did not return any relevant datasets.
+    </div>
+
+    <div *ngIf="selectedDataset" class="description">
+      <div Markdown [data]="selectedDataset.description"></div>
+      <h4 class="attribute-table-title">Data Attributes</h4>
+      <table class="attribute-table">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Units</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attr of selectedDataset.dataAttributes">
+            <td>{{typeIndicatorForAttribute(attr)}}</td>
+            <td>{{attr.name}}</td>
+            <td>{{attr.description}}</td>
+            <td>{{attr.units}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div mat-dialog-actions fxLayoutAlign="end">
+  <button mat-raised-button (click)="close()"
+          angulartics2On="click"
+          angularticsCategory="Playground"
+          angularticsAction="CancelPublicDatasets">Cancel</button>
+  <button mat-raised-button cdk-focus-start color="accent" [disabled]="!selectedDataset" (click)="addNewMap()">Create a New Map</button>
+  <button mat-raised-button cdk-focus-start color="accent"
+          [disabled]="!selectedDataset"
+          (click)="addToMap()"
+          angulartics2On="click"
+          angularticsCategory="Playground"
+          angularticsAction="AddPublicDatasetToMap"
+          [angularticsLabel]="selectedDataset?.name">Add to Current Map</button>
+</div>

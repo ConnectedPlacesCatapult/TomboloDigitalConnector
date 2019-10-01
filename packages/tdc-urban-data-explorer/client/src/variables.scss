@@ -1,0 +1,59 @@
+@import '~@angular/material/theming';
+
+// standard grid size
+$g: 20px;
+
+// standard border radius for rounded corners
+$br: 4px;
+
+$sidebar-left-width: $g * 12 !default;
+$sidebar-right-width: $g * 15 !default;
+$sidebar-padding: $g;
+
+$map-zoom-button-size: $g * 1.5;
+
+$tombolo-darkblue: (
+  50: #efebe9,
+  100: #d7ccc8,
+  200: #bcaaa4,
+  300: #a1887f,
+  400: #214E63,
+  500: #12394c,
+  600: #062c3c,
+  700: #0e2c3b,
+  800: #06212E,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text
+  )
+);
+
+$tombolo-cyan: (
+  50: #CBF0F6,
+  100: #B1E9F2,
+  200: #30D5F1,
+  300: #a1ebf4,
+  400: #8d6e63,
+  500: #3BCAE2,
+  600: #6d4c41,
+  700: #18B6D0,
+  800: #4e342e,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text
+  )
+);

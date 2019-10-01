@@ -1,0 +1,55 @@
+@import '../../../../variables';
+
+.number-slider-component {
+
+  .number-slider-component-wrapper {
+    display: flex;
+  }
+
+  .mat-slider {
+    flex: 1 1;
+    padding: 0;
+    height: 30px;
+  }
+
+  .mat-form-field {
+    width: 40px;
+  }
+
+  .mat-slider-wrapper {
+    left: 0;
+    top: 12px;
+  }
+
+  .mat-input-infix {
+    border-top: 0;
+  }
+
+  .mat-input-wrapper, .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-underline {
+    bottom: 0;
+  }
+
+  input {
+    text-align: right;
+  }
+
+  .unit {
+    margin-left: 1px;
+  }
+
+  // Turn off stepper controls
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: textfield;
+    margin: 0;
+  }
+}
+
+

@@ -1,0 +1,29 @@
+@import '../../../variables';
+
+:host {
+  display: block;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: $sidebar-left-width;
+  width: $g * 15;
+  height: $g * 2;
+  overflow-x: hidden;
+}
+
+.button-box {
+  overflow-x: hidden;
+  display: flex;
+}
+
+.username-button {
+  flex-shrink: 1;
+}
+
+.username {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

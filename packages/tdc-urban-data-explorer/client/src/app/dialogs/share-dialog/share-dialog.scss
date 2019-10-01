@@ -1,0 +1,63 @@
+/deep/ .mat-dialog-container {
+  padding: 22px;
+  overflow: hidden;
+}
+
+:host {
+
+  $icon-size: 40px;
+  $button-padding: 6px;
+
+  .full-width {
+    width: 100%;
+  }
+
+  h1, input[type='text'] {
+    margin-left: $button-padding;
+  }
+
+  /deep/ .mat-dialog-title, /deep/ .mat-input-flex  {
+    padding: 0;
+    margin: 0;
+  }
+
+  /deep/ .mat-dialog-actions {
+    padding: 15px 0 0 0;
+    margin: 0;
+  }
+
+
+
+  /deep/ .mat-form-field-underline {
+    height: 2px;
+    background-color: rgb(200,217,217);
+  }
+
+  .share-buttons {
+    z-index: 9999;
+    margin: 8px 0 0 0;
+
+    .share-button {
+      width: $icon-size+$button-padding;
+      height: $icon-size+3;
+      padding: 0;
+      margin-right: 3px;
+    }
+
+    /deep/ .mat-icon {
+      width: $icon-size;
+      height: $icon-size;
+      font-size: $icon-size;
+      size: $icon-size;
+      margin-top: 10px;
+    }
+  }
+
+  .tombolo-button {
+    background-color: rgb(68,202,224);
+    color: white;
+    font-size: 11px;
+    text-transform: uppercase;
+    corner-radius: 20;
+  }
+}

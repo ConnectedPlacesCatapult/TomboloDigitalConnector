@@ -1,0 +1,62 @@
+<h3 class="sidebar-header">
+  <mat-icon fontSet="fa" fontIcon="fa-info-circle"></mat-icon>
+  Export Map
+</h3>
+
+<div class="sidebar-content with-padding" [formGroup]="exportForm">
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Name" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-select placeholder="Preset Layouts" formControlName="preset">
+      <mat-option value="a4_150dpi">A4 at 150 DPI</mat-option>
+      <mat-option value="a4_300dpi">A4 at 300 DPI</mat-option>
+      <mat-option value="a3_150dpi">A3 at 150 DPI</mat-option>
+      <mat-option value="a3_300dpi">A3 at 300 DPI</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Width (mm)" formControlName="width">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Height (mm)" formControlName="height">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="DPI" formControlName="dpi">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-select placeholder="Format" formControlName="format">
+      <mat-option value="png">PNG</mat-option>
+      <mat-option value="pdf">PDF</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="buttons" *ngIf="map">
+    <button mat-button (click)="routeBack()"
+            angulartics2On="click"
+            angularticsCategory="View"
+            angularticsAction="CancelExportMap"
+            [angularticsLabel]="map.name">Cancel</button>
+    <button mat-button (click)="exportMap()" [disabled]="!exportForm.valid || !map || exporting"
+            angulartics2On="click"
+            angularticsCategory="View"
+            angularticsAction="ExportMap"
+            [angularticsLabel]="map.name">Export Map</button>
+  </div>
+
+  <div *ngIf="exporting" class="spinner-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>
+
+<div #theMapKey class="sidebar-footer">
+  <map-key [map]="map" class="with-side-padding"></map-key>
+</div>
+

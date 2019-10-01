@@ -1,0 +1,27 @@
+<ng-container *ngIf="map">
+
+    <h2><span class="title">Filters</span>
+      <button mat-icon-button
+              disableRipple
+              (click)="addFilter()"
+              angulartics2On="click"
+              angularticsCategory="Filter"
+              angularticsAction="AddFilter"
+              [angularticsLabel]="map?.name">Add a filter<mat-icon svgIcon="add"></mat-icon></button>
+    </h2>
+    <mat-accordion multi="true" displayMode="flat">
+      <!-- Map filters -->
+      <mat-expansion-panel *ngFor="let filter of filters; let i = index" expanded="true">
+        <mat-expansion-panel-header collapsedHeight="40px" expandedHeight="40px">
+          <span class="expansion-header-title">Filter #{{i + 1}}</span>
+          <div class="button-box">
+            <button mat-icon-button class="compressed" (click)="toggleFilterEnabled(i, filter); $event.stopPropagation()"><mat-icon [svgIcon]="eyeIconForFilter(filter)"></mat-icon></button>
+            <button mat-icon-button class="compressed" (click)="deleteFilter(filter); $event.stopPropagation()"><mat-icon svgIcon="trash"></mat-icon></button>
+          </div>
+        </mat-expansion-panel-header>
+        <filter-editor [map]="map" [filter]="filter" (filterChange)="onFilterChange(i, $event)"></filter-editor>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </ng-container>
+

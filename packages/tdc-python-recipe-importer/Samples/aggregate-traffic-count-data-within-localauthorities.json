@@ -1,0 +1,48 @@
+{
+  "dataset": {
+    "subjects": [
+      {
+        "subjectType": "localAuthority",
+        "provider": "uk.gov.ons",
+        "matchRule": {
+          "attribute": "label",
+          "pattern": "E090%"
+        }
+      }
+    ],
+    "datasources": [
+      {
+        "importerClass": "uk.org.tombolo.importer.ons.OaImporter",
+        "datasourceId": "localAuthority"
+      },
+      {
+        "importerClass": "uk.org.tombolo.importer.dft.TrafficCountImporter",
+        "datasourceId": "trafficCounts",
+        "geographyScope": [
+          "London"
+        ]
+      }
+    ],
+    "fields": [
+      {
+        "fieldClass": "uk.org.tombolo.field.aggregation.GeographicAggregationField",
+        "label": "SumCountPedalCycles",
+        "subject": {
+          "subjectType": "trafficCounter",
+          "provider": "uk.gov.dft"
+        },
+        "function": "sum",
+        "field": {
+          "fieldClass": "uk.org.tombolo.field.value.LatestValueField",
+          "label": "CountPedalCycles",
+          "attribute": {
+            "provider": "uk.gov.dft",
+            "label": "CountPedalCycles"
+          }
+        }
+      }
+    ]
+  },
+  "exporter": "uk.org.tombolo.exporter.GeoJsonExporter",
+  "timeStamp": false
+}

@@ -1,0 +1,17 @@
+<mat-table [dataSource]="attributesSource">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef class="field-cell">Attribute <span class="hint-text">(hover for description)</span></mat-header-cell>
+    <mat-cell *matCellDef="let attribute" class="field-cell">
+      <div class="tooltip">
+        {{attribute.name}}<span class="tooltiptext" *ngIf="attribute.description!==null">{{attribute.description}}</span>
+      </div>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="value">
+    <mat-header-cell *matHeaderCellDef class="field-cell">Value</mat-header-cell>
+    <mat-cell *matCellDef="let attribute" class="field-cell" [innerHTML]="formatValue(attribute)"></mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="headerRows" class="field-row header"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: headerRows;" class="field-row"></mat-row>
+</mat-table>

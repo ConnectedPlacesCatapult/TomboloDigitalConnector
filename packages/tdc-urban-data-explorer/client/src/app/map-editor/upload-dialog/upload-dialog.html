@@ -1,0 +1,49 @@
+<mat-horizontal-stepper linear #stepper="matHorizontalStepper">
+  <mat-step label="Upload Dataset" editable="false">
+    <upload-page1 [context]="context"></upload-page1>
+    <button mat-raised-button color="accent" class="wizard-button" (click)="next()" [disabled]="!pageCompleted(0)"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="WizardNextPage"
+            angularticsLabel="1">Next</button>
+    <button mat-raised-button class="wizard-button" (click)="cancel()"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="CancelUpload"
+            angularticsLabel="0">Cancel</button>
+  </mat-step>
+  <mat-step label="Dataset Details" editable="false">
+    <upload-page2 [context]="context"></upload-page2>
+    <button mat-raised-button color="accent" class="wizard-button" (click)="next()" [disabled]="!pageCompleted(1)"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="WizardNextPage"
+            angularticsLabel="2">Next</button>
+    <button mat-raised-button class="wizard-button" (click)="cancel()"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="CancelUpload"
+            angularticsLabel="1">Cancel</button>
+  </mat-step>
+  <mat-step label="Data Attribute Details" editable="false">
+    <upload-page3 [context]="context"></upload-page3>
+    <button mat-raised-button color="accent" class="wizard-button" (click)="next()" [disabled]="!pageCompleted(2)"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="WizardNextPage"
+            angularticsLabel="3">Next</button>
+    <button mat-raised-button class="wizard-button" (click)="cancel()"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="CancelUpload"
+            angularticsLabel="2">Cancel</button>
+  </mat-step>
+  <mat-step label="Finish" editable="false">
+    <upload-page4 [context]="context"></upload-page4>
+    <button mat-raised-button color="accent" class="wizard-button" (click)="finish()"
+            angulartics2On="click"
+            angularticsCategory="UploadDataset"
+            angularticsAction="WizardCompleted"
+            angularticsLabel="3">OK</button>
+  </mat-step>
+</mat-horizontal-stepper>

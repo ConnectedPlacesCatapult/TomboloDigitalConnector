@@ -1,0 +1,53 @@
+<h3 class="sidebar-header">
+  Access To from Space Syntax
+</h3>
+
+<div class="sidebar-content with-padding" [formGroup]="form" *ngIf="map">
+  <h4>{{map.name}}</h4>
+  <div *ngIf="map.description"  Markdown [data]="map.description" [@expandedState]="descriptionExpanded"></div>
+
+
+  <button mat-button class="button-small" (click)="toggleDescriptionExpanded()">
+    {{expandButtonText()}}
+  </button>
+  <hr>
+
+  <h4>Transport Mode</h4>
+
+  <mat-radio-group formControlName="transportMode">
+    <mat-radio-button value="wlk">
+      <mat-icon svgIcon="wlk"></mat-icon><span>Walking</span>
+    </mat-radio-button>
+
+    <mat-radio-button value="bus">
+      <mat-icon svgIcon="bus"></mat-icon><span>Public Transport</span>
+    </mat-radio-button>
+
+
+    <mat-radio-button value="car">
+      <mat-icon svgIcon="car"></mat-icon><span>Car</span>
+    </mat-radio-button>
+
+  </mat-radio-group>
+
+
+  <hr>
+
+  <h4>Journey Time</h4>
+  <number-slider-control formControlName="journeyTime" min="5" max="15" step="5" unit="min" [tick-interval]="1"></number-slider-control>
+
+  <hr>
+  <h4>Satisfaction</h4>
+  <number-slider-control formControlName="satisfaction" min="0" max="100" step="1" unit="%" [tick-interval]="10"></number-slider-control>
+  <hr>
+
+  <h4>GPs per 1000 Patients</h4>
+  <number-slider-control formControlName="gpRatio" min="0" max="4" step="0.5" unit="GP" [tick-interval]="2"></number-slider-control>
+  <hr>
+
+</div>
+
+
+<div class="sidebar-footer">
+  <map-key [map]="map" class="with-side-padding"></map-key>
+</div>

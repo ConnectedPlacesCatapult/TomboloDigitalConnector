@@ -1,0 +1,60 @@
+@import '../../../variables';
+
+$dataset-dialog-height: 500px !default;
+$dataset-dialog-left-column-width: 300x !default;
+$dataset-dialog-datasets-list-height: 160px !default;
+
+:host {
+  display: block;
+}
+
+hr {
+  display: block;
+  width: 100%;
+  height: 1px;
+  flex-shrink: 0;
+  background-color: black;
+  border: none;
+}
+.mat-dialog-content {
+  display: flex;
+  height: $dataset-dialog-height;
+  overflow: hidden;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  width: $dataset-dialog-left-column-width;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+}
+
+.categories-list {
+  flex: 1 1;
+  overflow: auto;
+}
+
+.datasets-list {
+  max-height: $dataset-dialog-datasets-list-height;
+  flex-shrink: 0;
+  overflow: auto;
+
+  .mat-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 4px;
+  }
+}
+
+.description {
+  overflow: auto;
+}
+
+.attribute-table {
+  width: 100%;
+}

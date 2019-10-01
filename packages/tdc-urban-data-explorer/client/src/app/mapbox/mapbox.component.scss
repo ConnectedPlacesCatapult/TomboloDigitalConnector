@@ -1,0 +1,49 @@
+tombolo-mapbox {
+  display: block;
+  height: 100%;
+  background-color: white;
+
+  .map-container.hover .mapboxgl-canvas-container {
+    cursor: pointer;
+  }
+
+  .progress-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .map-container {
+    transition: opacity 0.3s;
+    position:absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .zoom-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 16px;
+  }
+
+  .zoom-button-minus {
+    top: 60px;
+  }
+
+  .hidden {
+    width: 0px;
+    height: 0px;
+    position: fixed;
+    verflow: hidden;
+  }
+
+  .mapboxgl-popup-close-button {
+    font-size: 28px;
+  }
+}
+

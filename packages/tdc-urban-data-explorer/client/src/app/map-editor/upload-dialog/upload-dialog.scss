@@ -1,0 +1,74 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+
+$typography: mat-typography-config();
+
+
+.mat-horizontal-stepper-content {
+
+}
+
+/deep/ .mat-horizontal-content-container {
+  padding-bottom: 0;
+}
+
+.wizard-page-component {
+  display: block;
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+}
+
+mat-table {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.wizard-button {
+  float: right;
+  margin: 1em 0 0.2em 1em;
+}
+
+
+upload-page2 /deep/ .mat-form-field {
+  margin-bottom: 1em;
+}
+
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 95%;
+}
+
+.mat-column-id {
+  flex: 1 1;
+}
+
+.mat-column-type {
+  flex: 0 0 120px;
+}
+
+.mat-column-name {
+  flex: 1 1;
+}
+
+.mat-column-description {
+  flex: 2 2;
+}
+
+.mat-column-unit {
+  flex: 0 0 80px;
+}
+
+.mat-column-remove {
+  flex: 0 0 40px;
+}
+
+mat-row.mat-row.ng-star-inserted.removed {
+  background-color: rgba(0,0,0,0.2);
+  text-decoration: line-through !important;
+  font-style: italic;
+}

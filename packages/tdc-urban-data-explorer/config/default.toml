@@ -1,0 +1,79 @@
+[logger]
+label = "tombolo-viewer"
+level = "debug"
+
+[db]
+host = "localhost"
+port = 5432
+username = "tombolo_cde"
+password = "*************"  # Excluded from git - set DB_PASSWORD environment variable
+database = "tombolo_cde"
+dialect = "postgres"
+loglevel = 'debug' # Log level at which Sequelize logs are made
+
+[db.pool]
+max = 20
+idle = 30000
+acquire = 60000
+
+[jwt]
+issuer = "Future Cities Catapult"
+secret = "changethis!"
+
+[cors]
+origin = "*"
+credentials = true
+
+[mapnik]
+simplify_distance = 1
+area_threshold = 20
+
+[server]
+baseUrl = "http://localhost:4200"
+mapAssetsUrl = "http://localhost:4200/assets/"
+datasetCaching = false
+slowTileLimit = 500 # ms
+largeTileLimit = 100000 # bytes
+
+[fileUpload]
+uploadPath = "./data/uploads"
+maxFileSize = 52428800 # 50 MB
+
+[auth]
+secret = "changethis!"
+sessionSecret = "changethis!"
+
+[auth.facebook]
+clientId = "147217102619899"
+clientSecret = "1deb1f9d17a53f41ddce510a9c47c109"
+
+[auth.twitter]
+consumerKey = "QWEAgUk3nlZjxNkCrk9Zg5ilZ"
+consumerSecret = "NBNSxKBIu12QHXZDGvMViM5YdsioAUtW5wrpehzFdS9p71Cyv6"
+
+[client]
+socialMediaTitle = "My City Data Explorer Map"
+socialMediaDescription = "Check out this amazing map I built with City Data Explorer!"
+socialMediaTags = "city data explorer, tombolo, emuanalytics"
+googleAnalyticsUserId = "UA-79725616-5"
+nominatimUrl = "https://nominatim.openstreetmap.org"
+defaultMap = "950db2c7-1a3b-448d-9b21-444a0ec7b5e0"
+poweredBy = "Powered by Tombolo and Emu Analytics"
+uploadEnabled = true
+saveEnabled = true
+socialLoginEnabled = false
+createAccountEnabled = true
+
+[emailTemplates]
+from = "tombolo@emu-analytics.net"
+basePath = "./email-templates"
+
+[smtp]
+host = "localhost"
+port = 1025
+secure = false
+
+[quota]
+maps = 50
+datasets = 10
+totalStorage = 104857600 # 100 MB

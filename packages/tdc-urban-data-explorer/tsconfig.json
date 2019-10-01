@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "removeComments": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "outDir": "./build",
+    "allowJs": true
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+   "src/lib/customTypings"
+  ]
+}

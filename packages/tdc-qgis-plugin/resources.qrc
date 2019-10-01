@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/plugins/DigitalConnectorPlugin" >
+        <file>icon.png</file>
+	<file>dc_logo.png</file>
+    </qresource>
+</RCC>

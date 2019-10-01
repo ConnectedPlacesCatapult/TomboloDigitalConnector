@@ -1,0 +1,23 @@
+<mat-input-container floatLabel="never">
+  <input matInput class="searchbar"
+         #searchBox
+         (keyup.enter)="search(searchBox.value)"
+         placeholder="Search location"
+         [matAutocomplete]="auto"
+         tabindex="-1">
+  <button mat-icon-button matSuffix (click)="search(searchBox.value)">
+    <mat-icon svgIcon="map-pin"></mat-icon>
+  </button>
+</mat-input-container>
+
+<div>
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true">
+    <mat-option *ngFor="let place of places" (click)="locationClick(place)">
+      {{place.displayName}}
+    </mat-option>
+    <mat-option *ngIf="!found">
+      <i>Not found</i>
+    </mat-option>
+  </mat-autocomplete>
+</div>
+

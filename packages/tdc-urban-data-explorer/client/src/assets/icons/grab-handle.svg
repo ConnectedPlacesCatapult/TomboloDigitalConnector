@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- original viewBox="0 0 10 8" -->
+<svg width="24px" height="24px" viewBox="-7 -8 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g id="Symbols" stroke="none" stroke-width="1" fill-rule="evenodd">
+    <g id="Reorder">
+      <g id="Group-Copy">
+        <rect id="Rectangle" x="0" y="0" width="10" height="1.6" rx="0.200000003"></rect>
+        <rect id="Rectangle-Copy" x="0" y="3.2" width="10" height="1.6" rx="0.200000003"></rect>
+        <rect id="Rectangle-Copy-4" transform="translate(5.000000, 7.200000) scale(1, -1) translate(-5.000000, -7.200000) " x="0" y="6.4" width="10" height="1.6" rx="0.200000003"></rect>
+      </g>
+    </g>
+  </g>
+</svg>

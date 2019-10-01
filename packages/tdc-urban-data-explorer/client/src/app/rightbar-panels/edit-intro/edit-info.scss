@@ -1,0 +1,31 @@
+@import '../../../variables';
+
+.logo-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.logo {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  width: $g * 5;
+  height: $g* 2;
+}
+
+.logo-fcc {
+  background-image: url(/assets/images/fcc.svg);
+}
+
+.logo-space-syntax {
+  background-image: url(/assets/images/space_syntax.png);
+}
+
+p.mat-caption {
+  margin-bottom: 0;
+}
+
+.sidebar-header {
+  font-size: 16px;
+}

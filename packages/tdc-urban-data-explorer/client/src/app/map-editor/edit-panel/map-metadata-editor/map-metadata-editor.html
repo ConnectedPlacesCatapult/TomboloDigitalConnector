@@ -1,0 +1,16 @@
+<form [formGroup]="form">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Name" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <textarea matInput
+              placeholder="Description"
+              formControlName="description"
+              matAutosizeMinRows="4"
+              matAutosizeMaxRows="10"></textarea>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="isPublic">Public</mat-checkbox>
+
+</form>

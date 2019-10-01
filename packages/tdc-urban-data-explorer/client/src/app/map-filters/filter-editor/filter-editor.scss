@@ -1,0 +1,48 @@
+@import '../../../variables';
+
+$control-spacing: $g;
+
+.filter-editor {
+  number-slider-control {
+
+    display: block;
+    margin-top: $control-spacing / 2;
+
+    .mat-slider {
+      position: relative;
+    }
+
+    .mat-slider:before {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      content: 'min';
+    }
+
+    .mat-slider:after {
+      position: absolute;
+      right: 8px;
+      bottom: 0;
+      content: 'max';
+    }
+  }
+
+  .trigger-with-info {
+    display: inline-flex;
+    width: 100%;
+
+    .mat-icon {
+      width: 18px;
+      height: 18px;
+      color: rgba(0,0,0,0.2);
+      margin-right: 4px;
+    }
+
+    .attribute-info {
+      flex: 1 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

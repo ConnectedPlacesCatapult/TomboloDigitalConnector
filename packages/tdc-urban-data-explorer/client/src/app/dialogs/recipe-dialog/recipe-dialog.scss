@@ -1,0 +1,32 @@
+/deep/ .mat-dialog-container {
+  padding: 15px;
+  overflow: hidden;
+}
+
+:host {
+
+  .full-width {
+    width: 100%;
+  }
+
+  /deep/ .mat-dialog-title {
+    margin-bottom: 10px;
+  }
+
+  /deep/ .mat-dialog-actions {
+    padding: 15px 0 0 0;
+    margin: 0;
+  }
+
+  .tombolo-button {
+    background-color: rgb(68,202,224);
+    color: white;
+    font-size: 11px;
+    text-transform: uppercase;
+    corner-radius: 20;
+  }
+
+  .norecipe {
+    padding: 10px;
+  }
+}

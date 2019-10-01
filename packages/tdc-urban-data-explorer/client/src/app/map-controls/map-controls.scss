@@ -1,0 +1,41 @@
+@import '../../variables';
+
+:host {
+  display: block;
+  position: absolute;
+  right:0;
+  bottom:0;
+  width: $sidebar-right-width;
+}
+
+.button-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: $g * 3;
+
+
+  .mat-icon-button {
+    width: $sidebar-right-width / 4;
+    height: $g * 3;
+  }
+
+  .mat-icon-button:first-child {
+    border-left: none;
+  }
+  .mat-icon-button:last-child {
+    border-right: none;
+  }
+}
+
+.basemap-detail-slider {
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  height: $g * 1.5;
+
+  mat-slider {
+    flex: 1 1;
+  }
+}

@@ -1,0 +1,33 @@
+@mixin gradient-sidebar-left($palette) {
+  background: linear-gradient(to bottom, mat-color($palette) 0%,  mat-color($palette) 10%, mat-color($palette, 0.86) 50%, mat-color($palette) 90%,  mat-color($palette) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='mat-color($palette)', endColorstr='mat-color($palette)',GradientType=0 );
+}
+
+@mixin gradient-facebook-button() {
+  background: linear-gradient(to bottom, #5F97D3 0%, #415790 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F0845F', endColorstr='#DD4D31',GradientType=0 );
+}
+
+@mixin gradient-twitter-button() {
+  background: linear-gradient(to bottom, #4BCEF5 0%, #2EA7F0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F0845F', endColorstr='#DD4D31',GradientType=0 );
+}
+
+@mixin gradient-google-button() {
+  background: linear-gradient(to bottom, #F0845F 0%, #DD4D31 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F0845F', endColorstr='#DD4D31',GradientType=0 );
+}
+
+@mixin gradient-dark-button() {
+  background: linear-gradient(to bottom, #1C485A 0%, #041F2C 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F0845F', endColorstr='#DD4D31',GradientType=0 );
+}
+
+@mixin gradient-fade($color: white) {
+  background: linear-gradient(to bottom, rgba($color, 0) 0%, rgba($color, 1) 100%);
+}
+
+@mixin gradient-right-expansion-header() {
+  background: linear-gradient(to bottom, rgba(228, 237, 237, 1) 0%, rgba(228, 237, 237, 0) 100%);
+
+}

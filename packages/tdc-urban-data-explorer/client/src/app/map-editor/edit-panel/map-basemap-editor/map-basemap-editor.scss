@@ -1,0 +1,35 @@
+.basemap-editor {
+  display: block;
+
+  .mat-radio-group {
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .mat-radio-label-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0px;
+    padding-bottom: 18px;
+  }
+
+  img {
+    box-sizing: border-box;
+    border: 1px solid black;
+    width: 105px;
+    height:70px;
+  }
+
+  .mat-radio-container {
+    display: none;
+  }
+
+  .mat-radio-button.mat-radio-checked {
+    img {
+      border: 5px solid red;
+    }
+  }
+}

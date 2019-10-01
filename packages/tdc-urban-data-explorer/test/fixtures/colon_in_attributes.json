@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.292,
+          51.3736
+        ]
+      },
+      "properties": {
+        "component:sum_of_green_space_areas": 1.1,
+        "component:area": 1.2,
+        "name": "name",
+        "index:green_space": 3.1,
+        "label": "label"
+      }
+    }
+  ]
+}
