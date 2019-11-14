@@ -53,7 +53,7 @@ public class DataExportEngineTest extends AbstractTest {
     public void testReturnsEmptyOnBlankSpec() throws Exception {
         engine.execute(builder.build(), writer, emptyImporterMatcher);
 
-        JSONAssert.assertEquals(writer.toString(), "{type:'FeatureCollection', features:[]}", false);
+        JSONAssert.assertEquals(writer.toString(), "{type:'FeatureCollection',\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"urn:ogc:def:crs:EPSG::4326\"}},features:[]}", false);
     }
 
     @Test
